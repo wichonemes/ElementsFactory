@@ -71,7 +71,7 @@ class DataParser {
       });
 
       // Basic type/range checks (kept simple on purpose)
-      if (typeof element.number !== 'number' || element.number < 1 || element.number > 118) {
+      if (typeof element.number !== 'number' || element.number < 1) {
         throw new Error(`Element at index ${index} has invalid atomic number: ${element.number}`);
       }
       if (typeof element.symbol !== 'string' || element.symbol.length === 0) {
