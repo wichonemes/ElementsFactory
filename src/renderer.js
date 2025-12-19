@@ -160,7 +160,7 @@ class PeriodicTableRenderer {
       `fill="${textColor}" ` +
       `text-anchor="middle" ` +
       `font-family="Arial, sans-serif">` +
-      `${element.atomicMass}` +
+      `${element.atomic_mass}` +
       `</text>`;
 
     svg += '</g>';
