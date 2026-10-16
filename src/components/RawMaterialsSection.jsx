@@ -1871,32 +1871,32 @@ Artesano Digital — Taller & Manufactura Inteligente`;
     <div className="space-y-6">
       
       {/* ENCABEZADO PRINCIPAL */}
-      <div className="bg-white p-5 rounded-3xl border border-[#E8E4DA] shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="bg-white p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border border-[#E8E4DA] shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-[#2D4F3E] text-white flex items-center justify-center shadow-xs">
-              <Boxes className="w-5 h-5 text-emerald-300" />
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-[#2D4F3E] text-white flex items-center justify-center shadow-xs shrink-0">
+              <Boxes className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-300" />
             </div>
             <div>
-              <h2 className="text-lg font-extrabold font-heading text-[#1F2421]">
+              <h2 className="text-base sm:text-lg font-extrabold font-heading text-[#1F2421]">
                 Materias Primas &amp; Stock del Taller
               </h2>
-              <p className="text-xs text-gray-500">
+              <p className="text-[11px] sm:text-xs text-gray-500 hidden sm:block">
                 Control de inventario físico, edición de cantidades a mano, gestión de proveedores y costos operativos en tiempo real.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Navegación por sub-pestañas */}
-        <div className="flex items-center gap-1.5 p-1 bg-gray-100/80 rounded-2xl border border-gray-200/80 text-xs font-semibold flex-wrap">
+        {/* Navegación por sub-pestañas (Desktop y Carrusel Deslizable en Móvil) */}
+        <div className="w-full sm:w-auto flex items-center gap-1.5 p-1 bg-gray-100/80 rounded-xl sm:rounded-2xl border border-gray-200/80 text-xs font-semibold overflow-x-auto no-scrollbar scroll-smooth">
           <button
             onClick={() => handleSwitchSubTab('inventory')}
-            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl transition-all cursor-pointer ${
+            className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-lg sm:rounded-xl transition-all cursor-pointer whitespace-nowrap ${
               activeSubTab === 'inventory' ? 'bg-white text-[#2D4F3E] shadow-sm font-bold' : 'text-gray-600 hover:text-gray-900'
             }`}
           >
-            <PackageCheck className="w-4 h-4" />
+            <PackageCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             <span>Insumos &amp; Stock ({materials.length})</span>
             {stats.urgentCount > 0 && (
               <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
@@ -1905,31 +1905,31 @@ Artesano Digital — Taller & Manufactura Inteligente`;
 
           <button
             onClick={() => handleSwitchSubTab('operational_costs')}
-            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl transition-all cursor-pointer ${
+            className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-lg sm:rounded-xl transition-all cursor-pointer whitespace-nowrap ${
               activeSubTab === 'operational_costs' ? 'bg-white text-[#2D4F3E] shadow-sm font-bold' : 'text-gray-600 hover:text-gray-900'
             }`}
           >
-            <Sliders className="w-4 h-4" />
+            <Sliders className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             <span>Costos Operativos &amp; Procesos</span>
           </button>
 
           <button
             onClick={() => handleSwitchSubTab('pricing_table')}
-            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl transition-all cursor-pointer ${
+            className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-lg sm:rounded-xl transition-all cursor-pointer whitespace-nowrap ${
               activeSubTab === 'pricing_table' ? 'bg-white text-[#2D4F3E] shadow-sm font-bold' : 'text-gray-600 hover:text-gray-900'
             }`}
           >
-            <TrendingUp className="w-4 h-4" />
+            <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             <span>Tablas de Precios en Vivo</span>
           </button>
 
           <button
             onClick={() => handleSwitchSubTab('suppliers')}
-            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl transition-all cursor-pointer ${
+            className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-lg sm:rounded-xl transition-all cursor-pointer whitespace-nowrap ${
               activeSubTab === 'suppliers' ? 'bg-white text-[#2D4F3E] shadow-sm font-bold' : 'text-gray-600 hover:text-gray-900'
             }`}
           >
-            <Building2 className="w-4 h-4" />
+            <Building2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             <span>Directorio de Proveedores ({suppliers.length})</span>
           </button>
         </div>
@@ -1959,8 +1959,8 @@ Artesano Digital — Taller & Manufactura Inteligente`;
         <div className="space-y-6">
           
           {/* Tarjetas de Diagnóstico de Stock y Valorización */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-            
+          {/* Vista Escritorio: Grid de 5 columnas */}
+          <div className="hidden md:grid md:grid-cols-5 gap-3">
             {/* Total Materias */}
             <div className="bg-white p-4 rounded-2xl border border-[#E8E4DA] shadow-xs">
               <div className="text-[11px] font-bold text-gray-500 uppercase">Insumos Totales</div>
@@ -2035,15 +2035,84 @@ Artesano Digital — Taller & Manufactura Inteligente`;
               </div>
               <div className="text-[10px] text-gray-500 mt-0.5">Inversión actual en almacén</div>
             </div>
+          </div>
 
+          {/* Vista Móvil: Carrusel Táctil Horizontal Compacto de Diagnóstico */}
+          <div className="md:hidden flex gap-2.5 overflow-x-auto pb-1 no-scrollbar scroll-smooth">
+            {/* Total */}
+            <div className="min-w-[130px] bg-white p-3 rounded-2xl border border-[#E8E4DA] shadow-2xs shrink-0">
+              <div className="text-[10px] font-bold text-gray-500 uppercase">Insumos Totales</div>
+              <div className="text-xl font-black font-heading text-[#1F2421] mt-0.5">{stats.totalItems}</div>
+              <div className="text-[9px] text-gray-400">Total en almacén</div>
+            </div>
+
+            {/* Urgente */}
+            <div
+              onClick={() => setFilterStockStatus(filterStockStatus === 'urgent' ? 'all' : 'urgent')}
+              className={`min-w-[130px] p-3 rounded-2xl border shadow-2xs cursor-pointer shrink-0 transition-all ${
+                filterStockStatus === 'urgent'
+                  ? 'bg-rose-100 border-rose-400 ring-2 ring-rose-300'
+                  : 'bg-rose-50 border-rose-200'
+              }`}
+            >
+              <div className="text-[10px] font-bold text-rose-800 uppercase flex items-center gap-1">
+                <span className="w-2 h-2 rounded-full bg-rose-600 animate-pulse" />
+                <span>Urgente</span>
+              </div>
+              <div className="text-xl font-black font-heading text-rose-900 mt-0.5">{stats.urgentCount}</div>
+              <div className="text-[9px] text-rose-700">Agotados / Críticos</div>
+            </div>
+
+            {/* Por Terminarse */}
+            <div
+              onClick={() => setFilterStockStatus(filterStockStatus === 'warning' ? 'all' : 'warning')}
+              className={`min-w-[130px] p-3 rounded-2xl border shadow-2xs cursor-pointer shrink-0 transition-all ${
+                filterStockStatus === 'warning'
+                  ? 'bg-amber-100 border-amber-400 ring-2 ring-amber-300'
+                  : 'bg-amber-50 border-amber-200'
+              }`}
+            >
+              <div className="text-[10px] font-bold text-amber-800 uppercase flex items-center gap-1">
+                <span className="w-2 h-2 rounded-full bg-amber-500" />
+                <span>Por Terminar</span>
+              </div>
+              <div className="text-xl font-black font-heading text-amber-900 mt-0.5">{stats.warningCount}</div>
+              <div className="text-[9px] text-amber-700">Cerca del mínimo</div>
+            </div>
+
+            {/* Stock Óptimo */}
+            <div
+              onClick={() => setFilterStockStatus(filterStockStatus === 'ok' ? 'all' : 'ok')}
+              className={`min-w-[130px] p-3 rounded-2xl border shadow-2xs cursor-pointer shrink-0 transition-all ${
+                filterStockStatus === 'ok'
+                  ? 'bg-emerald-100 border-emerald-400 ring-2 ring-emerald-300'
+                  : 'bg-emerald-50 border-emerald-200'
+              }`}
+            >
+              <div className="text-[10px] font-bold text-emerald-800 uppercase flex items-center gap-1">
+                <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                <span>Stock OK</span>
+              </div>
+              <div className="text-xl font-black font-heading text-emerald-900 mt-0.5">{stats.okCount}</div>
+              <div className="text-[9px] text-emerald-700">Producción cubierta</div>
+            </div>
+
+            {/* Valor Insumos */}
+            <div className="min-w-[145px] bg-white p-3 rounded-2xl border border-[#E8E4DA] shadow-2xs shrink-0">
+              <div className="text-[10px] font-bold text-[#2D4F3E] uppercase">Valor Almacén</div>
+              <div className="text-base font-black font-heading text-[#2D4F3E] mt-0.5 truncate">
+                ${stats.totalValuation.toLocaleString('es-MX')}
+              </div>
+              <div className="text-[9px] text-gray-500">Inversión actual</div>
+            </div>
           </div>
 
           {/* Barra de Filtros por Técnica con Contadores y Búsqueda */}
-          <div className="bg-white p-4 rounded-2xl border border-[#E8E4DA] shadow-xs flex flex-wrap items-center justify-between gap-3">
-            <div className="flex flex-wrap items-center gap-1.5">
-              <div className="flex items-center gap-1 text-xs font-bold text-gray-500 uppercase mr-1">
+          <div className="bg-white p-3 sm:p-4 rounded-2xl border border-[#E8E4DA] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div className="w-full md:w-auto flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth pb-1 md:pb-0">
+              <div className="flex items-center gap-1 text-xs font-bold text-gray-500 uppercase mr-1 shrink-0">
                 <Filter className="w-3.5 h-3.5 text-[#2D4F3E]" />
-                <span>Técnica:</span>
+                <span className="hidden sm:inline">Técnica:</span>
               </div>
 
               {[
@@ -2064,7 +2133,7 @@ Artesano Digital — Taller & Manufactura Inteligente`;
                     setFilterColor('all');
                     setFilterFinish('all');
                   }}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                  className={`shrink-0 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
                     filterCategory === cat.id
                       ? 'bg-[#2D4F3E] text-white shadow-xs font-bold'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -2075,10 +2144,10 @@ Artesano Digital — Taller & Manufactura Inteligente`;
               ))}
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between sm:justify-end gap-2 shrink-0">
               <button
                 onClick={handleOpenNewModal}
-                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#2D4F3E] text-white text-xs font-bold hover:bg-[#20392C] transition-all shadow-xs cursor-pointer"
+                className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#2D4F3E] text-white text-xs font-bold hover:bg-[#20392C] transition-all shadow-xs cursor-pointer whitespace-nowrap"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>+ Nuevo Insumo</span>
@@ -2086,7 +2155,7 @@ Artesano Digital — Taller & Manufactura Inteligente`;
 
               <button
                 onClick={() => { loadMaterials(); loadSuppliers(); }}
-                className="p-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-600 transition-colors cursor-pointer"
+                className="p-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-600 transition-colors cursor-pointer shrink-0"
                 title="Recargar inventario y proveedores"
               >
                 <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
@@ -2095,10 +2164,10 @@ Artesano Digital — Taller & Manufactura Inteligente`;
           </div>
 
           {/* PANEL DE FILTROS DINÁMICOS POR ÁREA: MATERIAL / TIPO, COLOR, ACABADO Y LUPITA BUSCADORA */}
-          <div className="bg-[#FAF9F5] p-3.5 rounded-2xl border border-[#E8E4DA] shadow-xs space-y-3 transition-all">
+          <div className="bg-[#FAF9F5] p-3 sm:p-3.5 rounded-2xl border border-[#E8E4DA] shadow-xs space-y-3 transition-all">
             
             {/* Cabecera del filtro con título del área, lupita buscadora, botón expandir/contraer y botón limpiar */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-2.5">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-xs font-extrabold uppercase tracking-wider text-[#2D4F3E] flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-[#D4A359]" />
@@ -2121,14 +2190,14 @@ Artesano Digital — Taller & Manufactura Inteligente`;
                 {filteredMaterials.some(m => (Number(m.currentStock) || 0) <= (Number(m.minStockAlert) || 1)) && (
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-rose-100 text-rose-800 border border-rose-300 animate-pulse">
                     <span className="w-1.5 h-1.5 rounded-full bg-rose-600"></span>
-                    <span>Números Rojos al Inicio</span>
+                    <span>Números Rojos</span>
                   </span>
                 )}
               </div>
 
               {/* Lupita buscadora rápida en tiempo real y botón colapsable */}
-              <div className="flex flex-wrap items-center gap-2">
-                <div className="relative">
+              <div className="flex items-center gap-2 w-full md:w-auto">
+                <div className="relative flex-1 md:w-64">
                   <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-gray-400" />
                   <input
                     type="text"
@@ -2144,7 +2213,7 @@ Artesano Digital — Taller & Manufactura Inteligente`;
                     }
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
-                    className="pl-8 pr-7 py-1.5 rounded-xl border border-gray-300 bg-white text-xs w-56 sm:w-64 focus:outline-none focus:border-[#2D4F3E]"
+                    className="w-full pl-8 pr-7 py-1.5 rounded-xl border border-gray-300 bg-white text-xs focus:outline-none focus:border-[#2D4F3E]"
                   />
                   {searchQuery && (
                     <button
@@ -2161,7 +2230,7 @@ Artesano Digital — Taller & Manufactura Inteligente`;
                 <button
                   type="button"
                   onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0 ${
                     isFiltersExpanded
                       ? 'bg-[#2D4F3E] text-white shadow-xs'
                       : (filterMaterialType !== 'all' || filterColor !== 'all' || filterFinish !== 'all')
@@ -2171,11 +2240,14 @@ Artesano Digital — Taller & Manufactura Inteligente`;
                   title={isFiltersExpanded ? 'Contraer filtros para ver lista limpia' : 'Extender filtros por color, material y acabado'}
                 >
                   <Filter className="w-3.5 h-3.5" />
-                  <span>{isFiltersExpanded ? 'Ocultar Filtros' : 'Filtros (Color/Material)'}</span>
+                  <span className="hidden sm:inline">{isFiltersExpanded ? 'Ocultar Filtros' : 'Filtros (Color/Material)'}</span>
+                  <span className="sm:hidden">{isFiltersExpanded ? 'Filtros ▲' : 'Filtros ▼'}</span>
                   {(filterMaterialType !== 'all' || filterColor !== 'all' || filterFinish !== 'all') && (
                     <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
                   )}
-                  {isFiltersExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                  <span className="hidden sm:inline">
+                    {isFiltersExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                  </span>
                 </button>
 
                 {(filterMaterialType !== 'all' || filterColor !== 'all' || filterFinish !== 'all' || searchQuery || filterStockStatus !== 'all') && (
@@ -2188,10 +2260,10 @@ Artesano Digital — Taller & Manufactura Inteligente`;
                       setSearchQuery('');
                       setFilterStockStatus('all');
                     }}
-                    className="flex items-center gap-1 text-[11px] font-bold text-[#9E472A] hover:text-[#7D341E] bg-rose-50 px-2.5 py-1.5 rounded-xl border border-rose-200 transition-colors cursor-pointer shrink-0"
+                    className="flex items-center gap-1 text-[11px] font-bold text-[#9E472A] hover:text-[#7D341E] bg-rose-50 px-2 py-1.5 rounded-xl border border-rose-200 transition-colors cursor-pointer shrink-0"
                   >
                     <X className="w-3 h-3" />
-                    <span>Limpiar</span>
+                    <span className="hidden sm:inline">Limpiar</span>
                   </button>
                 )}
               </div>
@@ -2415,7 +2487,7 @@ Artesano Digital — Taller & Manufactura Inteligente`;
               onScroll={handleTableScroll}
               className="w-full max-h-[70vh] overflow-y-auto overflow-x-hidden rounded-b-2xl scrollbar-thin"
             >
-              <table className="w-full text-left border-separate border-spacing-0 text-xs table-fixed">
+              <table className="hidden md:table w-full text-left border-separate border-spacing-0 text-xs table-fixed">
                 <thead className="sticky top-0 z-10">
                   <tr className="text-gray-600 font-bold uppercase text-[9.5px] tracking-wider">
                     <th className="sticky top-0 z-20 py-3 px-4 bg-gray-50/98 backdrop-blur-md border-b border-gray-200 w-[31%]">
@@ -2750,6 +2822,275 @@ Artesano Digital — Taller & Manufactura Inteligente`;
                   })}
                 </tbody>
               </table>
+
+              {/* VISTA MÓVIL: TARJETAS TÁCTILES ERGONÓMICAS DE MATERIAS PRIMAS */}
+              <div className="md:hidden divide-y divide-[#E8E4DA]/60 bg-white">
+                {filteredMaterials.length === 0 && (
+                  <div className="py-12 px-4 text-center text-gray-500 bg-white">
+                    <Boxes className="w-10 h-10 text-gray-300 mx-auto mb-2" />
+                    <p className="font-bold text-sm text-gray-700">No se encontraron materias primas con estos filtros</p>
+                    <p className="text-xs text-gray-400 mt-1 max-w-xs mx-auto">
+                      Prueba seleccionando otra técnica, limpiando la búsqueda o restableciendo los filtros de color y acabado.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFilterCategory('all');
+                        setFilterMaterialType('all');
+                        setFilterColor('all');
+                        setFilterFinish('all');
+                        setFilterStockStatus('all');
+                        setSearchQuery('');
+                      }}
+                      className="mt-3 px-4 py-2 rounded-xl bg-[#2D4F3E] text-white text-xs font-bold hover:bg-[#20392C] cursor-pointer transition-all shadow-xs"
+                    >
+                      Restablecer todos los filtros
+                    </button>
+                  </div>
+                )}
+                {filteredMaterials.map(mat => {
+                  const st = getStockStatus(mat);
+                  const catBadge = getCategoryBadge(mat.category);
+                  const currentStockInputVal = editingStockMap[mat.id] !== undefined ? editingStockMap[mat.id] : mat.currentStock;
+                  const minAlertInputVal = editingMinAlertMap[mat.id] !== undefined ? editingMinAlertMap[mat.id] : mat.minStockAlert;
+                  const costInputVal = editingCostMap[mat.id] !== undefined ? editingCostMap[mat.id] : mat.costPerUnit;
+                  const filamentColor = getFilamentColor(mat.color && mat.color !== 'N/A' ? mat.color : mat.name);
+                  const parsedPkg = parsePackageInfo(mat);
+                  const pkgQtyInputVal = editingPackageQtyMap[mat.id] !== undefined ? editingPackageQtyMap[mat.id] : (mat.packageQuantity || parsedPkg.packageQuantity);
+                  const pkgMeasInputVal = editingPackageMeasMap[mat.id] !== undefined ? editingPackageMeasMap[mat.id] : (mat.packageMeasurement || parsedPkg.packageMeasurement);
+                  const baseUnitCost = (Number(costInputVal) || 0) / (Number(pkgQtyInputVal) || 1);
+                  const isRedAlert = (Number(currentStockInputVal) || 0) <= (Number(minAlertInputVal) || 1);
+                  const lineVal = (Number(currentStockInputVal) || 0) * (Number(costInputVal) || 0);
+
+                  return (
+                    <div
+                      key={`mob-${mat.id}`}
+                      className={`p-3.5 space-y-3 transition-colors ${
+                        isRedAlert ? 'bg-rose-50/40 border-l-4 border-l-rose-500' : 'hover:bg-gray-50/60'
+                      }`}
+                    >
+                      {/* Fila 1: Nombre, color, badges y alerta */}
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex items-start gap-2.5 min-w-0">
+                          {filamentColor ? (
+                            <span
+                              className="w-4 h-4 rounded-full inline-block shadow-2xs border mt-0.5 shrink-0"
+                              style={{
+                                background: filamentColor.css,
+                                borderColor: filamentColor.border,
+                                boxShadow: filamentColor.glow ? '0 0 6px rgba(110, 231, 183, 0.9)' : undefined
+                              }}
+                            />
+                          ) : (
+                            <span className="w-4 h-4 rounded-full bg-stone-200 border border-stone-300 mt-0.5 shrink-0" />
+                          )}
+                          <div className="min-w-0">
+                            <h4 className="font-bold text-gray-900 text-sm leading-snug break-words">
+                              {mat.name}
+                            </h4>
+                            <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                              <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold border ${catBadge.color}`}>
+                                <span>{catBadge.icon}</span>
+                                <span>{catBadge.label}</span>
+                              </span>
+                              {mat.materialType && mat.materialType !== 'General' && mat.materialType !== 'N/A' && (
+                                <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-stone-100 text-stone-700 border border-stone-200">
+                                  {mat.materialType}
+                                </span>
+                              )}
+                              {mat.finish && mat.finish !== 'Estándar' && (
+                                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                                  <Sparkles className="w-2.5 h-2.5 text-amber-500" />
+                                  <span>{mat.finish}</span>
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Badge de estado de stock */}
+                        <span className={`shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10.5px] font-black border ${st.color}`}>
+                          <span>{st.icon}</span>
+                          <span>{st.key === 'urgent' ? 'Agotado' : st.key === 'warning' ? 'Por agotarse' : 'Stock OK'}</span>
+                        </span>
+                      </div>
+
+                      {/* Fila 2: Control Táctil Rápido de Stock Actual y Alerta Mínima */}
+                      <div className="bg-[#FAF9F5] p-2.5 rounded-xl border border-[#E8E4DA] flex items-center justify-between gap-2">
+                        <div>
+                          <div className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Stock Actual</div>
+                          <div className="inline-flex items-center gap-1 mt-1 bg-white p-0.5 rounded-xl border border-gray-300 shadow-2xs">
+                            <button
+                              type="button"
+                              onClick={() => handleAdjustStock(mat, String(mat.unit || '').includes('kg') ? -0.2 : -1)}
+                              className="w-8 h-8 rounded-lg bg-gray-100 active:bg-gray-200 text-gray-800 font-black flex items-center justify-center cursor-pointer text-base shadow-2xs"
+                              title="Restar cantidad"
+                            >
+                              -
+                            </button>
+                            <input
+                              type="number"
+                              step="any"
+                              min="0"
+                              value={currentStockInputVal}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setEditingStockMap(prev => ({ ...prev, [mat.id]: val }));
+                              }}
+                              onBlur={(e) => handleSaveStock(mat.id, e.target.value)}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') handleSaveStock(mat.id, e.currentTarget.value);
+                              }}
+                              className="w-14 h-8 text-center font-black font-mono text-sm bg-white border-0 py-0 text-[#1F2421] focus:outline-none"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleAdjustStock(mat, String(mat.unit || '').includes('kg') ? +0.5 : +1)}
+                              className="w-8 h-8 rounded-lg bg-emerald-100 active:bg-emerald-200 text-[#2D4F3E] font-black flex items-center justify-center cursor-pointer text-base shadow-2xs"
+                              title="Sumar cantidad"
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="text-right">
+                          <div className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Alerta Mínima</div>
+                          <div className="inline-flex items-center gap-1.5 mt-1 bg-white px-2 py-1 rounded-xl border border-gray-300 shadow-2xs">
+                            <span className="text-xs text-gray-400 font-bold">Mín:</span>
+                            <input
+                              type="number"
+                              step="any"
+                              min="0"
+                              value={minAlertInputVal}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setEditingMinAlertMap(prev => ({ ...prev, [mat.id]: val }));
+                              }}
+                              onBlur={(e) => handleSaveMinAlert(mat.id, e.target.value)}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') handleSaveMinAlert(mat.id, e.currentTarget.value);
+                              }}
+                              className="w-10 text-center font-mono font-black text-xs text-rose-800 focus:outline-none"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Fila 3: Contenido de Empaque, Costo de Compra y Costo Base */}
+                      <div className="grid grid-cols-2 gap-2 text-xs">
+                        <div className="bg-white p-2 rounded-xl border border-gray-200">
+                          <div className="text-[9.5px] font-bold text-gray-500 uppercase">Empaque</div>
+                          <div className="flex items-center gap-1 mt-1">
+                            <input
+                              type="number"
+                              step="any"
+                              min="0.001"
+                              value={pkgQtyInputVal}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setEditingPackageQtyMap(prev => ({ ...prev, [mat.id]: val }));
+                              }}
+                              onBlur={(e) => handleSavePackageInfo(mat, e.target.value, pkgMeasInputVal)}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') handleSavePackageInfo(mat, e.currentTarget.value, pkgMeasInputVal);
+                              }}
+                              className="w-12 text-center font-mono font-bold border border-gray-300 rounded py-0.5 text-xs"
+                            />
+                            <select
+                              value={pkgMeasInputVal}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setEditingPackageMeasMap(prev => ({ ...prev, [mat.id]: val }));
+                                handleSavePackageInfo(mat, pkgQtyInputVal, val);
+                              }}
+                              className="text-xs font-bold border border-gray-300 rounded py-0.5 bg-gray-50"
+                            >
+                              <option value="g">g</option>
+                              <option value="pza">pza</option>
+                              <option value="ml">ml</option>
+                              <option value="m">m</option>
+                              <option value="cm²">cm²</option>
+                              <option value="hoja">hoja</option>
+                              <option value="kg">kg</option>
+                              <option value="L">L</option>
+                              <option value="par">par</option>
+                              <option value="pliego">pliego</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div className="bg-white p-2 rounded-xl border border-gray-200 text-right">
+                          <div className="text-[9.5px] font-bold text-gray-500 uppercase">Costo Paquete</div>
+                          <div className="flex items-center justify-end gap-1 mt-1">
+                            <span className="text-gray-400 font-bold">$</span>
+                            <input
+                              type="number"
+                              step="any"
+                              min="0"
+                              value={costInputVal}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setEditingCostMap(prev => ({ ...prev, [mat.id]: val }));
+                              }}
+                              onBlur={(e) => handleSaveUnitCost(mat.id, e.target.value)}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') handleSaveUnitCost(mat.id, e.currentTarget.value);
+                              }}
+                              className="w-16 text-right font-mono font-bold border border-gray-300 rounded py-0.5 px-1 text-xs"
+                            />
+                          </div>
+                          <div className="text-[9.5px] font-bold text-emerald-800 mt-0.5">
+                            → ${baseUnitCost.toFixed(baseUnitCost < 0.1 ? 3 : 2)}/{pkgMeasInputVal}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Fila 4: Valor en Almacén, Proveedor y Acciones */}
+                      <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-gray-100 text-xs">
+                        <div>
+                          <span className="text-[10px] text-gray-500 font-medium">Valor almacén: </span>
+                          <span className="font-mono font-black text-[#2D4F3E] text-sm">
+                            ${lineVal.toLocaleString('es-MX', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-1.5">
+                          {mat.supplier && (
+                            <button
+                              type="button"
+                              onClick={() => handleOpenSupplierModal(mat.supplierId || mat.supplier, mat)}
+                              className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] font-bold hover:bg-emerald-100 transition-colors"
+                            >
+                              <Building2 className="w-3 h-3 text-emerald-600" />
+                              <span className="truncate max-w-[90px]">{mat.supplier}</span>
+                              <ExternalLink className="w-2.5 h-2.5 opacity-70" />
+                            </button>
+                          )}
+
+                          <button
+                            type="button"
+                            onClick={() => handleOpenEditModal(mat)}
+                            className="p-1.5 rounded-lg bg-gray-100 text-gray-700 hover:bg-amber-100 hover:text-amber-800 transition-colors"
+                            title="Editar insumo"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteMaterial(mat.id, mat.name)}
+                            className="p-1.5 rounded-lg bg-gray-100 text-gray-700 hover:bg-rose-100 hover:text-rose-800 transition-colors"
+                            title="Eliminar insumo"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Banner resumen al final de los SKUs con botón de regreso */}
@@ -2764,7 +3105,7 @@ Artesano Digital — Taller & Manufactura Inteligente`;
                 <button
                   type="button"
                   onClick={scrollToStart}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white border border-gray-300 text-gray-700 font-bold hover:bg-gray-100 cursor-pointer shadow-2xs text-xs transition-colors"
+                  className="hidden md:inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white border border-gray-300 text-gray-700 font-bold hover:bg-gray-100 cursor-pointer shadow-2xs text-xs transition-colors"
                   title="Volver a la primera columna de la izquierda"
                 >
                   <ChevronLeft className="w-3.5 h-3.5" />
