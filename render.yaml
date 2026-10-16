@@ -4,12 +4,12 @@ services:
     runtime: node
     plan: free
     region: virginia
-    buildCommand: corepack enable && pnpm install --frozen-lockfile --prod=false && pnpm build || npm install && npm run build
+    buildCommand: corepack enable && pnpm install --prod=false && pnpm build
     startCommand: node server/index.js
     healthCheckPath: /healthz
     envVars:
       - key: NODE_VERSION
-        value: 24.19.0
+        value: 22.11.0
       - key: NODE_ENV
         value: production
       - key: JWT_SECRET
