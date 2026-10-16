@@ -1449,8 +1449,66 @@ export default function PackagesAndServicesView({
   return (
     <div className="bg-[#FBF9F5] min-h-screen">
       
-      {/* Hero Cover Dinámico de Paquetes y Temporadas */}
-      <div className="relative bg-[#17251E] text-white overflow-hidden py-12 sm:py-16 border-b border-[#D4A359]/40 min-h-[380px] flex items-center">
+      {/* CABECERA COMPACTA MÓVIL ESTILO MERCADO LIBRE: Directa a los paquetes sin scroll innecesario */}
+      <div className="md:hidden bg-[#17251E] text-white px-4 pt-3 pb-3 border-b border-[#D4A359]/30">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#D4A359] animate-pulse"></span>
+            <span className="text-[11px] font-black uppercase tracking-wider text-[#D4A359]">
+              Kits &amp; Combos con Ahorro
+            </span>
+          </div>
+          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/10 text-gray-300">
+            {allBundles.length} Paquetes
+          </span>
+        </div>
+        <h1 className="text-xl font-black font-heading text-white mt-1">
+          Paquetes del Taller
+        </h1>
+        <p className="text-[11px] text-gray-300 mt-0.5">
+          Combos listos para Hogar, Negocios, Eventos y el servicio estrella Patch Bar.
+        </p>
+
+        {/* Chips de Categorías Rápidas Deslizables en Móvil */}
+        <div className="flex items-center gap-2 mt-3 overflow-x-auto scrollbar-none pb-1 select-none">
+          {[
+            { id: 'all', label: '✨ Todos los Paquetes', count: allBundles.length },
+            { id: 'servicios', label: '🧵 Patch Bar en Vivo', count: 1, highlight: true },
+            { id: 'hogar', label: '🏠 Hogar', count: hogarBundles.length },
+            { id: 'negocios', label: '💼 Negocios', count: negociosBundles.length },
+            { id: 'eventos', label: '🎉 Eventos', count: eventosBundles.length }
+          ].map(tab => {
+            const isSelected = activeAreaFilter === tab.id;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => {
+                  setActiveAreaFilter(tab.id);
+                  setPackagesSeed(Date.now());
+                }}
+                className={`px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap shrink-0 transition-all flex items-center gap-1.5 cursor-pointer ${
+                  isSelected
+                    ? 'bg-[#D4A359] text-[#17251E] font-black shadow-sm'
+                    : tab.highlight
+                    ? 'bg-[#D82B6E]/30 text-rose-200 border border-[#D82B6E]/50'
+                    : 'bg-white/10 text-gray-300 hover:bg-white/15 border border-white/10'
+                }`}
+              >
+                <span>{tab.label}</span>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+                  isSelected ? 'bg-black/20 text-[#17251E]' : 'bg-white/10 text-gray-400'
+                }`}>
+                  {tab.count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Hero Cover Dinámico de Paquetes y Temporadas (Solo Desktop / Pantallas Grandes) */}
+      <div className="hidden md:flex relative bg-[#17251E] text-white overflow-hidden py-12 sm:py-16 border-b border-[#D4A359]/40 min-h-[380px] items-center">
         {/* Atmósfera y Animación Estacional de Temporada */}
         <SeasonalAtmosphere
           effect={campaignConfig?.seasonalEffect || activeSeason?.seasonalEffect || 'snow'}
@@ -1565,8 +1623,8 @@ export default function PackagesAndServicesView({
         </div>
       </div>
 
-      {/* Barra de Valor: ¿Por qué comprar en paquete? */}
-      <div className="bg-[#FAF9F5] border-b border-[#E8E4DA] py-4">
+      {/* Barra de Valor: ¿Por qué comprar en paquete? (Solo Desktop / Pantallas Grandes) */}
+      <div className="hidden md:block bg-[#FAF9F5] border-b border-[#E8E4DA] py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             <div className="flex items-center gap-3 p-3 rounded-2xl bg-white border border-[#E8E4DA] shadow-2xs">
@@ -1613,21 +1671,23 @@ export default function PackagesAndServicesView({
       </div>
 
       {/* Main Body */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-12 space-y-6 sm:space-y-12">
         
-        {/* Banner de Eventos Comerciales del Mes (Estilo Temu / Mercado Libre / AliExpress) */}
+        {/* Banner de Eventos Comerciales del Mes (Solo en Escritorio / Desktop) */}
         {campaignConfig?.monthlyEvents && (
-          <MonthlyEventBanner
-            eventsConfig={campaignConfig.monthlyEvents}
-            seasonalEffect={campaignConfig?.seasonalEffect}
-            activeTheme={campaignConfig?.accentTheme || campaignConfig?.seasonalEffect || 'clasico'}
-            textColorMode={campaignConfig?.textColorMode || 'auto'}
-            showcaseSlides={campaignConfig?.monthlyEvents?.showcaseSlides || campaignConfig?.showcaseSlides}
-            onExploreClick={() => {
-              const el = document.getElementById('paquetes-especial') || document.getElementById('paquetes-hogar') || document.getElementById('servicios-patchbar-top');
-              if (el) el.scrollIntoView({ behavior: 'smooth' });
-            }}
-          />
+          <div className="hidden md:block">
+            <MonthlyEventBanner
+              eventsConfig={campaignConfig.monthlyEvents}
+              seasonalEffect={campaignConfig?.seasonalEffect}
+              activeTheme={campaignConfig?.accentTheme || campaignConfig?.seasonalEffect || 'clasico'}
+              textColorMode={campaignConfig?.textColorMode || 'auto'}
+              showcaseSlides={campaignConfig?.monthlyEvents?.showcaseSlides || campaignConfig?.showcaseSlides}
+              onExploreClick={() => {
+                const el = document.getElementById('paquetes-especial') || document.getElementById('paquetes-hogar') || document.getElementById('servicios-patchbar-top');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }}
+            />
+          </div>
         )}
 
         {/* SECCIÓN ESPECIAL: TEMPORADA ACTIVA & SELECCIÓN DEL MES */}
@@ -1664,55 +1724,75 @@ export default function PackagesAndServicesView({
 
         {/* VIP BANNER DESTACADO: SERVICIO PATCH BAR EN VIVO (Visible en 'all', 'eventos' y 'servicios') */}
         {(activeAreaFilter === 'all' || activeAreaFilter === 'eventos' || activeAreaFilter === 'servicios') && (
-          <section id="servicios-patchbar-top" className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#17251E] via-[#243B2E] to-[#1F2421] text-white p-6 sm:p-8 border-2 border-[#D4A359]/40 shadow-xl">
-            <div className="absolute top-0 right-0 w-80 h-80 bg-[#D4A359]/10 rounded-full blur-3xl pointer-events-none"></div>
-            <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-6">
-              <div className="space-y-3 max-w-2xl">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#D82B6E] text-white text-xs font-black uppercase tracking-wider shadow-sm">
-                  <Flame className="w-3.5 h-3.5" />
-                  <span>Servicio Estrella para Bodas y Fiestas</span>
-                </div>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold font-heading text-white leading-tight">
-                  Servicio Patch Bar en Vivo (Gorras &amp; Totes)
-                </h2>
-                <p className="text-sm text-gray-300 leading-relaxed">
-                  Llevamos nuestro stand de madera artesanal y prensa térmica a tu celebración. Tus invitados eligen sus parches favoritos y personalizan su recuerdo en vivo en solo 45 segundos.
-                </p>
-                <div className="flex flex-wrap items-center gap-3 pt-1">
-                  <span className="text-xl sm:text-2xl font-black text-[#E5C378] font-heading">
-                    Desde $4,800 <span className="text-xs text-gray-300 font-normal">MXN (Nivel Esencial hasta Edición Magna)</span>
-                  </span>
-                  <span className="text-xs bg-white/10 px-2.5 py-1 rounded-full text-emerald-300 border border-emerald-400/20 font-bold">
-                    ✓ Incluye mobiliario, prensa y operador
+          <section id="servicios-patchbar-top" className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#17251E] via-[#243B2E] to-[#1F2421] text-white p-5 sm:p-8 border-2 border-[#D4A359]/60 shadow-xl">
+            <div className="absolute top-0 right-0 w-80 h-80 bg-[#D4A359]/15 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div className="relative z-10 flex flex-col md:flex-row items-center gap-6">
+              {/* Imagen / Foto de la Estación Patch Bar */}
+              <div className="w-full md:w-56 h-48 md:h-52 rounded-2xl overflow-hidden shrink-0 border border-white/20 shadow-md relative group">
+                <img
+                  src="/uploads/patch_bar_servicio_en_vivo.jpg"
+                  alt="Servicio Patch Bar en Vivo"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-2.5">
+                  <span className="text-[10px] font-bold text-white bg-black/50 px-2 py-0.5 rounded-md backdrop-blur-xs">
+                    Estación móvil de madera
                   </span>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row lg:flex-col gap-3 w-full sm:w-auto shrink-0">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setActiveAreaFilter('servicios');
-                    const el = document.getElementById('servicios-taller');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="px-6 py-3.5 rounded-2xl bg-[#D4A359] hover:bg-[#c28e38] text-[#17251E] font-extrabold text-sm transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <Sparkles className="w-4 h-4" />
-                  <span>Ver experiencia en vivo</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (patchBarProduct) {
-                      onSelectProduct(patchBarProduct);
-                    }
-                  }}
-                  className="px-6 py-3.5 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm transition-all border border-white/20 flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <Plus className="w-4 h-4 stroke-[2.8]" />
-                  <span>Ver fotos &amp; cotizar</span>
-                </button>
+              {/* Contenido e información de Patch Bar */}
+              <div className="flex-1 space-y-3">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#D82B6E] text-white text-xs font-black uppercase tracking-wider shadow-sm">
+                  <Flame className="w-3.5 h-3.5" />
+                  <span>★ Servicio Estrella para Bodas y Fiestas</span>
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-extrabold font-heading text-white leading-tight">
+                  Servicio Patch Bar en Vivo (Gorras &amp; Totes)
+                </h2>
+                <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
+                  Llevamos nuestro stand de madera artesanal y prensa térmica industrial a tu evento. Tus invitados eligen sus parches favoritos y personalizan su recuerdo en vivo en solo 45 segundos.
+                </p>
+                <div className="flex flex-wrap items-center gap-2 pt-1">
+                  <span className="text-lg sm:text-2xl font-black text-[#E5C378] font-heading">
+                    Desde $4,800 <span className="text-xs text-gray-300 font-normal">MXN</span>
+                  </span>
+                  <span className="text-[11px] bg-white/10 px-2.5 py-1 rounded-full text-emerald-300 border border-emerald-400/20 font-bold">
+                    ✓ Incluye mobiliario, prensa y operador
+                  </span>
+                  <span className="text-[11px] bg-white/10 px-2.5 py-1 rounded-full text-amber-300 border border-amber-400/20 font-bold">
+                    📍 San Luis Potosí y alrededores
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2.5 pt-2">
+                  <a
+                    href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent('¡Hola Artesano Digital! Me interesa cotizar el Servicio de Patch Bar en Vivo para mi evento.')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-5 py-2.5 rounded-2xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-extrabold text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>Cotizar por WhatsApp</span>
+                  </a>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (patchBarProduct) {
+                        onSelectProduct(patchBarProduct);
+                      } else {
+                        const el = document.getElementById('servicios-taller');
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }}
+                    className="px-5 py-2.5 rounded-2xl bg-[#D4A359] hover:bg-[#c28e38] text-[#17251E] font-black text-xs sm:text-sm transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    <span>Ver fotos &amp; detalles</span>
+                  </button>
+                </div>
               </div>
             </div>
           </section>
@@ -1750,8 +1830,24 @@ export default function PackagesAndServicesView({
         {(activeAreaFilter === 'all' || activeAreaFilter === 'negocios') && negociosBundles.length > 0 && (
           <section id="paquetes-negocios" className="space-y-6">
             
-            {/* Banner Comercial Atractivo con Recursos Gráficos Sutiles */}
-            <div className="relative rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-[#FAF7F0] via-[#F4EFE6] to-[#FAF7F0] border-2 border-[#E5D7B7] shadow-sm overflow-hidden space-y-5">
+            {/* Cabecera Móvil Limpia de Negocios */}
+            <div className="md:hidden flex items-center justify-between pb-2 border-b border-[#E8E4DA]">
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-[#2D4F3E] uppercase tracking-wider">
+                  <Briefcase className="w-3.5 h-3.5 text-[#D4A359]" />
+                  <span>Área Negocios &amp; Marcas</span>
+                </div>
+                <h2 className="text-xl font-extrabold text-[#1F2421] font-heading">
+                  Paquetes para Negocios
+                </h2>
+              </div>
+              <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-[#FAF7F0] border border-[#E5D7B7] text-[#9E472A]">
+                {negociosBundles.length} combos
+              </span>
+            </div>
+
+            {/* Banner Comercial Atractivo con Recursos Gráficos Sutiles (Solo Desktop) */}
+            <div className="hidden md:block relative rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-[#FAF7F0] via-[#F4EFE6] to-[#FAF7F0] border-2 border-[#E5D7B7] shadow-sm overflow-hidden space-y-5">
               
               {/* Decoración gráfica sutil de fondo */}
               <div className="absolute -right-6 -bottom-8 opacity-[0.04] pointer-events-none text-[#2D4F3E]">
