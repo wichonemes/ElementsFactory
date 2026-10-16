@@ -6,7 +6,7 @@ import {
   X, Trophy, Volume2, VolumeX, Flame, Zap, Award, Gift,
   Sparkles, Check, Copy, ArrowRight, Play, RotateCcw, Clock,
   ChevronRight, Heart, Shield, HelpCircle, Gamepad2, Star,
-  Lock, Unlock, Coins
+  Lock, Unlock, Coins, RotateCw, Smartphone, Maximize2, Minimize2
 } from 'lucide-react';
 
 // Web Audio API Retro Sound Synthesizer (0 external files)
@@ -571,6 +571,68 @@ export default function WorkshopArcadeModal({
   const [lives, setLives] = useState(3);
   const [currentLevel, setCurrentLevel] = useState(1);
   const [rewardConfetti, setRewardConfetti] = useState([]);
+  const [isLandscapeMode, setIsLandscapeMode] = useState(false);
+
+  // Toggle de rotación / modo horizontal para optimizar pantalla completa en celular
+  const toggleOrientationMode = async () => {
+    const nextMode = !isLandscapeMode;
+    setIsLandscapeMode(nextMode);
+
+    try {
+      if (nextMode) {
+        if (typeof window !== 'undefined' && window.screen?.orientation?.lock) {
+          await window.screen.orientation.lock('landscape').catch(() => {});
+        }
+      } else {
+        if (typeof window !== 'undefined' && window.screen?.orientation?.unlock) {
+          window.screen.orientation.unlock();
+        }
+      }
+    } catch {
+      // Ignorar restricciones de bloqueo en navegadores que no lo soportan
+    }
+  };
+
+  // Movimiento táctil direccional para Atrapa-Piezas y Rompemuros
+  const handleMoveLeft = () => {
+    const state = internalStateRef.current;
+    if (!state) return;
+    if (selectedGameId === 'collector' && state.basket) {
+      state.basket.x = Math.max(10, state.basket.x - 50);
+    } else if (selectedGameId === 'breaker' && state.paddle) {
+      state.paddle.x = Math.max(10, state.paddle.x - 50);
+    }
+  };
+
+  const handleMoveRight = () => {
+    const state = internalStateRef.current;
+    if (!state) return;
+    if (selectedGameId === 'collector' && state.basket) {
+      state.basket.x = Math.min(530, state.basket.x + 50);
+    } else if (selectedGameId === 'breaker' && state.paddle) {
+      state.paddle.x = Math.min(535, state.paddle.x + 50);
+    }
+  };
+
+  // Etiquetas táctiles dinámicas por juego
+  const getGameActionLabel = (gameId) => {
+    switch (gameId) {
+      case 'dino':
+        return { label: '¡SALTAR VIRUTA!', icon: '🦖' };
+      case 'drone':
+        return { label: '¡IMPULSAR DRON!', icon: '🛸' };
+      case 'stacker':
+        return { label: '¡ALINEAR CAPA!', icon: '🏗️' };
+      case 'laser':
+        return { label: '¡DISPARAR LÁSER!', icon: '⚡' };
+      case 'heatpress':
+        return { label: '¡TERMOFIJAR DTF!', icon: '🔥' };
+      case 'nfcchip':
+        return { label: '¡CALIBRAR CHIP!', icon: '📡' };
+      default:
+        return { label: '¡ACCIÓN DE TALLER!', icon: '🕹️' };
+    }
+  };
 
   // Conversión equilibrada de puntos a monedas: 1 moneda cada 50 puntos acumulados
   const lastCoinMilestoneRef = useRef(0);
@@ -1943,9 +2005,9 @@ export default function WorkshopArcadeModal({
   }, [isOpen, selectedGameId, gameState, score, coinsEarned, currentLevel, activeTheme]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+    <div className={`fixed inset-0 z-50 flex items-center justify-center ${isLandscapeMode ? 'p-0' : 'p-1.5 sm:p-4'} bg-black/85 backdrop-blur-md animate-fadeIn`}>
       <div
-        className={`relative w-full max-w-4xl bg-gradient-to-br ${currentTheme.cabinetBg} text-white rounded-3xl border-2 ${currentTheme.cabinetBorder} shadow-2xl overflow-hidden flex flex-col max-h-[95vh] transition-all duration-500`}
+        className={`relative w-full ${isLandscapeMode ? 'h-full max-h-screen max-w-full rounded-none' : 'max-w-4xl max-h-[96vh] rounded-3xl'} bg-gradient-to-br ${currentTheme.cabinetBg} text-white border-2 ${currentTheme.cabinetBorder} shadow-2xl overflow-hidden flex flex-col transition-all duration-300`}
         onClick={e => e.stopPropagation()}
       >
         {/* Lluvia de confeti de recompensa estacional */}
@@ -1971,11 +2033,11 @@ export default function WorkshopArcadeModal({
                 <span className="text-[10px] bg-red-600/90 text-white px-2 py-0.5 rounded-full font-mono uppercase tracking-wider font-bold animate-pulse shadow-xs">
                   10 JUEGOS
                 </span>
-                <span className="text-[10px] bg-white/15 text-white/95 border border-white/20 px-2 py-0.5 rounded-full font-mono font-bold tracking-wide shadow-xs flex items-center gap-1">
+                <span className="hidden sm:inline-flex text-[10px] bg-white/15 text-white/95 border border-white/20 px-2 py-0.5 rounded-full font-mono font-bold tracking-wide shadow-xs items-center gap-1">
                   <span>{currentTheme.marqueeTag}</span>
                 </span>
               </div>
-              <p className="text-[11px] text-gray-300">
+              <p className="text-[11px] text-gray-300 hidden sm:block">
                 {currentTheme.subtitle || 'Rotación de juegos, dificultad dinámica y cupones de descuento canjeables'}
               </p>
             </div>
@@ -2027,6 +2089,26 @@ export default function WorkshopArcadeModal({
                 <span>🔄 2🪙 por +1🎮</span>
               </button>
             )}
+
+            {/* Toggle de Voltear Pantalla / Modo Horizontal Fullscreen */}
+            <button
+              type="button"
+              onClick={toggleOrientationMode}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer shadow-xs active:scale-95 ${
+                isLandscapeMode
+                  ? 'bg-amber-400 text-[#17251E] border-amber-300 ring-2 ring-amber-300/50'
+                  : 'bg-white/10 hover:bg-white/20 text-gray-200 border-white/20'
+              }`}
+              title={isLandscapeMode ? "Volver a modo normal" : "Voltear pantalla / modo horizontal para jugar mejor en celular"}
+            >
+              <RotateCw className={`w-3.5 h-3.5 ${isLandscapeMode ? 'text-[#17251E] rotate-90' : 'text-amber-400'}`} />
+              <span className="text-[11px] hidden sm:inline">
+                {isLandscapeMode ? 'Pantalla Normal' : 'Modo Horizontal'}
+              </span>
+              <span className="text-[11px] sm:hidden">
+                {isLandscapeMode ? 'Normal' : 'Girar'}
+              </span>
+            </button>
 
             {/* Audio Toggle */}
             <button
@@ -2083,7 +2165,7 @@ export default function WorkshopArcadeModal({
           </div>
 
           {/* Selector de modo de juegos: Reto del Día vs Ver los 10 */}
-          {activeTab === 'play' && (
+          {activeTab === 'play' && gameState !== 'playing' && (
             <div className="flex items-center gap-1 text-[11px] bg-black/40 p-1 rounded-xl border border-white/10">
               <button
                 type="button"
@@ -2112,7 +2194,7 @@ export default function WorkshopArcadeModal({
         </div>
 
         {/* CONTENIDO PRINCIPAL */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
+        <div className="flex-1 overflow-y-auto p-3 sm:p-5 space-y-3 sm:space-y-4">
           {effectiveConfig?.enabled === false && (
             <div className="p-3.5 rounded-2xl bg-rose-950/40 border border-rose-500/40 text-rose-200 flex items-center gap-2.5 text-xs font-bold shadow-inner">
               <span className="text-lg">⏸️</span>
@@ -2124,9 +2206,9 @@ export default function WorkshopArcadeModal({
           )}
 
           {activeTab === 'play' && (
-            <div className="space-y-4">
-              {/* Selector de Mini-Juegos */}
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+            <div className="space-y-3 sm:space-y-4">
+              {/* Selector de Mini-Juegos (Oculto en móvil durante partida para dar prioridad absoluta al canvas y controles) */}
+              <div className={`${gameState === 'playing' ? 'hidden sm:grid' : 'grid'} grid-cols-2 sm:grid-cols-5 gap-2`}>
                 {currentAvailableGames.map(g => {
                   const isSel = selectedGameId === g.id;
                   const active = isGameActive(g.id);
@@ -2192,7 +2274,7 @@ export default function WorkshopArcadeModal({
               </div>
 
               {/* HUD Superior de la Partida */}
-              <div className="flex items-center justify-between px-4 py-2 rounded-2xl bg-black/40 border border-[#D4A359]/30 text-xs font-mono">
+              <div className="flex items-center justify-between px-3 sm:px-4 py-2 rounded-2xl bg-black/40 border border-[#D4A359]/30 text-xs font-mono flex-wrap gap-2">
                 {/* Vidas */}
                 <div className="flex items-center gap-1.5">
                   <span className="text-gray-400 text-[11px]">Vidas:</span>
@@ -2208,8 +2290,8 @@ export default function WorkshopArcadeModal({
                 {/* Nivel y Dificultad Dinámica */}
                 <div className="flex items-center gap-1.5 text-amber-300">
                   <Flame className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
-                  <span className="font-bold">
-                    Nivel {currentLevel} · Monedas: +{coinsEarned}🪙
+                  <span className="font-bold text-[11px] sm:text-xs">
+                    Nivel {currentLevel} · +{coinsEarned}🪙
                   </span>
                 </div>
 
@@ -2221,15 +2303,24 @@ export default function WorkshopArcadeModal({
                   </span>
                 </div>
 
-                {/* Puntos de la sesión */}
-                <div className="flex items-center gap-3">
+                {/* Puntos y Botón de Giro en Pantalla */}
+                <div className="flex items-center gap-2">
                   <span className="text-gray-300">Pts: <strong className="text-white">{score}</strong></span>
+                  <button
+                    type="button"
+                    onClick={toggleOrientationMode}
+                    className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-amber-300 border border-white/20 text-[11px] flex items-center gap-1 cursor-pointer transition-colors active:scale-95"
+                    title={isLandscapeMode ? "Modo normal" : "Modo horizontal / pantalla completa"}
+                  >
+                    <RotateCw className={`w-3.5 h-3.5 ${isLandscapeMode ? 'rotate-90 text-amber-200' : ''}`} />
+                    <span className="hidden sm:inline">{isLandscapeMode ? 'Normal' : 'Girar'}</span>
+                  </button>
                 </div>
               </div>
 
               {/* PANTALLA CANVAS DEL JUEGO CON BORDE TEMÁTICO */}
               <div
-                className={`relative w-full aspect-video max-h-[380px] bg-black rounded-3xl overflow-hidden border-2 ${currentTheme.screenBorder} shadow-inner flex items-center justify-center cursor-pointer select-none`}
+                className={`relative w-full aspect-video ${isLandscapeMode ? 'max-h-[55vh] sm:max-h-[65vh]' : 'max-h-[380px]'} bg-black rounded-3xl overflow-hidden border-2 ${currentTheme.screenBorder} shadow-inner flex items-center justify-center cursor-pointer select-none`}
                 onClick={handleAction}
                 onMouseMove={handleCanvasMouseMove}
                 onTouchMove={handleCanvasTouchMove}
@@ -2350,79 +2441,116 @@ export default function WorkshopArcadeModal({
                 )}
               </div>
 
-              {/* Controles para el Mezclador de Tintas si está activo */}
-              {selectedGameId === 'inkmixer' && gameState === 'playing' && (
-                <div className="grid grid-cols-4 gap-2 pt-1">
-                  {[
-                    { key: 'cyan', label: '🔵 Cian', hex: 'bg-cyan-600' },
-                    { key: 'magenta', label: '🔴 Magenta', hex: 'bg-pink-600' },
-                    { key: 'yellow', label: '🟡 Amarillo', hex: 'bg-amber-400 text-black' },
-                    { key: 'black', label: '⚫ Negro', hex: 'bg-gray-900 border border-gray-600' }
-                  ].map(ink => (
+              {/* CONTROLES VIRTUALES COMPLETOS PARA CELULAR (GAMEPAD MÓVIL) */}
+              {gameState === 'playing' && (
+                <div className="pt-2 pb-1 space-y-2.5 select-none animate-fadeIn">
+                  
+                  {/* Mezclador de Tintas: 4 botones de selección CMYK táctiles */}
+                  {selectedGameId === 'inkmixer' && (
+                    <div className="grid grid-cols-4 gap-2 pt-1">
+                      {[
+                        { key: 'cyan', label: '🔵 Cian', hex: 'bg-cyan-600' },
+                        { key: 'magenta', label: '🔴 Magenta', hex: 'bg-pink-600' },
+                        { key: 'yellow', label: '🟡 Amarillo', hex: 'bg-amber-400 text-black' },
+                        { key: 'black', label: '⚫ Negro', hex: 'bg-gray-900 border border-gray-600' }
+                      ].map(ink => (
+                        <button
+                          key={ink.key}
+                          type="button"
+                          onClick={() => handleSelectInk(ink.key)}
+                          className={`py-3 rounded-2xl text-xs font-black text-white shadow-md cursor-pointer hover:scale-105 active:scale-95 transition-all text-center ${ink.hex}`}
+                        >
+                          {ink.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Sierra Ninja: Pista táctil interactiva */}
+                  {selectedGameId === 'saw' && (
+                    <div className="py-2.5 px-4 rounded-2xl bg-amber-500/20 border border-amber-400/40 text-amber-200 text-xs font-bold text-center flex items-center justify-center gap-2">
+                      <span className="text-lg">🪚</span>
+                      <span>¡Desliza tu dedo sobre la pantalla para cortar las piezas en el aire! Esquiva tornillos 🔩</span>
+                    </div>
+                  )}
+
+                  {/* Controles de Movimiento Izquierda / Derecha para Atrapa-Piezas y Rompemuros */}
+                  {(selectedGameId === 'collector' || selectedGameId === 'breaker') && (
+                    <div className="grid grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        onClick={handleMoveLeft}
+                        onTouchStart={(e) => {
+                          e.preventDefault();
+                          handleMoveLeft();
+                        }}
+                        className="h-14 sm:h-16 rounded-2xl bg-gradient-to-b from-white/20 to-white/10 hover:bg-white/25 active:bg-[#D4A359] active:text-[#17251E] text-white font-black text-sm flex items-center justify-center gap-2 border-2 border-white/30 shadow-lg active:scale-95 transition-all cursor-pointer"
+                      >
+                        <span className="text-2xl">◀</span>
+                        <span>Mover Izquierda</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={handleMoveRight}
+                        onTouchStart={(e) => {
+                          e.preventDefault();
+                          handleMoveRight();
+                        }}
+                        className="h-14 sm:h-16 rounded-2xl bg-gradient-to-b from-white/20 to-white/10 hover:bg-white/25 active:bg-[#D4A359] active:text-[#17251E] text-white font-black text-sm flex items-center justify-center gap-2 border-2 border-white/30 shadow-lg active:scale-95 transition-all cursor-pointer"
+                      >
+                        <span>Mover Derecha</span>
+                        <span className="text-2xl">▶</span>
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Botón Principal de Acción / Salto / Disparo para Juegos Móviles */}
+                  {selectedGameId !== 'inkmixer' && selectedGameId !== 'saw' && (
+                    <div>
+                      <button
+                        type="button"
+                        onClick={handleAction}
+                        onTouchStart={(e) => {
+                          e.preventDefault();
+                          handleAction();
+                        }}
+                        className="w-full h-14 sm:h-16 rounded-2xl bg-gradient-to-r from-amber-400 via-[#F5D061] to-amber-500 hover:brightness-110 active:scale-95 text-[#17251E] font-black text-base transition-all shadow-[0_8px_25px_rgba(245,158,11,0.5)] border-2 border-white/80 flex items-center justify-center gap-3 cursor-pointer"
+                      >
+                        <span className="text-2xl">{getGameActionLabel(selectedGameId).icon}</span>
+                        <span>{getGameActionLabel(selectedGameId).label}</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Barra de Instrucciones y Botón Físico Destacado para Jugar (Solo visible antes de iniciar partida) */}
+              {gameState !== 'playing' && (
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-300 px-2">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded-md bg-white/10 font-mono text-[10px] text-amber-300 font-bold">
+                      CONTROLES:
+                    </span>
+                    <span className="text-[11px]">
+                      {GAMES.find(g => g.id === selectedGameId)?.instructions}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
                     <button
-                      key={ink.key}
                       type="button"
-                      onClick={() => handleSelectInk(ink.key)}
-                      className={`py-2 rounded-xl text-xs font-bold text-white shadow-md cursor-pointer hover:scale-105 transition-all text-center ${ink.hex}`}
+                      onClick={startGame}
+                      disabled={!isGameActive(selectedGameId)}
+                      className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#D4A359] via-amber-400 to-[#F5D061] hover:brightness-110 active:scale-95 text-[#17251E] font-black text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg border border-amber-300/40"
+                      title={`Inicia partida descontando 1 moneda. Tienes ${credits}/${maxCredits} monedas`}
                     >
-                      {ink.label}
+                      <span className="text-sm">🎮</span>
+                      <span>JUGAR AHORA · Costo: 1 Moneda de Juego (Tienes {credits}/{maxCredits})</span>
                     </button>
-                  ))}
+                  </div>
                 </div>
               )}
-
-              {/* Controles táctiles adicionales para Atrapa-Piezas */}
-              {selectedGameId === 'collector' && gameState === 'playing' && (
-                <div className="flex sm:hidden items-center justify-between gap-3 pt-1">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (internalStateRef.current?.basket) {
-                        internalStateRef.current.basket.x = Math.max(10, internalStateRef.current.basket.x - 50);
-                      }
-                    }}
-                    className="flex-1 py-2.5 rounded-xl bg-white/10 text-white font-bold text-xs text-center border border-white/20 active:bg-[#D4A359] active:text-black cursor-pointer"
-                  >
-                    ◀ Mover Izquierda
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (internalStateRef.current?.basket) {
-                        internalStateRef.current.basket.x = Math.min(530, internalStateRef.current.basket.x + 50);
-                      }
-                    }}
-                    className="flex-1 py-2.5 rounded-xl bg-white/10 text-white font-bold text-xs text-center border border-white/20 active:bg-[#D4A359] active:text-black cursor-pointer"
-                  >
-                    Mover Derecha ▶
-                  </button>
-                </div>
-              )}
-
-              {/* Barra de Instrucciones y Botón Físico Destacado para Jugar */}
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-300 px-2">
-                <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 rounded-md bg-white/10 font-mono text-[10px] text-amber-300 font-bold">
-                    CONTROLES:
-                  </span>
-                  <span className="text-[11px]">
-                    {GAMES.find(g => g.id === selectedGameId)?.instructions}
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
-                  <button
-                    type="button"
-                    onClick={startGame}
-                    disabled={!isGameActive(selectedGameId)}
-                    className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#D4A359] via-amber-400 to-[#F5D061] hover:brightness-110 active:scale-95 text-[#17251E] font-black text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg border border-amber-300/40"
-                    title={`Inicia partida descontando 1 moneda. Tienes ${credits}/${maxCredits} monedas`}
-                  >
-                    <span className="text-sm">🎮</span>
-                    <span>JUGAR AHORA · Costo: 1 Moneda de Juego (Tienes {credits}/{maxCredits})</span>
-                  </button>
-                </div>
-              </div>
             </div>
           )}
 

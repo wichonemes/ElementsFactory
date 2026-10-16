@@ -2015,36 +2015,36 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
         <div
-          className="w-full max-w-[97vw] 2xl:max-w-7xl h-[95vh] bg-[#FBF9F5] rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-[#E8E4DA]"
+          className="w-full max-w-[97vw] 2xl:max-w-7xl h-full sm:h-[95vh] bg-[#FBF9F5] rounded-none sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden border-0 sm:border border-[#E8E4DA]"
           onClick={e => e.stopPropagation()}
         >
         
         {/* Top Header */}
-        <div className="px-6 py-4 bg-[#1F2421] text-white flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-white/10 text-emerald-400">
-              <Shield className="w-5 h-5" />
+        <div className="px-3 sm:px-6 py-2.5 sm:py-4 bg-[#1F2421] text-white flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <div className="p-1.5 sm:p-2 rounded-xl bg-white/10 text-emerald-400 shrink-0">
+              <Shield className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <div>
-              <div className="text-base font-bold font-heading flex items-center gap-2">
-                <span>Panel Privado Artesano Digital</span>
-                <span className="text-[10px] bg-emerald-900/60 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-700">
-                  Autenticación Activa
+            <div className="min-w-0">
+              <div className="text-sm sm:text-base font-bold font-heading flex items-center gap-1.5 sm:gap-2">
+                <span className="truncate">Panel Privado Artesano</span>
+                <span className="text-[9px] sm:text-[10px] bg-emerald-900/60 text-emerald-300 px-1.5 sm:px-2 py-0.2 rounded-full border border-emerald-700 shrink-0">
+                  Activo
                 </span>
               </div>
-              <div className="text-xs text-gray-400">
-                {currentUser ? `Conectado como: ${currentUser.name} (${currentUser.username})` : 'Acceso Restringido'}
+              <div className="text-[10px] sm:text-xs text-gray-400 truncate">
+                {currentUser ? `${currentUser.name} (${currentUser.username})` : 'Acceso Restringido'}
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {token && (
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-rose-900/60 text-gray-300 hover:text-white text-xs font-semibold transition-colors"
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-rose-900/60 text-gray-300 hover:text-white text-xs font-semibold transition-colors cursor-pointer"
                 title="Cerrar sesión"
               >
                 <LogOut className="w-3.5 h-3.5" />
@@ -2053,10 +2053,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
             )}
             <button
               onClick={onClose}
-              className="p-1.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
-              aria-label="Cerrar"
+              className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-bold transition-all cursor-pointer shadow-xs active:scale-95"
+              aria-label="Salir a la Tienda"
+              title="Salir a la Tienda"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4 sm:w-5 sm:h-5" />
+              <span className="text-xs">Salir a la Tienda</span>
             </button>
           </div>
         </div>
@@ -2135,8 +2137,88 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
           /* Logged In Dashboard & Tabs */
           <div className="flex-1 flex flex-col md:flex-row overflow-hidden min-w-0 min-h-0">
             
-            {/* Sidebar Navigation */}
-            <aside className="w-full md:w-64 bg-white border-r border-b md:border-b-0 border-[#E8E4DA] p-2.5 sm:p-3 flex md:flex-col justify-between shrink-0 overflow-x-auto md:overflow-y-auto scrollbar-thin">
+            {/* Navegación Móvil Táctil Dedicada: selector superior con chips deslizables */}
+            <div className="md:hidden bg-white border-b border-[#E8E4DA] p-2.5 shrink-0 shadow-2xs space-y-2">
+              <div className="flex items-center justify-between px-1">
+                <span className="text-[10px] font-black uppercase tracking-wider text-gray-500">
+                  Sección activa del panel:
+                </span>
+                <span className="text-xs font-black text-[#2D4F3E] bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                  {activeTab === 'products' ? '📦 Productos' :
+                   activeTab === 'flash-deals' ? '⚡ Ofertas Flash' :
+                   activeTab === 'area-banners' ? '🖼️ Banners Áreas' :
+                   activeTab === 'categories' ? '📁 Categorías' :
+                   activeTab === 'raw-materials' ? (rawMaterialsSubTab === 'suppliers' ? '🏢 Proveedores' : '🧱 Stock Insumos') :
+                   activeTab === 'margins' ? '📈 Costos & Márgenes' :
+                   activeTab === 'campaigns' ? '✨ Temporadas' :
+                   activeTab === 'arcade' ? '🎮 Arcade Taller' :
+                   activeTab === 'packages' ? '🎁 Paquetes & Kits' :
+                   activeTab === 'sales' ? '📢 Ventas & ROI' :
+                   activeTab === 'stats' ? '📊 Métricas' :
+                   activeTab === 'catalog-mobile' ? '📱 Catálogo Móvil' :
+                   activeTab === 'settings' ? '⚙️ Ajustes' : 'Panel'}
+                </span>
+              </div>
+
+              {/* Chips táctiles con scroll suave horizontal */}
+              <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none no-scrollbar">
+                {[
+                  { id: 'products', label: 'Productos', icon: '📦', count: products.length },
+                  { id: 'flash-deals', label: 'Ofertas Flash', icon: '⚡', count: activeFlashList.length },
+                  { id: 'area-banners', label: 'Banners', icon: '🖼️', count: 3 },
+                  { id: 'categories', label: 'Categorías', icon: '📁', count: categories.length },
+                  { id: 'raw-materials-inventory', label: 'Stock Insumos', icon: '🧱' },
+                  { id: 'raw-materials-suppliers', label: 'Proveedores', icon: '🏢' },
+                  { id: 'margins', label: 'Costos & Márgenes', icon: '📈', count: `${marginsStats.avgMargin}%` },
+                  { id: 'campaigns', label: 'Temporadas', icon: '✨' },
+                  { id: 'arcade', label: 'Arcade Taller', icon: '🎮' },
+                  { id: 'packages', label: 'Paquetes', icon: '🎁', count: products.filter(p => p.isBundle).length },
+                  { id: 'sales', label: 'Ventas', icon: '📢' },
+                  { id: 'stats', label: 'Métricas', icon: '📊' },
+                  { id: 'catalog-mobile', label: 'Catálogo Móvil', icon: '📱' },
+                  { id: 'settings', label: 'Ajustes', icon: '⚙️' },
+                ].map(item => {
+                  const isCurrent = (item.id === 'raw-materials-inventory' && activeTab === 'raw-materials' && rawMaterialsSubTab === 'inventory')
+                    || (item.id === 'raw-materials-suppliers' && activeTab === 'raw-materials' && rawMaterialsSubTab === 'suppliers')
+                    || (activeTab === item.id);
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => {
+                        if (item.id === 'raw-materials-inventory') {
+                          setRawMaterialsSubTab('inventory');
+                          setActiveTab('raw-materials');
+                        } else if (item.id === 'raw-materials-suppliers') {
+                          setRawMaterialsSubTab('suppliers');
+                          setActiveTab('raw-materials');
+                        } else {
+                          setActiveTab(item.id);
+                        }
+                      }}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 flex items-center gap-1.5 transition-all cursor-pointer ${
+                        isCurrent
+                          ? 'bg-[#2D4F3E] text-white shadow-xs'
+                          : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                      }`}
+                    >
+                      <span>{item.icon}</span>
+                      <span>{item.label}</span>
+                      {item.count !== undefined && (
+                        <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
+                          isCurrent ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-700'
+                        }`}>
+                          {item.count}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Sidebar Navigation para Escritorio */}
+            <aside className="hidden md:flex md:w-64 bg-white border-r border-[#E8E4DA] p-2.5 sm:p-3 flex-col justify-between shrink-0 overflow-y-auto scrollbar-thin">
               <nav className="flex md:flex-col gap-2.5 sm:gap-3 w-full min-w-max md:min-w-0">
 
                 {/* GRUPO 1: CATÁLOGO & TIENDA */}
@@ -2700,8 +2782,153 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     </div>
                   </div>
 
-                  {/* TABLA DE PRODUCTOS CON SWITCH DE STOCK (100% AJUSTADA A LA VENTANA) */}
-                  <div className="bg-white rounded-2xl border border-[#E8E4DA] overflow-hidden shadow-xs min-w-0">
+                  {/* VISTA MÓVIL: Tarjetas de Producto Táctiles y Adaptadas */}
+                  <div className="md:hidden space-y-3">
+                    {filteredProducts.map(p => (
+                      <div
+                        key={p.id}
+                        className="bg-white rounded-2xl p-3.5 border border-[#E8E4DA] shadow-xs space-y-3"
+                      >
+                        {/* Encabezado de la tarjeta: Foto, Código, Título y Estado */}
+                        <div className="flex items-start gap-3">
+                          <img
+                            src={p.primaryImage}
+                            alt=""
+                            className="w-14 h-14 rounded-xl object-cover bg-gray-100 border border-gray-200 shrink-0 shadow-2xs"
+                          />
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center justify-between gap-1">
+                              <span className="font-mono font-bold text-gray-800 bg-gray-100 px-1.5 py-0.5 rounded text-[10.5px] border border-gray-200">
+                                {p.sku || p.code}
+                              </span>
+                              <span className={`px-2 py-0.5 rounded-full text-[9.5px] font-bold ${
+                                p.status === 'published' ? 'bg-emerald-100 text-emerald-800' :
+                                p.status === 'draft' ? 'bg-amber-100 text-amber-800' : 'bg-gray-100 text-gray-600'
+                              }`}>
+                                {p.status === 'published' ? 'Publicado' : p.status === 'draft' ? 'Borrador' : 'Archivado'}
+                              </span>
+                            </div>
+
+                            <h4 className="font-bold text-sm text-[#1F2421] truncate mt-1">
+                              {p.name}
+                            </h4>
+
+                            <div className="flex items-center gap-2 mt-1">
+                              <span className="font-black text-[#2D4F3E] text-sm">
+                                ${p.price} <span className="text-[10px] font-normal text-gray-500">{p.unit || 'MXN'}</span>
+                              </span>
+                              {p.isBundle && (
+                                <span className="px-1.5 py-0.2 bg-purple-100 text-purple-800 rounded font-bold text-[9.5px]">
+                                  🎁 Kit
+                                </span>
+                              )}
+                              {p.skuBreakdown && (
+                                <span className="text-[9.5px] text-gray-400 truncate max-w-[120px]">
+                                  {p.skuBreakdown.area} • {p.skuBreakdown.technique}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Fila de Controles Rápidos: Switch de Stock y Oferta Flash */}
+                        <div className="flex items-center justify-between gap-2 pt-2 border-t border-gray-100">
+                          {/* Control de Stock */}
+                          <div className="flex items-center gap-2 bg-gray-50 px-2.5 py-1.5 rounded-xl border border-gray-200">
+                            <button
+                              type="button"
+                              onClick={(e) => handleToggleStock(p, e)}
+                              className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                                p.availability === 'in_stock' ? 'bg-emerald-600' : 'bg-gray-300'
+                              }`}
+                            >
+                              <span
+                                className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out mt-0.5 ml-0.5 ${
+                                  p.availability === 'in_stock' ? 'translate-x-4' : 'translate-x-0'
+                                }`}
+                              />
+                            </button>
+                            <span className={`text-[11px] font-bold ${
+                              p.availability === 'in_stock' ? 'text-emerald-700' : 'text-gray-500'
+                            }`}>
+                              {p.availability === 'in_stock' ? `${p.stockQuantity || 0} pz` : 'Pedido'}
+                            </span>
+                            {p.availability === 'in_stock' && (
+                              <div className="flex items-center gap-1 ml-1">
+                                <button
+                                  type="button"
+                                  onClick={(e) => handleAdjustStockQuantity(p, -1, e)}
+                                  className="w-5 h-5 rounded bg-white border border-gray-300 text-gray-700 flex items-center justify-center text-xs font-black shadow-2xs"
+                                >
+                                  -
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={(e) => handleAdjustStockQuantity(p, 1, e)}
+                                  className="w-5 h-5 rounded bg-white border border-gray-300 text-gray-700 flex items-center justify-center text-xs font-black shadow-2xs"
+                                >
+                                  +
+                                </button>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Control de Oferta Flash */}
+                          <button
+                            type="button"
+                            onClick={(e) => handleToggleProductFlash(p, e)}
+                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                              p.flashDealConfig?.enabled
+                                ? 'bg-amber-100 text-amber-900 border border-amber-300 shadow-2xs'
+                                : 'bg-gray-100 text-gray-500 border border-gray-200'
+                            }`}
+                          >
+                            <Zap className={`w-3.5 h-3.5 ${p.flashDealConfig?.enabled ? 'fill-amber-500 text-amber-600' : 'text-gray-400'}`} />
+                            <span>{p.flashDealConfig?.enabled ? 'Flash Activa' : 'Sin Flash'}</span>
+                          </button>
+                        </div>
+
+                        {/* Fila de Botones de Acción */}
+                        <div className="flex items-center justify-between gap-2 pt-2 border-t border-gray-100">
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => handleDuplicateProduct(p.id)}
+                              className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold transition-colors cursor-pointer"
+                              title="Duplicar como plantilla"
+                            >
+                              <Copy className="w-3.5 h-3.5" />
+                              <span>Duplicar</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteProduct(p.id)}
+                              className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold transition-colors cursor-pointer"
+                              title="Eliminar producto"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                              <span>Borrar</span>
+                            </button>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleOpenEditProduct(p);
+                            }}
+                            className="flex-1 max-w-[140px] flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-xs font-bold shadow-xs active:scale-95 transition-all cursor-pointer"
+                          >
+                            <Edit className="w-3.5 h-3.5" />
+                            <span>Editar</span>
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* TABLA DE PRODUCTOS CON SWITCH DE STOCK (ESCRITORIO) */}
+                  <div className="hidden md:block bg-white rounded-2xl border border-[#E8E4DA] overflow-hidden shadow-xs min-w-0">
                     <div className="w-full">
                       <table className="w-full text-left text-xs">
                         <thead className="bg-[#F8F7F2] border-b border-[#E8E4DA] text-gray-600 uppercase font-bold text-[9.5px]">
