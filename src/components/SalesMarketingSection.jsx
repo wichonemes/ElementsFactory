@@ -53,6 +53,9 @@ export default function SalesMarketingSection({ token, products = [], settings =
     amount: 0,
     status: 'consulta',
     customerCode: '',
+    couponCode: '',
+    couponCategory: 'store',
+    couponDiscount: 0,
     hasCosts: true,
     costBreakdown: {
       materialsCost: 0,
@@ -267,6 +270,9 @@ export default function SalesMarketingSection({ token, products = [], settings =
       amount: 0,
       status: 'consulta',
       customerCode: '',
+      couponCode: '',
+      couponCategory: 'store',
+      couponDiscount: 0,
       hasCosts: true,
       costBreakdown: {
         materialsCost: 0,
@@ -295,6 +301,9 @@ export default function SalesMarketingSection({ token, products = [], settings =
       amount: ord.amount || 0,
       status: ord.status || 'consulta',
       customerCode: ord.customerCode || '',
+      couponCode: ord.couponCode || '',
+      couponCategory: ord.couponCategory || 'store',
+      couponDiscount: ord.couponDiscount || 0,
       hasCosts: ord.hasCosts ?? true,
       costBreakdown: {
         materialsCost: cb.materialsCost || 0,
@@ -322,6 +331,9 @@ export default function SalesMarketingSection({ token, products = [], settings =
         ...orderForm,
         quantity: Math.max(1, Number(orderForm.quantity) || 1),
         amount: Math.max(0, Number(orderForm.amount) || 0),
+        couponCode: orderForm.couponCode ? orderForm.couponCode.trim().toUpperCase() : null,
+        couponCategory: orderForm.couponCategory || 'store',
+        couponDiscount: Math.max(0, Number(orderForm.couponDiscount) || 0),
         costBreakdown: {
           materialsCost: Number(orderForm.costBreakdown.materialsCost) || 0,
           laborCost: Number(orderForm.costBreakdown.laborCost) || 0,
@@ -1499,8 +1511,23 @@ export default function SalesMarketingSection({ token, products = [], settings =
                             </div>
                           </td>
 
-                          <td className="py-3 px-3 text-right font-black text-[#2D4F3E]">
-                            ${(ord.amount || 0).toLocaleString('es-MX')}
+                          <td className="py-3 px-3 text-right">
+                            <div className="font-black text-[#2D4F3E]">
+                              ${(ord.amount || 0).toLocaleString('es-MX')}
+                            </div>
+                            {ord.couponCode && (
+                              <div className="mt-1 flex items-center justify-end">
+                                <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded border inline-flex items-center gap-1 ${
+                                  ord.couponCategory === 'arcade'
+                                    ? 'bg-purple-50 text-purple-800 border-purple-200'
+                                    : 'bg-blue-50 text-blue-800 border-blue-200'
+                                }`} title={`Cupón ${ord.couponCode} (${ord.couponCategory === 'arcade' ? 'Monedas Arcade' : 'Código Tienda'})`}>
+                                  <span>{ord.couponCategory === 'arcade' ? '🎮' : '🏷️'}</span>
+                                  <span className="font-mono">{ord.couponCode}</span>
+                                  {ord.couponDiscount > 0 && <span>(-${ord.couponDiscount})</span>}
+                                </span>
+                              </div>
+                            )}
                           </td>
 
                           <td className="py-3 px-3 text-center">
@@ -1935,6 +1962,58 @@ export default function SalesMarketingSection({ token, products = [], settings =
                       onChange={e => setOrderForm({ ...orderForm, amount: e.target.value })}
                       placeholder="0"
                       className="w-full pl-7 pr-3 py-2 rounded-xl border border-gray-300 font-bold text-base focus:border-[#2D4F3E] focus:outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Cupón de Descuento Aplicado */}
+              <div className="bg-amber-50/50 p-3 rounded-2xl border border-amber-200/80 space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-amber-950 flex items-center gap-1.5">
+                    <span>🎟️</span>
+                    <span>Cupón o Código Utilizado (Monitoreo)</span>
+                  </label>
+                  {orderForm.couponCode && (
+                    <span className="text-[10px] font-bold text-[#2D4F3E] bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                      Cupón Vinculado
+                    </span>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-3 gap-2">
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-600 mb-0.5">Código:</label>
+                    <input
+                      type="text"
+                      placeholder="Ej. ARCADE5 o BUENFIN"
+                      value={orderForm.couponCode}
+                      onChange={e => setOrderForm({ ...orderForm, couponCode: e.target.value.toUpperCase().replace(/\s+/g, '') })}
+                      className="w-full px-2.5 py-1.5 rounded-xl border border-gray-300 font-mono text-xs font-bold bg-white focus:outline-none focus:border-[#2D4F3E]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-600 mb-0.5">Tipo de Cupón:</label>
+                    <select
+                      value={orderForm.couponCategory}
+                      onChange={e => setOrderForm({ ...orderForm, couponCategory: e.target.value })}
+                      className="w-full px-2 py-1.5 rounded-xl border border-gray-300 text-xs bg-white focus:outline-none focus:border-[#2D4F3E]"
+                    >
+                      <option value="store">🏷️ Código Tienda</option>
+                      <option value="arcade">🎮 Monedas Arcade</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-600 mb-0.5">Descuento ($ MXN):</label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={orderForm.couponDiscount}
+                      onChange={e => setOrderForm({ ...orderForm, couponDiscount: e.target.value })}
+                      placeholder="0"
+                      className="w-full px-2.5 py-1.5 rounded-xl border border-gray-300 text-xs font-bold bg-white focus:outline-none focus:border-[#2D4F3E]"
                     />
                   </div>
                 </div>

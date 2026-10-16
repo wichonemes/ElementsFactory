@@ -251,6 +251,29 @@ app.get('/api/arcade/config', (req, res) => {
   }
 });
 
+// Cupones y Códigos de Descuento (Public)
+app.get('/api/coupons', (req, res) => {
+  try {
+    const { category } = req.query;
+    const { coupons } = db.getCoupons({ category, status: 'active' });
+    res.json(coupons);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Registro de uso de cupón desde checkout / WhatsApp
+app.post('/api/coupons/record-use', (req, res) => {
+  try {
+    const { code, orderTotal, discountAmount, customerName } = req.body;
+    if (!code) return res.status(400).json({ error: 'Código de cupón requerido' });
+    const result = db.recordCouponUse(code, { orderTotal, discountAmount, customerName });
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Analytics tracking from client
 app.post('/api/analytics/event', (req, res) => {
   try {
@@ -782,6 +805,48 @@ app.get('/api/admin/sales-report', requireAdmin, (req, res) => {
     const { startDate, endDate, socialNetwork, productId } = req.query;
     const report = db.getSalesReport({ startDate, endDate, socialNetwork, productId });
     res.json(report);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ==========================================
+// 4.5. GESTIÓN DE CUPONES Y DESCUENTOS (PROTECTED)
+// ==========================================
+app.get('/api/admin/coupons', requireAdmin, (req, res) => {
+  try {
+    const { category, status, search } = req.query;
+    const data = db.getCoupons({ category, status, search });
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/admin/coupons', requireAdmin, (req, res) => {
+  try {
+    const newCoupon = db.createCoupon(req.body);
+    res.status(201).json(newCoupon);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+app.put('/api/admin/coupons/:id', requireAdmin, (req, res) => {
+  try {
+    const updated = db.updateCoupon(req.params.id, req.body);
+    if (!updated) return res.status(404).json({ error: 'Cupón no encontrado' });
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+app.delete('/api/admin/coupons/:id', requireAdmin, (req, res) => {
+  try {
+    const success = db.deleteCoupon(req.params.id);
+    if (!success) return res.status(404).json({ error: 'Cupón no encontrado' });
+    res.json({ ok: true, message: 'Cupón eliminado correctamente' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

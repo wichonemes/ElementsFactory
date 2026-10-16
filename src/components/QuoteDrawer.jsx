@@ -4,7 +4,7 @@ import {
   Info, Calendar, MapPin, User, Truck, AlertTriangle, Zap, Tag, Sparkles, RotateCcw
 } from 'lucide-react';
 import { formatServiceDate } from '../utils/serviceStatus';
-import { findCoupon, calculateCouponDiscount } from '../utils/couponsHelper';
+import { findCoupon, calculateCouponDiscount, getCouponCategory, getCouponCategoryLabel, isCouponExpired } from '../utils/couponsHelper';
 import { playCoinSound, playRandomOrderCelebrationSound, playMarioPowerDownSound } from '../utils/soundEffects';
 
 export default function QuoteDrawer({
@@ -26,6 +26,17 @@ export default function QuoteDrawer({
   const [cityZip, setCityZip] = useState('');
   const [deliveryNotes, setDeliveryNotes] = useState('');
   const [copied, setCopied] = useState(false);
+
+  // Cupones activos cargados desde el servidor
+  const [serverCoupons, setServerCoupons] = useState([]);
+  useEffect(() => {
+    fetch('/api/coupons')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) setServerCoupons(data);
+      })
+      .catch(() => {});
+  }, []);
 
   // Cupón y Código de Descuento
   const [couponInput, setCouponInput] = useState('');
@@ -101,11 +112,13 @@ export default function QuoteDrawer({
     }
   });
 
-  // Lista combinada de cupones incluyendo los tiers de arcade personalizados con protección de márgenes
+  // Lista combinada de cupones incluyendo los cupones del backend, cupones personalizados y los tiers de arcade
   const combinedCustomCoupons = [
+    ...(serverCoupons || []),
     ...(settings?.discountCoupons || []),
     ...(settings?.arcadeConfig?.discountTiers?.map(t => ({
       code: t.code,
+      category: 'arcade',
       type: t.discountPercent ? 'percent' : (t.discountAmount ? 'fixed' : 'percent'),
       value: t.discountPercent || t.discountAmount || 0,
       label: t.label,
@@ -244,8 +257,13 @@ export default function QuoteDrawer({
     msg += `💰 *Subtotal de productos:* $${subtotal} MXN\n`;
 
     if (appliedCouponCode && discountAmount > 0) {
-      msg += `🎟️ *Cupón aplicado:* ${appliedCouponCode} (-$${discountAmount} MXN)\n`;
-      msg += `✨ *TOTAL CON DESCUENTO:* $${finalTotal} MXN\n`;
+      const categoryLabel = activeCouponObj ? getCouponCategoryLabel(activeCouponObj) : '🏷️ Código Especial de Tienda';
+      const benefitLabel = activeCouponObj?.label || activeCouponObj?.name || 'Descuento especial';
+      msg += `🎟️ *CUPÓN APLICADO:* ${appliedCouponCode}\n`;
+      msg += `   • *Tipo:* ${categoryLabel}\n`;
+      msg += `   • *Beneficio:* ${benefitLabel}\n`;
+      msg += `   • *Ahorro otorgado:* -$${discountAmount} MXN\n`;
+      msg += `✨ *TOTAL FINAL CON CUPÓN:* $${finalTotal} MXN\n`;
     } else {
       msg += `✨ *Total a pagar:* $${subtotal} MXN\n`;
     }
@@ -271,6 +289,23 @@ export default function QuoteDrawer({
     if (items.length === 0) return;
     playCoinSound();
     playRandomOrderCelebrationSound();
+
+    // Monitoreo: Registrar uso de cupón en la base de datos del taller
+    if (appliedCouponCode && discountAmount > 0) {
+      try {
+        fetch('/api/coupons/record-use', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            code: appliedCouponCode,
+            orderTotal: finalTotal,
+            discountAmount,
+            customerName: customerName.trim()
+          })
+        }).catch(() => {});
+      } catch (e) {}
+    }
+
     const text = buildWhatsAppMessage();
     const phone = (settings?.whatsappNumber || '5215500000000').replace(/[^0-9]/g, '');
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
@@ -282,7 +317,9 @@ export default function QuoteDrawer({
         hasPendingQuotes,
         customerName: customerName.trim(),
         mode: checkoutMode,
-        coupon: appliedCouponCode || null
+        coupon: appliedCouponCode || null,
+        couponCategory: activeCouponObj ? getCouponCategory(activeCouponObj) : 'store',
+        discountAmount
       });
     }
 
@@ -639,13 +676,25 @@ export default function QuoteDrawer({
                               <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse" />
                               Activo
                             </span>
+                            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded border ${
+                              (activeCouponObj && getCouponCategory(activeCouponObj) === 'arcade')
+                                ? 'bg-purple-100 text-purple-900 border-purple-300'
+                                : 'bg-blue-100 text-blue-900 border-blue-300'
+                            }`}>
+                              {activeCouponObj && getCouponCategory(activeCouponObj) === 'arcade' ? '🎮 Monedas Arcade' : '🏷️ Cupón de Tienda'}
+                            </span>
                             <span className="text-[10px] font-bold text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-200">
                               🪙 ¡Tócame!
                             </span>
                           </div>
                           <p className="text-[11px] text-emerald-900 font-medium truncate mt-0.5">
-                            {activeCouponObj?.label || 'Descuento aplicado'} · Ahorro: <strong className="text-emerald-700">-${discountAmount} MXN</strong>
+                            {activeCouponObj?.label || activeCouponObj?.name || 'Descuento aplicado'} · Ahorro: <strong className="text-emerald-700">-${discountAmount} MXN</strong>
                           </p>
+                          {activeCouponObj?.expiresAt && (
+                            <p className="text-[10px] text-gray-500 font-medium mt-0.5">
+                              📅 Válido hasta: {new Date(activeCouponObj.expiresAt).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' })}
+                            </p>
+                          )}
                         </div>
                       </div>
 

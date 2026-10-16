@@ -1,36 +1,80 @@
 // couponsHelper.js - Validador y Calculador de Cupones y Códigos de Descuento
 
 export const DEFAULT_COUPONS = [
-  // Cupones de Arcade
-  { code: 'TALLER5', type: 'percent', value: 5, label: '5% de Descuento Arcade', minPurchase: 0 },
-  { code: 'TALLER10', type: 'percent', value: 10, label: '10% de Descuento Arcade', minPurchase: 0 },
-  { code: 'MAESTRO50', type: 'fixed', value: 50, label: '$50 MXN de Descuento Taller', minPurchase: 200 },
-  { code: 'VIPARTESANO', type: 'percent', value: 15, label: '15% de Descuento VIP + Sorpresa', minPurchase: 0 },
+  // Cupones de Arcade (Ganados con Monedas de Juego)
+  { code: 'TALLER5', category: 'arcade', type: 'percent', value: 5, label: '5% de Descuento Arcade', minPurchase: 0 },
+  { code: 'TALLER10', category: 'arcade', type: 'percent', value: 10, label: '10% de Descuento Arcade', minPurchase: 0 },
+  { code: 'MAESTRO50', category: 'arcade', type: 'fixed', value: 50, label: '$50 MXN de Descuento Taller', minPurchase: 200 },
+  { code: 'VIPARTESANO', category: 'arcade', type: 'percent', value: 15, label: '15% de Descuento VIP + Sorpresa', minPurchase: 0 },
 
-  // Cupones Promocionales & Clientes
-  { code: 'BIENVENIDO', type: 'percent', value: 10, label: '10% de Bienvenida al Taller', minPurchase: 0 },
-  { code: 'ARTESANO10', type: 'percent', value: 10, label: '10% de Descuento Especial', minPurchase: 0 },
-  { code: 'CLIENTEFRECUENTE', type: 'percent', value: 15, label: '15% de Cliente Frecuente', minPurchase: 0 },
-  { code: 'PROMO20', type: 'percent', value: 20, label: '20% de Descuento Especial', minPurchase: 500 },
-  { code: 'ENVIOGRATIS', type: 'fixed', value: 150, label: 'Bono de $150 MXN para Envío', minPurchase: 400 },
-  { code: 'BUENFIN', type: 'percent', value: 15, label: '15% de Descuento de Temporada', minPurchase: 0 },
-  { code: 'NAVIDAD', type: 'percent', value: 15, label: '15% de Temporada Navideña', minPurchase: 0 },
+  // Cupones Promocionales & Clientes (Códigos Especiales y de Tienda)
+  { code: 'BIENVENIDO', category: 'store', type: 'percent', value: 10, label: '10% de Bienvenida al Taller', minPurchase: 0 },
+  { code: 'ARTESANO10', category: 'store', type: 'percent', value: 10, label: '10% de Descuento Especial', minPurchase: 0 },
+  { code: 'CLIENTEFRECUENTE', category: 'store', type: 'percent', value: 15, label: '15% de Cliente Frecuente', minPurchase: 0 },
+  { code: 'PROMO20', category: 'store', type: 'percent', value: 20, label: '20% de Descuento Especial', minPurchase: 500 },
+  { code: 'ENVIOGRATIS', category: 'store', type: 'fixed', value: 150, label: 'Bono de $150 MXN para Envío', minPurchase: 400 },
+  { code: 'BUENFIN', category: 'store', type: 'percent', value: 15, label: '15% de Descuento de Temporada', minPurchase: 0 },
+  { code: 'NAVIDAD', category: 'store', type: 'percent', value: 15, label: '15% de Temporada Navideña', minPurchase: 0 },
 
   // Cupones de Eventos Mensuales de Taller (Eventos Grandes y Quincenas)
-  { code: 'GRANMES15', type: 'percent', value: 15, label: '15% de Evento Grande del Mes', minPurchase: 0 },
-  { code: 'GRANMES20', type: 'percent', value: 20, label: '20% de Gran Bazar del Mes', minPurchase: 400 },
-  { code: 'QUINCENA10', type: 'percent', value: 10, label: '10% de Quincena Relámpago Flash', minPurchase: 0 },
-  { code: 'MUERTOS15', type: 'percent', value: 15, label: '15% Festival Día de Muertos', minPurchase: 0 },
-  { code: 'CATRINA10', type: 'percent', value: 10, label: '10% Quincena Catrinas', minPurchase: 0 },
-  { code: 'AMOR15', type: 'percent', value: 15, label: '15% Gran Bazar del Amor', minPurchase: 0 },
-  { code: 'MAMA20', type: 'percent', value: 20, label: '20% Especial Día de las Madres', minPurchase: 0 },
+  { code: 'GRANMES15', category: 'store', type: 'percent', value: 15, label: '15% de Evento Grande del Mes', minPurchase: 0 },
+  { code: 'GRANMES20', category: 'store', type: 'percent', value: 20, label: '20% de Gran Bazar del Mes', minPurchase: 400 },
+  { code: 'QUINCENA10', category: 'store', type: 'percent', value: 10, label: '10% de Quincena Relámpago Flash', minPurchase: 0 },
+  { code: 'MUERTOS15', category: 'store', type: 'percent', value: 15, label: '15% Festival Día de Muertos', minPurchase: 0 },
+  { code: 'CATRINA10', category: 'store', type: 'percent', value: 10, label: '10% Quincena Catrinas', minPurchase: 0 },
+  { code: 'AMOR15', category: 'store', type: 'percent', value: 15, label: '15% Gran Bazar del Amor', minPurchase: 0 },
+  { code: 'MAMA20', category: 'store', type: 'percent', value: 20, label: '20% Especial Día de las Madres', minPurchase: 0 },
 
   // Cupones de Oferta Relámpago Especial (Fines de Semana & Liquidaciones)
-  { code: 'FLASHFINDE30', type: 'percent', value: 30, label: '30% Especial Oferta Relámpago de Fin de Semana', minPurchase: 0 },
-  { code: 'FLASHFINDE', type: 'percent', value: 30, label: '30% Venta Flash de Fin de Semana', minPurchase: 0 },
-  { code: 'LIQUIDACION', type: 'percent', value: 35, label: '35% Liquidación de Taller', minPurchase: 0 },
-  { code: 'FINDE30', type: 'percent', value: 30, label: '30% Flash Fin de Semana', minPurchase: 0 }
+  { code: 'FLASHFINDE30', category: 'store', type: 'percent', value: 30, label: '30% Especial Oferta Relámpago de Fin de Semana', minPurchase: 0 },
+  { code: 'FLASHFINDE', category: 'store', type: 'percent', value: 30, label: '30% Venta Flash de Fin de Semana', minPurchase: 0 },
+  { code: 'LIQUIDACION', category: 'store', type: 'percent', value: 35, label: '35% Liquidación de Taller', minPurchase: 0 },
+  { code: 'FINDE30', category: 'store', type: 'percent', value: 30, label: '30% Flash Fin de Semana', minPurchase: 0 }
 ];
+
+/**
+ * Identifica la categoría de un cupón ('arcade' | 'store')
+ */
+export function getCouponCategory(coupon) {
+  if (!coupon) return 'store';
+  if (coupon.category) return coupon.category;
+  const code = (coupon.code || '').toUpperCase();
+  if (code.startsWith('ARCADE') || code.startsWith('TALLER50') || code.startsWith('VIP15') || code.startsWith('MAESTRO') || code.startsWith('TALLER5') || code.startsWith('TALLER10')) {
+    return 'arcade';
+  }
+  return 'store';
+}
+
+/**
+ * Retorna la etiqueta legible en español de la categoría del cupón
+ */
+export function getCouponCategoryLabel(coupon) {
+  const cat = getCouponCategory(coupon);
+  return cat === 'arcade'
+    ? '🎮 Ganado con Monedas de Juego (Arcade)'
+    : '🏷️ Código Especial de Tienda';
+}
+
+/**
+ * Verifica si un cupón tiene fecha de caducidad y si ya ha vencido
+ */
+export function isCouponExpired(coupon) {
+  if (!coupon || !coupon.expiresAt) return false;
+  return new Date(coupon.expiresAt).getTime() < Date.now();
+}
+
+/**
+ * Genera un código aleatorio único y limpio (ej. 'TIENDA-7F2A' o 'ART-9K42')
+ */
+export function generateUniqueCouponCode(prefix = 'TIENDA') {
+  const cleanPrefix = (prefix || 'TIENDA').trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+  let rand = '';
+  for (let i = 0; i < 4; i++) {
+    rand += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return `${cleanPrefix}-${rand}`;
+}
 
 /**
  * Genera un sufijo rotativo determinista único para cada día (ej. 'K7M2')
@@ -66,6 +110,7 @@ export function getDailyArcadeCoupons(date = new Date()) {
   return [
     {
       id: 'tier-5',
+      category: 'arcade',
       coinsRequired: 30,
       code: `ARCADE5-${suffix}`,
       type: 'percent',
@@ -77,6 +122,7 @@ export function getDailyArcadeCoupons(date = new Date()) {
     },
     {
       id: 'tier-10',
+      category: 'arcade',
       coinsRequired: 60,
       code: `ARCADE10-${suffix}`,
       type: 'percent',
@@ -88,6 +134,7 @@ export function getDailyArcadeCoupons(date = new Date()) {
     },
     {
       id: 'tier-50',
+      category: 'arcade',
       coinsRequired: 100,
       code: `TALLER50-${suffix}`,
       type: 'fixed',
@@ -99,6 +146,7 @@ export function getDailyArcadeCoupons(date = new Date()) {
     },
     {
       id: 'tier-vip',
+      category: 'arcade',
       coinsRequired: 150,
       code: `VIP15-${suffix}`,
       type: 'percent',
@@ -149,8 +197,20 @@ export function calculateCouponDiscount(coupon, subtotal = 0) {
     return { discountAmount: 0, finalTotal: subtotal, isValid: false, reason: 'Cupón inexistente' };
   }
 
+  if (coupon.active === false) {
+    return { discountAmount: 0, finalTotal: subtotal, isValid: false, reason: 'Este cupón se encuentra inactivo o pausado por el taller' };
+  }
+
+  if (isCouponExpired(coupon)) {
+    return { discountAmount: 0, finalTotal: subtotal, isValid: false, reason: 'Este cupón ha caducado (fecha de vigencia vencida)' };
+  }
+
+  if (coupon.maxUses && coupon.usedCount >= coupon.maxUses) {
+    return { discountAmount: 0, finalTotal: subtotal, isValid: false, reason: 'Este cupón ya alcanzó el límite máximo de canjes permitidos' };
+  }
+
   if (subtotal <= 0) {
-    return { discountAmount: 0, finalTotal: 0, isValid: true, label: coupon.label };
+    return { discountAmount: 0, finalTotal: 0, isValid: true, label: coupon.label || coupon.name };
   }
 
   // Protección de taller: compra mínima efectiva obligatoria para cupones

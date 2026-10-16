@@ -19,6 +19,7 @@ import CampaignsAdminSection from './CampaignsAdminSection';
 import ArcadeAdminSection from './ArcadeAdminSection';
 import AreaBannersAdminSection from './AreaBannersAdminSection';
 import PackagesAdminSection from './PackagesAdminSection';
+import CouponsAdminSection from './CouponsAdminSection';
 import AdminConfirmSaveModal from './AdminConfirmSaveModal';
 import {
   DEFAULT_SERVICE_STATUS,
@@ -2152,6 +2153,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                    activeTab === 'margins' ? '📈 Costos & Márgenes' :
                    activeTab === 'campaigns' ? '✨ Temporadas' :
                    activeTab === 'arcade' ? '🎮 Arcade Taller' :
+                   activeTab === 'coupons' ? '🎟️ Cupones' :
                    activeTab === 'packages' ? '🎁 Paquetes & Kits' :
                    activeTab === 'sales' ? '📢 Ventas & ROI' :
                    activeTab === 'stats' ? '📊 Métricas' :
@@ -2172,6 +2174,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   { id: 'margins', label: 'Costos & Márgenes', icon: '📈', count: `${marginsStats.avgMargin}%` },
                   { id: 'campaigns', label: 'Temporadas', icon: '✨' },
                   { id: 'arcade', label: 'Arcade Taller', icon: '🎮' },
+                  { id: 'coupons', label: 'Cupones', icon: '🎟️' },
                   { id: 'packages', label: 'Paquetes', icon: '🎁', count: products.filter(p => p.isBundle).length },
                   { id: 'sales', label: 'Ventas', icon: '📢' },
                   { id: 'stats', label: 'Métricas', icon: '📊' },
@@ -2418,6 +2421,23 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   </button>
 
                   <button
+                    onClick={() => setActiveTab('coupons')}
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                      activeTab === 'coupons' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Tag className="w-4 h-4" />
+                      <span>Cupones &amp; Descuentos</span>
+                    </div>
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                      activeTab === 'coupons' ? 'bg-white/20 text-white' : 'bg-amber-50 text-amber-800 border border-amber-200'
+                    }`}>
+                      🎟️ Tienda &amp; Arcade
+                    </span>
+                  </button>
+
+                  <button
                     onClick={() => setActiveTab('sales')}
                     className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
                       activeTab === 'sales' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
@@ -2594,6 +2614,11 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     if (onRefreshCatalog) onRefreshCatalog();
                   }}
                 />
+              )}
+
+              {/* TAB: CUPONES & CÓDIGOS DE DESCUENTO (ARCADE & TIENDA) */}
+              {activeTab === 'coupons' && (
+                <CouponsAdminSection token={token} />
               )}
 
               {/* TAB 1: PRODUCTOS */}

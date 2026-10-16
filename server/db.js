@@ -2038,9 +2038,193 @@ const createInitialDb = () => {
     rawMaterials: initialRawMaterials,
     publications: [],
     orders: [],
-    pubTracking: []
+    pubTracking: [],
+    coupons: initialCoupons
   };
 };
+
+const initialCoupons = [
+  // ==========================================
+  // 1. CUPONES GANADOS CON MONEDAS DE JUEGO (ARCADE)
+  // ==========================================
+  {
+    id: 'cup-arcade-5',
+    code: 'ARCADE5',
+    name: '5% de Descuento Arcade',
+    category: 'arcade',
+    type: 'percent',
+    value: 5,
+    minPurchase: 0,
+    maxUses: null,
+    usedCount: 0,
+    expiresAt: '2026-12-31T23:59:59.000Z',
+    active: true,
+    coinsRequired: 30,
+    description: 'Canjeado con 30 monedas en el Taller Arcade. Válido en cualquier compra.'
+  },
+  {
+    id: 'cup-arcade-10',
+    code: 'ARCADE10',
+    name: '10% de Descuento Arcade',
+    category: 'arcade',
+    type: 'percent',
+    value: 10,
+    minPurchase: 0,
+    maxUses: null,
+    usedCount: 0,
+    expiresAt: '2026-12-31T23:59:59.000Z',
+    active: true,
+    coinsRequired: 60,
+    description: 'Canjeado con 60 monedas en el Taller Arcade. Descuento en catálogo completo.'
+  },
+  {
+    id: 'cup-arcade-50',
+    code: 'TALLER50',
+    name: '$50 MXN de Descuento Taller',
+    category: 'arcade',
+    type: 'fixed',
+    value: 50,
+    minPurchase: 200,
+    maxUses: null,
+    usedCount: 0,
+    expiresAt: '2026-12-31T23:59:59.000Z',
+    active: true,
+    coinsRequired: 100,
+    description: 'Canjeado con 100 monedas en el Taller Arcade. Ahorro directo en compras mayores a $200 MXN.'
+  },
+  {
+    id: 'cup-arcade-vip',
+    code: 'VIP15',
+    name: '15% de Descuento VIP + Sorpresa',
+    category: 'arcade',
+    type: 'percent',
+    value: 15,
+    minPurchase: 0,
+    maxUses: null,
+    usedCount: 0,
+    expiresAt: '2026-12-31T23:59:59.000Z',
+    active: true,
+    coinsRequired: 150,
+    description: 'Canjeado con 150 monedas en el Taller Arcade. Nivel Maestro con detalle de taller sorpresa.'
+  },
+  {
+    id: 'cup-arcade-maestro',
+    code: 'MAESTRO50',
+    name: '$50 MXN de Descuento Taller Maestro',
+    category: 'arcade',
+    type: 'fixed',
+    value: 50,
+    minPurchase: 200,
+    maxUses: null,
+    usedCount: 0,
+    expiresAt: '2026-12-31T23:59:59.000Z',
+    active: true,
+    coinsRequired: 100,
+    description: 'Bono directo de taller para artesanos destacados.'
+  },
+
+  // ==========================================
+  // 2. CUPONES DE CÓDIGO ESPECIAL Y DE TIENDA
+  // ==========================================
+  {
+    id: 'cup-store-bienvenido',
+    code: 'BIENVENIDO',
+    name: '10% de Bienvenida al Taller',
+    category: 'store',
+    type: 'percent',
+    value: 10,
+    minPurchase: 0,
+    maxUses: null,
+    usedCount: 0,
+    expiresAt: '2026-12-31T23:59:59.000Z',
+    active: true,
+    description: 'Código especial de bienvenida para primeros clientes de la tienda online.'
+  },
+  {
+    id: 'cup-store-artesano10',
+    code: 'ARTESANO10',
+    name: '10% de Descuento Especial',
+    category: 'store',
+    type: 'percent',
+    value: 10,
+    minPurchase: 0,
+    maxUses: null,
+    usedCount: 0,
+    expiresAt: '2026-12-31T23:59:59.000Z',
+    active: true,
+    description: 'Descuento general para promociones y campañas en redes sociales.'
+  },
+  {
+    id: 'cup-store-frecuente',
+    code: 'CLIENTEFRECUENTE',
+    name: '15% de Cliente Frecuente',
+    category: 'store',
+    type: 'percent',
+    value: 15,
+    minPurchase: 0,
+    maxUses: null,
+    usedCount: 0,
+    expiresAt: '2026-12-31T23:59:59.000Z',
+    active: true,
+    description: 'Premio especial para clientes recurrentes y compras consecutivas.'
+  },
+  {
+    id: 'cup-store-promo20',
+    code: 'PROMO20',
+    name: '20% de Descuento en Pedidos Mayores',
+    category: 'store',
+    type: 'percent',
+    value: 20,
+    minPurchase: 500,
+    maxUses: null,
+    usedCount: 0,
+    expiresAt: '2026-12-31T23:59:59.000Z',
+    active: true,
+    description: 'Descuento del 20% aplicable en compras a partir de $500 MXN.'
+  },
+  {
+    id: 'cup-store-enviogratis',
+    code: 'ENVIOGRATIS',
+    name: 'Bono de $150 MXN para Envío',
+    category: 'store',
+    type: 'fixed',
+    value: 150,
+    minPurchase: 400,
+    maxUses: null,
+    usedCount: 0,
+    expiresAt: '2026-12-31T23:59:59.000Z',
+    active: true,
+    description: 'Subsidio directo para el envío en compras mayores a $400 MXN.'
+  },
+  {
+    id: 'cup-store-buenfin',
+    code: 'BUENFIN',
+    name: '15% de Descuento Buen Fin',
+    category: 'store',
+    type: 'percent',
+    value: 15,
+    minPurchase: 0,
+    maxUses: null,
+    usedCount: 0,
+    expiresAt: '2026-11-30T23:59:59.000Z',
+    active: true,
+    description: 'Campaña especial de fin de temporada y ofertas comerciales.'
+  },
+  {
+    id: 'cup-store-flashfinde',
+    code: 'FLASHFINDE30',
+    name: '30% Especial Oferta Relámpago',
+    category: 'store',
+    type: 'percent',
+    value: 30,
+    minPurchase: 0,
+    maxUses: null,
+    usedCount: 0,
+    expiresAt: '2026-12-31T23:59:59.000Z',
+    active: true,
+    description: 'Código relámpago exclusivo para fines de semana.'
+  }
+];
 
 const initialRawMaterials = [
   {
@@ -4333,6 +4517,10 @@ class Database {
       if (!data.orders) data.orders = [];
       if (!data.pubTracking) data.pubTracking = [];
       if (!data.suppliers) data.suppliers = [];
+      if (!data.coupons || data.coupons.length === 0) {
+        data.coupons = [...initialCoupons];
+        this.save(data);
+      }
       if (!data.rawMaterials || data.rawMaterials.length === 0) {
         data.rawMaterials = [...initialRawMaterials];
         this.save(data);
@@ -4345,6 +4533,7 @@ class Database {
       data.orders = [];
       data.pubTracking = [];
       data.suppliers = [];
+      data.coupons = [...initialCoupons];
       data.rawMaterials = [...initialRawMaterials];
       return data;
     }
@@ -5376,6 +5565,9 @@ class Database {
       },
       hasCosts: Boolean(hasCosts),
       totalCost,
+      couponCode: data.couponCode ? data.couponCode.trim().toUpperCase() : (data.coupon ? String(data.coupon).trim().toUpperCase() : null),
+      couponCategory: data.couponCategory || (data.couponCode && (data.couponCode.toUpperCase().startsWith('ARCADE') || data.couponCode.toUpperCase().startsWith('TALLER50') || data.couponCode.toUpperCase().startsWith('VIP15') || data.couponCode.toUpperCase().startsWith('MAESTRO')) ? 'arcade' : (data.couponCode ? 'store' : null)),
+      couponDiscount: Math.max(0, Number(data.couponDiscount) || 0),
       notes: data.notes?.trim() || '',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
@@ -5383,6 +5575,20 @@ class Database {
 
     db.orders.push(newOrder);
     this.save(db);
+
+    // Auto-record coupon usage if order included a valid coupon
+    if (newOrder.couponCode) {
+      try {
+        this.recordCouponUse(newOrder.couponCode, {
+          orderNumber: newOrder.orderNumber,
+          amount: newOrder.amount,
+          discount: newOrder.couponDiscount
+        });
+      } catch (e) {
+        console.warn('Aviso: cupón no encontrado para registrar uso:', e.message);
+      }
+    }
+
     return newOrder;
   }
 
@@ -5454,9 +5660,11 @@ class Database {
       firstTouchPubCode,
       costBreakdown,
       hasCosts: Boolean(hasCosts),
-      totalCost,
       amount: data.amount !== undefined ? Math.max(0, Number(data.amount) || 0) : current.amount,
       quantity: data.quantity !== undefined ? Math.max(1, Number(data.quantity) || 1) : current.quantity,
+      couponCode: data.couponCode !== undefined ? (data.couponCode ? data.couponCode.trim().toUpperCase() : null) : (current.couponCode || null),
+      couponCategory: data.couponCategory !== undefined ? data.couponCategory : (current.couponCategory || null),
+      couponDiscount: data.couponDiscount !== undefined ? Math.max(0, Number(data.couponDiscount) || 0) : (current.couponDiscount || 0),
       updatedAt: new Date().toISOString()
     };
 
@@ -5902,6 +6110,175 @@ class Database {
 
     this.save(db);
     return true;
+  }
+
+  // ==========================================
+  // CUPONES & CÓDIGOS DE DESCUENTO (ARCADE & TIENDA)
+  // ==========================================
+  getCoupons(filters = {}) {
+    const db = this.read();
+    let coupons = db.coupons || [];
+    const now = new Date().getTime();
+
+    // Filtro por categoría: 'all' | 'arcade' | 'store'
+    if (filters.category && filters.category !== 'all') {
+      coupons = coupons.filter(c => c.category === filters.category);
+    }
+
+    // Filtro por estatus de vigencia: 'all' | 'active' | 'expired' | 'paused'
+    if (filters.status && filters.status !== 'all') {
+      if (filters.status === 'active') {
+        coupons = coupons.filter(c => c.active !== false && (!c.expiresAt || new Date(c.expiresAt).getTime() >= now));
+      } else if (filters.status === 'expired') {
+        coupons = coupons.filter(c => c.expiresAt && new Date(c.expiresAt).getTime() < now);
+      } else if (filters.status === 'paused') {
+        coupons = coupons.filter(c => c.active === false);
+      }
+    }
+
+    // Filtro de búsqueda por texto (código, nombre, descripción)
+    if (filters.search) {
+      const q = filters.search.toLowerCase().trim();
+      coupons = coupons.filter(c =>
+        (c.code && c.code.toLowerCase().includes(q)) ||
+        (c.name && c.name.toLowerCase().includes(q)) ||
+        (c.description && c.description.toLowerCase().includes(q))
+      );
+    }
+
+    // Métricas globales de cupones
+    const all = db.coupons || [];
+    const activeList = all.filter(c => c.active !== false && (!c.expiresAt || new Date(c.expiresAt).getTime() >= now));
+    const stats = {
+      total: all.length,
+      activeCount: activeList.length,
+      arcadeCount: all.filter(c => c.category === 'arcade').length,
+      storeCount: all.filter(c => c.category === 'store').length,
+      totalUses: all.reduce((acc, c) => acc + (Number(c.usedCount) || 0), 0),
+      totalDiscountGiven: (db.orders || []).reduce((acc, o) => acc + (Number(o.couponDiscount) || 0), 0)
+    };
+
+    return {
+      coupons: coupons.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)),
+      stats
+    };
+  }
+
+  getCouponById(id) {
+    const db = this.read();
+    if (!id) return null;
+    return (db.coupons || []).find(c => c.id === id || c.code?.toUpperCase() === id?.toUpperCase());
+  }
+
+  getCouponByCode(code) {
+    const db = this.read();
+    if (!code) return null;
+    const clean = code.trim().toUpperCase();
+    return (db.coupons || []).find(c => c.code?.toUpperCase() === clean);
+  }
+
+  createCoupon(data) {
+    const db = this.read();
+    db.coupons = db.coupons || [];
+
+    const cleanCode = (data.code || '').trim().toUpperCase();
+    if (!cleanCode) throw new Error('El código del cupón es obligatorio');
+
+    const exists = db.coupons.some(c => c.code.toUpperCase() === cleanCode);
+    if (exists) throw new Error(`El código "${cleanCode}" ya existe. Elige uno diferente.`);
+
+    const newCoupon = {
+      id: data.id || `cup-${Date.now()}-${Math.round(Math.random() * 1000)}`,
+      code: cleanCode,
+      name: data.name?.trim() || `Cupón ${cleanCode}`,
+      category: data.category === 'arcade' ? 'arcade' : 'store',
+      type: data.type === 'fixed' ? 'fixed' : 'percent',
+      value: Math.max(1, Number(data.value) || 10),
+      minPurchase: Math.max(0, Number(data.minPurchase) || 0),
+      maxUses: (data.maxUses !== undefined && data.maxUses !== null && data.maxUses !== '') ? Number(data.maxUses) : null,
+      usedCount: 0,
+      expiresAt: data.expiresAt || null,
+      active: data.active !== false,
+      coinsRequired: data.category === 'arcade' ? Number(data.coinsRequired || 50) : null,
+      description: data.description?.trim() || '',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    db.coupons.unshift(newCoupon);
+    this.save(db);
+    return newCoupon;
+  }
+
+  updateCoupon(id, data) {
+    const db = this.read();
+    db.coupons = db.coupons || [];
+    const idx = db.coupons.findIndex(c => c.id === id);
+    if (idx === -1) return null;
+
+    const current = db.coupons[idx];
+
+    // Si cambia el código, verificar que no colisione con otro
+    if (data.code && data.code.trim().toUpperCase() !== current.code.toUpperCase()) {
+      const cleanCode = data.code.trim().toUpperCase();
+      const conflict = db.coupons.some(c => c.id !== id && c.code.toUpperCase() === cleanCode);
+      if (conflict) throw new Error(`El código "${cleanCode}" ya está registrado por otro cupón`);
+      current.code = cleanCode;
+    }
+
+    db.coupons[idx] = {
+      ...current,
+      ...data,
+      id: current.id,
+      code: data.code ? data.code.trim().toUpperCase() : current.code,
+      name: data.name !== undefined ? data.name.trim() : current.name,
+      category: data.category !== undefined ? data.category : current.category,
+      type: data.type !== undefined ? data.type : current.type,
+      value: data.value !== undefined ? Number(data.value) : current.value,
+      minPurchase: data.minPurchase !== undefined ? Number(data.minPurchase) : current.minPurchase,
+      maxUses: (data.maxUses !== undefined && data.maxUses !== null && data.maxUses !== '') ? Number(data.maxUses) : (data.maxUses === null ? null : current.maxUses),
+      expiresAt: data.expiresAt !== undefined ? data.expiresAt : current.expiresAt,
+      active: data.active !== undefined ? Boolean(data.active) : current.active,
+      description: data.description !== undefined ? data.description.trim() : current.description,
+      coinsRequired: data.category === 'arcade' ? (data.coinsRequired !== undefined ? Number(data.coinsRequired) : current.coinsRequired) : null,
+      updatedAt: new Date().toISOString()
+    };
+
+    this.save(db);
+    return db.coupons[idx];
+  }
+
+  deleteCoupon(id) {
+    const db = this.read();
+    db.coupons = db.coupons || [];
+    const idx = db.coupons.findIndex(c => c.id === id);
+    if (idx === -1) return false;
+    db.coupons.splice(idx, 1);
+    this.save(db);
+    return true;
+  }
+
+  recordCouponUse(code, meta = {}) {
+    const db = this.read();
+    db.coupons = db.coupons || [];
+    const clean = (code || '').trim().toUpperCase();
+    const idx = db.coupons.findIndex(c => c.code.toUpperCase() === clean);
+
+    if (idx === -1) {
+      // Cupón rotativo diario de Arcade o evento dinámico externo
+      return { success: true, recognized: false, message: 'Cupón diario o externo' };
+    }
+
+    const coupon = db.coupons[idx];
+    coupon.usedCount = (Number(coupon.usedCount) || 0) + 1;
+    coupon.lastUsedAt = new Date().toISOString();
+
+    if (coupon.maxUses && coupon.usedCount >= coupon.maxUses) {
+      coupon.exhausted = true;
+    }
+
+    this.save(db);
+    return { success: true, recognized: true, coupon };
   }
 
   // ==========================================
