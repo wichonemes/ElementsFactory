@@ -142,11 +142,30 @@ export default function ProductDetailModal({
     setSelectedVariants(prev => ({ ...prev, [variantName]: option }));
   };
 
-  const handleShare = () => {
-    const url = window.location.href;
-    navigator.clipboard?.writeText(url);
-    setCopiedLink(true);
-    setTimeout(() => setCopiedLink(false), 2500);
+  const handleShare = async () => {
+    const origin = window.location.origin;
+    const prodParam = product.code || product.sku || product.id;
+    const url = `${origin}/?prod=${encodeURIComponent(prodParam)}`;
+    const shareData = {
+      title: `${product.name} — Artesano Digital`,
+      text: `Mira este producto en Artesano Digital: ${product.name}`,
+      url
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+        return;
+      } catch (err) {
+        // Fallback al portapapeles si cancela el diálogo nativo
+      }
+    }
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url);
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2500);
+    }
   };
 
   const productTime = (flashDeal?.getTimeForProduct && product?.id)

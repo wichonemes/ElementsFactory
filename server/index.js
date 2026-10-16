@@ -69,7 +69,7 @@ app.use('/downloads', express.static(downloadsDir));
 // Serve built frontend if exists
 const distDir = path.join(__dirname, '..', 'dist');
 if (fs.existsSync(distDir)) {
-  app.use(express.static(distDir));
+  app.use(express.static(distDir, { index: false }));
 }
 
 // Multer Storage Configuration
@@ -1349,13 +1349,64 @@ app.use((error, _req, res, _next) => {
   res.status(400).json({ error: error instanceof multer.MulterError ? 'La imagen supera el límite permitido.' : 'No fue posible procesar la solicitud.' });
 });
 
-// Fallback for SPA routing if dist exists
+// Fallback for SPA routing if dist exists con soporte para Open Graph dinámico en WhatsApp
 const distIndex = path.join(distDir, 'index.html');
 if (fs.existsSync(distIndex)) {
   app.use((req, res) => {
-    res.sendFile(distIndex, (err) => {
-      if (err) res.status(404).end();
-    });
+    // Si la solicitud es para un asset o endpoint no HTML, dejar pasar
+    if (req.path.startsWith('/assets/') || req.path.startsWith('/uploads/') || req.path.startsWith('/brand/')) {
+      return res.status(404).end();
+    }
+
+    try {
+      const baseHtml = fs.readFileSync(distIndex, 'utf8');
+      const proto = req.headers['x-forwarded-proto'] || (req.secure ? 'https' : 'https');
+      const host = req.headers['x-forwarded-host'] || req.headers['host'] || 'artesano-digital.onrender.com';
+      const baseUrl = `${proto}://${host}`;
+
+      const targetProdCode = (req.query.prod || '').trim().toUpperCase();
+      let matchedProduct = null;
+      if (targetProdCode) {
+        matchedProduct = db.getProducts({ status: 'all' }).find(p => 
+          (p.code && p.code.toUpperCase() === targetProdCode) ||
+          (p.id && String(p.id).toUpperCase() === targetProdCode) ||
+          (p.sku && p.sku.toUpperCase() === targetProdCode)
+        );
+      }
+
+      let renderedHtml = baseHtml;
+
+      if (matchedProduct) {
+        const prodName = matchedProduct.name || 'Producto Exclusivo';
+        const prodPrice = matchedProduct.price ? `$${matchedProduct.price} MXN` : 'A cotizar';
+        const prodDesc = `${matchedProduct.shortDescription || 'Pieza artesanal personalizada fabricada en taller'} · ${prodPrice} · Pedido directo por WhatsApp.`;
+        const prodImg = matchedProduct.primaryImage && matchedProduct.primaryImage.startsWith('http')
+          ? matchedProduct.primaryImage
+          : `${baseUrl}${matchedProduct.primaryImage || '/brand/og_artesano_preview.jpg'}`;
+
+        renderedHtml = renderedHtml
+          .replace(/<title>[\s\S]*?<\/title>/i, `<title>${prodName} — Artesano Digital</title>`)
+          .replace(/<meta\s+property=["']og:title["']\s+content=["'].*?["']\s*\/?>/i, `<meta property="og:title" content="${prodName} — Artesano Digital" />`)
+          .replace(/<meta\s+property=["']og:description["']\s+content=["'].*?["']\s*\/?>/i, `<meta property="og:description" content="${prodDesc}" />`)
+          .replace(/<meta\s+property=["']og:image["']\s+content=["'].*?["']\s*\/?>/i, `<meta property="og:image" content="${prodImg}" />`)
+          .replace(/<meta\s+property=["']og:image:secure_url["']\s+content=["'].*?["']\s*\/?>/i, `<meta property="og:image:secure_url" content="${prodImg}" />`)
+          .replace(/<meta\s+name=["']twitter:title["']\s+content=["'].*?["']\s*\/?>/i, `<meta name="twitter:title" content="${prodName} — Artesano Digital" />`)
+          .replace(/<meta\s+name=["']twitter:description["']\s+content=["'].*?["']\s*\/?>/i, `<meta name="twitter:description" content="${prodDesc}" />`)
+          .replace(/<meta\s+name=["']twitter:image["']\s+content=["'].*?["']\s*\/?>/i, `<meta name="twitter:image" content="${prodImg}" />`);
+      } else {
+        // Enlace general de tienda: asegurar URLs absolutas válidas para el rastreador de WhatsApp
+        const defaultImg = `${baseUrl}/brand/og_artesano_preview.jpg`;
+        renderedHtml = renderedHtml
+          .replace(/<meta\s+property=["']og:image["']\s+content=["'].*?["']\s*\/?>/i, `<meta property="og:image" content="${defaultImg}" />`)
+          .replace(/<meta\s+property=["']og:image:secure_url["']\s+content=["'].*?["']\s*\/?>/i, `<meta property="og:image:secure_url" content="${defaultImg}" />`)
+          .replace(/<meta\s+name=["']twitter:image["']\s+content=["'].*?["']\s*\/?>/i, `<meta name="twitter:image" content="${defaultImg}" />`);
+      }
+
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      res.send(renderedHtml);
+    } catch {
+      res.sendFile(distIndex);
+    }
   });
 }
 
