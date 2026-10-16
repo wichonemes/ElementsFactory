@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import {
   X, Check, ShoppingBag, MessageCircle, Share2, Clock, Ruler,
   ShieldCheck, Sparkles, ChevronLeft, ChevronRight, Maximize2,
@@ -15,6 +15,8 @@ import { getBundleTiers } from './PackagesAndServicesView';
 
 export default function ProductDetailModal({
   product,
+  allProducts = [],
+  onSelectProduct,
   settings = null,
   isFlashDeal = false,
   flashDeal = null,
@@ -65,6 +67,43 @@ export default function ProductDetailModal({
   const [quantity, setQuantity] = useState(product.specifications?.minQuantity || 1);
   const [copiedLink, setCopiedLink] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
+  const modalScrollRef = useRef(null);
+
+  // Protección anti-salida accidental en móviles:
+  // Al deslizar el dedo en el celular hacia atrás, solo se cierra el modal sin salirse de la tienda
+  useEffect(() => {
+    if (!product) return;
+    const modalKey = 'artesano_modal_' + (product.id || 'detail');
+    window.history.pushState({ modal: modalKey }, '', window.location.href);
+
+    const onPopState = () => {
+      if (onClose) onClose();
+    };
+
+    window.addEventListener('popstate', onPopState);
+    return () => {
+      window.removeEventListener('popstate', onPopState);
+    };
+  }, [product?.id]);
+
+  const handleSafeClose = () => {
+    if (window.history.state?.modal?.startsWith('artesano_modal_')) {
+      window.history.back();
+    } else {
+      if (onClose) onClose();
+    }
+  };
+
+  // Sugerencias continuas al scrolear hasta abajo para nunca quedarse sin productos
+  const suggestedProducts = useMemo(() => {
+    if (!allProducts || allProducts.length === 0) return [];
+    const others = allProducts.filter(p => p.id !== product.id && p.status !== 'draft');
+    if (others.length === 0) return [];
+
+    const sameArea = others.filter(p => p.worlds?.some(w => product.worlds?.includes(w)));
+    const remaining = others.filter(p => !sameArea.some(sa => sa.id === p.id));
+    return [...sameArea, ...remaining];
+  }, [allProducts, product]);
 
   // Arcade & Gamificación con hook unificado en sesión
   const [isArcadeOpen, setIsArcadeOpen] = useState(false);
@@ -192,9 +231,12 @@ export default function ProductDetailModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 overflow-y-auto bg-black/70 backdrop-blur-sm animate-fade-in">
+    <div
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 overflow-y-auto bg-black/70 backdrop-blur-sm animate-fade-in overscroll-contain touch-pan-y"
+      onClick={handleSafeClose}
+    >
       <div
-        className="relative w-full max-w-5xl bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden border-t sm:border border-[#E8E4DA] sm:my-auto max-h-[92vh] sm:max-h-[94vh] flex flex-col"
+        className="relative w-full max-w-5xl bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden border-t sm:border border-[#E8E4DA] sm:my-auto max-h-[92vh] sm:max-h-[94vh] flex flex-col overscroll-contain touch-pan-y"
         onClick={e => e.stopPropagation()}
       >
         {/* Mobile Swipe / Drag Handle Indicator */}
@@ -224,8 +266,8 @@ export default function ProductDetailModal({
               <span className="hidden sm:inline">{copiedLink ? '¡Enlace copiado!' : 'Compartir'}</span>
             </button>
             <button
-              onClick={onClose}
-              className="p-2 text-gray-400 hover:text-[#1F2421] hover:bg-white rounded-full transition-colors"
+              onClick={handleSafeClose}
+              className="p-2 text-gray-400 hover:text-[#1F2421] hover:bg-white rounded-full transition-colors cursor-pointer"
               aria-label="Cerrar"
             >
               <X className="w-5 h-5" />
@@ -234,7 +276,7 @@ export default function ProductDetailModal({
         </div>
 
         {/* Modal Scrollable Body */}
-        <div className="overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6 flex-1">
+        <div ref={modalScrollRef} className="overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6 flex-1 overscroll-contain touch-pan-y">
           {/* Oferta Flash 2h Banner */}
           {isFlashDeal && (
             <TemuUrgencyModule
@@ -1060,43 +1102,43 @@ export default function ProductDetailModal({
 
               {/* Technical Specifications Accordion / Grid */}
               <div className="pt-4 border-t border-gray-100">
-                <div className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3 flex items-center gap-1.5">
-                  <Ruler className="w-3.5 h-3.5 text-emerald-600" />
+                <div className="text-xs font-bold uppercase tracking-wider text-stone-500 mb-3 flex items-center gap-1.5">
+                  <Ruler className="w-3.5 h-3.5 text-stone-500" />
                   <span>Ficha técnica y especificaciones:</span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-                  <div className="p-3 rounded-xl bg-gray-50 border border-gray-100">
-                    <span className="text-gray-400 block text-[10px] uppercase font-bold">SKU de Taller</span>
-                    <span className="font-mono font-bold text-gray-800">{product.sku || product.code}</span>
+                  <div className="p-3 rounded-xl bg-[#F8F7F4] border border-[#E8E4DA]/80">
+                    <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">SKU de Taller</span>
+                    <span className="font-mono font-bold text-stone-800">{product.sku || product.code}</span>
                   </div>
                   {product.specifications?.dimensions && (
-                    <div className="p-3 rounded-xl bg-gray-50 border border-gray-100">
-                      <span className="text-gray-400 block text-[10px] uppercase font-bold">Medidas / Dimensiones</span>
-                      <span className="font-semibold text-gray-800">{product.specifications.dimensions}</span>
+                    <div className="p-3 rounded-xl bg-[#F8F7F4] border border-[#E8E4DA]/80">
+                      <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">Medidas / Dimensiones</span>
+                      <span className="font-semibold text-stone-800">{product.specifications.dimensions}</span>
                     </div>
                   )}
                   {product.specifications?.material && (
-                    <div className="p-3 rounded-xl bg-gray-50 border border-gray-100">
-                      <span className="text-gray-400 block text-[10px] uppercase font-bold">Material</span>
-                      <span className="font-semibold text-gray-800">{product.specifications.material}</span>
+                    <div className="p-3 rounded-xl bg-[#F8F7F4] border border-[#E8E4DA]/80">
+                      <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">Material</span>
+                      <span className="font-semibold text-stone-800">{product.specifications.material}</span>
                     </div>
                   )}
                   {product.specifications?.finish && (
-                    <div className="p-3 rounded-xl bg-gray-50 border border-gray-100">
-                      <span className="text-gray-400 block text-[10px] uppercase font-bold">Acabado</span>
-                      <span className="font-semibold text-gray-800">{product.specifications.finish}</span>
+                    <div className="p-3 rounded-xl bg-[#F8F7F4] border border-[#E8E4DA]/80">
+                      <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">Acabado</span>
+                      <span className="font-semibold text-stone-800">{product.specifications.finish}</span>
                     </div>
                   )}
                   {product.specifications?.includes && (
-                    <div className="p-3 rounded-xl bg-gray-50 border border-gray-100">
-                      <span className="text-gray-400 block text-[10px] uppercase font-bold">Qué incluye</span>
-                      <span className="font-semibold text-gray-800">{product.specifications.includes}</span>
+                    <div className="p-3 rounded-xl bg-[#F8F7F4] border border-[#E8E4DA]/80">
+                      <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">Qué incluye</span>
+                      <span className="font-semibold text-stone-800">{product.specifications.includes}</span>
                     </div>
                   )}
                   {product.specifications?.careNotes && (
-                    <div className="sm:col-span-2 p-3 rounded-xl bg-gray-50 border border-gray-100">
-                      <span className="text-gray-400 block text-[10px] uppercase font-bold">Cuidados recomendados</span>
-                      <span className="text-gray-700">{product.specifications.careNotes}</span>
+                    <div className="sm:col-span-2 p-3 rounded-xl bg-[#F8F7F4] border border-[#E8E4DA]/80">
+                      <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">Cuidados recomendados</span>
+                      <span className="text-stone-700">{product.specifications.careNotes}</span>
                     </div>
                   )}
                 </div>
@@ -1104,6 +1146,63 @@ export default function ProductDetailModal({
 
             </div>
           </div>
+
+          {/* Más productos que te pueden gustar (Sugerencias continuas al scrolear hasta abajo) */}
+          {suggestedProducts.length > 0 && (
+            <div className="pt-8 border-t border-gray-200 space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-base sm:text-lg font-bold text-[#1F2421] font-heading flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-stone-500" />
+                    <span>Más creaciones del taller que te pueden interesar</span>
+                  </h3>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    Continúa explorando piezas de taller sin salirte de la tienda
+                  </p>
+                </div>
+                <span className="text-[11px] font-bold text-stone-500 bg-stone-100 px-2.5 py-1 rounded-full">
+                  {suggestedProducts.length} productos
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+                {suggestedProducts.slice(0, 8).map(rel => (
+                  <div
+                    key={rel.id}
+                    onClick={() => {
+                      if (onSelectProduct) {
+                        onSelectProduct(rel);
+                      }
+                      setActiveIdx(0);
+                      modalScrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="cursor-pointer group p-2.5 sm:p-3 rounded-2xl border border-gray-200 hover:border-[#2D4F3E] transition-all bg-white hover:shadow-md flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="aspect-square rounded-xl overflow-hidden bg-gray-50 border border-gray-100 mb-2.5">
+                        <img
+                          src={rel.primaryImage}
+                          alt={rel.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div className="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-wider">{rel.code}</div>
+                      <div className="text-xs font-bold text-gray-800 line-clamp-2 mt-0.5 leading-snug group-hover:text-[#2D4F3E] transition-colors">{rel.name}</div>
+                    </div>
+                    <div className="mt-2 pt-2 border-t border-gray-100 flex items-center justify-between">
+                      <span className="text-xs font-black text-[#1F2421] font-mono">
+                        {rel.price ? `$${rel.price} MXN` : 'A cotizar'}
+                      </span>
+                      <span className="text-[10.5px] font-bold text-[#2D4F3E] group-hover:underline">
+                        Ver →
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
         </div>
 

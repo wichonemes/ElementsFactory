@@ -7,6 +7,11 @@
 }
 
 @layer base {
+  html, body, #root {
+    overscroll-behavior-x: none;
+    overscroll-behavior-y: auto;
+  }
+
   body {
     font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
     color: #1F2421;
