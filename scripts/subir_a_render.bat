@@ -18,7 +18,9 @@ git push -u origin main --force
 if %ERRORLEVEL% equ 0 (
     echo.
     echo [ÉXITO] Cambios subidos a GitHub.
-    echo Render detectará el cambio y comenzará el despliegue automático en:
+    echo Notificando y forzando despliegue en Render...
+    curl -s -X POST "https://api.render.com/deploy/srv-db8lvr6q1p3s73bk1660?key=gYGPX7kR1QQ" > nul
+    echo Despliegue en curso en:
     echo https://artesano-digital.onrender.com/
 ) else (
     echo.
