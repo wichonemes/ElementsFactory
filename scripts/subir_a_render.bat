@@ -14,10 +14,12 @@ if not "%REPO_URL%"=="" (
 )
 echo.
 echo Subiendo cambios a la rama principal (main)...
-git push -u origin main --force
+git push origin main
+git push artesano main
+git push artesano main:master
 if %ERRORLEVEL% equ 0 (
     echo.
-    echo [ÉXITO] Cambios subidos a GitHub.
+    echo [ÉXITO] Cambios subidos a GitHub en ambos repositorios.
     echo Notificando y forzando despliegue en Render...
     curl -s -X POST "https://api.render.com/deploy/srv-db8lvr6q1p3s73bk1660?key=gYGPX7kR1QQ" > nul
     echo Despliegue en curso en:
