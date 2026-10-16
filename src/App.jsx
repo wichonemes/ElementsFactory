@@ -310,7 +310,7 @@ export default function App() {
         'nfc': shuffle(baseList.filter(p => p.techniques?.includes('nfc') && !p.isBundle))
       };
 
-      const keys = ['3d', 'laser', 'sublimation', 'bundle', 'vinyl', 'nfc'];
+      const keys = shuffle(['3d', 'laser', 'sublimation', 'bundle', 'vinyl', 'nfc']);
       const maxLen = Math.max(...Object.values(buckets).map(b => b.length));
       const seen = new Set();
       const interleaved = [];
