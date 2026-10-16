@@ -1,0 +1,220 @@
+@import "tailwindcss";
+
+@theme {
+  --font-heading: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-futura: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+    color: #1F2421;
+    background-color: #FBF9F5;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-heading, .font-futura {
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+    letter-spacing: -0.015em;
+  }
+}
+
+.font-futura, .font-heading {
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.font-sans, .font-body {
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F3EFE6;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Discrete Brand Accent Colors */
+:root {
+  --color-primary: #2D4F3E;       /* Deep Forest / Olive Green */
+  --color-primary-light: #3D6A54;
+  --color-primary-dark: #1E362A;
+  --color-magenta: #D82B6E;       /* Subtle brand accent */
+  --color-green-accent: #2E7D32;  /* Fresh craft accent */
+  --color-graphite: #1F2421;      /* Charcoal text/elements */
+  --color-sand: #FBF9F5;          /* Warm page background */
+  --color-sand-card: #FFFFFF;
+  --color-sand-muted: #F4F0E8;
+  --color-border: #E8E4DA;
+}
+
+/* Animación de Llamas para Insignia Superior Flash (Estilizada y refinada) */
+@keyframes flame-aura {
+  0%, 100% {
+    box-shadow: 0 1px 4px rgba(139, 44, 21, 0.35);
+    border-color: rgba(245, 158, 11, 0.45);
+  }
+  50% {
+    box-shadow: 0 2px 7px rgba(184, 71, 28, 0.45);
+    border-color: rgba(254, 215, 170, 0.7);
+  }
+}
+
+@keyframes flame-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes flame-flicker {
+  0%, 100% {
+    transform: scale(1) translateY(0) rotate(0deg);
+    filter: drop-shadow(0 0 2px rgba(254, 215, 170, 0.8));
+  }
+  50% {
+    transform: scale(1.08) translateY(-0.5px) rotate(2deg);
+    filter: drop-shadow(0 0 3px rgba(245, 158, 11, 0.85));
+  }
+}
+
+@keyframes flame-sparkle {
+  0%, 100% {
+    opacity: 0.2;
+    transform: translateY(0) scale(0.9);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(-1px) scale(1.05);
+  }
+}
+
+.badge-flame-effect {
+  background: linear-gradient(130deg, #7C2411 0%, #A83A14 35%, #C44E1C 65%, #A83A14 100%);
+  background-size: 200% 200%;
+  animation: flame-shift 4s ease infinite, flame-aura 2.5s ease-in-out infinite;
+}
+
+.icon-flame-flicker {
+  animation: flame-flicker 1.3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: 50% 90%;
+}
+
+.flame-sparkle-pulse {
+  animation: flame-sparkle 1.8s ease-in-out infinite;
+}
+
+/* Animaciones para la Opción Media de Paquetes (Nivel Artesano Pro / Recomendado) */
+@keyframes gold-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 1.5px rgba(212, 163, 89, 0.4), 0 4px 18px -2px rgba(212, 163, 89, 0.25);
+    border-color: rgba(212, 163, 89, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 2.5px rgba(212, 163, 89, 0.85), 0 8px 30px 4px rgba(212, 163, 89, 0.45);
+    border-color: rgba(212, 163, 89, 1);
+  }
+}
+
+@keyframes shimmer-sweep {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.card-pro-recommended {
+  animation: gold-glow-pulse 3s ease-in-out infinite;
+  position: relative;
+}
+
+.shimmer-sweep {
+  background-size: 200% auto;
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.28) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer-sweep 3.5s infinite;
+}
+
+.badge-gold-shimmer {
+  background: linear-gradient(135deg, #FFF9EB 0%, #FEEEC8 50%, #FFF9EB 100%);
+}
+
+/* Animaciones de Cupón en Carrito & Mario Coin */
+@keyframes coupon-fly-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-24px) scale(0.92);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(6px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes coupon-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.45), 0 4px 18px rgba(16, 185, 129, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.9), 0 8px 26px rgba(212, 163, 89, 0.45);
+  }
+}
+
+@keyframes mario-coin-jump {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.6) rotate(0deg);
+  }
+  25% {
+    opacity: 1;
+    transform: translateY(-18px) scale(1.35) rotate(-15deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-46px) scale(1.15) rotate(15deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-68px) scale(0.9) rotate(0deg);
+  }
+}
+
+.animate-coupon-fly-in {
+  animation: coupon-fly-in 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.coupon-glow-active {
+  animation: coupon-glow-pulse 2.8s ease-in-out infinite;
+}
+
+.animate-mario-coin {
+  animation: mario-coin-jump 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+

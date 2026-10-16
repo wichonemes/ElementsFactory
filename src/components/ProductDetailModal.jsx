@@ -1,0 +1,1196 @@
+import React, { useState, useMemo } from 'react';
+import {
+  X, Check, ShoppingBag, MessageCircle, Share2, Clock, Ruler,
+  ShieldCheck, Sparkles, ChevronLeft, ChevronRight, Maximize2,
+  Package, Eye, Layers, Calculator, Calendar, AlertTriangle, Truck, MapPin,
+  Gamepad2, Gift, Trophy, Star, ArrowRight
+} from 'lucide-react';
+import TemuUrgencyModule from './TemuUrgencyModule';
+import WorkshopArcadeModal from './WorkshopArcadeModal';
+import { useArcadeSession } from '../hooks/useArcadeSession';
+import { formatServiceDate } from '../utils/serviceStatus';
+import { getFilamentColor, isDarkColor, DARK_COLOR_PRESETS, WORKSHOP_COLOR_PALETTES, ALL_WORKSHOP_COLORS } from '../utils/colorUtils';
+import { playCoinSound, playMarioPowerDownSound } from '../utils/soundEffects';
+import { getBundleTiers } from './PackagesAndServicesView';
+
+export default function ProductDetailModal({
+  product,
+  settings = null,
+  isFlashDeal = false,
+  flashDeal = null,
+  onClose,
+  onAddToCart,
+  onOpenArcade,
+  onDirectWhatsAppQuote,
+  onOpenCalculator,
+  relatedProducts = [],
+  onSelectRelated,
+  onPrevProduct,
+  onNextProduct
+}) {
+  if (!product) return null;
+
+  // Build clean unified gallery list strictly following the 4-photo standard
+  const gallery = product.gallery && product.gallery.length > 0
+    ? product.gallery
+    : [product.primaryImage];
+
+  const defaultMeta = product.isBundle
+    ? [
+        { label: '🌿 1. En contexto de uso (Referencia)', shortLabel: '🌿 En contexto', type: 'lifestyle' },
+        { label: '📦 2. Ángulo en fondo blanco', shortLabel: '📦 Fondo blanco', type: 'white_angle' },
+        { label: '🔍 3. Detalle y cualidades', shortLabel: '🔍 Detalle', type: 'detail' },
+        { label: '🎁 4. Todo lo que incluye el paquete', shortLabel: '🎁 Contenido pack', type: 'bundle_content' }
+      ]
+    : [
+        { label: '🌿 1. En contexto de uso (Referencia)', shortLabel: '🌿 En contexto', type: 'lifestyle' },
+        { label: '📦 2. Ángulo en fondo blanco', shortLabel: '📦 Fondo blanco', type: 'white_angle' },
+        { label: '🔍 3. Detalle y cualidades', shortLabel: '🔍 Detalle', type: 'detail' },
+        { label: '📐 4. Medidas y referencia de escala', shortLabel: '📐 Medidas & escala', type: 'measures' }
+      ];
+
+  const galleryMeta = product.galleryMeta || defaultMeta;
+
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [selectedVariants, setSelectedVariants] = useState(() => {
+    const init = {};
+    (product.variants || []).forEach(v => {
+      const filtered = isFlashDeal
+        ? v.options.filter(opt => !opt.toLowerCase().includes('personalizad'))
+        : v.options;
+      init[v.name] = (filtered.length > 0 ? filtered[0] : v.options[0]);
+    });
+    return init;
+  });
+  const [customText, setCustomText] = useState('');
+  const [showPersonalizationInput, setShowPersonalizationInput] = useState(false);
+  const [isPaletteExpanded, setIsPaletteExpanded] = useState(false);
+  const [activePaletteGroup, setActivePaletteGroup] = useState('todos');
+  const [quantity, setQuantity] = useState(product.specifications?.minQuantity || 1);
+  const [copiedLink, setCopiedLink] = useState(false);
+  const [isZoomed, setIsZoomed] = useState(false);
+
+  // Arcade & Gamificación con hook unificado en sesión
+  const [isArcadeOpen, setIsArcadeOpen] = useState(false);
+  const [activeArcadeGame, setActiveArcadeGame] = useState('dino');
+  const [arcadeTab, setArcadeTab] = useState('play');
+  const {
+    credits: arcadeCredits,
+    coins: arcadeCoins,
+    activeCoupon,
+    refillTimeFormatted,
+    exchangeCoinsForCredits
+  } = useArcadeSession();
+
+  const handleArcadeClose = () => {
+    setIsArcadeOpen(false);
+  };
+
+  const activeImage = gallery[activeIdx] || product.primaryImage;
+  const currentMeta = galleryMeta[activeIdx] || {
+    label: `📸 ${activeIdx + 1}. Fotografía adicional`,
+    shortLabel: `📸 Foto ${activeIdx + 1}`,
+    type: 'detail'
+  };
+
+  const handlePrev = (e) => {
+    e?.stopPropagation();
+    setActiveIdx((prev) => (prev === 0 ? gallery.length - 1 : prev - 1));
+  };
+
+  const handleNext = (e) => {
+    e?.stopPropagation();
+    setActiveIdx((prev) => (prev === gallery.length - 1 ? 0 : prev + 1));
+  };
+
+  const handleVariantChange = (variantName, option) => {
+    setSelectedVariants(prev => ({ ...prev, [variantName]: option }));
+  };
+
+  const handleShare = () => {
+    const url = window.location.href;
+    navigator.clipboard?.writeText(url);
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 2500);
+  };
+
+  const productTime = (flashDeal?.getTimeForProduct && product?.id)
+    ? flashDeal.getTimeForProduct(product.id)
+    : null;
+  const currentDiscount = product.flashDealConfig?.discountPercent || productTime?.discountPercent || flashDeal?.discountPercent || 20;
+
+  // Soporte de los 3 paquetes / niveles de taller para bundles y promociones
+  const bundleTiers = useMemo(() => {
+    if (!product) return [];
+    if (product.tiers && product.tiers.length > 0) return product.tiers;
+    if (product.isBundle || product.code?.startsWith('PROMO-')) {
+      return getBundleTiers(product);
+    }
+    return [];
+  }, [product]);
+
+  const [selectedTierId, setSelectedTierId] = useState(() => {
+    if (bundleTiers.length > 0) {
+      const rec = bundleTiers.find(t => t.isPopular || t.id === 'pro');
+      return rec ? rec.id : bundleTiers[0].id;
+    }
+    return 'pro';
+  });
+
+  const activeTier = useMemo(() => {
+    if (bundleTiers.length === 0) return null;
+    return bundleTiers.find(t => t.id === selectedTierId) || bundleTiers[0];
+  }, [bundleTiers, selectedTierId]);
+
+  const basePrice = activeTier ? activeTier.price : product.price;
+  const regularPrice = activeTier ? (activeTier.regularPrice || Math.round(activeTier.price * 1.25)) : product.regularPrice;
+  const savings = activeTier ? (activeTier.savings || (regularPrice - basePrice)) : product.savings;
+
+  const effectivePrice = (isFlashDeal && basePrice)
+    ? Math.round(basePrice * (1 - currentDiscount / 100))
+    : basePrice;
+
+  const handleAdd = () => {
+    playCoinSound();
+    const couponToUse = activeCoupon || localStorage.getItem('artesano_active_coupon');
+    const selectedLevelVariant = activeTier ? { 'Nivel': activeTier.name } : {};
+    onAddToCart({
+      product: {
+        ...product,
+        price: effectivePrice,
+        regularPrice: regularPrice,
+        savings: savings,
+        flashDealApplied: isFlashDeal
+      },
+      quantity,
+      selectedVariants: { ...selectedVariants, ...selectedLevelVariant },
+      customText: [
+        customText,
+        activeTier ? `Nivel: ${activeTier.name}` : null,
+        isFlashDeal ? `Aprovechó ${productTime?.durationLabel || 'Oferta Flash'} (-${currentDiscount}%)` : null,
+        couponToUse ? `Cupón Arcade: ${couponToUse}` : null
+      ].filter(Boolean).join(' | ')
+    });
+  };
+
+  const handleDirectWhatsApp = () => {
+    playCoinSound();
+    const couponToUse = activeCoupon || localStorage.getItem('artesano_active_coupon');
+    const selectedLevelVariant = activeTier ? { 'Nivel': activeTier.name } : {};
+    onDirectWhatsAppQuote({
+      product: {
+        ...product,
+        price: effectivePrice,
+        regularPrice: regularPrice,
+        savings: savings
+      },
+      quantity,
+      selectedVariants: { ...selectedVariants, ...selectedLevelVariant },
+      customText: [
+        customText,
+        activeTier ? `Nivel seleccionado: ${activeTier.name}` : null,
+        isFlashDeal ? `Precio especial ${productTime?.durationLabel || 'Oferta Flash'}: $${effectivePrice} MXN` : null,
+        couponToUse ? `🎟️ Cupón de Descuento Arcade aplicado: [${couponToUse}]` : null
+      ].filter(Boolean).join(' | ')
+    });
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 overflow-y-auto bg-black/70 backdrop-blur-sm animate-fade-in">
+      <div
+        className="relative w-full max-w-5xl bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden border-t sm:border border-[#E8E4DA] sm:my-auto max-h-[92vh] sm:max-h-[94vh] flex flex-col"
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Mobile Swipe / Drag Handle Indicator */}
+        <div className="sm:hidden pt-2.5 pb-1 flex justify-center bg-[#FBF9F5]">
+          <div className="w-12 h-1 bg-gray-300 rounded-full" />
+        </div>
+
+        {/* Header bar */}
+        <div className="flex items-center justify-between px-5 sm:px-6 py-3.5 border-b border-gray-100 bg-[#FBF9F5] shrink-0">
+          <div className="flex items-center gap-2.5">
+            {/* SKU de Taller oculto al cliente final por requerimiento pero accesible en sistema interno */}
+            <span className="hidden" data-sku={product.sku || product.code} title={product.sku ? `SKU de Taller: ${product.sku}` : `Código: ${product.code}`}>
+              {product.sku || product.code}
+            </span>
+            <span className="text-xs text-gray-500 font-medium capitalize">
+              Área {product.worlds?.join(' / ')}
+            </span>
+            {onPrevProduct && onNextProduct && (
+              <div className="flex items-center gap-1 bg-white px-1.5 py-0.5 rounded-full border border-gray-200 shadow-2xs ml-2">
+                <button
+                  type="button"
+                  onClick={onPrevProduct}
+                  className="p-1 rounded-full text-gray-500 hover:text-[#1F2421] hover:bg-gray-100 transition-colors cursor-pointer"
+                  title="Producto anterior en bucle"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                </button>
+                <span className="text-[10px] font-bold text-gray-400 px-1 select-none">Bucle</span>
+                <button
+                  type="button"
+                  onClick={onNextProduct}
+                  className="p-1 rounded-full text-gray-500 hover:text-[#1F2421] hover:bg-gray-100 transition-colors cursor-pointer"
+                  title="Siguiente producto en bucle"
+                >
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleShare}
+              className="p-2 text-gray-500 hover:text-[#1F2421] hover:bg-white rounded-full transition-colors text-xs flex items-center gap-1.5 border border-transparent hover:border-gray-200"
+              title="Compartir producto"
+            >
+              <Share2 className="w-4 h-4" />
+              <span className="hidden sm:inline">{copiedLink ? '¡Enlace copiado!' : 'Compartir'}</span>
+            </button>
+            <button
+              onClick={onClose}
+              className="p-2 text-gray-400 hover:text-[#1F2421] hover:bg-white rounded-full transition-colors"
+              aria-label="Cerrar"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Modal Scrollable Body */}
+        <div className="overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6 flex-1">
+          {/* Oferta Flash 2h Banner */}
+          {isFlashDeal && (
+            <TemuUrgencyModule
+              product={product}
+              flashDeal={flashDeal}
+              variant="modal"
+              onAction={() => onOpenCalculator ? onOpenCalculator(product) : handleDirectWhatsApp()}
+            />
+          )}
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+            
+            {/* Gallery Column (6 cols on lg) — Mercado Libre Style */}
+            <div className="lg:col-span-6 space-y-3.5">
+              
+              {/* Main Photo Container */}
+              <div className="relative rounded-2xl overflow-hidden bg-white border border-[#E8E4DA] aspect-square shadow-xs group flex items-center justify-center">
+                
+                {/* Active Main Image */}
+                <img
+                  src={activeImage}
+                  alt={`${product.name} - ${currentMeta.label}`}
+                  className={`w-full h-full transition-all duration-300 ${
+                    activeIdx === 0 
+                      ? 'object-cover' 
+                      : 'object-contain p-2.5 sm:p-4 bg-white'
+                  } ${isZoomed ? 'scale-150 cursor-zoom-out' : 'cursor-zoom-in'}`}
+                  onClick={() => setIsZoomed(!isZoomed)}
+                />
+
+                {/* Top Badge: View Type Indicator */}
+                <div className="absolute top-3 left-3 pointer-events-none">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-white text-[11px] font-semibold tracking-wide shadow-md">
+                    <span>{currentMeta.label}</span>
+                  </span>
+                </div>
+
+                {/* Top Right: Zoom / Expand button */}
+                <button
+                  onClick={() => setIsZoomed(!isZoomed)}
+                  className="absolute top-3 right-3 p-2 rounded-full bg-white/80 hover:bg-white text-gray-700 shadow-md transition-all active:scale-95"
+                  title={isZoomed ? "Reducir zoom" : "Ampliar vista"}
+                >
+                  <Maximize2 className="w-3.5 h-3.5" />
+                </button>
+
+                {/* Carousel Navigation Arrows */}
+                {gallery.length > 1 && (
+                  <>
+                    <button
+                      onClick={handlePrev}
+                      className="absolute left-2.5 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/85 hover:bg-white text-[#1F2421] shadow-lg border border-gray-200 transition-all hover:scale-105 active:scale-95"
+                      aria-label="Foto anterior"
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={handleNext}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/85 hover:bg-white text-[#1F2421] shadow-lg border border-gray-200 transition-all hover:scale-105 active:scale-95"
+                      aria-label="Siguiente foto"
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </>
+                )}
+
+                {/* Bottom Dot Indicators */}
+                {gallery.length > 1 && (
+                  <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 pointer-events-none">
+                    {gallery.map((_, i) => (
+                      <span
+                        key={i}
+                        className={`h-1.5 rounded-full transition-all ${
+                          activeIdx === i ? 'w-5 bg-[#2D4F3E]' : 'w-1.5 bg-black/25'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Mercado Libre Style View Mode Buttons */}
+              {gallery.length > 1 && (
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {gallery.map((imgUrl, idx) => {
+                    const meta = galleryMeta[idx] || { label: `Vista ${idx + 1}` };
+                    const isSelected = activeIdx === idx;
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => {
+                          setActiveIdx(idx);
+                          setIsZoomed(false);
+                        }}
+                        className={`p-1.5 rounded-xl border-2 flex flex-col items-center gap-1 transition-all text-left ${
+                          isSelected
+                            ? 'border-[#2D4F3E] bg-[#F4F0E8] ring-1 ring-[#2D4F3E]'
+                            : 'border-[#E8E4DA] bg-white hover:border-gray-300 opacity-80 hover:opacity-100'
+                        }`}
+                      >
+                        <div className="w-full h-14 rounded-lg overflow-hidden bg-white flex items-center justify-center border border-gray-100">
+                          <img
+                            src={imgUrl}
+                            alt=""
+                            className={`w-full h-full ${idx === 0 ? 'object-cover' : 'object-contain p-1'}`}
+                          />
+                        </div>
+                        <span className={`text-[10px] font-bold line-clamp-1 text-center w-full ${
+                          isSelected ? 'text-[#2D4F3E]' : 'text-gray-600'
+                        }`}>
+                          {meta.shortLabel || meta.label}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Guarantees Box & Realistic Craftsmanship Expectation */}
+              <div className="p-4 rounded-2xl bg-[#F8F7F2] border border-[#E8E4DA] space-y-2.5 text-xs">
+                <div className="flex items-start gap-2.5 text-gray-800">
+                  <ShieldCheck className="w-4 h-4 text-[#2D4F3E] shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-bold text-[#1F2421]">Fotografías y vistas 3D de referencia artesanal</span>
+                    <p className="text-[11px] text-gray-500 mt-0.5 leading-relaxed">
+                      Las imágenes y modelos son aproximaciones visuales. Debido a la naturaleza de los materiales (vetas de madera, filamentos y acabados) y la iluminación de pantalla, los tonos y texturas finales pueden presentar sutiles variaciones únicas.
+                    </p>
+                  </div>
+                </div>
+                {product.specifications?.estimatedLeadTime && (
+                  <div className="flex items-center gap-2 text-gray-700 pt-2 border-t border-[#E8E4DA]/80">
+                    <Clock className="w-4 h-4 text-amber-600 shrink-0" />
+                    <span>Tiempo de producción: <strong>{product.specifications.estimatedLeadTime}</strong></span>
+                  </div>
+                )}
+              </div>
+
+
+            </div>
+
+            {/* Product Details & Actions Column (6 cols on lg) */}
+            <div className="lg:col-span-6 space-y-5">
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-bold text-stone-900 leading-tight tracking-tight">
+                  {product.name}
+                </h2>
+                <p className="text-xs sm:text-sm text-gray-600 mt-2 leading-relaxed">
+                  {product.fullDescription || product.shortDescription}
+                </p>
+              </div>
+
+              {/* Price Banner */}
+              <div className={`p-4 rounded-2xl border flex items-center justify-between ${
+                isFlashDeal 
+                  ? 'bg-gradient-to-r from-[#FAF7F0] to-[#FFF8F5] border-[#D4A359] ring-2 ring-[#D4A359]/20' 
+                  : 'bg-[#F4F0E8] border-[#E8E4DA]'
+              }`}>
+                <div>
+                  <div className="text-[10px] uppercase font-bold text-gray-500 tracking-wider flex items-center gap-2">
+                    {isFlashDeal ? (
+                      <span className="px-2.5 py-0.5 rounded-full bg-[#9E472A] text-white text-[10px] font-black flex items-center gap-1 animate-pulse">
+                        ⚡ PRECIO {productTime?.durationLabel || 'FLASH'}
+                      </span>
+                    ) : (
+                      <span>{product.priceType === 'quote' ? 'Modalidad' : product.priceType === 'starting_at' ? 'Precio base desde' : 'Precio del paquete'}</span>
+                    )}
+
+                    {isFlashDeal ? (
+                      <span className="px-2 py-0.5 rounded-full bg-[#FAF7F0] border border-[#E5D7B7] text-[#9E472A] text-[10px] font-black">
+                        -{flashDeal?.discountPercent || 20}% DE DESCUENTO
+                      </span>
+                    ) : product.savings ? (
+                      <span className="px-2 py-0.5 rounded-full bg-[#D82B6E] text-white text-[10px] font-black">
+                        Ahorro de ${product.savings} MXN
+                      </span>
+                    ) : null}
+                  </div>
+
+                  {(isFlashDeal || product.regularPrice) && (
+                    <div className="text-xs text-gray-400 line-through font-semibold mt-0.5">
+                      Precio regular: ${isFlashDeal ? product.price : product.regularPrice} MXN
+                    </div>
+                  )}
+
+                  <div className={`text-2xl sm:text-3xl font-black font-heading mt-0.5 ${isFlashDeal ? 'text-[#9E472A]' : 'text-[#1F2421]'}`}>
+                    {product.priceType === 'quote' || product.price === null ? (
+                      <span className="text-[#2D4F3E]">A cotizar por proyecto</span>
+                    ) : (
+                      <>
+                        ${effectivePrice} <span className="text-xs font-normal text-gray-500">MXN {product.priceUnit && `(${product.priceUnit})`}</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                <div className="text-right">
+                  <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
+                    isFlashDeal 
+                      ? 'bg-[#FAF7F0] border border-[#D4A359] text-[#9E472A] font-bold' 
+                      : 'bg-white border border-[#E8E4DA] text-gray-700'
+                  }`}>
+                    {isFlashDeal ? 'Oferta flash activa' : product.isBundle ? 'Paquete en promoción' : product.availability === 'in_stock' ? 'En existencia' : 'Bajo pedido personalizado'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Despliegue de los 3 Paquetes / Niveles de Taller en Ventana Emergente */}
+              {bundleTiers.length > 0 ? (
+                <div className="p-4 rounded-2xl bg-gradient-to-b from-[#FAF8F4] to-[#F5ECE0] border-2 border-[#D4A359]/70 shadow-sm space-y-3.5">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-[#7A4B1D]">
+                      <Layers className="w-4 h-4 text-[#D4A359]" />
+                      <span>Elige tu Nivel de Paquete:</span>
+                    </div>
+                    <span className="text-[10.5px] font-bold text-stone-600 bg-white/80 px-2 py-0.5 rounded-full border border-[#D4A359]/30">
+                      3 opciones de taller
+                    </span>
+                  </div>
+
+                  {/* Selector interactivo de los 3 niveles */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    {bundleTiers.map(tier => {
+                      const isSelected = activeTier?.id === tier.id;
+                      return (
+                        <button
+                          key={tier.id}
+                          type="button"
+                          onClick={() => {
+                            playCoinSound();
+                            setSelectedTierId(tier.id);
+                          }}
+                          className={`relative p-2.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                            isSelected
+                              ? 'bg-white border-[#2D4F3E] ring-2 ring-[#2D4F3E]/30 shadow-sm'
+                              : 'bg-white/70 hover:bg-white border-gray-200'
+                          }`}
+                        >
+                          {tier.isPopular && (
+                            <span className="absolute -top-2 right-2 px-1.5 py-0.2 rounded-full bg-[#D4A359] text-stone-900 font-black text-[8.5px] uppercase tracking-wider shadow-2xs">
+                              ★ Recomendado
+                            </span>
+                          )}
+                          <div>
+                            <div className="flex items-center gap-1 text-xs font-bold text-[#1F2421]">
+                              <span>{tier.icon}</span>
+                              <span className="truncate">{tier.name.replace('Nivel ', '')}</span>
+                            </div>
+                            <p className="text-[10px] text-gray-500 mt-1 line-clamp-2 leading-tight">
+                              {tier.summary}
+                            </p>
+                          </div>
+                          <div className="mt-2 pt-1.5 border-t border-gray-100 flex items-baseline justify-between">
+                            <span className="text-xs font-black text-[#1F2421] font-mono">
+                              ${tier.price} <span className="text-[9px] font-normal text-gray-400">MXN</span>
+                            </span>
+                            {tier.savings ? (
+                              <span className="text-[9.5px] text-emerald-700 font-bold">
+                                -${tier.savings}
+                              </span>
+                            ) : null}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Piezas incluidas en el nivel activo */}
+                  {activeTier && activeTier.includedItems && (
+                    <div className="p-3 bg-white rounded-xl border border-[#E8DFC8] space-y-2">
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-[#7A4B1D] uppercase tracking-wider">
+                        <Package className="w-3.5 h-3.5 text-[#D4A359]" />
+                        <span>Piezas incluidas en {activeTier.name}:</span>
+                      </div>
+                      <ul className="space-y-1.5 text-xs text-gray-700">
+                        {activeTier.includedItems.map((item, idx) => (
+                          <li key={idx} className="flex items-start gap-2">
+                            <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                            <span className="leading-snug">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      {activeTier.extraBenefits && activeTier.extraBenefits.length > 0 && (
+                        <div className="pt-2 border-t border-gray-100 flex flex-wrap gap-1.5">
+                          {activeTier.extraBenefits.map((b, i) => (
+                            <span key={i} className="text-[10px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                              ✓ {b}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ) : (product.includedItems && product.includedItems.length > 0) ? (
+                <div className="p-4 rounded-2xl bg-[#FFF9FB] border border-[#F4D6E2] space-y-2">
+                  <div className="flex items-center gap-2 text-[#D82B6E] font-bold text-xs uppercase tracking-wider">
+                    <Package className="w-4 h-4" />
+                    <span>Piezas incluidas en esta promoción:</span>
+                  </div>
+                  <ul className="space-y-1.5 text-xs text-gray-700">
+                    {product.includedItems.map((item, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+
+              {/* Variants Selector */}
+              {product.variants && product.variants.length > 0 && (
+                <div className="space-y-3.5 pt-1">
+                  {product.variants.map(variant => {
+                    const isColorVariant = /color|acento|tono/i.test(variant.name);
+                    const availableOptions = isFlashDeal 
+                      ? variant.options.filter(opt => !opt.toLowerCase().includes('personalizad'))
+                      : variant.options;
+                    const finalOptions = availableOptions.length > 0 ? availableOptions : variant.options;
+
+                    return (
+                      <div key={variant.name} className="space-y-1.5">
+                        <div className="flex items-center justify-between">
+                          <label className="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
+                            <span>{variant.name}:</span>
+                            {isColorVariant && selectedVariants[variant.name] && (
+                              <span className="text-[#2D4F3E] font-black normal-case text-xs bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-md">
+                                {selectedVariants[variant.name]}
+                              </span>
+                            )}
+                          </label>
+                          {isColorVariant && (
+                            <span className="text-[10.5px] text-gray-400 font-medium">
+                              {finalOptions.length} {finalOptions.length === 1 ? 'opción' : 'opciones'}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Circulitos de color para variantes de color */}
+                        {isColorVariant ? (
+                          <div className="flex flex-wrap items-center gap-2 pt-1">
+                            {finalOptions.map(opt => {
+                              const isSelected = selectedVariants[variant.name] === opt;
+                              const swatch = getFilamentColor(opt);
+                              return (
+                                <button
+                                  key={opt}
+                                  type="button"
+                                  onClick={() => handleVariantChange(variant.name, opt)}
+                                  className={`group/c relative p-0.5 rounded-full transition-all cursor-pointer flex items-center justify-center ${
+                                    isSelected
+                                      ? 'ring-2 ring-[#2D4F3E] ring-offset-2 scale-110 shadow-xs'
+                                      : 'hover:scale-110 hover:ring-2 hover:ring-gray-300'
+                                  }`}
+                                  title={opt}
+                                >
+                                  <span
+                                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-black/20 shadow-2xs flex items-center justify-center transition-transform"
+                                    style={{
+                                      background: swatch?.css || '#D1D5DB',
+                                      borderColor: swatch?.border || '#9CA3AF',
+                                      boxShadow: swatch?.glow ? '0 0 8px rgba(110, 231, 183, 0.9)' : undefined
+                                    }}
+                                  >
+                                    {isSelected && (
+                                      <span className={`text-[11px] font-black ${
+                                        isDarkColor(swatch)
+                                          ? 'text-white drop-shadow-sm'
+                                          : 'text-gray-900'
+                                      }`}>
+                                        ✓
+                                      </span>
+                                    )}
+                                  </span>
+                                  {/* Tooltip con nombre de color */}
+                                  <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover/c:block z-30 px-2 py-0.5 text-[10px] font-bold text-white bg-black/90 rounded-md whitespace-nowrap shadow-md pointer-events-none">
+                                    {opt}
+                                  </span>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        ) : (
+                          /* Botones tipo pill para otras variantes (medida, drenaje, etc.) */
+                          <div className="flex flex-wrap gap-2">
+                            {finalOptions.map(opt => {
+                              const isSelected = selectedVariants[variant.name] === opt;
+                              return (
+                                <button
+                                  key={opt}
+                                  type="button"
+                                  onClick={() => handleVariantChange(variant.name, opt)}
+                                  className={`px-3.5 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer ${
+                                    isSelected
+                                      ? 'bg-[#2D4F3E] text-white border-[#2D4F3E] shadow-xs'
+                                      : 'bg-white text-gray-700 border-[#E8E4DA] hover:bg-gray-50'
+                                  }`}
+                                >
+                                  {opt}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+
+                  {product.techniques?.includes('3d') && (
+                    <div className="flex items-center gap-2 p-2.5 rounded-xl bg-[#2D4F3E]/5 border border-[#2D4F3E]/15 text-[11.5px] text-[#2D4F3E]">
+                      <Sparkles className="w-4 h-4 text-[#2D4F3E] shrink-0" />
+                      <span>
+                        <strong>Gama abierta de filamentos 3D:</strong> Contamos con amplia variedad de colores (mate, seda, madera o translúcido). Si requieres un tono personalizado, elígelo en la lista o indícalo en tu pedido.
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Personalización Opcional Secundaria (Plegable para agilizar la compra) */}
+              {!isFlashDeal ? (
+                <div className="pt-0.5">
+                  {!showPersonalizationInput && !customText ? (
+                    <button
+                      type="button"
+                      onClick={() => setShowPersonalizationInput(true)}
+                      className="text-xs font-semibold text-[#2D4F3E] hover:text-[#20392C] flex items-center justify-between py-2 px-3.5 rounded-xl border border-dashed border-[#2D4F3E]/40 hover:bg-emerald-50/50 transition-all cursor-pointer w-full bg-[#FAF9F5]/60"
+                    >
+                      <span className="flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                        <span>¿Deseas personalizar esta pieza con grabado o logo? (Opcional)</span>
+                      </span>
+                      <span className="text-[11px] text-[#2D4F3E] font-black">+ Agregar</span>
+                    </button>
+                  ) : (
+                    <div className="space-y-2 p-3.5 rounded-2xl bg-[#FAF9F5] border border-[#E8E4DA] animate-in fade-in">
+                      <div className="flex items-center justify-between">
+                        <label className="text-[11px] font-bold text-gray-700 flex items-center gap-1">
+                          <span>Detalles de personalización (opcional):</span>
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowPersonalizationInput(false);
+                            setCustomText('');
+                          }}
+                          className="text-[10.5px] text-gray-400 hover:text-rose-600 cursor-pointer"
+                        >
+                          Quitar personalización
+                        </button>
+                      </div>
+                      <textarea
+                        rows={2}
+                        placeholder="Ej: Grabar nombre 'Familia Pérez', fecha 24-Octubre o tono especial..."
+                        value={customText}
+                        onChange={e => setCustomText(e.target.value)}
+                        className="w-full px-3 py-2 text-xs rounded-xl border border-[#E8E4DA] focus:border-[#2D4F3E] focus:outline-none bg-white"
+                        autoFocus
+                      />
+
+                      {/* Selector de Paletas de Taller (Más de 30 variedades con pestañita para contraer/mostrar más) */}
+                      <div className="pt-2 border-t border-gray-200/80 space-y-2">
+                        <div className="flex items-center justify-between text-[11px] text-gray-700 font-semibold">
+                          <span className="flex items-center gap-1.5 text-[#1F2421]">
+                            <span>🎨 Tonos oscuros de taller y acabados especiales:</span>
+                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-900 font-black">
+                              {ALL_WORKSHOP_COLORS.length} colores
+                            </span>
+                          </span>
+                          
+                          {/* Pestañita para contraer o mostrar más colores */}
+                          <button
+                            type="button"
+                            onClick={() => setIsPaletteExpanded(prev => !prev)}
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10.5px] font-bold text-[#2D4F3E] bg-[#E8EFEA] hover:bg-[#D5E3DA] transition-colors cursor-pointer border border-[#2D4F3E]/20"
+                          >
+                            <span>{isPaletteExpanded ? '▲ Contraer' : '▼ Mostrar más colores'}</span>
+                          </button>
+                        </div>
+
+                        {/* Barra de pestañitas por categoría si está expandido */}
+                        {isPaletteExpanded && (
+                          <div className="flex flex-wrap gap-1 p-1 rounded-xl bg-gray-100 border border-gray-200">
+                            <button
+                              type="button"
+                              onClick={() => setActivePaletteGroup('todos')}
+                              className={`px-2 py-0.5 rounded-lg text-[10px] font-bold transition-all cursor-pointer ${
+                                activePaletteGroup === 'todos'
+                                  ? 'bg-white text-gray-900 shadow-2xs font-black'
+                                  : 'text-gray-500 hover:text-gray-800'
+                              }`}
+                            >
+                              🌟 Todos ({ALL_WORKSHOP_COLORS.length})
+                            </button>
+                            {WORKSHOP_COLOR_PALETTES.map(group => (
+                              <button
+                                key={group.id}
+                                type="button"
+                                onClick={() => setActivePaletteGroup(group.id)}
+                                className={`px-2 py-0.5 rounded-lg text-[10px] font-bold transition-all cursor-pointer ${
+                                  activePaletteGroup === group.id
+                                    ? 'bg-white text-gray-900 shadow-2xs font-black'
+                                    : 'text-gray-500 hover:text-gray-800'
+                                }`}
+                              >
+                                {group.label}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Cuadrícula de colores: Si está contraído muestra los primeros 8 esenciales, si está expandido muestra el grupo activo */}
+                        {(() => {
+                          const displayColors = isPaletteExpanded
+                            ? (activePaletteGroup === 'todos'
+                                ? ALL_WORKSHOP_COLORS
+                                : (WORKSHOP_COLOR_PALETTES.find(g => g.id === activePaletteGroup)?.colors || ALL_WORKSHOP_COLORS))
+                            : ALL_WORKSHOP_COLORS.slice(0, 8);
+
+                          return (
+                            <div className="space-y-1.5">
+                              <div className="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto pr-1">
+                                {displayColors.map(colorName => {
+                                  const swatch = getFilamentColor(colorName);
+                                  const isIncluded = customText.includes(colorName);
+                                  const isDark = isDarkColor(swatch);
+                                  return (
+                                    <button
+                                      key={colorName}
+                                      type="button"
+                                      onClick={() => {
+                                        if (isIncluded) {
+                                          setCustomText(customText.replace(new RegExp(`(,\\s*)?Color preferido: ${colorName}`, 'g'), '').trim());
+                                        } else {
+                                          const prefix = customText.trim() ? `${customText.trim()} | ` : '';
+                                          setCustomText(`${prefix}Color preferido: ${colorName}`);
+                                        }
+                                      }}
+                                      className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-lg text-[10px] font-bold transition-all border cursor-pointer ${
+                                        isIncluded
+                                          ? 'bg-[#1F2421] text-amber-200 border-[#D4A359] shadow-xs ring-1 ring-[#D4A359]/50'
+                                          : 'bg-white text-gray-700 border-gray-200 hover:border-gray-400 hover:bg-gray-50'
+                                      }`}
+                                      title={`Aplicar acabado ${colorName}`}
+                                    >
+                                      <span
+                                        className="w-2.5 h-2.5 rounded-full border border-black/30 shrink-0 shadow-2xs"
+                                        style={{ background: swatch?.css || '#1F2421' }}
+                                      />
+                                      <span>{colorName}</span>
+                                    </button>
+                                  );
+                                })}
+                              </div>
+
+                              {!isPaletteExpanded && (
+                                <div className="flex items-center justify-between text-[10px] text-gray-500 pt-0.5">
+                                  <span>Mostrando 8 esenciales de taller</span>
+                                  <button
+                                    type="button"
+                                    onClick={() => setIsPaletteExpanded(true)}
+                                    className="text-[#2D4F3E] font-bold hover:underline cursor-pointer"
+                                  >
+                                    Ver los {ALL_WORKSHOP_COLORS.length - 8} colores restantes →
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="p-3.5 rounded-xl bg-[#FAF7F0] border border-[#E8E4DA] flex items-start gap-3 text-xs text-gray-600 select-none shadow-2xs">
+                  <span className="w-5 h-5 rounded-full bg-amber-100 text-[#9E472A] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                    ⚡
+                  </span>
+                  <div>
+                    <span className="font-bold text-[#1F2421] block">
+                      Personalización desactivada para Ofertas Flash
+                    </span>
+                    <span className="text-[11.5px] text-gray-500 leading-relaxed block mt-0.5">
+                      Las piezas con precio especial flash corresponden a lotes estándar de entrega inmediata de taller, por lo que no admiten grabado ni modificaciones personalizadas.
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Quantity Stepper */}
+              <div className="flex items-center gap-3 pt-1">
+                <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">
+                  Cantidad:
+                </label>
+                <div className="flex items-center border border-[#E8E4DA] rounded-xl overflow-hidden bg-white shadow-2xs">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const min = product.specifications?.minQuantity || 1;
+                      if (quantity > min) {
+                        playMarioPowerDownSound();
+                        setQuantity(q => q - 1);
+                      }
+                    }}
+                    className="px-3 py-1.5 text-gray-600 hover:bg-gray-100 font-bold text-sm transition-colors cursor-pointer"
+                    title="Disminuir cantidad"
+                    aria-label="Disminuir cantidad"
+                  >
+                    -
+                  </button>
+                  <span className="px-4 py-1.5 text-sm font-bold text-[#1F2421] min-w-[36px] text-center select-none">
+                    {quantity}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      playCoinSound();
+                      setQuantity(q => q + 1);
+                    }}
+                    className="px-3 py-1.5 text-gray-600 hover:bg-gray-100 font-bold text-sm transition-colors cursor-pointer"
+                    title="Aumentar cantidad"
+                    aria-label="Aumentar cantidad"
+                  >
+                    +
+                  </button>
+                </div>
+                {product.specifications?.minQuantity > 1 && (
+                  <span className="text-[11px] text-gray-500 italic">
+                    (Mínimo {product.specifications.minQuantity} piezas)
+                  </span>
+                )}
+              </div>
+
+              {/* Brand Scarcity & Demand Box */}
+              <div className="p-3.5 rounded-2xl bg-gradient-to-r from-[#FAF7F0] to-[#F5ECE0] border border-[#E5D7B7] space-y-2 shadow-2xs">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 text-xs font-black text-[#9E472A]">
+                    <span className="w-2 h-2 rounded-full bg-[#9E472A] animate-ping"></span>
+                    <span>⚡ LOTE CON PRECIO PREFERENCIAL</span>
+                  </div>
+                  <span className="text-[11px] font-bold text-[#8C3B1E] bg-[#EFE6D5] px-2 py-0.5 rounded-full">
+                    🔥 Solo quedan {((product.id.charCodeAt(0) * 3) % 4) + 2} disponibles
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between text-[11px] text-gray-600">
+                  <span>88% de la capacidad de producción asignada</span>
+                  <span className="font-bold text-[#1F2421]">👁️ 4 personas viendo ahora</span>
+                </div>
+
+                <div className="w-full bg-[#EFE6D5] rounded-full h-1.5 overflow-hidden">
+                  <div 
+                    className="bg-gradient-to-r from-[#D4A359] via-[#C28E38] to-[#9E472A] h-1.5 rounded-full" 
+                    style={{ width: '88%' }}
+                  ></div>
+                </div>
+              </div>
+
+              {/* Taller en Pausa / Aviso de Cobertura */}
+              {settings?.serviceStatus?.isPaused && (
+                <div className="p-3 rounded-xl bg-amber-50 border border-amber-300 text-amber-950 text-xs space-y-1 shadow-2xs">
+                  <div className="font-bold flex items-center gap-1.5 text-amber-900">
+                    <Calendar className="w-4 h-4 text-amber-700 shrink-0" />
+                    <span>⏸️ Taller en receso hasta el {formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'próximo aviso'}</span>
+                  </div>
+                  <p className="text-[11px] text-amber-800 leading-relaxed">
+                    {settings.serviceStatus.pausedCustomMessage || 'Reanudamos servicio en esa fecha. Puedes cotizar tu pieza hoy mismo y quedará agendada con prioridad.'}
+                  </p>
+                </div>
+              )}
+
+              {!settings?.serviceStatus?.isPaused && (settings?.serviceStatus?.localService === false || settings?.serviceStatus?.nationalService === false) && (
+                <div className="p-2.5 rounded-xl bg-amber-50/80 border border-amber-200 text-amber-900 text-[11px] font-semibold flex items-center gap-1.5">
+                  <AlertTriangle className="w-3.5 h-3.5 text-amber-700 shrink-0" />
+                  <span>
+                    {settings.serviceStatus.localService && !settings.serviceStatus.nationalService
+                      ? '📍 Servicio activo solo para entregas locales y taller en SLP. Envíos nacionales en pausa.'
+                      : !settings.serviceStatus.localService && settings.serviceStatus.nationalService
+                      ? '📦 Envíos nacionales activos a toda la República. Entregas locales temporalmente no disponibles.'
+                      : '⏸️ Entregas en pausa temporalmente.'}
+                  </span>
+                </div>
+              )}
+
+              {/* Primary Action Buttons */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                {/* Cotizar a la izquierda con color verde oliva */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (onOpenCalculator) {
+                      onOpenCalculator(product);
+                    } else {
+                      handleDirectWhatsApp();
+                    }
+                  }}
+                  className="flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-[#2D4F3E] text-white text-sm font-bold hover:bg-[#20392C] active:scale-98 transition-all shadow-md cursor-pointer"
+                >
+                  <Calculator className="w-4 h-4" />
+                  <span>Cotizar</span>
+                </button>
+
+                {/* Hacer pedido a la derecha con color verde normal */}
+                <button
+                  type="button"
+                  onClick={handleAdd}
+                  className="flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-[#16A34A] text-white text-sm font-bold hover:bg-[#15803D] active:scale-98 transition-all shadow-md shadow-emerald-500/10 cursor-pointer"
+                >
+                  <ShoppingBag className="w-4 h-4" />
+                  <span>Hacer pedido</span>
+                </button>
+              </div>
+
+              {/* Acceso Discreto a Mini-Juego de Taller (Ubicado después de la decisión de compra) */}
+              {(settings?.arcadeConfig?.enabled !== false) && (
+                <div className="p-3 rounded-2xl bg-[#FAF9F5] border border-[#E8E4DA] space-y-2 text-xs">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-base">🕹️</span>
+                      <div>
+                        <span className="font-bold text-[#1F2421] block leading-none">
+                          Mini-Juegos de Taller
+                        </span>
+                        <span className="text-[10.5px] text-gray-500 leading-tight">
+                          Juega mientras cotizamos y gana cupones de descuento
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <span className="px-2 py-0.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10.5px] font-mono font-bold" title="Fichas de juego disponibles">
+                        🎮 {arcadeCredits}/5
+                        {arcadeCredits < 5 && (
+                          <span className="font-normal ml-0.5 text-[9.5px]">({refillTimeFormatted})</span>
+                        )}
+                      </span>
+                      <span className="px-2 py-0.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-[10.5px] font-mono font-bold" title="Monedas ganadas">
+                        🪙 {arcadeCoins}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Cupón activo si ya lo canjeó */}
+                  {activeCoupon && (
+                    <div className="px-2.5 py-1 rounded-xl bg-emerald-100/70 border border-emerald-300 text-[10.5px] text-emerald-900 font-bold flex items-center justify-between">
+                      <span>🎟️ Cupón aplicado: <strong>{activeCoupon}</strong></span>
+                      <span className="text-[10px] text-emerald-700 font-normal">Se enviará en tu pedido</span>
+                    </div>
+                  )}
+
+                  {/* Botones de Acción Sutiles */}
+                  <div className="flex items-center gap-2 pt-0.5">
+                    {arcadeCredits === 0 && arcadeCoins >= 2 && (
+                      <button
+                        type="button"
+                        onClick={() => exchangeCoinsForCredits(2, 1)}
+                        className="py-1.5 px-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 text-[11px] font-bold transition-all cursor-pointer border border-amber-300 shrink-0"
+                        title="Canjear 2 monedas por 1 ficha al instante"
+                      >
+                        🔄 2🪙 por 1🎮
+                      </button>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (onOpenArcade) {
+                          onOpenArcade('play');
+                        } else {
+                          setActiveArcadeGame('dino');
+                          setArcadeTab('play');
+                          setIsArcadeOpen(true);
+                        }
+                      }}
+                      className="flex-1 py-1.5 px-2.5 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                    >
+                      <Gamepad2 className="w-3.5 h-3.5 text-amber-300" />
+                      <span>Jugar (1 ficha)</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (onOpenArcade) {
+                          onOpenArcade('rewards');
+                        } else {
+                          setArcadeTab('rewards');
+                          setIsArcadeOpen(true);
+                        }
+                      }}
+                      className="py-1.5 px-2.5 rounded-xl bg-white hover:bg-gray-100 border border-gray-300 text-gray-700 font-bold text-xs transition-all flex items-center justify-center gap-1 cursor-pointer shadow-2xs"
+                    >
+                      <Gift className="w-3.5 h-3.5 text-amber-600" />
+                      <span>Canjear Cupones</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Technical Specifications Accordion / Grid */}
+              <div className="pt-4 border-t border-gray-100">
+                <div className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3 flex items-center gap-1.5">
+                  <Ruler className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>Ficha técnica y especificaciones:</span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                  <div className="p-3 rounded-xl bg-gray-50 border border-gray-100">
+                    <span className="text-gray-400 block text-[10px] uppercase font-bold">SKU de Taller</span>
+                    <span className="font-mono font-bold text-gray-800">{product.sku || product.code}</span>
+                  </div>
+                  {product.specifications?.dimensions && (
+                    <div className="p-3 rounded-xl bg-gray-50 border border-gray-100">
+                      <span className="text-gray-400 block text-[10px] uppercase font-bold">Medidas / Dimensiones</span>
+                      <span className="font-semibold text-gray-800">{product.specifications.dimensions}</span>
+                    </div>
+                  )}
+                  {product.specifications?.material && (
+                    <div className="p-3 rounded-xl bg-gray-50 border border-gray-100">
+                      <span className="text-gray-400 block text-[10px] uppercase font-bold">Material</span>
+                      <span className="font-semibold text-gray-800">{product.specifications.material}</span>
+                    </div>
+                  )}
+                  {product.specifications?.finish && (
+                    <div className="p-3 rounded-xl bg-gray-50 border border-gray-100">
+                      <span className="text-gray-400 block text-[10px] uppercase font-bold">Acabado</span>
+                      <span className="font-semibold text-gray-800">{product.specifications.finish}</span>
+                    </div>
+                  )}
+                  {product.specifications?.includes && (
+                    <div className="p-3 rounded-xl bg-gray-50 border border-gray-100">
+                      <span className="text-gray-400 block text-[10px] uppercase font-bold">Qué incluye</span>
+                      <span className="font-semibold text-gray-800">{product.specifications.includes}</span>
+                    </div>
+                  )}
+                  {product.specifications?.careNotes && (
+                    <div className="sm:col-span-2 p-3 rounded-xl bg-gray-50 border border-gray-100">
+                      <span className="text-gray-400 block text-[10px] uppercase font-bold">Cuidados recomendados</span>
+                      <span className="text-gray-700">{product.specifications.careNotes}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          {/* Related Products Section */}
+          {relatedProducts.length > 0 && (
+            <div className="pt-8 border-t border-gray-100">
+              <h3 className="text-base font-bold text-[#1F2421] mb-4 font-heading">
+                Productos complementarios recomendados
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {relatedProducts.slice(0, 4).map(rel => (
+                  <div
+                    key={rel.id}
+                    onClick={() => {
+                      onSelectRelated(rel);
+                      setActiveIdx(0);
+                    }}
+                    className="cursor-pointer group p-2.5 rounded-2xl border border-gray-200 hover:border-[#2D4F3E] transition-all bg-white"
+                  >
+                    <div className="aspect-square rounded-xl overflow-hidden bg-gray-100 mb-2">
+                      <img src={rel.primaryImage} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                    </div>
+                    <div className="text-[11px] font-mono font-bold text-gray-400">{rel.code}</div>
+                    <div className="text-xs font-bold text-gray-800 line-clamp-1">{rel.name}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+        </div>
+
+        {/* Mobile Sticky Bottom Action Bar (Thumb-friendly CTA like Mercado Libre) */}
+        <div className="sm:hidden border-t border-gray-200 bg-white/98 backdrop-blur-md px-4 py-2.5 flex items-center justify-between gap-3 shrink-0 shadow-lg z-20">
+          <div className="flex flex-col">
+            <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider leading-none">
+              {product.priceType === 'quote' ? 'Modalidad' : 'Precio'}
+            </span>
+            <span className="text-base font-black text-[#1F2421] font-heading mt-0.5">
+              {product.priceType === 'quote' || product.price === null ? (
+                <span className="text-[#2D4F3E] text-xs">A cotizar</span>
+              ) : (
+                `$${effectivePrice} MXN`
+              )}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                if (onOpenCalculator) {
+                  onOpenCalculator(product);
+                } else {
+                  handleDirectWhatsApp();
+                }
+              }}
+              className="px-3.5 py-2.5 rounded-full bg-[#2D4F3E] text-white text-xs font-bold hover:bg-[#20392C] active:scale-95 transition-all shadow-sm cursor-pointer flex items-center gap-1.5"
+            >
+              <Calculator className="w-3.5 h-3.5" />
+              <span>Cotizar</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleAdd}
+              className="px-4 py-2.5 rounded-full bg-[#16A34A] text-white text-xs font-black hover:bg-[#15803D] active:scale-95 transition-all shadow-md shadow-emerald-500/20 cursor-pointer flex items-center gap-1.5"
+            >
+              <ShoppingBag className="w-3.5 h-3.5" />
+              <span>Pedir</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Modal Arcade de Juegos y Canje de Monedas */}
+      {isArcadeOpen && (
+        <WorkshopArcadeModal
+          isOpen={isArcadeOpen}
+          onClose={handleArcadeClose}
+          initialGame={activeArcadeGame}
+          initialTab={arcadeTab}
+          arcadeConfig={settings?.arcadeConfig}
+          activeTheme={settings?.arcadeConfig?.activeTheme || 'clasico'}
+        />
+      )}
+    </div>
+  );
+}

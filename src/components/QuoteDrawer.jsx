@@ -1,0 +1,842 @@
+import React, { useState, useEffect } from 'react';
+import {
+  X, Trash2, MessageCircle, Copy, Check, ShoppingBag, ArrowRight,
+  Info, Calendar, MapPin, User, Truck, AlertTriangle, Zap, Tag, Sparkles, RotateCcw
+} from 'lucide-react';
+import { formatServiceDate } from '../utils/serviceStatus';
+import { findCoupon, calculateCouponDiscount } from '../utils/couponsHelper';
+import { playCoinSound, playRandomOrderCelebrationSound, playMarioPowerDownSound } from '../utils/soundEffects';
+
+export default function QuoteDrawer({
+  isOpen,
+  onClose,
+  items,
+  onUpdateQuantity,
+  onRemoveItem,
+  onClearCart,
+  settings,
+  onTrackWhatsApp,
+  onOpenArcade
+}) {
+  if (!isOpen) return null;
+
+  // Modo de Compra: 'direct' (Compra Directa Inmediata) | 'quote' (Cotización Personalizada)
+  const [checkoutMode, setCheckoutMode] = useState('direct');
+  const [customerName, setCustomerName] = useState('');
+  const [cityZip, setCityZip] = useState('');
+  const [deliveryNotes, setDeliveryNotes] = useState('');
+  const [copied, setCopied] = useState(false);
+
+  // Cupón y Código de Descuento
+  const [couponInput, setCouponInput] = useState('');
+  const [appliedCouponCode, setAppliedCouponCode] = useState(() => {
+    try {
+      return localStorage.getItem('artesano_active_coupon') || '';
+    } catch {
+      return '';
+    }
+  });
+  const [couponError, setCouponError] = useState('');
+  const [couponSuccessMsg, setCouponSuccessMsg] = useState('');
+  const [isChangingCoupon, setIsChangingCoupon] = useState(false);
+  const [isJustApplied, setIsJustApplied] = useState(false);
+  const [floatingCoins, setFloatingCoins] = useState([]);
+
+  // Campaña o referencia
+  const [campaignRef] = useState(() => {
+    try {
+      return localStorage.getItem('artesano_active_pub') || '';
+    } catch {
+      return '';
+    }
+  });
+
+  // Sintetizador Web Audio para sonido retro de monedita de Mario (B5 -> E6)
+  const playMarioCoinSound = () => {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      if (ctx.state === 'suspended') ctx.resume();
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(987.77, now); // B5 (987.77 Hz)
+      osc.frequency.setValueAtTime(1318.51, now + 0.08); // E6 (1318.51 Hz)
+      gain.gain.setValueAtTime(0.18, now);
+      gain.gain.linearRampToValueAtTime(0.01, now + 0.28);
+      osc.start(now);
+      osc.stop(now + 0.28);
+    } catch (e) {}
+  };
+
+  // Manejador interactivo estilo monedita de Mario al cliquear el cupón en el carrito
+  const handleCouponCardClick = (e) => {
+    playMarioCoinSound();
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX ? e.clientX - rect.left : rect.width / 2;
+    const newCoin = {
+      id: Date.now() + Math.random(),
+      x: Math.max(20, Math.min(rect.width - 20, clickX)),
+      text: '+🪙'
+    };
+    setFloatingCoins(prev => [...prev, newCoin]);
+    setTimeout(() => {
+      setFloatingCoins(prev => prev.filter(c => c.id !== newCoin.id));
+    }, 900);
+  };
+
+  // Cálculo de Subtotales
+  let hasPendingQuotes = false;
+  let subtotal = 0;
+
+  items.forEach(item => {
+    if (item.product.priceType === 'quote' || item.product.price === null) {
+      hasPendingQuotes = true;
+    } else {
+      subtotal += (item.product.price || 0) * item.quantity;
+    }
+  });
+
+  // Lista combinada de cupones incluyendo los tiers de arcade personalizados con protección de márgenes
+  const combinedCustomCoupons = [
+    ...(settings?.discountCoupons || []),
+    ...(settings?.arcadeConfig?.discountTiers?.map(t => ({
+      code: t.code,
+      type: t.discountPercent ? 'percent' : (t.discountAmount ? 'fixed' : 'percent'),
+      value: t.discountPercent || t.discountAmount || 0,
+      label: t.label,
+      minPurchase: (t.minPurchase !== undefined && t.minPurchase !== null && t.minPurchase > 0)
+        ? t.minPurchase
+        : (t.discountAmount ? Math.max(200, Math.round(t.discountAmount * 3.5)) : (t.discountPercent >= 20 ? 350 : 0))
+    })) || [])
+  ];
+
+  // Validar cupón activo contra la lista de cupones
+  const activeCouponObj = appliedCouponCode ? findCoupon(appliedCouponCode, combinedCustomCoupons) : null;
+  const couponCalculation = activeCouponObj ? calculateCouponDiscount(activeCouponObj, subtotal) : null;
+
+  const discountAmount = couponCalculation?.isValid ? couponCalculation.discountAmount : 0;
+  // Piso comercial: ningún total con productos puede quedar en $0 MXN
+  const finalTotal = subtotal > 0
+    ? (couponCalculation?.isValid ? couponCalculation.finalTotal : subtotal)
+    : 0;
+
+  // Manejador para aplicar un nuevo código de descuento
+  const handleApplyCoupon = (e) => {
+    e?.preventDefault();
+    setCouponError('');
+    setCouponSuccessMsg('');
+
+    if (!couponInput.trim()) {
+      setCouponError('Ingresa un código de descuento');
+      return;
+    }
+
+    const found = findCoupon(couponInput, combinedCustomCoupons);
+    if (!found) {
+      setCouponError('Código no válido. Verifica que esté bien escrito o consulta con nosotros en WhatsApp.');
+      return;
+    }
+
+    const calc = calculateCouponDiscount(found, subtotal);
+    if (!calc.isValid) {
+      setCouponError(calc.reason || 'Este código no aplica para el monto actual');
+      return;
+    }
+
+    // Aplicar con éxito y disparar animación y sonido retro
+    setAppliedCouponCode(found.code);
+    setIsJustApplied(true);
+    playMarioCoinSound();
+    setTimeout(() => setIsJustApplied(false), 3500);
+
+    try {
+      localStorage.setItem('artesano_active_coupon', found.code);
+    } catch {}
+    setCouponSuccessMsg(`¡Código ${found.code} aplicado con éxito!`);
+    setIsChangingCoupon(false);
+    setCouponInput('');
+  };
+
+  // Manejador para quitar o cambiar el cupón
+  const handleRemoveCoupon = () => {
+    setAppliedCouponCode('');
+    try {
+      localStorage.removeItem('artesano_active_coupon');
+    } catch {}
+    setCouponError('');
+    setCouponSuccessMsg('');
+    setIsChangingCoupon(false);
+    setIsJustApplied(false);
+  };
+
+  // Construcción del mensaje estructurado para WhatsApp con enlaces directos
+  const buildWhatsAppMessage = () => {
+    const isDirect = checkoutMode === 'direct';
+    const baseUrl = typeof window !== 'undefined' && window.location.origin ? window.location.origin : 'https://artesanodigital.mx';
+
+    let msg = isDirect
+      ? `*⚡ PEDIDO DIRECTO INMEDIATO — ARTESANO DIGITAL*\n`
+      : `*SOLICITUD DE COTIZACIÓN — ARTESANO DIGITAL*\n`;
+
+    msg += `--------------------------------------\n`;
+
+    if (customerName.trim()) {
+      msg += `👤 *Cliente:* ${customerName.trim()}\n`;
+    }
+    if (cityZip.trim()) {
+      msg += `📍 *Ciudad / C.P. para entrega:* ${cityZip.trim()}\n`;
+    }
+    if (campaignRef.trim()) {
+      msg += `🏷️ *Referencia:* ${campaignRef.trim()}\n`;
+    }
+
+    msg += `--------------------------------------\n`;
+    msg += isDirect ? `*PRODUCTOS A COMPRAR (ESTÁNDAR):*\n\n` : `*PRODUCTOS A COTIZAR:*\n\n`;
+
+    items.forEach((item, index) => {
+      const p = item.product;
+      const prodUrl = `${baseUrl}/?prod=${encodeURIComponent(p.code || p.id)}`;
+
+      msg += `${index + 1}. *[${p.code}] ${p.name}*\n`;
+      msg += `   • Cantidad: *${item.quantity} ${p.priceUnit || 'pza'}*\n`;
+
+      if (item.selectedVariants && Object.keys(item.selectedVariants).length > 0) {
+        const variantsStr = Object.entries(item.selectedVariants)
+          .map(([k, v]) => `${k}: ${v}`)
+          .join(', ');
+        msg += `   • Opciones: ${variantsStr}\n`;
+      }
+
+      if (item.customText && item.customText.trim()) {
+        msg += `   • Personalización: "${item.customText.trim()}"\n`;
+      } else if (isDirect) {
+        msg += `   • Acabado: Estándar de taller (sin grabado)\n`;
+      }
+
+      if (p.priceType === 'quote' || p.price === null) {
+        msg += `   • Precio: A convenir por proyecto\n`;
+      } else {
+        const lineTotal = p.price * item.quantity;
+        msg += `   • Precio: $${p.price} c/u (Subtotal: $${lineTotal} MXN)\n`;
+      }
+
+      // Enlace directo a la pieza en tienda
+      msg += `   🔗 *Ver pieza:* ${prodUrl}\n`;
+
+      // Enlace al modelo 3D en MakerWorld si es pieza 3D
+      const is3D = p.techniques?.some(t => t === '3d' || t === 'impresion_3d' || t === '3d_printing') ||
+                   p.worlds?.includes('3d') ||
+                   (p.categories && p.categories.some(c => c.includes('3d') || c.includes('gamer') || c.includes('escritorio')));
+      if (is3D) {
+        const makerUrl = p.makerWorldUrl || `https://makerworld.com/en/search/models?keyword=${encodeURIComponent(p.name.replace(/[^a-zA-Z0-9 ]/g, ''))}`;
+        msg += `   🖨️ *Modelo 3D MakerWorld:* ${makerUrl}\n`;
+      }
+
+      msg += `\n`;
+    });
+
+    msg += `--------------------------------------\n`;
+    msg += `💰 *Subtotal de productos:* $${subtotal} MXN\n`;
+
+    if (appliedCouponCode && discountAmount > 0) {
+      msg += `🎟️ *Cupón aplicado:* ${appliedCouponCode} (-$${discountAmount} MXN)\n`;
+      msg += `✨ *TOTAL CON DESCUENTO:* $${finalTotal} MXN\n`;
+    } else {
+      msg += `✨ *Total a pagar:* $${subtotal} MXN\n`;
+    }
+
+    if (hasPendingQuotes) {
+      msg += `⚠️ *(Piezas sin precio fijo se confirmarán en este chat)*\n`;
+    }
+
+    if (deliveryNotes.trim()) {
+      msg += `\n📝 *Notas:* ${deliveryNotes.trim()}\n`;
+    }
+
+    if (isDirect) {
+      msg += `\n_⚡ Modalidad: Compra directa rápida. Solicito cuenta para transferencia/pago y fecha de entrega._`;
+    } else {
+      msg += `\n_Solicito cotización detallada con tiempos de elaboración._`;
+    }
+
+    return msg;
+  };
+
+  const handleSendWhatsApp = () => {
+    if (items.length === 0) return;
+    playCoinSound();
+    playRandomOrderCelebrationSound();
+    const text = buildWhatsAppMessage();
+    const phone = (settings?.whatsappNumber || '5215500000000').replace(/[^0-9]/g, '');
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+
+    if (onTrackWhatsApp) {
+      onTrackWhatsApp({
+        itemCount: items.length,
+        subtotal: finalTotal,
+        hasPendingQuotes,
+        customerName: customerName.trim(),
+        mode: checkoutMode,
+        coupon: appliedCouponCode || null
+      });
+    }
+
+    window.open(url, '_blank');
+  };
+
+  const handleCopySummary = () => {
+    const text = buildWhatsAppMessage();
+    navigator.clipboard?.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-xs animate-in fade-in">
+      <div
+        className="w-full sm:max-w-lg bg-white h-full shadow-2xl flex flex-col justify-between overflow-hidden border-l border-[#E8E4DA]"
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Mobile Top Grab Indicator */}
+        <div className="sm:hidden pt-2.5 pb-0.5 flex justify-center bg-[#FBF9F5]">
+          <div className="w-12 h-1 bg-gray-300 rounded-full" />
+        </div>
+
+        {/* Header del Carrito */}
+        <div className="p-4 sm:p-5 border-b border-[#E8E4DA] bg-[#FBF9F5] flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-xl bg-[#2D4F3E] text-white flex items-center justify-center">
+              <ShoppingBag className="w-4 h-4" />
+            </div>
+            <div>
+              <h3 className="text-base sm:text-lg font-bold text-[#1F2421] font-heading leading-tight">
+                Mi Carrito de Compra
+              </h3>
+              <span className="text-[11px] text-gray-500">
+                {items.length} {items.length === 1 ? 'producto seleccionado' : 'productos seleccionados'}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {items.length > 0 && (
+              <button
+                type="button"
+                onClick={() => {
+                  playMarioPowerDownSound();
+                  onClearCart();
+                }}
+                className="text-xs text-gray-400 hover:text-rose-600 transition-colors p-1"
+                title="Vaciar carrito"
+              >
+                Vaciar
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={onClose}
+              className="p-1.5 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Selector de Modalidad: Compra Directa vs Cotización */}
+        {items.length > 0 && (
+          <div className="px-4 py-2 bg-gray-50 border-b border-gray-200/80 shrink-0">
+            <div className="grid grid-cols-2 p-1 bg-gray-200/80 rounded-xl text-xs font-bold">
+              <button
+                type="button"
+                onClick={() => setCheckoutMode('direct')}
+                className={`py-1.5 px-2 rounded-lg flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                  checkoutMode === 'direct'
+                    ? 'bg-white text-[#2D4F3E] shadow-xs'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <Zap className="w-3.5 h-3.5 text-amber-500" />
+                <span>⚡ Compra Directa (Rápido)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setCheckoutMode('quote')}
+                className={`py-1.5 px-2 rounded-lg flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                  checkoutMode === 'quote'
+                    ? 'bg-white text-[#2D4F3E] shadow-xs'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <span>🎨 Cotizar con Grabado</span>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Contenido Desplazable del Carrito */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
+          {items.length === 0 ? (
+            <div className="py-20 text-center space-y-4">
+              <div className="w-16 h-16 rounded-full bg-[#F4F0E8] text-[#2D4F3E] flex items-center justify-center mx-auto">
+                <ShoppingBag className="w-8 h-8 opacity-60" />
+              </div>
+              <div>
+                <h4 className="text-base font-bold text-gray-800">Tu carrito está vacío</h4>
+                <p className="text-xs text-gray-500 max-w-xs mx-auto mt-1">
+                  Agrega piezas de Hogar, Negocios o Eventos para pedir directamente o cotizar.
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#2D4F3E] text-white text-xs font-semibold hover:bg-[#20392C] cursor-pointer"
+                >
+                  <span>Explorar productos</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+                <a
+                  href="/downloads/catalogo_movil_artesano_digital.pdf"
+                  download="Catalogo_Movil_Artesano_Digital.pdf"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#FAF9F5] text-[#2D4F3E] border border-[#2D4F3E]/20 text-xs font-bold hover:bg-[#2D4F3E]/10 cursor-pointer transition-all"
+                  title="Descargar catálogo 9:16 para celular con enlaces MakerWorld"
+                >
+                  <span>📱 Catálogo PDF Móvil</span>
+                </a>
+              </div>
+            </div>
+          ) : (
+            <>
+              {/* Aviso cuando el taller está en receso */}
+              {settings?.serviceStatus?.isPaused && (
+                <div className="p-3 rounded-xl bg-amber-50 border border-amber-300 text-amber-950 text-xs space-y-1">
+                  <div className="font-bold flex items-center gap-1.5 text-amber-900">
+                    <Calendar className="w-4 h-4 text-amber-700 shrink-0" />
+                    <span>⏸️ Taller en receso hasta el {formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'próximo aviso'}</span>
+                  </div>
+                  <p className="text-[11px] text-amber-800 leading-relaxed">
+                    Puedes confirmar tu pedido hoy y quedará programado con prioridad de entrega al reanudar.
+                  </p>
+                </div>
+              )}
+
+              {/* Mensaje de Compra Directa */}
+              {checkoutMode === 'direct' && (
+                <div className="p-2.5 rounded-xl bg-emerald-50/70 border border-emerald-200 text-emerald-900 text-xs flex items-center gap-2 shadow-2xs">
+                  <Zap className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span className="text-[11.5px] font-medium leading-tight">
+                    <strong>Modo Express:</strong> Piezas terminadas con diseño de taller listas para envío.
+                  </span>
+                </div>
+              )}
+
+              {/* Lista de Artículos */}
+              <div className="space-y-2.5">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400">
+                  Artículos en orden ({items.length}):
+                </div>
+
+                {items.map((item, idx) => {
+                  const p = item.product;
+                  const itemPrice = p.price ? p.price * item.quantity : null;
+
+                  return (
+                    <div
+                      key={`${p.id}-${idx}`}
+                      className="p-3 rounded-2xl border border-[#E8E4DA] bg-white flex gap-3 relative group shadow-2xs"
+                    >
+                      {/* Miniatura Cuadrada */}
+                      <img
+                        src={p.primaryImage}
+                        alt={p.name}
+                        className="w-16 h-16 rounded-xl object-cover bg-gray-50 border border-gray-100 shrink-0"
+                      />
+
+                      {/* Info del Producto */}
+                      <div className="flex-1 min-w-0 space-y-1">
+                        <div className="flex items-start justify-between gap-1">
+                          <span className="text-[11px] font-mono font-bold text-gray-500">
+                            [{p.code}]
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              playMarioPowerDownSound();
+                              onRemoveItem(idx);
+                            }}
+                            className="text-gray-300 hover:text-rose-600 transition-colors cursor-pointer"
+                            title="Eliminar del carrito"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+
+                        <h5 className="text-xs font-bold text-[#1F2421] truncate">
+                          {p.name}
+                        </h5>
+
+                        {/* Variantes seleccionadas */}
+                        {item.selectedVariants && Object.keys(item.selectedVariants).length > 0 && (
+                          <div className="text-[10.5px] text-gray-500 truncate">
+                            {Object.entries(item.selectedVariants).map(([k, v]) => `${k}: ${v}`).join(' · ')}
+                          </div>
+                        )}
+
+                        {/* Personalización secundaria */}
+                        {item.customText ? (
+                          <div className="text-[10px] text-[#2D4F3E] bg-[#F4F0E8] px-2 py-0.5 rounded-md inline-block max-w-full truncate">
+                            Personalizado: {item.customText}
+                          </div>
+                        ) : (
+                          <span className="text-[10px] text-gray-400 italic block">
+                            Acabado estándar de taller
+                          </span>
+                        )}
+
+                        {/* Stepper y Precio */}
+                        <div className="flex items-center justify-between pt-1">
+                          <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden bg-gray-50 text-xs">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const newQ = Math.max(1, item.quantity - 1);
+                                if (newQ < item.quantity) {
+                                  playMarioPowerDownSound();
+                                }
+                                onUpdateQuantity(idx, newQ);
+                              }}
+                              className="px-2.5 py-0.5 hover:bg-gray-200 font-bold cursor-pointer"
+                              title="Disminuir cantidad"
+                            >
+                              -
+                            </button>
+                            <span className="px-2.5 py-0.5 font-bold text-gray-800">
+                              {item.quantity}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                playCoinSound();
+                                onUpdateQuantity(idx, item.quantity + 1);
+                              }}
+                              className="px-2.5 py-0.5 hover:bg-gray-200 font-bold cursor-pointer"
+                              title="Aumentar cantidad"
+                            >
+                              +
+                            </button>
+                          </div>
+
+                          <div className="text-xs font-black text-[#1F2421]">
+                            {itemPrice !== null ? `$${itemPrice} MXN` : <span className="text-gray-400 font-normal">A convenir</span>}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* APARTADO DE CÓDIGOS DE DESCUENTO Y CUPONES */}
+              <div className="p-3.5 rounded-2xl bg-[#FAF9F5] border border-[#E5D7B7] space-y-2.5 text-xs">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 font-bold text-gray-700">
+                    <Tag className="w-3.5 h-3.5 text-[#D4A359]" />
+                    <span>¿Tienes un código de descuento?</span>
+                  </div>
+                  {appliedCouponCode && !isChangingCoupon && (
+                    <button
+                      type="button"
+                      onClick={() => setIsChangingCoupon(true)}
+                      className="text-[11px] text-[#2D4F3E] hover:underline font-bold flex items-center gap-1 cursor-pointer"
+                    >
+                      <RotateCcw className="w-3 h-3" />
+                      <span>Cambiar código</span>
+                    </button>
+                  )}
+                </div>
+
+                {/* Aviso claro de que los cupones no son acumulables */}
+                <div className="flex items-center gap-2 p-2 rounded-xl bg-amber-50/80 border border-amber-200/90 text-[11px] text-amber-900 leading-tight">
+                  <span className="text-amber-600 text-sm shrink-0">ℹ️</span>
+                  <span><strong>Nota:</strong> Los cupones de descuento no son acumulables entre sí (máximo 1 cupón por pedido).</span>
+                </div>
+
+                {/* Enlace directo para canjear cupones con monedas del Arcade */}
+                {onOpenArcade && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onOpenArcade('rewards');
+                      onClose();
+                    }}
+                    className="w-full flex items-center justify-between p-2.5 rounded-xl bg-gradient-to-r from-amber-50 via-rose-50 to-amber-50 border border-amber-300/80 hover:border-amber-400 text-xs text-amber-900 font-bold transition-all cursor-pointer shadow-2xs group"
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <span className="text-base group-hover:rotate-12 transition-transform">🎁</span>
+                      <span>¿Quieres cupones? Canjea monedas en Arcade</span>
+                    </span>
+                    <span className="text-[11px] text-amber-700 underline font-semibold">
+                      Canjear &rarr;
+                    </span>
+                  </button>
+                )}
+
+                {/* Si ya hay un cupón activo y no se está cambiando */}
+                {appliedCouponCode && !isChangingCoupon ? (
+                  <div className="space-y-2">
+                    {/* Banner de animación al recién aplicar */}
+                    {isJustApplied && (
+                      <div className="p-2 rounded-xl bg-gradient-to-r from-emerald-600 to-[#2D4F3E] text-white text-[11px] font-bold flex items-center justify-between shadow-md animate-bounce">
+                        <span className="flex items-center gap-1.5">
+                          <span>🎉</span>
+                          <span>¡Cupón agregado al carrito de compras con éxito!</span>
+                        </span>
+                        <span className="text-xs">✨</span>
+                      </div>
+                    )}
+
+                    {/* Tarjeta de Cupón Resplandeciente e interactiva al estilo monedita de Mario */}
+                    <div
+                      onClick={handleCouponCardClick}
+                      className={`relative overflow-hidden p-3 rounded-2xl bg-gradient-to-r from-emerald-50 via-amber-50/70 to-emerald-50 border-2 border-emerald-400 flex items-center justify-between gap-2 shadow-md shadow-emerald-500/20 coupon-glow-active transition-all cursor-pointer select-none active:scale-95 group ${
+                        isJustApplied ? 'animate-coupon-fly-in ring-2 ring-emerald-500' : ''
+                      }`}
+                      title="¡Haz clic aquí para interactuar con tu cupón!"
+                    >
+                      {/* Efecto de barrido resplandeciente continuo */}
+                      <div className="absolute inset-0 pointer-events-none shimmer-sweep opacity-30" />
+
+                      {/* Moneditas flotantes al hacer clic (efecto Mario Coin) */}
+                      {floatingCoins.map(coin => (
+                        <div
+                          key={coin.id}
+                          style={{ left: `${coin.x}px`, top: '8px' }}
+                          className="absolute pointer-events-none animate-mario-coin z-30 font-black text-amber-500 text-sm drop-shadow-md select-none flex items-center gap-0.5"
+                        >
+                          <span>🪙</span>
+                          <span className="text-xs text-amber-600 font-black">+¡Ting!</span>
+                        </div>
+                      ))}
+
+                      <div className="flex items-center gap-2.5 min-w-0 relative z-10">
+                        <div className="w-9 h-9 rounded-xl bg-emerald-100 border border-emerald-300 flex items-center justify-center text-lg shrink-0 group-hover:scale-110 transition-transform shadow-xs">
+                          🎟️
+                        </div>
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="font-mono font-black text-emerald-950 text-xs tracking-wider">
+                              {appliedCouponCode}
+                            </span>
+                            <span className="text-[10px] font-black text-white bg-emerald-700 px-2 py-0.5 rounded-full shadow-2xs flex items-center gap-1">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse" />
+                              Activo
+                            </span>
+                            <span className="text-[10px] font-bold text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-200">
+                              🪙 ¡Tócame!
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-emerald-900 font-medium truncate mt-0.5">
+                            {activeCouponObj?.label || 'Descuento aplicado'} · Ahorro: <strong className="text-emerald-700">-${discountAmount} MXN</strong>
+                          </p>
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleRemoveCoupon();
+                        }}
+                        className="relative z-20 text-[11px] text-red-600 hover:text-red-800 font-bold px-2.5 py-1 rounded-lg hover:bg-red-50/80 cursor-pointer shrink-0 border border-transparent hover:border-red-200 transition-colors"
+                        title="Quitar cupón"
+                      >
+                        Quitar
+                      </button>
+                    </div>
+
+                    {/* Alerta si el carrito está por debajo del mínimo de compra para este cupón */}
+                    {couponCalculation && !couponCalculation.isValid && (
+                      <div className="mt-2 p-2 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-[11px] font-semibold flex items-center gap-1.5">
+                        <AlertTriangle className="w-3.5 h-3.5 text-amber-700 shrink-0" />
+                        <span>⚠️ {couponCalculation.reason || 'Cupón en pausa: no alcanza el mínimo de compra'}</span>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  /* Formulario para ingresar o cambiar el código */
+                  <form onSubmit={handleApplyCoupon} className="space-y-1.5">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        placeholder="Ingresa tu código (ej: BIENVENIDO, TALLER10...)"
+                        value={couponInput}
+                        onChange={e => {
+                          setCouponInput(e.target.value.toUpperCase());
+                          setCouponError('');
+                        }}
+                        className="flex-1 px-3 py-1.5 rounded-xl border border-gray-300 bg-white font-mono uppercase text-base sm:text-xs focus:outline-none focus:border-[#2D4F3E]"
+                      />
+                      <button
+                        type="submit"
+                        className="px-3.5 py-1.5 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-xs font-bold transition-all cursor-pointer shadow-xs shrink-0"
+                      >
+                        Aplicar
+                      </button>
+                      {isChangingCoupon && (
+                        <button
+                          type="button"
+                          onClick={() => setIsChangingCoupon(false)}
+                          className="px-2 py-1.5 text-xs text-gray-500 hover:text-gray-800"
+                        >
+                          Cancelar
+                        </button>
+                      )}
+                    </div>
+
+                    {couponError && (
+                      <p className="text-[11px] text-red-600 font-medium">
+                        ⚠️ {couponError}
+                      </p>
+                    )}
+
+                    {couponSuccessMsg && (
+                      <p className="text-[11px] text-emerald-700 font-bold">
+                        ✓ {couponSuccessMsg}
+                      </p>
+                    )}
+                  </form>
+                )}
+              </div>
+
+              {/* Formulario Rápido de Entrega */}
+              <div className="p-3.5 rounded-2xl bg-[#FAF9F5] border border-[#E8E4DA] space-y-2.5 text-xs">
+                <div className="font-bold text-gray-700 flex items-center gap-1.5 text-xs">
+                  <User className="w-3.5 h-3.5 text-[#2D4F3E]" />
+                  <span>Datos rápidos para tu entrega:</span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-[11px] font-semibold text-gray-600 block mb-0.5">
+                      Tu nombre o contacto:
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Ej: Sofía Martínez"
+                      value={customerName}
+                      onChange={e => setCustomerName(e.target.value)}
+                      className="w-full px-3 py-1.5 rounded-xl border border-gray-300 focus:border-[#2D4F3E] focus:outline-none bg-white text-base sm:text-xs"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-semibold text-gray-600 block mb-0.5">
+                      Ciudad o C.P.:
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Ej: SLP / CDMX"
+                      value={cityZip}
+                      onChange={e => setCityZip(e.target.value)}
+                      className="w-full px-3 py-1.5 rounded-xl border border-gray-300 focus:border-[#2D4F3E] focus:outline-none bg-white text-base sm:text-xs"
+                    />
+                  </div>
+                </div>
+
+                {checkoutMode === 'quote' && (
+                  <div>
+                    <label className="text-[11px] font-semibold text-gray-600 block mb-0.5">
+                      Detalles de grabado o personalización requerida:
+                    </label>
+                    <textarea
+                      rows={2}
+                      placeholder="Indica nombres, fechas, colores específicos o adjunta link de tu logo..."
+                      value={deliveryNotes}
+                      onChange={e => setDeliveryNotes(e.target.value)}
+                      className="w-full px-3 py-1.5 rounded-xl border border-gray-300 focus:border-[#2D4F3E] focus:outline-none bg-white text-base sm:text-xs"
+                    />
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Acciones del Footer del Carrito */}
+        {items.length > 0 && (
+          <div className="p-4 sm:p-5 border-t border-[#E8E4DA] bg-[#FBF9F5] space-y-3 shrink-0">
+            {/* Resumen de Total */}
+            <div className="space-y-1">
+              <div className="flex items-center justify-between text-xs text-gray-600">
+                <span>Subtotal ({items.length} productos):</span>
+                <span className="font-bold text-gray-900">${subtotal} MXN</span>
+              </div>
+
+              {discountAmount > 0 && (
+                <div className="flex items-center justify-between text-xs text-emerald-700 font-bold">
+                  <span>Descuento ({appliedCouponCode}):</span>
+                  <span>-${discountAmount} MXN</span>
+                </div>
+              )}
+
+              <div className="flex items-center justify-between text-base font-extrabold text-[#1F2421] pt-1 border-t border-gray-200/60 font-heading">
+                <span>Total estimado:</span>
+                <span className="text-lg font-black text-[#2D4F3E]">${finalTotal} MXN</span>
+              </div>
+
+              <div className="text-[10px] text-gray-400">
+                * Confirmas dirección exacta y método de pago (transferencia/tarjeta) por WhatsApp.
+              </div>
+            </div>
+
+            {/* Botón Principal Grande y Rápido */}
+            <div className="space-y-2">
+              <button
+                type="button"
+                onClick={handleSendWhatsApp}
+                className={`w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-full text-white text-sm font-black transition-all shadow-md cursor-pointer active:scale-98 ${
+                  checkoutMode === 'direct'
+                    ? 'bg-[#16A34A] hover:bg-[#15803D] shadow-emerald-500/20'
+                    : 'bg-[#25D366] hover:bg-[#1EBE5D] shadow-emerald-500/20'
+                }`}
+              >
+                {checkoutMode === 'direct' ? <Zap className="w-5 h-5 fill-white" /> : <MessageCircle className="w-5 h-5" />}
+                <span>
+                  {checkoutMode === 'direct'
+                    ? `⚡ Hacer Pedido Directo ($${finalTotal} MXN)`
+                    : '💬 Enviar Cotización por WhatsApp'}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleCopySummary}
+                className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-full bg-white text-gray-700 border border-[#E8E4DA] text-xs font-semibold hover:bg-gray-50 active:scale-98 transition-all cursor-pointer"
+              >
+                {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-gray-400" />}
+                <span>{copied ? '¡Resumen copiado al portapapeles!' : 'Copiar resumen de orden'}</span>
+              </button>
+
+              <a
+                href="/downloads/catalogo_movil_artesano_digital.pdf"
+                download="Catalogo_Movil_Artesano_Digital.pdf"
+                className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-full bg-amber-50 text-amber-900 border border-amber-200 text-xs font-bold hover:bg-amber-100 active:scale-98 transition-all cursor-pointer text-center"
+                title="Descargar catálogo vertical 9:16 para celular con enlaces MakerWorld"
+              >
+                <span>📱</span>
+                <span>Descargar Catálogo PDF Móvil (9:16)</span>
+              </a>
+            </div>
+          </div>
+        )}
+
+      </div>
+    </div>
+  );
+}

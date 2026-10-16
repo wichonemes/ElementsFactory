@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+server/data/
+.gemini/
+scratch/
+product_repository/
+*.log
+*.pem
+*.key
+.openai/
