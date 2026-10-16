@@ -51,8 +51,13 @@ export default function App() {
   const [selectedTechnique, setSelectedTechnique] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState('catalog'); // 'catalog' | 'promotions'
-  const [catalogSeed, setCatalogSeed] = useState(() => Date.now());
+  const [catalogSeed, setCatalogSeed] = useState(() => Math.floor(Math.random() * 1000000) + Date.now());
   const [packagesInitialArea, setPackagesInitialArea] = useState('all');
+
+  // Aleatoriedad dinámica: cada vez que el usuario cambie de pantalla, categoría o técnica, se baraja una nueva posición
+  useEffect(() => {
+    setCatalogSeed(Math.floor(Math.random() * 1000000) + Date.now());
+  }, [activeWorld, selectedCategory, selectedTechnique]);
 
   // Cart / Quote State (Persisted in localStorage)
   const [cartItems, setCartItems] = useState(() => {
@@ -328,6 +333,9 @@ export default function App() {
       });
 
       list = interleaved;
+    } else {
+      // En categorías, áreas específicas o filtros: barajado completo para que los productos siempre cambien de lugar
+      list = shuffle(baseList);
     }
 
     const flashItems = shuffle(list.filter(p => flashIds.includes(p.id)));
