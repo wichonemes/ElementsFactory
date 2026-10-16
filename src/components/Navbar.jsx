@@ -61,14 +61,16 @@ export default function Navbar({
             </span>
           </div>
           <div className="hidden md:flex items-center gap-4 text-gray-400">
-            <a
-              href="/downloads/catalogo_movil_artesano_digital.pdf"
-              download="Catalogo_Movil_Artesano_Digital.pdf"
-              className="hover:text-amber-300 flex items-center gap-1 transition-colors text-amber-200/90 font-medium text-[11px]"
-              title="Descargar catálogo en PDF vertical 9:16 con enlaces a MakerWorld"
-            >
-              <span>📱</span> Catálogo Móvil PDF
-            </a>
+            {settings?.mobileCatalogConfig?.enabled !== false && settings?.mobileCatalogConfig?.showInNavbar !== false && (
+              <a
+                href={settings?.mobileCatalogConfig?.fileUrl || '/downloads/catalogo_movil_artesano_digital.pdf'}
+                download={settings?.mobileCatalogConfig?.fileName || 'Catalogo_Movil_Artesano_Digital.pdf'}
+                className="hover:text-amber-300 flex items-center gap-1 transition-colors text-amber-200/90 font-medium text-[11px]"
+                title={settings?.mobileCatalogConfig?.title || 'Descargar catálogo en PDF vertical 9:16 con enlaces a MakerWorld'}
+              >
+                <span>📱</span> {settings?.mobileCatalogConfig?.buttonText || 'Catálogo Móvil PDF'}
+              </a>
+            )}
             {settings?.whatsappNumber && (
               <a
                 href={`https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, '')}?text=Hola%20Artesano%20Digital,%20tengo%20una%20consulta.`}
@@ -293,15 +295,18 @@ export default function Navbar({
               </div>
             )}
 
-            <a
-              href="/downloads/catalogo_movil_artesano_digital.pdf"
-              download="Catalogo_Movil_Artesano_Digital.pdf"
-              onClick={() => setMobileMenuOpen(false)}
-              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-[#2D4F3E]/20 bg-[#FAF9F5] text-[#2D4F3E] text-xs font-bold shadow-2xs cursor-pointer"
-            >
-              <span>📱</span>
-              <span>Descargar Catálogo Móvil (PDF 9:16)</span>
-            </a>
+            {settings?.mobileCatalogConfig?.enabled !== false && (
+              <a
+                href={settings?.mobileCatalogConfig?.fileUrl || '/downloads/catalogo_movil_artesano_digital.pdf'}
+                download={settings?.mobileCatalogConfig?.fileName || 'Catalogo_Movil_Artesano_Digital.pdf'}
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-[#2D4F3E]/20 bg-[#FAF9F5] text-[#2D4F3E] text-xs font-bold shadow-2xs cursor-pointer"
+                title={settings?.mobileCatalogConfig?.title || 'Descargar Catálogo Móvil (PDF 9:16)'}
+              >
+                <span>📱</span>
+                <span>{settings?.mobileCatalogConfig?.buttonText ? `Descargar ${settings.mobileCatalogConfig.buttonText}` : 'Descargar Catálogo Móvil (PDF 9:16)'}</span>
+              </a>
+            )}
 
             <button
               onClick={() => {

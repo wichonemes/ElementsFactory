@@ -1941,11 +1941,28 @@ const defaultArcadeConfig = {
   ]
 };
 
+// Default Mobile Catalog Config (9:16 vertical PDF with MakerWorld links, customizable)
+export const defaultMobileCatalogConfig = {
+  enabled: true,
+  title: 'Catálogo Móvil Artesano Digital (9:16)',
+  subtitle: 'Piezas en 3D, Corte Láser, Sublimación y Vinil con enlaces a MakerWorld',
+  buttonText: '📱 Catálogo Móvil PDF',
+  fileName: 'Catalogo_Movil_Artesano_Digital.pdf',
+  fileUrl: '/downloads/catalogo_movil_artesano_digital.pdf',
+  fileSize: '1,312 KB',
+  fileType: 'application/pdf',
+  updatedAt: new Date().toISOString(),
+  showInNavbar: true,
+  showInDrawer: true,
+  showInFooter: true
+};
+
 // Initial Settings
 const initialSettings = {
   workshopMachines: initialWorkshopMachines,
   campaignsConfig: defaultCampaignsConfig,
   arcadeConfig: defaultArcadeConfig,
+  mobileCatalogConfig: defaultMobileCatalogConfig,
   businessName: 'Artesano Digital',
   tagline: 'Si lo piensas, se hace.',
   subtagline: 'Productos y detalles personalizados · Impresión 3D · Láser · Sublimación · Vinil',
@@ -4529,6 +4546,14 @@ class Database {
           : defaultArcadeConfig.discountTiers
       };
     }
+    if (!settings.mobileCatalogConfig) {
+      settings.mobileCatalogConfig = { ...defaultMobileCatalogConfig };
+    } else {
+      settings.mobileCatalogConfig = {
+        ...defaultMobileCatalogConfig,
+        ...settings.mobileCatalogConfig
+      };
+    }
     return settings;
   }
 
@@ -4537,6 +4562,40 @@ class Database {
     db.settings = { ...db.settings, ...newSettings };
     this.save(db);
     return db.settings;
+  }
+
+  getMobileCatalogConfig() {
+    const db = this.read();
+    if (!db.settings) db.settings = {};
+    if (!db.settings.mobileCatalogConfig) {
+      db.settings.mobileCatalogConfig = { ...defaultMobileCatalogConfig };
+      this.save(db);
+    }
+    return db.settings.mobileCatalogConfig;
+  }
+
+  updateMobileCatalogConfig(partialConfig) {
+    const db = this.read();
+    if (!db.settings) db.settings = {};
+    const current = db.settings.mobileCatalogConfig || defaultMobileCatalogConfig;
+    db.settings.mobileCatalogConfig = {
+      ...current,
+      ...partialConfig,
+      updatedAt: new Date().toISOString()
+    };
+    this.save(db);
+    return db.settings.mobileCatalogConfig;
+  }
+
+  resetMobileCatalogConfig() {
+    const db = this.read();
+    if (!db.settings) db.settings = {};
+    db.settings.mobileCatalogConfig = {
+      ...defaultMobileCatalogConfig,
+      updatedAt: new Date().toISOString()
+    };
+    this.save(db);
+    return db.settings.mobileCatalogConfig;
   }
 
   getCampaignsConfig() {

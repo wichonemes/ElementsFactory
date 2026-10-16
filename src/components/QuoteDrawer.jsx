@@ -401,14 +401,16 @@ export default function QuoteDrawer({
                   <span>Explorar productos</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
-                <a
-                  href="/downloads/catalogo_movil_artesano_digital.pdf"
-                  download="Catalogo_Movil_Artesano_Digital.pdf"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#FAF9F5] text-[#2D4F3E] border border-[#2D4F3E]/20 text-xs font-bold hover:bg-[#2D4F3E]/10 cursor-pointer transition-all"
-                  title="Descargar catálogo 9:16 para celular con enlaces MakerWorld"
-                >
-                  <span>📱 Catálogo PDF Móvil</span>
-                </a>
+                {settings?.mobileCatalogConfig?.enabled !== false && settings?.mobileCatalogConfig?.showInDrawer !== false && (
+                  <a
+                    href={settings?.mobileCatalogConfig?.fileUrl || '/downloads/catalogo_movil_artesano_digital.pdf'}
+                    download={settings?.mobileCatalogConfig?.fileName || 'Catalogo_Movil_Artesano_Digital.pdf'}
+                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#FAF9F5] text-[#2D4F3E] border border-[#2D4F3E]/20 text-xs font-bold hover:bg-[#2D4F3E]/10 cursor-pointer transition-all"
+                    title={settings?.mobileCatalogConfig?.title || 'Descargar catálogo 9:16 para celular con enlaces MakerWorld'}
+                  >
+                    <span>{settings?.mobileCatalogConfig?.buttonText || '📱 Catálogo PDF Móvil'}</span>
+                  </a>
+                )}
               </div>
             </div>
           ) : (
@@ -823,15 +825,17 @@ export default function QuoteDrawer({
                 <span>{copied ? '¡Resumen copiado al portapapeles!' : 'Copiar resumen de orden'}</span>
               </button>
 
-              <a
-                href="/downloads/catalogo_movil_artesano_digital.pdf"
-                download="Catalogo_Movil_Artesano_Digital.pdf"
-                className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-full bg-amber-50 text-amber-900 border border-amber-200 text-xs font-bold hover:bg-amber-100 active:scale-98 transition-all cursor-pointer text-center"
-                title="Descargar catálogo vertical 9:16 para celular con enlaces MakerWorld"
-              >
-                <span>📱</span>
-                <span>Descargar Catálogo PDF Móvil (9:16)</span>
-              </a>
+              {settings?.mobileCatalogConfig?.enabled !== false && settings?.mobileCatalogConfig?.showInDrawer !== false && (
+                <a
+                  href={settings?.mobileCatalogConfig?.fileUrl || '/downloads/catalogo_movil_artesano_digital.pdf'}
+                  download={settings?.mobileCatalogConfig?.fileName || 'Catalogo_Movil_Artesano_Digital.pdf'}
+                  className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-full bg-amber-50 text-amber-900 border border-amber-200 text-xs font-bold hover:bg-amber-100 active:scale-98 transition-all cursor-pointer text-center"
+                  title={settings?.mobileCatalogConfig?.title || 'Descargar catálogo vertical 9:16 para celular con enlaces MakerWorld'}
+                >
+                  <span>📱</span>
+                  <span>{settings?.mobileCatalogConfig?.buttonText ? `Descargar ${settings.mobileCatalogConfig.buttonText}` : 'Descargar Catálogo PDF Móvil (9:16)'}</span>
+                </a>
+              )}
             </div>
           </div>
         )}

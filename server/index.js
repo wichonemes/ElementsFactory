@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { randomBytes } from 'node:crypto';
 import { cloudDb, durableHandler } from './cloud-db.js';
-import { storeImage } from './cloud-files.js';
+import { storeImage, storeFile } from './cloud-files.js';
 import { publicProduct, publicSettings, rateLimit } from './public-data.js';
 import express from 'express';
 import cors from 'cors';
@@ -88,6 +88,32 @@ const upload = multer({
       cb(null, true);
     } else {
       cb(new Error('Solo se permiten imágenes (JPG, PNG, WebP, GIF)'));
+    }
+  }
+});
+
+// Multer Storage Configuration for Catalog & Documents (up to 50MB)
+const catalogStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, downloadsDir);
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase() || '.pdf';
+    const cleanName = path.basename(file.originalname, ext).replace(/[^a-zA-Z0-9_-]/g, '_');
+    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e4)}`;
+    cb(null, `${cleanName}_${uniqueSuffix}${ext}`);
+  }
+});
+const catalogUpload = multer({
+  storage: cloudDb.enabled ? multer.memoryStorage() : catalogStorage,
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
+  fileFilter: (req, file, cb) => {
+    const allowedExtensions = new Set(['.pdf', '.png', '.jpg', '.jpeg', '.webp', '.doc', '.docx']);
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (allowedExtensions.has(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Solo se permiten archivos PDF, imágenes (JPG, PNG, WebP) o documentos (DOC/DOCX)'));
     }
   }
 });
@@ -938,6 +964,68 @@ app.get('/api/admin/backups/download/:filename', requireAdmin, async (req, res) 
       return res.status(404).json({ error: 'Archivo de respaldo no encontrado' });
     }
     res.download(filePath);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Mobile Catalog Configuration & Upload Endpoints
+app.get('/api/admin/catalog-pdf/config', requireAdmin, (_req, res) => {
+  try {
+    const config = db.getMobileCatalogConfig();
+    res.json(config);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put('/api/admin/catalog-pdf/config', requireAdmin, (req, res) => {
+  try {
+    const updated = db.updateMobileCatalogConfig(req.body || {});
+    res.json({ success: true, mobileCatalogConfig: updated });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/admin/catalog-pdf/upload', requireAdmin, catalogUpload.single('file'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No se subió ningún archivo' });
+    }
+    let fileUrl = '';
+    let fileName = req.file.originalname || 'catalogo.pdf';
+    const fileSizeFormatted = req.file.size > 1024 * 1024
+      ? `${(req.file.size / (1024 * 1024)).toFixed(2)} MB`
+      : `${Math.round(req.file.size / 1024)} KB`;
+
+    if (cloudDb.enabled) {
+      const stored = await storeFile(req.file.buffer, req.file.originalname, req.file.mimetype);
+      fileUrl = stored.url;
+      fileName = stored.filename || req.file.originalname;
+    } else {
+      fileUrl = `/downloads/${req.file.filename}`;
+      fileName = req.file.originalname || req.file.filename;
+    }
+
+    const updated = db.updateMobileCatalogConfig({
+      fileName,
+      fileUrl,
+      fileSize: fileSizeFormatted,
+      fileType: req.file.mimetype,
+      enabled: true
+    });
+
+    res.json({ success: true, mobileCatalogConfig: updated });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/admin/catalog-pdf/reset', requireAdmin, (_req, res) => {
+  try {
+    const reset = db.resetMobileCatalogConfig();
+    res.json({ success: true, mobileCatalogConfig: reset });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -8,10 +8,11 @@ import {
   Sliders, DollarSign, Calculator, Boxes, Minus, ChevronDown, ChevronUp,
   Home, Briefcase, PartyPopper, Printer, Palette, Scissors, Radio, Filter,
   Megaphone, Truck, MapPin, Calendar, Power, AlertCircle, Gift, Building2,
-  Database, Save, Download, Gamepad2
+  Database, Save, Download, Gamepad2, Smartphone
 } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 import SalesMarketingSection from './SalesMarketingSection';
+import MobileCatalogAdminSection from './MobileCatalogAdminSection';
 import RawMaterialsSection, { parsePackageInfo } from './RawMaterialsSection';
 import FlashDealsControlSection from './FlashDealsControlSection';
 import CampaignsAdminSection from './CampaignsAdminSection';
@@ -2371,6 +2372,25 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   </div>
 
                   <button
+                    onClick={() => setActiveTab('catalog-mobile')}
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                      activeTab === 'catalog-mobile' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Smartphone className="w-4 h-4" />
+                      <span>Catálogo Móvil &amp; Descargas</span>
+                    </div>
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                      activeTab === 'catalog-mobile'
+                        ? 'bg-white/20 text-white'
+                        : (businessSettings?.mobileCatalogConfig?.enabled !== false ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200')
+                    }`}>
+                      {businessSettings?.mobileCatalogConfig?.enabled !== false ? 'Activo' : 'Oculto'}
+                    </span>
+                  </button>
+
+                  <button
                     onClick={() => setActiveTab('settings')}
                     className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
                       activeTab === 'settings' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
@@ -2398,6 +2418,16 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
             {/* Main Content Area */}
             <main className="flex-1 min-w-0 overflow-y-auto p-3 sm:p-5 lg:p-6 space-y-6">
               
+              {/* TAB: CATÁLOGO MÓVIL & ARCHIVO DE DESCARGAS */}
+              {activeTab === 'catalog-mobile' && (
+                <MobileCatalogAdminSection
+                  token={token}
+                  businessSettings={businessSettings}
+                  onUpdateSettings={(updated) => setBusinessSettings(updated)}
+                  onRefreshCatalog={onRefreshCatalog}
+                />
+              )}
+
               {/* TAB: VENTAS Y PUBLICACIONES */}
               {activeTab === 'sales' && (
                 <SalesMarketingSection
