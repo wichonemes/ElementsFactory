@@ -3,7 +3,7 @@ import {
   X, Check, ShoppingBag, MessageCircle, Share2, Clock, Ruler,
   ShieldCheck, Sparkles, ChevronLeft, ChevronRight, Maximize2,
   Package, Eye, Layers, Calculator, Calendar, AlertTriangle, Truck, MapPin,
-  Gamepad2, Gift, Trophy, Star, ArrowRight
+  Gamepad2, Gift, Trophy, Star, ArrowRight, FileText, ZoomIn
 } from 'lucide-react';
 import TemuUrgencyModule from './TemuUrgencyModule';
 import WorkshopArcadeModal from './WorkshopArcadeModal';
@@ -22,11 +22,7 @@ export default function ProductDetailModal({
   onAddToCart,
   onOpenArcade,
   onDirectWhatsAppQuote,
-  onOpenCalculator,
-  relatedProducts = [],
-  onSelectRelated,
-  onPrevProduct,
-  onNextProduct
+  onOpenCalculator
 }) {
   if (!product) return null;
 
@@ -37,16 +33,16 @@ export default function ProductDetailModal({
 
   const defaultMeta = product.isBundle
     ? [
-        { label: '🌿 1. En contexto de uso (Referencia)', shortLabel: '🌿 En contexto', type: 'lifestyle' },
-        { label: '📦 2. Ángulo en fondo blanco', shortLabel: '📦 Fondo blanco', type: 'white_angle' },
-        { label: '🔍 3. Detalle y cualidades', shortLabel: '🔍 Detalle', type: 'detail' },
-        { label: '🎁 4. Todo lo que incluye el paquete', shortLabel: '🎁 Contenido pack', type: 'bundle_content' }
+        { label: '1. En contexto', shortLabel: '1. En contexto', type: 'lifestyle' },
+        { label: '2. Fondo blanco', shortLabel: '2. Fondo blanco', type: 'white_angle' },
+        { label: '3. Detalle macro', shortLabel: '3. Detalle', type: 'detail' },
+        { label: '4. Contenido del paquete', shortLabel: '4. Contenido', type: 'bundle_content' }
       ]
     : [
-        { label: '🌿 1. En contexto de uso (Referencia)', shortLabel: '🌿 En contexto', type: 'lifestyle' },
-        { label: '📦 2. Ángulo en fondo blanco', shortLabel: '📦 Fondo blanco', type: 'white_angle' },
-        { label: '🔍 3. Detalle y cualidades', shortLabel: '🔍 Detalle', type: 'detail' },
-        { label: '📐 4. Medidas y referencia de escala', shortLabel: '📐 Medidas & escala', type: 'measures' }
+        { label: '1. En contexto', shortLabel: '1. En contexto', type: 'lifestyle' },
+        { label: '2. Fondo blanco', shortLabel: '2. Fondo blanco', type: 'white_angle' },
+        { label: '3. Detalle macro', shortLabel: '3. Detalle', type: 'detail' },
+        { label: '4. Medidas y escala', shortLabel: '4. Medidas', type: 'measures' }
       ];
 
   const galleryMeta = product.galleryMeta || defaultMeta;
@@ -216,27 +212,6 @@ export default function ProductDetailModal({
             <span className="text-xs text-gray-500 font-medium capitalize">
               Área {product.worlds?.join(' / ')}
             </span>
-            {onPrevProduct && onNextProduct && (
-              <div className="flex items-center gap-1 bg-white px-1.5 py-0.5 rounded-full border border-gray-200 shadow-2xs ml-2">
-                <button
-                  type="button"
-                  onClick={onPrevProduct}
-                  className="p-1 rounded-full text-gray-500 hover:text-[#1F2421] hover:bg-gray-100 transition-colors cursor-pointer"
-                  title="Producto anterior en bucle"
-                >
-                  <ChevronLeft className="w-3.5 h-3.5" />
-                </button>
-                <span className="text-[10px] font-bold text-gray-400 px-1 select-none">Bucle</span>
-                <button
-                  type="button"
-                  onClick={onNextProduct}
-                  className="p-1 rounded-full text-gray-500 hover:text-[#1F2421] hover:bg-gray-100 transition-colors cursor-pointer"
-                  title="Siguiente producto en bucle"
-                >
-                  <ChevronRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            )}
           </div>
 
           <div className="flex items-center gap-2">
@@ -290,13 +265,6 @@ export default function ProductDetailModal({
                   onClick={() => setIsZoomed(!isZoomed)}
                 />
 
-                {/* Top Badge: View Type Indicator */}
-                <div className="absolute top-3 left-3 pointer-events-none">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-white text-[11px] font-semibold tracking-wide shadow-md">
-                    <span>{currentMeta.label}</span>
-                  </span>
-                </div>
-
                 {/* Top Right: Zoom / Expand button */}
                 <button
                   onClick={() => setIsZoomed(!isZoomed)}
@@ -341,12 +309,20 @@ export default function ProductDetailModal({
                 )}
               </div>
 
-              {/* Mercado Libre Style View Mode Buttons */}
+              {/* 4 Miniaturas con Iconos Sobrios y Discretos (Hoja en blanco para Fondo Blanco) */}
               {gallery.length > 1 && (
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   {gallery.map((imgUrl, idx) => {
-                    const meta = galleryMeta[idx] || { label: `Vista ${idx + 1}` };
                     const isSelected = activeIdx === idx;
+                    const getSlotBadge = (i) => {
+                      if (i === 0) return { label: '1. En contexto', Icon: Eye };
+                      if (i === 1) return { label: '2. Fondo blanco', Icon: FileText };
+                      if (i === 2) return { label: '3. Detalle', Icon: ZoomIn };
+                      if (i === 3) return { label: product.isBundle ? '4. Combo' : '4. Medidas', Icon: product.isBundle ? Layers : Ruler };
+                      return { label: `Foto ${i + 1}`, Icon: FileText };
+                    };
+                    const slotInfo = getSlotBadge(idx);
+                    const SlotIcon = slotInfo.Icon;
                     return (
                       <button
                         key={idx}
@@ -355,7 +331,7 @@ export default function ProductDetailModal({
                           setActiveIdx(idx);
                           setIsZoomed(false);
                         }}
-                        className={`p-1.5 rounded-xl border-2 flex flex-col items-center gap-1 transition-all text-left ${
+                        className={`p-1.5 rounded-xl border-2 flex flex-col items-center gap-1.5 transition-all text-left ${
                           isSelected
                             ? 'border-[#2D4F3E] bg-[#F4F0E8] ring-1 ring-[#2D4F3E]'
                             : 'border-[#E8E4DA] bg-white hover:border-gray-300 opacity-80 hover:opacity-100'
@@ -368,11 +344,14 @@ export default function ProductDetailModal({
                             className={`w-full h-full ${idx === 0 ? 'object-cover' : 'object-contain p-1'}`}
                           />
                         </div>
-                        <span className={`text-[10px] font-bold line-clamp-1 text-center w-full ${
-                          isSelected ? 'text-[#2D4F3E]' : 'text-gray-600'
-                        }`}>
-                          {meta.shortLabel || meta.label}
-                        </span>
+                        <div className="flex items-center justify-center gap-1.5 w-full px-0.5">
+                          <SlotIcon className={`w-3.5 h-3.5 shrink-0 ${isSelected ? 'text-[#2D4F3E]' : 'text-gray-400'}`} />
+                          <span className={`text-[10px] font-bold truncate ${
+                            isSelected ? 'text-[#2D4F3E]' : 'text-gray-600'
+                          }`}>
+                            {slotInfo.label}
+                          </span>
+                        </div>
                       </button>
                     );
                   })}
@@ -1107,33 +1086,6 @@ export default function ProductDetailModal({
 
             </div>
           </div>
-
-          {/* Related Products Section */}
-          {relatedProducts.length > 0 && (
-            <div className="pt-8 border-t border-gray-100">
-              <h3 className="text-base font-bold text-[#1F2421] mb-4 font-heading">
-                Productos complementarios recomendados
-              </h3>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                {relatedProducts.slice(0, 4).map(rel => (
-                  <div
-                    key={rel.id}
-                    onClick={() => {
-                      onSelectRelated(rel);
-                      setActiveIdx(0);
-                    }}
-                    className="cursor-pointer group p-2.5 rounded-2xl border border-gray-200 hover:border-[#2D4F3E] transition-all bg-white"
-                  >
-                    <div className="aspect-square rounded-xl overflow-hidden bg-gray-100 mb-2">
-                      <img src={rel.primaryImage} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
-                    </div>
-                    <div className="text-[11px] font-mono font-bold text-gray-400">{rel.code}</div>
-                    <div className="text-xs font-bold text-gray-800 line-clamp-1">{rel.name}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
 
         </div>
 

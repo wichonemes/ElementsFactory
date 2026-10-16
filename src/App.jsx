@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import WorldSelector from './components/WorldSelector';
@@ -356,6 +356,55 @@ export default function App() {
 
     return result;
   }, [filteredProducts, flashDeal?.activeFlashProductIds, catalogSeed, activeWorld, selectedCategory, selectedTechnique, searchQuery]);
+
+  // Bucle infinito estilo Marketplace en la pantalla principal (scrolleo continuo de catálogo)
+  const [infiniteLoopBatches, setInfiniteLoopBatches] = useState(1);
+  const infiniteSentinelRef = useRef(null);
+
+  // Reiniciar tandas al cambiar de área, categoría, técnica o búsqueda
+  useEffect(() => {
+    setInfiniteLoopBatches(1);
+  }, [activeWorld, selectedCategory, selectedTechnique, searchQuery, viewMode]);
+
+  // Observador de intersección para añadir más tandas de productos al llegar al final
+  useEffect(() => {
+    if (viewMode !== 'catalog') return;
+    const sentinel = infiniteSentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+      if (entry && entry.isIntersecting) {
+        setInfiniteLoopBatches(prev => prev + 1);
+      }
+    }, {
+      rootMargin: '400px'
+    });
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [viewMode, searchQuery, filteredProducts.length, regularProducts.length]);
+
+  // Catálogo continuo en bucle para sensación de abundancia infinita
+  const loopedCatalogProducts = useMemo(() => {
+    const baseList = searchQuery ? filteredProducts : regularProducts;
+    if (!baseList || baseList.length === 0) return [];
+
+    if (infiniteLoopBatches <= 1) {
+      return baseList.map((p, idx) => ({ ...p, loopKey: `${p.id}-init-${idx}` }));
+    }
+
+    const res = [];
+    for (let b = 0; b < infiniteLoopBatches; b++) {
+      for (let i = 0; i < baseList.length; i++) {
+        res.push({
+          ...baseList[i],
+          loopKey: `${baseList[i].id}-loop-${b}-${i}`
+        });
+      }
+    }
+    return res;
+  }, [searchQuery, filteredProducts, regularProducts, infiniteLoopBatches]);
 
   // Go to Home handler
   const handleGoHome = () => {
@@ -905,9 +954,9 @@ export default function App() {
             ) : (
               <div className="space-y-10">
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
-                  {(searchQuery ? filteredProducts : regularProducts).map(product => (
+                  {loopedCatalogProducts.map(product => (
                     <ProductCard
-                      key={product.id}
+                      key={product.loopKey || product.id}
                       product={product}
                       isFlashDeal={flashDeal.isProductOnFlashDeal(product.id)}
                       flashDeal={flashDeal}
@@ -918,6 +967,14 @@ export default function App() {
                       onOpenCalculator={handleOpenCalculator}
                     />
                   ))}
+                </div>
+
+                {/* Centinela de Scrolleo Infinito en Bucle Estilo Marketplace */}
+                <div ref={infiniteSentinelRef} className="py-6 flex flex-col items-center justify-center">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/95 border border-[#E8E4DA] text-xs font-semibold text-gray-600 shadow-2xs">
+                    <span className="w-2 h-2 rounded-full bg-[#2D4F3E] animate-ping" />
+                    <span>Catálogo continuo · Desliza para seguir explorando</span>
+                  </div>
                 </div>
 
                 {/* Servicio Patch Bar en Vivo en Eventos (al final de los productos, justo antes de los paquetes combo de cada área) */}
@@ -955,7 +1012,7 @@ export default function App() {
       </main>
       )}
 
-      {/* Product Detail Modal with Loop Navigation */}
+      {/* Product Detail Modal */}
       {selectedProduct && (
         <ProductDetailModal
           product={selectedProduct}
@@ -967,28 +1024,6 @@ export default function App() {
           onOpenArcade={handleOpenArcade}
           onDirectWhatsAppQuote={handleDirectWhatsAppQuote}
           onOpenCalculator={handleOpenCalculator}
-          relatedProducts={products.filter(p => p.id !== selectedProduct.id && p.worlds?.some(w => selectedProduct.worlds?.includes(w)))}
-          onSelectRelated={(prod) => setSelectedProduct(prod)}
-          onNextProduct={() => {
-            const list = activeWorld !== 'all' 
-              ? products.filter(p => !p.isBundle && p.worlds?.includes(activeWorld))
-              : products.filter(p => !p.isBundle);
-            const idx = list.findIndex(p => p.id === selectedProduct.id);
-            if (idx >= 0 && list.length > 1) {
-              const next = (idx + 1) % list.length;
-              setSelectedProduct(list[next]);
-            }
-          }}
-          onPrevProduct={() => {
-            const list = activeWorld !== 'all' 
-              ? products.filter(p => !p.isBundle && p.worlds?.includes(activeWorld))
-              : products.filter(p => !p.isBundle);
-            const idx = list.findIndex(p => p.id === selectedProduct.id);
-            if (idx >= 0 && list.length > 1) {
-              const prev = (idx - 1 + list.length) % list.length;
-              setSelectedProduct(list[prev]);
-            }
-          }}
         />
       )}
 

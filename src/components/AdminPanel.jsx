@@ -4882,7 +4882,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           key: 'blanco',
                           label: '2. Fondo Blanco Puro (#FFFFFF)',
                           shortLabel: 'Fondo blanco',
-                          icon: '📦',
+                          icon: '📄',
                           src: editorForm.whiteBgImage || editorForm.gallery?.[1]
                         },
                         {
