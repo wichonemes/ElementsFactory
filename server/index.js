@@ -41,7 +41,18 @@ for (const method of ['get', 'post', 'put', 'delete', 'patch']) {
     return register(route, ...handlers);
   };
 }
-app.get('/healthz', (_req, res) => res.json({ ok: true }));
+app.get('/healthz', (_req, res) => res.json({ ok: true, version: '2026-10-16-v2-combos' }));
+app.get('/api/deploy-version', (_req, res) => {
+  const assetsDir = path.join(distDir, 'assets');
+  res.json({
+    ok: true,
+    version: '2026-10-16-v2-combos',
+    deployTimestamp: new Date().toISOString(),
+    nodeVersion: process.version,
+    distExists: fs.existsSync(distDir),
+    assets: fs.existsSync(assetsDir) ? fs.readdirSync(assetsDir) : []
+  });
+});
 
 // Middlewares
 if (!production) app.use(cors());

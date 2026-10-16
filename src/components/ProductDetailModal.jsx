@@ -3,7 +3,7 @@ import {
   X, Check, ShoppingBag, MessageCircle, Share2, Clock, Ruler,
   ShieldCheck, Sparkles, ChevronLeft, ChevronRight, Maximize2,
   Package, Eye, Layers, Calculator, Calendar, AlertTriangle, Truck, MapPin,
-  Gamepad2, Gift, Trophy, Star, ArrowRight, FileText, ZoomIn
+  Gamepad2, Gift, Trophy, Star, ArrowRight, FileText, ZoomIn, Crown
 } from 'lucide-react';
 import TemuUrgencyModule from './TemuUrgencyModule';
 import WorkshopArcadeModal from './WorkshopArcadeModal';
@@ -538,10 +538,14 @@ export default function ProductDetailModal({
                     </span>
                   </div>
 
-                  {/* Selector interactivo de los 3 niveles */}
+                  {/* Selector interactivo de los 3 niveles con estética de Combo Comercial */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     {bundleTiers.map(tier => {
                       const isSelected = activeTier?.id === tier.id;
+                      const isPro = tier.id === 'pro';
+                      const isMaestra = tier.id === 'maestra';
+                      const priceDiff = tier.price - (bundleTiers[0]?.price || tier.price);
+
                       return (
                         <button
                           key={tier.id}
@@ -550,33 +554,51 @@ export default function ProductDetailModal({
                             playCoinSound();
                             setSelectedTierId(tier.id);
                           }}
-                          className={`relative p-2.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                          className={`relative p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
                             isSelected
-                              ? 'bg-white border-[#2D4F3E] ring-2 ring-[#2D4F3E]/30 shadow-sm'
-                              : 'bg-white/70 hover:bg-white border-gray-200'
+                              ? isPro
+                                ? 'bg-emerald-50/90 border-emerald-600 ring-2 ring-emerald-500/30 shadow-md'
+                                : isMaestra
+                                ? 'bg-amber-50/90 border-amber-500 ring-2 ring-amber-500/30 shadow-md'
+                                : 'bg-white border-stone-800 ring-2 ring-stone-800/20 shadow-md'
+                              : 'bg-white/80 hover:bg-white border-stone-200'
                           }`}
                         >
-                          {tier.isPopular && (
-                            <span className="absolute -top-2 right-2 px-1.5 py-0.2 rounded-full bg-[#D4A359] text-stone-900 font-black text-[8.5px] uppercase tracking-wider shadow-2xs">
-                              ★ Recomendado
+                          {/* Badge superior distintivo de cada nivel sin medallas emoji */}
+                          <div className="flex items-center justify-between mb-1">
+                            <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider ${
+                              isPro
+                                ? 'bg-[#2D4F3E] text-white shadow-2xs'
+                                : isMaestra
+                                ? 'bg-amber-700 text-white shadow-2xs'
+                                : 'bg-stone-200 text-stone-700'
+                            }`}>
+                              {isPro ? '★ Más Conveniente' : isMaestra ? '⭐ Todo Incluido' : 'Kit Base'}
                             </span>
-                          )}
+
+                            {priceDiff > 0 && (
+                              <span className="text-[9.5px] font-bold text-emerald-700 font-mono">
+                                +${priceDiff}
+                              </span>
+                            )}
+                          </div>
+
                           <div>
-                            <div className="flex items-center gap-1 text-xs font-bold text-[#1F2421]">
-                              <span>{tier.icon}</span>
-                              <span className="truncate">{tier.name.replace('Nivel ', '')}</span>
+                            <div className="text-xs font-black text-[#1F2421] leading-tight mt-0.5">
+                              {tier.name.replace('Nivel ', '')}
                             </div>
                             <p className="text-[10px] text-gray-500 mt-1 line-clamp-2 leading-tight">
                               {tier.summary}
                             </p>
                           </div>
-                          <div className="mt-2 pt-1.5 border-t border-gray-100 flex items-baseline justify-between">
-                            <span className="text-xs font-black text-[#1F2421] font-mono">
+
+                          <div className="mt-2.5 pt-1.5 border-t border-gray-100 flex items-baseline justify-between">
+                            <span className="text-sm font-black text-[#1F2421] font-mono">
                               ${tier.price} <span className="text-[9px] font-normal text-gray-400">MXN</span>
                             </span>
                             {tier.savings ? (
-                              <span className="text-[9.5px] text-emerald-700 font-bold">
-                                -${tier.savings}
+                              <span className="text-[9.5px] text-emerald-800 font-bold bg-emerald-100/70 px-1.5 py-0.2 rounded">
+                                Ahorro ${tier.savings}
                               </span>
                             ) : null}
                           </div>
@@ -585,25 +607,80 @@ export default function ProductDetailModal({
                     })}
                   </div>
 
-                  {/* Piezas incluidas en el nivel activo */}
+                  {/* Detalle y desglose de piezas del combo seleccionado */}
                   {activeTier && activeTier.includedItems && (
-                    <div className="p-3 bg-white rounded-xl border border-[#E8DFC8] space-y-2">
-                      <div className="flex items-center gap-1.5 text-xs font-bold text-[#7A4B1D] uppercase tracking-wider">
-                        <Package className="w-3.5 h-3.5 text-[#D4A359]" />
-                        <span>Piezas incluidas en {activeTier.name}:</span>
+                    <div className="p-3.5 bg-white rounded-2xl border border-[#E8DFC8] space-y-3 shadow-xs">
+                      {/* Banner de conveniencia según el nivel */}
+                      {activeTier.id === 'pro' ? (
+                        <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-300 flex items-center justify-between text-xs font-bold text-emerald-950 shadow-2xs">
+                          <span className="flex items-center gap-1.5">
+                            <Sparkles className="w-4 h-4 text-emerald-700 shrink-0" />
+                            <span>Combo Recomendado: ¡Incluye el kit base más piezas adicionales!</span>
+                          </span>
+                          <span className="bg-emerald-700 text-white text-[9.5px] font-black px-2 py-0.5 rounded-full shrink-0 shadow-2xs">
+                            Mejor Valor
+                          </span>
+                        </div>
+                      ) : activeTier.id === 'maestra' ? (
+                        <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-300 flex items-center justify-between text-xs font-bold text-amber-950 shadow-2xs">
+                          <span className="flex items-center gap-1.5">
+                            <Crown className="w-4 h-4 text-amber-700 shrink-0" />
+                            <span>Paquete Completo VIP: Máximo ahorro y acabados artesanales de lujo</span>
+                          </span>
+                          <span className="bg-amber-700 text-white text-[9.5px] font-black px-2 py-0.5 rounded-full shrink-0 shadow-2xs">
+                            Todo Incluido
+                          </span>
+                        </div>
+                      ) : null}
+
+                      <div className="flex items-center justify-between text-xs font-black uppercase tracking-wider text-[#7A4B1D]">
+                        <div className="flex items-center gap-1.5">
+                          <Package className="w-3.5 h-3.5 text-[#D4A359]" />
+                          <span>Piezas incluidas en {activeTier.name}:</span>
+                        </div>
+                        {activeTier.includedItems.some(i => i.startsWith('+')) && (
+                          <span className="text-[10px] text-emerald-800 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                            + Piezas extra destacadas en verde
+                          </span>
+                        )}
                       </div>
-                      <ul className="space-y-1.5 text-xs text-gray-700">
-                        {activeTier.includedItems.map((item, idx) => (
-                          <li key={idx} className="flex items-start gap-2">
-                            <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                            <span className="leading-snug">{item}</span>
-                          </li>
-                        ))}
+
+                      <ul className="space-y-1.5 text-xs">
+                        {activeTier.includedItems.map((item, idx) => {
+                          const isAdded = item.startsWith('+');
+                          return (
+                            <li
+                              key={idx}
+                              className={`flex items-start gap-2 rounded-xl p-2 transition-colors ${
+                                isAdded
+                                  ? 'bg-emerald-50/90 border border-emerald-200 text-emerald-950 font-bold shadow-2xs'
+                                  : 'text-gray-700 bg-stone-50/60 border border-stone-100'
+                              }`}
+                            >
+                              {isAdded ? (
+                                <span className="w-4.5 h-4.5 rounded-full bg-emerald-600 text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
+                                  +
+                                </span>
+                              ) : (
+                                <Check className="w-4 h-4 text-stone-500 shrink-0 mt-0.5" />
+                              )}
+                              <div className="min-w-0">
+                                <span className="leading-snug block">{item.replace(/^\+\s*/, '')}</span>
+                                {isAdded && (
+                                  <span className="text-[10px] text-emerald-700 font-semibold block mt-0.5">
+                                    Pieza adicional agregada a este paquete
+                                  </span>
+                                )}
+                              </div>
+                            </li>
+                          );
+                        })}
                       </ul>
+
                       {activeTier.extraBenefits && activeTier.extraBenefits.length > 0 && (
                         <div className="pt-2 border-t border-gray-100 flex flex-wrap gap-1.5">
                           {activeTier.extraBenefits.map((b, i) => (
-                            <span key={i} className="text-[10px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                            <span key={i} className="text-[10px] font-semibold text-emerald-900 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
                               ✓ {b}
                             </span>
                           ))}

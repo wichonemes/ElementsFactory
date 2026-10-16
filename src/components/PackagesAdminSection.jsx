@@ -317,12 +317,10 @@ export default function PackagesAdminSection({
                   {/* Niveles Disponibles */}
                   <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-500">
                     <span className="font-bold">Opciones de nivel:</span>
-                    <div className="flex items-center gap-1 font-mono font-bold text-gray-700">
-                      <span>🥉 ${tiers[0]?.price || p.price}</span>
-                      <span>•</span>
-                      <span className="text-[#2D4F3E]">🥈 ${tiers[1]?.price || p.price}</span>
-                      <span>•</span>
-                      <span className="text-amber-800">🥇 ${tiers[2]?.price || Math.round(p.price * 1.35)}</span>
+                    <div className="flex items-center gap-1.5 font-mono font-bold text-gray-700">
+                      <span className="bg-stone-100 text-stone-700 px-1.5 py-0.2 rounded border border-stone-200">Base: ${tiers[0]?.price || p.price}</span>
+                      <span className="bg-emerald-50 text-emerald-800 px-1.5 py-0.2 rounded border border-emerald-200">★ Pro: ${tiers[1]?.price || p.price}</span>
+                      <span className="bg-amber-50 text-amber-900 px-1.5 py-0.2 rounded border border-amber-200">⭐ VIP: ${tiers[2]?.price || Math.round(p.price * 1.35)}</span>
                     </div>
                   </div>
 
