@@ -18,6 +18,12 @@ import PackagesAndServicesView from './components/PackagesAndServicesView';
 import BlitzClockWidget from './components/BlitzClockWidget';
 import CatalogBottomNav from './components/CatalogBottomNav';
 import WorkshopArcadeModal from './components/WorkshopArcadeModal';
+import MobileMercadoLibreHeader from './components/MobileMercadoLibreHeader';
+import MobileBannerCarousel from './components/MobileBannerCarousel';
+import MobileFlashDealsSection from './components/MobileFlashDealsSection';
+import MobileBottomNav from './components/MobileBottomNav';
+import MobileCategoriesModal from './components/MobileCategoriesModal';
+import MobileMoreMenuModal from './components/MobileMoreMenuModal';
 import { useFlashDeal } from './hooks/useFlashDeal';
 import { Home, Briefcase, CalendarHeart, Sparkles, ChevronRight, ShoppingBag, Layers, MessageCircle, Gift, RotateCw, Calendar, AlertTriangle, MapPin, Truck } from 'lucide-react';
 import { formatServiceDate } from './utils/serviceStatus';
@@ -66,6 +72,9 @@ export default function App() {
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
   const [calculatorProduct, setCalculatorProduct] = useState(null);
   const [campaignsConfig, setCampaignsConfig] = useState(null);
+  const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false);
+  const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
+  const [mobileNavTab, setMobileNavTab] = useState('home');
 
   // Sync Cart to localStorage
   useEffect(() => {
@@ -522,26 +531,118 @@ export default function App() {
   const currentCategoryObj = categories.find(c => c.id === selectedCategory);
   const currentWorldObj = worlds.find(w => w.id === activeWorld);
 
+  const mobileSlides = useMemo(() => {
+    if (campaignsConfig?.monthlyEvents?.showcaseSlides?.length > 0) {
+      return campaignsConfig.monthlyEvents.showcaseSlides;
+    }
+    return [
+      {
+        id: 'hogar-estilo',
+        image: '/uploads/img_001.jpg',
+        badge: 'Hogar & Decoración',
+        title: 'Colección Hogar & Decoración',
+        description: 'Lámparas 3D, maceteros geométricos y percheros de pared',
+        worldId: 'hogar'
+      },
+      {
+        id: 'branding-comercial',
+        image: '/uploads/pack_barberia_boutique_contexto.jpg',
+        badge: 'Negocios & Marcas',
+        title: 'Branding Comercial & Mostrador',
+        description: 'Señalética inteligente, QR y enlaces NFC para negocios',
+        worldId: 'negocios'
+      },
+      {
+        id: 'bodas-eventos',
+        image: '/uploads/bienvenida_ceremonia_boda.jpg',
+        badge: 'Eventos Especiales',
+        title: 'Bodas, XV Años & Recuerdos',
+        description: 'Letreros de bienvenida, copas grabadas y souvenirs de taller',
+        worldId: 'eventos'
+      },
+      {
+        id: 'setup-gamer',
+        image: '/uploads/kit_home_office_gamer_contexto.jpg',
+        badge: 'Setup & Gaming',
+        title: 'Setup Gamer & Home Office',
+        description: 'Soportes de audífonos, bandejas y organizadores 3D',
+        worldId: 'hogar'
+      }
+    ];
+  }, [campaignsConfig]);
+
+  const handleMobileNavTab = (tab) => {
+    setMobileNavTab(tab);
+    if (tab === 'home') {
+      setActiveWorld('all');
+      setSelectedCategory('all');
+      setSelectedTechnique('all');
+      setSearchQuery('');
+      setViewMode('catalog');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (tab === 'categories') {
+      setIsCategoriesModalOpen(true);
+    } else if (tab === 'cart') {
+      setIsCartOpen(true);
+    } else if (tab === 'arcade') {
+      handleOpenArcade('play');
+    } else if (tab === 'more') {
+      setIsMoreMenuOpen(true);
+    }
+  };
+
+  const handleOpenWhatsAppDirect = () => {
+    if (settings?.whatsappNumber) {
+      window.open(
+        `https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, '')}?text=Hola%20Artesano%20Digital,%20tengo%20una%20consulta.`,
+        '_blank'
+      );
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-[#FBF9F5] text-[#1F2421] pb-20 lg:pb-0">
       
-      {/* Top Navigation */}
-      <Navbar
-        activeWorld={activeWorld}
-        onSelectWorld={handleSelectWorld}
-        onGoHome={handleGoHome}
-        cartCount={totalCartCount}
-        onOpenCart={() => setIsCartOpen(true)}
-        onOpenAdmin={() => setIsAdminOpen(true)}
-        onOpenArcade={handleOpenArcade}
+      {/* Top Navigation para Escritorio */}
+      <div className="hidden md:block">
+        <Navbar
+          activeWorld={activeWorld}
+          onSelectWorld={handleSelectWorld}
+          onGoHome={handleGoHome}
+          cartCount={totalCartCount}
+          onOpenCart={() => setIsCartOpen(true)}
+          onOpenAdmin={() => setIsAdminOpen(true)}
+          onOpenArcade={handleOpenArcade}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          settings={settings}
+        />
+      </div>
+
+      {/* Top Navigation para Móviles estilo Mercado Libre */}
+      <MobileMercadoLibreHeader
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
+        onClearSearch={() => setSearchQuery('')}
+        activeWorld={activeWorld}
+        onSelectWorld={handleSelectWorld}
+        onOpenCart={() => setIsCartOpen(true)}
+        cartCount={totalCartCount}
+        onOpenWhatsApp={handleOpenWhatsAppDirect}
+        onOpenCalculator={() => handleOpenCalculator()}
+        onOpenArcade={() => handleOpenArcade('play')}
+        onOpenFlashDeals={() => {
+          setActiveWorld('all');
+          setViewMode('catalog');
+          const el = document.getElementById('catalogo-section');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }}
         settings={settings}
       />
 
-      {/* BANNER DE ESTADO DE SERVICIO: LOCAL, NACIONAL Y PAUSA DE TALLER */}
+      {/* BANNER DE ESTADO DE SERVICIO: LOCAL, NACIONAL Y PAUSA DE TALLER (Escritorio) */}
       {settings?.serviceStatus?.isPaused ? (
-        <div className="bg-gradient-to-r from-[#9E472A] via-[#B8573C] to-[#9E472A] text-white py-3 px-4 shadow-sm border-b border-black/20 animate-in fade-in">
+        <div className="hidden md:block bg-gradient-to-r from-[#9E472A] via-[#B8573C] to-[#9E472A] text-white py-3 px-4 shadow-sm border-b border-black/20 animate-in fade-in">
           <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
             <div className="flex items-center gap-3">
               <span className="p-2 rounded-xl bg-white/20 backdrop-blur-xs shrink-0 shadow-2xs">
@@ -565,7 +666,7 @@ export default function App() {
           </div>
         </div>
       ) : (settings?.serviceStatus?.localService === false || settings?.serviceStatus?.nationalService === false) ? (
-        <div className="bg-[#1F2421] text-amber-300 py-2.5 px-4 border-b border-amber-900/40 text-xs shadow-2xs">
+        <div className="hidden md:block bg-[#1F2421] text-amber-300 py-2.5 px-4 border-b border-amber-900/40 text-xs shadow-2xs">
           <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
             <div className="flex items-center gap-2.5">
               <span className="p-1.5 rounded-lg bg-amber-500/20 text-amber-400 shrink-0">
@@ -585,27 +686,48 @@ export default function App() {
         </div>
       ) : null}
 
-      {/* Hero Section (only when on Home / All view) */}
+      {/* VISTA MÓVIL ESTILO MERCADO LIBRE: Banner Compacto + Cortinilla + Ofertas Relámpago */}
       {activeWorld === 'all' && !searchQuery && (
-        <Hero
-          onExploreCatalog={() => {
-            const el = document.getElementById('areas-section');
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
-          }}
-          onOpenWorld={handleSelectWorld}
-          settings={settings}
-          campaignsConfig={campaignsConfig}
-        />
+        <div className="md:hidden">
+          <MobileBannerCarousel
+            slides={mobileSlides}
+            onSelectSlide={handleSelectWorld}
+            settings={settings}
+          />
+          <MobileFlashDealsSection
+            products={products}
+            flashDeal={flashDeal}
+            onSelectProduct={(p) => setSelectedProduct(p)}
+            onAddToCart={handleAddToCart}
+          />
+        </div>
       )}
 
-      {/* Categories & Areas Overview (when on Home / All view) */}
+      {/* Hero Section para Escritorio (Oculto en Móviles para dar paso a la vista compacta) */}
       {activeWorld === 'all' && !searchQuery && (
-        <WorldSelector
-          worlds={worlds}
-          activeWorld={activeWorld}
-          onSelectWorld={handleSelectWorld}
-          categories={categories}
-        />
+        <div className="hidden md:block">
+          <Hero
+            onExploreCatalog={() => {
+              const el = document.getElementById('areas-section');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+            onOpenWorld={handleSelectWorld}
+            settings={settings}
+            campaignsConfig={campaignsConfig}
+          />
+        </div>
+      )}
+
+      {/* Categories & Areas Overview para Escritorio (Oculto en Móviles) */}
+      {activeWorld === 'all' && !searchQuery && (
+        <div className="hidden md:block">
+          <WorldSelector
+            worlds={worlds}
+            activeWorld={activeWorld}
+            onSelectWorld={handleSelectWorld}
+            categories={categories}
+          />
+        </div>
       )}
 
       {/* Area Cover Banner (when a specific area is selected) */}
@@ -988,101 +1110,41 @@ export default function App() {
         onAddToCart={handleAddToCart}
       />
 
-      {/* Mobile Floating Bottom Bar (Navegación táctil estilo app nativa para celular) */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#E8E4DA] py-1.5 px-2 shadow-2xl flex items-center justify-around text-[10px] font-semibold text-gray-600 select-none">
-        <button
-          onClick={() => {
-            playSoftAreaSwitchSound();
-            handleSelectWorld('all');
-          }}
-          className={`flex flex-col items-center gap-0.5 py-1 px-2.5 rounded-xl transition-all cursor-pointer ${
-            activeWorld === 'all'
-              ? 'text-[#2D4F3E] font-bold bg-[#2D4F3E]/10'
-              : 'hover:text-[#1F2421]'
-          }`}
-        >
-          <Home className="w-5 h-5" />
-          <span>Inicio</span>
-        </button>
+      {/* Barra Inferior Fija para Celular estilo Mercado Libre (5 Botones Nativos) */}
+      <MobileBottomNav
+        activeTab={mobileNavTab}
+        onSelectTab={handleMobileNavTab}
+        cartCount={totalCartCount}
+      />
 
-        <button
-          onClick={() => {
-            playSoftAreaSwitchSound();
-            handleSelectWorld('hogar');
-          }}
-          className={`flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl transition-all cursor-pointer ${
-            activeWorld === 'hogar'
-              ? 'text-emerald-800 font-bold bg-emerald-100/70'
-              : 'hover:text-[#1F2421]'
-          }`}
-        >
-          <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-[10px] font-black">H</span>
-          <span>Hogar</span>
-        </button>
+      {/* Vista de Categorías Master-Detail para Celular estilo Mercado Libre */}
+      <MobileCategoriesModal
+        isOpen={isCategoriesModalOpen}
+        onClose={() => {
+          setIsCategoriesModalOpen(false);
+          setMobileNavTab('home');
+        }}
+        categories={categories}
+        worlds={worlds}
+        onSelectWorld={handleSelectWorld}
+        onSelectCategory={setSelectedCategory}
+        onSelectTechnique={setSelectedTechnique}
+      />
 
-        <button
-          onClick={() => {
-            playSoftAreaSwitchSound();
-            handleSelectWorld('negocios');
-          }}
-          className={`flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl transition-all cursor-pointer ${
-            activeWorld === 'negocios'
-              ? 'text-amber-900 font-bold bg-amber-100/70'
-              : 'hover:text-[#1F2421]'
-          }`}
-        >
-          <Briefcase className="w-5 h-5" />
-          <span>Negocios</span>
-        </button>
-
-        <button
-          onClick={() => {
-            playSoftAreaSwitchSound();
-            handleSelectWorld('eventos');
-          }}
-          className={`flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl transition-all cursor-pointer ${
-            activeWorld === 'eventos'
-              ? 'text-rose-900 font-bold bg-rose-100/70'
-              : 'hover:text-[#1F2421]'
-          }`}
-        >
-          <CalendarHeart className="w-5 h-5" />
-          <span>Eventos</span>
-        </button>
-
-        <button
-          onClick={() => {
-            playSoftAreaSwitchSound();
-            handleSelectWorld('paquetes-servicios');
-          }}
-          className={`flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl transition-all cursor-pointer ${
-            activeWorld === 'paquetes-servicios'
-              ? 'text-[#9E472A] font-bold bg-[#9E472A]/10'
-              : 'text-[#9E472A] hover:opacity-80'
-          }`}
-        >
-          <Gift className="w-5 h-5" />
-          <span>Paquetes</span>
-        </button>
-
-        <button
-          onClick={() => {
-            playCoinSound();
-            setIsCartOpen(true);
-          }}
-          className="relative flex flex-col items-center gap-0.5 py-1 px-2.5 rounded-xl text-[#2D4F3E] font-bold transition-all cursor-pointer active:scale-95"
-        >
-          <div className="relative">
-            <ShoppingBag className="w-5 h-5" />
-            {totalCartCount > 0 && (
-              <span className="absolute -top-1 -right-2 bg-[#D82B6E] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold animate-bounce shadow-xs">
-                {totalCartCount}
-              </span>
-            )}
-          </div>
-          <span>Cotización</span>
-        </button>
-      </div>
+      {/* Menú 'Más' para Celular estilo Mercado Libre */}
+      <MobileMoreMenuModal
+        isOpen={isMoreMenuOpen}
+        onClose={() => {
+          setIsMoreMenuOpen(false);
+          setMobileNavTab('home');
+        }}
+        onOpenAdmin={() => setIsAdminOpen(true)}
+        onOpenArcade={handleOpenArcade}
+        onOpenCalculator={() => handleOpenCalculator()}
+        onOpenWhatsApp={handleOpenWhatsAppDirect}
+        onSelectPackages={handleSelectPackages}
+        settings={settings}
+      />
 
     </div>
   );
