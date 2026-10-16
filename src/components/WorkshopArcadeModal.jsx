@@ -665,6 +665,84 @@ export default function WorkshopArcadeModal({
     redeemCoupon
   } = useArcadeSession();
 
+  // Configuración de Dificultad Dinámica / Asistida por Monedas
+  const [difficultyMode, setDifficultyMode] = useState(() => {
+    try {
+      return localStorage.getItem('artesano_arcade_difficulty') || 'easy';
+    } catch {
+      return 'easy';
+    }
+  });
+
+  const [hasShield, setHasShield] = useState(false);
+
+  const changeDifficultyMode = (mode) => {
+    setDifficultyMode(mode);
+    try {
+      localStorage.setItem('artesano_arcade_difficulty', mode);
+    } catch {}
+  };
+
+  const getDifficultySettings = useCallback(() => {
+    let mode = difficultyMode;
+    let scale = 0.65;
+    let initialLives = 4;
+    let coinsMult = 1;
+    let label = '🌟 Fácil / Móvil';
+    let badge = '🌟 Fácil';
+    let hint = 'Velocidad accesible y 4 vidas. Ideal para pantallas táctiles.';
+
+    if (mode === 'auto_coins') {
+      if (userCoins < 15) {
+        scale = 0.65;
+        initialLives = 4;
+        coinsMult = 1;
+        label = '🪙 Auto: Asistencia (<15🪙)';
+        badge = '🪙 Auto: Fácil';
+        hint = 'Velocidad suave y 4 vidas para ayudarte a juntar monedas.';
+      } else if (userCoins < 40) {
+        scale = 0.90;
+        initialLives = 3;
+        coinsMult = 1;
+        label = '🪙 Auto: Equilibrado (15-40🪙)';
+        badge = '🪙 Auto: Normal';
+        hint = 'Dificultad estándar balanceada según tu progreso.';
+      } else {
+        scale = 1.25;
+        initialLives = 2;
+        coinsMult = 2;
+        label = '🪙 Auto: Reto Pro (>40🪙, 2x)';
+        badge = '🪙 Auto: Pro x2';
+        hint = 'Reto para expertos con monedas x2 al superar retos.';
+      }
+    } else if (mode === 'easy') {
+      scale = 0.65;
+      initialLives = 4;
+      coinsMult = 1;
+      label = '🌟 Fácil / Celular';
+      badge = '🌟 Fácil';
+      hint = 'Ritmo relajado y 4 vidas. Recomendado para jugar en celular.';
+    } else if (mode === 'normal') {
+      scale = 0.95;
+      initialLives = 3;
+      coinsMult = 1;
+      label = '⚡ Normal';
+      badge = '⚡ Normal';
+      hint = 'Velocidad estándar de taller y 3 vidas.';
+    } else if (mode === 'pro') {
+      scale = 1.30;
+      initialLives = 2;
+      coinsMult = 2;
+      label = '🔥 Pro (x2 🪙)';
+      badge = '🔥 Pro x2🪙';
+      hint = 'Mayor velocidad y 2 vidas, ¡pero ganas el DOBLE de monedas!';
+    }
+
+    return { mode, scale, initialLives, coinsMult, label, badge, hint };
+  }, [difficultyMode, userCoins]);
+
+  const diffSettings = getDifficultySettings();
+
   const canvasRef = useRef(null);
   const internalStateRef = useRef({});
 
@@ -833,10 +911,12 @@ export default function WorkshopArcadeModal({
       soundSynth.play('hit');
       return;
     }
+    const activeDiff = getDifficultySettings();
     setNoCreditsWarning(false);
     setScore(0);
     setCoinsEarned(0);
-    setLives(3);
+    setLives(activeDiff.initialLives);
+    setHasShield(activeDiff.mode === 'easy');
     setCurrentLevel(1);
     setTimeLeft(arcadeConfig?.timeLimitSeconds || 180);
     setGameState('playing');
@@ -987,8 +1067,8 @@ export default function WorkshopArcadeModal({
     const state = internalStateRef.current;
     if (!state) return;
 
-    // Multiplicador dinámico de dificultad progresiva por monedas acumuladas
-    const diffMultiplier = 1 + Math.min(2.5, (coinsEarned * 0.04) + (score * 0.003) + (currentLevel - 1) * 0.25);
+    // Multiplicador dinámico de dificultad calibrado por modo y monedas
+    const diffMultiplier = Math.max(0.45, (1 + Math.min(1.4, (coinsEarned * 0.02) + (score * 0.002) + (currentLevel - 1) * 0.15)) * diffSettings.scale);
 
     if (selectedGameId === 'dino') {
       if (state.player && state.player.grounded) {
@@ -1338,7 +1418,7 @@ export default function WorkshopArcadeModal({
       }
 
       const state = internalStateRef.current;
-      const diffMultiplier = 1 + Math.min(2.5, (coinsEarned * 0.04) + (score * 0.003) + (currentLevel - 1) * 0.25);
+      const diffMultiplier = Math.max(0.45, (1 + Math.min(1.4, (coinsEarned * 0.02) + (score * 0.002) + (currentLevel - 1) * 0.15)) * diffSettings.scale);
 
       // 1. DINO RUNNER
       if (selectedGameId === 'dino' && state.player && Array.isArray(state.obstacles) && Array.isArray(state.coins)) {
@@ -1941,12 +2021,12 @@ export default function WorkshopArcadeModal({
       }
 
       // HUD de Dificultad Dinámica en Canvas
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
-      ctx.fillRect(width - 165, 8, 155, 24);
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.55)';
+      ctx.fillRect(width - 215, 8, 205, 24);
       ctx.fillStyle = diffMultiplier > 1.8 ? '#EF4444' : (diffMultiplier > 1.3 ? '#F59E0B' : '#10B981');
       ctx.font = 'bold 11px monospace';
       ctx.textAlign = 'right';
-      ctx.fillText(`🔥 DIFICULTAD: ${diffMultiplier.toFixed(1)}x`, width - 18, 24);
+      ctx.fillText(`🔥 DIFICULTAD: ${diffMultiplier.toFixed(1)}x (${diffSettings.badge})`, width - 18, 24);
 
       // Overlays de Inicio, Game Over y Victoria
       if (gameState === 'ready') {
@@ -2206,9 +2286,81 @@ export default function WorkshopArcadeModal({
           )}
 
           {activeTab === 'play' && (
-            <div className="space-y-3 sm:space-y-4">
-              {/* Selector de Mini-Juegos (Oculto en móvil durante partida para dar prioridad absoluta al canvas y controles) */}
-              <div className={`${gameState === 'playing' ? 'hidden sm:grid' : 'grid'} grid-cols-2 sm:grid-cols-5 gap-2`}>
+            <div className="space-y-2.5 sm:space-y-4">
+              {/* Selector Deslizable Compacto para Celular (Ultra compacto ~38px: ¡El juego queda arriba de inmediato!) */}
+              <div className="flex sm:hidden items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+                <span className="text-[10px] font-bold text-gray-400 shrink-0 font-mono px-1">🕹️ Juegos:</span>
+                {currentAvailableGames.map(g => {
+                  const isSel = selectedGameId === g.id;
+                  const active = isGameActive(g.id);
+                  return (
+                    <button
+                      key={`mob-${g.id}`}
+                      type="button"
+                      disabled={!active}
+                      onClick={() => {
+                        if (!active) {
+                          soundSynth.play('hit');
+                          return;
+                        }
+                        setSelectedGameId(g.id);
+                        initGameLogic(g.id);
+                        setGameState('ready');
+                        soundSynth.play('stack');
+                      }}
+                      className={`px-2.5 py-1.5 rounded-xl text-xs font-bold shrink-0 flex items-center gap-1.5 border transition-all cursor-pointer ${
+                        !active
+                          ? 'opacity-40 cursor-not-allowed bg-red-950/20 border-red-500/30 text-rose-300'
+                          : isSel
+                            ? 'bg-[#2D4F3E] border-[#D4A359] text-[#F5D061] ring-2 ring-[#D4A359]/60 shadow-sm'
+                            : 'bg-black/40 border-white/15 text-gray-200 hover:bg-white/10'
+                      }`}
+                      title={!active ? 'Juego inactivo' : g.title}
+                    >
+                      <span className="text-sm">{g.icon}</span>
+                      <span className="text-[11px] font-semibold whitespace-nowrap">{g.title.split(' ')[0]}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Selector de Dificultad Dinámica y Asistida por Monedas */}
+              <div className="flex items-center justify-between p-2 rounded-2xl bg-black/40 border border-[#D4A359]/30 text-xs gap-2 flex-wrap sm:flex-nowrap">
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                  <span className="font-bold text-[11px] text-gray-200">Dificultad:</span>
+                </div>
+
+                <div className="flex items-center gap-1 overflow-x-auto no-scrollbar w-full sm:w-auto">
+                  {[
+                    { id: 'easy', label: '⭐ Fácil (Móvil)', hint: 'Velocidad suave & 4 vidas' },
+                    { id: 'normal', label: '⚡ Normal', hint: 'Velocidad estándar & 3 vidas' },
+                    { id: 'pro', label: '🔥 Pro (x2)', hint: 'Mayor velocidad & doble moneda' },
+                    { id: 'auto_coins', label: '🪙 Adaptable', hint: 'Se adapta automáticamente a tu saldo de monedas' }
+                  ].map(m => (
+                    <button
+                      key={m.id}
+                      type="button"
+                      onClick={() => changeDifficultyMode(m.id)}
+                      className={`px-2 py-1 rounded-lg text-[10px] sm:text-[11px] font-bold border transition-all cursor-pointer whitespace-nowrap shrink-0 ${
+                        difficultyMode === m.id
+                          ? 'bg-[#D4A359] text-[#17251E] border-amber-300 shadow-sm font-extrabold ring-1 ring-amber-300/60'
+                          : 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/15'
+                      }`}
+                      title={m.hint}
+                    >
+                      {m.label}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="text-[10px] text-amber-300 font-mono hidden md:flex items-center gap-1 shrink-0">
+                  <span>{diffSettings.hint}</span>
+                </div>
+              </div>
+
+              {/* Selector de Mini-Juegos para Escritorio (Preservado en cuadrícula de 5 columnas) */}
+              <div className="hidden sm:grid sm:grid-cols-5 gap-2">
                 {currentAvailableGames.map(g => {
                   const isSel = selectedGameId === g.id;
                   const active = isGameActive(g.id);
@@ -2275,15 +2427,20 @@ export default function WorkshopArcadeModal({
 
               {/* HUD Superior de la Partida */}
               <div className="flex items-center justify-between px-3 sm:px-4 py-2 rounded-2xl bg-black/40 border border-[#D4A359]/30 text-xs font-mono flex-wrap gap-2">
-                {/* Vidas */}
+                {/* Vidas Dinámicas */}
                 <div className="flex items-center gap-1.5">
                   <span className="text-gray-400 text-[11px]">Vidas:</span>
                   <div className="flex gap-1 text-sm">
-                    {[1, 2, 3].map(heartIdx => (
+                    {Array.from({ length: Math.max(diffSettings.initialLives, lives) }, (_, i) => i + 1).map(heartIdx => (
                       <span key={heartIdx} className={heartIdx <= lives ? 'opacity-100' : 'opacity-25 grayscale'}>
                         ❤️
                       </span>
                     ))}
+                    {hasShield && (
+                      <span className="text-sm animate-pulse" title="🛡️ Escudo Asistido Activo (absorbe 1 fallo)">
+                        🛡️
+                      </span>
+                    )}
                   </div>
                 </div>
 
@@ -2291,7 +2448,7 @@ export default function WorkshopArcadeModal({
                 <div className="flex items-center gap-1.5 text-amber-300">
                   <Flame className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
                   <span className="font-bold text-[11px] sm:text-xs">
-                    Nivel {currentLevel} · +{coinsEarned}🪙
+                    Nivel {currentLevel} · {diffSettings.badge} · +{coinsEarned}🪙
                   </span>
                 </div>
 
@@ -2549,6 +2706,59 @@ export default function WorkshopArcadeModal({
                       <span>JUGAR AHORA · Costo: 1 Moneda de Juego (Tienes {credits}/{maxCredits})</span>
                     </button>
                   </div>
+                </div>
+              )}
+
+              {/* Catálogo detallado de juegos para móvil (debajo del juego para no empujar el canvas) */}
+              {gameState !== 'playing' && (
+                <div className="sm:hidden pt-1">
+                  <details className="group rounded-2xl bg-black/40 border border-white/10 overflow-hidden">
+                    <summary className="px-4 py-2 text-xs font-bold text-amber-300 flex items-center justify-between cursor-pointer hover:bg-white/5 select-none">
+                      <span>📖 Ver catálogo detallado de juegos ({currentAvailableGames.length})</span>
+                      <span className="text-gray-400 group-open:rotate-180 transition-transform">▼</span>
+                    </summary>
+                    <div className="p-2 grid grid-cols-1 gap-1.5 border-t border-white/10 bg-black/20">
+                      {currentAvailableGames.map(g => {
+                        const isSel = selectedGameId === g.id;
+                        const active = isGameActive(g.id);
+                        return (
+                          <button
+                            key={`mob-detail-${g.id}`}
+                            type="button"
+                            disabled={!active}
+                            onClick={() => {
+                              if (!active) {
+                                soundSynth.play('hit');
+                                return;
+                              }
+                              setSelectedGameId(g.id);
+                              initGameLogic(g.id);
+                              setGameState('ready');
+                              soundSynth.play('stack');
+                            }}
+                            className={`p-2 rounded-xl border text-left transition-all flex items-center gap-2.5 ${
+                              !active
+                                ? 'opacity-40 cursor-not-allowed bg-red-950/20 border-red-500/20'
+                                : isSel
+                                  ? 'bg-[#2D4F3E] border-[#D4A359] text-[#F5D061] ring-1 ring-[#D4A359]/60'
+                                  : 'bg-black/30 border-white/10 text-gray-200'
+                            }`}
+                          >
+                            <span className="text-xl">{g.icon}</span>
+                            <div className="flex-1 min-w-0">
+                              <div className="font-bold text-xs text-white truncate">{g.title}</div>
+                              <div className="text-[10px] text-gray-400 truncate">{g.subtitle}</div>
+                            </div>
+                            <span className={`text-[10px] px-2 py-0.5 rounded-md font-bold font-mono ${
+                              active ? 'bg-amber-400/20 text-amber-300 border border-amber-400/30' : 'bg-red-500/20 text-rose-300'
+                            }`}>
+                              {active ? '1 Moneda' : '🚫 Inactivo'}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </details>
                 </div>
               )}
             </div>
