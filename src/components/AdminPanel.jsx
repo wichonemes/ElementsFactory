@@ -127,12 +127,45 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   const [photoStudioProductId, setPhotoStudioProductId] = useState(null);
 
   const handleOpenPhotoStudio = (productId = null) => {
-    setPhotoStudioProductId(productId || (products[0]?.id ?? null));
+    if (productId === 'new' || (!productId && isEditorOpen && !editingProduct)) {
+      setPhotoStudioProductId('new');
+    } else if (productId) {
+      setPhotoStudioProductId(productId);
+    } else if (editingProduct?.id) {
+      setPhotoStudioProductId(editingProduct.id);
+    } else {
+      setPhotoStudioProductId(products[0]?.id ?? 'new');
+    }
     setIsPhotoStudioOpen(true);
   };
 
   const handleProductUpdatedFromStudio = (updatedProduct) => {
     if (!updatedProduct) return;
+    if (updatedProduct.id === 'new' || updatedProduct.isNew || !editingProduct) {
+      // Applied directly to the new product form in progress!
+      setEditorForm(prev => {
+        if (!prev) return prev;
+        const newGal = Array.isArray(updatedProduct.gallery) ? [...updatedProduct.gallery] : prev.gallery;
+        return {
+          ...prev,
+          name: updatedProduct.name && (!prev.name || prev.name === 'Nuevo Producto de Catálogo') ? updatedProduct.name : prev.name,
+          sku: updatedProduct.sku || prev.sku,
+          code: updatedProduct.sku || prev.code,
+          primaryImage: newGal[0] || prev.primaryImage,
+          whiteBgImage: newGal[1] || prev.whiteBgImage,
+          detailImage: newGal[2] || prev.detailImage,
+          measureImage: newGal[3] || prev.measureImage,
+          gallery: newGal,
+          specifications: {
+            ...prev.specifications,
+            ...(updatedProduct.specifications || {})
+          }
+        };
+      });
+      setIsEditorOpen(true);
+      return;
+    }
+
     setProducts(prev => prev.map(p => p.id === updatedProduct.id ? updatedProduct : p));
     if (editingProduct?.id === updatedProduct.id) {
       setEditingProduct(updatedProduct);
@@ -2043,7 +2076,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
+      <div className="fixed inset-0 z-[60] flex items-center justify-center p-0 sm:p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
         <div
           className="w-full max-w-[97vw] 2xl:max-w-7xl h-full sm:h-[95vh] bg-[#FBF9F5] rounded-none sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden border-0 sm:border border-[#E8E4DA]"
           onClick={e => e.stopPropagation()}
@@ -2827,20 +2860,41 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       <button
                         type="button"
                         onClick={() => handleOpenPhotoStudio()}
-                        className="flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white text-xs font-bold active:scale-95 transition-all shadow-sm"
+                        className="flex items-center gap-1.5 px-3 sm:px-4 py-2 min-h-[40px] rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white text-xs font-bold active:scale-95 transition-all shadow-sm cursor-pointer touch-manipulation"
                         title="Abrir Estudio Fotográfico para generar las 4 tomas de catálogo con IA"
                       >
                         <Camera className="w-4 h-4 text-amber-200" />
                         <span>Estudio 4 Fotos IA</span>
                       </button>
                       <button
+                        type="button"
                         onClick={handleOpenNewProduct}
-                        className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#2D4F3E] text-white text-xs font-bold hover:bg-[#20392C] active:scale-95 transition-all shadow-sm"
+                        className="flex items-center gap-1.5 px-4 py-2 min-h-[40px] rounded-xl bg-[#2D4F3E] text-white text-xs font-bold hover:bg-[#20392C] active:scale-95 transition-all shadow-sm cursor-pointer touch-manipulation"
                       >
-                        <Plus className="w-4 h-4" />
+                        <Plus className="w-4 h-4 stroke-[2.5]" />
                         <span>Nuevo Producto</span>
                       </button>
                     </div>
+                  </div>
+
+                  {/* BARRA MÓVIL DE ACCIONES RÁPIDAS (BOTONES GRANDES PARA DEDO) */}
+                  <div className="md:hidden grid grid-cols-2 gap-2.5 p-2 bg-[#F4F0E8] rounded-2xl border border-[#E8E4DA]">
+                    <button
+                      type="button"
+                      onClick={handleOpenNewProduct}
+                      className="min-h-[48px] w-full px-3 py-2.5 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-xs font-black flex items-center justify-center gap-2 shadow-md active:scale-95 transition-all cursor-pointer touch-manipulation"
+                    >
+                      <Plus className="w-4 h-4 stroke-[3]" />
+                      <span>+ Agregar Producto</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleOpenPhotoStudio('new')}
+                      className="min-h-[48px] w-full px-3 py-2.5 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 text-white text-xs font-black flex items-center justify-center gap-2 shadow-md active:scale-95 transition-all cursor-pointer touch-manipulation"
+                    >
+                      <Camera className="w-4 h-4 text-amber-200" />
+                      <span>Estudio 4 Fotos IA</span>
+                    </button>
                   </div>
 
                   {/* VISTA MÓVIL: Tarjetas de Producto Táctiles y Adaptadas */}
@@ -2850,12 +2904,18 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         key={p.id}
                         className="bg-white rounded-2xl p-3.5 border border-[#E8E4DA] shadow-xs space-y-3"
                       >
-                        {/* Encabezado de la tarjeta: Foto, Código, Título y Estado */}
-                        <div className="flex items-start gap-3">
+                        {/* Encabezado de la tarjeta: Toca cualquier parte para Editar */}
+                        <div
+                          role="button"
+                          tabIndex={0}
+                          onClick={() => handleOpenEditProduct(p)}
+                          className="flex items-start gap-3 cursor-pointer group active:opacity-75 transition-opacity touch-manipulation"
+                          title="Toca para editar este producto"
+                        >
                           <img
                             src={p.primaryImage}
                             alt=""
-                            className="w-14 h-14 rounded-xl object-cover bg-gray-100 border border-gray-200 shrink-0 shadow-2xs"
+                            className="w-16 h-16 rounded-xl object-cover bg-gray-100 border border-gray-200 shrink-0 shadow-2xs group-hover:scale-105 transition-transform"
                           />
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center justify-between gap-1">
@@ -2870,7 +2930,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               </span>
                             </div>
 
-                            <h4 className="font-bold text-sm text-[#1F2421] truncate mt-1">
+                            <h4 className="font-bold text-sm text-[#1F2421] group-hover:text-[#2D4F3E] truncate mt-1 transition-colors">
                               {p.name}
                             </h4>
 
@@ -2919,14 +2979,14 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 <button
                                   type="button"
                                   onClick={(e) => handleAdjustStockQuantity(p, -1, e)}
-                                  className="w-5 h-5 rounded bg-white border border-gray-300 text-gray-700 flex items-center justify-center text-xs font-black shadow-2xs"
+                                  className="w-6 h-6 rounded-lg bg-white border border-gray-300 text-gray-700 flex items-center justify-center text-xs font-black shadow-2xs active:scale-90"
                                 >
                                   -
                                 </button>
                                 <button
                                   type="button"
                                   onClick={(e) => handleAdjustStockQuantity(p, 1, e)}
-                                  className="w-5 h-5 rounded bg-white border border-gray-300 text-gray-700 flex items-center justify-center text-xs font-black shadow-2xs"
+                                  className="w-6 h-6 rounded-lg bg-white border border-gray-300 text-gray-700 flex items-center justify-center text-xs font-black shadow-2xs active:scale-90"
                                 >
                                   +
                                 </button>
@@ -2938,7 +2998,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           <button
                             type="button"
                             onClick={(e) => handleToggleProductFlash(p, e)}
-                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                            className={`inline-flex items-center gap-1.5 px-3 py-2 min-h-[36px] rounded-xl text-xs font-bold transition-all cursor-pointer touch-manipulation ${
                               p.flashDealConfig?.enabled
                                 ? 'bg-amber-100 text-amber-900 border border-amber-300 shadow-2xs'
                                 : 'bg-gray-100 text-gray-500 border border-gray-200'
@@ -2949,41 +3009,41 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           </button>
                         </div>
 
-                        {/* Fila de Botones de Acción */}
+                        {/* Fila de Botones de Acción Táctiles y Accesibles */}
                         <div className="flex items-center justify-between gap-2 pt-2 border-t border-gray-100">
                           <div className="flex items-center gap-1.5">
                             <button
                               type="button"
                               onClick={() => handleDuplicateProduct(p.id)}
-                              className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold transition-colors cursor-pointer"
+                              className="min-h-[38px] flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold transition-colors cursor-pointer touch-manipulation"
                               title="Duplicar como plantilla"
                             >
                               <Copy className="w-3.5 h-3.5" />
-                              <span>Duplicar</span>
+                              <span className="hidden xs:inline">Duplicar</span>
                             </button>
                             <button
                               type="button"
                               onClick={() => handleDeleteProduct(p.id)}
-                              className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold transition-colors cursor-pointer"
+                              className="min-h-[38px] flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold transition-colors cursor-pointer touch-manipulation"
                               title="Eliminar producto"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
-                              <span>Borrar</span>
+                              <span className="hidden xs:inline">Borrar</span>
                             </button>
                           </div>
 
-                          <div className="flex items-center gap-1.5">
+                          <div className="flex items-center gap-2">
                             <button
                               type="button"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleOpenPhotoStudio(p.id);
                               }}
-                              className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold border border-amber-200 transition-colors cursor-pointer"
+                              className="min-h-[42px] flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-bold border border-amber-300 transition-colors cursor-pointer active:scale-95 touch-manipulation"
                               title="Generar 4 tomas de catálogo con IA"
                             >
-                              <Camera className="w-3.5 h-3.5 text-amber-600" />
-                              <span>4 Fotos</span>
+                              <Camera className="w-4 h-4 text-amber-700" />
+                              <span>4 Fotos IA</span>
                             </button>
                             <button
                               type="button"
@@ -2991,9 +3051,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 e.stopPropagation();
                                 handleOpenEditProduct(p);
                               }}
-                              className="flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-xs font-bold shadow-xs active:scale-95 transition-all cursor-pointer"
+                              className="min-h-[42px] px-4 py-2 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-xs font-black shadow-md active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1.5 touch-manipulation"
+                              title="Editar producto"
                             >
-                              <Edit className="w-3.5 h-3.5" />
+                              <Edit className="w-4 h-4" />
                               <span>Editar</span>
                             </button>
                           </div>
@@ -4853,11 +4914,11 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   {/* Botón para abrir Estudio Fotográfico IA */}
                   <button
                     type="button"
-                    onClick={() => handleOpenPhotoStudio(editingProduct?.id || null)}
-                    className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition active:scale-98 cursor-pointer"
+                    onClick={() => handleOpenPhotoStudio(editingProduct?.id || 'new')}
+                    className="w-full py-3 px-3.5 rounded-xl bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-md hover:shadow-amber-500/20 transition active:scale-98 cursor-pointer touch-manipulation"
                   >
-                    <Camera className="w-4 h-4 text-amber-200" />
-                    <span>📸 Abrir Estudio Fotográfico IA (4 Fotos de Catálogo)</span>
+                    <Camera className="w-4 h-4 text-slate-950" />
+                    <span>📸 Generar las 4 Fotos con IA (Frente, Arriba, Costado, Detalle)</span>
                   </button>
 
                   {/* 4 Miniaturas Táctiles del Estándar Oficial de Catálogo */}

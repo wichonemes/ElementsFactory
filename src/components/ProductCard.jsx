@@ -253,6 +253,10 @@ export default function ProductCard({
           <p className="hidden sm:block text-xs text-gray-500 line-clamp-2 leading-relaxed">
             {product.shortDescription}
           </p>
+          <div className="flex items-center gap-1 text-[10px] text-[#2D4F3E] font-bold select-none">
+            <span className="text-[#9E472A]">✨ Personalizable</span>
+            <span className="text-gray-400 font-medium hidden sm:inline">· Si lo piensas, se hace</span>
+          </div>
         </div>
 
         {/* Circulitos de color disponibles */}

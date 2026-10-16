@@ -391,6 +391,24 @@ export default function ProductDetailModal({
                 </p>
               </div>
 
+              {/* LEYENDA DISTINTIVA: Todo puede ser PERSONALIZABLE · Si lo piensas, se hace */}
+              <div className="p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-[#F4F0E8] via-[#FAF7F0] to-[#EAE4D7] border border-[#D4A359]/40 shadow-xs flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-[#2D4F3E] text-white flex items-center justify-center shrink-0 shadow-xs">
+                  <Sparkles className="w-5 h-5 text-[#D4A359]" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-[#1F2421]">
+                      Todo puede ser <span className="text-[#9E472A] bg-amber-100/80 px-1.5 py-0.5 rounded-md font-black">PERSONALIZABLE</span>
+                    </span>
+                  </div>
+                  <p className="text-[10.5px] sm:text-[11.5px] text-[#2D4F3E] font-bold italic tracking-tight mt-0.5 flex items-center gap-1">
+                    <span>✨ Si lo piensas, se hace</span>
+                    <span className="text-gray-400 font-normal not-italic text-[10px] hidden sm:inline">· Taller de Fabricación Artesano</span>
+                  </p>
+                </div>
+              </div>
+
               {/* Price Banner */}
               <div className={`p-4 rounded-2xl border flex items-center justify-between ${
                 isFlashDeal 

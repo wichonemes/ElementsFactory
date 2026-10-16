@@ -539,18 +539,29 @@ app.get('/api/admin/photo-studio/config', requireAdmin, (_req, res) => {
 });
 
 // Generar el paquete completo de 4 imágenes [Contexto, Fondo Blanco, Detalle, Medidas]
-app.post('/api/admin/photo-studio/generate-all', requireAdmin, upload.single('referenceImage'), async (req, res) => {
+// Acepta 1 foto principal o hasta 4 tomas de referencia (frente, arriba, costado, detalle)
+app.post('/api/admin/photo-studio/generate-all', requireAdmin, upload.any(), async (req, res) => {
   try {
-    let inputBuffer = req.file?.buffer;
-    if (!inputBuffer && req.file?.path) {
-      inputBuffer = await fs.promises.readFile(req.file.path);
-    }
-    if (!inputBuffer && req.body.referenceImageUrl) {
-      inputBuffer = await getImageBuffer(req.body.referenceImageUrl);
-    }
+    const files = req.files || (req.file ? [req.file] : []);
 
-    if (!inputBuffer) {
-      return res.status(400).json({ error: 'Debes proporcionar una fotografía de referencia (archivo o URL).' });
+    const findBuffer = async (fieldNames, bodyUrlKey) => {
+      const f = files.find(file => fieldNames.includes(file.fieldname));
+      if (f?.buffer) return f.buffer;
+      if (f?.path) return await fs.promises.readFile(f.path);
+      if (req.body[bodyUrlKey]) return await getImageBuffer(req.body[bodyUrlKey]);
+      return null;
+    };
+
+    let frontBuffer = await findBuffer(['referenceImage', 'referenceFront', 'front', 'image'], 'referenceImageUrl');
+    if (!frontBuffer && files.length > 0) {
+      frontBuffer = files[0].buffer || (files[0].path ? await fs.promises.readFile(files[0].path) : null);
+    }
+    const topBuffer = await findBuffer(['referenceTop', 'top'], 'referenceTopUrl');
+    const sideBuffer = await findBuffer(['referenceSide', 'side'], 'referenceSideUrl');
+    const detailBuffer = await findBuffer(['referenceDetail', 'detail'], 'referenceDetailUrl');
+
+    if (!frontBuffer) {
+      return res.status(400).json({ error: 'Debes proporcionar al menos la fotografía frontal / principal de referencia (archivo o URL).' });
     }
 
     let specifications = {};
@@ -572,7 +583,13 @@ app.post('/api/admin/photo-studio/generate-all', requireAdmin, upload.single('re
     }
 
     const result = await processCatalogStudioPackage({
-      inputBuffer,
+      inputBuffer: frontBuffer,
+      referenceImages: {
+        front: frontBuffer,
+        top: topBuffer,
+        side: sideBuffer,
+        detail: detailBuffer
+      },
       sku: req.body.sku || 'PROD-001',
       productName: req.body.productName || 'Producto Artesano',
       specifications,

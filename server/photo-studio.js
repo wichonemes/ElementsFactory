@@ -367,6 +367,7 @@ export async function generateContextImage(whiteImageBuffer, productData = {}) {
  */
 export async function processCatalogStudioPackage({
   inputBuffer,
+  referenceImages = {},
   sku = 'PROD-001',
   productName = '',
   specifications = {},
@@ -375,16 +376,35 @@ export async function processCatalogStudioPackage({
   const cleanSku = String(sku || 'PROD-001').toLowerCase().replace(/[^a-z0-9_-]/g, '_');
   const timestamp = Date.now();
 
-  // 1. Imagen 2: Fondo Blanco Puro
-  const whiteBuffer = await generateWhiteBackgroundImage(inputBuffer);
+  // Toma frontal/principal como referencia madre
+  const frontBuffer = referenceImages.front || inputBuffer;
+  const topBuffer = referenceImages.top || null;
+  const sideBuffer = referenceImages.side || null;
+  const customDetailBuffer = referenceImages.detail || null;
+
+  // 1. Imagen 2: Fondo Blanco Puro (#FFFFFF) - Se genera primero como referencia madre obligatoria
+  const whiteBuffer = await generateWhiteBackgroundImage(frontBuffer);
   const whiteFilename = `${cleanSku}-white-v${timestamp}.webp`;
   const whiteUrl = await persistProcessedImage(whiteBuffer, whiteFilename);
 
-  // 2. Imagen 3: Detalle Macro (recorte real de Imagen 2)
-  const detailBuffer = await generateDetailMacroImage(whiteBuffer, {
-    cropPosition: options.cropPosition || 'center',
-    zoom: options.zoom || 2.2
-  });
+  // 2. Imagen 3: Detalle Macro (recorte real de Imagen 2 o toma de detalle si el usuario la proveyó)
+  let detailBuffer;
+  if (customDetailBuffer) {
+    // Si el usuario proporcionó una toma de detalle específica, la optimizamos y aplicamos nitidez de macro
+    detailBuffer = await sharp(customDetailBuffer)
+      .rotate()
+      .resize(1000, 1000, { fit: 'cover' })
+      .sharpen({ sigma: 1.5, m1: 1.2, m2: 2.0 })
+      .modulate({ saturation: 1.08, brightness: 1.02 })
+      .webp({ quality: 90, effort: 4 })
+      .toBuffer();
+  } else {
+    // Recorte real y ampliado de la Imagen 2
+    detailBuffer = await generateDetailMacroImage(whiteBuffer, {
+      cropPosition: options.cropPosition || 'center',
+      zoom: options.zoom || 2.2
+    });
+  }
   const detailFilename = `${cleanSku}-detail-v${timestamp}.webp`;
   const detailUrl = await persistProcessedImage(detailBuffer, detailFilename);
 
@@ -403,12 +423,21 @@ export async function processCatalogStudioPackage({
   const dimensionsFilename = `${cleanSku}-dimensions-v${timestamp}.webp`;
   const dimensionsUrl = await persistProcessedImage(dimensionsBuffer, dimensionsFilename);
 
+  // Guardar tomas de referencia adicionales si se proporcionaron para trazabilidad
+  const savedReferenceAngles = {
+    front: true,
+    top: Boolean(topBuffer),
+    side: Boolean(sideBuffer),
+    detail: Boolean(customDetailBuffer)
+  };
+
   // Retornar en el orden estricto de catálogo 1, 2, 3, 4
   return {
     success: true,
     sku,
     productName,
     timestamp,
+    referenceAngles: savedReferenceAngles,
     gallery: [
       contextUrl,    // Slot 0: En Contexto
       whiteUrl,      // Slot 1: Fondo Blanco Puro

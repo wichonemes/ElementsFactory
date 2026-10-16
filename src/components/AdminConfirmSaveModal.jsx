@@ -21,7 +21,7 @@ export default function AdminConfirmSaveModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in text-xs">
+    <div className="fixed inset-0 z-[90] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in text-xs">
       <div
         className="bg-white rounded-3xl border border-[#E8E4DA] shadow-2xl max-w-lg w-full overflow-hidden animate-scale-up"
         role="dialog"

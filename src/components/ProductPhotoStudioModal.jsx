@@ -46,15 +46,27 @@ export default function ProductPhotoStudioModal({
   const [selectedProductId, setSelectedProductId] = useState(initialProductId || '');
   const [selectedProduct, setSelectedProduct] = useState(null);
 
+  // Draft product state (para cuando se usa desde "Nuevo Producto")
+  const [draftName, setDraftName] = useState('Nuevo Producto Artesano');
+  const [draftSku, setDraftSku] = useState('NUEVO-001');
+
   // Technical specifications
   const [dimensions, setDimensions] = useState('');
   const [materials, setMaterials] = useState('');
   const [includes, setIncludes] = useState('');
 
-  // Reference photo
-  const [referenceFile, setReferenceFile] = useState(null);
-  const [referencePreview, setReferencePreview] = useState('');
-  const fileInputRef = useRef(null);
+  // 4 Reference photos (Frente obligatoria para generar, Arriba/Costado/Detalle opcionales)
+  const [refFront, setRefFront] = useState({ file: null, preview: '' });
+  const [refTop, setRefTop] = useState({ file: null, preview: '' });
+  const [refSide, setRefSide] = useState({ file: null, preview: '' });
+  const [refDetail, setRefDetail] = useState({ file: null, preview: '' });
+
+  const refInputRefs = {
+    front: useRef(null),
+    top: useRef(null),
+    side: useRef(null),
+    detail: useRef(null)
+  };
 
   // Generation state
   const [isGenerating, setIsGenerating] = useState(false);
@@ -90,6 +102,23 @@ export default function ProductPhotoStudioModal({
 
   // Load selected product data
   useEffect(() => {
+    if (selectedProductId === 'new') {
+      setSelectedProduct(null);
+      setDraftName('Nuevo Producto Artesano');
+      setDraftSku('NUEVO-' + Date.now().toString().slice(-4));
+      setDimensions('');
+      setMaterials('Polímero PLA / Madera / Cerámica');
+      setIncludes('1 pieza terminada en taller');
+      setGeneratedGallery(['', '', '', '']);
+      setRefFront({ file: null, preview: '' });
+      setRefTop({ file: null, preview: '' });
+      setRefSide({ file: null, preview: '' });
+      setRefDetail({ file: null, preview: '' });
+      setHasUnsavedChanges(false);
+      setStaleSlots({ 0: false, 2: false, 3: false });
+      return;
+    }
+
     const prod = products.find(p => p.id === selectedProductId);
     setSelectedProduct(prod || null);
 
@@ -113,9 +142,9 @@ export default function ProductPhotoStudioModal({
         setGeneratedGallery(['', '', '', '']);
       }
 
-      // Initial reference preview from primary image
+      // Initial reference preview from primary image for front slot
       if (prod.primaryImage || prod.whiteBgImage) {
-        setReferencePreview(prod.whiteBgImage || prod.primaryImage);
+        setRefFront({ file: null, preview: prod.whiteBgImage || prod.primaryImage });
       }
       setHasUnsavedChanges(false);
       setStaleSlots({ 0: false, 2: false, 3: false });
@@ -137,26 +166,50 @@ export default function ProductPhotoStudioModal({
     setTimeout(() => setNotice({ text: '', type: 'info' }), 4500);
   };
 
-  // Handle reference photo selection
-  const handleReferenceFileChange = (e) => {
-    const file = e.target.files?.[0];
+  // Handle angle reference file selection (Frente, Arriba, Costado, Detalle)
+  const handleAngleFileChange = (angleKey, file) => {
     if (!file) return;
-
     if (!file.type.startsWith('image/')) {
       showToast('Por favor selecciona un archivo de imagen válido (JPG, PNG o WebP).', 'error');
       return;
     }
 
-    setReferenceFile(file);
     const objectUrl = URL.createObjectURL(file);
-    setReferencePreview(objectUrl);
-    showToast('Foto de referencia cargada correctamente. Lista para procesar.', 'success');
+    const setterMap = {
+      front: setRefFront,
+      top: setRefTop,
+      side: setRefSide,
+      detail: setRefDetail
+    };
+
+    if (setterMap[angleKey]) {
+      setterMap[angleKey]({ file, preview: objectUrl });
+      const angleLabels = {
+        front: 'Frente (Principal)',
+        top: 'Arriba / Cenital',
+        side: 'Costado / Lateral',
+        detail: 'Detalle / Macro'
+      };
+      showToast(`Toma de ${angleLabels[angleKey] || angleKey} cargada correctamente.`, 'success');
+    }
+  };
+
+  const handleClearAngle = (angleKey) => {
+    const setterMap = {
+      front: setRefFront,
+      top: setRefTop,
+      side: setRefSide,
+      detail: setRefDetail
+    };
+    if (setterMap[angleKey]) {
+      setterMap[angleKey]({ file: null, preview: '' });
+    }
   };
 
   // Generate all 4 images
   const handleGenerateAll = async () => {
-    if (!referenceFile && !referencePreview) {
-      showToast('Sube o selecciona una foto de referencia para comenzar.', 'warning');
+    if (!refFront.file && !refFront.preview) {
+      showToast('Por favor sube o toma al menos la fotografía frontal (principal) de referencia.', 'warning');
       return;
     }
 
@@ -166,14 +219,27 @@ export default function ProductPhotoStudioModal({
 
     try {
       const formData = new FormData();
-      if (referenceFile) {
-        formData.append('referenceImage', referenceFile);
-      } else if (referencePreview) {
-        formData.append('referenceImageUrl', referencePreview);
+      
+      // Foto frontal / principal
+      if (refFront.file) {
+        formData.append('referenceFront', refFront.file);
+        formData.append('referenceImage', refFront.file);
+      } else if (refFront.preview) {
+        formData.append('referenceImageUrl', refFront.preview);
       }
 
-      formData.append('sku', selectedProduct?.sku || 'PROD-001');
-      formData.append('productName', selectedProduct?.name || 'Producto Artesano');
+      // Fotos opcionales de ángulo
+      if (refTop.file) formData.append('referenceTop', refTop.file);
+      else if (refTop.preview) formData.append('referenceTopUrl', refTop.preview);
+
+      if (refSide.file) formData.append('referenceSide', refSide.file);
+      else if (refSide.preview) formData.append('referenceSideUrl', refSide.preview);
+
+      if (refDetail.file) formData.append('referenceDetail', refDetail.file);
+      else if (refDetail.preview) formData.append('referenceDetailUrl', refDetail.preview);
+
+      formData.append('sku', selectedProduct?.sku || selectedProduct?.code || draftSku || 'PROD-001');
+      formData.append('productName', selectedProduct?.name || draftName || 'Producto Artesano');
       formData.append('dimensions', dimensions);
       formData.append('materials', materials);
       formData.append('includes', includes);
@@ -319,15 +385,32 @@ export default function ProductPhotoStudioModal({
 
   // Apply gallery to product
   const handleApplyToProduct = async () => {
-    if (!selectedProduct?.id) {
-      showToast('Selecciona un producto válido primero.', 'error');
-      return;
-    }
-
     // Verify all 4 images are present
     const validCount = generatedGallery.filter(url => Boolean(url)).length;
     if (validCount < 4) {
       showToast(`El paquete debe tener las 4 tomas completas. Actualmente hay ${validCount} de 4.`, 'warning');
+      return;
+    }
+
+    // Modo Borrador / Nuevo Producto: Pasar directamente al formulario de creación
+    if (selectedProductId === 'new' || !selectedProduct?.id) {
+      if (onProductUpdated) {
+        onProductUpdated({
+          id: 'new',
+          isNew: true,
+          name: draftName,
+          sku: draftSku,
+          primaryImage: generatedGallery[0],
+          whiteBgImage: generatedGallery[1],
+          detailImage: generatedGallery[2],
+          measureImage: generatedGallery[3],
+          gallery: generatedGallery,
+          specifications: { dimensions, material: materials, includes }
+        });
+      }
+      setHasUnsavedChanges(false);
+      showToast('¡Las 4 fotos se han aplicado al borrador del producto! Puedes guardar el producto en el editor.', 'success');
+      setTimeout(() => onClose(), 800);
       return;
     }
 
@@ -399,7 +482,7 @@ export default function ProductPhotoStudioModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/80 backdrop-blur-md flex items-start justify-center p-2 sm:p-4 md:p-6 animate-fadeIn">
+    <div className="fixed inset-0 z-[80] overflow-y-auto bg-slate-950/80 backdrop-blur-md flex items-start justify-center p-2 sm:p-4 md:p-6 animate-fadeIn">
       <div className="relative w-full max-w-6xl bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden my-4 sm:my-8 text-slate-100">
         
         {/* Header */}
@@ -411,14 +494,14 @@ export default function ProductPhotoStudioModal({
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-lg sm:text-xl font-bold tracking-tight text-white">
-                  Estudio Fotográfico de Catálogo (4 Tomas)
+                  Estudio Fotográfico de Catálogo (4 Tomas IA)
                 </h2>
                 <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-950/80 border border-emerald-600/50 text-emerald-300">
                   <Sparkles className="w-3 h-3" /> Sharp Nativo · $0.00 MXN
                 </span>
               </div>
               <p className="text-xs text-slate-400">
-                1 foto de referencia → 4 tomas estándar profesionales (1000 × 1000 WebP)
+                1 a 4 fotos de referencia (celular o PC) → 4 tomas profesionales de catálogo en 1000 × 1000 WebP
               </p>
             </div>
           </div>
@@ -467,21 +550,54 @@ export default function ProductPhotoStudioModal({
               
               {/* Product Select */}
               <div className="lg:col-span-5 space-y-2">
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
-                  Producto de Catálogo a Fotografiar
-                </label>
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
+                    Producto Destino del Catálogo
+                  </label>
+                  {selectedProductId === 'new' && (
+                    <span className="text-[10px] font-bold text-amber-400 bg-amber-950/60 border border-amber-700/60 px-2 py-0.2 rounded-full">
+                      Modo Borrador / Nuevo
+                    </span>
+                  )}
+                </div>
+
                 <select
                   value={selectedProductId}
                   onChange={(e) => setSelectedProductId(e.target.value)}
                   className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500 transition"
                 >
+                  <option value="new">➕ Nuevo Producto en Creación (Borrador)</option>
                   {products.map(p => (
                     <option key={p.id} value={p.id}>
                       {p.name} ({p.sku || p.code || 'Sin SKU'}) - ${p.price?.toLocaleString('es-MX')} MXN
                     </option>
                   ))}
                 </select>
-                {selectedProduct && (
+
+                {selectedProductId === 'new' ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                    <div>
+                      <label className="text-[10px] font-bold text-slate-400 uppercase">Nombre temporal</label>
+                      <input
+                        type="text"
+                        value={draftName}
+                        onChange={e => setDraftName(e.target.value)}
+                        placeholder="Ej. Bandeja Vaciabolsillos"
+                        className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-slate-400 uppercase">SKU temporal</label>
+                      <input
+                        type="text"
+                        value={draftSku}
+                        onChange={e => setDraftSku(e.target.value)}
+                        placeholder="Ej. HOG-3D-001"
+                        className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white font-mono"
+                      />
+                    </div>
+                  </div>
+                ) : selectedProduct && (
                   <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400 pt-1">
                     <span className="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300 font-mono">
                       SKU: {selectedProduct.sku || 'N/A'}
@@ -511,7 +627,7 @@ export default function ProductPhotoStudioModal({
                     placeholder="Ej. 22 × 14 × 3.5 cm"
                     className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500"
                   />
-                  <span className="text-[10px] text-slate-500">Para cotas numéricas</span>
+                  <span className="text-[10px] text-slate-500">Cotas numéricas y escala</span>
                 </div>
 
                 <div className="space-y-1">
@@ -546,117 +662,190 @@ export default function ProductPhotoStudioModal({
             </div>
           </div>
 
-          {/* Section 2: Reference Photo & Generate CTA */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
-            
-            {/* Upload Box */}
-            <div className="lg:col-span-5 bg-slate-950/40 border-2 border-dashed border-slate-700 hover:border-amber-500/70 rounded-2xl p-4 flex flex-col justify-between transition group">
+          {/* Section 2: 4 Tomas de Referencia Multi-Ángulo (Frente obligatoria, Arriba/Costado/Detalle opcionales) */}
+          <div className="space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-                    <Upload className="w-3.5 h-3.5 text-amber-400" /> 1 Foto de Referencia Original
-                  </span>
-                  <span className="text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded">
-                    Móvil o PC
-                  </span>
-                </div>
-                <p className="text-xs text-slate-400 mb-3">
-                  Puede estar mal iluminada, inclinada o tomada con celular. El motor la endereza, centra sobre fondo blanco puro y genera las 4 tomas.
+                <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                  <Camera className="w-4 h-4 text-amber-400" />
+                  <span>Tomas de Referencia del Producto (Toma fotos o sube archivos)</span>
+                </h3>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  La foto de <strong>Frente</strong> es la principal y obligatoria para generar. Las tomas de <strong>Arriba</strong>, <strong>Costado</strong> y <strong>Detalle</strong> son 100% opcionales pero le dan a la IA referencias dimensionales mucho más exactas.
                 </p>
-
-                {referencePreview ? (
-                  <div className="relative rounded-xl overflow-hidden border border-slate-700 bg-slate-900 max-h-44 flex items-center justify-center">
-                    <img
-                      src={referencePreview}
-                      alt="Referencia"
-                      className="max-h-44 object-contain"
-                    />
-                    <button
-                      onClick={() => {
-                        setReferenceFile(null);
-                        setReferencePreview('');
-                      }}
-                      className="absolute top-2 right-2 p-1.5 bg-rose-950/80 hover:bg-rose-900 text-rose-300 rounded-lg border border-rose-700 transition"
-                      title="Quitar foto"
-                    >
-                      <X className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                ) : (
-                  <div
-                    onClick={() => fileInputRef.current?.click()}
-                    className="cursor-pointer py-8 px-4 flex flex-col items-center justify-center text-center bg-slate-900/60 rounded-xl hover:bg-slate-800/60 transition border border-slate-800"
-                  >
-                    <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-2 group-hover:scale-105 transition">
-                      <Camera className="w-6 h-6" />
-                    </div>
-                    <span className="text-xs font-semibold text-slate-200">
-                      Toma una foto o selecciónala de tu galería
-                    </span>
-                    <span className="text-[11px] text-slate-500 mt-1">
-                      JPG, PNG o WebP hasta 15MB
-                    </span>
-                  </div>
-                )}
-
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  capture="environment"
-                  className="hidden"
-                  onChange={handleReferenceFileChange}
-                />
               </div>
-
-              <div className="pt-3 flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="flex-1 py-1.5 px-3 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center justify-center gap-1.5 transition"
-                >
-                  <Camera className="w-3.5 h-3.5 text-amber-400" />
-                  {referencePreview ? 'Cambiar foto de referencia' : 'Cargar foto'}
-                </button>
-                {selectedProduct?.primaryImage && !referencePreview && (
-                  <button
-                    type="button"
-                    onClick={() => setReferencePreview(selectedProduct.primaryImage)}
-                    className="py-1.5 px-3 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition"
-                    title="Usar imagen existente del producto"
-                  >
-                    Usar actual
-                  </button>
-                )}
-              </div>
+              <span className="text-[11px] font-bold text-amber-300 bg-amber-950/60 border border-amber-800/70 px-2.5 py-1 rounded-lg shrink-0 self-start sm:self-auto">
+                📱 Toma foto directa con cámara o sube desde galería
+              </span>
             </div>
 
-            {/* Action Card & Generation Status */}
-            <div className="lg:col-span-7 bg-gradient-to-br from-slate-900 via-slate-900 to-amber-950/20 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between">
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-                    <Sparkles className="w-4 h-4" /> Proceso Automatizado en 4 Pasos
-                  </span>
-                  <span className="text-[11px] px-2 py-0.5 rounded bg-emerald-950/90 text-emerald-300 border border-emerald-800">
-                    Orden Estricto: 2 → 3 → 1 → 4
-                  </span>
-                </div>
+            {/* Grid de 4 Ángulos de Referencia */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {[
+                {
+                  key: 'front',
+                  title: '1. Frente (Principal)',
+                  icon: Camera,
+                  state: refFront,
+                  isRequired: true,
+                  badge: 'Obligatoria',
+                  badgeColor: 'bg-emerald-950 text-emerald-300 border-emerald-700',
+                  desc: 'Determina el diseño, color y silueta sobre fondo blanco puro.'
+                },
+                {
+                  key: 'top',
+                  title: '2. Arriba / Cenital',
+                  icon: Eye,
+                  state: refTop,
+                  isRequired: false,
+                  badge: 'Opcional',
+                  badgeColor: 'bg-slate-800 text-slate-300 border-slate-700',
+                  desc: 'Muestra vista superior, grosor, cavidades y compartimentos.'
+                },
+                {
+                  key: 'side',
+                  title: '3. Costado / Lateral',
+                  icon: Sliders,
+                  state: refSide,
+                  isRequired: false,
+                  badge: 'Opcional',
+                  badgeColor: 'bg-slate-800 text-slate-300 border-slate-700',
+                  desc: 'Referencia de perfil, volumen y altura real.'
+                },
+                {
+                  key: 'detail',
+                  title: '4. Detalle / Textura',
+                  icon: ZoomIn,
+                  state: refDetail,
+                  isRequired: false,
+                  badge: 'Opcional',
+                  badgeColor: 'bg-slate-800 text-slate-300 border-slate-700',
+                  desc: 'Primer plano de acabado, textura, grabado o ensamble.'
+                }
+              ].map(angle => {
+                const AngleIcon = angle.icon;
+                const hasPhoto = Boolean(angle.state.preview || angle.state.file);
 
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
-                  {SLOT_CONFIG.map(slot => (
-                    <div key={slot.index} className="bg-slate-950/60 border border-slate-800 rounded-lg p-2 text-center">
-                      <div className="text-[10px] font-bold text-amber-400">Paso {slot.number}</div>
-                      <div className="text-xs font-semibold text-slate-200 truncate">{slot.slotName}</div>
-                      <div className="text-[9px] text-slate-500 mt-0.5">1000×1000 px</div>
+                return (
+                  <div
+                    key={angle.key}
+                    className={`bg-slate-950/60 border rounded-2xl p-3 flex flex-col justify-between transition group relative ${
+                      hasPhoto
+                        ? 'border-emerald-600/70 shadow-sm'
+                        : angle.isRequired
+                        ? 'border-amber-500/60 border-dashed'
+                        : 'border-slate-800 border-dashed hover:border-slate-700'
+                    }`}
+                  >
+                    <div>
+                      {/* Encabezado del ángulo */}
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                          <AngleIcon className={`w-3.5 h-3.5 ${hasPhoto ? 'text-emerald-400' : 'text-amber-400'}`} />
+                          <span>{angle.title}</span>
+                        </span>
+                        <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded border ${
+                          hasPhoto ? 'bg-emerald-950 text-emerald-300 border-emerald-700' : angle.badgeColor
+                        }`}>
+                          {hasPhoto ? '✓ Lista' : angle.badge}
+                        </span>
+                      </div>
+
+                      {/* Visor / Subida */}
+                      {hasPhoto ? (
+                        <div className="relative rounded-xl overflow-hidden border border-slate-700 bg-slate-900 aspect-square flex items-center justify-center">
+                          <img
+                            src={angle.state.preview}
+                            alt={angle.title}
+                            className="w-full h-full object-contain p-2"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleClearAngle(angle.key)}
+                            className="absolute top-2 right-2 p-1.5 bg-rose-950/90 hover:bg-rose-900 text-rose-300 rounded-lg border border-rose-700 transition cursor-pointer"
+                            title="Quitar esta foto"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ) : (
+                        <div
+                          onClick={() => refInputRefs[angle.key].current?.click()}
+                          className="cursor-pointer py-6 px-3 flex flex-col items-center justify-center text-center bg-slate-900/60 rounded-xl hover:bg-slate-800/60 transition border border-slate-800 aspect-square"
+                        >
+                          <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-2 group-hover:scale-110 transition ${
+                            angle.isRequired
+                              ? 'bg-amber-500/10 border border-amber-500/30 text-amber-400'
+                              : 'bg-slate-800 border border-slate-700 text-slate-400'
+                          }`}>
+                            <Camera className="w-5 h-5" />
+                          </div>
+                          <span className="text-[11px] font-bold text-slate-300 leading-snug">
+                            {angle.isRequired ? 'Tomar o subir foto de frente' : 'Tomar o subir ángulo'}
+                          </span>
+                          <span className="text-[9.5px] text-slate-500 mt-1">
+                            {angle.desc}
+                          </span>
+                        </div>
+                      )}
+
+                      <input
+                        ref={refInputRefs[angle.key]}
+                        type="file"
+                        accept="image/*"
+                        capture="environment"
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) handleAngleFileChange(angle.key, file);
+                        }}
+                      />
                     </div>
-                  ))}
-                </div>
 
-                {/* Progress bar when generating */}
+                    {/* Acciones del ángulo */}
+                    <div className="pt-2.5 flex items-center gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => refInputRefs[angle.key].current?.click()}
+                        className="flex-1 py-1.5 px-2 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center justify-center gap-1 transition cursor-pointer"
+                      >
+                        <Camera className="w-3 h-3 text-amber-400" />
+                        <span>{hasPhoto ? 'Cambiar' : 'Tomar / Subir'}</span>
+                      </button>
+
+                      {angle.key === 'front' && selectedProduct?.primaryImage && !hasPhoto && (
+                        <button
+                          type="button"
+                          onClick={() => setRefFront({ file: null, preview: selectedProduct.primaryImage })}
+                          className="py-1.5 px-2 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition cursor-pointer shrink-0"
+                          title="Usar imagen existente de la tienda"
+                        >
+                          Usar actual
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Barra de Disparo para Generación de las 4 Tomas */}
+            <div className="bg-gradient-to-br from-slate-900 via-slate-900 to-amber-950/30 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="space-y-1 text-center md:text-left">
+                <div className="flex items-center justify-center md:justify-start gap-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                    <Sparkles className="w-4 h-4" /> Flujo Oficial de Fabricación en 4 Tomas
+                  </span>
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 font-bold">
+                    Orden: 2 → 3 → 1 → 4
+                  </span>
+                </div>
+                <p className="text-xs text-slate-400">
+                  Crea las 4 tomas profesionales listas para catálogo: En Contexto, Fondo Blanco #FFFFFF, Detalle Macro y Medidas con tarjeta de escala (8.6 × 5.4 cm).
+                </p>
                 {isGenerating && (
-                  <div className="space-y-2 bg-slate-950/80 border border-amber-500/30 rounded-xl p-3 my-2 animate-pulse">
-                    <div className="flex justify-between text-xs font-medium text-amber-300">
+                  <div className="pt-2 space-y-1.5">
+                    <div className="flex justify-between text-xs font-bold text-amber-300">
                       <span>{generationStep}</span>
                       <span>{generationProgress}%</span>
                     </div>
@@ -670,27 +859,26 @@ export default function ProductPhotoStudioModal({
                 )}
               </div>
 
-              {/* Generate CTA Button */}
-              <div className="pt-3 flex flex-col sm:flex-row items-center gap-3">
+              <div className="shrink-0 w-full md:w-auto">
                 <button
                   type="button"
-                  disabled={isGenerating || (!referenceFile && !referencePreview)}
+                  disabled={isGenerating || (!refFront.file && !refFront.preview)}
                   onClick={handleGenerateAll}
-                  className={`w-full sm:flex-1 py-3 px-5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-xl transition ${
-                    isGenerating || (!referenceFile && !referencePreview)
+                  className={`w-full md:w-auto py-3 px-6 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xl transition cursor-pointer ${
+                    isGenerating || (!refFront.file && !refFront.preview)
                       ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
-                      : 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 hover:shadow-amber-500/20 active:scale-[0.99]'
+                      : 'bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 hover:shadow-amber-500/20 active:scale-95'
                   }`}
                 >
                   {isGenerating ? (
                     <>
                       <RefreshCw className="w-4 h-4 animate-spin text-slate-950" />
-                      Generando las 4 tomas de catálogo...
+                      <span>Generando las 4 tomas de catálogo...</span>
                     </>
                   ) : (
                     <>
                       <Sparkles className="w-4 h-4" />
-                      Generar las 4 imágenes de catálogo
+                      <span>Generar las 4 imágenes de catálogo</span>
                     </>
                   )}
                 </button>
@@ -952,7 +1140,7 @@ export default function ProductPhotoStudioModal({
 
       {/* AI Transparency & Config Modal */}
       {showAiModal && (
-        <div className="fixed inset-0 z-60 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[95] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl text-slate-200">
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <h3 className="text-base font-bold text-white flex items-center gap-2">

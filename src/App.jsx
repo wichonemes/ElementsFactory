@@ -1142,11 +1142,13 @@ export default function App() {
       />
 
       {/* Barra Inferior Fija para Celular estilo Mercado Libre (5 Botones Nativos) */}
-      <MobileBottomNav
-        activeTab={mobileNavTab}
-        onSelectTab={handleMobileNavTab}
-        cartCount={totalCartCount}
-      />
+      {!isAdminOpen && !selectedProduct && (
+        <MobileBottomNav
+          activeTab={mobileNavTab}
+          onSelectTab={handleMobileNavTab}
+          cartCount={totalCartCount}
+        />
+      )}
 
       {/* Vista de Categorías Master-Detail para Celular estilo Mercado Libre */}
       <MobileCategoriesModal
@@ -1169,7 +1171,11 @@ export default function App() {
           setIsMoreMenuOpen(false);
           setMobileNavTab('home');
         }}
-        onOpenAdmin={() => setIsAdminOpen(true)}
+        onOpenAdmin={() => {
+          setIsAdminOpen(true);
+          setIsMoreMenuOpen(false);
+          setMobileNavTab('home');
+        }}
         onOpenArcade={handleOpenArcade}
         onOpenCalculator={() => handleOpenCalculator()}
         onOpenWhatsApp={handleOpenWhatsAppDirect}
