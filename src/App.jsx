@@ -20,10 +20,9 @@ import CatalogBottomNav from './components/CatalogBottomNav';
 import WorkshopArcadeModal from './components/WorkshopArcadeModal';
 import MobileMercadoLibreHeader from './components/MobileMercadoLibreHeader';
 import MobileBannerCarousel from './components/MobileBannerCarousel';
-import MobileFlashDealsSection from './components/MobileFlashDealsSection';
 import MobileBottomNav from './components/MobileBottomNav';
 import MobileCategoriesModal from './components/MobileCategoriesModal';
-import MobileMoreMenuModal from './components/MobileMoreMenuModal';
+import MobileSidebarDrawer from './components/MobileSidebarDrawer';
 import { useFlashDeal } from './hooks/useFlashDeal';
 import { Home, Briefcase, CalendarHeart, Sparkles, ChevronRight, ShoppingBag, Layers, MessageCircle, Gift, RotateCw, Calendar, AlertTriangle, MapPin, Truck } from 'lucide-react';
 import { formatServiceDate } from './utils/serviceStatus';
@@ -73,8 +72,8 @@ export default function App() {
   const [calculatorProduct, setCalculatorProduct] = useState(null);
   const [campaignsConfig, setCampaignsConfig] = useState(null);
   const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false);
-  const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
-  const [mobileNavTab, setMobileNavTab] = useState('home');
+  const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(() => typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('menu'));
+  const [mobileNavTab, setMobileNavTab] = useState(() => (typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('menu')) ? 'menu' : 'home');
 
   // Sync Cart to localStorage
   useEffect(() => {
@@ -208,8 +207,13 @@ export default function App() {
   const filteredProducts = useMemo(() => {
     return products.filter(p => {
       // Area / World filter
-      if (activeWorld !== 'all' && (!p.worlds || !p.worlds.includes(activeWorld))) {
-        return false;
+      if (activeWorld !== 'all') {
+        if (activeWorld === 'flash') {
+          const hasDiscount = flashDeal?.isProductOnFlashDeal?.(p.id) || p.flashDealConfig?.discountPercent > 0 || (p.regularPrice && p.regularPrice > p.price);
+          if (!hasDiscount) return false;
+        } else if (!p.worlds || !p.worlds.includes(activeWorld)) {
+          return false;
+        }
       }
       // Category filter
       if (selectedCategory !== 'all' && (!p.categories || !p.categories.includes(selectedCategory))) {
@@ -584,9 +588,7 @@ export default function App() {
       setIsCategoriesModalOpen(true);
     } else if (tab === 'cart') {
       setIsCartOpen(true);
-    } else if (tab === 'arcade') {
-      handleOpenArcade('play');
-    } else if (tab === 'more') {
+    } else if (tab === 'menu' || tab === 'more') {
       setIsMoreMenuOpen(true);
     }
   };
@@ -628,15 +630,7 @@ export default function App() {
         onSelectWorld={handleSelectWorld}
         onOpenCart={() => setIsCartOpen(true)}
         cartCount={totalCartCount}
-        onOpenWhatsApp={handleOpenWhatsAppDirect}
-        onOpenCalculator={() => handleOpenCalculator()}
-        onOpenArcade={() => handleOpenArcade('play')}
-        onOpenFlashDeals={() => {
-          setActiveWorld('all');
-          setViewMode('catalog');
-          const el = document.getElementById('catalogo-section');
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }}
+        onToggleSidebar={() => setIsMoreMenuOpen(true)}
         settings={settings}
       />
 
@@ -686,19 +680,13 @@ export default function App() {
         </div>
       ) : null}
 
-      {/* VISTA MÓVIL ESTILO MERCADO LIBRE: Banner Compacto + Cortinilla + Ofertas Relámpago */}
+      {/* VISTA MÓVIL ESTILO MERCADO LIBRE: Banner Compacto + Cortinilla */}
       {activeWorld === 'all' && !searchQuery && (
         <div className="md:hidden">
           <MobileBannerCarousel
             slides={mobileSlides}
             onSelectSlide={handleSelectWorld}
             settings={settings}
-          />
-          <MobileFlashDealsSection
-            products={products}
-            flashDeal={flashDeal}
-            onSelectProduct={(p) => setSelectedProduct(p)}
-            onAddToCart={handleAddToCart}
           />
         </div>
       )}
@@ -1131,8 +1119,8 @@ export default function App() {
         onSelectTechnique={setSelectedTechnique}
       />
 
-      {/* Menú 'Más' para Celular estilo Mercado Libre */}
-      <MobileMoreMenuModal
+      {/* Barra Lateral Deslizable para Móviles (Drawer con Cotizador, Arcade, Catálogo, WhatsApp y Admin) */}
+      <MobileSidebarDrawer
         isOpen={isMoreMenuOpen}
         onClose={() => {
           setIsMoreMenuOpen(false);
@@ -1142,7 +1130,9 @@ export default function App() {
         onOpenArcade={handleOpenArcade}
         onOpenCalculator={() => handleOpenCalculator()}
         onOpenWhatsApp={handleOpenWhatsAppDirect}
-        onSelectPackages={handleSelectPackages}
+        onSelectWorld={handleSelectWorld}
+        onOpenCart={() => setIsCartOpen(true)}
+        cartCount={totalCartCount}
         settings={settings}
       />
 

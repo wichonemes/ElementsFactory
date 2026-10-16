@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Eye, ArrowUpRight, Plus, MessageCircle, Sparkles, Layers, Image as ImageIcon, Calculator, ShoppingBag, Flame, Clock } from 'lucide-react';
+import { Eye, ArrowUpRight, Plus, MessageCircle, Sparkles, Layers, Image as ImageIcon, Calculator, ShoppingBag, Flame, Clock, Zap } from 'lucide-react';
 import TemuUrgencyModule from './TemuUrgencyModule';
 import { getFilamentColor, getProductColorOptions } from '../utils/colorUtils';
 
@@ -52,20 +52,24 @@ export default function ProductCard({
       );
     }
 
-    if (isFlashDeal && product.price) {
+    if ((isFlashDeal || product.flashDealConfig?.discountPercent > 0) && product.price) {
       const discountPercent = product.flashDealConfig?.discountPercent || productTime?.discountPercent || flashDeal?.discountPercent || 20;
       const flashPrice = Math.round(product.price * (1 - discountPercent / 100));
       return (
         <div className="flex flex-col">
-          <div className="flex items-center gap-1.5">
-            <span className="text-xs text-gray-400 line-through font-semibold">${product.price} MXN</span>
-            <span className="text-[10px] font-black text-white bg-[#9E472A] px-1.5 py-0.2 rounded shadow-2xs">
-              -{discountPercent}% FLASH
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <span className="text-[10px] font-black text-white bg-emerald-600 px-1.5 py-0.2 rounded shadow-2xs">
+              {discountPercent}% OFF
+            </span>
+            <span className="text-xs text-gray-400 line-through font-semibold">${product.price}</span>
+            <span className="text-[9px] font-bold text-amber-700 bg-amber-50 px-1 rounded flex items-center gap-0.5">
+              <Zap className="w-2.5 h-2.5 fill-amber-500 text-amber-500" />
+              <span>Flash</span>
             </span>
           </div>
-          <div className="flex items-baseline gap-1">
-            <span className="text-base sm:text-lg font-black text-[#9E472A] font-heading">${flashPrice}</span>
-            <span className="text-xs text-gray-500 font-bold">MXN</span>
+          <div className="flex items-baseline gap-1 mt-0.5">
+            <span className="text-base sm:text-lg font-black text-stone-900 font-heading">${flashPrice}</span>
+            <span className="text-xs text-gray-500 font-medium">MXN</span>
           </div>
         </div>
       );
@@ -212,6 +216,22 @@ export default function ProductCard({
         </div>
 
 
+        {/* Quick Add Floating Button estilo Mercado Libre */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (onAddToCart) onAddToCart(product, 1);
+            else if (onQuickAdd) onQuickAdd(product);
+            else handleOpenDetailModal(e);
+          }}
+          className="absolute bottom-2 right-2 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/95 hover:bg-white text-emerald-800 border border-gray-200/90 shadow-md flex items-center justify-center active:scale-90 hover:scale-105 transition-all cursor-pointer z-10"
+          title="Agregar a cotización"
+          aria-label="Agregar"
+        >
+          <Plus className="w-4 h-4 stroke-[2.5]" />
+        </button>
+
         {/* Quick View Overlay on Desktop */}
         <div className="absolute inset-0 bg-black/15 opacity-0 group-hover:opacity-100 transition-opacity hidden sm:flex items-center justify-center pointer-events-none">
           <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-[#1F2421] text-xs font-bold shadow-lg transform -translate-y-1 group-hover:translate-y-0 transition-all">
@@ -287,19 +307,27 @@ export default function ProductCard({
         )}
 
         {/* Price & Circular '+' Action */}
-        <div className="pt-2 border-t border-[#E8E4DA]/60 flex items-center justify-between">
-          <div>
-            {formatPrice()}
+        <div className="pt-2 border-t border-[#E8E4DA]/60 space-y-1">
+          <div className="flex items-center justify-between">
+            <div>
+              {formatPrice()}
+            </div>
+
+            <button
+              onClick={handleOpenDetailModal}
+              className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#EBF5EE] border border-[#2D4F3E]/30 text-[#2D4F3E] hover:bg-[#2D4F3E] hover:text-white shadow-2xs hover:shadow-md flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 cursor-pointer group/btn shrink-0"
+              title="Agregar / Ver opciones"
+              aria-label="Agregar / Ver opciones"
+            >
+              <Plus className="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5 stroke-[2.8] text-[#2D4F3E] group-hover/btn:text-white transition-all duration-200 group-hover/btn:rotate-90" />
+            </button>
           </div>
 
-          <button
-            onClick={handleOpenDetailModal}
-            className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#EBF5EE] border border-[#2D4F3E]/30 text-[#2D4F3E] hover:bg-[#2D4F3E] hover:text-white shadow-2xs hover:shadow-md flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 cursor-pointer group/btn shrink-0"
-            title="Agregar / Ver opciones"
-            aria-label="Agregar / Ver opciones"
-          >
-            <Plus className="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5 stroke-[2.8] text-[#2D4F3E] group-hover/btn:text-white transition-all duration-200 group-hover/btn:rotate-90" />
-          </button>
+          {/* Sello de Taller & Envío Seguro estilo Mercado Libre */}
+          <div className="text-[10px] text-emerald-700 font-bold flex items-center gap-1 pt-0.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+            <span className="truncate">Taller SLP · Envío Seguro</span>
+          </div>
         </div>
       </div>
 

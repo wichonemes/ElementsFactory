@@ -1,21 +1,21 @@
 import React from 'react';
-import { Home, LayoutGrid, ShoppingBag, Gamepad2, Menu } from 'lucide-react';
+import { Home, LayoutGrid, ShoppingBag, Menu } from 'lucide-react';
 
 export default function MobileBottomNav({
-  activeTab = 'home', // 'home' | 'categories' | 'cart' | 'arcade' | 'more'
+  activeTab = 'home', // 'home' | 'categories' | 'cart' | 'menu'
   onSelectTab,
   cartCount = 0
 }) {
   return (
     <nav 
       aria-label="Navegación inferior móvil"
-      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-md border-t border-gray-200 h-14 flex items-center justify-around px-2 shadow-[0_-2px_10px_rgba(0,0,0,0.06)]"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/98 backdrop-blur-md border-t border-gray-200 h-14 flex items-center justify-around px-2 shadow-[0_-2px_10px_rgba(0,0,0,0.06)] select-none"
     >
       {/* 1. Inicio */}
       <button
         type="button"
         onClick={() => onSelectTab('home')}
-        className={`flex-1 flex flex-col items-center justify-center py-1 transition-all ${
+        className={`flex-1 flex flex-col items-center justify-center py-1 transition-all cursor-pointer ${
           activeTab === 'home' ? 'text-[#2D4F3E]' : 'text-gray-400 hover:text-gray-600'
         }`}
       >
@@ -29,7 +29,7 @@ export default function MobileBottomNav({
       <button
         type="button"
         onClick={() => onSelectTab('categories')}
-        className={`flex-1 flex flex-col items-center justify-center py-1 transition-all ${
+        className={`flex-1 flex flex-col items-center justify-center py-1 transition-all cursor-pointer ${
           activeTab === 'categories' ? 'text-[#2D4F3E]' : 'text-gray-400 hover:text-gray-600'
         }`}
       >
@@ -43,7 +43,7 @@ export default function MobileBottomNav({
       <button
         type="button"
         onClick={() => onSelectTab('cart')}
-        className={`flex-1 flex flex-col items-center justify-center py-1 relative transition-all ${
+        className={`flex-1 flex flex-col items-center justify-center py-1 relative transition-all cursor-pointer ${
           activeTab === 'cart' ? 'text-[#2D4F3E]' : 'text-gray-400 hover:text-gray-600'
         }`}
       >
@@ -60,31 +60,17 @@ export default function MobileBottomNav({
         </span>
       </button>
 
-      {/* 4. Arcade del Taller */}
+      {/* 4. Menú de Taller (Abre la barra lateral con Cotizador, Arcade, Catálogo, WhatsApp, Admin) */}
       <button
         type="button"
-        onClick={() => onSelectTab('arcade')}
-        className={`flex-1 flex flex-col items-center justify-center py-1 transition-all ${
-          activeTab === 'arcade' ? 'text-[#2D4F3E]' : 'text-gray-400 hover:text-gray-600'
+        onClick={() => onSelectTab('menu')}
+        className={`flex-1 flex flex-col items-center justify-center py-1 transition-all cursor-pointer ${
+          activeTab === 'menu' ? 'text-[#2D4F3E]' : 'text-gray-400 hover:text-gray-600'
         }`}
       >
-        <Gamepad2 className={`w-5 h-5 ${activeTab === 'arcade' ? 'stroke-[2.5]' : ''}`} />
-        <span className={`text-[10px] font-bold mt-0.5 ${activeTab === 'arcade' ? 'text-[#2D4F3E]' : 'text-gray-500'}`}>
-          Arcade
-        </span>
-      </button>
-
-      {/* 5. Más (Menú de Perfil / Soporte) */}
-      <button
-        type="button"
-        onClick={() => onSelectTab('more')}
-        className={`flex-1 flex flex-col items-center justify-center py-1 transition-all ${
-          activeTab === 'more' ? 'text-[#2D4F3E]' : 'text-gray-400 hover:text-gray-600'
-        }`}
-      >
-        <Menu className={`w-5 h-5 ${activeTab === 'more' ? 'stroke-[2.5]' : ''}`} />
-        <span className={`text-[10px] font-bold mt-0.5 ${activeTab === 'more' ? 'text-[#2D4F3E]' : 'text-gray-500'}`}>
-          Más
+        <Menu className={`w-5 h-5 ${activeTab === 'menu' ? 'stroke-[2.5]' : ''}`} />
+        <span className={`text-[10px] font-bold mt-0.5 ${activeTab === 'menu' ? 'text-[#2D4F3E]' : 'text-gray-500'}`}>
+          Menú
         </span>
       </button>
     </nav>
