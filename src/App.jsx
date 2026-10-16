@@ -1038,9 +1038,9 @@ export default function App() {
         isArcadeOpen={isArcadeOpen}
       />
 
-      {/* Botón Flotante Sutil: Easter Egg Arcade del Taller (visible en móvil y escritorio) */}
+      {/* Botón Flotante Sutil: Easter Egg Arcade del Taller (sólo escritorio, en móvil está en el Bottom Nav) */}
       {settings?.arcadeConfig?.enabled !== false && settings?.arcadeConfig?.showFloatingEasterEgg !== false && !isArcadeOpen && (
-        <div className="fixed bottom-20 sm:bottom-5 left-3 sm:left-4 z-40">
+        <div className="hidden md:block fixed bottom-5 left-4 z-40">
           <button
             type="button"
             onClick={() => handleOpenArcade('play')}
