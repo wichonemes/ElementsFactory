@@ -12,6 +12,13 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import multer from 'multer';
 import { db } from './db.js';
+import {
+  processCatalogStudioPackage,
+  processManualSlotImage,
+  regenerateSingleSlot,
+  getAiStudioConfig,
+  getImageBuffer
+} from './photo-studio.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -517,6 +524,230 @@ app.delete('/api/admin/products/:id', requireAdmin, (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+// ==========================================
+// ESTUDIO FOTOGRÁFICO DE CATÁLOGO (4 TOMAS IA / SHARP)
+// ==========================================
+
+// Configuración y transparencia de motor
+app.get('/api/admin/photo-studio/config', requireAdmin, (_req, res) => {
+  try {
+    res.json(getAiStudioConfig());
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Generar el paquete completo de 4 imágenes [Contexto, Fondo Blanco, Detalle, Medidas]
+app.post('/api/admin/photo-studio/generate-all', requireAdmin, upload.single('referenceImage'), async (req, res) => {
+  try {
+    let inputBuffer = req.file?.buffer;
+    if (!inputBuffer && req.file?.path) {
+      inputBuffer = await fs.promises.readFile(req.file.path);
+    }
+    if (!inputBuffer && req.body.referenceImageUrl) {
+      inputBuffer = await getImageBuffer(req.body.referenceImageUrl);
+    }
+
+    if (!inputBuffer) {
+      return res.status(400).json({ error: 'Debes proporcionar una fotografía de referencia (archivo o URL).' });
+    }
+
+    let specifications = {};
+    if (typeof req.body.specifications === 'string') {
+      try { specifications = JSON.parse(req.body.specifications); } catch { specifications = { dimensions: req.body.specifications }; }
+    } else if (req.body.specifications) {
+      specifications = req.body.specifications;
+    }
+
+    if (req.body.dimensions && !specifications.dimensions) specifications.dimensions = req.body.dimensions;
+    if (req.body.materials && !specifications.material) specifications.material = req.body.materials;
+    if (req.body.includes && !specifications.includes) specifications.includes = req.body.includes;
+
+    let options = {};
+    if (typeof req.body.options === 'string') {
+      try { options = JSON.parse(req.body.options); } catch { options = {}; }
+    } else if (req.body.options) {
+      options = req.body.options;
+    }
+
+    const result = await processCatalogStudioPackage({
+      inputBuffer,
+      sku: req.body.sku || 'PROD-001',
+      productName: req.body.productName || 'Producto Artesano',
+      specifications,
+      options
+    });
+
+    res.json(result);
+  } catch (err) {
+    console.error('Error en generate-all studio:', err);
+    res.status(500).json({ error: err.message || 'Error al procesar paquete de catálogo' });
+  }
+});
+
+// Subir y optimizar manualmente una imagen de reemplazo para una ranura específica (0, 1, 2 o 3)
+app.post('/api/admin/photo-studio/upload-single', requireAdmin, upload.single('image'), async (req, res) => {
+  try {
+    let inputBuffer = req.file?.buffer;
+    if (!inputBuffer && req.file?.path) {
+      inputBuffer = await fs.promises.readFile(req.file.path);
+    }
+
+    if (!inputBuffer) {
+      return res.status(400).json({ error: 'No se recibió ninguna imagen para subir.' });
+    }
+
+    const slotIndex = Number(req.body.slotIndex ?? 0);
+    const sku = req.body.sku || 'PROD-001';
+
+    const result = await processManualSlotImage({
+      inputBuffer,
+      sku,
+      slotIndex
+    });
+
+    res.json({
+      success: true,
+      ...result
+    });
+  } catch (err) {
+    console.error('Error en upload-single studio:', err);
+    res.status(500).json({ error: err.message || 'Error al subir imagen individual' });
+  }
+});
+
+// Regenerar una sola toma con parámetros ajustados
+app.post('/api/admin/photo-studio/regenerate-single', requireAdmin, upload.single('image'), async (req, res) => {
+  try {
+    let inputBuffer = req.file?.buffer;
+    if (!inputBuffer && req.file?.path) {
+      inputBuffer = await fs.promises.readFile(req.file.path);
+    }
+
+    const slotIndex = Number(req.body.slotIndex ?? 0);
+    const baseImageUrl = req.body.baseImageUrl;
+
+    if (!inputBuffer && !baseImageUrl) {
+      return res.status(400).json({ error: 'Se requiere una imagen base de referencia o archivo subido.' });
+    }
+
+    let specifications = {};
+    if (typeof req.body.specifications === 'string') {
+      try { specifications = JSON.parse(req.body.specifications); } catch { specifications = {}; }
+    } else if (req.body.specifications) {
+      specifications = req.body.specifications;
+    }
+    if (req.body.dimensions && !specifications.dimensions) specifications.dimensions = req.body.dimensions;
+    if (req.body.materials && !specifications.material) specifications.material = req.body.materials;
+    if (req.body.includes && !specifications.includes) specifications.includes = req.body.includes;
+
+    let options = {};
+    if (typeof req.body.options === 'string') {
+      try { options = JSON.parse(req.body.options); } catch { options = {}; }
+    } else if (req.body.options) {
+      options = req.body.options;
+    }
+
+    const result = await regenerateSingleSlot({
+      slotIndex,
+      baseImageUrl,
+      inputBuffer,
+      sku: req.body.sku || 'PROD-001',
+      productName: req.body.productName || '',
+      specifications,
+      options
+    });
+
+    res.json(result);
+  } catch (err) {
+    console.error('Error en regenerate-single studio:', err);
+    res.status(500).json({ error: err.message || 'Error al regenerar ranura individual' });
+  }
+});
+
+// Aplicar la galería generada al producto (guarda respaldo previo para permitir deshacer)
+app.post('/api/admin/photo-studio/apply-to-product', requireAdmin, async (req, res) => {
+  try {
+    const { productId, gallery } = req.body;
+    if (!productId) return res.status(400).json({ error: 'Se requiere el ID del producto.' });
+    if (!Array.isArray(gallery) || gallery.length === 0) {
+      return res.status(400).json({ error: 'La galería debe ser un arreglo de URLs válidas.' });
+    }
+
+    const currentProd = db.getProductById(productId);
+    if (!currentProd) return res.status(404).json({ error: 'Producto no encontrado.' });
+
+    // Guardar respaldo de la galería anterior
+    const previousImagesBackup = {
+      gallery: currentProd.gallery || [],
+      primaryImage: currentProd.primaryImage || null,
+      whiteBgImage: currentProd.whiteBgImage || null,
+      detailImage: currentProd.detailImage || null,
+      dimensionsImage: currentProd.dimensionsImage || null,
+      measureImage: currentProd.measureImage || null,
+      backedUpAt: new Date().toISOString()
+    };
+
+    const patch = {
+      gallery: gallery,
+      primaryImage: gallery[0] || currentProd.primaryImage,
+      whiteBgImage: gallery[1] || currentProd.whiteBgImage,
+      detailImage: gallery[2] || currentProd.detailImage,
+      dimensionsImage: gallery[3] || currentProd.dimensionsImage,
+      measureImage: gallery[3] || currentProd.measureImage,
+      previousImagesBackup
+    };
+
+    const updated = db.updateProduct(productId, patch);
+    res.json({
+      success: true,
+      message: 'Fotografías del catálogo actualizadas correctamente.',
+      product: updated,
+      hasBackup: true
+    });
+  } catch (err) {
+    console.error('Error al aplicar galería a producto:', err);
+    res.status(500).json({ error: err.message || 'Error al guardar la galería en el producto' });
+  }
+});
+
+// Restaurar galería anterior respaldada
+app.post('/api/admin/photo-studio/restore-gallery', requireAdmin, async (req, res) => {
+  try {
+    const { productId } = req.body;
+    if (!productId) return res.status(400).json({ error: 'Se requiere el ID del producto.' });
+
+    const currentProd = db.getProductById(productId);
+    if (!currentProd) return res.status(404).json({ error: 'Producto no encontrado.' });
+
+    const backup = currentProd.previousImagesBackup;
+    if (!backup || !Array.isArray(backup.gallery) || backup.gallery.length === 0) {
+      return res.status(400).json({ error: 'No existe un respaldo previo de galería para este producto.' });
+    }
+
+    const patch = {
+      gallery: backup.gallery,
+      primaryImage: backup.primaryImage || backup.gallery[0],
+      whiteBgImage: backup.whiteBgImage || backup.gallery[1],
+      detailImage: backup.detailImage || backup.gallery[2],
+      dimensionsImage: backup.dimensionsImage || backup.gallery[3],
+      measureImage: backup.measureImage || backup.gallery[3],
+      previousImagesBackup: null // Limpiar respaldo una vez restaurado
+    };
+
+    const updated = db.updateProduct(productId, patch);
+    res.json({
+      success: true,
+      message: 'Galería anterior restaurada con éxito.',
+      product: updated
+    });
+  } catch (err) {
+    console.error('Error al restaurar galería previa:', err);
+    res.status(500).json({ error: err.message || 'Error al restaurar la galería anterior' });
+  }
+});
+
 
 // Admin All Categories
 app.get('/api/admin/categories', requireAdmin, (req, res) => {

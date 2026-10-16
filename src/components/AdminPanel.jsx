@@ -8,7 +8,7 @@ import {
   Sliders, DollarSign, Calculator, Boxes, Minus, ChevronDown, ChevronUp,
   Home, Briefcase, PartyPopper, Printer, Palette, Scissors, Radio, Filter,
   Megaphone, Truck, MapPin, Calendar, Power, AlertCircle, Gift, Building2,
-  Database, Save, Download, Gamepad2, Smartphone
+  Database, Save, Download, Gamepad2, Smartphone, Camera
 } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 import SalesMarketingSection from './SalesMarketingSection';
@@ -21,6 +21,7 @@ import AreaBannersAdminSection from './AreaBannersAdminSection';
 import PackagesAdminSection from './PackagesAdminSection';
 import CouponsAdminSection from './CouponsAdminSection';
 import AdminConfirmSaveModal from './AdminConfirmSaveModal';
+import ProductPhotoStudioModal from './ProductPhotoStudioModal';
 import {
   DEFAULT_SERVICE_STATUS,
   formatServiceDate,
@@ -113,12 +114,38 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   const [editingProduct, setEditingProduct] = useState(null);
   const [editorForm, setEditorForm] = useState(null);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [editorMessage, setEditorMessage] = useState({ text: '', type: '' });
   const [customColorInput, setCustomColorInput] = useState('');
   const [newIncludedItemInput, setNewIncludedItemInput] = useState('');
   const [editorActiveSlot, setEditorActiveSlot] = useState(0); // 0: Portada/Contexto, 1: Fondo blanco, 2: Detalle, 3: Medidas/Escala
   const [editorSkuAccordion, setEditorSkuAccordion] = useState(false);
   const [editorColorsAccordion, setEditorColorsAccordion] = useState(false);
   const [editorFlashAccordion, setEditorFlashAccordion] = useState(false);
+
+  // Photo Studio Modal State (Estudio Fotográfico IA / 4 Fotos)
+  const [isPhotoStudioOpen, setIsPhotoStudioOpen] = useState(false);
+  const [photoStudioProductId, setPhotoStudioProductId] = useState(null);
+
+  const handleOpenPhotoStudio = (productId = null) => {
+    setPhotoStudioProductId(productId || (products[0]?.id ?? null));
+    setIsPhotoStudioOpen(true);
+  };
+
+  const handleProductUpdatedFromStudio = (updatedProduct) => {
+    if (!updatedProduct) return;
+    setProducts(prev => prev.map(p => p.id === updatedProduct.id ? updatedProduct : p));
+    if (editingProduct?.id === updatedProduct.id) {
+      setEditingProduct(updatedProduct);
+      setEditorForm(prev => prev ? ({
+        ...prev,
+        primaryImage: updatedProduct.primaryImage,
+        whiteBgImage: updatedProduct.whiteBgImage,
+        detailImage: updatedProduct.detailImage,
+        measureImage: updatedProduct.measureImage,
+        gallery: updatedProduct.gallery || prev.gallery
+      }) : null);
+    }
+  };
 
   // Password change state
   const [passwordForm, setPasswordForm] = useState({ currentPassword: '', newPassword: '' });
@@ -2798,6 +2825,15 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                     <div className="flex items-center gap-2">
                       <button
+                        type="button"
+                        onClick={() => handleOpenPhotoStudio()}
+                        className="flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white text-xs font-bold active:scale-95 transition-all shadow-sm"
+                        title="Abrir Estudio Fotográfico para generar las 4 tomas de catálogo con IA"
+                      >
+                        <Camera className="w-4 h-4 text-amber-200" />
+                        <span>Estudio 4 Fotos IA</span>
+                      </button>
+                      <button
                         onClick={handleOpenNewProduct}
                         className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#2D4F3E] text-white text-xs font-bold hover:bg-[#20392C] active:scale-95 transition-all shadow-sm"
                       >
@@ -2936,17 +2972,31 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             </button>
                           </div>
 
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleOpenEditProduct(p);
-                            }}
-                            className="flex-1 max-w-[140px] flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-xs font-bold shadow-xs active:scale-95 transition-all cursor-pointer"
-                          >
-                            <Edit className="w-3.5 h-3.5" />
-                            <span>Editar</span>
-                          </button>
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleOpenPhotoStudio(p.id);
+                              }}
+                              className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold border border-amber-200 transition-colors cursor-pointer"
+                              title="Generar 4 tomas de catálogo con IA"
+                            >
+                              <Camera className="w-3.5 h-3.5 text-amber-600" />
+                              <span>4 Fotos</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleOpenEditProduct(p);
+                              }}
+                              className="flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-xs font-bold shadow-xs active:scale-95 transition-all cursor-pointer"
+                            >
+                              <Edit className="w-3.5 h-3.5" />
+                              <span>Editar</span>
+                            </button>
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -3165,6 +3215,17 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                               <td className="py-1 px-2 text-right">
                                 <div className="flex items-center justify-end gap-0.5">
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleOpenPhotoStudio(p.id);
+                                    }}
+                                    className="p-1 text-amber-600 hover:text-amber-800 hover:bg-amber-50 rounded cursor-pointer"
+                                    title="Estudio Fotográfico (4 Fotos IA)"
+                                  >
+                                    <Camera className="w-3.5 h-3.5" />
+                                  </button>
                                   <button
                                     type="button"
                                     onClick={(e) => {
@@ -4788,6 +4849,16 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </div>
                     );
                   })()}
+
+                  {/* Botón para abrir Estudio Fotográfico IA */}
+                  <button
+                    type="button"
+                    onClick={() => handleOpenPhotoStudio(editingProduct?.id || null)}
+                    className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition active:scale-98 cursor-pointer"
+                  >
+                    <Camera className="w-4 h-4 text-amber-200" />
+                    <span>📸 Abrir Estudio Fotográfico IA (4 Fotos de Catálogo)</span>
+                  </button>
 
                   {/* 4 Miniaturas Táctiles del Estándar Oficial de Catálogo */}
                   <div className="space-y-1.5">
@@ -6656,6 +6727,15 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         changes={adminConfirmModal.changes}
         onConfirm={adminConfirmModal.onConfirm}
         onCancel={() => setAdminConfirmModal(prev => ({ ...prev, isOpen: false }))}
+      />
+
+      {/* Estudio Fotográfico de Catálogo (4 Fotos con Sharp / IA) */}
+      <ProductPhotoStudioModal
+        isOpen={isPhotoStudioOpen}
+        onClose={() => setIsPhotoStudioOpen(false)}
+        products={products}
+        initialProductId={photoStudioProductId}
+        onProductUpdated={handleProductUpdatedFromStudio}
       />
     </>
   );
