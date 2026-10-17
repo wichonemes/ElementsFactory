@@ -5,7 +5,7 @@ import {
   ExternalLink, Search, RefreshCw, KeyRound, Sparkles,
   Flame, Clock, Zap, Percent, Image as ImageIcon, Layers, Tag, HelpCircle,
   TrendingUp, CheckCircle2, ArrowRight,
-  Sliders, DollarSign, Calculator, Boxes, Minus, ChevronDown, ChevronUp,
+  Sliders, DollarSign, Calculator, Boxes, Minus, ChevronDown, ChevronUp, FileSpreadsheet,
   Home, Briefcase, PartyPopper, Printer, Palette, Scissors, Radio, Filter,
   Megaphone, Truck, MapPin, Calendar, Power, AlertCircle, Gift, Building2,
   Database, Save, Download, Gamepad2, Smartphone, Camera, Wrench, Hammer
@@ -9845,9 +9845,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           {/* CARD: RESUMEN EJECUTIVO DETALLADO DEL COSTE DETRÁS DEL PRODUCTO */}
                           {(() => {
                             const allRecipeItems = rec.items || [];
-                            const recDirectCost = Math.round(allRecipeItems.filter(it => it.supplyType === 'direct' || (!it.supplyType && it.supplyType !== 'finish' && it.supplyType !== 'indirect')).reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
-                            const recFinishCost = Math.round(allRecipeItems.filter(it => it.supplyType === 'finish').reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
-                            const recIndirectCost = Math.round(allRecipeItems.filter(it => it.supplyType === 'indirect').reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
+                            const recDirectCost = Math.round(allRecipeItems.filter(it => it && (it.supplyType === 'direct' || (!it.supplyType && it.supplyType !== 'finish' && it.supplyType !== 'indirect'))).reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
+                            const recFinishCost = Math.round(allRecipeItems.filter(it => it && it.supplyType === 'finish').reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
+                            const recIndirectCost = Math.round(allRecipeItems.filter(it => it && it.supplyType === 'indirect').reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
 
                             const directShown = allRecipeItems.length > 0 ? recDirectCost : (matCost * 0.75);
                             const finishShown = allRecipeItems.length > 0 ? recFinishCost : (matCost * 0.15);
@@ -10364,19 +10364,19 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10px]">
                                   <div className="p-1.5 rounded-lg bg-gray-50 border border-gray-100">
                                     <div className="font-bold text-gray-400 uppercase text-[9px]">🏭 Destino / Área</div>
-                                    <div className="font-bold text-gray-800 mt-0.5">{breakdown.explanation.destino}</div>
+                                    <div className="font-bold text-gray-800 mt-0.5">{breakdown?.explanation?.destino || 'Área general'}</div>
                                   </div>
                                   <div className="p-1.5 rounded-lg bg-gray-50 border border-gray-100">
                                     <div className="font-bold text-gray-400 uppercase text-[9px]">⚙️ Maquinaria / Proceso</div>
-                                    <div className="font-bold text-emerald-800 mt-0.5">{breakdown.explanation.maquinaria}</div>
+                                    <div className="font-bold text-emerald-800 mt-0.5">{breakdown?.explanation?.maquinaria || 'Proceso estándar'}</div>
                                   </div>
                                   <div className="p-1.5 rounded-lg bg-gray-50 border border-gray-100">
                                     <div className="font-bold text-gray-400 uppercase text-[9px]">🪵 Materia Prima</div>
-                                    <div className="font-bold text-amber-800 mt-0.5">{breakdown.explanation.materiaPrima}</div>
+                                    <div className="font-bold text-amber-800 mt-0.5">{breakdown?.explanation?.materiaPrima || 'Materia prima oficial'}</div>
                                   </div>
                                   <div className="p-1.5 rounded-lg bg-gray-50 border border-gray-100">
                                     <div className="font-bold text-gray-400 uppercase text-[9px]">✨ Acabado Taller</div>
-                                    <div className="font-bold text-purple-800 mt-0.5">{breakdown.explanation.acabadoTaller}</div>
+                                    <div className="font-bold text-purple-800 mt-0.5">{breakdown?.explanation?.acabadoTaller || 'Acabado artesanal'}</div>
                                   </div>
                                 </div>
                               </div>
