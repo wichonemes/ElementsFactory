@@ -6112,9 +6112,10 @@ class Database {
   simulateRecipeProduction(productId, units = 1, customRecipe = null) {
     const db = this.read();
     const product = db.products.find(p => p.id === productId || p.code === productId);
-    const recipe = customRecipe || product?.manufacturingRecipe || product?.costBreakdown?.manufacturingRecipe;
+    const rawRecipe = customRecipe || product?.manufacturingRecipe || product?.costBreakdown?.manufacturingRecipe;
+    const recipeItems = Array.isArray(rawRecipe) ? rawRecipe : (rawRecipe?.items || []);
 
-    if (!recipe || !Array.isArray(recipe.items) || recipe.items.length === 0) {
+    if (!Array.isArray(recipeItems) || recipeItems.length === 0) {
       return {
         feasible: false,
         hasRecipe: false,
@@ -6131,8 +6132,8 @@ class Database {
     let totalNetCost = 0;
     let totalWasteCost = 0;
 
-    for (const item of recipe.items) {
-      const mat = (db.rawMaterials || []).find(m => m.id === item.materialId || (item.name && m.name.toLowerCase().trim() === item.name.toLowerCase().trim()));
+    for (const item of recipeItems) {
+      const mat = (db.rawMaterials || []).find(m => m.id === item.materialId || m.id === item.rawMaterialId || (item.name && m.name.toLowerCase().trim() === item.name.toLowerCase().trim()));
       const netQty = Number(item.netQuantity) || 0;
       const wasteQty = Number(item.wasteQuantity) || 0;
       const totalPerUnit = (netQty + wasteQty) || Number(item.totalQuantity) || Number(item.quantity) || 0;
@@ -6229,9 +6230,10 @@ class Database {
     db.productionLogs = db.productionLogs || [];
 
     const product = db.products.find(p => p.id === productId || p.code === productId);
-    const recipe = options.customRecipe || product?.manufacturingRecipe || product?.costBreakdown?.manufacturingRecipe;
+    const rawRecipe = options.customRecipe || product?.manufacturingRecipe || product?.costBreakdown?.manufacturingRecipe;
+    const recipeItems = Array.isArray(rawRecipe) ? rawRecipe : (rawRecipe?.items || []);
 
-    if (!recipe || !Array.isArray(recipe.items) || recipe.items.length === 0) {
+    if (!Array.isArray(recipeItems) || recipeItems.length === 0) {
       return {
         success: false,
         error: 'El producto no tiene una receta de manufactura configurada.'
@@ -6242,8 +6244,8 @@ class Database {
     const deductions = [];
     const now = new Date().toISOString();
 
-    for (const item of recipe.items) {
-      const idx = db.rawMaterials.findIndex(m => m.id === item.materialId || (item.name && m.name.toLowerCase().trim() === item.name.toLowerCase().trim()));
+    for (const item of recipeItems) {
+      const idx = db.rawMaterials.findIndex(m => m.id === item.materialId || m.id === item.rawMaterialId || (item.name && m.name.toLowerCase().trim() === item.name.toLowerCase().trim()));
       if (idx === -1) continue;
 
       const mat = db.rawMaterials[idx];
