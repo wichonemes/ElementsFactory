@@ -417,6 +417,50 @@ export default function SalesMarketingSection({ token, products = [], settings =
     }
   };
 
+  // Descontar insumos de taller para un pedido
+  const handleDeductOrderMaterials = async (order) => {
+    if (!window.confirm(`¿Confirmas que deseas descontar del almacén de taller los insumos para fabricar el pedido #${order.orderNumber}?`)) return;
+    try {
+      const res = await fetch(`/api/admin/orders/${order.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ consumeStock: true })
+      });
+      if (res.ok) {
+        setActionMessage({ text: `✓ Insumos de taller descontados para pedido #${order.orderNumber}`, type: 'success' });
+        loadAllSalesData();
+        setTimeout(() => setActionMessage({ text: '', type: '' }), 3000);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // Revertir insumos de taller para un pedido
+  const handleRevertOrderMaterials = async (order) => {
+    if (!window.confirm(`¿Revertir y devolver al almacén de taller los insumos del pedido #${order.orderNumber}?`)) return;
+    try {
+      const res = await fetch(`/api/admin/orders/${order.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ revertStock: true })
+      });
+      if (res.ok) {
+        setActionMessage({ text: `✓ Insumos devueltos al almacén de taller para pedido #${order.orderNumber}`, type: 'success' });
+        loadAllSalesData();
+        setTimeout(() => setActionMessage({ text: '', type: '' }), 3000);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   // -------------------------------------------------------------
   // CSV / EXCEL EXPORT
   // -------------------------------------------------------------
@@ -1542,6 +1586,37 @@ export default function SalesMarketingSection({ token, products = [], settings =
                               <option value="pagado">Pagado</option>
                               <option value="cancelado">Cancelado</option>
                             </select>
+
+                            {ord.materialsDeducted ? (
+                              <div className="mt-1 flex flex-col items-center gap-0.5">
+                                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-full bg-emerald-100 text-emerald-800 text-[8.5px] font-bold border border-emerald-300">
+                                  <span>✓</span>
+                                  <span>Insumos Taller Descontados</span>
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => handleRevertOrderMaterials(ord)}
+                                  className="text-[8px] text-gray-400 hover:text-amber-700 underline cursor-pointer"
+                                  title="Revertir y devolver stock a taller"
+                                >
+                                  Revertir insumos
+                                </button>
+                              </div>
+                            ) : (
+                              ord.status !== 'cancelado' && (
+                                <div className="mt-1 flex justify-center">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleDeductOrderMaterials(ord)}
+                                    className="px-1.5 py-0.5 rounded-md bg-stone-100 hover:bg-emerald-50 text-gray-600 hover:text-emerald-800 border border-stone-200 hover:border-emerald-300 text-[8.5px] font-bold flex items-center gap-0.5 cursor-pointer transition-colors"
+                                    title="Descontar insumos exactos del stock de taller para este pedido"
+                                  >
+                                    <span>🔨</span>
+                                    <span>Descontar Stock</span>
+                                  </button>
+                                </div>
+                              )
+                            )}
                           </td>
 
                           <td className="py-3 px-3 text-right">

@@ -28,7 +28,7 @@ export function parsePackageInfo(mat) {
       packageMeasurement: String(mat.packageMeasurement).trim() || 'pza'
     };
   }
-  const unit = ((mat && mat.unit) || '').toLowerCase().trim();
+  const unit = (((mat && mat.unit) || '') + ' ' + ((mat && mat.name) || '')).toLowerCase().trim();
   
   if (unit.includes('1 kg') || unit.includes('1kg') || unit.includes('kilo')) return { packageQuantity: 1000, packageMeasurement: 'g' };
   if (unit.includes('250g') || unit.includes('250 g')) return { packageQuantity: 250, packageMeasurement: 'g' };
@@ -43,11 +43,14 @@ export function parsePackageInfo(mat) {
   if (unit.includes('40x40') || unit.includes('40 x 40')) return { packageQuantity: 1600, packageMeasurement: 'cm²' };
   if (unit.includes('30x40') || unit.includes('30 x 40')) return { packageQuantity: 1200, packageMeasurement: 'cm²' };
   
-  if (unit.includes('10 m') || unit.includes('10m') || unit.includes('10 metros')) return { packageQuantity: 10, packageMeasurement: 'm' };
-  if (unit.includes('20 m') || unit.includes('20m') || unit.includes('20 metros')) return { packageQuantity: 20, packageMeasurement: 'm' };
-  if (unit.includes('50m') || unit.includes('50 m')) return { packageQuantity: 50, packageMeasurement: 'm' };
-  if (unit.includes('5m') || unit.includes('5 m') || unit.includes('5 metros')) return { packageQuantity: 5, packageMeasurement: 'm' };
-  if (unit.includes('metro')) return { packageQuantity: 1, packageMeasurement: 'm' };
+  // Cinta Térmica Kapton y rollos en centímetros
+  if (unit.includes('3 rollos') && (unit.includes('33m') || unit.includes('33 m'))) return { packageQuantity: 9900, packageMeasurement: 'cm' };
+  if (unit.includes('33m') || unit.includes('33 m')) return { packageQuantity: 3300, packageMeasurement: 'cm' };
+  if (unit.includes('10 m') || unit.includes('10m') || unit.includes('10 metros')) return { packageQuantity: 1000, packageMeasurement: 'cm' };
+  if (unit.includes('20 m') || unit.includes('20m') || unit.includes('20 metros')) return { packageQuantity: 2000, packageMeasurement: 'cm' };
+  if (unit.includes('50m') || unit.includes('50 m')) return { packageQuantity: 5000, packageMeasurement: 'cm' };
+  if (unit.includes('5m') || unit.includes('5 m') || unit.includes('5 metros')) return { packageQuantity: 500, packageMeasurement: 'cm' };
+  if (unit.includes('metro')) return { packageQuantity: 100, packageMeasurement: 'cm' };
 
   if (unit.includes('500 pzas') || unit.includes('500')) return { packageQuantity: 500, packageMeasurement: 'pza' };
   if (unit.includes('200 pzas') || unit.includes('200')) return { packageQuantity: 200, packageMeasurement: 'pza' };
@@ -66,6 +69,38 @@ export function parsePackageInfo(mat) {
   if (unit.includes('2 pzas') || unit.includes('2 piezas') || unit.includes('2')) return { packageQuantity: 2, packageMeasurement: 'pza' };
 
   return { packageQuantity: 1, packageMeasurement: 'pza' };
+}
+
+// Helper para convertir consumo de receta a unidades de stock de almacén de taller
+export function calculateMaterialStockDeduction(material, requiredQuantity, requiredUnit) {
+  const pkg = parsePackageInfo(material);
+  const reqUnit = (requiredUnit || 'pza').toLowerCase().trim();
+  const pkgMeas = (pkg.packageMeasurement || 'pza').toLowerCase().trim();
+  const pkgQty = Number(pkg.packageQuantity) || 1;
+  const qty = Number(requiredQuantity) || 0;
+
+  let baseUnitsRequired = qty;
+
+  if (reqUnit === pkgMeas) {
+    baseUnitsRequired = qty;
+  } else if ((reqUnit === 'g' || reqUnit === 'gr' || reqUnit === 'gramos') && (pkgMeas === 'kg' || pkgMeas === 'kilo')) {
+    baseUnitsRequired = qty / 1000;
+  } else if ((reqUnit === 'kg' || reqUnit === 'kilo') && (pkgMeas === 'g' || pkgMeas === 'gr' || pkgMeas === 'gramos')) {
+    baseUnitsRequired = qty * 1000;
+  } else if ((reqUnit === 'cm' || reqUnit === 'centimetros' || reqUnit === 'centímetros') && (pkgMeas === 'm' || pkgMeas === 'metros')) {
+    baseUnitsRequired = qty / 100;
+  } else if ((reqUnit === 'm' || reqUnit === 'metros') && (pkgMeas === 'cm' || pkgMeas === 'centimetros' || pkgMeas === 'centímetros')) {
+    baseUnitsRequired = qty * 100;
+  } else if ((reqUnit === 'ml' || reqUnit === 'mililitros') && (pkgMeas === 'l' || pkgMeas === 'litro' || pkgMeas === 'litros')) {
+    baseUnitsRequired = qty / 1000;
+  } else if ((reqUnit === 'l' || reqUnit === 'litro' || pkgMeas === 'litros') && (pkgMeas === 'ml' || pkgMeas === 'mililitros')) {
+    baseUnitsRequired = qty * 1000;
+  } else if ((reqUnit === 'hoja' || reqUnit === 'hojas') && (pkgMeas === 'pza' || pkgMeas === 'pieza' || pkgMeas === 'hoja')) {
+    baseUnitsRequired = qty;
+  }
+
+  const stockUnitsDeducted = baseUnitsRequired / pkgQty;
+  return Math.round(stockUnitsDeducted * 10000) / 10000;
 }
 
 export default function RawMaterialsSection({

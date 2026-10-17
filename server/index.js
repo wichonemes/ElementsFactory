@@ -1040,8 +1040,42 @@ app.post('/api/admin/orders', requireAdmin, (req, res) => {
 
 app.put('/api/admin/orders/:id', requireAdmin, (req, res) => {
   try {
+    const currentOrder = (db.getOrders({}).find(o => o.id === req.params.id));
     const updated = db.updateOrder(req.params.id, req.body);
     if (!updated) return res.status(404).json({ error: 'Pedido no encontrado' });
+
+    // Auto-descuento de insumos de taller si el pedido entra a fabricación o se confirma
+    const shouldDeduct = req.body.consumeStock === true || (
+      ['confirmado', 'pagado', 'fabricando', 'en_produccion'].includes(req.body.status) &&
+      currentOrder && !currentOrder.materialsDeducted &&
+      req.body.consumeStock !== false
+    );
+
+    if (shouldDeduct && !updated.materialsDeducted && updated.productId) {
+      const deductionRes = db.deductRecipeMaterials(updated.productId, updated.quantity || 1, {
+        orderId: updated.id,
+        orderNumber: updated.orderNumber,
+        productName: updated.productName,
+        reason: `Fabricación de pedido #${updated.orderNumber}`
+      });
+      if (deductionRes.success) {
+        db.updateOrder(updated.id, {
+          materialsDeducted: true,
+          materialsDeductedAt: new Date().toISOString()
+        });
+        updated.materialsDeducted = true;
+        updated.materialsDeductedAt = new Date().toISOString();
+      }
+    } else if (req.body.revertStock === true || (req.body.status === 'cancelado' && currentOrder?.materialsDeducted)) {
+      db.revertRecipeDeduction(updated.id);
+      db.updateOrder(updated.id, {
+        materialsDeducted: false,
+        materialsDeductedAt: null
+      });
+      updated.materialsDeducted = false;
+      updated.materialsDeductedAt = null;
+    }
+
     res.json(updated);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -1173,6 +1207,58 @@ app.delete('/api/admin/raw-materials/:id', requireAdmin, (req, res) => {
     const success = db.deleteRawMaterial(req.params.id);
     if (!success) return res.status(404).json({ error: 'Materia prima no encontrada' });
     res.json({ ok: true, message: 'Materia prima eliminada correctamente' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ==========================================
+// RECETAS DE MANUFACTURA & CONSUMO DE TALLER (BOM)
+// ==========================================
+
+// Obtener historial / bitácora de consumo de insumos por producción
+app.get('/api/admin/production/logs', requireAdmin, (req, res) => {
+  try {
+    const limit = Number(req.query.limit) || 100;
+    const logs = db.getProductionLogs(limit);
+    res.json(logs);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Simular fabricación y consumo de materiales de un producto
+app.post('/api/admin/production/simulate', requireAdmin, (req, res) => {
+  try {
+    const { productId, units = 1, customRecipe } = req.body;
+    const result = db.simulateRecipeProduction(productId, units, customRecipe);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Descontar insumos de taller por fabricación
+app.post('/api/admin/production/deduct', requireAdmin, (req, res) => {
+  try {
+    const { productId, units = 1, orderId, orderNumber, reason, customRecipe, productName, productCode } = req.body;
+    const result = db.deductRecipeMaterials(productId, units, { orderId, orderNumber, reason, customRecipe, productName, productCode });
+    if (!result.success) {
+      return res.status(400).json({ error: result.error || 'Error al descontar insumos de taller' });
+    }
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Revertir descuento de insumos de taller para un pedido
+app.post('/api/admin/production/revert', requireAdmin, (req, res) => {
+  try {
+    const { orderId } = req.body;
+    if (!orderId) return res.status(400).json({ error: 'orderId es requerido' });
+    const result = db.revertRecipeDeduction(orderId);
+    res.json(result);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

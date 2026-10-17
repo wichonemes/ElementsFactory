@@ -8,12 +8,12 @@ import {
   Sliders, DollarSign, Calculator, Boxes, Minus, ChevronDown, ChevronUp,
   Home, Briefcase, PartyPopper, Printer, Palette, Scissors, Radio, Filter,
   Megaphone, Truck, MapPin, Calendar, Power, AlertCircle, Gift, Building2,
-  Database, Save, Download, Gamepad2, Smartphone, Camera
+  Database, Save, Download, Gamepad2, Smartphone, Camera, Wrench, Hammer
 } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 import SalesMarketingSection from './SalesMarketingSection';
 import MobileCatalogAdminSection from './MobileCatalogAdminSection';
-import RawMaterialsSection, { parsePackageInfo } from './RawMaterialsSection';
+import RawMaterialsSection, { parsePackageInfo, calculateMaterialStockDeduction } from './RawMaterialsSection';
 import FlashDealsControlSection from './FlashDealsControlSection';
 import CampaignsAdminSection from './CampaignsAdminSection';
 import ArcadeAdminSection from './ArcadeAdminSection';
@@ -40,6 +40,210 @@ import {
   parseSku,
   suggestSkuForProduct
 } from '../utils/skuHelper';
+
+// Helper para generar una receta de manufactura (BOM) inicial realista según la técnica
+export function generateDefaultRecipeForProduct(prod, rawMaterials = []) {
+  const techs = Array.isArray(prod?.techniques) ? prod.techniques : ['3d'];
+  const code = (prod?.code || '').toUpperCase();
+  const name = (prod?.name || '').toLowerCase();
+
+  const findMat = (id, fallbackQ) => {
+    const byId = rawMaterials.find(m => m.id === id);
+    if (byId) return byId;
+    return rawMaterials.find(m => (m.name || '').toLowerCase().includes(fallbackQ.toLowerCase())) || null;
+  };
+
+  const plaMat = findMat('mat-pla-olivo', 'pla verde olivo') || rawMaterials.find(m => m.category === '3d') || {
+    id: 'mat-pla-olivo',
+    name: 'Filamento PLA Verde Olivo Mate (1.75mm)',
+    category: '3d',
+    costPerUnit: 500,
+    packageQuantity: 1000,
+    packageMeasurement: 'g',
+    unit: 'bobina (1 kg)'
+  };
+
+  const sprayMat = findMat('mat-spray-3dlac', '3dlac') || {
+    id: 'mat-spray-3dlac',
+    name: 'Spray Fijador de Cama 3DLac Antideformación (400 ml)',
+    category: '3d',
+    costPerUnit: 250,
+    packageQuantity: 400,
+    packageMeasurement: 'ml',
+    unit: 'lata (400 ml)'
+  };
+
+  const mdfMat = findMat('mat-mdf-3mm', 'mdf') || findMat('mat-madera-triplay-3mm', 'triplay') || {
+    id: 'mat-mdf-3mm',
+    name: 'Placas MDF Natural Calibrado 3mm (60x40 cm)',
+    category: 'laser',
+    costPerUnit: 35,
+    packageQuantity: 2400,
+    packageMeasurement: 'cm²',
+    unit: 'placa (60x40 cm)'
+  };
+
+  const tazaMat = findMat('mat-tazas-blancas-11oz', 'taza blanca') || {
+    id: 'mat-tazas-blancas-11oz',
+    name: 'Tazas Cerámica Blanco Puro Grado A+ Sublimable (11 oz)',
+    category: 'sublimation',
+    costPerUnit: 28,
+    packageQuantity: 1,
+    packageMeasurement: 'pza',
+    unit: 'pieza'
+  };
+
+  const papelSubMat = findMat('mat-papel-sublimacion', 'papel sublimacion') || {
+    id: 'mat-papel-sublimacion',
+    name: 'Papel Sublimación de Secado Rápido A4 Premium (100 hojas)',
+    category: 'sublimation',
+    costPerUnit: 180,
+    packageQuantity: 100,
+    packageMeasurement: 'hoja',
+    unit: 'paquete (100 hojas)'
+  };
+
+  const kaptonMat = findMat('mat-cinta-termica-kapton', 'cinta termica') || {
+    id: 'mat-cinta-termica-kapton',
+    name: 'Cinta Térmica Kapton Alta Resistencia 10mm x 33m (3 rollos)',
+    category: 'sublimation',
+    costPerUnit: 90,
+    packageQuantity: 9900,
+    packageMeasurement: 'cm',
+    unit: 'paquete (3 rollos)'
+  };
+
+  const tintaMat = findMat('mat-tintas-sublimacion-cmyk', 'tintas sublimacion') || {
+    id: 'mat-tintas-sublimacion-cmyk',
+    name: 'Tintas de Sublimación Anti-Tapado CMYK (Set 4x100ml)',
+    category: 'sublimation',
+    costPerUnit: 480,
+    packageQuantity: 400,
+    packageMeasurement: 'ml',
+    unit: 'set (4 botellas)'
+  };
+
+  let items = [];
+  let mainTech = techs[0] || '3d';
+
+  if (techs.includes('sublimation') || name.includes('taza') || name.includes('termo') || name.includes('lata') || code.startsWith('S')) {
+    mainTech = 'sublimation';
+    items = [
+      {
+        id: `item-sub-1`,
+        materialId: tazaMat.id,
+        name: tazaMat.name,
+        category: 'sublimation',
+        netQuantity: 1,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 1,
+        unit: 'pza',
+        unitCost: Number(tazaMat.costPerUnit) || 28.00,
+        totalCost: Number(tazaMat.costPerUnit) || 28.00
+      },
+      {
+        id: `item-sub-2`,
+        materialId: papelSubMat.id,
+        name: papelSubMat.name,
+        category: 'sublimation',
+        netQuantity: 1,
+        wasteQuantity: 0.1,
+        wasteType: 'trimming',
+        totalQuantity: 1.1,
+        unit: 'hoja',
+        unitCost: Math.round(((Number(papelSubMat.costPerUnit) || 180) / 100) * 100) / 100,
+        totalCost: Math.round(1.1 * 1.80 * 100) / 100
+      },
+      {
+        id: `item-sub-3`,
+        materialId: kaptonMat.id,
+        name: kaptonMat.name,
+        category: 'sublimation',
+        netQuantity: 15,
+        wasteQuantity: 5,
+        wasteType: 'tape',
+        totalQuantity: 20,
+        unit: 'cm',
+        unitCost: Math.round(((Number(kaptonMat.costPerUnit) || 90) / 9900) * 10000) / 10000,
+        totalCost: Math.round(20 * 0.0091 * 100) / 100
+      },
+      {
+        id: `item-sub-4`,
+        materialId: tintaMat.id,
+        name: tintaMat.name,
+        category: 'sublimation',
+        netQuantity: 1,
+        wasteQuantity: 0.2,
+        wasteType: 'purge',
+        totalQuantity: 1.2,
+        unit: 'ml',
+        unitCost: Math.round(((Number(tintaMat.costPerUnit) || 480) / 400) * 100) / 100,
+        totalCost: Math.round(1.2 * 1.20 * 100) / 100
+      }
+    ];
+  } else if (techs.includes('laser') || code.startsWith('L') || name.includes('llavero madera') || name.includes('colgador') || name.includes('letrero')) {
+    mainTech = 'laser';
+    items = [
+      {
+        id: `item-las-1`,
+        materialId: mdfMat.id,
+        name: mdfMat.name,
+        category: 'laser',
+        netQuantity: 380,
+        wasteQuantity: 60,
+        wasteType: 'kerf_cut',
+        totalQuantity: 440,
+        unit: 'cm²',
+        unitCost: Math.round(((Number(mdfMat.costPerUnit) || 35) / 2400) * 10000) / 10000,
+        totalCost: Math.round(440 * 0.0146 * 100) / 100
+      }
+    ];
+  } else {
+    mainTech = '3d';
+    items = [
+      {
+        id: `item-3d-1`,
+        materialId: plaMat.id,
+        name: plaMat.name,
+        category: '3d',
+        netQuantity: 48,
+        wasteQuantity: 16,
+        wasteType: 'supports_purge',
+        totalQuantity: 64,
+        unit: 'g',
+        unitCost: Math.round(((Number(plaMat.costPerUnit) || 500) / 1000) * 100) / 100,
+        totalCost: Math.round(64 * 0.50 * 100) / 100
+      },
+      {
+        id: `item-3d-2`,
+        materialId: sprayMat.id,
+        name: sprayMat.name,
+        category: '3d',
+        netQuantity: 5,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 5,
+        unit: 'ml',
+        unitCost: Math.round(((Number(sprayMat.costPerUnit) || 250) / 400) * 100) / 100,
+        totalCost: Math.round(5 * 0.625 * 100) / 100
+      }
+    ];
+  }
+
+  const totalMaterialCost = Math.round(items.reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
+  const totalWasteCost = Math.round(items.reduce((acc, it) => acc + ((Number(it.wasteQuantity) || 0) * (Number(it.unitCost) || 0)), 0) * 100) / 100;
+  const wastePercentAverage = totalMaterialCost > 0 ? Math.round((totalWasteCost / totalMaterialCost) * 1000) / 10 : 0;
+
+  return {
+    technique: mainTech,
+    yieldUnits: 1,
+    items,
+    totalMaterialCost,
+    totalWasteCost,
+    wastePercentAverage
+  };
+}
 
 export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDeal = null }) {
   if (!isOpen) return null;
@@ -121,6 +325,18 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   const [editorSkuAccordion, setEditorSkuAccordion] = useState(false);
   const [editorColorsAccordion, setEditorColorsAccordion] = useState(false);
   const [editorFlashAccordion, setEditorFlashAccordion] = useState(false);
+  const [editorRecipeAccordion, setEditorRecipeAccordion] = useState(true);
+  const [editorRecipeMatSearch, setEditorRecipeMatSearch] = useState('');
+  const [editorRecipeSelectedMatId, setEditorRecipeSelectedMatId] = useState('');
+  const [editorRecipeNetQty, setEditorRecipeNetQty] = useState(45);
+  const [editorRecipeWasteQty, setEditorRecipeWasteQty] = useState(15);
+  const [editorRecipeWasteType, setEditorRecipeWasteType] = useState('supports_purge');
+  const [editorRecipeUnit, setEditorRecipeUnit] = useState('g');
+  const [editorRecipeCustomName, setEditorRecipeCustomName] = useState('');
+  const [editorRecipeCustomCost, setEditorRecipeCustomCost] = useState(0.5);
+  const [recipeSimulateUnits, setRecipeSimulateUnits] = useState(1);
+  const [recipeSimulationModal, setRecipeSimulationModal] = useState(null);
+  const [recipeDeductLoading, setRecipeDeductLoading] = useState(false);
 
   // Photo Studio Modal State (Estudio Fotográfico IA / 4 Fotos)
   const [isPhotoStudioOpen, setIsPhotoStudioOpen] = useState(false);
@@ -443,6 +659,11 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         shippingCost: 0,
         costStatus: 'Estimado'
       },
+      manufacturingRecipe: generateDefaultRecipeForProduct({
+        techniques: ['3d'],
+        code: 'HOG-3D-PLA-001',
+        name: 'Nuevo Producto'
+      }, rawMaterialsList),
       privateNotes: ''
     });
     setNewIncludedItemInput('');
@@ -450,6 +671,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     setEditorSkuAccordion(false);
     setEditorColorsAccordion(false);
     setEditorFlashAccordion(false);
+    setEditorRecipeAccordion(true);
     setEditorMessage({ text: '', type: '' });
     setIsEditorOpen(true);
   };
@@ -521,6 +743,33 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       stockQuantity: prod.stockQuantity ?? (prod.availability === 'in_stock' ? 10 : 0),
       costPrice: prod.costPrice ?? (prod.price ? Math.round(prod.price * 0.4) : 0),
       costBreakdown: prod.costBreakdown || {},
+      manufacturingRecipe: prod.manufacturingRecipe ? {
+        technique: prod.manufacturingRecipe.technique || prod.techniques?.[0] || '3d',
+        yieldUnits: Math.max(1, Number(prod.manufacturingRecipe.yieldUnits) || 1),
+        items: Array.isArray(prod.manufacturingRecipe.items) ? [...prod.manufacturingRecipe.items] : [],
+        totalMaterialCost: Number(prod.manufacturingRecipe.totalMaterialCost) || 0,
+        totalWasteCost: Number(prod.manufacturingRecipe.totalWasteCost) || 0,
+        wastePercentAverage: Number(prod.manufacturingRecipe.wastePercentAverage) || 0
+      } : (prod.costBreakdown?.recipeItems && prod.costBreakdown.recipeItems.length > 0 ? {
+        technique: prod.techniques?.[0] || '3d',
+        yieldUnits: Math.max(1, Number(prod.costBreakdown.yieldUnits) || 1),
+        items: prod.costBreakdown.recipeItems.map(it => ({
+          id: it.id || `item-${Date.now()}-${Math.random()}`,
+          materialId: it.materialId || '',
+          name: it.name || '',
+          category: it.category || '3d',
+          netQuantity: Number(it.quantity) || 0,
+          wasteQuantity: 0,
+          wasteType: 'none',
+          totalQuantity: Number(it.quantity) || 0,
+          unit: it.unit || 'g',
+          unitCost: Number(it.unitCost) || 0,
+          totalCost: Number(it.lineTotal) || 0
+        })),
+        totalMaterialCost: Number(prod.costBreakdown?.recipeRawMaterialsCost) || 0,
+        totalWasteCost: 0,
+        wastePercentAverage: 0
+      } : generateDefaultRecipeForProduct(prod, rawMaterialsList)),
       flashDealConfig: prod.flashDealConfig || {
         enabled: false,
         durationMinutes: 120,
@@ -530,6 +779,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       variants: Array.isArray(prod.variants) ? [...prod.variants] : [],
       customizationOptions: Array.isArray(prod.customizationOptions) ? [...prod.customizationOptions] : []
     });
+    setEditorRecipeAccordion(true);
     setEditorMessage({ text: '', type: '' });
     setIsEditorOpen(true);
   };
@@ -559,6 +809,216 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       items[idx] = text;
       return { ...prev, includedItems: items };
     });
+  };
+
+  // Handlers para administración de Recetas de Manufactura (BOM) e Insumos
+  const handleAddEditorRecipeItem = () => {
+    if (!editorRecipeSelectedMatId && !editorRecipeCustomName.trim()) return;
+
+    let selMat = null;
+    let name = editorRecipeCustomName.trim();
+    let unit = editorRecipeUnit;
+    let unitCost = Number(editorRecipeCustomCost) || 0;
+    let category = 'general';
+
+    if (editorRecipeSelectedMatId) {
+      selMat = rawMaterialsList.find(m => m.id === editorRecipeSelectedMatId);
+      if (selMat) {
+        name = selMat.name;
+        category = selMat.category || 'general';
+        const pkg = parsePackageInfo(selMat);
+        const pkgCost = Number(selMat.costPerUnit || selMat.packageCost || 0);
+        const pkgQty = Number(pkg.packageQuantity) || 1;
+        const pkgMeas = (pkg.packageMeasurement || 'pza').toLowerCase().trim();
+        const reqUnit = (editorRecipeUnit || pkgMeas).toLowerCase().trim();
+
+        unitCost = pkgCost / pkgQty;
+        if ((reqUnit === 'g' || reqUnit === 'gr') && (pkgMeas === 'kg' || pkgMeas === 'kilo')) {
+          unitCost = pkgCost / (pkgQty * 1000);
+        } else if ((reqUnit === 'kg' || reqUnit === 'kilo') && (pkgMeas === 'g' || pkgMeas === 'gr')) {
+          unitCost = (pkgCost / pkgQty) * 1000;
+        } else if ((reqUnit === 'cm') && (pkgMeas === 'm' || pkgMeas === 'metro')) {
+          unitCost = pkgCost / (pkgQty * 100);
+        } else if ((reqUnit === 'm') && (pkgMeas === 'cm')) {
+          unitCost = (pkgCost / pkgQty) * 100;
+        } else if ((reqUnit === 'ml') && (pkgMeas === 'l' || pkgMeas === 'litro')) {
+          unitCost = pkgCost / (pkgQty * 1000);
+        }
+      }
+    }
+
+    const netQty = Math.max(0, Number(editorRecipeNetQty) || 0);
+    const wasteQty = Math.max(0, Number(editorRecipeWasteQty) || 0);
+    const totalQty = Math.round((netQty + wasteQty) * 100) / 100;
+    const totalCost = Math.round(totalQty * unitCost * 100) / 100;
+
+    const newItem = {
+      id: `item-${Date.now()}-${Math.round(Math.random() * 1000)}`,
+      materialId: editorRecipeSelectedMatId || '',
+      name,
+      category,
+      netQuantity: netQty,
+      wasteQuantity: wasteQty,
+      wasteType: editorRecipeWasteType,
+      totalQuantity: totalQty,
+      unit,
+      unitCost: Math.round(unitCost * 10000) / 10000,
+      totalCost
+    };
+
+    const currentRecipe = editorForm.manufacturingRecipe || { items: [] };
+    const updatedItems = [...(currentRecipe.items || []), newItem];
+    const totalMaterialCost = Math.round(updatedItems.reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
+    const totalWasteCost = Math.round(updatedItems.reduce((acc, it) => acc + ((Number(it.wasteQuantity) || 0) * (Number(it.unitCost) || 0)), 0) * 100) / 100;
+    const wastePercentAverage = totalMaterialCost > 0 ? Math.round((totalWasteCost / totalMaterialCost) * 1000) / 10 : 0;
+
+    setEditorForm({
+      ...editorForm,
+      manufacturingRecipe: {
+        ...currentRecipe,
+        items: updatedItems,
+        totalMaterialCost,
+        totalWasteCost,
+        wastePercentAverage
+      }
+    });
+
+    setEditorRecipeCustomName('');
+    setEditorRecipeSelectedMatId('');
+  };
+
+  const handleRemoveEditorRecipeItem = (itemId) => {
+    const currentRecipe = editorForm.manufacturingRecipe || { items: [] };
+    const updatedItems = (currentRecipe.items || []).filter(it => it.id !== itemId);
+    const totalMaterialCost = Math.round(updatedItems.reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
+    const totalWasteCost = Math.round(updatedItems.reduce((acc, it) => acc + ((Number(it.wasteQuantity) || 0) * (Number(it.unitCost) || 0)), 0) * 100) / 100;
+    const wastePercentAverage = totalMaterialCost > 0 ? Math.round((totalWasteCost / totalMaterialCost) * 1000) / 10 : 0;
+
+    setEditorForm({
+      ...editorForm,
+      manufacturingRecipe: {
+        ...currentRecipe,
+        items: updatedItems,
+        totalMaterialCost,
+        totalWasteCost,
+        wastePercentAverage
+      }
+    });
+  };
+
+  const handleUpdateEditorRecipeItem = (itemId, field, value) => {
+    const currentRecipe = editorForm.manufacturingRecipe || { items: [] };
+    const updatedItems = (currentRecipe.items || []).map(it => {
+      if (it.id !== itemId) return it;
+      const updated = { ...it, [field]: value };
+      const net = field === 'netQuantity' ? Number(value) : (Number(updated.netQuantity) || 0);
+      const waste = field === 'wasteQuantity' ? Number(value) : (Number(updated.wasteQuantity) || 0);
+      updated.totalQuantity = Math.round((net + waste) * 100) / 100;
+      updated.totalCost = Math.round(updated.totalQuantity * (Number(updated.unitCost) || 0) * 100) / 100;
+      return updated;
+    });
+
+    const totalMaterialCost = Math.round(updatedItems.reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
+    const totalWasteCost = Math.round(updatedItems.reduce((acc, it) => acc + ((Number(it.wasteQuantity) || 0) * (Number(it.unitCost) || 0)), 0) * 100) / 100;
+    const wastePercentAverage = totalMaterialCost > 0 ? Math.round((totalWasteCost / totalMaterialCost) * 1000) / 10 : 0;
+
+    setEditorForm({
+      ...editorForm,
+      manufacturingRecipe: {
+        ...currentRecipe,
+        items: updatedItems,
+        totalMaterialCost,
+        totalWasteCost,
+        wastePercentAverage
+      }
+    });
+  };
+
+  const handleApplyRecipePreset = (presetType) => {
+    const defaultRec = generateDefaultRecipeForProduct({
+      ...editorForm,
+      techniques: [presetType]
+    }, rawMaterialsList);
+
+    setEditorForm({
+      ...editorForm,
+      manufacturingRecipe: defaultRec
+    });
+  };
+
+  const handleSyncRecipeToCostPrice = () => {
+    const cost = editorForm.manufacturingRecipe?.totalMaterialCost || 0;
+    if (cost > 0) {
+      setEditorForm({
+        ...editorForm,
+        costPrice: cost
+      });
+      setEditorMessage({
+        text: `✓ Costo de producción actualizado a $${cost.toFixed(2)} MXN a partir de la receta.`,
+        type: 'success'
+      });
+      setTimeout(() => setEditorMessage({ text: '', type: '' }), 3000);
+    }
+  };
+
+  const handleSimulateProduction = async (units = 1) => {
+    try {
+      const res = await fetch('/api/admin/production/simulate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          productId: editingProduct?.id || 'simulated-preview',
+          units,
+          customRecipe: editorForm.manufacturingRecipe
+        })
+      });
+      const data = await res.json();
+      setRecipeSimulationModal(data);
+    } catch (err) {
+      console.error('Error simulating production:', err);
+    }
+  };
+
+  const handleDeductStockNow = async (units = 1) => {
+    if (!window.confirm(`¿Confirmas que deseas descontar del almacén de taller los insumos para fabricar ${units} pieza(s)?`)) return;
+    setRecipeDeductLoading(true);
+    try {
+      const res = await fetch('/api/admin/production/deduct', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          productId: editingProduct?.id || 'direct-workshop-prod',
+          units,
+          productName: editorForm.name || 'Producto',
+          productCode: editorForm.code || '',
+          reason: `Fabricación directa de stock desde el editor (${units} pzas)`,
+          customRecipe: editorForm.manufacturingRecipe
+        })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setEditorMessage({
+          text: `✓ ¡Insumos descontados de almacén exitosamente para ${units} unidad(es)!`,
+          type: 'success'
+        });
+        await loadAllData();
+      } else {
+        setEditorMessage({
+          text: data.error || 'Error al descontar insumos',
+          type: 'error'
+        });
+      }
+    } catch (err) {
+      console.error('Error deducting stock:', err);
+    } finally {
+      setRecipeDeductLoading(false);
+    }
   };
 
   // Quick 1-click toggle for Stock / Availability from table
@@ -5300,6 +5760,503 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     )}
                   </div>
 
+                  {/* SECCIÓN DEDICADA: RECETA DE MANUFACTURA, INSUMOS & MERMA DE TALLER (BOM) */}
+                  <div className="rounded-2xl border-2 border-emerald-600/30 bg-gradient-to-br from-stone-50 via-[#FAF9F5] to-emerald-50/20 overflow-hidden shadow-xs">
+                    
+                    {/* Encabezado del Acordeón con Resumen Vivo */}
+                    <div
+                      onClick={() => setEditorRecipeAccordion(prev => !prev)}
+                      className="p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-2.5 cursor-pointer select-none hover:bg-black/[0.02] transition-colors"
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <span className="p-2 rounded-xl bg-emerald-100 text-emerald-800 shadow-2xs shrink-0">
+                          <Layers className="w-4 h-4 text-emerald-800" />
+                        </span>
+                        <div>
+                          <h4 className="font-heading font-black text-xs text-[#1F2421] flex flex-wrap items-center gap-1.5">
+                            <span>Insumos, Receta de Manufactura y Merma (BOM)</span>
+                            <span className="px-2 py-0.2 rounded-full bg-emerald-100 text-emerald-900 text-[10px] font-bold border border-emerald-300">
+                              {(editorForm.manufacturingRecipe?.items || []).length} insumos
+                            </span>
+                            {editorForm.manufacturingRecipe?.totalMaterialCost > 0 && (
+                              <span className="px-2 py-0.2 rounded-full bg-white text-emerald-800 text-[10px] font-mono font-black border border-emerald-200 shadow-2xs">
+                                Total: ${Number(editorForm.manufacturingRecipe.totalMaterialCost).toFixed(2)} MXN
+                              </span>
+                            )}
+                          </h4>
+                          <p className="text-[10.5px] text-gray-500 line-clamp-1">
+                            Control granular de filamento 3D, soportes, torre de purga, corte láser, blanks y cinta térmica. Se descuenta del stock de taller al fabricar.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 shrink-0">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleSyncRecipeToCostPrice();
+                          }}
+                          className="px-2.5 py-1 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-[10.5px] flex items-center gap-1 transition-all shadow-2xs cursor-pointer active:scale-95"
+                          title="Copiar costo total de insumos al campo Costo de Producción del producto"
+                        >
+                          <Zap className="w-3 h-3 text-amber-300" />
+                          <span>Sincronizar Costo (${Number(editorForm.manufacturingRecipe?.totalMaterialCost || 0).toFixed(1)})</span>
+                        </button>
+                        <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${editorRecipeAccordion ? 'rotate-180' : ''}`} />
+                      </div>
+                    </div>
+
+                    {/* Contenido desplegable */}
+                    {editorRecipeAccordion && (
+                      <div className="p-3.5 sm:p-4 pt-0 border-t border-emerald-100 space-y-4">
+                        
+                        {/* 1. Barra de Presets Rápidos por Técnica */}
+                        <div className="pt-2 flex flex-wrap items-center justify-between gap-2">
+                          <span className="text-[10px] font-bold text-gray-500 uppercase flex items-center gap-1">
+                            <Sparkles className="w-3 h-3 text-emerald-600" />
+                            <span>Cargar Plantilla Rápida de Taller:</span>
+                          </span>
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => handleApplyRecipePreset('3d')}
+                              className="px-2 py-1 rounded-lg bg-white border border-stone-300 hover:border-emerald-600 hover:bg-emerald-50 text-[10.5px] font-semibold text-gray-700 transition-all cursor-pointer shadow-2xs"
+                              title="Carga filamento PLA con peso neto + soportes y torre de purga + spray de cama"
+                            >
+                              🖨️ Preset 3D (PLA + Purga/Soportes)
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleApplyRecipePreset('laser')}
+                              className="px-2 py-1 rounded-lg bg-white border border-stone-300 hover:border-emerald-600 hover:bg-emerald-50 text-[10.5px] font-semibold text-gray-700 transition-all cursor-pointer shadow-2xs"
+                              title="Carga placa MDF o Triplay con área y merma de corte"
+                            >
+                              ⚡ Preset Láser (MDF + Merma 15%)
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleApplyRecipePreset('sublimation')}
+                              className="px-2 py-1 rounded-lg bg-white border border-stone-300 hover:border-emerald-600 hover:bg-emerald-50 text-[10.5px] font-semibold text-gray-700 transition-all cursor-pointer shadow-2xs"
+                              title="Carga taza blanca 11oz, papel transfer, tintas CMYK y cinta térmica en centímetros"
+                            >
+                              ☕ Preset Sublimación (Taza + Cinta + Papel)
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* 2. Tabla / Lista de Insumos Actuales de la Receta */}
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between text-[11px] font-bold text-gray-700 uppercase tracking-wider">
+                            <span>Insumos y Materiales Requeridos para 1 Unidad:</span>
+                            <span className="text-gray-400 font-normal lowercase text-[10.5px]">
+                              rinde {(editorForm.manufacturingRecipe?.yieldUnits || 1)} pieza(s)
+                            </span>
+                          </div>
+
+                          {(editorForm.manufacturingRecipe?.items || []).length === 0 ? (
+                            <div className="p-4 bg-white rounded-xl border border-dashed border-stone-300 text-center space-y-1">
+                              <p className="text-xs font-semibold text-gray-600">Este producto aún no tiene insumos configurados.</p>
+                              <p className="text-[11px] text-gray-400">Selecciona un insumo del catálogo abajo o haz clic en una de las plantillas rápidas.</p>
+                            </div>
+                          ) : (
+                            <div className="space-y-2 max-h-72 overflow-y-auto pr-0.5">
+                              {(editorForm.manufacturingRecipe?.items || []).map((item, idx) => {
+                                const matchedMat = rawMaterialsList.find(m => m.id === item.materialId || (item.name && m.name.toLowerCase().trim() === item.name.toLowerCase().trim()));
+                                const netVal = Number(item.netQuantity) || 0;
+                                const wasteVal = Number(item.wasteQuantity) || 0;
+                                const totalVal = netVal + wasteVal;
+                                const costVal = Number(item.totalCost) || 0;
+
+                                // Stock disponible en taller
+                                let stockBadgeText = 'Sin vincular';
+                                let stockBadgeColor = 'bg-gray-100 text-gray-600 border-gray-200';
+                                if (matchedMat) {
+                                  const currentStock = Number(matchedMat.currentStock) || 0;
+                                  const deductionPerUnit = calculateMaterialStockDeduction(matchedMat, totalVal, item.unit);
+                                  const possibleUnits = deductionPerUnit > 0 ? Math.floor(currentStock / deductionPerUnit) : 0;
+                                  
+                                  if (possibleUnits >= 5) {
+                                    stockBadgeText = `🟢 Taller: ${currentStock} ${matchedMat.unit} (~${possibleUnits} pzas)`;
+                                    stockBadgeColor = 'bg-emerald-50 text-emerald-800 border-emerald-200';
+                                  } else if (possibleUnits > 0) {
+                                    stockBadgeText = `⚠️ Taller bajo: ${currentStock} ${matchedMat.unit} (${possibleUnits} pzas)`;
+                                    stockBadgeColor = 'bg-amber-50 text-amber-800 border-amber-200';
+                                  } else {
+                                    stockBadgeText = `🔴 Agotado en taller: ${currentStock} ${matchedMat.unit}`;
+                                    stockBadgeColor = 'bg-rose-50 text-rose-800 border-rose-200';
+                                  }
+                                }
+
+                                return (
+                                  <div
+                                    key={item.id || idx}
+                                    className="p-2.5 sm:p-3 rounded-xl bg-white border border-stone-200 hover:border-emerald-300 transition-all shadow-2xs space-y-2"
+                                  >
+                                    <div className="flex flex-wrap items-center justify-between gap-2">
+                                      <div className="flex items-center gap-2 min-w-0">
+                                        <span className="w-5 h-5 rounded-full bg-[#2D4F3E] text-white flex items-center justify-center font-bold text-[10px] shrink-0">
+                                          {idx + 1}
+                                        </span>
+                                        <div className="min-w-0">
+                                          <div className="font-bold text-xs text-gray-900 truncate flex items-center gap-1.5">
+                                            <span>{item.name}</span>
+                                            {item.category && (
+                                              <span className="px-1.5 py-0.2 rounded bg-stone-100 text-stone-700 text-[9px] uppercase font-bold">
+                                                {item.category}
+                                              </span>
+                                            )}
+                                          </div>
+                                          <div className="flex items-center gap-1.5 mt-0.5">
+                                            <span className={`px-2 py-0.2 rounded-full border text-[9.5px] font-bold ${stockBadgeColor}`}>
+                                              {stockBadgeText}
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      <div className="flex items-center gap-2">
+                                        <span className="text-xs font-mono font-black text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-200">
+                                          ${costVal.toFixed(2)} MXN
+                                        </span>
+                                        <button
+                                          type="button"
+                                          onClick={() => handleRemoveEditorRecipeItem(item.id)}
+                                          className="p-1 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                                          title="Eliminar insumo de la receta"
+                                        >
+                                          <Trash2 className="w-3.5 h-3.5" />
+                                        </button>
+                                      </div>
+                                    </div>
+
+                                    {/* Inputs de Cantidad Neta, Merma y Tipo */}
+                                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 border-t border-stone-100 text-[10px]">
+                                      
+                                      {/* Cantidad Neta */}
+                                      <div>
+                                        <label className="text-gray-500 font-bold block mb-0.5">
+                                          Peso / Cant. Neta ({item.unit}):
+                                        </label>
+                                        <input
+                                          type="number"
+                                          step="any"
+                                          min="0"
+                                          value={item.netQuantity ?? ''}
+                                          onChange={e => handleUpdateEditorRecipeItem(item.id, 'netQuantity', parseFloat(e.target.value) || 0)}
+                                          className="w-full px-2 py-1 rounded-lg border border-gray-300 font-mono font-bold text-xs bg-stone-50/50"
+                                          placeholder="Ej: 45"
+                                        />
+                                        <span className="text-[9px] text-gray-400">En pieza final</span>
+                                      </div>
+
+                                      {/* Merma / Desperdicio */}
+                                      <div>
+                                        <label className="text-amber-800 font-bold block mb-0.5">
+                                          + Merma / Purga ({item.unit}):
+                                        </label>
+                                        <input
+                                          type="number"
+                                          step="any"
+                                          min="0"
+                                          value={item.wasteQuantity ?? ''}
+                                          onChange={e => handleUpdateEditorRecipeItem(item.id, 'wasteQuantity', parseFloat(e.target.value) || 0)}
+                                          className="w-full px-2 py-1 rounded-lg border border-amber-300 bg-amber-50/50 font-mono font-bold text-xs text-amber-900"
+                                          placeholder="Ej: 15"
+                                        />
+                                        <span className="text-[9px] text-amber-700 font-semibold">
+                                          {totalVal > 0 ? `${Math.round((wasteVal / totalVal) * 100)}% merma` : '0%'}
+                                        </span>
+                                      </div>
+
+                                      {/* Tipo de Merma */}
+                                      <div>
+                                        <label className="text-gray-500 font-bold block mb-0.5">
+                                          Motivo de Merma:
+                                        </label>
+                                        <select
+                                          value={item.wasteType || 'supports_purge'}
+                                          onChange={e => handleUpdateEditorRecipeItem(item.id, 'wasteType', e.target.value)}
+                                          className="w-full px-2 py-1 rounded-lg border border-gray-300 font-medium text-[10.5px] bg-white"
+                                        >
+                                          <option value="supports_purge">🖨️ Soportes / Torre Purga (3D)</option>
+                                          <option value="kerf_cut">⚡ Kerf / Retacería (Láser)</option>
+                                          <option value="tape">☕ Cinta Térmica / Fijación</option>
+                                          <option value="trimming">✂️ Recortes / Descarte Papel</option>
+                                          <option value="manual">🪵 Merma Manual / Pruebas</option>
+                                          <option value="none">✓ Sin Merma (Exacto)</option>
+                                        </select>
+                                      </div>
+
+                                      {/* Total y Costo Unitario */}
+                                      <div>
+                                        <label className="text-gray-500 font-bold block mb-0.5">
+                                          Total a Consumir:
+                                        </label>
+                                        <div className="px-2 py-1 rounded-lg bg-stone-100 font-mono font-bold text-xs text-gray-800 flex items-center justify-between">
+                                          <span>{totalVal} {item.unit}</span>
+                                          <span className="text-[9.5px] text-gray-500 font-normal">@ ${Number(item.unitCost).toFixed(3)}</span>
+                                        </div>
+                                        <span className="text-[9px] text-gray-400">Total taller</span>
+                                      </div>
+
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* 3. Formulario para Añadir Nuevo Insumo al Producto */}
+                        <div className="p-3 bg-white rounded-xl border border-stone-200 space-y-2.5">
+                          <div className="text-[11px] font-bold text-gray-800 uppercase flex items-center gap-1.5">
+                            <Plus className="w-3.5 h-3.5 text-emerald-700" />
+                            <span>Agregar Materia Prima o Insumo a la Receta:</span>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-12 gap-2 text-xs">
+                            
+                            {/* Selector / Búsqueda de Insumo */}
+                            <div className="sm:col-span-5 space-y-1">
+                              <label className="text-[10px] font-bold text-gray-600 block">
+                                Insumo del Taller ({rawMaterialsList.length} en almacén):
+                              </label>
+                              <select
+                                value={editorRecipeSelectedMatId}
+                                onChange={e => {
+                                  const id = e.target.value;
+                                  setEditorRecipeSelectedMatId(id);
+                                  const mat = rawMaterialsList.find(m => m.id === id);
+                                  if (mat) {
+                                    const pkg = parsePackageInfo(mat);
+                                    setEditorRecipeUnit(pkg.packageMeasurement || 'pza');
+                                    // Sugerir cantidades lógicas según tipo
+                                    if (mat.category === '3d') {
+                                      setEditorRecipeNetQty(45);
+                                      setEditorRecipeWasteQty(15);
+                                      setEditorRecipeWasteType('supports_purge');
+                                    } else if (mat.category === 'laser') {
+                                      setEditorRecipeNetQty(350);
+                                      setEditorRecipeWasteQty(50);
+                                      setEditorRecipeWasteType('kerf_cut');
+                                    } else if (mat.name.toLowerCase().includes('cinta')) {
+                                      setEditorRecipeNetQty(15);
+                                      setEditorRecipeWasteQty(5);
+                                      setEditorRecipeWasteType('tape');
+                                      setEditorRecipeUnit('cm');
+                                    } else if (mat.category === 'sublimation' && mat.unit === 'pieza') {
+                                      setEditorRecipeNetQty(1);
+                                      setEditorRecipeWasteQty(0);
+                                      setEditorRecipeWasteType('none');
+                                      setEditorRecipeUnit('pza');
+                                    }
+                                  }
+                                }}
+                                className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-medium text-xs text-gray-800"
+                              >
+                                <option value="">-- Seleccionar insumo de bodega --</option>
+                                <optgroup label="🖨️ Filamentos 3D & Insumos de Cama">
+                                  {rawMaterialsList.filter(m => m.category === '3d').map(m => (
+                                    <option key={m.id} value={m.id}>
+                                      {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
+                                    </option>
+                                  ))}
+                                </optgroup>
+                                <optgroup label="⚡ Placas Láser (MDF, Triplay, Acrílico)">
+                                  {rawMaterialsList.filter(m => m.category === 'laser').map(m => (
+                                    <option key={m.id} value={m.id}>
+                                      {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
+                                    </option>
+                                  ))}
+                                </optgroup>
+                                <optgroup label="☕ Sublimación (Tazas, Blanks, Cinta, Tintas)">
+                                  {rawMaterialsList.filter(m => m.category === 'sublimation').map(m => (
+                                    <option key={m.id} value={m.id}>
+                                      {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
+                                    </option>
+                                  ))}
+                                </optgroup>
+                                <optgroup label="📦 Otros Insumos, Vinil & Empaque">
+                                  {rawMaterialsList.filter(m => !['3d', 'laser', 'sublimation'].includes(m.category)).map(m => (
+                                    <option key={m.id} value={m.id}>
+                                      {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
+                                    </option>
+                                  ))}
+                                </optgroup>
+                              </select>
+                              <span className="text-[9.5px] text-gray-400">O escribe uno manual si no está en almacén</span>
+                            </div>
+
+                            {/* Opcional: Nombre Personalizado */}
+                            {!editorRecipeSelectedMatId && (
+                              <div className="sm:col-span-3 space-y-1">
+                                <label className="text-[10px] font-bold text-gray-600 block">Nombre manual:</label>
+                                <input
+                                  type="text"
+                                  value={editorRecipeCustomName}
+                                  onChange={e => setEditorRecipeCustomName(e.target.value)}
+                                  className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white text-xs"
+                                  placeholder="Ej: Lija 240 / Cinta..."
+                                />
+                              </div>
+                            )}
+
+                            {/* Cantidad Neta */}
+                            <div className="sm:col-span-2 space-y-1">
+                              <label className="text-[10px] font-bold text-gray-600 block">Cant. Neta:</label>
+                              <input
+                                type="number"
+                                step="any"
+                                min="0"
+                                value={editorRecipeNetQty}
+                                onChange={e => setEditorRecipeNetQty(parseFloat(e.target.value) || 0)}
+                                className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-mono font-bold text-xs"
+                              />
+                            </div>
+
+                            {/* Cantidad Merma */}
+                            <div className="sm:col-span-2 space-y-1">
+                              <label className="text-[10px] font-bold text-amber-800 block">+ Merma:</label>
+                              <input
+                                type="number"
+                                step="any"
+                                min="0"
+                                value={editorRecipeWasteQty}
+                                onChange={e => setEditorRecipeWasteQty(parseFloat(e.target.value) || 0)}
+                                className="w-full px-2 py-1.5 rounded-lg border border-amber-300 bg-amber-50/50 font-mono font-bold text-xs text-amber-900"
+                              />
+                            </div>
+
+                            {/* Unidad */}
+                            <div className="sm:col-span-1 space-y-1">
+                              <label className="text-[10px] font-bold text-gray-600 block">Unidad:</label>
+                              <select
+                                value={editorRecipeUnit}
+                                onChange={e => setEditorRecipeUnit(e.target.value)}
+                                className="w-full px-1.5 py-1.5 rounded-lg border border-gray-300 bg-white font-bold text-xs text-center"
+                              >
+                                <option value="g">g</option>
+                                <option value="kg">kg</option>
+                                <option value="cm²">cm²</option>
+                                <option value="cm">cm</option>
+                                <option value="m">m</option>
+                                <option value="pza">pza</option>
+                                <option value="hoja">hoja</option>
+                                <option value="ml">ml</option>
+                              </select>
+                            </div>
+
+                            {/* Botón de Agregar */}
+                            <div className="sm:col-span-2 flex items-end">
+                              <button
+                                type="button"
+                                onClick={handleAddEditorRecipeItem}
+                                className="w-full py-1.5 px-3 rounded-lg bg-[#2D4F3E] hover:bg-[#20392C] text-white font-bold text-xs flex items-center justify-center gap-1 shadow-xs transition-all cursor-pointer active:scale-95"
+                              >
+                                <Plus className="w-3.5 h-3.5" />
+                                <span>Agregar</span>
+                              </button>
+                            </div>
+
+                          </div>
+                        </div>
+
+                        {/* 4. Tarjeta de Simulación en Taller & Descuento Inmediato de Inventario */}
+                        <div className="p-3 bg-gradient-to-r from-emerald-900 via-[#1C2721] to-[#141615] rounded-xl text-white space-y-2.5 shadow-md border border-emerald-700/50">
+                          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-2">
+                            <div className="flex items-center gap-2">
+                              <span className="p-1 rounded-lg bg-emerald-500/20 text-emerald-300">
+                                <Hammer className="w-4 h-4" />
+                              </span>
+                              <div>
+                                <h5 className="font-bold text-xs text-white flex items-center gap-1.5">
+                                  <span>Simulador de Fabricación &amp; Control de Descuento de Taller</span>
+                                  <span className="px-2 py-0.2 rounded-full bg-emerald-500/30 text-emerald-300 text-[9.5px] font-bold">
+                                    En Vivo
+                                  </span>
+                                </h5>
+                                <span className="text-[10px] text-gray-300">
+                                  Prueba si tienes stock suficiente para una orden o descuenta las materias primas al instante
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Resumen Financiero en el Header del Simulador */}
+                            <div className="flex items-center gap-2 text-right">
+                              <div>
+                                <div className="text-[9.5px] text-gray-400">Costo Material Unitario:</div>
+                                <div className="font-mono font-black text-sm text-emerald-300">
+                                  ${Number(editorForm.manufacturingRecipe?.totalMaterialCost || 0).toFixed(2)} MXN
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Control de Unidades a Fabricar */}
+                          <div className="flex flex-wrap items-center justify-between gap-3 text-xs pt-1">
+                            <div className="flex items-center gap-2">
+                              <label className="text-[11px] text-gray-300 font-semibold">
+                                Piezas a fabricar:
+                              </label>
+                              <div className="flex items-center border border-gray-600 rounded-lg bg-black/40 overflow-hidden">
+                                <button
+                                  type="button"
+                                  onClick={() => setRecipeSimulateUnits(Math.max(1, recipeSimulateUnits - 1))}
+                                  className="px-2 py-1 text-gray-300 hover:bg-white/10 cursor-pointer"
+                                >
+                                  -
+                                </button>
+                                <input
+                                  type="number"
+                                  min="1"
+                                  value={recipeSimulateUnits}
+                                  onChange={e => setRecipeSimulateUnits(Math.max(1, parseInt(e.target.value) || 1))}
+                                  className="w-12 text-center font-mono font-bold text-xs bg-transparent text-white focus:outline-none"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => setRecipeSimulateUnits(recipeSimulateUnits + 1)}
+                                  className="px-2 py-1 text-gray-300 hover:bg-white/10 cursor-pointer"
+                                >
+                                  +
+                                </button>
+                              </div>
+                              <span className="text-[10.5px] text-emerald-400 font-mono">
+                                = ${(recipeSimulateUnits * Number(editorForm.manufacturingRecipe?.totalMaterialCost || 0)).toFixed(2)} MXN en insumos
+                              </span>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                              <button
+                                type="button"
+                                onClick={() => handleSimulateProduction(recipeSimulateUnits)}
+                                className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer"
+                              >
+                                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                                <span>Verificar Disponibilidad de Stock</span>
+                              </button>
+
+                              <button
+                                type="button"
+                                disabled={recipeDeductLoading || (editorForm.manufacturingRecipe?.items || []).length === 0}
+                                onClick={() => handleDeductStockNow(recipeSimulateUnits)}
+                                className="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-black text-xs flex items-center gap-1.5 transition-all shadow-md cursor-pointer active:scale-95"
+                                title="Resta de inmediato las cantidades exactas con merma del stock de taller"
+                              >
+                                <Zap className="w-3.5 h-3.5 text-amber-300" />
+                                <span>{recipeDeductLoading ? 'Descontando...' : `Descontar ${recipeSimulateUnits} pza(s) del Taller`}</span>
+                              </button>
+                            </div>
+                          </div>
+
+                        </div>
+
+                      </div>
+                    )}
+
+                  </div>
+
                   {/* CONFIGURACIÓN EXCLUSIVA DE PAQUETE O COMBO PROMOCIONAL */}
                   {editorForm.isBundle && (
                     <div className="p-4 rounded-2xl bg-gradient-to-r from-purple-50/80 via-[#FAF9F5] to-amber-50/50 border-2 border-purple-300/90 space-y-3.5 shadow-xs">
@@ -6073,6 +7030,131 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               </div>
 
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Simulación Detallada de Disponibilidad de Taller */}
+      {recipeSimulationModal && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center p-3 sm:p-5 bg-black/75 backdrop-blur-sm animate-fade-in">
+          <div
+            className="bg-[#FBF9F5] rounded-3xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden border border-[#E8E4DA] shadow-2xl"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="px-6 py-4 bg-[#1F2421] text-white flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-xl bg-white/10 text-emerald-400">
+                  <CheckCircle2 className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold font-heading flex items-center gap-2">
+                    <span>Resultado de Simulación de Taller</span>
+                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${
+                      recipeSimulationModal.feasible
+                        ? 'bg-emerald-900/60 text-emerald-300 border-emerald-700'
+                        : 'bg-rose-900/60 text-rose-300 border-rose-700'
+                    }`}>
+                      {recipeSimulationModal.feasible ? '✓ Stock Suficiente' : '⚠️ Stock Insuficiente'}
+                    </span>
+                  </h3>
+                  <p className="text-xs text-gray-400">
+                    Simulación para: <strong className="text-white">{recipeSimulationModal.requestedUnits || 1} pieza(s)</strong> • Capacidad máx. actual: <strong className="text-amber-300 font-mono">{recipeSimulationModal.maxPossibleUnits} piezas</strong>
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setRecipeSimulationModal(null)}
+                className="p-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="p-6 overflow-y-auto space-y-4 flex-1 text-xs">
+              
+              {/* Banner de Estado */}
+              <div className={`p-4 rounded-2xl border flex items-start gap-3 ${
+                recipeSimulationModal.feasible
+                  ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
+                  : 'bg-rose-50 border-rose-200 text-rose-900'
+              }`}>
+                {recipeSimulationModal.feasible ? (
+                  <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+                ) : (
+                  <AlertTriangle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
+                )}
+                <div>
+                  <h4 className="font-bold text-sm">
+                    {recipeSimulationModal.feasible
+                      ? `¡Excelente! Tienes suficiente stock en bodega para fabricar ${recipeSimulationModal.requestedUnits} pieza(s).`
+                      : `Atención: No hay suficiente stock de algunos insumos para fabricar ${recipeSimulationModal.requestedUnits} pieza(s).`}
+                  </h4>
+                  <p className="text-xs mt-0.5 text-gray-600">
+                    Costo estimado en insumos: <strong className="font-mono text-gray-900">${recipeSimulationModal.totalEstimatedCost} MXN</strong> (Neto: ${recipeSimulationModal.totalNetCost} • Merma/Purga: ${recipeSimulationModal.totalWasteCost} - {recipeSimulationModal.wastePercentAverage}%)
+                  </p>
+                </div>
+              </div>
+
+              {/* Lista Detallada de Insumos */}
+              <div className="space-y-2">
+                <div className="text-[11px] font-bold text-gray-700 uppercase tracking-wider">
+                  Impacto en el inventario de materias primas:
+                </div>
+
+                <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
+                  {(recipeSimulationModal.items || []).map((it, idx) => (
+                    <div
+                      key={idx}
+                      className={`p-3 rounded-xl border flex flex-wrap items-center justify-between gap-2 ${
+                        it.sufficient
+                          ? 'bg-white border-stone-200'
+                          : 'bg-rose-50/50 border-rose-300'
+                      }`}
+                    >
+                      <div className="min-w-0">
+                        <div className="font-bold text-xs text-gray-900 flex items-center gap-1.5">
+                          <span>{it.name}</span>
+                          <span className={`px-1.5 py-0.2 rounded-full text-[9px] font-bold ${
+                            it.sufficient ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+                          }`}>
+                            {it.sufficient ? '✓ Disponible' : `Faltan ${it.missingStock} ${it.stockUnit}`}
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-gray-500 mt-0.5">
+                          Consumo: <strong className="text-gray-800 font-mono">{it.totalRequired} {it.unit}</strong> (Neto: {it.netQuantity * (recipeSimulationModal.requestedUnits || 1)} + Merma: {it.wasteQuantity * (recipeSimulationModal.requestedUnits || 1)}) • Stock actual: <span className="font-mono">{it.currentStock} {it.stockUnit}</span>
+                        </div>
+                      </div>
+
+                      <div className="text-right">
+                        <div className="text-[10px] text-gray-400">Stock resultante:</div>
+                        <div className={`font-mono font-bold text-xs ${it.sufficient ? 'text-emerald-700' : 'text-rose-700'}`}>
+                          {it.remainingStock} {it.stockUnit}
+                        </div>
+                        <div className="text-[9.5px] text-gray-400">Línea: ${it.lineCost} MXN</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+
+            {/* Footer */}
+            <div className="p-4 px-6 bg-white border-t border-stone-200 flex items-center justify-between shrink-0">
+              <span className="text-[11px] text-gray-500">
+                Capacidad máxima de producción con stock actual: <strong>{recipeSimulationModal.maxPossibleUnits} piezas</strong>
+              </span>
+              <button
+                type="button"
+                onClick={() => setRecipeSimulationModal(null)}
+                className="px-5 py-2 rounded-xl bg-[#2D4F3E] text-white font-bold text-xs hover:bg-[#20392C] transition-colors cursor-pointer"
+              >
+                Cerrar Simulación
+              </button>
+            </div>
           </div>
         </div>
       )}

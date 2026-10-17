@@ -2226,6 +2226,87 @@ const initialCoupons = [
   }
 ];
 
+// Helper para desglosar el contenido de un empaque o bobina en cantidad numérica y unidad base
+export function parseMaterialPackage(mat) {
+  if (mat && mat.packageQuantity !== undefined && mat.packageQuantity !== null && mat.packageMeasurement) {
+    return {
+      packageQuantity: Number(mat.packageQuantity) || 1,
+      packageMeasurement: String(mat.packageMeasurement).trim().toLowerCase()
+    };
+  }
+  const unit = (((mat && mat.unit) || '') + ' ' + ((mat && mat.name) || '')).toLowerCase().trim();
+
+  if (unit.includes('1 kg') || unit.includes('1kg') || unit.includes('kilo')) return { packageQuantity: 1000, packageMeasurement: 'g' };
+  if (unit.includes('250g') || unit.includes('250 g')) return { packageQuantity: 250, packageMeasurement: 'g' };
+
+  if (unit.includes('1 litro') || unit.includes('1l') || unit.includes('1 l')) return { packageQuantity: 1000, packageMeasurement: 'ml' };
+  if (unit.includes('400 ml') || unit.includes('400ml')) return { packageQuantity: 400, packageMeasurement: 'ml' };
+  if (unit.includes('250 ml') || unit.includes('250ml')) return { packageQuantity: 250, packageMeasurement: 'ml' };
+  const mlMatch = unit.match(/(\d+)\s*ml/);
+  if (mlMatch) return { packageQuantity: Number(mlMatch[1]), packageMeasurement: 'ml' };
+
+  if (unit.includes('60x40') || unit.includes('60 x 40')) return { packageQuantity: 2400, packageMeasurement: 'cm²' };
+  if (unit.includes('40x40') || unit.includes('40 x 40')) return { packageQuantity: 1600, packageMeasurement: 'cm²' };
+  if (unit.includes('30x40') || unit.includes('30 x 40')) return { packageQuantity: 1200, packageMeasurement: 'cm²' };
+
+  // Cinta Térmica Kapton y rollos (3 rollos de 33m = 99m = 9900 cm)
+  if (unit.includes('3 rollos') && (unit.includes('33m') || unit.includes('33 m'))) return { packageQuantity: 9900, packageMeasurement: 'cm' };
+  if (unit.includes('33m') || unit.includes('33 m')) return { packageQuantity: 3300, packageMeasurement: 'cm' };
+  if (unit.includes('10 m') || unit.includes('10m') || unit.includes('10 metros')) return { packageQuantity: 1000, packageMeasurement: 'cm' };
+  if (unit.includes('20 m') || unit.includes('20m') || unit.includes('20 metros')) return { packageQuantity: 2000, packageMeasurement: 'cm' };
+  if (unit.includes('50m') || unit.includes('50 m')) return { packageQuantity: 5000, packageMeasurement: 'cm' };
+
+  if (unit.includes('500 pzas') || unit.includes('500')) return { packageQuantity: 500, packageMeasurement: 'pza' };
+  if (unit.includes('200 pzas') || unit.includes('200')) return { packageQuantity: 200, packageMeasurement: 'pza' };
+  if (unit.includes('100 pzas') || unit.includes('100 hojas') || unit.includes('100 pliegos') || unit.includes('100')) {
+    const meas = unit.includes('hoja') || unit.includes('pliego') ? 'hoja' : 'pza';
+    return { packageQuantity: 100, packageMeasurement: meas };
+  }
+  if (unit.includes('50 pzas') || unit.includes('50 pares') || unit.includes('50')) return { packageQuantity: 50, packageMeasurement: 'pza' };
+  if (unit.includes('36 tazas') || unit.includes('36')) return { packageQuantity: 36, packageMeasurement: 'pza' };
+  if (unit.includes('25 pzas') || unit.includes('25')) return { packageQuantity: 25, packageMeasurement: 'pza' };
+  if (unit.includes('20 pzas') || unit.includes('20')) return { packageQuantity: 20, packageMeasurement: 'pza' };
+  if (unit.includes('6 rollos') || unit.includes('6')) return { packageQuantity: 6, packageMeasurement: 'pza' };
+  if (unit.includes('5 pzas') || unit.includes('5')) return { packageQuantity: 5, packageMeasurement: 'pza' };
+  if (unit.includes('4 botellas') || unit.includes('4')) return { packageQuantity: 4, packageMeasurement: 'pza' };
+  if (unit.includes('3 rollos') || unit.includes('3 pzas') || unit.includes('3')) return { packageQuantity: 3, packageMeasurement: 'pza' };
+  if (unit.includes('2 pzas') || unit.includes('2 piezas') || unit.includes('2')) return { packageQuantity: 2, packageMeasurement: 'pza' };
+
+  return { packageQuantity: 1, packageMeasurement: 'pza' };
+}
+
+// Convierte la cantidad requerida en la unidad del stock del almacén de taller
+export function calculateMaterialStockDeduction(material, requiredQuantity, requiredUnit) {
+  const pkg = parseMaterialPackage(material);
+  const reqUnit = (requiredUnit || 'pza').toLowerCase().trim();
+  const pkgMeas = (pkg.packageMeasurement || 'pza').toLowerCase().trim();
+  const pkgQty = Number(pkg.packageQuantity) || 1;
+  const qty = Number(requiredQuantity) || 0;
+
+  let baseUnitsRequired = qty;
+
+  if (reqUnit === pkgMeas) {
+    baseUnitsRequired = qty;
+  } else if ((reqUnit === 'g' || reqUnit === 'gr' || reqUnit === 'gramos') && (pkgMeas === 'kg' || pkgMeas === 'kilo')) {
+    baseUnitsRequired = qty / 1000;
+  } else if ((reqUnit === 'kg' || reqUnit === 'kilo') && (pkgMeas === 'g' || pkgMeas === 'gr' || pkgMeas === 'gramos')) {
+    baseUnitsRequired = qty * 1000;
+  } else if ((reqUnit === 'cm' || reqUnit === 'centimetros' || reqUnit === 'centímetros') && (pkgMeas === 'm' || pkgMeas === 'metros')) {
+    baseUnitsRequired = qty / 100;
+  } else if ((reqUnit === 'm' || reqUnit === 'metros') && (pkgMeas === 'cm' || pkgMeas === 'centimetros' || pkgMeas === 'centímetros')) {
+    baseUnitsRequired = qty * 100;
+  } else if ((reqUnit === 'ml' || reqUnit === 'mililitros') && (pkgMeas === 'l' || pkgMeas === 'litro' || pkgMeas === 'litros')) {
+    baseUnitsRequired = qty / 1000;
+  } else if ((reqUnit === 'l' || reqUnit === 'litro' || pkgMeas === 'litros') && (pkgMeas === 'ml' || pkgMeas === 'mililitros')) {
+    baseUnitsRequired = qty * 1000;
+  } else if ((reqUnit === 'hoja' || reqUnit === 'hojas') && (pkgMeas === 'pza' || pkgMeas === 'pieza' || pkgMeas === 'hoja')) {
+    baseUnitsRequired = qty;
+  }
+
+  const stockUnitsDeducted = baseUnitsRequired / pkgQty;
+  return Math.round(stockUnitsDeducted * 10000) / 10000;
+}
+
 const initialRawMaterials = [
   {
     "id": "mat-pla-olivo",
@@ -4517,6 +4598,7 @@ class Database {
       if (!data.orders) data.orders = [];
       if (!data.pubTracking) data.pubTracking = [];
       if (!data.suppliers) data.suppliers = [];
+      if (!data.productionLogs) data.productionLogs = [];
       if (!data.coupons || data.coupons.length === 0) {
         data.coupons = [...initialCoupons];
         this.save(data);
@@ -4533,6 +4615,7 @@ class Database {
       data.orders = [];
       data.pubTracking = [];
       data.suppliers = [];
+      data.productionLogs = [];
       data.coupons = [...initialCoupons];
       data.rawMaterials = [...initialRawMaterials];
       return data;
@@ -6015,6 +6098,251 @@ class Database {
     db.rawMaterials.splice(idx, 1);
     this.save(db);
     return true;
+  }
+
+  // ==========================================
+  // MANUFACTURING RECIPES & STOCK DEDUCTION
+  // ==========================================
+  getProductionLogs(limit = 100) {
+    const db = this.read();
+    const logs = db.productionLogs || [];
+    return logs.slice(-limit).reverse();
+  }
+
+  simulateRecipeProduction(productId, units = 1, customRecipe = null) {
+    const db = this.read();
+    const product = db.products.find(p => p.id === productId || p.code === productId);
+    const recipe = customRecipe || product?.manufacturingRecipe || product?.costBreakdown?.manufacturingRecipe;
+
+    if (!recipe || !Array.isArray(recipe.items) || recipe.items.length === 0) {
+      return {
+        feasible: false,
+        hasRecipe: false,
+        message: 'El producto no tiene una receta de manufactura configurada.',
+        items: []
+      };
+    }
+
+    const multiplier = Math.max(1, Number(units) || 1);
+    const itemsEvaluation = [];
+    let allSufficient = true;
+    let maxPossibleUnits = Infinity;
+    let totalEstimatedCost = 0;
+    let totalNetCost = 0;
+    let totalWasteCost = 0;
+
+    for (const item of recipe.items) {
+      const mat = (db.rawMaterials || []).find(m => m.id === item.materialId || (item.name && m.name.toLowerCase().trim() === item.name.toLowerCase().trim()));
+      const netQty = Number(item.netQuantity) || 0;
+      const wasteQty = Number(item.wasteQuantity) || 0;
+      const totalPerUnit = (netQty + wasteQty) || Number(item.totalQuantity) || Number(item.quantity) || 0;
+      const totalRequired = totalPerUnit * multiplier;
+
+      const pkgInfo = mat ? parseMaterialPackage(mat) : { packageQuantity: 1, packageMeasurement: item.unit || 'pza' };
+      const computedUnitCost = mat && Number(mat.costPerUnit) > 0 ? (Number(mat.costPerUnit) / (pkgInfo.packageQuantity || 1)) : (Number(item.unitCost) || 0);
+      const unitCost = Number(item.unitCost) > 0 ? Number(item.unitCost) : computedUnitCost;
+
+      const lineTotalCost = totalRequired * unitCost;
+      const lineNetCost = (netQty * multiplier) * unitCost;
+      const lineWasteCost = (wasteQty * multiplier) * unitCost;
+
+      totalEstimatedCost += lineTotalCost;
+      totalNetCost += lineNetCost;
+      totalWasteCost += lineWasteCost;
+
+      if (!mat) {
+        itemsEvaluation.push({
+          materialId: item.materialId || '',
+          name: item.name || 'Insumo no catalogado',
+          category: item.category || 'general',
+          netQuantity: netQty,
+          wasteQuantity: wasteQty,
+          wasteType: item.wasteType || 'standard',
+          totalPerUnit,
+          totalRequired,
+          unit: item.unit || 'pza',
+          unitCost,
+          lineCost: Math.round(lineTotalCost * 100) / 100,
+          currentStock: 0,
+          stockUnit: item.unit || 'pza',
+          stockDeductionPerUnit: 0,
+          totalStockDeduction: 0,
+          sufficient: false,
+          missingStock: totalRequired,
+          maxUnits: 0,
+          untracked: true
+        });
+        allSufficient = false;
+        maxPossibleUnits = 0;
+        continue;
+      }
+
+      const deductionPerUnit = calculateMaterialStockDeduction(mat, totalPerUnit, item.unit);
+      const totalStockDeduction = deductionPerUnit * multiplier;
+      const currentStock = Number(mat.currentStock) || 0;
+      const sufficient = currentStock >= totalStockDeduction;
+      const possibleUnitsWithMat = deductionPerUnit > 0 ? Math.floor(currentStock / deductionPerUnit) : 9999;
+      if (possibleUnitsWithMat < maxPossibleUnits) maxPossibleUnits = possibleUnitsWithMat;
+      if (!sufficient) allSufficient = false;
+
+      itemsEvaluation.push({
+        materialId: mat.id,
+        name: mat.name,
+        category: mat.category,
+        color: mat.color,
+        netQuantity: netQty,
+        wasteQuantity: wasteQty,
+        wasteType: item.wasteType || 'standard',
+        totalPerUnit,
+        totalRequired,
+        unit: item.unit || 'pza',
+        unitCost,
+        lineCost: Math.round(lineTotalCost * 100) / 100,
+        currentStock,
+        stockUnit: mat.unit,
+        stockDeductionPerUnit: Math.round(deductionPerUnit * 10000) / 10000,
+        totalStockDeduction: Math.round(totalStockDeduction * 10000) / 10000,
+        remainingStock: Math.max(0, Math.round((currentStock - totalStockDeduction) * 10000) / 10000),
+        sufficient,
+        missingStock: sufficient ? 0 : Math.round((totalStockDeduction - currentStock) * 10000) / 10000,
+        maxUnits: possibleUnitsWithMat
+      });
+    }
+
+    return {
+      feasible: allSufficient,
+      hasRecipe: true,
+      requestedUnits: multiplier,
+      maxPossibleUnits: maxPossibleUnits === Infinity ? 0 : maxPossibleUnits,
+      totalEstimatedCost: Math.round(totalEstimatedCost * 100) / 100,
+      totalNetCost: Math.round(totalNetCost * 100) / 100,
+      totalWasteCost: Math.round(totalWasteCost * 100) / 100,
+      wastePercentAverage: totalEstimatedCost > 0 ? Math.round((totalWasteCost / totalEstimatedCost) * 1000) / 10 : 0,
+      unitCost: Math.round((totalEstimatedCost / multiplier) * 100) / 100,
+      items: itemsEvaluation
+    };
+  }
+
+  deductRecipeMaterials(productId, units = 1, options = {}) {
+    const db = this.read();
+    db.rawMaterials = db.rawMaterials || [];
+    db.productionLogs = db.productionLogs || [];
+
+    const product = db.products.find(p => p.id === productId || p.code === productId);
+    const recipe = options.customRecipe || product?.manufacturingRecipe || product?.costBreakdown?.manufacturingRecipe;
+
+    if (!recipe || !Array.isArray(recipe.items) || recipe.items.length === 0) {
+      return {
+        success: false,
+        error: 'El producto no tiene una receta de manufactura configurada.'
+      };
+    }
+
+    const multiplier = Math.max(1, Number(units) || 1);
+    const deductions = [];
+    const now = new Date().toISOString();
+
+    for (const item of recipe.items) {
+      const idx = db.rawMaterials.findIndex(m => m.id === item.materialId || (item.name && m.name.toLowerCase().trim() === item.name.toLowerCase().trim()));
+      if (idx === -1) continue;
+
+      const mat = db.rawMaterials[idx];
+      const netQty = Number(item.netQuantity) || 0;
+      const wasteQty = Number(item.wasteQuantity) || 0;
+      const totalPerUnit = (netQty + wasteQty) || Number(item.totalQuantity) || Number(item.quantity) || 0;
+      const totalRequired = totalPerUnit * multiplier;
+      const deductionAmount = calculateMaterialStockDeduction(mat, totalPerUnit, item.unit) * multiplier;
+      const prevStock = Number(mat.currentStock) || 0;
+      const newStock = Math.max(0, Math.round((prevStock - deductionAmount) * 10000) / 10000);
+
+      db.rawMaterials[idx].currentStock = newStock;
+      db.rawMaterials[idx].updatedAt = now;
+
+      const record = {
+        materialId: mat.id,
+        materialName: mat.name,
+        category: mat.category,
+        consumedAmount: totalRequired,
+        consumedUnit: item.unit,
+        netConsumed: netQty * multiplier,
+        wasteConsumed: wasteQty * multiplier,
+        wasteType: item.wasteType || 'standard',
+        stockDeducted: Math.round(deductionAmount * 10000) / 10000,
+        stockUnit: mat.unit,
+        previousStock: prevStock,
+        newStock
+      };
+
+      deductions.push(record);
+
+      db.productionLogs.push({
+        id: `prod-log-${Date.now()}-${Math.round(Math.random() * 10000)}`,
+        timestamp: now,
+        action: 'deduct',
+        productId: product?.id || productId,
+        productName: product?.name || options.productName || 'Producto',
+        productCode: product?.code || options.productCode || '',
+        orderId: options.orderId || null,
+        orderNumber: options.orderNumber || null,
+        quantityProduced: multiplier,
+        reason: options.reason || 'Consumo por orden de fabricación en taller',
+        deduction: record
+      });
+    }
+
+    this.save(db);
+
+    return {
+      success: true,
+      productId: product?.id || productId,
+      productName: product?.name || 'Producto',
+      unitsProduced: multiplier,
+      deductions,
+      updatedRawMaterials: db.rawMaterials,
+      timestamp: now
+    };
+  }
+
+  revertRecipeDeduction(orderId) {
+    const db = this.read();
+    db.rawMaterials = db.rawMaterials || [];
+    db.productionLogs = db.productionLogs || [];
+
+    const orderLogs = db.productionLogs.filter(l => l.orderId === orderId && l.action === 'deduct');
+    if (orderLogs.length === 0) {
+      return { success: false, message: 'No hay consumos registrados para revertir en este pedido.' };
+    }
+
+    const restoredItems = [];
+    const now = new Date().toISOString();
+
+    for (const log of orderLogs) {
+      const matIdx = db.rawMaterials.findIndex(m => m.id === log.deduction?.materialId);
+      if (matIdx !== -1 && log.deduction?.stockDeducted > 0) {
+        const curStock = Number(db.rawMaterials[matIdx].currentStock) || 0;
+        const restoredStock = Math.round((curStock + log.deduction.stockDeducted) * 10000) / 10000;
+        db.rawMaterials[matIdx].currentStock = restoredStock;
+        db.rawMaterials[matIdx].updatedAt = now;
+        restoredItems.push({
+          materialId: log.deduction.materialId,
+          name: log.deduction.materialName,
+          restoredAmount: log.deduction.stockDeducted,
+          newStock: restoredStock
+        });
+      }
+    }
+
+    db.productionLogs.push({
+      id: `prod-revert-${Date.now()}`,
+      timestamp: now,
+      action: 'revert',
+      orderId,
+      reason: 'Reversión de consumo por cancelación o modificación de pedido',
+      restoredItems
+    });
+
+    this.save(db);
+    return { success: true, restoredItems, updatedRawMaterials: db.rawMaterials };
   }
 
   // ==========================================
