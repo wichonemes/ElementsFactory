@@ -10,3 +10,6 @@ product_repository/
 *.pem
 *.key
 .openai/
+server/backups/
+/catalog-v2-*.webp
+/*.jpg

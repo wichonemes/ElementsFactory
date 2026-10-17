@@ -1101,6 +1101,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterStock, setFilterStock] = useState('all'); // 'all' | 'in_stock' | 'made_to_order'
   const [filterTechnique, setFilterTechnique] = useState('all');
+  const [productViewMode, setProductViewMode] = useState('grid'); // 'grid' (estilo paquetes) | 'table'
 
   // Cost & Margins (Workshop Parameters & Calculations)
   const [workshopParams, setWorkshopParams] = useState({
@@ -4633,6 +4634,36 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         <option value="draft">Borradores</option>
                         <option value="archived">Archivados</option>
                       </select>
+
+                      {/* Selector de modo de vista: Tarjetas (estilo paquetes) vs Tabla */}
+                      <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-xl border border-gray-200">
+                        <button
+                          type="button"
+                          onClick={() => setProductViewMode('grid')}
+                          className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                            productViewMode === 'grid'
+                              ? 'bg-[#2D4F3E] text-white shadow-xs'
+                              : 'text-gray-600 hover:text-gray-900'
+                          }`}
+                          title="Vista de cuadrícula en tarjetas (estilo Paquetes)"
+                        >
+                          <Boxes className="w-3.5 h-3.5" />
+                          <span className="hidden sm:inline">Tarjetas</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setProductViewMode('table')}
+                          className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                            productViewMode === 'table'
+                              ? 'bg-[#2D4F3E] text-white shadow-xs'
+                              : 'text-gray-600 hover:text-gray-900'
+                          }`}
+                          title="Vista en tabla compacta"
+                        >
+                          <Layers className="w-3.5 h-3.5" />
+                          <span className="hidden sm:inline">Tabla</span>
+                        </button>
+                      </div>
                     </div>
 
                     <div className="flex items-center gap-2">
@@ -4676,7 +4707,169 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     </button>
                   </div>
 
-                  {/* VISTA MÓVIL: Tarjetas de Producto Táctiles y Adaptadas */}
+                  {productViewMode === 'grid' ? (
+                    /* VISTA EN CUADRÍCULA DE TARJETAS (ESTILO PAQUETES - FÁCIL EDICIÓN) */
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                      {filteredProducts.map(p => (
+                        <div
+                          key={p.id}
+                          className="rounded-3xl border border-[#E8E4DA] hover:border-gray-400 bg-white transition-all flex flex-col justify-between overflow-hidden shadow-xs hover:shadow-md relative"
+                        >
+                          <div className="p-4 sm:p-5 space-y-3.5">
+                            {/* Encabezado: Foto, SKU y Nombre */}
+                            <div className="flex items-start gap-3">
+                              <img
+                                src={p.primaryImage || p.gallery?.[0] || p.whiteBgImage}
+                                alt={p.name}
+                                className="w-16 h-16 rounded-2xl object-cover bg-gray-100 border border-gray-200 shrink-0"
+                              />
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-1.5 flex-wrap">
+                                  <span className="font-mono font-bold text-[10.5px] text-gray-700 bg-gray-100 px-2 py-0.5 rounded border border-gray-200">
+                                    {p.sku || p.code}
+                                  </span>
+                                  {p.worlds?.map(w => (
+                                    <span
+                                      key={w}
+                                      className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-[9.5px] font-bold border border-emerald-200 capitalize"
+                                    >
+                                      {w}
+                                    </span>
+                                  ))}
+                                  <span className={`px-2 py-0.5 rounded-full text-[9.5px] font-bold ${
+                                    p.status === 'published' ? 'bg-emerald-100 text-emerald-800' :
+                                    p.status === 'draft' ? 'bg-amber-100 text-amber-800' : 'bg-gray-100 text-gray-600'
+                                  }`}>
+                                    {p.status === 'published' ? 'Publicado' : p.status === 'draft' ? 'Borrador' : 'Archivado'}
+                                  </span>
+                                </div>
+
+                                <h4 className="font-bold text-xs sm:text-sm text-[#1F2421] truncate mt-1" title={p.name}>
+                                  {p.name}
+                                </h4>
+                                <p className="text-[11px] text-gray-500 line-clamp-1 mt-0.5">
+                                  {p.shortDescription || 'Sin descripción corta.'}
+                                </p>
+                              </div>
+                            </div>
+
+                            {/* Precios y Existencia */}
+                            <div className="p-2.5 rounded-2xl bg-gray-50 border border-gray-200/80 flex items-center justify-between">
+                              <div>
+                                <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Precio</div>
+                                <div className="font-black text-sm sm:text-base text-[#2D4F3E] font-mono">
+                                  {p.priceType === 'quote' ? 'A cotizar' : `$${p.price}`}
+                                  <span className="text-[10px] font-normal text-gray-500 ml-1">
+                                    {p.priceUnit || 'MXN'}
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Switch de Stock */}
+                              <div className="flex items-center gap-2 bg-white px-2.5 py-1.5 rounded-xl border border-gray-200 shadow-2xs">
+                                <button
+                                  type="button"
+                                  onClick={(e) => handleToggleStock(p, e)}
+                                  className={`relative inline-flex h-4 w-7 shrink-0 cursor-pointer rounded-full border border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                                    p.availability === 'in_stock' ? 'bg-emerald-600' : 'bg-gray-300'
+                                  }`}
+                                  title={p.availability === 'in_stock' ? 'En existencia. Clic para desactivar' : 'Sin stock inmediato. Clic para activar'}
+                                >
+                                  <span
+                                    className={`pointer-events-none inline-block h-3 w-3 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                                      p.availability === 'in_stock' ? 'translate-x-3' : 'translate-x-0'
+                                    }`}
+                                  />
+                                </button>
+                                <span className={`text-[10px] font-bold ${
+                                  p.availability === 'in_stock' ? 'text-emerald-700' : 'text-gray-500'
+                                }`}>
+                                  {p.availability === 'in_stock' ? `${p.stockQuantity || 0} en stock` : 'Bajo pedido'}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Técnicas y Oferta Flash */}
+                            <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-[10.5px]">
+                              <div className="flex items-center gap-1 flex-wrap">
+                                {p.techniques?.map(t => (
+                                  <span key={t} className="px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 text-[9px] font-bold uppercase">
+                                    {t}
+                                  </span>
+                                ))}
+                              </div>
+
+                              <button
+                                type="button"
+                                onClick={(e) => handleToggleProductFlash(p, e)}
+                                className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold transition-all cursor-pointer ${
+                                  p.flashDealConfig?.enabled
+                                    ? 'bg-amber-100 text-amber-900 border border-amber-300 shadow-2xs'
+                                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200 border border-gray-200'
+                                }`}
+                              >
+                                <Zap className={`w-3 h-3 ${p.flashDealConfig?.enabled ? 'fill-amber-500 text-amber-600' : 'text-gray-400'}`} />
+                                <span>{p.flashDealConfig?.enabled ? 'Flash Activa' : 'Sin Flash'}</span>
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Barra de Acciones */}
+                          <div className="p-3 bg-gray-50 border-t border-gray-100 flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-1.5">
+                              <button
+                                type="button"
+                                onClick={() => handleDuplicateProduct(p.id)}
+                                className="p-2 rounded-xl bg-white hover:bg-gray-100 text-gray-600 border border-gray-200 text-xs font-bold transition-colors cursor-pointer"
+                                title="Duplicar como plantilla"
+                              >
+                                <Copy className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteProduct(p.id)}
+                                className="p-2 rounded-xl bg-white hover:bg-rose-50 text-rose-600 border border-rose-200 text-xs font-bold transition-colors cursor-pointer"
+                                title="Eliminar producto"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleOpenPhotoStudio(p.id);
+                                }}
+                                className="py-1.5 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs"
+                                title="Generar 4 tomas de catálogo con IA"
+                              >
+                                <Camera className="w-3.5 h-3.5 text-amber-700" />
+                                <span>4 Fotos IA</span>
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleOpenEditProduct(p);
+                                }}
+                                className="py-1.5 px-4 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 shadow-xs"
+                                title="Editar producto"
+                              >
+                                <Edit className="w-3.5 h-3.5" />
+                                <span>Editar</span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    /* VISTA EN TABLA (MODO COMPACTO) */
+                    <>
+{/* VISTA MÓVIL: Tarjetas de Producto Táctiles y Adaptadas */}
                   <div className="md:hidden space-y-3">
                     {filteredProducts.map(p => (
                       <div
@@ -5099,6 +5292,8 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </table>
                     </div>
                   </div>
+                </>
+              )}
                 </div>
               )}
 
