@@ -88,24 +88,24 @@ const initialProducts = [
     techniques: ['laser'],
     primaryImage: '/uploads/img_002.jpg',
     gallery: ['/uploads/img_002.jpg', '/uploads/img_001.jpg'],
-    shortDescription: 'Colgador de llaves en madera natural con grabado láser botánico y percheros torneados.',
-    fullDescription: 'Mantén organizadas tus llaves desde que entras a casa. Fabricado con corte y grabado láser en madera natural con acabado satinado protector. Incluye perchas cilíndricas resistentes y orificios discretos para montaje en pared.',
+    shortDescription: 'Colgador de llaves en madera natural sólida con grabado láser botánico y percheros torneados.',
+    fullDescription: 'Mantén organizadas tus llaves desde que entras a casa. Fabricado en madera natural sólida y triplay de pino estufado (100% libre de MDF) con grabado láser botánico de alta definición y capa protectora de barniz transparente satinado. Incluye 3 perchas torneadas resistentes y orificios discretos para montaje en pared.',
     specifications: {
       dimensions: '25 cm de largo x 10 cm de alto x 1.5 cm de espesor',
-      material: 'Madera natural contrachapada tratada',
-      finish: 'Sellador mate protector contra humedad',
+      material: 'Madera natural sólida y triplay de pino estufado 5.5mm (libre de MDF)',
+      finish: 'Capa de barniz transparente satinado protector contra humedad y grasa',
       includes: '3 percheros de madera y cinta de montaje alta adherencia',
       minQuantity: 1,
       estimatedLeadTime: '2 a 3 días hábiles',
-      careNotes: 'Limpiar con paño seco o ligeramente húmedo. No sumergir.'
+      careNotes: 'Limpiar con paño seco o ligeramente húmedo. Madera tratada y sellada contra humedad.'
     },
     variants: [
-      { name: 'Grabado', options: ['"Bienvenidos"', 'Apellido familiar', 'Personalizado con nombre'] },
-      { name: 'Tono de madera', options: ['Natural claro', 'Nogal clásico'] }
+      { name: 'Grabado', options: ['"Bienvenidos"', 'Apellido familiar', 'Personalizado con nombres'] },
+      { name: 'Tono de Barniz', options: ['Barniz Natural Transparente', 'Nogal Americano', 'Caoba Clásico', 'Roble Claro Nórdico'] }
     ],
     customizationOptions: ['Nombre o apellido grabado', 'Diseño de hojas o minimalista'],
     availability: 'made_to_order',
-    privateNotes: 'Archivo DXF en carpeta laser/hogar/L14_colgador_v2.dxf',
+    privateNotes: 'Corte y grabado en pino estufado 5.5mm. Lijado fino, capa uniforme de barniz transparente sellador contra humedad, instalación a presión de percheros torneados con gota de Resistol 850.',
     createdAt: new Date().toISOString()
   },
   {
@@ -290,23 +290,24 @@ const initialProducts = [
     techniques: ['laser'],
     primaryImage: '/uploads/img_005.jpg',
     gallery: ['/uploads/img_005.jpg', '/uploads/img_003.jpg'],
-    shortDescription: 'Fotografía con veta visible de madera y grabado láser de nombres o fecha familiar.',
-    fullDescription: 'Un recuerdo rústico y cálido. Tu fotografía favorita montada sobre madera natural con esquinas redondeadas y grabado láser inferior para dedicatorias o nombres de la familia.',
+    shortDescription: 'Retrato familiar o conmemorativo grabado a láser sobre madera natural de abedul con imán posterior.',
+    fullDescription: 'Un recuerdo rústico y cálido. Tu fotografía favorita montada sobre madera natural clara de abedul (sin MDF) con esquinas redondeadas, sellada con una capa de barniz transparente satinado y grabado láser inferior para dedicatorias o nombres de la familia.',
     specifications: {
       dimensions: '7.5 x 7.5 cm x 4 mm de espesor',
-      material: 'Madera de abedul o contrachapado fino',
-      finish: 'Sellado cera natural',
-      includes: 'Imán posterior de alta fuerza',
+      material: 'Madera natural de abedul / pino estufado de 3mm (sin MDF)',
+      finish: 'Capa de barniz transparente protector satinado y sellado de poro',
+      includes: 'Imán posterior de neodimio de alta adherencia',
       minQuantity: 1,
       estimatedLeadTime: '2 a 3 días hábiles',
-      careNotes: 'Mantener en ambiente seco.'
+      careNotes: 'Madera tratada con barniz protector contra humedad ambiental.'
     },
     variants: [
-      { name: 'Grabado inferior', options: ['Con texto familiar', 'Solo fotografía'] }
+      { name: 'Tono de Barniz', options: ['Barniz Natural Transparente', 'Nogal Americano', 'Caoba Clásico', 'Verde Bosque Rústico'] },
+      { name: 'Grabado inferior', options: ['Con dedicatoria o fecha familiar', 'Solo fotografía grabada'] }
     ],
     customizationOptions: ['Nombre de familia', 'Fecha conmemorativa'],
     availability: 'made_to_order',
-    privateNotes: 'Corte a 18mm/s potencia 65%.',
+    privateNotes: 'Tramado fotográfico a 300 DPI sobre madera clara de abedul/pino estufado. Capa selladora de barniz transparente para fijar tonalidad y colocación de imán de neodimio N52 al reverso.',
     createdAt: new Date().toISOString()
   },
   {
@@ -323,24 +324,24 @@ const initialProducts = [
     techniques: ['laser'],
     primaryImage: '/uploads/img_004.jpg',
     gallery: ['/uploads/img_004.jpg', '/uploads/img_003.jpg'],
-    shortDescription: 'Llavero en capas de madera con forma de cámara retro, foto personalizada y borla de color.',
-    fullDescription: 'Nuestra pieza icónica para regalar: fabricada artesanalmente en capas de contrachapado con grabado láser y pintura a mano en tonos vintage. Lleva tu fotografía miniatura enmarcada en el visor y una borla decorativa artesanal. Paquete especial de 3 camaritas por $200.',
+    shortDescription: 'Llavero artesanal en madera natural con forma de cámara retro, foto personalizada en visor y borla sedosa.',
+    fullDescription: 'Nuestra pieza icónica para regalar: fabricada artesanalmente en madera natural de abedul y pino estufado (sin MDF) con corte y grabado láser fino, protegida con barniz transparente hidrófugo y tintes para madera en tonos vintage (Nogal Americano, Verde Bosque, Azul Colonial o Caoba). Lleva tu fotografía miniatura protegida en el visor y una borla decorativa sedosa. Paquete especial de 3 camaritas por $200.',
     specifications: {
       dimensions: '4.5 x 3.5 cm x 6 mm de espesor',
-      material: 'Madera multicapa grabada y herrajes metálicos reforzados',
-      finish: 'Detalles en acuarela/acrílico y sellador',
-      includes: 'Argolla giratoria de llavero y borla de hilo sedoso',
+      material: 'Madera natural de abedul y pino estufado de 3mm (100% libre de MDF)',
+      finish: 'Capa protectora de barniz transparente sellador repelente a humedad y tintes para madera',
+      includes: 'Argolla metálica reforzada con cadena, fotografía mini en visor y borla sedosa artesanal',
       minQuantity: 1,
       estimatedLeadTime: '2 a 4 días hábiles',
-      careNotes: 'No sumergir en agua.'
+      careNotes: 'Limpiar con paño seco. Acabado hidrófugo resistente a salpicaduras.'
     },
     variants: [
-      { name: 'Color de cámara', options: ['Verde menta vintage', 'Azul cielo', 'Rosa pastel', 'Madera natural'] },
+      { name: 'Tono de Barniz y Acabado', options: ['Barniz Natural Transparente', 'Nogal Americano', 'Verde Bosque Rústico', 'Azul Colonial Vintage', 'Caoba Clásico'] },
       { name: 'Promoción', options: ['Individual ($100)', 'Paquete 3 Camaritas ($200)'] }
     ],
     customizationOptions: ['Fotografía del cliente en visor', 'Color de borla a elegir'],
     availability: 'made_to_order',
-    privateNotes: 'Empaque individual en bolsita kraft.',
+    privateNotes: 'Madera de abedul/pino selecta 3mm. Lijado suave grano 220, grabado nítido sin quemaduras. Aplicar capa de barniz protector transparente o tinte de madera elegido. Montar argolla metálica reforzada con eslabón y borla sedosa.',
     createdAt: new Date().toISOString()
   },
   {
@@ -427,20 +428,20 @@ const initialProducts = [
     fullDescription: 'El detalle de distinción para oficinas, recepciones, directivos y profesionistas independientes. Fabricado en bloque macizo cepillado con cantos biselados y grabado láser profundo.',
     specifications: {
       dimensions: '18 cm de largo x 4.5 cm de alto x 4 cm de base triangular',
-      material: 'Madera de pino o nogal estufado',
-      finish: 'Sellado con ceras vegetales y aceite de linaza',
+      material: 'Madera natural maciza de pino estufado o nogal americano (sin MDF)',
+      finish: 'Capa de barniz transparente satinado y aceite sellador de grano fino',
       includes: 'Grabado personalizado en una o dos líneas',
       minQuantity: 1,
       estimatedLeadTime: '2 a 3 días hábiles',
-      careNotes: 'Nutrir la madera una vez al año con aceite mineral.'
+      careNotes: 'Limpieza con paño seco. Nutrir con aceite mineral ocasionalmente.'
     },
     variants: [
-      { name: 'Tipo de madera', options: ['Pino claro', 'Nogal oscuro'] },
+      { name: 'Tono de Barniz y Madera', options: ['Barniz Natural Pino Claro', 'Nogal Americano Cálido', 'Caoba Clásico', 'Roble Claro Nórdico'] },
       { name: 'Tipografía', options: ['Moderna sin serifa', 'Elegante cursiva', 'Institucional mayúsculas'] }
     ],
     customizationOptions: ['Nombre del profesionista', 'Cargo o especialidad', 'Logotipo vectorial'],
     availability: 'made_to_order',
-    privateNotes: 'Enviar muestra digital antes de grabar.',
+    privateNotes: 'Corte y biselado en madera maciza. Grabado láser de precisión y acabado satinado con barniz transparente.',
     createdAt: new Date().toISOString()
   },
   {
@@ -722,23 +723,24 @@ const initialProducts = [
     techniques: ['laser'],
     primaryImage: '/uploads/img_009.jpg',
     gallery: ['/uploads/img_009.jpg'],
-    shortDescription: 'Disco de madera natural con grabado láser de isotipo, nombre o motivo botánico.',
-    fullDescription: 'Protege las mesas con un accesorio noble y natural. Cada posavasos es cortado y grabado con láser de alta precisión y tratado con sellador hidrófugo para resistir la condensación de bebidas frías o el calor de tazas.',
+    shortDescription: 'Set de posavasos en madera natural con patrones botánicos o logotipo grabado a láser y base de corcho.',
+    fullDescription: 'Protege las mesas con calidez artesanal. Fabricados en madera natural selecta de 5mm (sin MDF) con grabado láser de alta precisión y triple sellado de barniz transparente poliuretano que repele agua, café y alcohol. Con base de corcho natural antideslizante que protege superficies delicadas.',
     specifications: {
       dimensions: '9 cm de diámetro x 5 mm de espesor',
-      material: 'Madera natural seleccionada con veta',
-      finish: 'Sellado repelente de líquidos mate',
+      material: 'Madera natural sólida seleccionada de pino / haya 5mm con base de corcho natural (sin MDF)',
+      finish: 'Triple capa de barniz transparente sellador poliuretano hidrófugo grado mesa',
       includes: 'Tope de corcho inferior antideslizante',
       minQuantity: 4,
       estimatedLeadTime: '2 a 4 días hábiles',
-      careNotes: 'Secar con un trapo tras usar. No dejar en remojo.'
+      careNotes: 'Secar con un trapo tras usar. Protección hidrófuga contra líquidos y calor.'
     },
     variants: [
-      { name: 'Forma', options: ['Circular', 'Cuadrado con cantos redondeados'] }
+      { name: 'Tono de Barniz', options: ['Barniz Natural Transparente', 'Nogal Americano', 'Caoba Clásico', 'Roble Claro Nórdico'] },
+      { name: 'Forma', options: ['Circular (9 cm)', 'Cuadrado con cantos redondeados (9 cm)'] }
     ],
     customizationOptions: ['Logotipo de cafetería', 'Iniciales de evento'],
     availability: 'made_to_order',
-    privateNotes: 'Se entrega atado con cordel de yute en paquetes de 4 o 6.',
+    privateNotes: 'Corte y grabado en pino selecto 5mm. Aplicación de triple capa de barniz transparente poliuretano hidrófugo por ambas caras y pegado de corcho base. Se entrega atado con cordel de yute en paquetes de 4 o 6.',
     createdAt: new Date().toISOString()
   },
   {
@@ -855,24 +857,24 @@ const initialProducts = [
     techniques: ['laser'],
     primaryImage: '/uploads/img_014.jpg',
     gallery: ['/uploads/img_014.jpg', '/uploads/img_015.jpg'],
-    shortDescription: 'Placa en arco de madera o acrílico con nombres caligráficos y fecha de celebración.',
-    fullDescription: 'La pieza que da la bienvenida a tus invitados y enmarca las fotos del día más especial. Corte en arco superior contemporáneo con tipografía elegante y motivos de olivo grabados con láser.',
+    shortDescription: 'Placa en silueta de arco en madera natural selecta o acrílico con nombres caligráficos y fecha grabada.',
+    fullDescription: 'La pieza que da la bienvenida a tus invitados y enmarca las fotos del día más especial. Corte en arco contemporáneo en madera natural seleccionada (100% libre de MDF) con tipografía elegante y motivos botánicos grabados a láser, sellado con capa de barniz transparente satinado que protege la madera sin alterar su textura.',
     specifications: {
       dimensions: 'Desde 30 x 20 cm hasta 60 x 40 cm según el uso (mesa o caballete)',
-      material: 'Madera fina contrachapada de 6 mm o acrílico',
-      finish: 'Bordes pulidos con sellado satinado',
-      includes: 'Base de madera independiente o ranuras para caballete',
+      material: 'Madera natural sólida de haya / pino estufado de 6 mm o acrílico cristal (sin MDF)',
+      finish: 'Capa protectora de barniz transparente satinado y bordes pulidos',
+      includes: 'Letrero en silueta de arco con base de madera independiente ranurada',
       minQuantity: 1,
       estimatedLeadTime: '3 a 5 días hábiles',
       careNotes: 'Empaque especial acolchado para traslado.'
     },
     variants: [
-      { name: 'Tamaño', options: ['Mesa de dulces / firmas (30 x 20 cm)', 'Entrada al salón (50 x 35 cm)'] },
-      { name: 'Estilo', options: ['Madera natural nórdica', 'Fondo oscuro con grabado claro'] }
+      { name: 'Acabado y Barniz', options: ['Barniz Natural Transparente Pino Nórdico', 'Nogal Americano Clásico', 'Caoba Elegante', 'Acrílico Blanco Esmerilado'] },
+      { name: 'Tamaño', options: ['Mesa de dulces / firmas (30 x 20 cm)', 'Entrada al salón (50 x 35 cm)'] }
     ],
     customizationOptions: ['Nombres de los novios o festejados', 'Fecha del evento', 'Frase personalizada'],
     availability: 'made_to_order',
-    privateNotes: 'Se entrega con film de protección en los acabados.',
+    privateNotes: 'Corte limpio en arco sobre madera natural de haya/pino 6mm. Grabado de nombres y sellado con barniz transparente satinado. Base ranurada ajustada a medida.',
     createdAt: new Date().toISOString()
   },
   {
@@ -3059,7 +3061,7 @@ const initialRawMaterials = [
   },
   {
     "id": "mat-madera-triplay-3mm",
-    "name": "Madera Triplay / Contrachapada Pino 3mm Calidad Láser (60x40 cm)",
+    "name": "Madera Natural Pino / Triplay Selecto 3mm Calidad Láser (60x40 cm)",
     "category": "laser",
     "materialType": "Triplay Pino",
     "color": "Madera Natural",
@@ -3070,7 +3072,7 @@ const initialRawMaterials = [
     "costPerUnit": 45,
     "supplierId": "sup-maderas-bajio",
     "supplier": "Maderas & Láser del Bajío",
-    "notes": "Caras libres de parches y resinas pesadas. Corte limpio con borde tostado uniforme."
+    "notes": "Madera natural de pino calibrada para corte láser limpio y grabado nítido (100% libre de MDF)."
   },
   {
     "id": "mat-triplay-caobilla-3mm",
@@ -3326,6 +3328,108 @@ const initialRawMaterials = [
     "supplierId": "sup-maderas-bajio",
     "supplier": "Maderas & Láser del Bajío",
     "notes": "Protección hidrófuga extrema contra salpicaduras de agua y humedad ambiental."
+  },
+  {
+    "id": "mat-madera-abedul-3mm",
+    "name": "Madera Abedul / Pino Calidad Láser Selecta 3mm (60x40 cm)",
+    "category": "laser",
+    "materialType": "Madera Natural",
+    "color": "Madera Clara Natural",
+    "finish": "Natural / Madera",
+    "unit": "placa (60x40 cm)",
+    "packageQuantity": 2400,
+    "packageMeasurement": "cm²",
+    "currentStock": 20,
+    "minStockAlert": 10,
+    "costPerUnit": 58,
+    "supplierId": "sup-maderas-bajio",
+    "supplier": "Maderas & Láser del Bajío",
+    "notes": "Madera natural sólida estufada libre de nudos y sin MDF, corte limpio y borde tostado claro uniforme."
+  },
+  {
+    "id": "mat-barniz-poliuretano-transparente",
+    "name": "Barniz Poliuretano Transparente Protector Sellador (500 ml)",
+    "category": "laser",
+    "materialType": "Barniz Transparente",
+    "color": "Cristal Transparente",
+    "finish": "Satinado / Cristal",
+    "unit": "bote (500 ml)",
+    "packageQuantity": 500,
+    "packageMeasurement": "ml",
+    "currentStock": 4,
+    "minStockAlert": 2,
+    "costPerUnit": 140,
+    "supplierId": "sup-maderas-bajio",
+    "supplier": "Maderas & Láser del Bajío",
+    "notes": "Capa protectora selladora transparente repelente a humedad, agua y polvo para llaveros y piezas de madera."
+  },
+  {
+    "id": "mat-tinte-nogal-americano",
+    "name": "Tinte y Barniz Nogal Americano Base Aceite para Madera (250 ml)",
+    "category": "laser",
+    "materialType": "Tinte Madera",
+    "color": "Nogal Americano",
+    "finish": "Satinado Cálido",
+    "unit": "frasco (250 ml)",
+    "packageQuantity": 250,
+    "packageMeasurement": "ml",
+    "currentStock": 3,
+    "minStockAlert": 1,
+    "costPerUnit": 115,
+    "supplierId": "sup-maderas-bajio",
+    "supplier": "Maderas & Láser del Bajío",
+    "notes": "Tono nogal clásico cálido y profundo que resalta las vetas de la madera en llaveros y letreros."
+  },
+  {
+    "id": "mat-tinte-verde-bosque",
+    "name": "Tinte para Madera Verde Bosque / Rústico Artesanal (250 ml)",
+    "category": "laser",
+    "materialType": "Tinte Madera",
+    "color": "Verde Bosque Rústico",
+    "finish": "Mate Satinado",
+    "unit": "frasco (250 ml)",
+    "packageQuantity": 250,
+    "packageMeasurement": "ml",
+    "currentStock": 2,
+    "minStockAlert": 1,
+    "costPerUnit": 120,
+    "supplierId": "sup-maderas-bajio",
+    "supplier": "Maderas & Láser del Bajío",
+    "notes": "Tinte vegetal traslúcido verde bosque que deja ver la veta orgánica para piezas vintage y llaveros botánicos."
+  },
+  {
+    "id": "mat-tinte-azul-colonial",
+    "name": "Tinte para Madera Azul Colonial Vintage (250 ml)",
+    "category": "laser",
+    "materialType": "Tinte Madera",
+    "color": "Azul Colonial Vintage",
+    "finish": "Mate Satinado",
+    "unit": "frasco (250 ml)",
+    "packageQuantity": 250,
+    "packageMeasurement": "ml",
+    "currentStock": 2,
+    "minStockAlert": 1,
+    "costPerUnit": 120,
+    "supplierId": "sup-maderas-bajio",
+    "supplier": "Maderas & Láser del Bajío",
+    "notes": "Tinte artesanal azul añejo traslúcido para camaritas de madera retro y detalles coloniales."
+  },
+  {
+    "id": "mat-tinte-caoba",
+    "name": "Tinte y Barniz Caoba Clásico Rojizo para Madera (250 ml)",
+    "category": "laser",
+    "materialType": "Tinte Madera",
+    "color": "Caoba Clásico",
+    "finish": "Satinado Elegante",
+    "unit": "frasco (250 ml)",
+    "packageQuantity": 250,
+    "packageMeasurement": "ml",
+    "currentStock": 2,
+    "minStockAlert": 1,
+    "costPerUnit": 115,
+    "supplierId": "sup-maderas-bajio",
+    "supplier": "Maderas & Láser del Bajío",
+    "notes": "Tinte cálido rojizo de estilo artesanal para letreros de eventos, libros de firmas y recuerdos finos."
   },
   {
     "id": "mat-vinil-textil-blanco",
@@ -4797,6 +4901,156 @@ class Database {
           this.save(data);
         }
       }
+
+      // Auto-migración para productos de madera natural, barnices y corrección de MDF
+      if (Array.isArray(data.products)) {
+        let changedProducts = false;
+        data.products.forEach(p => {
+          if (p.id === 'llavero-camarita-l9' || p.code === 'L9') {
+            if ((p.specifications?.material || '').includes('multicapa') || (p.variants?.[0]?.name || '').includes('Color de cámara') || p.sku?.includes('MDF')) {
+              p.shortDescription = 'Llavero artesanal en madera natural con forma de cámara retro, foto personalizada en visor y borla sedosa.';
+              p.fullDescription = 'Nuestra pieza icónica para regalar: fabricada artesanalmente en madera natural de abedul y pino estufado (sin MDF) con corte y grabado láser fino, protegida con barniz transparente hidrófugo y tintes para madera en tonos vintage (Nogal Americano, Verde Bosque, Azul Colonial o Caoba). Lleva tu fotografía miniatura protegida en el visor y una borla decorativa sedosa. Paquete especial de 3 camaritas por $200.';
+              p.specifications = {
+                ...(p.specifications || {}),
+                dimensions: '4.5 x 3.5 cm x 6 mm de espesor',
+                material: 'Madera natural de abedul y pino estufado de 3mm (100% libre de MDF)',
+                finish: 'Capa protectora de barniz transparente sellador repelente a humedad y tintes para madera',
+                includes: 'Argolla metálica reforzada con cadena, fotografía mini en visor y borla sedosa artesanal',
+                minQuantity: 1,
+                estimatedLeadTime: '2 a 4 días hábiles',
+                careNotes: 'Limpiar con paño seco. Acabado hidrófugo resistente a salpicaduras.'
+              };
+              p.variants = [
+                { name: 'Tono de Barniz y Acabado', options: ['Barniz Natural Transparente', 'Nogal Americano', 'Verde Bosque Rústico', 'Azul Colonial Vintage', 'Caoba Clásico'] },
+                { name: 'Promoción', options: ['Individual ($100)', 'Paquete 3 Camaritas ($200)'] }
+              ];
+              p.privateNotes = 'Madera de abedul/pino selecta 3mm. Lijado suave grano 220, grabado nítido sin quemaduras. Aplicar capa de barniz protector transparente o tinte de madera elegido. Montar argolla metálica reforzada con eslabón y borla sedosa.';
+              p.sku = 'HOG-LAS-PIN-GRA-009';
+              if (p.skuBreakdown) {
+                p.skuBreakdown.standardSku = 'HOG-LAS-PIN-GRA-009';
+                p.skuBreakdown.material = 'PIN';
+                if (p.skuBreakdown.instructionsForStaff) {
+                  p.skuBreakdown.instructionsForStaff.materiaPrima = '🪵 Madera Natural Pino / Abedul 3mm (Sin MDF)';
+                  p.skuBreakdown.instructionsForStaff.acabadoTaller = '✨ Barniz Transparente Sellador & Tintes de Madera';
+                }
+              }
+              changedProducts = true;
+            }
+          }
+          if (p.id === 'colgador-llaves-l14' || p.code === 'L14') {
+            if ((p.privateNotes || '').includes('DXF') || (p.specifications?.material || '').includes('contrachapada')) {
+              p.specifications = {
+                ...(p.specifications || {}),
+                material: 'Madera natural sólida y triplay de pino estufado 5.5mm (libre de MDF)',
+                finish: 'Capa de barniz transparente satinado protector contra humedad y grasa'
+              };
+              p.variants = [
+                { name: 'Grabado', options: ['"Bienvenidos"', 'Apellido familiar', 'Personalizado con nombres'] },
+                { name: 'Tono de Barniz', options: ['Barniz Natural Transparente', 'Nogal Americano', 'Caoba Clásico', 'Roble Claro Nórdico'] }
+              ];
+              p.privateNotes = 'Corte y grabado en pino estufado 5.5mm. Lijado fino, capa uniforme de barniz transparente sellador contra humedad, instalación a presión de percheros torneados con gota de Resistol 850.';
+              p.sku = 'HOG-LAS-PIN-GRA-014';
+              if (p.skuBreakdown) {
+                p.skuBreakdown.standardSku = 'HOG-LAS-PIN-GRA-014';
+                p.skuBreakdown.material = 'PIN';
+                if (p.skuBreakdown.instructionsForStaff) {
+                  p.skuBreakdown.instructionsForStaff.materiaPrima = '🪵 Madera Natural Pino Estufado 5.5mm (Sin MDF)';
+                  p.skuBreakdown.instructionsForStaff.acabadoTaller = '✨ Barniz Transparente Protector Satinado';
+                }
+              }
+              changedProducts = true;
+            }
+          }
+          if (p.id === 'fotoiman-madera-l8' || p.code === 'L8') {
+            if ((p.specifications?.material || '').includes('contrachapado') || p.sku?.includes('MDF')) {
+              p.specifications = {
+                ...(p.specifications || {}),
+                material: 'Madera natural de abedul / pino estufado de 3mm (sin MDF)',
+                finish: 'Capa de barniz transparente protector satinado y sellado de poro'
+              };
+              p.variants = [
+                { name: 'Tono de Barniz', options: ['Barniz Natural Transparente', 'Nogal Americano', 'Caoba Clásico', 'Verde Bosque Rústico'] },
+                { name: 'Grabado inferior', options: ['Con dedicatoria o fecha familiar', 'Solo fotografía grabada'] }
+              ];
+              p.sku = 'HOG-LAS-PIN-GRA-008';
+              if (p.skuBreakdown) {
+                p.skuBreakdown.standardSku = 'HOG-LAS-PIN-GRA-008';
+                p.skuBreakdown.material = 'PIN';
+                if (p.skuBreakdown.instructionsForStaff) {
+                  p.skuBreakdown.instructionsForStaff.materiaPrima = '🪵 Madera Natural Abedul / Pino 3mm (Sin MDF)';
+                }
+              }
+              changedProducts = true;
+            }
+          }
+          if (p.id === 'posavasos-madera-l15' || p.code === 'L15') {
+            if (!(p.variants || []).some(v => v.name.includes('Barniz')) || p.sku?.includes('MDF')) {
+              p.specifications = {
+                ...(p.specifications || {}),
+                material: 'Madera natural sólida seleccionada de pino / haya 5mm con base de corcho natural (sin MDF)',
+                finish: 'Triple capa de barniz transparente sellador poliuretano hidrófugo grado mesa'
+              };
+              p.variants = [
+                { name: 'Tono de Barniz', options: ['Barniz Natural Transparente', 'Nogal Americano', 'Caoba Clásico', 'Roble Claro Nórdico'] },
+                { name: 'Forma', options: ['Circular (9 cm)', 'Cuadrado con cantos redondeados (9 cm)'] }
+              ];
+              p.sku = 'HOG-LAS-PIN-GRA-015';
+              if (p.skuBreakdown) {
+                p.skuBreakdown.standardSku = 'HOG-LAS-PIN-GRA-015';
+                p.skuBreakdown.material = 'PIN';
+              }
+              changedProducts = true;
+            }
+          }
+          if (p.id === 'letrero-boda-l2' || p.code === 'L2') {
+            if ((p.specifications?.material || '').includes('contrachapada')) {
+              p.specifications = {
+                ...(p.specifications || {}),
+                material: 'Madera natural sólida de haya / pino estufado de 6 mm o acrílico cristal (sin MDF)',
+                finish: 'Capa protectora de barniz transparente satinado y bordes pulidos'
+              };
+              p.variants = [
+                { name: 'Acabado y Barniz', options: ['Barniz Natural Transparente Pino Nórdico', 'Nogal Americano Clásico', 'Caoba Elegante', 'Acrílico Blanco Esmerilado'] },
+                { name: 'Tamaño', options: ['Mesa de dulces / firmas (30 x 20 cm)', 'Entrada al salón (50 x 35 cm)'] }
+              ];
+              p.sku = 'EVE-LAS-PIN-GRA-002';
+              if (p.skuBreakdown) {
+                p.skuBreakdown.standardSku = 'EVE-LAS-PIN-GRA-002';
+                p.skuBreakdown.material = 'PIN';
+              }
+              changedProducts = true;
+            }
+          }
+          if (p.code === 'EV-GUEST-01' || p.code === 'EV-TOPPER-01' || p.code === 'EV-CAJITAS-01' || p.code === 'EV-ABANICO-01') {
+            if (p.sku?.includes('MDF') || (p.skuBreakdown?.instructionsForStaff?.materiaPrima || '').includes('MDF (3mm')) {
+              p.sku = 'EVE-LAS-PIN-GRA-001';
+              if (p.skuBreakdown) {
+                p.skuBreakdown.standardSku = 'EVE-LAS-PIN-GRA-001';
+                p.skuBreakdown.material = 'PIN';
+                if (p.skuBreakdown.instructionsForStaff) {
+                  p.skuBreakdown.instructionsForStaff.materiaPrima = '🪵 Madera Natural Calidad Láser (Sin MDF)';
+                }
+              }
+              changedProducts = true;
+            }
+          }
+          if (p.code === 'SB-TERMO-01' && p.sku?.includes('MDF')) {
+            p.sku = 'HOG-SUB-MET-MAT-001';
+            if (p.skuBreakdown) {
+              p.skuBreakdown.standardSku = 'HOG-SUB-MET-MAT-001';
+              p.skuBreakdown.material = 'MET';
+              if (p.skuBreakdown.instructionsForStaff) {
+                p.skuBreakdown.instructionsForStaff.materiaPrima = '🥤 Termo Acero Inoxidable Doble Pared 20 oz';
+              }
+            }
+            changedProducts = true;
+          }
+        });
+        if (changedProducts) {
+          this.save(data);
+        }
+      }
+
       return data;
     } catch (err) {
       console.error('Error reading db.json:', err);

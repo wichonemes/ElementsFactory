@@ -27,8 +27,8 @@ export const SKU_MATERIALS = {
   PLA: { code: 'PLA', label: 'Filamento PLA', family: 'Polímeros 3D', note: 'Biodegradable, gran acabado superficial' },
   PET: { code: 'PET', label: 'Filamento PETG / TPU', family: 'Polímeros Técnicos', note: 'Flexible o resistente a impacto' },
   RES: { code: 'RES', label: 'Resina Fotosensible', family: 'Resinas UV', note: 'Ultra alta definición y detalles finos' },
-  MDF: { code: 'MDF', label: 'Madera MDF (3mm / 6mm)', family: 'Fibras de Madera', note: 'Económico y óptimo para corte láser' },
-  PIN: { code: 'PIN', label: 'Madera Maciza / Pino Natural', family: 'Maderas Naturales', note: 'Cálido, con vetas naturales' },
+  MDF: { code: 'MDF', label: 'Madera MDF / Fibras de Madera', family: 'Fibras de Madera', note: 'Económico para plantillas y letreros para pintar' },
+  PIN: { code: 'PIN', label: 'Madera Natural Selecta (Pino/Abedul/Haya/Nogal)', family: 'Maderas Naturales', note: 'Madera natural estufada sin MDF, veta fina y cálida' },
   ACR: { code: 'ACR', label: 'Acrílico Cristal / Color', family: 'Termoplásticos', note: 'Brillante, translúcido o espejo' },
   CER: { code: 'CER', label: 'Cerámica / Vidrio', family: 'Inorgánicos', note: 'Apto para termo-transferencia' },
   TEX: { code: 'TEX', label: 'Textil / Manta de Algodón', family: 'Telas & Confección', note: 'Prendas, tote bags o gorras' },
@@ -161,16 +161,16 @@ export function suggestSkuForProduct(product = {}, existingProducts = []) {
 
   // 3. Deducir Material
   let material = 'PLA';
-  const matText = ((product.specifications?.material || '') + ' ' + (product.name || '')).toLowerCase();
-  if (matText.includes('mdf')) material = 'MDF';
-  else if (matText.includes('pino') || matText.includes('madera maciza') || matText.includes('roble') || matText.includes('nogal')) material = 'PIN';
+  const matText = ((product.specifications?.material || '') + ' ' + (product.name || '') + ' ' + (product.shortDescription || '')).toLowerCase();
+  if (matText.includes('termo') || matText.includes('aluminio') || matText.includes('acero') || matText.includes('metal')) material = 'MET';
+  else if (matText.includes('madera') || matText.includes('pino') || matText.includes('abedul') || matText.includes('haya') || matText.includes('roble') || matText.includes('nogal') || matText.includes('camarita') || matText.includes('triplay') || matText.includes('contrachapad') || matText.includes('llavero')) material = 'PIN';
+  else if (matText.includes('mdf') || matText.includes('fibrofacil')) material = 'MDF';
   else if (matText.includes('acrílico') || matText.includes('acrilico')) material = 'ACR';
   else if (matText.includes('cerámica') || matText.includes('ceramica') || matText.includes('taza')) material = 'CER';
   else if (matText.includes('manta') || matText.includes('algodón') || matText.includes('textil') || matText.includes('playera') || matText.includes('gorra')) material = 'TEX';
   else if (matText.includes('petg') || matText.includes('tpu') || matText.includes('flexible')) material = 'PET';
   else if (matText.includes('resina')) material = 'RES';
-  else if (matText.includes('aluminio') || matText.includes('acero') || matText.includes('metal')) material = 'MET';
-  else if (technique === 'LAS') material = 'MDF';
+  else if (technique === 'LAS') material = 'PIN';
   else if (technique === 'SUB') material = 'CER';
   else if (technique === 'VIN') material = 'TEX';
   else material = 'PLA';

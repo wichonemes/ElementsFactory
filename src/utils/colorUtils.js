@@ -36,9 +36,14 @@ const COLOR_MAP = [
   { keys: ['naranja', 'coral'], name: 'Naranja Cálido', css: '#F97316', border: '#EA580C' },
   { keys: ['mostaza colonial', 'mostaza', 'amarillo mostaza', 'amarillo', 'cera'], name: 'Mostaza Colonial', css: '#D4A359', border: '#B8863A' },
 
-  // 5. Maderas
+  // 5. Maderas y Barnices Artesanales
+  { keys: ['barniz natural transparente', 'barniz transparente', 'transparente cristal', 'barniz cristal', 'sellador transparente', 'acabado natural', 'barniz natural'], name: 'Barniz Natural Transparente', css: 'linear-gradient(135deg, #F5EBD7, #DCC3A0)', border: '#C4A47C', isLight: true },
+  { keys: ['nogal americano', 'tinte nogal americano', 'nogal oscuro', 'nogal calido', 'nogal clásico', 'nogal'], name: 'Nogal Americano', css: '#4E3524', border: '#332014', isDark: true },
+  { keys: ['verde bosque rústico', 'verde bosque rustico', 'verde rústico', 'verde rustico', 'tinte verde', 'verde vintage', 'verde teñido'], name: 'Verde Bosque Rústico', css: '#2E4A35', border: '#1D3223', isDark: true },
+  { keys: ['azul colonial vintage', 'azul colonial', 'azul vintage', 'tinte azul', 'azul añejo', 'azul teñido'], name: 'Azul Colonial Vintage', css: '#2A4B63', border: '#183042', isDark: true },
+  { keys: ['caoba clásico', 'caoba clasico', 'caoba', 'tinte caoba', 'caoba rojizo', 'caoba elegante'], name: 'Caoba Clásico', css: '#662418', border: '#43130B', isDark: true },
+  { keys: ['roble claro nórdico', 'roble claro nordico', 'roble claro', 'roble nordico', 'pino claro', 'roble suave', 'pino nórdico'], name: 'Roble Claro Nórdico', css: '#C8A272', border: '#9B784E' },
   { keys: ['madera woodfill', 'woodfill'], name: 'Madera Woodfill', css: '#A07855', border: '#785536' },
-  { keys: ['nogal claro', 'nogal'], name: 'Madera Nogal', css: '#855E42', border: '#5C3E28' },
   { keys: ['madera roble natural', 'roble natural', 'madera natural', 'madera', 'roble', 'café', 'caramelo', 'chocolate'], name: 'Madera Roble Natural', css: '#A27B5C', border: '#79583F' },
 
   // 6. Metalizados y Sedas
@@ -212,11 +217,23 @@ export const WORKSHOP_COLOR_PALETTES = [
     ]
   },
   {
-    id: 'maderas_metales',
-    label: '🪵 Maderas Nobles & Sedas',
-    shortLabel: 'Maderas & Sedas (7)',
+    id: 'barnices_madera',
+    label: '🪵 Tintes & Barnices para Madera (Láser y Carpintería)',
+    shortLabel: 'Barnices y Tintes (6)',
     colors: [
-      'Madera Nogal',
+      'Barniz Natural Transparente',
+      'Nogal Americano',
+      'Verde Bosque Rústico',
+      'Azul Colonial Vintage',
+      'Caoba Clásico',
+      'Roble Claro Nórdico'
+    ]
+  },
+  {
+    id: 'maderas_metales',
+    label: '✨ Maderas Nobles & Sedas Metálicas',
+    shortLabel: 'Maderas & Sedas (6)',
+    colors: [
       'Madera Roble Natural',
       'Madera Woodfill',
       'Seda Oro Champagne',

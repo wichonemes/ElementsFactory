@@ -87,8 +87,114 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
     ];
   }
 
-  if (tech === 'laser') {
-    const mdfMat = findMat('mat-mdf-3mm', 'mdf') || findMat('mat-madera-triplay-3mm', 'triplay') || {
+  if (tech === 'laser' || tech === 'laser_madera') {
+    const maderaMat = findMat('mat-madera-abedul-3mm', 'abedul') || findMat('mat-madera-triplay-3mm', 'triplay') || {
+      id: 'mat-madera-triplay-3mm', name: 'Madera Triplay / Contrachapada Pino 3mm Calidad Láser (60x40 cm)', costPerUnit: 45, packageQuantity: 2400, packageMeasurement: 'cm²', unit: 'placa (60x40 cm)'
+    };
+    const barnizMat = findMat('mat-barniz-poliuretano-transparente', 'barniz poliuretano') || findMat('mat-barniz-poliuretano-spray', 'barniz spray') || findMat('mat-laca-spray', 'laca') || {
+      id: 'mat-barniz-poliuretano-spray', name: 'Barniz Poliuretano Transparente Satinado en Spray (400 ml)', costPerUnit: 135, packageQuantity: 400, packageMeasurement: 'ml', unit: 'lata (400 ml)'
+    };
+    return [
+      {
+        id: `item-las-${Date.now()}-1`,
+        materialId: maderaMat.id,
+        name: maderaMat.name,
+        category: 'laser',
+        netQuantity: 380,
+        wasteQuantity: 60,
+        wasteType: 'cut_remnants',
+        totalQuantity: 440,
+        unit: 'cm²',
+        unitCost: Math.round(((Number(maderaMat.costPerUnit) || 45) / 2400) * 10000) / 10000,
+        totalCost: Math.round(440 * 0.01875 * 100) / 100
+      },
+      {
+        id: `item-las-${Date.now()}-2`,
+        materialId: barnizMat.id,
+        name: barnizMat.name,
+        category: 'laser',
+        netQuantity: 4,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 4,
+        unit: 'ml',
+        unitCost: Math.round(((Number(barnizMat.costPerUnit) || 135) / 400) * 100) / 100,
+        totalCost: Math.round(4 * 0.3375 * 100) / 100
+      }
+    ];
+  }
+
+  if (tech === 'laser_llavero') {
+    const maderaMat = findMat('mat-madera-abedul-3mm', 'abedul') || findMat('mat-madera-triplay-3mm', 'triplay') || {
+      id: 'mat-madera-triplay-3mm', name: 'Madera Triplay / Contrachapada Pino 3mm Calidad Láser (60x40 cm)', costPerUnit: 45, packageQuantity: 2400, packageMeasurement: 'cm²', unit: 'placa (60x40 cm)'
+    };
+    const barnizMat = findMat('mat-barniz-poliuretano-transparente', 'barniz poliuretano') || findMat('mat-barniz-poliuretano-spray', 'barniz') || {
+      id: 'mat-barniz-poliuretano-spray', name: 'Barniz Poliuretano Transparente Satinado en Spray (400 ml)', costPerUnit: 135, packageQuantity: 400, packageMeasurement: 'ml', unit: 'lata (400 ml)'
+    };
+    const argollaMat = findMat('mat-argollas-llavero', 'argollas') || {
+      id: 'mat-argollas-llavero', name: 'Argollas Metálicas Niqueladas con Cadena y Eslabón (100 pzas)', costPerUnit: 120, packageQuantity: 100, packageMeasurement: 'pza', unit: 'paquete (100 pzas)'
+    };
+    const pegamentoMat = findMat('mat-pegamento-resistol-850', 'resistol') || {
+      id: 'mat-pegamento-resistol-850', name: 'Resistol 850 Pegamento Blanco para Madera Extra Fuerte (Bote 500g)', costPerUnit: 85, packageQuantity: 500, packageMeasurement: 'ml', unit: 'bote (500 ml)'
+    };
+    return [
+      {
+        id: `item-lasllav-${Date.now()}-1`,
+        materialId: maderaMat.id,
+        name: maderaMat.name,
+        category: 'laser',
+        netQuantity: 65,
+        wasteQuantity: 15,
+        wasteType: 'cut_remnants',
+        totalQuantity: 80,
+        unit: 'cm²',
+        unitCost: Math.round(((Number(maderaMat.costPerUnit) || 45) / 2400) * 10000) / 10000,
+        totalCost: Math.round(80 * 0.01875 * 100) / 100
+      },
+      {
+        id: `item-lasllav-${Date.now()}-2`,
+        materialId: barnizMat.id,
+        name: barnizMat.name,
+        category: 'laser',
+        netQuantity: 2,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 2,
+        unit: 'ml',
+        unitCost: Math.round(((Number(barnizMat.costPerUnit) || 135) / 400) * 100) / 100,
+        totalCost: Math.round(2 * 0.3375 * 100) / 100
+      },
+      {
+        id: `item-lasllav-${Date.now()}-3`,
+        materialId: argollaMat.id,
+        name: argollaMat.name,
+        category: 'laser',
+        netQuantity: 1,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 1,
+        unit: 'pza',
+        unitCost: Math.round(((Number(argollaMat.costPerUnit) || 120) / 100) * 100) / 100,
+        totalCost: Math.round(1 * 1.20 * 100) / 100
+      },
+      {
+        id: `item-lasllav-${Date.now()}-4`,
+        materialId: pegamentoMat.id,
+        name: pegamentoMat.name,
+        category: 'ensamble',
+        netQuantity: 4,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 4,
+        unit: 'gotas',
+        unitCost: Math.round(((Number(pegamentoMat.costPerUnit) || 85) / 10000) * 10000) / 10000,
+        totalCost: Math.round(4 * 0.0085 * 100) / 100
+      }
+    ];
+  }
+
+  if (tech === 'laser_mdf') {
+    const mdfMat = findMat('mat-mdf-3mm', 'mdf') || {
       id: 'mat-mdf-3mm', name: 'Placas MDF Natural Calibrado 3mm (60x40 cm)', costPerUnit: 35, packageQuantity: 2400, packageMeasurement: 'cm²', unit: 'placa (60x40 cm)'
     };
     const lacaMat = findMat('mat-laca-spray', 'laca') || {
@@ -96,7 +202,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
     };
     return [
       {
-        id: `item-las-${Date.now()}-1`,
+        id: `item-lasmdf-${Date.now()}-1`,
         materialId: mdfMat.id,
         name: mdfMat.name,
         category: 'laser',
@@ -109,7 +215,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         totalCost: Math.round(440 * 0.0146 * 100) / 100
       },
       {
-        id: `item-las-${Date.now()}-2`,
+        id: `item-lasmdf-${Date.now()}-2`,
         materialId: lacaMat.id,
         name: lacaMat.name,
         category: 'laser',
@@ -2108,6 +2214,15 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     'A convenir / Especial'
   ];
 
+  const STANDARD_WOOD_VARNISHES = [
+    'Barniz Natural Transparente',
+    'Nogal Americano',
+    'Verde Bosque Rústico',
+    'Azul Colonial Vintage',
+    'Caoba Clásico',
+    'Roble Claro Nórdico'
+  ];
+
   const STANDARD_PALETTE_COLORS = [
     'Blanco Marfil / Ártico',
     'Negro Carbón / Grafito',
@@ -2149,6 +2264,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     if (!editorForm?.variants) return null;
     return editorForm.variants.find(v => 
       v?.name?.toLowerCase().includes('color') ||
+      v?.name?.toLowerCase().includes('barniz') ||
+      v?.name?.toLowerCase().includes('tono') ||
+      v?.name?.toLowerCase().includes('madera') ||
+      v?.name?.toLowerCase().includes('acabado') ||
       v?.name?.toLowerCase().includes('estructura') ||
       v?.name?.toLowerCase().includes('marco') ||
       v?.name?.toLowerCase().includes('base') ||
@@ -2156,11 +2275,15 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     ) || null;
   };
 
-  const handleToggleColorOption = (colorName) => {
+  const handleToggleColorOption = (colorName, forcedVariantName = null) => {
     setEditorForm(prev => {
       const variants = [...(prev.variants || [])];
       let colorVar = variants.find(v => 
         v?.name?.toLowerCase().includes('color') ||
+        v?.name?.toLowerCase().includes('barniz') ||
+        v?.name?.toLowerCase().includes('tono') ||
+        v?.name?.toLowerCase().includes('madera') ||
+        v?.name?.toLowerCase().includes('acabado') ||
         v?.name?.toLowerCase().includes('estructura') ||
         v?.name?.toLowerCase().includes('marco') ||
         v?.name?.toLowerCase().includes('base') ||
@@ -2168,7 +2291,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       );
 
       if (!colorVar) {
-        colorVar = { name: 'Color', options: [] };
+        const isWoodItem = (prev.techniques || []).includes('laser') || 
+          ((prev.specifications?.material || '') + ' ' + (prev.name || '')).toLowerCase().includes('madera');
+        colorVar = { name: forcedVariantName || (isWoodItem ? 'Tono de Barniz y Acabado' : 'Color'), options: [] };
         variants.push(colorVar);
       }
 
@@ -6127,12 +6252,14 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           <div className="flex flex-wrap items-center gap-1.5">
                             {[
                               { id: '3d', label: 'Impresión 3D', icon: '🖨️', desc: 'PLA + Soportes/Purga + 3DLac' },
-                              { id: 'laser', label: 'Corte Láser', icon: '⚡', desc: 'MDF 3mm + Kerf 15%' },
+                              { id: 'laser_madera', label: 'Madera Natural', icon: '🪵', desc: 'Madera Natural 3mm + Barniz Transparente' },
+                              { id: 'laser_llavero', label: 'Llavero Madera', icon: '🔑', desc: 'Madera 3mm + Barniz + Argolla Metálica + Resistol' },
+                              { id: 'laser_mdf', label: 'MDF Calibrado', icon: '⚡', desc: 'MDF 3mm + Laca Mate' },
                               { id: 'sublimation', label: 'Sublimación', icon: '☕', desc: 'Taza + Cinta Kapton + Papel' },
                               { id: 'dtf', label: 'DTF Textil', icon: '👕', desc: 'Film PET + Tinta CMYKW + Poliamida' },
                               { id: 'impresion_laser', label: 'Impresión Láser', icon: '📄', desc: 'Papel Couché/Opalina + Click Tóner' },
                               { id: 'vinyl', label: 'Vinil Cameo', icon: '🏷️', desc: 'Vinil Textil/Adhesivo + Transfer' },
-                              { id: 'ensamble', label: 'Armado / Resistol', icon: '🪵', desc: 'Resistol 850 en gotas + Cianocrilato' },
+                              { id: 'ensamble', label: 'Armado / Resistol', icon: '💧', desc: 'Resistol 850 en gotas + Cianocrilato' },
                             ].map(preset => (
                               <div
                                 key={preset.id}
@@ -7418,10 +7545,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         <Palette className="w-4 h-4 text-purple-600" />
                         <div>
                           <h5 className="font-heading font-bold text-xs text-[#1F2421]">
-                            Colores y Materiales Disponibles ({getColorVariant()?.options?.length || 0} colores)
+                            Colores, Tintes y Barnices Disponibles ({getColorVariant()?.options?.length || 0} asignados)
                           </h5>
                           <span className="text-[10.5px] text-gray-500">
-                            Paleta seleccionable por el cliente en tienda
+                            Paleta seleccionable por el cliente en tienda (barnices de madera, tintes o filamentos)
                           </span>
                         </div>
                       </div>
@@ -7436,7 +7563,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           const currentColors = colorVar?.options || [];
                           return (
                             <div className="space-y-1.5 pt-2">
-                              <span className="text-[10px] font-bold text-gray-600 uppercase block">Colores asignados:</span>
+                              <span className="text-[10px] font-bold text-gray-600 uppercase block">Opciones asignadas actualmente ({colorVar?.name || 'Color'}):</span>
                               {currentColors.length > 0 ? (
                                 <div className="flex flex-wrap gap-1.5 p-2 rounded-xl bg-stone-50 border border-stone-200">
                                   {currentColors.map(color => {
@@ -7463,15 +7590,50 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   })}
                                 </div>
                               ) : (
-                                <p className="text-[11px] text-gray-400 italic">Sin colores específicos asignados.</p>
+                                <p className="text-[11px] text-gray-400 italic">Sin colores o acabados asignados.</p>
                               )}
                             </div>
                           );
                         })()}
 
-                        {/* Paleta Rápida de Circulitos */}
+                        {/* Paleta Rápida de Tintes y Barnices para Madera */}
                         <div className="space-y-1">
-                          <span className="text-[10px] font-bold text-gray-500 uppercase block">Paleta rápida de taller (haz clic para agregar):</span>
+                          <span className="text-[10px] font-bold text-amber-900 uppercase flex items-center gap-1">
+                            <span>🪵</span>
+                            <span>Tintes & Barnices para Madera (Láser y Carpintería):</span>
+                          </span>
+                          <div className="flex flex-wrap items-center gap-1.5 p-2 bg-amber-50/60 rounded-xl border border-amber-200/70">
+                            {STANDARD_WOOD_VARNISHES.map(varnish => {
+                              const colorVar = getColorVariant();
+                              const isSelected = (colorVar?.options || []).some(opt => opt.toLowerCase() === varnish.toLowerCase());
+                              const sw = getFilamentColor(varnish);
+                              return (
+                                <button
+                                  key={varnish}
+                                  type="button"
+                                  onClick={() => handleToggleColorOption(varnish, 'Tono de Barniz y Acabado')}
+                                  className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-lg text-[10.5px] font-semibold transition-all cursor-pointer shadow-2xs ${
+                                    isSelected 
+                                      ? 'bg-amber-900 text-white ring-2 ring-amber-700 ring-offset-1 scale-102' 
+                                      : 'bg-white text-stone-800 border border-amber-200/90 hover:bg-amber-100/50'
+                                  }`}
+                                  title={`Asignar ${varnish}`}
+                                >
+                                  <span
+                                    className="w-3.5 h-3.5 rounded-full border border-black/20 shrink-0 shadow-2xs"
+                                    style={{ background: sw?.css || '#A27B5C' }}
+                                  />
+                                  <span>{varnish}</span>
+                                  {isSelected && <span className="font-black text-amber-200 text-xs leading-none">✓</span>}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Paleta Rápida de Filamentos PLA y Polímeros */}
+                        <div className="space-y-1">
+                          <span className="text-[10px] font-bold text-gray-500 uppercase block">🖨️ Paleta de filamentos 3D (PLA / PETG):</span>
                           <div className="flex flex-wrap items-center gap-1.5 p-2 bg-stone-50 rounded-xl border border-stone-200">
                             {STANDARD_PALETTE_COLORS.map(color => {
                               const colorVar = getColorVariant();
@@ -7481,7 +7643,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 <button
                                   key={color}
                                   type="button"
-                                  onClick={() => handleToggleColorOption(color)}
+                                  onClick={() => handleToggleColorOption(color, 'Color')}
                                   className={`w-6 h-6 rounded-full border flex items-center justify-center transition-transform hover:scale-110 cursor-pointer shadow-2xs ${
                                     isSelected ? 'ring-2 ring-[#2D4F3E] ring-offset-1 scale-105' : 'border-black/20'
                                   }`}
