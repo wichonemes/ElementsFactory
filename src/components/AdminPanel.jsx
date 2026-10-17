@@ -42,95 +42,104 @@ import {
 } from '../utils/skuHelper';
 
 // Helper para generar una receta de manufactura (BOM) inicial realista según la técnica
-export function generateDefaultRecipeForProduct(prod, rawMaterials = []) {
-  const techs = Array.isArray(prod?.techniques) ? prod.techniques : ['3d'];
-  const code = (prod?.code || '').toUpperCase();
-  const name = (prod?.name || '').toLowerCase();
-
+// Helper para generar una receta de manufactura (BOM) inicial realista según la técnica
+export function getPresetItemsForTechnique(tech, rawMaterials = []) {
   const findMat = (id, fallbackQ) => {
     const byId = rawMaterials.find(m => m.id === id);
     if (byId) return byId;
     return rawMaterials.find(m => (m.name || '').toLowerCase().includes(fallbackQ.toLowerCase())) || null;
   };
 
-  const plaMat = findMat('mat-pla-olivo', 'pla verde olivo') || rawMaterials.find(m => m.category === '3d') || {
-    id: 'mat-pla-olivo',
-    name: 'Filamento PLA Verde Olivo Mate (1.75mm)',
-    category: '3d',
-    costPerUnit: 500,
-    packageQuantity: 1000,
-    packageMeasurement: 'g',
-    unit: 'bobina (1 kg)'
-  };
-
-  const sprayMat = findMat('mat-spray-3dlac', '3dlac') || {
-    id: 'mat-spray-3dlac',
-    name: 'Spray Fijador de Cama 3DLac Antideformación (400 ml)',
-    category: '3d',
-    costPerUnit: 250,
-    packageQuantity: 400,
-    packageMeasurement: 'ml',
-    unit: 'lata (400 ml)'
-  };
-
-  const mdfMat = findMat('mat-mdf-3mm', 'mdf') || findMat('mat-madera-triplay-3mm', 'triplay') || {
-    id: 'mat-mdf-3mm',
-    name: 'Placas MDF Natural Calibrado 3mm (60x40 cm)',
-    category: 'laser',
-    costPerUnit: 35,
-    packageQuantity: 2400,
-    packageMeasurement: 'cm²',
-    unit: 'placa (60x40 cm)'
-  };
-
-  const tazaMat = findMat('mat-tazas-blancas-11oz', 'taza blanca') || {
-    id: 'mat-tazas-blancas-11oz',
-    name: 'Tazas Cerámica Blanco Puro Grado A+ Sublimable (11 oz)',
-    category: 'sublimation',
-    costPerUnit: 28,
-    packageQuantity: 1,
-    packageMeasurement: 'pza',
-    unit: 'pieza'
-  };
-
-  const papelSubMat = findMat('mat-papel-sublimacion', 'papel sublimacion') || {
-    id: 'mat-papel-sublimacion',
-    name: 'Papel Sublimación de Secado Rápido A4 Premium (100 hojas)',
-    category: 'sublimation',
-    costPerUnit: 180,
-    packageQuantity: 100,
-    packageMeasurement: 'hoja',
-    unit: 'paquete (100 hojas)'
-  };
-
-  const kaptonMat = findMat('mat-cinta-termica-kapton', 'cinta termica') || {
-    id: 'mat-cinta-termica-kapton',
-    name: 'Cinta Térmica Kapton Alta Resistencia 10mm x 33m (3 rollos)',
-    category: 'sublimation',
-    costPerUnit: 90,
-    packageQuantity: 9900,
-    packageMeasurement: 'cm',
-    unit: 'paquete (3 rollos)'
-  };
-
-  const tintaMat = findMat('mat-tintas-sublimacion-cmyk', 'tintas sublimacion') || {
-    id: 'mat-tintas-sublimacion-cmyk',
-    name: 'Tintas de Sublimación Anti-Tapado CMYK (Set 4x100ml)',
-    category: 'sublimation',
-    costPerUnit: 480,
-    packageQuantity: 400,
-    packageMeasurement: 'ml',
-    unit: 'set (4 botellas)'
-  };
-
-  let items = [];
-  let mainTech = techs[0] || '3d';
-
-  if (techs.includes('sublimation') || name.includes('taza') || name.includes('termo') || name.includes('lata') || code.startsWith('S')) {
-    mainTech = 'sublimation';
-    items = [
+  if (tech === '3d') {
+    const plaMat = findMat('mat-pla-olivo', 'pla verde olivo') || rawMaterials.find(m => m.category === '3d') || {
+      id: 'mat-pla-olivo', name: 'Filamento PLA Verde Olivo Mate (1.75mm)', costPerUnit: 500, packageQuantity: 1000, packageMeasurement: 'g', unit: 'bobina (1 kg)'
+    };
+    const sprayMat = findMat('mat-spray-3dlac', '3dlac') || {
+      id: 'mat-spray-3dlac', name: 'Spray Fijador de Cama 3DLac (400 ml)', costPerUnit: 250, packageQuantity: 400, packageMeasurement: 'ml', unit: 'lata (400 ml)'
+    };
+    return [
       {
-        id: `item-sub-1`,
+        id: `item-3d-${Date.now()}-1`,
+        materialId: plaMat.id,
+        name: plaMat.name,
+        category: '3d',
+        netQuantity: 48,
+        wasteQuantity: 16,
+        wasteType: 'supports_and_purge',
+        totalQuantity: 64,
+        unit: 'g',
+        unitCost: Math.round(((Number(plaMat.costPerUnit) || 500) / 1000) * 100) / 100,
+        totalCost: Math.round(64 * 0.50 * 100) / 100
+      },
+      {
+        id: `item-3d-${Date.now()}-2`,
+        materialId: sprayMat.id,
+        name: sprayMat.name,
+        category: '3d',
+        netQuantity: 4,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 4,
+        unit: 'ml',
+        unitCost: Math.round(((Number(sprayMat.costPerUnit) || 250) / 400) * 100) / 100,
+        totalCost: Math.round(4 * 0.625 * 100) / 100
+      }
+    ];
+  }
+
+  if (tech === 'laser') {
+    const mdfMat = findMat('mat-mdf-3mm', 'mdf') || findMat('mat-madera-triplay-3mm', 'triplay') || {
+      id: 'mat-mdf-3mm', name: 'Placas MDF Natural Calibrado 3mm (60x40 cm)', costPerUnit: 35, packageQuantity: 2400, packageMeasurement: 'cm²', unit: 'placa (60x40 cm)'
+    };
+    const lacaMat = findMat('mat-laca-spray', 'laca') || {
+      id: 'mat-laca-spray', name: 'Laca Protectora Selladora Mate Spray (400 ml)', costPerUnit: 120, packageQuantity: 400, packageMeasurement: 'ml', unit: 'lata (400 ml)'
+    };
+    return [
+      {
+        id: `item-las-${Date.now()}-1`,
+        materialId: mdfMat.id,
+        name: mdfMat.name,
+        category: 'laser',
+        netQuantity: 380,
+        wasteQuantity: 60,
+        wasteType: 'cut_remnants',
+        totalQuantity: 440,
+        unit: 'cm²',
+        unitCost: Math.round(((Number(mdfMat.costPerUnit) || 35) / 2400) * 10000) / 10000,
+        totalCost: Math.round(440 * 0.0146 * 100) / 100
+      },
+      {
+        id: `item-las-${Date.now()}-2`,
+        materialId: lacaMat.id,
+        name: lacaMat.name,
+        category: 'laser',
+        netQuantity: 3,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 3,
+        unit: 'ml',
+        unitCost: Math.round(((Number(lacaMat.costPerUnit) || 120) / 400) * 100) / 100,
+        totalCost: Math.round(3 * 0.30 * 100) / 100
+      }
+    ];
+  }
+
+  if (tech === 'sublimation') {
+    const tazaMat = findMat('mat-tazas-blancas-11oz', 'taza blanca') || {
+      id: 'mat-tazas-blancas-11oz', name: 'Tazas Cerámica Blanco Puro Grado A+ (11 oz)', costPerUnit: 28, packageQuantity: 1, packageMeasurement: 'pza', unit: 'pieza'
+    };
+    const papelSubMat = findMat('mat-papel-sublimacion', 'papel sublimacion') || {
+      id: 'mat-papel-sublimacion', name: 'Papel Sublimación Secado Rápido A4 (100 hojas)', costPerUnit: 180, packageQuantity: 100, packageMeasurement: 'hoja', unit: 'paquete (100 hojas)'
+    };
+    const kaptonMat = findMat('mat-cinta-termica-kapton', 'cinta termica') || {
+      id: 'mat-cinta-termica-kapton', name: 'Cinta Térmica Kapton 10mm x 33m (3 rollos)', costPerUnit: 90, packageQuantity: 9900, packageMeasurement: 'cm', unit: 'paquete (3 rollos)'
+    };
+    const tintaMat = findMat('mat-tintas-sublimacion-cmyk', 'tintas sublimacion') || {
+      id: 'mat-tintas-sublimacion-cmyk', name: 'Tintas de Sublimación CMYK (Set 4x100ml)', costPerUnit: 480, packageQuantity: 400, packageMeasurement: 'ml', unit: 'set (4 botellas)'
+    };
+    return [
+      {
+        id: `item-sub-${Date.now()}-1`,
         materialId: tazaMat.id,
         name: tazaMat.name,
         category: 'sublimation',
@@ -143,93 +152,321 @@ export function generateDefaultRecipeForProduct(prod, rawMaterials = []) {
         totalCost: Number(tazaMat.costPerUnit) || 28.00
       },
       {
-        id: `item-sub-2`,
+        id: `item-sub-${Date.now()}-2`,
         materialId: papelSubMat.id,
         name: papelSubMat.name,
         category: 'sublimation',
         netQuantity: 1,
         wasteQuantity: 0.1,
-        wasteType: 'trimming',
+        wasteType: 'cut_remnants',
         totalQuantity: 1.1,
         unit: 'hoja',
         unitCost: Math.round(((Number(papelSubMat.costPerUnit) || 180) / 100) * 100) / 100,
         totalCost: Math.round(1.1 * 1.80 * 100) / 100
       },
       {
-        id: `item-sub-3`,
+        id: `item-sub-${Date.now()}-3`,
         materialId: kaptonMat.id,
         name: kaptonMat.name,
         category: 'sublimation',
-        netQuantity: 15,
+        netQuantity: 20,
         wasteQuantity: 5,
-        wasteType: 'tape',
-        totalQuantity: 20,
+        wasteType: 'tape_scrap',
+        totalQuantity: 25,
         unit: 'cm',
         unitCost: Math.round(((Number(kaptonMat.costPerUnit) || 90) / 9900) * 10000) / 10000,
-        totalCost: Math.round(20 * 0.0091 * 100) / 100
+        totalCost: Math.round(25 * 0.0091 * 100) / 100
       },
       {
-        id: `item-sub-4`,
+        id: `item-sub-${Date.now()}-4`,
         materialId: tintaMat.id,
         name: tintaMat.name,
         category: 'sublimation',
         netQuantity: 1,
         wasteQuantity: 0.2,
-        wasteType: 'purge',
+        wasteType: 'printer_purge',
         totalQuantity: 1.2,
         unit: 'ml',
         unitCost: Math.round(((Number(tintaMat.costPerUnit) || 480) / 400) * 100) / 100,
         totalCost: Math.round(1.2 * 1.20 * 100) / 100
       }
     ];
-  } else if (techs.includes('laser') || code.startsWith('L') || name.includes('llavero madera') || name.includes('colgador') || name.includes('letrero')) {
-    mainTech = 'laser';
-    items = [
+  }
+
+  if (tech === 'dtf') {
+    const playeraMat = findMat('mat-playera-poliester-blanca', 'playera') || {
+      id: 'mat-playera-poliester-blanca', name: 'Playera Blanca Spun Poliéster / Tacto Algodón', costPerUnit: 65, packageQuantity: 1, packageMeasurement: 'pza', unit: 'pieza'
+    };
+    const dtfFilm = findMat('mat-dtf-film-pet', 'dtf film') || {
+      id: 'mat-dtf-film-pet', name: 'Film PET Transfer DTF Rollo 30cm x 100m', costPerUnit: 1650, packageQuantity: 10000, packageMeasurement: 'cm', unit: 'rollo (30cm x 100m)'
+    };
+    const dtfTinta = findMat('mat-dtf-tinta-cmykw', 'tintas textiles dtf') || {
+      id: 'mat-dtf-tinta-cmykw', name: 'Tintas Textiles DTF CMYK + Blanco (Set 5 botellas)', costPerUnit: 1250, packageQuantity: 1250, packageMeasurement: 'ml', unit: 'set (5 botellas)'
+    };
+    const dtfPolvo = findMat('mat-dtf-poliamida-polvo', 'polvo poliamida') || {
+      id: 'mat-dtf-poliamida-polvo', name: 'Polvo Poliamida Termofusible Hot-Melt DTF (1 kg)', costPerUnit: 450, packageQuantity: 1000, packageMeasurement: 'g', unit: 'bolsa (1 kg)'
+    };
+    return [
       {
-        id: `item-las-1`,
-        materialId: mdfMat.id,
-        name: mdfMat.name,
-        category: 'laser',
-        netQuantity: 380,
-        wasteQuantity: 60,
-        wasteType: 'kerf_cut',
-        totalQuantity: 440,
-        unit: 'cm²',
-        unitCost: Math.round(((Number(mdfMat.costPerUnit) || 35) / 2400) * 10000) / 10000,
-        totalCost: Math.round(440 * 0.0146 * 100) / 100
-      }
-    ];
-  } else {
-    mainTech = '3d';
-    items = [
-      {
-        id: `item-3d-1`,
-        materialId: plaMat.id,
-        name: plaMat.name,
-        category: '3d',
-        netQuantity: 48,
-        wasteQuantity: 16,
-        wasteType: 'supports_purge',
-        totalQuantity: 64,
-        unit: 'g',
-        unitCost: Math.round(((Number(plaMat.costPerUnit) || 500) / 1000) * 100) / 100,
-        totalCost: Math.round(64 * 0.50 * 100) / 100
-      },
-      {
-        id: `item-3d-2`,
-        materialId: sprayMat.id,
-        name: sprayMat.name,
-        category: '3d',
-        netQuantity: 5,
+        id: `item-dtf-${Date.now()}-1`,
+        materialId: playeraMat.id,
+        name: playeraMat.name,
+        category: 'vinyl',
+        netQuantity: 1,
         wasteQuantity: 0,
         wasteType: 'none',
-        totalQuantity: 5,
+        totalQuantity: 1,
+        unit: 'pza',
+        unitCost: Number(playeraMat.costPerUnit) || 65,
+        totalCost: Number(playeraMat.costPerUnit) || 65
+      },
+      {
+        id: `item-dtf-${Date.now()}-2`,
+        materialId: dtfFilm.id,
+        name: dtfFilm.name,
+        category: 'vinyl',
+        netQuantity: 28,
+        wasteQuantity: 4,
+        wasteType: 'cut_remnants',
+        totalQuantity: 32,
+        unit: 'cm',
+        unitCost: Math.round(((Number(dtfFilm.costPerUnit) || 1650) / 10000) * 10000) / 10000,
+        totalCost: Math.round(32 * 0.165 * 100) / 100
+      },
+      {
+        id: `item-dtf-${Date.now()}-3`,
+        materialId: dtfTinta.id,
+        name: dtfTinta.name,
+        category: 'vinyl',
+        netQuantity: 2,
+        wasteQuantity: 0.3,
+        wasteType: 'printer_purge',
+        totalQuantity: 2.3,
         unit: 'ml',
-        unitCost: Math.round(((Number(sprayMat.costPerUnit) || 250) / 400) * 100) / 100,
-        totalCost: Math.round(5 * 0.625 * 100) / 100
+        unitCost: Math.round(((Number(dtfTinta.costPerUnit) || 1250) / 1250) * 100) / 100,
+        totalCost: Math.round(2.3 * 1.00 * 100) / 100
+      },
+      {
+        id: `item-dtf-${Date.now()}-4`,
+        materialId: dtfPolvo.id,
+        name: dtfPolvo.name,
+        category: 'vinyl',
+        netQuantity: 8,
+        wasteQuantity: 2,
+        wasteType: 'powder_waste',
+        totalQuantity: 10,
+        unit: 'g',
+        unitCost: Math.round(((Number(dtfPolvo.costPerUnit) || 450) / 1000) * 100) / 100,
+        totalCost: Math.round(10 * 0.45 * 100) / 100
       }
     ];
   }
+
+  if (tech === 'impresion_laser') {
+    const papelMat = findMat('mat-papel-couche-300g', 'couche') || findMat('mat-cartulina-opalina', 'opalina') || {
+      id: 'mat-papel-couche-300g', name: 'Papel Couché Brillante 300g A4 (100 hojas)', costPerUnit: 160, packageQuantity: 100, packageMeasurement: 'hoja', unit: 'paquete (100 hojas)'
+    };
+    const tonerMat = findMat('mat-toner-click-laser', 'toner') || {
+      id: 'mat-toner-click-laser', name: 'Tóner Láser Digital Color A4 (500 impresiones)', costPerUnit: 450, packageQuantity: 500, packageMeasurement: 'pza', unit: 'paquete (500 pzas)'
+    };
+    const foilMat = findMat('mat-foil-reactivo-oro', 'foil') || {
+      id: 'mat-foil-reactivo-oro', name: 'Foil Reactivo al Tóner Láser Oro (Rollo 30cm x 15m)', costPerUnit: 220, packageQuantity: 1500, packageMeasurement: 'cm', unit: 'rollo (30cm x 15m)'
+    };
+    return [
+      {
+        id: `item-prn-${Date.now()}-1`,
+        materialId: papelMat.id,
+        name: papelMat.name,
+        category: 'sublimation',
+        netQuantity: 1,
+        wasteQuantity: 0.1,
+        wasteType: 'cut_remnants',
+        totalQuantity: 1.1,
+        unit: 'hoja',
+        unitCost: Math.round(((Number(papelMat.costPerUnit) || 160) / 100) * 100) / 100,
+        totalCost: Math.round(1.1 * 1.60 * 100) / 100
+      },
+      {
+        id: `item-prn-${Date.now()}-2`,
+        materialId: tonerMat.id,
+        name: tonerMat.name,
+        category: 'sublimation',
+        netQuantity: 1,
+        wasteQuantity: 0.1,
+        wasteType: 'printer_purge',
+        totalQuantity: 1.1,
+        unit: 'click',
+        unitCost: Math.round(((Number(tonerMat.costPerUnit) || 450) / 500) * 100) / 100,
+        totalCost: Math.round(1.1 * 0.90 * 100) / 100
+      },
+      {
+        id: `item-prn-${Date.now()}-3`,
+        materialId: foilMat.id,
+        name: foilMat.name,
+        category: 'sublimation',
+        netQuantity: 20,
+        wasteQuantity: 5,
+        wasteType: 'foil_remnants',
+        totalQuantity: 25,
+        unit: 'cm',
+        unitCost: Math.round(((Number(foilMat.costPerUnit) || 220) / 1500) * 10000) / 10000,
+        totalCost: Math.round(25 * 0.1467 * 100) / 100
+      }
+    ];
+  }
+
+  if (tech === 'vinyl') {
+    const vinilMat = findMat('mat-vinil-textil-blanco', 'vinil textil') || findMat('mat-vinil-negro', 'vinil adhesivo') || {
+      id: 'mat-vinil-textil-blanco', name: 'Vinil Textil Térmico HTV Básico Blanco (Metro lineal)', costPerUnit: 130, packageQuantity: 100, packageMeasurement: 'cm', unit: 'metro lineal (50 cm ancho)'
+    };
+    const transferMat = findMat('mat-papel-transfer', 'transfer') || {
+      id: 'mat-papel-transfer', name: 'Cinta Transportadora Transfer con Cuadrícula (10m)', costPerUnit: 160, packageQuantity: 1000, packageMeasurement: 'cm', unit: 'rollo (30 cm x 10 m)'
+    };
+    return [
+      {
+        id: `item-vin-${Date.now()}-1`,
+        materialId: vinilMat.id,
+        name: vinilMat.name,
+        category: 'vinyl',
+        netQuantity: 25,
+        wasteQuantity: 5,
+        wasteType: 'weeding_scrap',
+        totalQuantity: 30,
+        unit: 'cm',
+        unitCost: Math.round(((Number(vinilMat.costPerUnit) || 130) / 100) * 100) / 100,
+        totalCost: Math.round(30 * 1.30 * 100) / 100
+      },
+      {
+        id: `item-vin-${Date.now()}-2`,
+        materialId: transferMat.id,
+        name: transferMat.name,
+        category: 'vinyl',
+        netQuantity: 25,
+        wasteQuantity: 3,
+        wasteType: 'tape_scrap',
+        totalQuantity: 28,
+        unit: 'cm',
+        unitCost: Math.round(((Number(transferMat.costPerUnit) || 160) / 1000) * 100) / 100,
+        totalCost: Math.round(28 * 0.16 * 100) / 100
+      }
+    ];
+  }
+
+  if (tech === 'ensamble') {
+    const resistolMat = findMat('mat-pegamento-resistol-850', 'resistol') || {
+      id: 'mat-pegamento-resistol-850', name: 'Resistol 850 Pegamento Blanco para Madera Extra Fuerte (500 ml)', costPerUnit: 85, packageQuantity: 500, packageMeasurement: 'ml', unit: 'bote (500 ml)'
+    };
+    const cianoMat = findMat('mat-pegamento-cianocrilato-gotas', 'cianoacrilato') || {
+      id: 'mat-pegamento-cianocrilato-gotas', name: 'Pegamento Instantáneo Cianocrilato Grado Taller (50g)', costPerUnit: 110, packageQuantity: 50, packageMeasurement: 'g', unit: 'frasco (50g)'
+    };
+    const argollaMat = findMat('mat-argollas-llavero', 'argollas') || {
+      id: 'mat-argollas-llavero', name: 'Argollas Metálicas con Cadena y Eslabón (100 pzas)', costPerUnit: 120, packageQuantity: 100, packageMeasurement: 'pza', unit: 'paquete (100 pzas)'
+    };
+    return [
+      {
+        id: `item-ens-${Date.now()}-1`,
+        materialId: resistolMat.id,
+        name: resistolMat.name,
+        category: 'assembly',
+        netQuantity: 10,
+        wasteQuantity: 2,
+        wasteType: 'glue_residue',
+        totalQuantity: 12,
+        unit: 'gotas',
+        unitCost: Math.round(((Number(resistolMat.costPerUnit) || 85) / 10000) * 10000) / 10000,
+        totalCost: Math.round(12 * 0.0085 * 100) / 100
+      },
+      {
+        id: `item-ens-${Date.now()}-2`,
+        materialId: cianoMat.id,
+        name: cianoMat.name,
+        category: 'assembly',
+        netQuantity: 4,
+        wasteQuantity: 1,
+        wasteType: 'glue_residue',
+        totalQuantity: 5,
+        unit: 'gotas',
+        unitCost: Math.round(((Number(cianoMat.costPerUnit) || 110) / 1000) * 1000) / 1000,
+        totalCost: Math.round(5 * 0.11 * 100) / 100
+      },
+      {
+        id: `item-ens-${Date.now()}-3`,
+        materialId: argollaMat.id,
+        name: argollaMat.name,
+        category: 'assembly',
+        netQuantity: 1,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 1,
+        unit: 'pza',
+        unitCost: Math.round(((Number(argollaMat.costPerUnit) || 120) / 100) * 100) / 100,
+        totalCost: Math.round(1 * 1.20 * 100) / 100
+      }
+    ];
+  }
+
+  return [];
+}
+
+export function generateDefaultRecipeForProduct(prod, rawMaterials = []) {
+  const techs = Array.isArray(prod?.techniques) ? prod.techniques : ['3d'];
+  const code = (prod?.code || '').toUpperCase();
+  const name = (prod?.name || '').toLowerCase();
+
+  let mainTech = techs[0] || '3d';
+  if (techs.includes('dtf') || name.includes('playera dtf')) mainTech = 'dtf';
+  else if (techs.includes('impresion_laser') || name.includes('invitacion') || name.includes('tarjeta')) mainTech = 'impresion_laser';
+  else if (techs.includes('sublimation') || name.includes('taza') || name.includes('termo') || name.includes('lata') || code.startsWith('S')) mainTech = 'sublimation';
+  else if (techs.includes('laser') || code.startsWith('L') || name.includes('madera') || name.includes('letrero')) mainTech = 'laser';
+  else if (techs.includes('vinyl') || name.includes('vinil')) mainTech = 'vinyl';
+  else if (techs.includes('ensamble')) mainTech = 'ensamble';
+
+  // Si tiene múltiples técnicas, recopilar los insumos de todas las técnicas seleccionadas
+  let items = [];
+  techs.forEach(t => {
+    const presetItems = getPresetItemsForTechnique(t, rawMaterials);
+    items = [...items, ...presetItems];
+  });
+
+  if (items.length === 0) {
+    items = getPresetItemsForTechnique(mainTech, rawMaterials);
+  }
+
+  // Tiempos y potencias de taller según técnica principal
+  let manufacturingTimeMinutes = 60;
+  let machinePowerWatts = 250;
+  let laborTimeMinutes = 10;
+  let laborRatePerHour = 100;
+
+  if (techs.includes('3d')) {
+    manufacturingTimeMinutes = 180;
+    machinePowerWatts = 250;
+    laborTimeMinutes = 8;
+  } else if (techs.includes('sublimation')) {
+    manufacturingTimeMinutes = 8;
+    machinePowerWatts = 1800;
+    laborTimeMinutes = 6;
+  } else if (techs.includes('dtf')) {
+    manufacturingTimeMinutes = 12;
+    machinePowerWatts = 1800;
+    laborTimeMinutes = 10;
+  } else if (techs.includes('laser')) {
+    manufacturingTimeMinutes = 15;
+    machinePowerWatts = 350;
+    laborTimeMinutes = 10;
+  } else if (techs.includes('impresion_laser')) {
+    manufacturingTimeMinutes = 5;
+    machinePowerWatts = 450;
+    laborTimeMinutes = 8;
+  } else if (techs.includes('vinyl')) {
+    manufacturingTimeMinutes = 10;
+    machinePowerWatts = 60;
+    laborTimeMinutes = 15;
+  }
+
+  const kwhCost = 3.50; // $3.50 MXN estándar comercial CFE
+  const energyCost = Math.round(((machinePowerWatts / 1000) * (manufacturingTimeMinutes / 60) * kwhCost) * 100) / 100;
+  const laborCost = Math.round(((laborTimeMinutes / 60) * laborRatePerHour) * 100) / 100;
 
   const totalMaterialCost = Math.round(items.reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
   const totalWasteCost = Math.round(items.reduce((acc, it) => acc + ((Number(it.wasteQuantity) || 0) * (Number(it.unitCost) || 0)), 0) * 100) / 100;
@@ -241,7 +478,21 @@ export function generateDefaultRecipeForProduct(prod, rawMaterials = []) {
     items,
     totalMaterialCost,
     totalWasteCost,
-    wastePercentAverage
+    wastePercentAverage,
+    manufacturingTimeMinutes,
+    machinePowerWatts,
+    kwhCost,
+    energyCost,
+    laborTimeMinutes,
+    laborRatePerHour,
+    laborCost,
+    packagingAndShipping: {
+      enabled: false,
+      packagingType: 'caja-kraft-chica',
+      packagingCost: 12,
+      shippingCost: 0,
+      notes: ''
+    }
   };
 }
 
@@ -934,30 +1185,81 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     });
   };
 
-  const handleApplyRecipePreset = (presetType) => {
-    const defaultRec = generateDefaultRecipeForProduct({
-      ...editorForm,
-      techniques: [presetType]
-    }, rawMaterialsList);
+  const handleApplyRecipePreset = (presetType, append = false) => {
+    const presetItems = getPresetItemsForTechnique(presetType, rawMaterialsList);
+    const currentRecipe = editorForm.manufacturingRecipe || { items: [] };
+
+    let updatedItems = [];
+    if (append) {
+      updatedItems = [...(currentRecipe.items || []), ...presetItems];
+    } else {
+      updatedItems = presetItems;
+    }
+
+    const totalMaterialCost = Math.round(updatedItems.reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
+    const totalWasteCost = Math.round(updatedItems.reduce((acc, it) => acc + ((Number(it.wasteQuantity) || 0) * (Number(it.unitCost) || 0)), 0) * 100) / 100;
+    const wastePercentAverage = totalMaterialCost > 0 ? Math.round((totalWasteCost / totalMaterialCost) * 1000) / 10 : 0;
+
+    const currentTechs = editorForm.techniques || [];
+    const updatedTechs = currentTechs.includes(presetType) ? currentTechs : [...currentTechs, presetType];
 
     setEditorForm({
       ...editorForm,
-      manufacturingRecipe: defaultRec
+      techniques: updatedTechs,
+      manufacturingRecipe: {
+        ...currentRecipe,
+        technique: updatedTechs[0] || presetType,
+        items: updatedItems,
+        totalMaterialCost,
+        totalWasteCost,
+        wastePercentAverage
+      }
+    });
+
+    setEditorMessage({
+      text: append ? `✓ Insumos de técnica agregados a la receta.` : `✓ Receta inicializada con plantilla de ${presetType.toUpperCase()}.`,
+      type: 'success'
+    });
+    setTimeout(() => setEditorMessage({ text: '', type: '' }), 3000);
+  };
+
+  const handleUpdateRecipeField = (field, value) => {
+    const rec = editorForm.manufacturingRecipe || {};
+    const updatedRec = { ...rec, [field]: value };
+
+    const watts = field === 'machinePowerWatts' ? Number(value) : (Number(updatedRec.machinePowerWatts) || 0);
+    const mins = field === 'manufacturingTimeMinutes' ? Number(value) : (Number(updatedRec.manufacturingTimeMinutes) || 0);
+    const kwh = field === 'kwhCost' ? Number(value) : (Number(updatedRec.kwhCost) || 3.50);
+    updatedRec.energyCost = Math.round(((watts / 1000) * (mins / 60) * kwh) * 100) / 100;
+
+    const laborMins = field === 'laborTimeMinutes' ? Number(value) : (Number(updatedRec.laborTimeMinutes) || 0);
+    const laborRate = field === 'laborRatePerHour' ? Number(value) : (Number(updatedRec.laborRatePerHour) || 0);
+    updatedRec.laborCost = Math.round(((laborMins / 60) * laborRate) * 100) / 100;
+
+    setEditorForm({
+      ...editorForm,
+      manufacturingRecipe: updatedRec
     });
   };
 
   const handleSyncRecipeToCostPrice = () => {
-    const cost = editorForm.manufacturingRecipe?.totalMaterialCost || 0;
-    if (cost > 0) {
+    const rec = editorForm.manufacturingRecipe || {};
+    const matCost = Number(rec.totalMaterialCost) || 0;
+    const energyCost = Number(rec.energyCost) || 0;
+    const laborCost = Number(rec.laborCost) || 0;
+    const packagingCost = rec.packagingAndShipping?.enabled ? (Number(rec.packagingAndShipping?.packagingCost) || 0) : 0;
+    const totalCost = Math.round((matCost + energyCost + laborCost + packagingCost) * 100) / 100;
+
+    if (totalCost > 0) {
       setEditorForm({
         ...editorForm,
-        costPrice: cost
+        costPrice: totalCost
       });
       setEditorMessage({
-        text: `✓ Costo de producción actualizado a $${cost.toFixed(2)} MXN a partir de la receta.`,
+        text: `✓ Costo de producción actualizado a $${totalCost.toFixed(2)} MXN (Insumos: $${matCost.toFixed(1)} + Luz: $${energyCost.toFixed(1)} + Mano de Obra: $${laborCost.toFixed(1)}${packagingCost > 0 ? ` + Empaque: $${packagingCost.toFixed(1)}` : ''}).`,
         type: 'success'
       });
-      setTimeout(() => setEditorMessage({ text: '', type: '' }), 3000);
+      setTimeout(() => setEditorMessage({ text: '', type: '' }), 4000);
     }
   };
 
@@ -5811,37 +6113,49 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     {editorRecipeAccordion && (
                       <div className="p-3.5 sm:p-4 pt-0 border-t border-emerald-100 space-y-4">
                         
-                        {/* 1. Barra de Presets Rápidos por Técnica */}
-                        <div className="pt-2 flex flex-wrap items-center justify-between gap-2">
-                          <span className="text-[10px] font-bold text-gray-500 uppercase flex items-center gap-1">
-                            <Sparkles className="w-3 h-3 text-emerald-600" />
-                            <span>Cargar Plantilla Rápida de Taller:</span>
-                          </span>
+                        {/* 1. Barra de Presets Rápidos por Técnica (Combinables) */}
+                        <div className="pt-2 space-y-1.5">
+                          <div className="flex flex-wrap items-center justify-between gap-1 text-[10px]">
+                            <span className="font-bold text-gray-700 uppercase flex items-center gap-1">
+                              <Sparkles className="w-3 h-3 text-emerald-600" />
+                              <span>Plantillas Rápidas de Taller (Combina 2 o más técnicas):</span>
+                            </span>
+                            <span className="text-gray-400">
+                              Haz clic en la técnica para cargarla, o en &quot;+ Añadir&quot; para combinar técnicas
+                            </span>
+                          </div>
                           <div className="flex flex-wrap items-center gap-1.5">
-                            <button
-                              type="button"
-                              onClick={() => handleApplyRecipePreset('3d')}
-                              className="px-2 py-1 rounded-lg bg-white border border-stone-300 hover:border-emerald-600 hover:bg-emerald-50 text-[10.5px] font-semibold text-gray-700 transition-all cursor-pointer shadow-2xs"
-                              title="Carga filamento PLA con peso neto + soportes y torre de purga + spray de cama"
-                            >
-                              🖨️ Preset 3D (PLA + Purga/Soportes)
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => handleApplyRecipePreset('laser')}
-                              className="px-2 py-1 rounded-lg bg-white border border-stone-300 hover:border-emerald-600 hover:bg-emerald-50 text-[10.5px] font-semibold text-gray-700 transition-all cursor-pointer shadow-2xs"
-                              title="Carga placa MDF o Triplay con área y merma de corte"
-                            >
-                              ⚡ Preset Láser (MDF + Merma 15%)
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => handleApplyRecipePreset('sublimation')}
-                              className="px-2 py-1 rounded-lg bg-white border border-stone-300 hover:border-emerald-600 hover:bg-emerald-50 text-[10.5px] font-semibold text-gray-700 transition-all cursor-pointer shadow-2xs"
-                              title="Carga taza blanca 11oz, papel transfer, tintas CMYK y cinta térmica en centímetros"
-                            >
-                              ☕ Preset Sublimación (Taza + Cinta + Papel)
-                            </button>
+                            {[
+                              { id: '3d', label: 'Impresión 3D', icon: '🖨️', desc: 'PLA + Soportes/Purga + 3DLac' },
+                              { id: 'laser', label: 'Corte Láser', icon: '⚡', desc: 'MDF 3mm + Kerf 15%' },
+                              { id: 'sublimation', label: 'Sublimación', icon: '☕', desc: 'Taza + Cinta Kapton + Papel' },
+                              { id: 'dtf', label: 'DTF Textil', icon: '👕', desc: 'Film PET + Tinta CMYKW + Poliamida' },
+                              { id: 'impresion_laser', label: 'Impresión Láser', icon: '📄', desc: 'Papel Couché/Opalina + Click Tóner' },
+                              { id: 'vinyl', label: 'Vinil Cameo', icon: '🏷️', desc: 'Vinil Textil/Adhesivo + Transfer' },
+                              { id: 'ensamble', label: 'Armado / Resistol', icon: '🪵', desc: 'Resistol 850 en gotas + Cianocrilato' },
+                            ].map(preset => (
+                              <div
+                                key={preset.id}
+                                className="inline-flex rounded-lg border border-stone-200 bg-white overflow-hidden shadow-2xs text-[10px]"
+                              >
+                                <button
+                                  type="button"
+                                  onClick={() => handleApplyRecipePreset(preset.id, false)}
+                                  className="px-2 py-1 font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-900 border-r border-stone-200 transition-colors cursor-pointer"
+                                  title={`Reemplazar receta con plantilla de ${preset.desc}`}
+                                >
+                                  {preset.icon} {preset.label}
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleApplyRecipePreset(preset.id, true)}
+                                  className="px-1.5 py-1 font-bold text-emerald-700 hover:bg-emerald-600 hover:text-white transition-colors cursor-pointer"
+                                  title={`Añadir ${preset.label} a la receta actual sin borrar lo anterior`}
+                                >
+                                  + Añadir
+                                </button>
+                              </div>
+                            ))}
                           </div>
                         </div>
 
@@ -6032,15 +6346,38 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                     const pkg = parsePackageInfo(mat);
                                     setEditorRecipeUnit(pkg.packageMeasurement || 'pza');
                                     // Sugerir cantidades lógicas según tipo
-                                    if (mat.category === '3d') {
+                                    const lowerName = (mat.name || '').toLowerCase();
+                                    if (lowerName.includes('resistol') || lowerName.includes('pegamento') || lowerName.includes('cianocrilato') || mat.unit === 'gotas') {
+                                      setEditorRecipeNetQty(10);
+                                      setEditorRecipeWasteQty(2);
+                                      setEditorRecipeWasteType('manual');
+                                      setEditorRecipeUnit('gotas');
+                                    } else if (lowerName.includes('spray') || lowerName.includes('3dlac') || mat.unit === 'disparos') {
+                                      setEditorRecipeNetQty(2);
+                                      setEditorRecipeWasteQty(0);
+                                      setEditorRecipeWasteType('none');
+                                      setEditorRecipeUnit('disparos');
+                                    } else if (lowerName.includes('click') || lowerName.includes('toner') || mat.unit === 'click') {
+                                      setEditorRecipeNetQty(1);
+                                      setEditorRecipeWasteQty(0);
+                                      setEditorRecipeWasteType('none');
+                                      setEditorRecipeUnit('click');
+                                    } else if (mat.category === 'dtf' || lowerName.includes('dtf') || lowerName.includes('pet')) {
+                                      setEditorRecipeNetQty(28);
+                                      setEditorRecipeWasteQty(2);
+                                      setEditorRecipeWasteType('kerf_cut');
+                                      setEditorRecipeUnit('cm');
+                                    } else if (mat.category === '3d') {
                                       setEditorRecipeNetQty(45);
                                       setEditorRecipeWasteQty(15);
                                       setEditorRecipeWasteType('supports_purge');
+                                      setEditorRecipeUnit('g');
                                     } else if (mat.category === 'laser') {
                                       setEditorRecipeNetQty(350);
                                       setEditorRecipeWasteQty(50);
                                       setEditorRecipeWasteType('kerf_cut');
-                                    } else if (mat.name.toLowerCase().includes('cinta')) {
+                                      setEditorRecipeUnit('cm²');
+                                    } else if (lowerName.includes('cinta')) {
                                       setEditorRecipeNetQty(15);
                                       setEditorRecipeWasteQty(5);
                                       setEditorRecipeWasteType('tape');
@@ -6077,8 +6414,36 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                     </option>
                                   ))}
                                 </optgroup>
-                                <optgroup label="📦 Otros Insumos, Vinil & Empaque">
-                                  {rawMaterialsList.filter(m => !['3d', 'laser', 'sublimation'].includes(m.category)).map(m => (
+                                <optgroup label="👕 DTF Textil (Film PET, Tinta CMYKW, Poliamida)">
+                                  {rawMaterialsList.filter(m => m.category === 'dtf').map(m => (
+                                    <option key={m.id} value={m.id}>
+                                      {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
+                                    </option>
+                                  ))}
+                                </optgroup>
+                                <optgroup label="📄 Papelería Fina & Impresión Láser (Couché, Opalina, Tóner)">
+                                  {rawMaterialsList.filter(m => m.category === 'impresion_laser' || m.category === 'paper').map(m => (
+                                    <option key={m.id} value={m.id}>
+                                      {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
+                                    </option>
+                                  ))}
+                                </optgroup>
+                                <optgroup label="🏷️ Vinil Textil & Rotulación Cameo">
+                                  {rawMaterialsList.filter(m => m.category === 'vinyl').map(m => (
+                                    <option key={m.id} value={m.id}>
+                                      {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
+                                    </option>
+                                  ))}
+                                </optgroup>
+                                <optgroup label="🪵 Adhesivos, Resistol en Gotas & Silicón">
+                                  {rawMaterialsList.filter(m => m.category === 'ensamble' || m.category === 'glue' || m.name?.toLowerCase().includes('resistol') || m.name?.toLowerCase().includes('pegamento') || m.name?.toLowerCase().includes('cianocrilato') || m.name?.toLowerCase().includes('silicón') || m.name?.toLowerCase().includes('silicon')).map(m => (
+                                    <option key={m.id} value={m.id}>
+                                      {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
+                                    </option>
+                                  ))}
+                                </optgroup>
+                                <optgroup label="📦 Otros Insumos, Blanks & Empaque">
+                                  {rawMaterialsList.filter(m => !['3d', 'laser', 'sublimation', 'dtf', 'impresion_laser', 'paper', 'vinyl', 'ensamble', 'glue'].includes(m.category) && !m.name?.toLowerCase().includes('resistol') && !m.name?.toLowerCase().includes('cianocrilato')).map(m => (
                                     <option key={m.id} value={m.id}>
                                       {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
                                     </option>
@@ -6143,7 +6508,11 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 <option value="m">m</option>
                                 <option value="pza">pza</option>
                                 <option value="hoja">hoja</option>
+                                <option value="pliego">pliego</option>
                                 <option value="ml">ml</option>
+                                <option value="gotas">gotas</option>
+                                <option value="disparos">disparos</option>
+                                <option value="click">click</option>
                               </select>
                             </div>
 
@@ -6162,7 +6531,302 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           </div>
                         </div>
 
-                        {/* 4. Tarjeta de Simulación en Taller & Descuento Inmediato de Inventario */}
+                        {/* 4. Consumo Eléctrico (Luz CFE) & Tiempos de Fabricación */}
+                        <div className="p-3 bg-white rounded-xl border border-stone-200 space-y-3">
+                          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-stone-100 pb-2">
+                            <div className="flex items-center gap-2">
+                              <span className="p-1 rounded-lg bg-amber-100 text-amber-800">
+                                <Zap className="w-3.5 h-3.5" />
+                              </span>
+                              <div>
+                                <h5 className="font-bold text-xs text-gray-900 flex items-center gap-1.5">
+                                  <span>Consumo Eléctrico (Luz CFE) &amp; Tiempos de Mano de Obra</span>
+                                  <span className="px-2 py-0.2 rounded-full bg-amber-100 text-amber-900 text-[9.5px] font-bold">
+                                    Overhead Exacto
+                                  </span>
+                                </h5>
+                                <span className="text-[10px] text-gray-400">
+                                  Calcula al centavo el gasto de luz según los Watts de la máquina y el tiempo del operador
+                                </span>
+                              </div>
+                            </div>
+                            
+                            <div className="text-right">
+                              <span className="text-[10px] text-gray-400 block">Subtotal Luz + Labor:</span>
+                              <span className="font-mono font-bold text-xs text-amber-900">
+                                ${((Number(editorForm.manufacturingRecipe?.energyCost) || 0) + (Number(editorForm.manufacturingRecipe?.laborCost) || 0)).toFixed(2)} MXN
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                            {/* Columna 1: Consumo Eléctrico */}
+                            <div className="p-2.5 rounded-lg bg-amber-50/40 border border-amber-200/60 space-y-2">
+                              <div className="flex items-center justify-between">
+                                <span className="font-bold text-[10.5px] text-amber-950 flex items-center gap-1">
+                                  ⚡ Luz Máquina CFE:
+                                </span>
+                                <span className="font-mono font-bold text-xs text-amber-900 bg-amber-100 px-2 py-0.5 rounded">
+                                  ${Number(editorForm.manufacturingRecipe?.energyCost || 0).toFixed(2)} MXN
+                                </span>
+                              </div>
+
+                              {/* Presets de Watts de máquinas */}
+                              <div className="space-y-1">
+                                <span className="text-[9.5px] text-gray-500 font-semibold block">Presets de potencia rápida:</span>
+                                <div className="flex flex-wrap gap-1">
+                                  {[
+                                    { label: '3D (250W)', watts: 250 },
+                                    { label: 'Láser Diodo (80W)', watts: 80 },
+                                    { label: 'Láser CO2 (450W)', watts: 450 },
+                                    { label: 'Plancha (1800W)', watts: 1800 },
+                                    { label: 'Imp. Láser (450W)', watts: 450 },
+                                    { label: 'Plotter (60W)', watts: 60 },
+                                  ].map(p => (
+                                    <button
+                                      key={p.label}
+                                      type="button"
+                                      onClick={() => handleUpdateRecipeField('machinePowerWatts', p.watts)}
+                                      className={`px-1.5 py-0.5 rounded text-[9.5px] font-bold border transition-colors cursor-pointer ${
+                                        editorForm.manufacturingRecipe?.machinePowerWatts === p.watts
+                                          ? 'bg-amber-700 text-white border-amber-800'
+                                          : 'bg-white text-gray-700 border-amber-200 hover:bg-amber-100'
+                                      }`}
+                                    >
+                                      {p.label}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+
+                              <div className="grid grid-cols-3 gap-1.5 pt-1 text-[10px]">
+                                <div>
+                                  <label className="text-gray-500 font-bold block mb-0.5">Potencia (W):</label>
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    step="10"
+                                    value={editorForm.manufacturingRecipe?.machinePowerWatts ?? 250}
+                                    onChange={e => handleUpdateRecipeField('machinePowerWatts', parseFloat(e.target.value) || 0)}
+                                    className="w-full px-1.5 py-1 rounded border border-gray-300 bg-white font-mono font-bold text-xs"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="text-gray-500 font-bold block mb-0.5">Tiempo (min):</label>
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    step="5"
+                                    value={editorForm.manufacturingRecipe?.manufacturingTimeMinutes ?? 90}
+                                    onChange={e => handleUpdateRecipeField('manufacturingTimeMinutes', parseFloat(e.target.value) || 0)}
+                                    className="w-full px-1.5 py-1 rounded border border-gray-300 bg-white font-mono font-bold text-xs"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="text-gray-500 font-bold block mb-0.5">Tarifa ($/kWh):</label>
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    step="0.1"
+                                    value={editorForm.manufacturingRecipe?.kwhCost ?? 3.50}
+                                    onChange={e => handleUpdateRecipeField('kwhCost', parseFloat(e.target.value) || 0)}
+                                    className="w-full px-1.5 py-1 rounded border border-gray-300 bg-white font-mono font-bold text-xs"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Columna 2: Mano de Obra y Tiempo de Operador */}
+                            <div className="p-2.5 rounded-lg bg-emerald-50/40 border border-emerald-200/60 space-y-2">
+                              <div className="flex items-center justify-between">
+                                <span className="font-bold text-[10.5px] text-emerald-950 flex items-center gap-1">
+                                  ⏱️ Mano de Obra / Operador:
+                                </span>
+                                <span className="font-mono font-bold text-xs text-emerald-900 bg-emerald-100 px-2 py-0.5 rounded">
+                                  ${Number(editorForm.manufacturingRecipe?.laborCost || 0).toFixed(2)} MXN
+                                </span>
+                              </div>
+
+                              <p className="text-[10px] text-gray-500">
+                                Tiempo que el artesano invierte en preparación, armado, desmolde, depilado o pegado manual.
+                              </p>
+
+                              <div className="grid grid-cols-2 gap-2 pt-1 text-[10px]">
+                                <div>
+                                  <label className="text-gray-500 font-bold block mb-0.5">Labor manual (min):</label>
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    step="5"
+                                    value={editorForm.manufacturingRecipe?.laborTimeMinutes ?? 15}
+                                    onChange={e => handleUpdateRecipeField('laborTimeMinutes', parseFloat(e.target.value) || 0)}
+                                    className="w-full px-2 py-1 rounded border border-gray-300 bg-white font-mono font-bold text-xs"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="text-gray-500 font-bold block mb-0.5">Costo hora ($/hr):</label>
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    step="5"
+                                    value={editorForm.manufacturingRecipe?.laborRatePerHour ?? 75}
+                                    onChange={e => handleUpdateRecipeField('laborRatePerHour', parseFloat(e.target.value) || 0)}
+                                    className="w-full px-2 py-1 rounded border border-gray-300 bg-white font-mono font-bold text-xs"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* 5. Empaque y Logística de Taller (Configurable / Futuro) */}
+                        <div className="p-3 bg-white rounded-xl border border-stone-200 space-y-2.5">
+                          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-stone-100 pb-2">
+                            <div className="flex items-center gap-2">
+                              <span className="p-1 rounded-lg bg-stone-100 text-stone-700">
+                                <Package className="w-3.5 h-3.5" />
+                              </span>
+                              <div>
+                                <h5 className="font-bold text-xs text-gray-900 flex items-center gap-1.5">
+                                  <span>Empaque &amp; Traslado de Taller (Futuro / Modular)</span>
+                                  <span className="px-2 py-0.2 rounded-full bg-stone-100 text-stone-700 text-[9.5px] font-bold">
+                                    Opcional
+                                  </span>
+                                </h5>
+                                <span className="text-[10px] text-gray-400">
+                                  Configura cajas kraft, bolsas celofán, viruta protectora o costo de entrega
+                                </span>
+                              </div>
+                            </div>
+
+                            <label className="flex items-center gap-1.5 cursor-pointer text-xs font-bold text-emerald-800">
+                              <input
+                                type="checkbox"
+                                checked={!!editorForm.manufacturingRecipe?.packagingAndShipping?.enabled}
+                                onChange={e => {
+                                  const currentPkg = editorForm.manufacturingRecipe?.packagingAndShipping || {};
+                                  handleUpdateRecipeField('packagingAndShipping', {
+                                    ...currentPkg,
+                                    enabled: e.target.checked,
+                                    packagingType: currentPkg.packagingType || 'caja_kraft',
+                                    packagingCost: currentPkg.packagingCost ?? 12,
+                                    shippingCost: currentPkg.shippingCost ?? 0,
+                                    notes: currentPkg.notes || ''
+                                  });
+                                }}
+                                className="w-4 h-4 rounded text-emerald-700 cursor-pointer"
+                              />
+                              <span>Activar costo de empaque</span>
+                            </label>
+                          </div>
+
+                          {editorForm.manufacturingRecipe?.packagingAndShipping?.enabled && (
+                            <div className="grid grid-cols-1 sm:grid-cols-12 gap-2 text-xs pt-1">
+                              <div className="sm:col-span-5 space-y-1">
+                                <label className="text-[10px] font-bold text-gray-600 block">Tipo de Empaque:</label>
+                                <select
+                                  value={editorForm.manufacturingRecipe?.packagingAndShipping?.packagingType || 'caja_kraft'}
+                                  onChange={e => {
+                                    const val = e.target.value;
+                                    const currentPkg = editorForm.manufacturingRecipe?.packagingAndShipping || {};
+                                    let suggestedCost = currentPkg.packagingCost || 12;
+                                    if (val === 'caja_kraft') suggestedCost = 12;
+                                    else if (val === 'bolsa_celofan') suggestedCost = 3.5;
+                                    else if (val === 'sobre_rigido') suggestedCost = 6;
+                                    else if (val === 'caja_premium') suggestedCost = 25;
+                                    handleUpdateRecipeField('packagingAndShipping', {
+                                      ...currentPkg,
+                                      packagingType: val,
+                                      packagingCost: suggestedCost
+                                    });
+                                  }}
+                                  className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-medium text-xs"
+                                >
+                                  <option value="caja_kraft">📦 Caja Kraft Microcorrugado con Viruta ($12.00)</option>
+                                  <option value="bolsa_celofan">🛍️ Bolsa Celofán con Cenefa / Sticker ($3.50)</option>
+                                  <option value="sobre_rigido">✉️ Sobre Rígido Papelería Fina ($6.00)</option>
+                                  <option value="caja_premium">🎁 Caja Rígida Premium con Moño ($25.00)</option>
+                                  <option value="custom">✏️ Empaque a Convenir / Personalizado</option>
+                                </select>
+                              </div>
+
+                              <div className="sm:col-span-3 space-y-1">
+                                <label className="text-[10px] font-bold text-gray-600 block">Costo Empaque ($ MXN):</label>
+                                <input
+                                  type="number"
+                                  step="0.5"
+                                  min="0"
+                                  value={editorForm.manufacturingRecipe?.packagingAndShipping?.packagingCost ?? 12}
+                                  onChange={e => {
+                                    const currentPkg = editorForm.manufacturingRecipe?.packagingAndShipping || {};
+                                    handleUpdateRecipeField('packagingAndShipping', {
+                                      ...currentPkg,
+                                      packagingCost: parseFloat(e.target.value) || 0
+                                    });
+                                  }}
+                                  className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-mono font-bold text-xs"
+                                />
+                              </div>
+
+                              <div className="sm:col-span-4 space-y-1">
+                                <label className="text-[10px] font-bold text-gray-600 block">Notas de Logística / Envío:</label>
+                                <input
+                                  type="text"
+                                  value={editorForm.manufacturingRecipe?.packagingAndShipping?.notes || ''}
+                                  onChange={e => {
+                                    const currentPkg = editorForm.manufacturingRecipe?.packagingAndShipping || {};
+                                    handleUpdateRecipeField('packagingAndShipping', {
+                                      ...currentPkg,
+                                      notes: e.target.value
+                                    });
+                                  }}
+                                  placeholder="Ej: Embalar con burbuja para mensajería..."
+                                  className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white text-xs"
+                                />
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* 6. Resumen Financiero Total de la Receta */}
+                        <div className="p-3 bg-stone-100 rounded-xl border border-stone-200 flex flex-wrap items-center justify-between gap-3 text-xs">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="text-gray-500 font-bold uppercase text-[10px]">Costo Total Unitario:</span>
+                            <span className="px-2 py-0.5 rounded-md bg-white border border-stone-300 font-mono text-[11px] text-gray-800">
+                              Insumos: <b>${Number(editorForm.manufacturingRecipe?.totalMaterialCost || 0).toFixed(2)}</b>
+                            </span>
+                            <span className="px-2 py-0.5 rounded-md bg-white border border-stone-300 font-mono text-[11px] text-amber-900">
+                              Luz: <b>${Number(editorForm.manufacturingRecipe?.energyCost || 0).toFixed(2)}</b>
+                            </span>
+                            <span className="px-2 py-0.5 rounded-md bg-white border border-stone-300 font-mono text-[11px] text-emerald-900">
+                              Labor: <b>${Number(editorForm.manufacturingRecipe?.laborCost || 0).toFixed(2)}</b>
+                            </span>
+                            {editorForm.manufacturingRecipe?.packagingAndShipping?.enabled && (
+                              <span className="px-2 py-0.5 rounded-md bg-white border border-stone-300 font-mono text-[11px] text-purple-900">
+                                Empaque: <b>${Number(editorForm.manufacturingRecipe?.packagingAndShipping?.packagingCost || 0).toFixed(2)}</b>
+                              </span>
+                            )}
+                            <span className="px-2.5 py-0.5 rounded-md bg-emerald-800 text-white font-mono font-bold text-xs shadow-2xs">
+                              Total: ${(
+                                (Number(editorForm.manufacturingRecipe?.totalMaterialCost) || 0) +
+                                (Number(editorForm.manufacturingRecipe?.energyCost) || 0) +
+                                (Number(editorForm.manufacturingRecipe?.laborCost) || 0) +
+                                (editorForm.manufacturingRecipe?.packagingAndShipping?.enabled ? (Number(editorForm.manufacturingRecipe?.packagingAndShipping?.packagingCost) || 0) : 0)
+                              ).toFixed(2)} MXN
+                            </span>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={handleSyncRecipeToCostPrice}
+                            className="px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer active:scale-95"
+                          >
+                            <Zap className="w-3.5 h-3.5 text-amber-300" />
+                            <span>Sincronizar a Costo de Producción</span>
+                          </button>
+                        </div>
+
+                        {/* 7. Tarjeta de Simulación en Taller & Descuento Inmediato de Inventario */}
                         <div className="p-3 bg-gradient-to-r from-emerald-900 via-[#1C2721] to-[#141615] rounded-xl text-white space-y-2.5 shadow-md border border-emerald-700/50">
                           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-2">
                             <div className="flex items-center gap-2">
@@ -6489,7 +7153,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         { id: '3d', label: 'Impresión 3D' },
                         { id: 'laser', label: 'Corte/Grabado Láser' },
                         { id: 'sublimation', label: 'Sublimación' },
-                        { id: 'vinyl', label: 'Vinil' },
+                        { id: 'vinyl', label: 'Vinil Textil/Corte' },
+                        { id: 'impresion_laser', label: 'Impresión Láser (Invitaciones)' },
+                        { id: 'dtf', label: 'DTF Textil' },
+                        { id: 'ensamble', label: 'Armado/Pegado' },
                         { id: 'nfc', label: 'NFC' }
                       ].map(tech => {
                         const isChecked = editorForm.techniques?.includes(tech.id);
@@ -7095,6 +7762,24 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   <p className="text-xs mt-0.5 text-gray-600">
                     Costo estimado en insumos: <strong className="font-mono text-gray-900">${recipeSimulationModal.totalEstimatedCost} MXN</strong> (Neto: ${recipeSimulationModal.totalNetCost} • Merma/Purga: ${recipeSimulationModal.totalWasteCost} - {recipeSimulationModal.wastePercentAverage}%)
                   </p>
+                  <div className="flex flex-wrap items-center gap-2 mt-1.5 text-xs">
+                    <span className="px-2 py-0.5 rounded bg-white border border-stone-200 text-gray-700 font-mono text-[11px]">
+                      Insumos: <b>${recipeSimulationModal.totalEstimatedCost} MXN</b>
+                    </span>
+                    {Number(recipeSimulationModal.energyCost || 0) > 0 && (
+                      <span className="px-2 py-0.5 rounded bg-amber-50 border border-amber-200 text-amber-900 font-mono text-[11px]">
+                        ⚡ Luz CFE: <b>${recipeSimulationModal.energyCost} MXN</b>
+                      </span>
+                    )}
+                    {Number(recipeSimulationModal.laborCost || 0) > 0 && (
+                      <span className="px-2 py-0.5 rounded bg-emerald-50 border border-emerald-200 text-emerald-900 font-mono text-[11px]">
+                        ⏱️ Mano de Obra: <b>${recipeSimulationModal.laborCost} MXN</b>
+                      </span>
+                    )}
+                    <span className="px-2 py-0.5 rounded bg-stone-900 text-white font-mono font-bold text-[11px]">
+                      Total Producción: ${recipeSimulationModal.grandTotalCost || recipeSimulationModal.totalEstimatedCost} MXN
+                    </span>
+                  </div>
                 </div>
               </div>
 

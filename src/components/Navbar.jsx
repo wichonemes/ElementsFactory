@@ -13,6 +13,7 @@ export default function Navbar({
   onOpenArcade,
   searchQuery,
   onSearchChange,
+  onOpenCatalog,
   settings
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -62,14 +63,17 @@ export default function Navbar({
           </div>
           <div className="hidden md:flex items-center gap-4 text-gray-400">
             {settings?.mobileCatalogConfig?.enabled !== false && settings?.mobileCatalogConfig?.showInNavbar !== false && (
-              <a
-                href={settings?.mobileCatalogConfig?.fileUrl || '/downloads/catalogo_movil_artesano_digital.pdf'}
-                download={settings?.mobileCatalogConfig?.fileName || 'Catalogo_Movil_Artesano_Digital.pdf'}
-                className="hover:text-amber-300 flex items-center gap-1 transition-colors text-amber-200/90 font-medium text-[11px]"
-                title={settings?.mobileCatalogConfig?.title || 'Descargar catálogo en PDF vertical 9:16 con enlaces a MakerWorld'}
+              <button
+                type="button"
+                onClick={() => {
+                  if (onOpenCatalog) onOpenCatalog();
+                  else window.open(settings?.mobileCatalogConfig?.fileUrl || '/downloads/catalogo_movil_artesano_digital.pdf', '_blank');
+                }}
+                className="hover:text-amber-300 flex items-center gap-1 transition-colors text-amber-200/90 font-medium text-[11px] cursor-pointer"
+                title={settings?.mobileCatalogConfig?.title || 'Catálogos Oficiales de Temporada en PDF'}
               >
                 <span>📱</span> {settings?.mobileCatalogConfig?.buttonText || 'Catálogo Móvil PDF'}
-              </a>
+              </button>
             )}
             {settings?.whatsappNumber && (
               <a
@@ -296,16 +300,19 @@ export default function Navbar({
             )}
 
             {settings?.mobileCatalogConfig?.enabled !== false && (
-              <a
-                href={settings?.mobileCatalogConfig?.fileUrl || '/downloads/catalogo_movil_artesano_digital.pdf'}
-                download={settings?.mobileCatalogConfig?.fileName || 'Catalogo_Movil_Artesano_Digital.pdf'}
-                onClick={() => setMobileMenuOpen(false)}
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  if (onOpenCatalog) onOpenCatalog();
+                  else window.open(settings?.mobileCatalogConfig?.fileUrl || '/downloads/catalogo_movil_artesano_digital.pdf', '_blank');
+                }}
                 className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-[#2D4F3E]/20 bg-[#FAF9F5] text-[#2D4F3E] text-xs font-bold shadow-2xs cursor-pointer"
-                title={settings?.mobileCatalogConfig?.title || 'Descargar Catálogo Móvil (PDF 9:16)'}
+                title={settings?.mobileCatalogConfig?.title || 'Catálogos Oficiales de Temporada (PDF 9:16)'}
               >
                 <span>📱</span>
-                <span>{settings?.mobileCatalogConfig?.buttonText ? `Descargar ${settings.mobileCatalogConfig.buttonText}` : 'Descargar Catálogo Móvil (PDF 9:16)'}</span>
-              </a>
+                <span>{settings?.mobileCatalogConfig?.buttonText ? `${settings.mobileCatalogConfig.buttonText}` : 'Catálogos Oficiales de Temporada (PDF 9:16)'}</span>
+              </button>
             )}
 
             <button

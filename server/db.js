@@ -1944,9 +1944,9 @@ const defaultArcadeConfig = {
 // Default Mobile Catalog Config (9:16 vertical PDF with MakerWorld links, customizable)
 export const defaultMobileCatalogConfig = {
   enabled: true,
-  title: 'Catálogo Móvil Artesano Digital (9:16)',
-  subtitle: 'Piezas en 3D, Corte Láser, Sublimación y Vinil con enlaces a MakerWorld',
-  buttonText: '📱 Catálogo Móvil PDF',
+  title: 'Catálogos Oficiales de Temporada (PDF Móvil)',
+  subtitle: 'Descarga nuestros catálogos en PDF vertical para celular con enlaces directos MakerWorld',
+  buttonText: '📱 Catálogos PDF',
   fileName: 'Catalogo_Movil_Artesano_Digital.pdf',
   fileUrl: '/downloads/catalogo_movil_artesano_digital.pdf',
   fileSize: '1,312 KB',
@@ -1954,7 +1954,23 @@ export const defaultMobileCatalogConfig = {
   updatedAt: new Date().toISOString(),
   showInNavbar: true,
   showInDrawer: true,
-  showInFooter: true
+  showInFooter: true,
+  catalogs: [
+    {
+      id: 'cat-general-oficial',
+      name: 'Catálogo Móvil Oficial 2026 (9:16)',
+      season: 'Todo el año',
+      badge: 'Colección General',
+      description: 'Llaveros, macetas, letreros, tazas y piezas 3D con enlaces a MakerWorld.',
+      fileName: 'Catalogo_Movil_Artesano_Digital.pdf',
+      fileUrl: '/downloads/catalogo_movil_artesano_digital.pdf',
+      fileSize: '1,312 KB',
+      fileType: 'application/pdf',
+      enabled: true,
+      isPrimary: true,
+      uploadedAt: new Date().toISOString()
+    }
+  ]
 };
 
 // Initial Settings
@@ -2237,7 +2253,12 @@ export function parseMaterialPackage(mat) {
   const unit = (((mat && mat.unit) || '') + ' ' + ((mat && mat.name) || '')).toLowerCase().trim();
 
   if (unit.includes('1 kg') || unit.includes('1kg') || unit.includes('kilo')) return { packageQuantity: 1000, packageMeasurement: 'g' };
+  if (unit.includes('500g') || unit.includes('500 g') || unit.includes('500 ml') || unit.includes('500ml')) {
+    const meas = unit.includes('ml') ? 'ml' : 'g';
+    return { packageQuantity: 500, packageMeasurement: meas };
+  }
   if (unit.includes('250g') || unit.includes('250 g')) return { packageQuantity: 250, packageMeasurement: 'g' };
+  if (unit.includes('50g') || unit.includes('50 g')) return { packageQuantity: 50, packageMeasurement: 'g' };
 
   if (unit.includes('1 litro') || unit.includes('1l') || unit.includes('1 l')) return { packageQuantity: 1000, packageMeasurement: 'ml' };
   if (unit.includes('400 ml') || unit.includes('400ml')) return { packageQuantity: 400, packageMeasurement: 'ml' };
@@ -2248,6 +2269,10 @@ export function parseMaterialPackage(mat) {
   if (unit.includes('60x40') || unit.includes('60 x 40')) return { packageQuantity: 2400, packageMeasurement: 'cm²' };
   if (unit.includes('40x40') || unit.includes('40 x 40')) return { packageQuantity: 1600, packageMeasurement: 'cm²' };
   if (unit.includes('30x40') || unit.includes('30 x 40')) return { packageQuantity: 1200, packageMeasurement: 'cm²' };
+
+  // DTF y Rollos Continuos
+  if (unit.includes('100m') || unit.includes('100 m') || unit.includes('100 metros')) return { packageQuantity: 10000, packageMeasurement: 'cm' };
+  if (unit.includes('15m') || unit.includes('15 m') || unit.includes('15 metros')) return { packageQuantity: 1500, packageMeasurement: 'cm' };
 
   // Cinta Térmica Kapton y rollos (3 rollos de 33m = 99m = 9900 cm)
   if (unit.includes('3 rollos') && (unit.includes('33m') || unit.includes('33 m'))) return { packageQuantity: 9900, packageMeasurement: 'cm' };
@@ -2299,7 +2324,11 @@ export function calculateMaterialStockDeduction(material, requiredQuantity, requ
     baseUnitsRequired = qty / 1000;
   } else if ((reqUnit === 'l' || reqUnit === 'litro' || pkgMeas === 'litros') && (pkgMeas === 'ml' || pkgMeas === 'mililitros')) {
     baseUnitsRequired = qty * 1000;
-  } else if ((reqUnit === 'hoja' || reqUnit === 'hojas') && (pkgMeas === 'pza' || pkgMeas === 'pieza' || pkgMeas === 'hoja')) {
+  } else if ((reqUnit === 'gotas' || reqUnit === 'gota') && (pkgMeas === 'ml' || pkgMeas === 'g')) {
+    baseUnitsRequired = qty * 0.05; // 20 gotas = 1 ml o 1 g
+  } else if ((reqUnit === 'disparos' || reqUnit === 'disparo' || reqUnit === 'spray') && pkgMeas === 'ml') {
+    baseUnitsRequired = qty * 2; // ~2 ml por disparo de fijador
+  } else if ((reqUnit === 'click' || reqUnit === 'clicks' || reqUnit === 'impresion' || reqUnit === 'impresiones' || reqUnit === 'hoja' || reqUnit === 'hojas') && (pkgMeas === 'pza' || pkgMeas === 'pieza' || pkgMeas === 'hoja')) {
     baseUnitsRequired = qty;
   }
 
@@ -4573,6 +4602,156 @@ const initialRawMaterials = [
     "supplierId": "sup-textiles-mex",
     "supplier": "Textiles e Insumos del Centro",
     "notes": "Se activan con la mini prensa térmica en playeras, gorras y mezclilla."
+  },
+  {
+    "id": "mat-pegamento-resistol-850",
+    "name": "Resistol 850 Pegamento Blanco para Madera Extra Fuerte (Bote 500g)",
+    "category": "assembly",
+    "materialType": "Pegamentos & Adhesivos",
+    "color": "Blanco Marfil",
+    "finish": "Mate",
+    "unit": "bote (500 ml)",
+    "currentStock": 3,
+    "minStockAlert": 1,
+    "costPerUnit": 85,
+    "supplierId": "sup-empaques-slp",
+    "supplier": "Herrajes & Ensamble San Luis",
+    "notes": "Adhesivo PVA base agua para uniones de madera, triplay y MDF. Secado transparente de alta resistencia (en ml o gotas)."
+  },
+  {
+    "id": "mat-pegamento-cianocrilato-gotas",
+    "name": "Pegamento Instantáneo Cianocrilato Grado Taller con Activador (50g)",
+    "category": "assembly",
+    "materialType": "Pegamentos & Adhesivos",
+    "color": "Translúcido Cristal",
+    "finish": "Brillante / Glossy",
+    "unit": "frasco (50g)",
+    "currentStock": 4,
+    "minStockAlert": 2,
+    "costPerUnit": 110,
+    "supplierId": "sup-empaques-slp",
+    "supplier": "Herrajes & Ensamble San Luis",
+    "notes": "Fraguado en 3 segundos con acelerador. Para pegar acrílico con madera, PLA y uniones de precisión (gotas)."
+  },
+  {
+    "id": "mat-silicon-caliente-barras",
+    "name": "Barras de Silicón Caliente Gruesas 11mm Alta Resistencia (1 kg)",
+    "category": "assembly",
+    "materialType": "Pegamentos & Adhesivos",
+    "color": "Translúcido Cristal",
+    "finish": "Estándar",
+    "unit": "paquete (1 kg)",
+    "currentStock": 3,
+    "minStockAlert": 1,
+    "costPerUnit": 120,
+    "supplierId": "sup-empaques-slp",
+    "supplier": "Herrajes & Ensamble San Luis",
+    "notes": "Para fijación de cables internos en lámparas 3D y forrado de empaques."
+  },
+  {
+    "id": "mat-dtf-film-pet",
+    "name": "Film PET Transfer DTF Rollo Continuo 30cm x 100m",
+    "category": "vinyl",
+    "materialType": "DTF Textil",
+    "color": "Translúcido Cristal",
+    "finish": "Mate",
+    "unit": "rollo (30cm x 100m)",
+    "currentStock": 2,
+    "minStockAlert": 1,
+    "costPerUnit": 1650,
+    "supplierId": "sup-sublimax",
+    "supplier": "Sublimax Mayorista Cerámica & Textil",
+    "notes": "Película PET tratada de desprendimiento en frío/caliente para impresión DTF textil."
+  },
+  {
+    "id": "mat-dtf-tinta-cmykw",
+    "name": "Tintas Textiles DTF Base Agua CMYK + Blanco (Set 5 botellas)",
+    "category": "vinyl",
+    "materialType": "DTF Textil",
+    "color": "Multicolor / CMYK",
+    "finish": "Estándar",
+    "unit": "set (5 botellas)",
+    "currentStock": 2,
+    "minStockAlert": 1,
+    "costPerUnit": 1250,
+    "supplierId": "sup-sublimax",
+    "supplier": "Sublimax Mayorista Cerámica & Textil",
+    "notes": "Pigmentos especiales de alta elasticidad para impresión sobre film DTF y curado en horno."
+  },
+  {
+    "id": "mat-dtf-poliamida-polvo",
+    "name": "Polvo Poliamida Termofusible Hot-Melt DTF Extra Fino (Bolsa 1 kg)",
+    "category": "vinyl",
+    "materialType": "DTF Textil",
+    "color": "Blanco Marfil",
+    "finish": "Mate",
+    "unit": "bolsa (1 kg)",
+    "currentStock": 2,
+    "minStockAlert": 1,
+    "costPerUnit": 450,
+    "supplierId": "sup-sublimax",
+    "supplier": "Sublimax Mayorista Cerámica & Textil",
+    "notes": "Polvo adhesivo de poliuretano termofusible que se adhiere a la tinta húmeda del transfer."
+  },
+  {
+    "id": "mat-papel-couche-300g",
+    "name": "Papel Couché Brillante 300g Calidad Imprenta A4 (100 hojas)",
+    "category": "sublimation",
+    "materialType": "Papelería & Impresión Láser",
+    "color": "Blanco Marfil",
+    "finish": "Brillante / Glossy",
+    "unit": "paquete (100 hojas)",
+    "currentStock": 4,
+    "minStockAlert": 2,
+    "costPerUnit": 160,
+    "supplierId": "sup-sublimax",
+    "supplier": "Sublimax Mayorista Cerámica & Textil",
+    "notes": "Gramaje grueso para invitaciones de boda, postales y portadas de catálogos."
+  },
+  {
+    "id": "mat-papel-sulfatada-12pts",
+    "name": "Cartulina Sulfatada 1 Cara 12 Puntos A4 (100 hojas)",
+    "category": "sublimation",
+    "materialType": "Papelería & Impresión Láser",
+    "color": "Blanco Marfil",
+    "finish": "Satinado",
+    "unit": "paquete (100 hojas)",
+    "currentStock": 3,
+    "minStockAlert": 2,
+    "costPerUnit": 175,
+    "supplierId": "sup-sublimax",
+    "supplier": "Sublimax Mayorista Cerámica & Textil",
+    "notes": "Cuerpo rígido con reverso blanco mate para cajas automontables y tarjetas de agradecimiento."
+  },
+  {
+    "id": "mat-toner-click-laser",
+    "name": "Tóner Láser Digital Color Alta Definición (Paquete 500 impresiones)",
+    "category": "sublimation",
+    "materialType": "Papelería & Impresión Láser",
+    "color": "Multicolor / CMYK",
+    "finish": "Brillante / Glossy",
+    "unit": "paquete (500 pzas)",
+    "currentStock": 3,
+    "minStockAlert": 1,
+    "costPerUnit": 450,
+    "supplierId": "sup-sublimax",
+    "supplier": "Sublimax Mayorista Cerámica & Textil",
+    "notes": "Costo por click de tóner láser color microfino para invitaciones y papelería corporativa."
+  },
+  {
+    "id": "mat-foil-reactivo-oro",
+    "name": "Foil Reactivo al Tóner Láser Oro Metalizado (Rollo 30cm x 15m)",
+    "category": "sublimation",
+    "materialType": "Papelería & Impresión Láser",
+    "color": "Seda Oro",
+    "finish": "Espejo Reflectivo",
+    "unit": "rollo (30cm x 15m)",
+    "currentStock": 2,
+    "minStockAlert": 1,
+    "costPerUnit": 220,
+    "supplierId": "sup-sublimax",
+    "supplier": "Sublimax Mayorista Cerámica & Textil",
+    "notes": "Se aplica con calor sobre tóner láser negro para crear letras doradas metalizadas en invitaciones."
   }
 ];
 
@@ -4606,6 +4785,17 @@ class Database {
       if (!data.rawMaterials || data.rawMaterials.length === 0) {
         data.rawMaterials = [...initialRawMaterials];
         this.save(data);
+      } else {
+        let addedNewMat = false;
+        initialRawMaterials.forEach(seedMat => {
+          if (!data.rawMaterials.some(m => m.id === seedMat.id)) {
+            data.rawMaterials.push({ ...seedMat });
+            addedNewMat = true;
+          }
+        });
+        if (addedNewMat) {
+          this.save(data);
+        }
       }
       return data;
     } catch (err) {
@@ -4842,6 +5032,26 @@ class Database {
     if (!db.settings.mobileCatalogConfig) {
       db.settings.mobileCatalogConfig = { ...defaultMobileCatalogConfig };
       this.save(db);
+    } else {
+      if (!Array.isArray(db.settings.mobileCatalogConfig.catalogs) || db.settings.mobileCatalogConfig.catalogs.length === 0) {
+        db.settings.mobileCatalogConfig.catalogs = [
+          {
+            id: 'cat-general-oficial',
+            name: db.settings.mobileCatalogConfig.title || 'Catálogo Móvil Oficial (9:16)',
+            season: 'Todo el año',
+            badge: 'Colección General',
+            description: db.settings.mobileCatalogConfig.subtitle || 'Llaveros, macetas, letreros, tazas y piezas 3D con enlaces directos MakerWorld.',
+            fileName: db.settings.mobileCatalogConfig.fileName || 'Catalogo_Movil_Artesano_Digital.pdf',
+            fileUrl: db.settings.mobileCatalogConfig.fileUrl || '/downloads/catalogo_movil_artesano_digital.pdf',
+            fileSize: db.settings.mobileCatalogConfig.fileSize || '1,312 KB',
+            fileType: db.settings.mobileCatalogConfig.fileType || 'application/pdf',
+            enabled: db.settings.mobileCatalogConfig.enabled !== false,
+            isPrimary: true,
+            uploadedAt: db.settings.mobileCatalogConfig.updatedAt || new Date().toISOString()
+          }
+        ];
+        this.save(db);
+      }
     }
     return db.settings.mobileCatalogConfig;
   }
@@ -4849,7 +5059,7 @@ class Database {
   updateMobileCatalogConfig(partialConfig) {
     const db = this.read();
     if (!db.settings) db.settings = {};
-    const current = db.settings.mobileCatalogConfig || defaultMobileCatalogConfig;
+    const current = this.getMobileCatalogConfig();
     db.settings.mobileCatalogConfig = {
       ...current,
       ...partialConfig,
@@ -4857,6 +5067,79 @@ class Database {
     };
     this.save(db);
     return db.settings.mobileCatalogConfig;
+  }
+
+  addMobileCatalogItem(item) {
+    const db = this.read();
+    const config = this.getMobileCatalogConfig();
+    config.catalogs = config.catalogs || [];
+    const newItem = {
+      id: item.id || `cat-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+      name: item.name || 'Nuevo Catálogo',
+      season: item.season || 'Temporada',
+      badge: item.badge || 'Novedad',
+      description: item.description || '',
+      fileName: item.fileName || 'catalogo.pdf',
+      fileUrl: item.fileUrl || '/downloads/catalogo.pdf',
+      fileSize: item.fileSize || '',
+      fileType: item.fileType || 'application/pdf',
+      enabled: item.enabled !== false,
+      isPrimary: Boolean(item.isPrimary),
+      uploadedAt: new Date().toISOString()
+    };
+    if (newItem.isPrimary || config.catalogs.length === 0) {
+      config.catalogs.forEach(c => { c.isPrimary = false; });
+      newItem.isPrimary = true;
+      config.fileUrl = newItem.fileUrl;
+      config.fileName = newItem.fileName;
+    }
+    config.catalogs.push(newItem);
+    config.updatedAt = new Date().toISOString();
+    db.settings.mobileCatalogConfig = config;
+    this.save(db);
+    return newItem;
+  }
+
+  updateMobileCatalogItem(id, data) {
+    const db = this.read();
+    const config = this.getMobileCatalogConfig();
+    config.catalogs = config.catalogs || [];
+    const idx = config.catalogs.findIndex(c => c.id === id);
+    if (idx === -1) return null;
+    const current = config.catalogs[idx];
+    if (data.isPrimary) {
+      config.catalogs.forEach(c => { c.isPrimary = false; });
+      config.fileUrl = data.fileUrl || current.fileUrl;
+      config.fileName = data.fileName || current.fileName;
+    }
+    config.catalogs[idx] = {
+      ...current,
+      ...data,
+      id: current.id,
+      updatedAt: new Date().toISOString()
+    };
+    config.updatedAt = new Date().toISOString();
+    db.settings.mobileCatalogConfig = config;
+    this.save(db);
+    return config.catalogs[idx];
+  }
+
+  deleteMobileCatalogItem(id) {
+    const db = this.read();
+    const config = this.getMobileCatalogConfig();
+    config.catalogs = config.catalogs || [];
+    const idx = config.catalogs.findIndex(c => c.id === id);
+    if (idx === -1) return false;
+    config.catalogs.splice(idx, 1);
+    if (config.catalogs.length > 0 && !config.catalogs.some(c => c.isPrimary)) {
+      config.catalogs[0].isPrimary = true;
+      config.fileUrl = config.catalogs[0].fileUrl;
+      config.fileName = config.catalogs[0].fileName;
+    }
+    config.updatedAt = new Date().toISOString();
+    db.settings.mobileCatalogConfig = config;
+    this.save(db);
+    return true;
   }
 
   resetMobileCatalogConfig() {
@@ -6210,6 +6493,24 @@ class Database {
       });
     }
 
+    const machineMinutes = Number(rawRecipe.manufacturingTimeMinutes) || 0;
+    const machineWatts = Number(rawRecipe.machinePowerWatts) || 0;
+    const kwhCost = Number(rawRecipe.kwhCost) > 0 ? Number(rawRecipe.kwhCost) : 3.50;
+    const energyCostPerUnit = (machineWatts > 0 && machineMinutes > 0)
+      ? Math.round(((machineWatts / 1000) * (machineMinutes / 60) * kwhCost) * 100) / 100
+      : (Number(rawRecipe.energyCost) || 0);
+    const totalEnergyCost = Math.round(energyCostPerUnit * multiplier * 100) / 100;
+
+    const laborMinutes = Number(rawRecipe.laborTimeMinutes) || 0;
+    const laborRate = Number(rawRecipe.laborRatePerHour) || 0;
+    const laborCostPerUnit = (laborRate > 0 && laborMinutes > 0)
+      ? Math.round(((laborMinutes / 60) * laborRate) * 100) / 100
+      : (Number(rawRecipe.laborCost) || 0);
+    const totalLaborCost = Math.round(laborCostPerUnit * multiplier * 100) / 100;
+
+    const grandTotalCost = Math.round((totalEstimatedCost + totalEnergyCost + totalLaborCost) * 100) / 100;
+    const grandUnitCost = Math.round((grandTotalCost / multiplier) * 100) / 100;
+
     return {
       feasible: allSufficient,
       hasRecipe: true,
@@ -6220,6 +6521,18 @@ class Database {
       totalWasteCost: Math.round(totalWasteCost * 100) / 100,
       wastePercentAverage: totalEstimatedCost > 0 ? Math.round((totalWasteCost / totalEstimatedCost) * 1000) / 10 : 0,
       unitCost: Math.round((totalEstimatedCost / multiplier) * 100) / 100,
+      manufacturingTimeMinutes: machineMinutes,
+      machinePowerWatts: machineWatts,
+      kwhCost,
+      energyCostPerUnit,
+      totalEnergyCost,
+      laborTimeMinutes: laborMinutes,
+      laborRatePerHour: laborRate,
+      laborCostPerUnit,
+      totalLaborCost,
+      grandTotalCost,
+      grandUnitCost,
+      packagingAndShipping: rawRecipe.packagingAndShipping || { enabled: false, packagingType: '', packagingCost: 0, shippingCost: 0 },
       items: itemsEvaluation
     };
   }

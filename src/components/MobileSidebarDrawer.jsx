@@ -26,6 +26,7 @@ export default function MobileSidebarDrawer({
   onOpenWhatsApp,
   onSelectWorld,
   onOpenCart,
+  onOpenCatalog,
   cartCount = 0,
   settings
 }) {
@@ -151,10 +152,13 @@ export default function MobileSidebarDrawer({
 
             {/* Catálogo Móvil en PDF (Si está activo) */}
             {isCatalogEnabled && (
-              <a
-                href={catalogPdfUrl}
-                download={catalogPdfName}
-                onClick={onClose}
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  if (onOpenCatalog) onOpenCatalog();
+                  else window.open(catalogPdfUrl, '_blank');
+                }}
                 className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-gray-50 active:bg-gray-100 transition-colors text-left group cursor-pointer"
               >
                 <div className="flex items-center gap-3">
@@ -166,11 +170,11 @@ export default function MobileSidebarDrawer({
                       <span>{settings?.mobileCatalogConfig?.buttonText || 'Catálogo Móvil PDF'}</span>
                       <span className="text-[9px] bg-amber-100 text-amber-900 font-bold px-1 rounded">9:16</span>
                     </div>
-                    <div className="text-[10px] text-gray-500">Descarga el catálogo para celular</div>
+                    <div className="text-[10px] text-gray-500">Descarga o consulta catálogos de temporada</div>
                   </div>
                 </div>
                 <ChevronRight className="w-4 h-4 text-gray-400 group-hover:translate-x-0.5 transition-transform" />
-              </a>
+              </button>
             )}
 
             {/* Ver Ofertas Relámpago (Filtro sutil) */}

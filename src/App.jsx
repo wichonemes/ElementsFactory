@@ -23,6 +23,7 @@ import MobileBannerCarousel from './components/MobileBannerCarousel';
 import MobileBottomNav from './components/MobileBottomNav';
 import MobileCategoriesModal from './components/MobileCategoriesModal';
 import MobileSidebarDrawer from './components/MobileSidebarDrawer';
+import CatalogSelectorModal from './components/CatalogSelectorModal';
 import { useFlashDeal } from './hooks/useFlashDeal';
 import { Home, Briefcase, CalendarHeart, Sparkles, ChevronRight, ShoppingBag, Layers, MessageCircle, Gift, RotateCw, Calendar, AlertTriangle, MapPin, Truck } from 'lucide-react';
 import { formatServiceDate } from './utils/serviceStatus';
@@ -77,8 +78,27 @@ export default function App() {
   const [calculatorProduct, setCalculatorProduct] = useState(null);
   const [campaignsConfig, setCampaignsConfig] = useState(null);
   const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false);
+  const [isCatalogSelectorOpen, setIsCatalogSelectorOpen] = useState(false);
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(() => typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('menu'));
   const [mobileNavTab, setMobileNavTab] = useState(() => (typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('menu')) ? 'menu' : 'home');
+
+  const handleOpenCatalogSelector = () => {
+    const catalogConfig = settings?.mobileCatalogConfig || {};
+    const catalogs = (catalogConfig.catalogs || []).filter(c => c.enabled !== false);
+    if (catalogs.length > 1) {
+      setIsCatalogSelectorOpen(true);
+    } else {
+      const targetUrl = catalogs[0]?.fileUrl || catalogConfig.fileUrl || '/downloads/catalogo_movil_artesano_digital.pdf';
+      const targetName = catalogs[0]?.fileName || catalogConfig.fileName || 'Catalogo_Movil_Artesano_Digital.pdf';
+      const link = document.createElement('a');
+      link.href = targetUrl;
+      link.download = targetName;
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
 
   // Sync Cart to localStorage
   useEffect(() => {
@@ -672,6 +692,7 @@ export default function App() {
           onOpenCart={() => setIsCartOpen(true)}
           onOpenAdmin={() => setIsAdminOpen(true)}
           onOpenArcade={handleOpenArcade}
+          onOpenCatalog={handleOpenCatalogSelector}
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
           settings={settings}
@@ -1183,7 +1204,15 @@ export default function App() {
         onOpenWhatsApp={handleOpenWhatsAppDirect}
         onSelectWorld={handleSelectWorld}
         onOpenCart={() => setIsCartOpen(true)}
+        onOpenCatalog={handleOpenCatalogSelector}
         cartCount={totalCartCount}
+        settings={settings}
+      />
+
+      {/* Selector Interactivo de Catálogos de Temporada en PDF */}
+      <CatalogSelectorModal
+        isOpen={isCatalogSelectorOpen}
+        onClose={() => setIsCatalogSelectorOpen(false)}
         settings={settings}
       />
 

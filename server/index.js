@@ -139,10 +139,6 @@ const catalogUpload = multer({
 // Auth Middleware
 function requireAdmin(req, res, next) {
   const authHeader = req.headers.authorization;
-  if (!production && !authHeader) {
-    req.user = { id: 'admin-dev', username: 'admin', role: 'superadmin' };
-    return next();
-  }
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Acceso no autorizado. Inicia sesión en el panel.' });
   }
@@ -1230,7 +1226,8 @@ app.get('/api/admin/production/logs', requireAdmin, (req, res) => {
 // Simular fabricación y consumo de materiales de un producto
 app.post('/api/admin/production/simulate', requireAdmin, (req, res) => {
   try {
-    const { productId, units = 1, customRecipe } = req.body;
+    const { productId, units = 1 } = req.body;
+    const customRecipe = req.body.customRecipe || req.body.recipe;
     const result = db.simulateRecipeProduction(productId, units, customRecipe);
     res.json(result);
   } catch (err) {
@@ -1241,7 +1238,8 @@ app.post('/api/admin/production/simulate', requireAdmin, (req, res) => {
 // Descontar insumos de taller por fabricación
 app.post('/api/admin/production/deduct', requireAdmin, (req, res) => {
   try {
-    const { productId, units = 1, orderId, orderNumber, reason, customRecipe, productName, productCode } = req.body;
+    const { productId, units = 1, orderId, orderNumber, reason, productName, productCode } = req.body;
+    const customRecipe = req.body.customRecipe || req.body.recipe;
     const result = db.deductRecipeMaterials(productId, units, { orderId, orderNumber, reason, customRecipe, productName, productCode });
     if (!result.success) {
       return res.status(400).json({ error: result.error || 'Error al descontar insumos de taller' });
@@ -1379,11 +1377,29 @@ app.get('/api/admin/backups/download/:filename', requireAdmin, async (req, res) 
   }
 });
 
-// Mobile Catalog Configuration & Upload Endpoints
+// Mobile Catalog Configuration & Multi-Catalog Upload Endpoints
 app.get('/api/admin/catalog-pdf/config', requireAdmin, (_req, res) => {
   try {
     const config = db.getMobileCatalogConfig();
     res.json(config);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Endpoint público para que los clientes descarguen o consulten los catálogos activos
+app.get('/api/catalog-pdf/list', (_req, res) => {
+  try {
+    const config = db.getMobileCatalogConfig();
+    const activeCatalogs = (config.catalogs || []).filter(c => c.enabled !== false);
+    res.json({
+      enabled: config.enabled !== false,
+      title: config.title || 'Catálogos Oficiales de Temporada',
+      subtitle: config.subtitle || 'Descarga nuestros catálogos en PDF vertical para celular',
+      buttonText: config.buttonText || '📱 Catálogos PDF',
+      catalogs: activeCatalogs,
+      primaryCatalog: activeCatalogs.find(c => c.isPrimary) || activeCatalogs[0] || null
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -1418,15 +1434,60 @@ app.post('/api/admin/catalog-pdf/upload', requireAdmin, catalogUpload.single('fi
       fileName = req.file.originalname || req.file.filename;
     }
 
-    const updated = db.updateMobileCatalogConfig({
-      fileName,
-      fileUrl,
-      fileSize: fileSizeFormatted,
-      fileType: req.file.mimetype,
-      enabled: true
-    });
+    const { catalogId, name, season, badge, description, isPrimary, enabled } = req.body || {};
 
-    res.json({ success: true, mobileCatalogConfig: updated });
+    let updatedConfig;
+    if (catalogId) {
+      db.updateMobileCatalogItem(catalogId, {
+        fileName,
+        fileUrl,
+        fileSize: fileSizeFormatted,
+        fileType: req.file.mimetype,
+        ...(name ? { name } : {}),
+        ...(season ? { season } : {}),
+        ...(badge ? { badge } : {}),
+        ...(description ? { description } : {}),
+        ...(isPrimary !== undefined ? { isPrimary: isPrimary === 'true' || isPrimary === true } : {}),
+        ...(enabled !== undefined ? { enabled: enabled === 'true' || enabled === true } : {})
+      });
+      updatedConfig = db.getMobileCatalogConfig();
+    } else {
+      db.addMobileCatalogItem({
+        name: name || fileName.replace(/\.[^/.]+$/, '').replace(/[_|-]/g, ' '),
+        season: season || 'Temporada Actual',
+        badge: badge || 'Nuevo',
+        description: description || 'Catálogo oficial descargable.',
+        fileName,
+        fileUrl,
+        fileSize: fileSizeFormatted,
+        fileType: req.file.mimetype,
+        enabled: enabled !== undefined ? (enabled === 'true' || enabled === true) : true,
+        isPrimary: isPrimary === 'true' || isPrimary === true
+      });
+      updatedConfig = db.getMobileCatalogConfig();
+    }
+
+    res.json({ success: true, mobileCatalogConfig: updatedConfig });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put('/api/admin/catalog-pdf/item/:id', requireAdmin, (req, res) => {
+  try {
+    const updated = db.updateMobileCatalogItem(req.params.id, req.body || {});
+    if (!updated) return res.status(404).json({ error: 'Catálogo no encontrado' });
+    res.json({ success: true, catalog: updated, mobileCatalogConfig: db.getMobileCatalogConfig() });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/api/admin/catalog-pdf/item/:id', requireAdmin, (req, res) => {
+  try {
+    const ok = db.deleteMobileCatalogItem(req.params.id);
+    if (!ok) return res.status(404).json({ error: 'Catálogo no encontrado' });
+    res.json({ success: true, mobileCatalogConfig: db.getMobileCatalogConfig() });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
