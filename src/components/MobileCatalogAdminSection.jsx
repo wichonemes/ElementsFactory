@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   FileText, 
   Upload, 
@@ -23,7 +23,8 @@ import {
   Star,
   ExternalLink,
   Layers,
-  X
+  X,
+  Link as LinkIcon
 } from 'lucide-react';
 
 export default function MobileCatalogAdminSection({
@@ -32,8 +33,7 @@ export default function MobileCatalogAdminSection({
   onUpdateSettings,
   onRefreshCatalog
 }) {
-  const newFileInputRef = useRef(null);
-  const replaceFileInputRef = useRef(null);
+  const authToken = token || (typeof window !== 'undefined' ? localStorage.getItem('artesano_admin_token') : '') || '';
 
   const initialConfig = businessSettings?.mobileCatalogConfig || {
     enabled: true,
@@ -72,6 +72,10 @@ export default function MobileCatalogAdminSection({
   const [isSaving, setIsSaving] = useState(false);
   const [feedback, setFeedback] = useState({ text: '', type: '' });
 
+  // Modales de confirmación para evitar bloqueos en celulares (window.confirm)
+  const [deleteConfirmCat, setDeleteConfirmCat] = useState(null);
+  const [resetConfirmOpen, setResetConfirmOpen] = useState(false);
+
   // Modal para agregar o editar un catálogo
   const [catalogModalOpen, setCatalogModalOpen] = useState(false);
   const [editingCatalog, setEditingCatalog] = useState(null);
@@ -80,11 +84,44 @@ export default function MobileCatalogAdminSection({
     season: '',
     badge: '',
     description: '',
+    fileUrl: '',
+    fileName: '',
     isPrimary: false,
     enabled: true
   });
   const [modalFile, setModalFile] = useState(null);
   const [modalIsReplacingFile, setModalIsReplacingFile] = useState(false);
+
+  // Sincronización en vivo con la base de datos al montar el componente
+  useEffect(() => {
+    let isMounted = true;
+    const fetchLatestConfig = async () => {
+      try {
+        const res = await fetch('/api/admin/catalog-pdf/config', {
+          headers: {
+            Authorization: `Bearer ${authToken}`
+          }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && isMounted) {
+            setConfig(data);
+          }
+        }
+      } catch (e) {
+        console.warn('No fue posible consultar configuración remota de catálogos:', e);
+      }
+    };
+    fetchLatestConfig();
+    return () => { isMounted = false; };
+  }, [authToken]);
+
+  // Actualizar si las configuraciones del negocio cambian desde el padre
+  useEffect(() => {
+    if (businessSettings?.mobileCatalogConfig) {
+      setConfig(businessSettings.mobileCatalogConfig);
+    }
+  }, [businessSettings?.mobileCatalogConfig]);
 
   const showFeedback = (text, type = 'success') => {
     setFeedback({ text, type });
@@ -102,7 +139,7 @@ export default function MobileCatalogAdminSection({
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${authToken}`
         },
         body: JSON.stringify(updated)
       });
@@ -133,6 +170,8 @@ export default function MobileCatalogAdminSection({
       season: 'Temporada Actual',
       badge: 'Novedad',
       description: '',
+      fileUrl: '',
+      fileName: '',
       isPrimary: (config.catalogs || []).length === 0,
       enabled: true
     });
@@ -149,6 +188,8 @@ export default function MobileCatalogAdminSection({
       season: cat.season || '',
       badge: cat.badge || '',
       description: cat.description || '',
+      fileUrl: cat.fileUrl || '',
+      fileName: cat.fileName || '',
       isPrimary: Boolean(cat.isPrimary),
       enabled: cat.enabled !== false
     });
@@ -160,13 +201,14 @@ export default function MobileCatalogAdminSection({
   // Guardar catálogo (Crear o Editar con o sin archivo)
   const handleSaveCatalogModal = async (e) => {
     e.preventDefault();
-    if (!modalForm.name.trim()) {
+    const cleanName = (modalForm.name || '').trim();
+    if (!cleanName) {
       showFeedback('Por favor asigna un nombre o título al catálogo.', 'error');
       return;
     }
 
-    if (!editingCatalog && !modalFile) {
-      showFeedback('Por favor selecciona un archivo PDF o folleto para subir.', 'error');
+    if (!editingCatalog && !modalFile && !(modalForm.fileUrl || '').trim()) {
+      showFeedback('Por favor selecciona un archivo PDF o proporciona una URL de enlace.', 'error');
       return;
     }
 
@@ -177,10 +219,10 @@ export default function MobileCatalogAdminSection({
       if (modalFile) {
         const formData = new FormData();
         formData.append('file', modalFile);
-        formData.append('name', modalForm.name.trim());
-        formData.append('season', modalForm.season.trim());
-        formData.append('badge', modalForm.badge.trim());
-        formData.append('description', modalForm.description.trim());
+        formData.append('name', cleanName);
+        formData.append('season', (modalForm.season || '').trim());
+        formData.append('badge', (modalForm.badge || '').trim());
+        formData.append('description', (modalForm.description || '').trim());
         formData.append('isPrimary', modalForm.isPrimary ? 'true' : 'false');
         formData.append('enabled', modalForm.enabled ? 'true' : 'false');
 
@@ -192,7 +234,7 @@ export default function MobileCatalogAdminSection({
         const res = await fetch('/api/admin/catalog-pdf/upload', {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${authToken}`
           },
           body: formData
         });
@@ -203,8 +245,8 @@ export default function MobileCatalogAdminSection({
           setConfig(data.mobileCatalogConfig);
           showFeedback(
             editingCatalog 
-              ? `✓ Catálogo "${modalForm.name}" actualizado con nuevo archivo.` 
-              : `✓ ¡Nuevo catálogo "${modalForm.name}" subido con éxito!`,
+              ? `✓ Catálogo "${cleanName}" actualizado con nuevo archivo.` 
+              : `✓ ¡Nuevo catálogo "${cleanName}" subido con éxito!`,
             'success'
           );
           setCatalogModalOpen(false);
@@ -216,19 +258,28 @@ export default function MobileCatalogAdminSection({
           showFeedback(data.error || 'No fue posible subir el catálogo.', 'error');
         }
       } else if (editingCatalog) {
-        // Solo editar metadatos
+        // Solo editar metadatos o URL
         const res = await fetch(`/api/admin/catalog-pdf/item/${editingCatalog.id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${authToken}`
           },
-          body: JSON.stringify(modalForm)
+          body: JSON.stringify({
+            name: cleanName,
+            season: (modalForm.season || '').trim(),
+            badge: (modalForm.badge || '').trim(),
+            description: (modalForm.description || '').trim(),
+            fileUrl: (modalForm.fileUrl || '').trim() || editingCatalog.fileUrl,
+            fileName: (modalForm.fileName || '').trim() || editingCatalog.fileName,
+            isPrimary: Boolean(modalForm.isPrimary),
+            enabled: modalForm.enabled !== false
+          })
         });
         const data = await res.json();
         if (res.ok && data.mobileCatalogConfig) {
           setConfig(data.mobileCatalogConfig);
-          showFeedback(`✓ Datos de "${modalForm.name}" actualizados.`, 'success');
+          showFeedback(`✓ Datos de "${cleanName}" actualizados.`, 'success');
           setCatalogModalOpen(false);
           if (onRefreshCatalog) onRefreshCatalog();
           if (onUpdateSettings) {
@@ -236,6 +287,37 @@ export default function MobileCatalogAdminSection({
           }
         } else {
           showFeedback(data.error || 'Error al actualizar catálogo.', 'error');
+        }
+      } else {
+        // Crear nuevo catálogo mediante enlace directo / URL
+        const res = await fetch('/api/admin/catalog-pdf/item', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authToken}`
+          },
+          body: JSON.stringify({
+            name: cleanName,
+            season: (modalForm.season || '').trim() || 'Temporada Actual',
+            badge: (modalForm.badge || '').trim() || 'Novedad',
+            description: (modalForm.description || '').trim(),
+            fileUrl: (modalForm.fileUrl || '').trim() || '/downloads/catalogo_movil_artesano_digital.pdf',
+            fileName: (modalForm.fileName || '').trim() || `${cleanName.toLowerCase().replace(/[^a-z0-9]/g, '_')}.pdf`,
+            isPrimary: Boolean(modalForm.isPrimary),
+            enabled: modalForm.enabled !== false
+          })
+        });
+        const data = await res.json();
+        if (res.ok && data.mobileCatalogConfig) {
+          setConfig(data.mobileCatalogConfig);
+          showFeedback(`✓ ¡Catálogo "${cleanName}" registrado con éxito!`, 'success');
+          setCatalogModalOpen(false);
+          if (onRefreshCatalog) onRefreshCatalog();
+          if (onUpdateSettings) {
+            onUpdateSettings({ ...businessSettings, mobileCatalogConfig: data.mobileCatalogConfig });
+          }
+        } else {
+          showFeedback(data.error || 'Error al registrar catálogo.', 'error');
         }
       }
     } catch (err) {
@@ -248,14 +330,11 @@ export default function MobileCatalogAdminSection({
 
   // Eliminar un catálogo individual
   const handleDeleteCatalog = async (catId, catName) => {
-    if (!window.confirm(`¿Confirmas que deseas eliminar el catálogo "${catName}"?`)) {
-      return;
-    }
     try {
       const res = await fetch(`/api/admin/catalog-pdf/item/${catId}`, {
         method: 'DELETE',
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${authToken}`
         }
       });
       const data = await res.json();
@@ -282,7 +361,7 @@ export default function MobileCatalogAdminSection({
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${authToken}`
         },
         body: JSON.stringify({ enabled: nextState })
       });
@@ -312,7 +391,7 @@ export default function MobileCatalogAdminSection({
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${authToken}`
         },
         body: JSON.stringify({ isPrimary: true })
       });
@@ -338,7 +417,7 @@ export default function MobileCatalogAdminSection({
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${authToken}`
         },
         body: JSON.stringify(config)
       });
@@ -361,15 +440,12 @@ export default function MobileCatalogAdminSection({
   };
 
   // Restaurar al catálogo original 9:16
-  const handleResetToDefault = async () => {
-    if (!window.confirm('¿Deseas restaurar la configuración al Catálogo Oficial original de Artesano Digital?')) {
-      return;
-    }
+  const executeResetToDefault = async () => {
     try {
       const res = await fetch('/api/admin/catalog-pdf/reset', {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${authToken}`
         }
       });
       const data = await res.json();
@@ -594,7 +670,7 @@ export default function MobileCatalogAdminSection({
 
                     <button
                       type="button"
-                      onClick={() => handleDeleteCatalog(cat.id, cat.name)}
+                      onClick={() => setDeleteConfirmCat(cat)}
                       className="p-1.5 rounded-lg text-rose-600 hover:text-rose-800 hover:bg-rose-50 text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer"
                       title="Eliminar este catálogo"
                     >
@@ -708,7 +784,7 @@ export default function MobileCatalogAdminSection({
           <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
             <button
               type="button"
-              onClick={handleResetToDefault}
+              onClick={() => setResetConfirmOpen(true)}
               className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-gray-600 hover:text-amber-800 text-xs font-semibold hover:bg-amber-50 transition-all cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5 text-amber-600" />
@@ -804,40 +880,59 @@ export default function MobileCatalogAdminSection({
                 />
               </div>
 
-              {/* Selector de Archivo */}
-              <div className="p-3.5 rounded-2xl bg-stone-50 border border-stone-200">
-                <label className="block font-bold text-gray-700 mb-1.5">
-                  {editingCatalog ? 'Archivo PDF / Folleto:' : 'Seleccionar Archivo PDF *:'}
-                </label>
+              {/* Selector de Archivo o Enlace Directo */}
+              <div className="p-3.5 rounded-2xl bg-stone-50 border border-stone-200 space-y-3">
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1.5">
+                    {editingCatalog ? 'Archivo PDF / Folleto:' : 'Opción A: Subir Archivo PDF / Folleto:'}
+                  </label>
 
-                {editingCatalog && !modalIsReplacingFile && (
-                  <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-stone-200 mb-2">
-                    <span className="truncate font-semibold text-gray-700" title={editingCatalog.fileName}>
-                      {editingCatalog.fileName}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setModalIsReplacingFile(true)}
-                      className="px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-[11px] cursor-pointer"
-                    >
-                      Reemplazar archivo
-                    </button>
-                  </div>
-                )}
+                  {editingCatalog && !modalIsReplacingFile && (
+                    <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-stone-200 mb-2">
+                      <span className="truncate font-semibold text-gray-700" title={editingCatalog.fileName}>
+                        {editingCatalog.fileName}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setModalIsReplacingFile(true)}
+                        className="px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-[11px] cursor-pointer"
+                      >
+                        Reemplazar archivo
+                      </button>
+                    </div>
+                  )}
 
-                {(!editingCatalog || modalIsReplacingFile) && (
-                  <div>
-                    <input
-                      type="file"
-                      accept=".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx"
-                      onChange={(e) => setModalFile(e.target.files?.[0] || null)}
-                      className="w-full text-xs text-stone-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#2D4F3E] file:text-white hover:file:bg-[#233f32] cursor-pointer"
-                    />
-                    <span className="text-[10px] text-stone-400 mt-1 block">
-                      Acepta PDF, JPG, PNG o documentos (hasta 50 MB).
-                    </span>
-                  </div>
-                )}
+                  {(!editingCatalog || modalIsReplacingFile) && (
+                    <div>
+                      <input
+                        type="file"
+                        accept=".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx"
+                        onChange={(e) => setModalFile(e.target.files?.[0] || null)}
+                        className="w-full text-xs text-stone-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#2D4F3E] file:text-white hover:file:bg-[#233f32] cursor-pointer"
+                      />
+                      <span className="text-[10px] text-stone-400 mt-1 block">
+                        Acepta PDF, JPG, PNG o documentos (hasta 50 MB).
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="pt-2.5 border-t border-stone-200">
+                  <label className="block font-bold text-gray-700 mb-1 flex items-center gap-1.5">
+                    <LinkIcon className="w-3.5 h-3.5 text-emerald-700" />
+                    <span>Opción B: O Enlace / URL Web Directo (Google Drive, Canva, Nube):</span>
+                  </label>
+                  <input
+                    type="url"
+                    value={modalForm.fileUrl || ''}
+                    onChange={(e) => setModalForm({ ...modalForm, fileUrl: e.target.value })}
+                    placeholder="https://... (enlace web a tu catálogo o PDF en la nube)"
+                    className="w-full px-3.5 py-2 rounded-xl border border-gray-300 text-xs text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#2D4F3E]/20 focus:border-[#2D4F3E]"
+                  />
+                  <span className="text-[10px] text-gray-400 mt-0.5 block">
+                    Si tu catálogo ya está alojado en Google Drive, Canva o tu web, puedes pegar su enlace directamente.
+                  </span>
+                </div>
               </div>
 
               {/* Opciones booleanas */}
@@ -882,6 +977,75 @@ export default function MobileCatalogAdminSection({
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de confirmación para eliminar catálogo */}
+      {deleteConfirmCat && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
+          <div className="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-stone-200 text-center animate-in zoom-in-95">
+            <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto mb-3">
+              <Trash2 className="w-6 h-6" />
+            </div>
+            <h3 className="font-bold text-base text-gray-900 mb-1">¿Eliminar este catálogo?</h3>
+            <p className="text-xs text-gray-500 mb-5">
+              Se eliminará «<strong className="text-gray-800">{deleteConfirmCat.name}</strong>» de la lista y no estará disponible para los clientes.
+            </p>
+            <div className="flex items-center justify-center gap-2">
+              <button
+                type="button"
+                onClick={() => setDeleteConfirmCat(null)}
+                className="px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold text-xs cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const target = deleteConfirmCat;
+                  setDeleteConfirmCat(null);
+                  handleDeleteCatalog(target.id, target.name);
+                }}
+                className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs cursor-pointer shadow-sm"
+              >
+                Sí, Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de confirmación para restaurar predeterminados */}
+      {resetConfirmOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
+          <div className="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-stone-200 text-center animate-in zoom-in-95">
+            <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-3">
+              <RotateCcw className="w-6 h-6" />
+            </div>
+            <h3 className="font-bold text-base text-gray-900 mb-1">¿Restaurar catálogo inicial?</h3>
+            <p className="text-xs text-gray-500 mb-5">
+              Se restablecerá la configuración del Catálogo Móvil Oficial de Artesano Digital 2026.
+            </p>
+            <div className="flex items-center justify-center gap-2">
+              <button
+                type="button"
+                onClick={() => setResetConfirmOpen(false)}
+                className="px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold text-xs cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setResetConfirmOpen(false);
+                  executeResetToDefault();
+                }}
+                className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs cursor-pointer shadow-sm"
+              >
+                Sí, Restaurar
+              </button>
+            </div>
           </div>
         </div>
       )}

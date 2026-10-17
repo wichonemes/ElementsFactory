@@ -1473,6 +1473,15 @@ app.post('/api/admin/catalog-pdf/upload', requireAdmin, catalogUpload.single('fi
   }
 });
 
+app.post('/api/admin/catalog-pdf/item', requireAdmin, (req, res) => {
+  try {
+    const item = db.addMobileCatalogItem(req.body || {});
+    res.json({ success: true, item, mobileCatalogConfig: db.getMobileCatalogConfig() });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.put('/api/admin/catalog-pdf/item/:id', requireAdmin, (req, res) => {
   try {
     const updated = db.updateMobileCatalogItem(req.params.id, req.body || {});
@@ -1504,7 +1513,8 @@ app.post('/api/admin/catalog-pdf/reset', requireAdmin, (_req, res) => {
 
 app.use('/api', (_req, res) => res.status(404).json({ error: 'Ruta no encontrada.' }));
 app.use((error, _req, res, _next) => {
-  res.status(400).json({ error: error instanceof multer.MulterError ? 'La imagen supera el límite permitido.' : 'No fue posible procesar la solicitud.' });
+  const message = error?.message || (error instanceof multer.MulterError ? 'El archivo excede el tamaño máximo permitido.' : 'No fue posible procesar la solicitud.');
+  res.status(400).json({ error: message });
 });
 
 // Fallback for SPA routing if dist exists con soporte para Open Graph dinámico en WhatsApp

@@ -3743,6 +3743,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   token={token}
                   products={products}
                   workshopParams={workshopParams}
+                  businessSettings={businessSettings}
                   onSaveWorkshopParams={(updated) => {
                     setWorkshopParams(updated);
                     loadAllData();

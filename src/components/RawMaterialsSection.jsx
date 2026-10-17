@@ -8,6 +8,7 @@ import {
   MessageCircle, User, ExternalLink, Copy, Cpu, Wrench
 } from 'lucide-react';
 
+import ShippingLogisticsSection from './ShippingLogisticsSection';
 import { getFilamentColor } from '../utils/colorUtils';
 export { getFilamentColor };
 
@@ -107,6 +108,7 @@ export default function RawMaterialsSection({
   token,
   products = [],
   workshopParams = {},
+  businessSettings = {},
   onSaveWorkshopParams,
   onRefreshCatalog,
   initialSubTab = 'inventory',
@@ -115,12 +117,22 @@ export default function RawMaterialsSection({
 }) {
   // Pestañas de navegación interna: 'inventory' | 'operational_costs' | 'pricing_table' | 'suppliers'
   const [activeSubTab, setActiveSubTab] = useState(initialSubTab);
+  const [supplierViewMode, setSupplierViewMode] = useState('suppliers'); // 'suppliers' | 'shipping'
 
   useEffect(() => {
     if (initialSubTab) setActiveSubTab(initialSubTab);
   }, [initialSubTab]);
 
   const handleSwitchSubTab = (newTab) => {
+    if (newTab === 'shipping_logistics') {
+      setActiveSubTab('suppliers');
+      setSupplierViewMode('shipping');
+      if (onSubTabChange) onSubTabChange('suppliers');
+      return;
+    }
+    if (newTab === 'suppliers') {
+      setSupplierViewMode('suppliers');
+    }
     setActiveSubTab(newTab);
     if (onSubTabChange) onSubTabChange(newTab);
   };
@@ -1961,11 +1973,21 @@ Artesano Digital — Taller & Manufactura Inteligente`;
           <button
             onClick={() => handleSwitchSubTab('suppliers')}
             className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-lg sm:rounded-xl transition-all cursor-pointer whitespace-nowrap ${
-              activeSubTab === 'suppliers' ? 'bg-white text-[#2D4F3E] shadow-sm font-bold' : 'text-gray-600 hover:text-gray-900'
+              activeSubTab === 'suppliers' && supplierViewMode === 'suppliers' ? 'bg-white text-[#2D4F3E] shadow-sm font-bold' : 'text-gray-600 hover:text-gray-900'
             }`}
           >
             <Building2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-            <span>Directorio de Proveedores ({suppliers.length})</span>
+            <span>Proveedores ({suppliers.length})</span>
+          </button>
+
+          <button
+            onClick={() => handleSwitchSubTab('shipping_logistics')}
+            className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-lg sm:rounded-xl transition-all cursor-pointer whitespace-nowrap ${
+              activeSubTab === 'suppliers' && supplierViewMode === 'shipping' ? 'bg-white text-[#2D4F3E] shadow-sm font-bold' : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            <Truck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-600" />
+            <span>📦 Paqueterías &amp; Envíos México</span>
           </button>
         </div>
       </div>
@@ -5100,13 +5122,46 @@ Artesano Digital — Taller & Manufactura Inteligente`;
       )}
 
       {/* ============================================================ */}
-      {/* 4. DIRECTORIO DE PROVEEDORES & RESURTIDO DE TALLER           */}
+      {/* 4. DIRECTORIO DE PROVEEDORES & PAQUETERÍAS MÉXICO             */}
       {/* ============================================================ */}
       {activeSubTab === 'suppliers' && (
         <div className="space-y-5 animate-in fade-in">
           
-          {/* Header Banner del Directorio */}
-          <div className="bg-gradient-to-br from-[#2D4F3E] via-[#20392C] to-[#15241C] p-6 rounded-3xl text-white shadow-md relative overflow-hidden">
+          {/* Sub-navegador: Directorio de Proveedores vs. Paqueterías y Logística */}
+          <div className="flex items-center gap-2 p-1.5 bg-stone-100 rounded-2xl border border-stone-200">
+            <button
+              type="button"
+              onClick={() => setSupplierViewMode('suppliers')}
+              className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                supplierViewMode === 'suppliers'
+                  ? 'bg-white text-[#2D4F3E] shadow-xs'
+                  : 'text-stone-600 hover:text-stone-900'
+              }`}
+            >
+              <Building2 className="w-4 h-4 text-emerald-700" />
+              <span>🏭 Directorio de Proveedores de Insumos ({suppliers.length})</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setSupplierViewMode('shipping')}
+              className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                supplierViewMode === 'shipping'
+                  ? 'bg-white text-[#2D4F3E] shadow-xs'
+                  : 'text-stone-600 hover:text-stone-900'
+              }`}
+            >
+              <Truck className="w-4 h-4 text-amber-600" />
+              <span>📦 Tarifas de Paqueterías en México &amp; Despacho</span>
+            </button>
+          </div>
+
+          {supplierViewMode === 'shipping' ? (
+            <ShippingLogisticsSection businessSettings={businessSettings} />
+          ) : (
+            <>
+              {/* Header Banner del Directorio */}
+              <div className="bg-gradient-to-br from-[#2D4F3E] via-[#20392C] to-[#15241C] p-6 rounded-3xl text-white shadow-md relative overflow-hidden">
             <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2.5 mb-2">
@@ -5431,6 +5486,8 @@ Artesano Digital — Taller & Manufactura Inteligente`;
                 );
               })}
             </div>
+          )}
+            </>
           )}
 
         </div>
