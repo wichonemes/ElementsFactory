@@ -4753,6 +4753,91 @@ const initialRawMaterials = [
     "notes": "Para fijación de cables internos en lámparas 3D y forrado de empaques."
   },
   {
+    "id": "mat-lija-madera-fina-220",
+    "name": "Lija de Madera Fina Grano 220 para Pulido y Cantos Suaves (Pliego)",
+    "category": "consumables",
+    "materialType": "Lijas & Consumibles de Taller",
+    "color": "Gris / Óxido de Aluminio",
+    "finish": "Fino",
+    "unit": "pliego",
+    "currentStock": 25,
+    "minStockAlert": 5,
+    "costPerUnit": 14,
+    "packageQuantity": 1,
+    "packageMeasurement": "pliego",
+    "supplierId": "sup-empaques-slp",
+    "supplier": "Herrajes & Ensamble San Luis",
+    "notes": "Pliego de lija de grano fino 220 para desbarbado suave y acabado sedoso antes del barnizado (rinde ~10 piezas de madera)."
+  },
+  {
+    "id": "mat-lija-madera-media-150",
+    "name": "Lija de Madera Grano Medio 150 para Nivelación y Desbaste (Pliego)",
+    "category": "consumables",
+    "materialType": "Lijas & Consumibles de Taller",
+    "color": "Rojo Óxido",
+    "finish": "Medio",
+    "unit": "pliego",
+    "currentStock": 20,
+    "minStockAlert": 5,
+    "costPerUnit": 12,
+    "packageQuantity": 1,
+    "packageMeasurement": "pliego",
+    "supplierId": "sup-empaques-slp",
+    "supplier": "Herrajes & Ensamble San Luis",
+    "notes": "Para eliminar bordes ásperos y rebabas de corte con sierra o láser."
+  },
+  {
+    "id": "mat-desgaste-corte-sierra-laser",
+    "name": "Consumible Indirecto de Corte (Desgaste Hoja Sierra / Tubo Láser CO2)",
+    "category": "consumables",
+    "materialType": "Desgaste de Herramientas",
+    "color": "Metálico",
+    "finish": "Industrial",
+    "unit": "corte",
+    "currentStock": 500,
+    "minStockAlert": 50,
+    "costPerUnit": 1.5,
+    "packageQuantity": 1,
+    "packageMeasurement": "corte",
+    "supplierId": "sup-refacciones-cnc",
+    "supplier": "Refacciones CNC 3D & Láser México",
+    "notes": "Amortización de filo de sierra circular y vida útil de tubo láser CO2 por ciclo de corte."
+  },
+  {
+    "id": "mat-estopa-limpieza-taller",
+    "name": "Estopa de Algodón Fino y Paños para Barnizado y Limpieza (1 kg)",
+    "category": "consumables",
+    "materialType": "Limpieza & Aplicación",
+    "color": "Blanco / Crudo",
+    "finish": "Suave",
+    "unit": "paquete",
+    "currentStock": 10,
+    "minStockAlert": 2,
+    "costPerUnit": 45,
+    "packageQuantity": 50,
+    "packageMeasurement": "paño",
+    "supplierId": "sup-empaques-slp",
+    "supplier": "Herrajes & Ensamble San Luis",
+    "notes": "Paños suaves de algodón para aplicar tinte, retirar exceso de barniz y limpiar piezas terminadas."
+  },
+  {
+    "id": "mat-cinta-enmascarar-laser",
+    "name": "Cinta de Enmascarar Crepé Grado Láser 50mm x 50m (Protección Anti-Ahumado)",
+    "category": "consumables",
+    "materialType": "Protección & Acabado",
+    "color": "Beige Crepé",
+    "finish": "Semi-mate",
+    "unit": "rollo (50m)",
+    "currentStock": 12,
+    "minStockAlert": 3,
+    "costPerUnit": 48,
+    "packageQuantity": 50,
+    "packageMeasurement": "m",
+    "supplierId": "sup-viniltech",
+    "supplier": "VinilTech Mayorista de Rotulación",
+    "notes": "Cinta de baja adherencia que protege la madera de quemaduras y humo de láser durante el corte."
+  },
+  {
     "id": "mat-dtf-film-pet",
     "name": "Film PET Transfer DTF Rollo Continuo 30cm x 100m",
     "category": "vinyl",
@@ -4938,28 +5023,166 @@ class Database {
             }
           }
           if (p.id === 'colgador-llaves-l14' || p.code === 'L14') {
-            if ((p.privateNotes || '').includes('DXF') || (p.specifications?.material || '').includes('contrachapada')) {
-              p.specifications = {
-                ...(p.specifications || {}),
-                material: 'Madera natural sólida y triplay de pino estufado 5.5mm (libre de MDF)',
-                finish: 'Capa de barniz transparente satinado protector contra humedad y grasa'
-              };
-              p.variants = [
-                { name: 'Grabado', options: ['"Bienvenidos"', 'Apellido familiar', 'Personalizado con nombres'] },
-                { name: 'Tono de Barniz', options: ['Barniz Natural Transparente', 'Nogal Americano', 'Caoba Clásico', 'Roble Claro Nórdico'] }
-              ];
-              p.privateNotes = 'Corte y grabado en pino estufado 5.5mm. Lijado fino, capa uniforme de barniz transparente sellador contra humedad, instalación a presión de percheros torneados con gota de Resistol 850.';
-              p.sku = 'HOG-LAS-PIN-GRA-014';
-              if (p.skuBreakdown) {
-                p.skuBreakdown.standardSku = 'HOG-LAS-PIN-GRA-014';
-                p.skuBreakdown.material = 'PIN';
-                if (p.skuBreakdown.instructionsForStaff) {
-                  p.skuBreakdown.instructionsForStaff.materiaPrima = '🪵 Madera Natural Pino Estufado 5.5mm (Sin MDF)';
-                  p.skuBreakdown.instructionsForStaff.acabadoTaller = '✨ Barniz Transparente Protector Satinado';
-                }
+            p.specifications = {
+              ...(p.specifications || {}),
+              material: 'Madera natural sólida y triplay de pino estufado 5.5mm (libre de MDF)',
+              finish: 'Capa de barniz transparente satinado protector contra humedad y grasa'
+            };
+            p.variants = [
+              { name: 'Grabado', options: ['"Bienvenidos"', 'Apellido familiar', 'Personalizado con nombres'] },
+              { name: 'Tono de Barniz', options: ['Barniz Natural Transparente', 'Nogal Americano', 'Caoba Clásico', 'Roble Claro Nórdico'] }
+            ];
+            p.privateNotes = 'Corte y grabado en pino estufado 5.5mm. Lijado fino grano 220, capa uniforme de barniz transparente sellador contra humedad, instalación a presión de percheros torneados con gota de Resistol 850.';
+            p.sku = 'HOG-LAS-PIN-GRA-014';
+            if (p.skuBreakdown) {
+              p.skuBreakdown.standardSku = 'HOG-LAS-PIN-GRA-014';
+              p.skuBreakdown.material = 'PIN';
+              if (p.skuBreakdown.instructionsForStaff) {
+                p.skuBreakdown.instructionsForStaff.materiaPrima = '🪵 Madera Natural Pino Estufado 5.5mm (Sin MDF)';
+                p.skuBreakdown.instructionsForStaff.acabadoTaller = '✨ Barniz Transparente Protector Satinado & Pulido 220';
               }
-              changedProducts = true;
             }
+            p.manufacturingRecipe = {
+              yieldUnits: 1,
+              technique: 'laser',
+              notes: 'Placa de pino estufado 5.5mm pulida con lija 220, cortada a láser con 3 percheros torneados fijados con Resistol 850 y barniz sellador.',
+              lastUpdated: new Date().toISOString(),
+              machinePowerWatts: 450,
+              manufacturingTimeMinutes: 25,
+              kwhCost: 3.50,
+              energyCost: 0.66,
+              laborTimeMinutes: 15,
+              laborRatePerHour: 75,
+              laborCost: 18.75,
+              items: [
+                {
+                  id: 'item-l14-pino5',
+                  materialId: 'mat-triplay-pino-5mm',
+                  name: 'Madera Triplay Pino 5.5mm para Estructuras Rígidas (60x40 cm)',
+                  category: 'laser',
+                  supplyType: 'direct',
+                  netQuantity: 260,
+                  wasteQuantity: 60,
+                  wasteType: 'cut_remnants',
+                  totalQuantity: 320,
+                  unit: 'cm²',
+                  unitCost: 0.0271,
+                  totalCost: 8.67
+                },
+                {
+                  id: 'item-l14-perchas',
+                  materialId: 'mat-percheros-madera',
+                  name: 'Percheros Cilíndricos Torneados de Madera Pino con Perno',
+                  category: 'laser',
+                  supplyType: 'direct',
+                  netQuantity: 3,
+                  wasteQuantity: 0,
+                  wasteType: 'none',
+                  totalQuantity: 3,
+                  unit: 'pieza',
+                  unitCost: 12,
+                  totalCost: 36
+                },
+                {
+                  id: 'item-l14-barniz',
+                  materialId: 'mat-barniz-poliuretano-spray',
+                  name: 'Barniz Poliuretano Transparente Satinado en Spray (400 ml)',
+                  category: 'laser',
+                  supplyType: 'direct',
+                  netQuantity: 5,
+                  wasteQuantity: 0,
+                  wasteType: 'none',
+                  totalQuantity: 5,
+                  unit: 'ml',
+                  unitCost: 0.3375,
+                  totalCost: 1.69
+                },
+                {
+                  id: 'item-l14-resistol',
+                  materialId: 'mat-pegamento-resistol-850',
+                  name: 'Resistol 850 Pegamento Blanco para Madera Extra Fuerte (Bote 500g)',
+                  category: 'ensamble',
+                  supplyType: 'direct',
+                  netQuantity: 6,
+                  wasteQuantity: 1,
+                  wasteType: 'manual',
+                  totalQuantity: 7,
+                  unit: 'gotas',
+                  unitCost: 0.0085,
+                  totalCost: 0.06
+                },
+                {
+                  id: 'item-l14-lija',
+                  materialId: 'mat-lija-madera-fina-220',
+                  name: 'Lija de Madera Fina Grano 220 para Pulido y Cantos Suaves (Pliego)',
+                  category: 'consumables',
+                  supplyType: 'indirect',
+                  netQuantity: 0.08,
+                  wasteQuantity: 0.02,
+                  wasteType: 'manual',
+                  totalQuantity: 0.1,
+                  unit: 'pliego',
+                  unitCost: 14,
+                  totalCost: 1.40
+                },
+                {
+                  id: 'item-l14-sierra',
+                  materialId: 'mat-desgaste-corte-sierra-laser',
+                  name: 'Consumible Indirecto de Corte (Desgaste Hoja Sierra / Tubo Láser CO2)',
+                  category: 'consumables',
+                  supplyType: 'indirect',
+                  netQuantity: 1,
+                  wasteQuantity: 0,
+                  wasteType: 'none',
+                  totalQuantity: 1,
+                  unit: 'corte',
+                  unitCost: 1.5,
+                  totalCost: 1.50
+                },
+                {
+                  id: 'item-l14-estopa',
+                  materialId: 'mat-estopa-limpieza-taller',
+                  name: 'Estopa de Algodón Fino y Paños para Barnizado y Limpieza (1 kg)',
+                  category: 'consumables',
+                  supplyType: 'indirect',
+                  netQuantity: 1,
+                  wasteQuantity: 0,
+                  wasteType: 'none',
+                  totalQuantity: 1,
+                  unit: 'paño',
+                  unitCost: 0.8,
+                  totalCost: 0.80
+                },
+                {
+                  id: 'item-l14-cinta',
+                  materialId: 'mat-cinta-enmascarar-laser',
+                  name: 'Cinta de Enmascarar Crepé Grado Láser 50mm x 50m (Protección Anti-Ahumado)',
+                  category: 'consumables',
+                  supplyType: 'indirect',
+                  netQuantity: 1.5,
+                  wasteQuantity: 0.2,
+                  wasteType: 'trimming',
+                  totalQuantity: 1.7,
+                  unit: 'm',
+                  unitCost: 0.96,
+                  totalCost: 1.63
+                }
+              ],
+              totalMaterialCost: 51.75,
+              totalWasteCost: 2.15,
+              wastePercentAverage: 4.2,
+              packagingAndShipping: {
+                enabled: true,
+                packagingType: 'caja_kraft',
+                packagingCost: 12.00,
+                packagingDetails: 'Caja microcorrugado 30x15x6 cm + poliburbuja protectora + viruta kraft + etiqueta térmica',
+                shippingNationwideEstimated: 149.00,
+                shippingIncludedInPrice: false,
+                notes: 'Envío estándar a cualquier parte de la República Mexicana por FedEx / Estafeta / DHL'
+              }
+            };
+            p.costPrice = 85.5;
+            changedProducts = true;
           }
           if (p.id === 'fotoiman-madera-l8' || p.code === 'L8') {
             if ((p.specifications?.material || '').includes('contrachapado') || p.sku?.includes('MDF')) {

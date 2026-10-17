@@ -253,19 +253,19 @@ export default function MobileSidebarDrawer({
 
         {/* 4. FOOTER DEL DRAWER */}
         <div className="p-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between text-[10px] text-gray-400 shrink-0">
-          {/* Acceso discreto para el dueño del taller en la esquina inferior izquierda */}
+          {/* Acceso ultra discreto para el dueño del taller en la esquina inferior izquierda */}
           <button
             type="button"
             onClick={() => {
               onClose();
               if (onOpenAdmin) onOpenAdmin();
             }}
-            className="text-[10px] text-gray-400/60 hover:text-gray-600 flex items-center gap-1 cursor-pointer transition-colors select-none py-0.5 px-1 rounded hover:bg-gray-200/50"
-            title="Gestión de Taller"
-            aria-label="Gestión de Taller"
+            className="text-[9px] text-gray-400/30 hover:text-gray-500 flex items-center gap-1 cursor-pointer transition-opacity select-none py-0.5 px-1 rounded hover:bg-gray-200/40 opacity-40 hover:opacity-100"
+            title="Taller"
+            aria-label="Taller"
           >
-            <Lock className="w-2.5 h-2.5 opacity-50" />
-            <span>Taller</span>
+            <Lock className="w-2 h-2 opacity-40" />
+            <span className="text-[8.5px]">taller</span>
           </button>
           <span className="text-gray-400 select-none">Artesano Digital · Hecho en México</span>
         </div>

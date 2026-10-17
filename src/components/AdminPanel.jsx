@@ -63,6 +63,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: plaMat.id,
         name: plaMat.name,
         category: '3d',
+        supplyType: 'direct',
         netQuantity: 48,
         wasteQuantity: 16,
         wasteType: 'supports_and_purge',
@@ -76,6 +77,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: sprayMat.id,
         name: sprayMat.name,
         category: '3d',
+        supplyType: 'indirect',
         netQuantity: 4,
         wasteQuantity: 0,
         wasteType: 'none',
@@ -94,12 +96,25 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
     const barnizMat = findMat('mat-barniz-poliuretano-transparente', 'barniz poliuretano') || findMat('mat-barniz-poliuretano-spray', 'barniz spray') || findMat('mat-laca-spray', 'laca') || {
       id: 'mat-barniz-poliuretano-spray', name: 'Barniz Poliuretano Transparente Satinado en Spray (400 ml)', costPerUnit: 135, packageQuantity: 400, packageMeasurement: 'ml', unit: 'lata (400 ml)'
     };
+    const pegamentoMat = findMat('mat-pegamento-resistol-850', 'resistol') || {
+      id: 'mat-pegamento-resistol-850', name: 'Resistol 850 Pegamento Blanco para Madera Extra Fuerte (Bote 500g)', costPerUnit: 85, packageQuantity: 500, packageMeasurement: 'ml', unit: 'bote (500 ml)'
+    };
+    const lijaMat = findMat('mat-lija-madera-fina-220', 'lija') || {
+      id: 'mat-lija-madera-fina-220', name: 'Lija de Madera Fina Grano 220 para Pulido y Cantos Suaves (Pliego)', costPerUnit: 14, packageQuantity: 1, packageMeasurement: 'pliego', unit: 'pliego'
+    };
+    const sierraMat = findMat('mat-desgaste-corte-sierra-laser', 'desgaste corte') || {
+      id: 'mat-desgaste-corte-sierra-laser', name: 'Consumible Indirecto de Corte (Desgaste Hoja Sierra / Tubo Láser CO2)', costPerUnit: 1.5, packageQuantity: 1, packageMeasurement: 'corte', unit: 'corte'
+    };
+    const estopaMat = findMat('mat-estopa-limpieza-taller', 'estopa') || {
+      id: 'mat-estopa-limpieza-taller', name: 'Estopa de Algodón Fino y Paños para Barnizado y Limpieza (1 kg)', costPerUnit: 45, packageQuantity: 50, packageMeasurement: 'paño', unit: 'paquete'
+    };
     return [
       {
         id: `item-las-${Date.now()}-1`,
         materialId: maderaMat.id,
         name: maderaMat.name,
         category: 'laser',
+        supplyType: 'direct',
         netQuantity: 380,
         wasteQuantity: 60,
         wasteType: 'cut_remnants',
@@ -113,6 +128,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: barnizMat.id,
         name: barnizMat.name,
         category: 'laser',
+        supplyType: 'direct',
         netQuantity: 4,
         wasteQuantity: 0,
         wasteType: 'none',
@@ -120,6 +136,62 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         unit: 'ml',
         unitCost: Math.round(((Number(barnizMat.costPerUnit) || 135) / 400) * 100) / 100,
         totalCost: Math.round(4 * 0.3375 * 100) / 100
+      },
+      {
+        id: `item-las-${Date.now()}-3`,
+        materialId: pegamentoMat.id,
+        name: pegamentoMat.name,
+        category: 'ensamble',
+        supplyType: 'direct',
+        netQuantity: 6,
+        wasteQuantity: 1,
+        wasteType: 'manual',
+        totalQuantity: 7,
+        unit: 'gotas',
+        unitCost: 0.0085,
+        totalCost: 0.06
+      },
+      {
+        id: `item-las-${Date.now()}-4`,
+        materialId: lijaMat.id,
+        name: lijaMat.name,
+        category: 'consumables',
+        supplyType: 'indirect',
+        netQuantity: 0.08,
+        wasteQuantity: 0.02,
+        wasteType: 'manual',
+        totalQuantity: 0.1,
+        unit: 'pliego',
+        unitCost: 14,
+        totalCost: 1.40
+      },
+      {
+        id: `item-las-${Date.now()}-5`,
+        materialId: sierraMat.id,
+        name: sierraMat.name,
+        category: 'consumables',
+        supplyType: 'indirect',
+        netQuantity: 1,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 1,
+        unit: 'corte',
+        unitCost: 1.5,
+        totalCost: 1.50
+      },
+      {
+        id: `item-las-${Date.now()}-6`,
+        materialId: estopaMat.id,
+        name: estopaMat.name,
+        category: 'consumables',
+        supplyType: 'indirect',
+        netQuantity: 1,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 1,
+        unit: 'paño',
+        unitCost: 0.8,
+        totalCost: 0.80
       }
     ];
   }
@@ -137,12 +209,19 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
     const pegamentoMat = findMat('mat-pegamento-resistol-850', 'resistol') || {
       id: 'mat-pegamento-resistol-850', name: 'Resistol 850 Pegamento Blanco para Madera Extra Fuerte (Bote 500g)', costPerUnit: 85, packageQuantity: 500, packageMeasurement: 'ml', unit: 'bote (500 ml)'
     };
+    const lijaMat = findMat('mat-lija-madera-fina-220', 'lija') || {
+      id: 'mat-lija-madera-fina-220', name: 'Lija de Madera Fina Grano 220 para Pulido y Cantos Suaves (Pliego)', costPerUnit: 14, packageQuantity: 1, packageMeasurement: 'pliego', unit: 'pliego'
+    };
+    const sierraMat = findMat('mat-desgaste-corte-sierra-laser', 'desgaste corte') || {
+      id: 'mat-desgaste-corte-sierra-laser', name: 'Consumible Indirecto de Corte (Desgaste Hoja Sierra / Tubo Láser CO2)', costPerUnit: 1.5, packageQuantity: 1, packageMeasurement: 'corte', unit: 'corte'
+    };
     return [
       {
         id: `item-lasllav-${Date.now()}-1`,
         materialId: maderaMat.id,
         name: maderaMat.name,
         category: 'laser',
+        supplyType: 'direct',
         netQuantity: 65,
         wasteQuantity: 15,
         wasteType: 'cut_remnants',
@@ -156,6 +235,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: barnizMat.id,
         name: barnizMat.name,
         category: 'laser',
+        supplyType: 'direct',
         netQuantity: 2,
         wasteQuantity: 0,
         wasteType: 'none',
@@ -169,6 +249,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: argollaMat.id,
         name: argollaMat.name,
         category: 'laser',
+        supplyType: 'direct',
         netQuantity: 1,
         wasteQuantity: 0,
         wasteType: 'none',
@@ -182,6 +263,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: pegamentoMat.id,
         name: pegamentoMat.name,
         category: 'ensamble',
+        supplyType: 'direct',
         netQuantity: 4,
         wasteQuantity: 0,
         wasteType: 'none',
@@ -189,6 +271,34 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         unit: 'gotas',
         unitCost: Math.round(((Number(pegamentoMat.costPerUnit) || 85) / 10000) * 10000) / 10000,
         totalCost: Math.round(4 * 0.0085 * 100) / 100
+      },
+      {
+        id: `item-lasllav-${Date.now()}-5`,
+        materialId: lijaMat.id,
+        name: lijaMat.name,
+        category: 'consumables',
+        supplyType: 'indirect',
+        netQuantity: 0.05,
+        wasteQuantity: 0.01,
+        wasteType: 'manual',
+        totalQuantity: 0.06,
+        unit: 'pliego',
+        unitCost: 14,
+        totalCost: 0.84
+      },
+      {
+        id: `item-lasllav-${Date.now()}-6`,
+        materialId: sierraMat.id,
+        name: sierraMat.name,
+        category: 'consumables',
+        supplyType: 'indirect',
+        netQuantity: 1,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 1,
+        unit: 'corte',
+        unitCost: 1.5,
+        totalCost: 1.50
       }
     ];
   }
@@ -249,6 +359,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: tazaMat.id,
         name: tazaMat.name,
         category: 'sublimation',
+        supplyType: 'direct',
         netQuantity: 1,
         wasteQuantity: 0,
         wasteType: 'none',
@@ -262,6 +373,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: papelSubMat.id,
         name: papelSubMat.name,
         category: 'sublimation',
+        supplyType: 'direct',
         netQuantity: 1,
         wasteQuantity: 0.1,
         wasteType: 'cut_remnants',
@@ -275,6 +387,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: kaptonMat.id,
         name: kaptonMat.name,
         category: 'sublimation',
+        supplyType: 'indirect',
         netQuantity: 20,
         wasteQuantity: 5,
         wasteType: 'tape_scrap',
@@ -288,6 +401,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: tintaMat.id,
         name: tintaMat.name,
         category: 'sublimation',
+        supplyType: 'direct',
         netQuantity: 1,
         wasteQuantity: 0.2,
         wasteType: 'printer_purge',
@@ -318,6 +432,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: playeraMat.id,
         name: playeraMat.name,
         category: 'vinyl',
+        supplyType: 'direct',
         netQuantity: 1,
         wasteQuantity: 0,
         wasteType: 'none',
@@ -674,6 +789,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [editorForm, setEditorForm] = useState(null);
+  const [editorActiveTab, setEditorActiveTab] = useState('general'); // 'general' | 'taller' | 'packaging' | 'pricing'
+  const [editorNewItemSupplyType, setEditorNewItemSupplyType] = useState('direct'); // 'direct' | 'indirect'
+  const [editorRecipeCategoryFilter, setEditorRecipeCategoryFilter] = useState('all'); // 'all' | 'direct' | 'indirect'
   const [uploadingImage, setUploadingImage] = useState(false);
   const [editorMessage, setEditorMessage] = useState({ text: '', type: '' });
   const [customColorInput, setCustomColorInput] = useState('');
@@ -1024,6 +1142,8 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       privateNotes: ''
     });
     setNewIncludedItemInput('');
+    setEditorActiveTab('general');
+    setEditorNewItemSupplyType('direct');
     setEditorActiveSlot(0);
     setEditorSkuAccordion(false);
     setEditorColorsAccordion(false);
@@ -1036,6 +1156,8 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   const handleOpenEditProduct = (prod) => {
     if (!prod) return;
     setEditingProduct(prod);
+    setEditorActiveTab('general');
+    setEditorNewItemSupplyType('direct');
     setEditorActiveSlot(0);
     setEditorSkuAccordion(false);
     setEditorColorsAccordion(false);
@@ -1064,6 +1186,65 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
     const regularPrice = prod.regularPrice || (prod.price ? Math.round(prod.price * 1.25) : 0);
     const savings = prod.savings || (regularPrice && prod.price ? Math.max(0, regularPrice - prod.price) : 0);
+
+    const rawRecipe = prod.manufacturingRecipe;
+    const resolvedRecipe = rawRecipe ? {
+      ...rawRecipe,
+      technique: rawRecipe.technique || prod.techniques?.[0] || '3d',
+      yieldUnits: Math.max(1, Number(rawRecipe.yieldUnits) || 1),
+      items: Array.isArray(rawRecipe.items) ? rawRecipe.items.map(it => ({
+        ...it,
+        supplyType: it.supplyType || (it.category === 'consumables' || (it.name || '').toLowerCase().includes('lija') || (it.name || '').toLowerCase().includes('sierra') || (it.name || '').toLowerCase().includes('estopa') || (it.name || '').toLowerCase().includes('cinta') ? 'indirect' : 'direct')
+      })) : [],
+      totalMaterialCost: Number(rawRecipe.totalMaterialCost) || 0,
+      totalWasteCost: Number(rawRecipe.totalWasteCost) || 0,
+      wastePercentAverage: Number(rawRecipe.wastePercentAverage) || 0,
+      energyCost: Number(rawRecipe.energyCost) || 0,
+      machinePowerWatts: Number(rawRecipe.machinePowerWatts) || 250,
+      manufacturingTimeMinutes: Number(rawRecipe.manufacturingTimeMinutes) || 30,
+      kwhCost: Number(rawRecipe.kwhCost) || 3.50,
+      laborCost: Number(rawRecipe.laborCost) || 0,
+      laborTimeMinutes: Number(rawRecipe.laborTimeMinutes) || 15,
+      laborRatePerHour: Number(rawRecipe.laborRatePerHour) || 75,
+      packagingAndShipping: rawRecipe.packagingAndShipping || {
+        enabled: true,
+        packagingType: 'caja_kraft',
+        packagingCost: 12,
+        packagingDetails: 'Caja microcorrugado + poliburbuja + viruta kraft + etiqueta térmica',
+        shippingNationwideEstimated: 149,
+        shippingIncludedInPrice: false,
+        notes: 'Envío estándar a toda la República Mexicana por FedEx / Estafeta / DHL'
+      }
+    } : (prod.costBreakdown?.recipeItems && prod.costBreakdown.recipeItems.length > 0 ? {
+      technique: prod.techniques?.[0] || '3d',
+      yieldUnits: Math.max(1, Number(prod.costBreakdown.yieldUnits) || 1),
+      items: prod.costBreakdown.recipeItems.map(it => ({
+        id: it.id || `item-${Date.now()}-${Math.random()}`,
+        materialId: it.materialId || '',
+        name: it.name || '',
+        category: it.category || '3d',
+        supplyType: (it.name || '').toLowerCase().includes('lija') || (it.name || '').toLowerCase().includes('sierra') ? 'indirect' : 'direct',
+        netQuantity: Number(it.quantity) || 0,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: Number(it.quantity) || 0,
+        unit: it.unit || 'g',
+        unitCost: Number(it.unitCost) || 0,
+        totalCost: Number(it.lineTotal) || 0
+      })),
+      totalMaterialCost: Number(prod.costBreakdown?.recipeRawMaterialsCost) || 0,
+      totalWasteCost: 0,
+      wastePercentAverage: 0,
+      packagingAndShipping: {
+        enabled: true,
+        packagingType: 'caja_kraft',
+        packagingCost: 12,
+        packagingDetails: 'Caja microcorrugado + poliburbuja + viruta kraft',
+        shippingNationwideEstimated: 149,
+        shippingIncludedInPrice: false,
+        notes: 'Envío estándar a toda la República Mexicana'
+      }
+    } : generateDefaultRecipeForProduct(prod, rawMaterialsList));
 
     setEditorForm({
       ...prod,
@@ -1100,33 +1281,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       stockQuantity: prod.stockQuantity ?? (prod.availability === 'in_stock' ? 10 : 0),
       costPrice: prod.costPrice ?? (prod.price ? Math.round(prod.price * 0.4) : 0),
       costBreakdown: prod.costBreakdown || {},
-      manufacturingRecipe: prod.manufacturingRecipe ? {
-        technique: prod.manufacturingRecipe.technique || prod.techniques?.[0] || '3d',
-        yieldUnits: Math.max(1, Number(prod.manufacturingRecipe.yieldUnits) || 1),
-        items: Array.isArray(prod.manufacturingRecipe.items) ? [...prod.manufacturingRecipe.items] : [],
-        totalMaterialCost: Number(prod.manufacturingRecipe.totalMaterialCost) || 0,
-        totalWasteCost: Number(prod.manufacturingRecipe.totalWasteCost) || 0,
-        wastePercentAverage: Number(prod.manufacturingRecipe.wastePercentAverage) || 0
-      } : (prod.costBreakdown?.recipeItems && prod.costBreakdown.recipeItems.length > 0 ? {
-        technique: prod.techniques?.[0] || '3d',
-        yieldUnits: Math.max(1, Number(prod.costBreakdown.yieldUnits) || 1),
-        items: prod.costBreakdown.recipeItems.map(it => ({
-          id: it.id || `item-${Date.now()}-${Math.random()}`,
-          materialId: it.materialId || '',
-          name: it.name || '',
-          category: it.category || '3d',
-          netQuantity: Number(it.quantity) || 0,
-          wasteQuantity: 0,
-          wasteType: 'none',
-          totalQuantity: Number(it.quantity) || 0,
-          unit: it.unit || 'g',
-          unitCost: Number(it.unitCost) || 0,
-          totalCost: Number(it.lineTotal) || 0
-        })),
-        totalMaterialCost: Number(prod.costBreakdown?.recipeRawMaterialsCost) || 0,
-        totalWasteCost: 0,
-        wastePercentAverage: 0
-      } : generateDefaultRecipeForProduct(prod, rawMaterialsList)),
+      manufacturingRecipe: resolvedRecipe,
       flashDealConfig: prod.flashDealConfig || {
         enabled: false,
         durationMinutes: 120,
@@ -1214,6 +1369,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       materialId: editorRecipeSelectedMatId || '',
       name,
       category,
+      supplyType: editorNewItemSupplyType || (category === 'consumables' || name.toLowerCase().includes('lija') || name.toLowerCase().includes('sierra') || name.toLowerCase().includes('estopa') || name.toLowerCase().includes('cinta') ? 'indirect' : 'direct'),
       netQuantity: netQty,
       wasteQuantity: wasteQty,
       wasteType: editorRecipeWasteType,
@@ -1242,6 +1398,25 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
     setEditorRecipeCustomName('');
     setEditorRecipeSelectedMatId('');
+  };
+
+  const handleToggleItemSupplyType = (itemId) => {
+    const currentRecipe = editorForm.manufacturingRecipe || { items: [] };
+    const updatedItems = (currentRecipe.items || []).map(it => {
+      if (it.id !== itemId) return it;
+      const currentType = it.supplyType === 'indirect' ? 'indirect' : 'direct';
+      return {
+        ...it,
+        supplyType: currentType === 'direct' ? 'indirect' : 'direct'
+      };
+    });
+    setEditorForm({
+      ...editorForm,
+      manufacturingRecipe: {
+        ...currentRecipe,
+        items: updatedItems
+      }
+    });
   };
 
   const handleRemoveEditorRecipeItem = (itemId) => {
@@ -1348,13 +1523,88 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     });
   };
 
+  const handleUpdatePackagingField = (field, value) => {
+    const currentRecipe = editorForm.manufacturingRecipe || {};
+    const currentPkg = currentRecipe.packagingAndShipping || {
+      enabled: true,
+      boxType: 'caja_mediana',
+      boxCost: 12,
+      bubbleWrapCost: 3.5,
+      cushioningCost: 2.5,
+      labelTapeCost: 2,
+      packagingCost: 20,
+      shippingCarrier: 'nacional_estandar',
+      shippingCost: 149,
+      includeShippingInPrice: false,
+      notes: ''
+    };
+
+    const updatedPkg = { ...currentPkg, [field]: value };
+
+    // Si cambió el tipo de caja predefinida, sugerir su costo
+    if (field === 'boxType') {
+      if (value === 'caja_chica') updatedPkg.boxCost = 8;
+      else if (value === 'caja_mediana') updatedPkg.boxCost = 12;
+      else if (value === 'caja_grande') updatedPkg.boxCost = 18;
+      else if (value === 'taza') updatedPkg.boxCost = 9;
+      else if (value === 'luxury') updatedPkg.boxCost = 25;
+      else if (value === 'sobre_rigido') updatedPkg.boxCost = 6;
+      else if (value === 'bolsa_celofan') updatedPkg.boxCost = 3.5;
+    }
+
+    // Si cambió la paquetería predefinida, sugerir su costo de flete
+    if (field === 'shippingCarrier') {
+      if (value === 'nacional_estandar') updatedPkg.shippingCost = 149;
+      else if (value === 'nacional_express') updatedPkg.shippingCost = 220;
+      else if (value === 'local_slp') updatedPkg.shippingCost = 0;
+      else if (value === 'local_domicilio') updatedPkg.shippingCost = 45;
+    }
+
+    // Recalcular costo total de embalaje
+    const box = Number(updatedPkg.boxCost) || 0;
+    const bubble = Number(updatedPkg.bubbleWrapCost) || 0;
+    const cushion = Number(updatedPkg.cushioningCost) || 0;
+    const labelTape = Number(updatedPkg.labelTapeCost) || 0;
+    updatedPkg.packagingCost = Math.round((box + bubble + cushion + labelTape) * 100) / 100;
+
+    setEditorForm({
+      ...editorForm,
+      manufacturingRecipe: {
+        ...currentRecipe,
+        packagingAndShipping: updatedPkg
+      }
+    });
+  };
+
+  const handleApplyTargetMargin = (marginPercent) => {
+    const cost = Number(editorForm.costPrice) || 0;
+    if (cost <= 0) {
+      setEditorMessage({ text: '⚠️ Primero sincroniza o ingresa el costo de producción para calcular el precio.', type: 'error' });
+      setTimeout(() => setEditorMessage({ text: '', type: '' }), 3000);
+      return;
+    }
+    const targetMarginRatio = marginPercent / 100;
+    const calculatedPvp = Math.ceil(cost / (1 - targetMarginRatio));
+    setEditorForm({
+      ...editorForm,
+      price: calculatedPvp
+    });
+    setEditorMessage({
+      text: `✓ Precio ajustado a $${calculatedPvp} MXN para obtener ${marginPercent}% de margen de utilidad (Ganancia: $${(calculatedPvp - cost).toFixed(1)} MXN).`,
+      type: 'success'
+    });
+    setTimeout(() => setEditorMessage({ text: '', type: '' }), 3500);
+  };
+
   const handleSyncRecipeToCostPrice = () => {
     const rec = editorForm.manufacturingRecipe || {};
     const matCost = Number(rec.totalMaterialCost) || 0;
     const energyCost = Number(rec.energyCost) || 0;
     const laborCost = Number(rec.laborCost) || 0;
-    const packagingCost = rec.packagingAndShipping?.enabled ? (Number(rec.packagingAndShipping?.packagingCost) || 0) : 0;
-    const totalCost = Math.round((matCost + energyCost + laborCost + packagingCost) * 100) / 100;
+    const pkg = rec.packagingAndShipping;
+    const packagingCost = pkg?.enabled ? (Number(pkg.packagingCost) || 0) : 0;
+    const shippingCost = (pkg?.enabled && pkg?.includeShippingInPrice) ? (Number(pkg.shippingCost) || 0) : 0;
+    const totalCost = Math.round((matCost + energyCost + laborCost + packagingCost + shippingCost) * 100) / 100;
 
     if (totalCost > 0) {
       setEditorForm({
@@ -1362,7 +1612,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         costPrice: totalCost
       });
       setEditorMessage({
-        text: `✓ Costo de producción actualizado a $${totalCost.toFixed(2)} MXN (Insumos: $${matCost.toFixed(1)} + Luz: $${energyCost.toFixed(1)} + Mano de Obra: $${laborCost.toFixed(1)}${packagingCost > 0 ? ` + Empaque: $${packagingCost.toFixed(1)}` : ''}).`,
+        text: `✓ Costo aterrizado sincronizado a $${totalCost.toFixed(2)} MXN (Insumos: $${matCost.toFixed(1)} + Luz CFE: $${energyCost.toFixed(1)} + Mano de Obra: $${laborCost.toFixed(1)}${packagingCost > 0 ? ` + Embalaje: $${packagingCost.toFixed(1)}` : ''}${shippingCost > 0 ? ` + Envío Nacional: $${shippingCost.toFixed(1)}` : ''}).`,
         type: 'success'
       });
       setTimeout(() => setEditorMessage({ text: '', type: '' }), 4000);
@@ -5694,2164 +5944,2513 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               </div>
             </div>
 
-            {/* Editor Body: Grid de 2 Columnas (Izquierda: Visor Visual | Derecha: Formulario Ergonómico) */}
+            {/* TABS DE NAVEGACIÓN UX ERGONÓMICOS (Móvil y Escritorio) */}
+            <div className="bg-[#FAF9F5] border-b border-[#E8E4DA] px-3 sm:px-5 py-2.5 flex items-center gap-1.5 sm:gap-2 overflow-x-auto scrollbar-none shrink-0">
+              <button
+                type="button"
+                onClick={() => setEditorActiveTab('general')}
+                className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
+                  editorActiveTab === 'general'
+                    ? 'bg-[#2D4F3E] text-white shadow-sm'
+                    : 'bg-white text-gray-700 border border-stone-200 hover:bg-stone-50'
+                }`}
+              >
+                <span>📋</span>
+                <span>1. Datos &amp; Galería</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setEditorActiveTab('taller')}
+                className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
+                  editorActiveTab === 'taller'
+                    ? 'bg-[#2D4F3E] text-white shadow-sm'
+                    : 'bg-white text-gray-700 border border-stone-200 hover:bg-stone-50'
+                }`}
+              >
+                <span>🪵</span>
+                <span>2. Taller &amp; Insumos (Escandallo)</span>
+                <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono font-bold ${
+                  editorActiveTab === 'taller' ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-800'
+                }`}>
+                  {(editorForm.manufacturingRecipe?.items || []).length}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setEditorActiveTab('packaging')}
+                className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
+                  editorActiveTab === 'packaging'
+                    ? 'bg-[#2D4F3E] text-white shadow-sm'
+                    : 'bg-white text-gray-700 border border-stone-200 hover:bg-stone-50'
+                }`}
+              >
+                <span>📦</span>
+                <span>3. Embalaje &amp; Flete Nacional</span>
+                {editorForm.manufacturingRecipe?.packagingAndShipping?.enabled && (
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setEditorActiveTab('pricing')}
+                className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
+                  editorActiveTab === 'pricing'
+                    ? 'bg-[#2D4F3E] text-white shadow-sm'
+                    : 'bg-white text-gray-700 border border-stone-200 hover:bg-stone-50'
+                }`}
+              >
+                <span>💰</span>
+                <span>4. Precios, Margen &amp; Descuentos</span>
+                {editorForm.price && (
+                  <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono font-bold ${
+                    editorActiveTab === 'pricing' ? 'bg-white/20 text-white' : 'bg-stone-100 text-stone-700'
+                  }`}>
+                    ${editorForm.price}
+                  </span>
+                )}
+              </button>
+            </div>
+
+            {/* Formulario Ergonómico por Pestañas */}
             <form onSubmit={handleSaveProduct} noValidate className="flex-1 overflow-y-auto flex flex-col">
               
               {editorMessage.text && (
-                <div className={`mx-6 mt-4 p-3 rounded-xl font-medium text-xs ${
+                <div className={`mx-4 sm:mx-6 mt-4 p-3 rounded-xl font-medium text-xs ${
                   editorMessage.type === 'success' ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-rose-50 text-rose-800 border border-rose-200'
                 }`}>
                   {editorMessage.text}
                 </div>
               )}
 
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 p-5 sm:p-6">
-                
-                {/* ======================================================== */}
-                {/* COLUMNA IZQUIERDA: VISOR FOTOGRÁFICO Y MINIATURAS (5 col) */}
-                {/* ======================================================== */}
-                <div className="lg:col-span-5 flex flex-col gap-4">
+              {/* ======================================================== */}
+              {/* PESTAÑA 1: DATOS GENERALES, FOTOS Y VARIANTES            */}
+              {/* ======================================================== */}
+              {editorActiveTab === 'general' && (
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 p-4 sm:p-6">
                   
-                  {/* Visor Grande de la Fotografía Activa */}
-                  {(() => {
-                    // Resolver URL de la toma activa
-                    let activeImgUrl = '';
-                    let slotName = '🌿 Toma 1 • Portada en Ambiente Real';
-                    let slotKey = 'portada';
+                  {/* COLUMNA IZQUIERDA: VISOR FOTOGRÁFICO Y MINIATURAS (5 col) */}
+                  <div className="lg:col-span-5 flex flex-col gap-4">
+                    
+                    {/* Visor Grande de la Fotografía Activa */}
+                    {(() => {
+                      let activeImgUrl = '';
+                      let slotName = '🌿 Toma 1 • Portada en Ambiente Real';
+                      let slotKey = 'portada';
 
-                    if (editorActiveSlot === 0) {
-                      activeImgUrl = editorForm.primaryImage || editorForm.gallery?.[0] || '';
-                      slotName = '🌿 Toma 1 • En Ambiente Real';
-                      slotKey = 'portada';
-                    } else if (editorActiveSlot === 1) {
-                      activeImgUrl = editorForm.whiteBgImage || editorForm.gallery?.[1] || '';
-                      slotName = '📦 Toma 2 • Fondo Blanco Puro (#FFFFFF)';
-                      slotKey = 'blanco';
-                    } else if (editorActiveSlot === 2) {
-                      activeImgUrl = editorForm.detailImage || editorForm.gallery?.[2] || '';
-                      slotName = '🔍 Toma 3 • Detalle y Macro';
-                      slotKey = 'detalle';
-                    } else if (editorActiveSlot === 3) {
-                      activeImgUrl = editorForm.measureImage || editorForm.gallery?.[3] || '';
-                      slotName = '📐 Toma 4 • Medidas y Escala';
-                      slotKey = 'escala';
-                    } else {
-                      activeImgUrl = editorForm.gallery?.[editorActiveSlot] || '';
-                      slotName = `✨ Toma Adicional #${editorActiveSlot + 1}`;
-                      slotKey = editorActiveSlot;
-                    }
+                      if (editorActiveSlot === 0) {
+                        activeImgUrl = editorForm.primaryImage || editorForm.gallery?.[0] || '';
+                        slotName = '🌿 Toma 1 • En Ambiente Real';
+                        slotKey = 'portada';
+                      } else if (editorActiveSlot === 1) {
+                        activeImgUrl = editorForm.whiteBgImage || editorForm.gallery?.[1] || '';
+                        slotName = '📦 Toma 2 • Fondo Blanco Puro (#FFFFFF)';
+                        slotKey = 'blanco';
+                      } else if (editorActiveSlot === 2) {
+                        activeImgUrl = editorForm.detailImage || editorForm.gallery?.[2] || '';
+                        slotName = '🔍 Toma 3 • Detalle y Macro';
+                        slotKey = 'detalle';
+                      } else if (editorActiveSlot === 3) {
+                        activeImgUrl = editorForm.measureImage || editorForm.gallery?.[3] || '';
+                        slotName = '📐 Toma 4 • Medidas y Escala';
+                        slotKey = 'escala';
+                      } else {
+                        activeImgUrl = editorForm.gallery?.[editorActiveSlot] || '';
+                        slotName = `✨ Toma Adicional #${editorActiveSlot + 1}`;
+                        slotKey = editorActiveSlot;
+                      }
 
-                    const fallbackImg = '/uploads/bandeja_vaciabolsillos_ovalada_white.jpg';
+                      const fallbackImg = '/uploads/bandeja_vaciabolsillos_ovalada_white.jpg';
 
-                    return (
-                      <div className="space-y-3">
-                        <div className="relative rounded-3xl overflow-hidden border-2 border-stone-200 bg-stone-100 aspect-square shadow-md group flex items-center justify-center">
-                          <img
-                            src={activeImgUrl || fallbackImg}
-                            alt="Fotografía activa del producto"
-                            className="w-full h-full object-contain p-2 bg-white"
-                          />
+                      return (
+                        <div className="space-y-3">
+                          <div className="relative rounded-3xl overflow-hidden border-2 border-stone-200 bg-stone-100 aspect-square shadow-md group flex items-center justify-center">
+                            <img
+                              src={activeImgUrl || fallbackImg}
+                              alt="Fotografía activa del producto"
+                              className="w-full h-full object-contain p-2 bg-white"
+                            />
 
-                          {/* Badge de Posición Fotográfica */}
-                          <div className="absolute top-3 left-3 bg-black/75 backdrop-blur-md px-3 py-1 rounded-full text-white text-[11px] font-bold shadow-sm pointer-events-none flex items-center gap-1.5">
-                            <span>{slotName}</span>
+                            <div className="absolute top-3 left-3 bg-black/75 backdrop-blur-md px-3 py-1 rounded-full text-white text-[11px] font-bold shadow-sm pointer-events-none flex items-center gap-1.5">
+                              <span>{slotName}</span>
+                            </div>
+
+                            <div className="absolute bottom-3 right-3 flex items-center gap-2">
+                              <label className="px-3.5 py-2 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-xs font-bold cursor-pointer transition-all shadow-lg flex items-center gap-1.5 active:scale-95">
+                                <Upload className="w-3.5 h-3.5" />
+                                <span>{uploadingImage === slotKey ? 'Subiendo...' : 'Subir foto'}</span>
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={e => handleUploadSlot(slotKey, e)}
+                                  disabled={uploadingImage === slotKey}
+                                  className="hidden"
+                                />
+                              </label>
+                            </div>
                           </div>
 
-                          {/* Botón Flotante para Subir o Cambiar Foto de esta Toma */}
-                          <div className="absolute bottom-3 right-3 flex items-center gap-2">
-                            <label className="px-3.5 py-2 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-xs font-bold cursor-pointer transition-all shadow-lg flex items-center gap-1.5 active:scale-95">
-                              <Upload className="w-3.5 h-3.5" />
-                              <span>{uploadingImage === slotKey ? 'Subiendo...' : 'Subir foto'}</span>
-                              <input
-                                type="file"
-                                accept="image/*"
-                                onChange={e => handleUploadSlot(slotKey, e)}
-                                disabled={uploadingImage === slotKey}
-                                className="hidden"
-                              />
-                            </label>
-                          </div>
-                        </div>
-
-                        {/* Input de URL directa para la toma activa */}
-                        <div className="flex items-center gap-1.5 bg-stone-50 p-2 rounded-xl border border-stone-200">
-                          <span className="text-[10px] font-bold text-stone-500 uppercase shrink-0">Ruta:</span>
-                          <input
-                            type="text"
-                            value={activeImgUrl}
-                            onChange={e => handleUpdateSlotUrl(slotKey, e.target.value)}
-                            placeholder="/uploads/... o https://..."
-                            className="flex-1 px-2 py-1 text-xs font-mono rounded-lg border border-gray-200 bg-white"
-                          />
-                          {activeImgUrl && (
-                            <button
-                              type="button"
-                              onClick={() => handleUpdateSlotUrl(slotKey, '')}
-                              className="p-1 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition-colors shrink-0"
-                              title="Limpiar imagen"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })()}
-
-                  {/* Botón para abrir Estudio Fotográfico IA */}
-                  <button
-                    type="button"
-                    onClick={() => handleOpenPhotoStudio(editingProduct?.id || 'new')}
-                    className="w-full py-3 px-3.5 rounded-xl bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-md hover:shadow-amber-500/20 transition active:scale-98 cursor-pointer touch-manipulation"
-                  >
-                    <Camera className="w-4 h-4 text-slate-950" />
-                    <span>📸 Generar las 4 Fotos con IA (Frente, Arriba, Costado, Detalle)</span>
-                  </button>
-
-                  {/* 4 Miniaturas Táctiles del Estándar Oficial de Catálogo */}
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between text-xs font-bold text-gray-700">
-                      <span>Estándar Oficial de 4 Fotografías:</span>
-                      <span className="text-[10px] text-gray-400">Toca una miniatura para verla</span>
-                    </div>
-
-                    <div className="grid grid-cols-4 gap-2">
-                      {[
-                        {
-                          idx: 0,
-                          key: 'portada',
-                          label: '1. Portada / En Contexto Real',
-                          shortLabel: 'En contexto',
-                          icon: '🌿',
-                          src: editorForm.primaryImage || editorForm.gallery?.[0]
-                        },
-                        {
-                          idx: 1,
-                          key: 'blanco',
-                          label: '2. Fondo Blanco Puro (#FFFFFF)',
-                          shortLabel: 'Fondo blanco',
-                          icon: '📄',
-                          src: editorForm.whiteBgImage || editorForm.gallery?.[1]
-                        },
-                        {
-                          idx: 2,
-                          key: 'detalle',
-                          label: '3. Detalle y Cualidades',
-                          shortLabel: 'Detalle',
-                          icon: '🔍',
-                          src: editorForm.detailImage || editorForm.gallery?.[2]
-                        },
-                        {
-                          idx: 3,
-                          key: 'escala',
-                          label: '4. Medidas y Escala',
-                          shortLabel: 'Medidas & escala',
-                          icon: '📐',
-                          src: editorForm.measureImage || editorForm.gallery?.[3]
-                        }
-                      ].map(slot => {
-                        const isSelected = editorActiveSlot === slot.idx;
-                        const hasImg = Boolean(slot.src);
-                        return (
-                          <div key={slot.idx} className="flex flex-col gap-1">
-                            <button
-                              type="button"
-                              onClick={() => setEditorActiveSlot(slot.idx)}
-                              className={`p-1.5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center gap-1 text-center relative w-full ${
-                                isSelected
-                                  ? 'border-[#2D4F3E] bg-[#FAF9F5] ring-2 ring-[#2D4F3E]/20 shadow-xs'
-                                  : 'border-stone-200 bg-white hover:border-stone-300'
-                              }`}
-                            >
-                              <div className="w-full aspect-square rounded-xl overflow-hidden bg-stone-100 flex items-center justify-center border border-stone-100">
-                                {hasImg ? (
-                                  <img
-                                    src={slot.src}
-                                    alt={slot.label}
-                                    className="w-full h-full object-cover"
-                                  />
-                                ) : (
-                                  <span className="text-sm opacity-50">{slot.icon}</span>
-                                )}
-                              </div>
-                              <span className={`text-[10px] font-bold line-clamp-1 ${
-                                isSelected ? 'text-[#2D4F3E]' : 'text-gray-600'
-                              }`}>
-                                {slot.shortLabel}
-                              </span>
-                              {hasImg && (
-                                <span className="w-2 h-2 rounded-full bg-emerald-500 absolute top-1 right-1 border border-white" />
-                              )}
-                            </button>
-
-                            {/* Subida rápida independiente de slot */}
-                            <label className="text-[9.5px] font-semibold text-center text-[#2D4F3E] hover:underline cursor-pointer block truncate" title={slot.label}>
-                              <span>Subir</span>
-                              <input
-                                type="file"
-                                accept="image/*"
-                                onChange={e => {
-                                  if (slot.key === 'portada') handleUploadSlot('portada', e);
-                                  else if (slot.key === 'blanco') handleUploadSlot('blanco', e);
-                                  else if (slot.key === 'detalle') handleUploadSlot('detalle', e);
-                                  else if (slot.key === 'escala') handleUploadSlot('escala', e);
-                                  else handleUploadSlot(slot.key, e);
-                                }}
-                                disabled={uploadingImage === slot.key}
-                                className="hidden"
-                              />
-                            </label>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Resumen Visual de Taller para Identificación Inmediata */}
-                  <div className="p-3.5 rounded-2xl bg-[#FAF9F5] border border-stone-200 space-y-2 text-xs">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Identificador de Taller:</span>
-                      <span className="font-mono text-xs font-black text-[#2D4F3E]">
-                        {editorForm.sku || editorForm.code}
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2 text-[11px]">
-                      <div className="p-2 rounded-xl bg-white border border-stone-200">
-                        <span className="text-[9px] font-bold text-gray-400 block uppercase">Áreas activas</span>
-                        <span className="font-bold text-gray-800">
-                          {editorForm.worlds?.length ? editorForm.worlds.join(', ') : 'Ninguna'}
-                        </span>
-                      </div>
-                      <div className="p-2 rounded-xl bg-white border border-stone-200">
-                        <span className="text-[9px] font-bold text-gray-400 block uppercase">Técnicas</span>
-                        <span className="font-bold text-emerald-800">
-                          {editorForm.techniques?.length ? editorForm.techniques.join(', ') : '3D'}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Fotografías adicionales ilimitadas para paquetes y servicios */}
-                  <div className="p-3.5 rounded-2xl bg-stone-50 border border-stone-200 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-stone-800">
-                        fotografías adicionales ilimitadas para paquetes y servicios
-                      </span>
-                      <button
-                        type="button"
-                        onClick={handleAddExtraImage}
-                        className="px-2.5 py-1 rounded-lg bg-[#2D4F3E] text-white text-[11px] font-bold hover:bg-[#20392C] transition-colors cursor-pointer"
-                      >
-                        + Agregar otra fotografía
-                      </button>
-                    </div>
-
-                    {editorForm.gallery && editorForm.gallery.length > 4 ? (
-                      <div className="grid grid-cols-4 gap-2 pt-1">
-                        {editorForm.gallery.slice(4).map((extraUrl, idx) => {
-                          const actualIndex = 4 + idx;
-                          return (
-                            <div
-                              key={actualIndex}
-                              onClick={() => setEditorActiveSlot(actualIndex)}
-                              className={`relative aspect-square rounded-xl overflow-hidden border-2 cursor-pointer ${
-                                editorActiveSlot === actualIndex ? 'border-[#2D4F3E] ring-2 ring-[#2D4F3E]/20' : 'border-stone-200'
-                              }`}
-                            >
-                              <img src={extraUrl || '/uploads/bandeja_vaciabolsillos_ovalada_white.jpg'} alt="" className="w-full h-full object-cover" />
+                          <div className="flex items-center gap-1.5 bg-stone-50 p-2 rounded-xl border border-stone-200">
+                            <span className="text-[10px] font-bold text-stone-500 uppercase shrink-0">Ruta:</span>
+                            <input
+                              type="text"
+                              value={activeImgUrl}
+                              onChange={e => handleUpdateSlotUrl(slotKey, e.target.value)}
+                              placeholder="/uploads/... o https://..."
+                              className="flex-1 px-2 py-1 text-xs font-mono rounded-lg border border-gray-200 bg-white"
+                            />
+                            {activeImgUrl && (
                               <button
                                 type="button"
-                                onClick={(e) => { e.stopPropagation(); handleRemoveExtraImage(actualIndex); }}
-                                className="absolute top-0.5 right-0.5 p-0.5 rounded-full bg-rose-600 text-white cursor-pointer"
-                                title="Eliminar foto adicional"
+                                onClick={() => handleUpdateSlotUrl(slotKey, '')}
+                                className="p-1 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition-colors shrink-0 cursor-pointer"
+                                title="Limpiar imagen"
                               >
-                                <X className="w-3 h-3" />
+                                <Trash2 className="w-3.5 h-3.5" />
                               </button>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })()}
+
+                    {/* Botón para abrir Estudio Fotográfico IA */}
+                    <button
+                      type="button"
+                      onClick={() => handleOpenPhotoStudio(editingProduct?.id || 'new')}
+                      className="w-full py-3 px-3.5 rounded-xl bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-md hover:shadow-amber-500/20 transition active:scale-98 cursor-pointer touch-manipulation"
+                    >
+                      <Camera className="w-4 h-4 text-slate-950" />
+                      <span>📸 Generar las 4 Fotos con IA (Frente, Arriba, Costado, Detalle)</span>
+                    </button>
+
+                    {/* 4 Miniaturas Táctiles del Estándar Oficial */}
+                    <div className="space-y-1.5">
+                      <div className="flex items-center justify-between text-xs font-bold text-gray-700">
+                        <span>Estándar Oficial de 4 Fotografías:</span>
+                        <span className="text-[10px] text-gray-400">Toca para ver</span>
+                      </div>
+
+                      <div className="grid grid-cols-4 gap-2">
+                        {[
+                          { idx: 0, key: 'portada', label: '1. Portada Real', shortLabel: 'En contexto', icon: '🌿', src: editorForm.primaryImage || editorForm.gallery?.[0] },
+                          { idx: 1, key: 'blanco', label: '2. Fondo Blanco', shortLabel: 'Fondo blanco', icon: '📄', src: editorForm.whiteBgImage || editorForm.gallery?.[1] },
+                          { idx: 2, key: 'detalle', label: '3. Detalle Macro', shortLabel: 'Detalle', icon: '🔍', src: editorForm.detailImage || editorForm.gallery?.[2] },
+                          { idx: 3, key: 'escala', label: '4. Medidas y Escala', shortLabel: 'Medidas', icon: '📐', src: editorForm.measureImage || editorForm.gallery?.[3] }
+                        ].map(slot => {
+                          const isSelected = editorActiveSlot === slot.idx;
+                          const hasImg = Boolean(slot.src);
+                          return (
+                            <div key={slot.idx} className="flex flex-col gap-1">
+                              <button
+                                type="button"
+                                onClick={() => setEditorActiveSlot(slot.idx)}
+                                className={`p-1.5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center gap-1 text-center relative w-full ${
+                                  isSelected
+                                    ? 'border-[#2D4F3E] bg-[#FAF9F5] ring-2 ring-[#2D4F3E]/20 shadow-xs'
+                                    : 'border-stone-200 bg-white hover:border-stone-300'
+                                }`}
+                              >
+                                <div className="w-full aspect-square rounded-xl overflow-hidden bg-stone-100 flex items-center justify-center border border-stone-100">
+                                  {hasImg ? (
+                                    <img src={slot.src} alt={slot.label} className="w-full h-full object-cover" />
+                                  ) : (
+                                    <span className="text-sm opacity-50">{slot.icon}</span>
+                                  )}
+                                </div>
+                                <span className={`text-[10px] font-bold line-clamp-1 ${
+                                  isSelected ? 'text-[#2D4F3E]' : 'text-gray-600'
+                                }`}>
+                                  {slot.shortLabel}
+                                </span>
+                                {hasImg && (
+                                  <span className="w-2 h-2 rounded-full bg-emerald-500 absolute top-1 right-1 border border-white" />
+                                )}
+                              </button>
+
+                              <label className="text-[9.5px] font-semibold text-center text-[#2D4F3E] hover:underline cursor-pointer block truncate">
+                                <span>Subir</span>
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={e => handleUploadSlot(slot.key, e)}
+                                  disabled={uploadingImage === slot.key}
+                                  className="hidden"
+                                />
+                              </label>
                             </div>
                           );
                         })}
                       </div>
-                    ) : (
-                      <p className="text-[11px] text-gray-400 italic">
-                        Solo tiene las 4 fotos base. Pulsa "+ Agregar otra fotografía" para sumar más tomas de este paquete o servicio.
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                {/* ======================================================== */}
-                {/* COLUMNA DERECHA: CAMPOS ESENCIALES Y AMIGABLES (7 col)  */}
-                {/* ======================================================== */}
-                <div className="lg:col-span-7 flex flex-col gap-4 text-xs">
-                  
-                  {/* 1. Nombre del Producto y Estado */}
-                  <div className="p-4 rounded-2xl bg-[#FAF9F5] border border-stone-200 space-y-3">
-                    <div>
-                      <label className="font-bold text-gray-800 block mb-1 text-xs">Nombre del Producto *</label>
-                      <input
-                        type="text"
-                        required
-                        value={editorForm.name}
-                        onChange={e => setEditorForm({ ...editorForm, name: e.target.value })}
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 font-bold text-sm text-gray-900 bg-white focus:ring-1 focus:ring-[#2D4F3E]"
-                        placeholder="Ej. Bandeja vaciabolsillos ovalada"
-                      />
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                      <div>
-                        <label className="font-bold text-gray-700 block mb-1 text-[11px]">Estado de Publicación</label>
-                        <select
-                          value={editorForm.status}
-                          onChange={e => setEditorForm({ ...editorForm, status: e.target.value })}
-                          className="w-full px-3 py-2 rounded-xl border border-stone-300 bg-white font-semibold"
-                        >
-                          <option value="published">🟢 Publicado (visible en tienda)</option>
-                          <option value="draft">🟡 Borrador (oculto en tienda)</option>
-                          <option value="archived">⚪ Archivado</option>
-                        </select>
-                      </div>
-
-                      <div className="flex flex-wrap items-center gap-4 pt-3 sm:col-span-2">
-                        <label className="flex items-center gap-2 cursor-pointer font-bold text-gray-800 select-none">
-                          <input
-                            type="checkbox"
-                            checked={!!editorForm.featured}
-                            onChange={e => setEditorForm({ ...editorForm, featured: e.target.checked })}
-                            className="w-4 h-4 rounded text-[#2D4F3E] focus:ring-0"
-                          />
-                          <span>⭐ Destacar en Inicio &amp; Catálogo</span>
-                        </label>
-
-                        <label className="flex items-center gap-2 cursor-pointer font-bold text-purple-900 select-none bg-purple-50 px-2.5 py-1 rounded-xl border border-purple-200">
-                          <input
-                            type="checkbox"
-                            checked={!!editorForm.isBundle}
-                            onChange={e => {
-                              const checked = e.target.checked;
-                              const worlds = editorForm.worlds || [];
-                              const newWorlds = checked
-                                ? (worlds.includes('paquetes') ? worlds : [...worlds, 'paquetes'])
-                                : worlds;
-                              setEditorForm({
-                                ...editorForm,
-                                isBundle: checked,
-                                worlds: newWorlds,
-                                priceUnit: checked ? 'combo' : (editorForm.priceUnit === 'combo' ? 'pieza' : editorForm.priceUnit)
-                              });
-                            }}
-                            className="w-4 h-4 rounded text-purple-700 focus:ring-0"
-                          />
-                          <span>🎁 Es un Paquete o Combo Promocional</span>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* 2. Tarjeta Ergonómica de Precio, Costo, Margen y Stock Físico */}
-                  <div className="p-4 rounded-2xl bg-gradient-to-r from-emerald-50/80 via-[#F4F9F5] to-emerald-50/50 border border-emerald-200/90 space-y-3">
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      
-                      {/* Precio de Venta */}
-                      <div>
-                        <label className="font-bold text-gray-800 block mb-1 text-[11px]">Precio de Venta ($ MXN)</label>
-                        <div className="flex items-center gap-1.5">
-                          <input
-                            type="number"
-                            disabled={editorForm.priceType === 'quote'}
-                            value={editorForm.price ?? ''}
-                            onChange={e => setEditorForm({ ...editorForm, price: e.target.value ? Number(e.target.value) : null })}
-                            className="w-full px-3 py-2 rounded-xl border border-gray-300 bg-white font-black text-sm text-[#2D4F3E]"
-                            placeholder="149"
-                          />
-                          <select
-                            value={['pieza', 'lote', 'paquete', 'docena', 'combo'].includes(editorForm.priceUnit) ? editorForm.priceUnit : 'custom'}
-                            onChange={e => {
-                              if (e.target.value !== 'custom') {
-                                setEditorForm({ ...editorForm, priceUnit: e.target.value });
-                              }
-                            }}
-                            className="px-2 py-2 rounded-xl border border-gray-300 bg-white font-semibold text-xs"
-                          >
-                            <option value="pieza">/ pza</option>
-                            <option value="lote">/ lote</option>
-                            <option value="paquete">/ paq</option>
-                            <option value="combo">/ combo</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      {/* Stock Físico */}
-                      <div>
-                        <label className="font-bold text-gray-800 block mb-1 text-[11px] flex items-center justify-between">
-                          <span>Piezas Físicas (Stock)</span>
-                          <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded ${
-                            editorForm.availability === 'in_stock' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
-                          }`}>
-                            {editorForm.availability === 'in_stock' ? 'Inmediato' : 'Bajo Pedido'}
-                          </span>
-                        </label>
-                        <div className="flex items-center border border-gray-300 rounded-xl bg-white overflow-hidden shadow-2xs">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const currentQty = Math.max(0, (Number(editorForm.stockQuantity) || 0) - 1);
-                              setEditorForm({
-                                ...editorForm,
-                                stockQuantity: currentQty,
-                                availability: currentQty > 0 ? 'in_stock' : 'made_to_order'
-                              });
-                            }}
-                            className="px-2.5 py-2 text-gray-500 hover:bg-gray-100 transition-colors"
-                          >
-                            <Minus className="w-3.5 h-3.5" />
-                          </button>
-                          <input
-                            type="number"
-                            min="0"
-                            value={editorForm.stockQuantity ?? 0}
-                            onChange={e => {
-                              const val = Math.max(0, parseInt(e.target.value) || 0);
-                              setEditorForm({
-                                ...editorForm,
-                                stockQuantity: val,
-                                availability: val > 0 ? 'in_stock' : 'made_to_order'
-                              });
-                            }}
-                            className="w-full text-center font-mono font-bold text-xs text-gray-800 focus:outline-none"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const currentQty = (Number(editorForm.stockQuantity) || 0) + 1;
-                              setEditorForm({
-                                ...editorForm,
-                                stockQuantity: currentQty,
-                                availability: 'in_stock'
-                              });
-                            }}
-                            className="px-2.5 py-2 text-gray-500 hover:bg-gray-100 transition-colors"
-                          >
-                            <Plus className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Costo Unitario */}
-                      <div>
-                        <label className="font-bold text-gray-800 block mb-1 text-[11px]">Costo Producción ($ MXN)</label>
-                        <div className="relative">
-                          <span className="absolute left-3 top-2 text-xs font-bold text-gray-400">$</span>
-                          <input
-                            type="number"
-                            step="0.5"
-                            min="0"
-                            value={editorForm.costPrice ?? ''}
-                            onChange={e => setEditorForm({ ...editorForm, costPrice: e.target.value ? parseFloat(e.target.value) : 0 })}
-                            className="w-full pl-6 pr-3 py-2 rounded-xl border border-gray-300 bg-white font-mono font-bold text-xs text-gray-800"
-                            placeholder="0.00"
-                          />
-                        </div>
-                      </div>
-
-                    </div>
-
-                    {/* Resumen de Margen de Ganancia */}
-                    {editorForm.price && Number(editorForm.price) > 0 && editorForm.costPrice !== undefined && (
-                      <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-emerald-200/60 text-xs">
-                        <div className="flex items-center gap-2">
-                          <span className="text-gray-600 font-medium">Margen financiero:</span>
-                          <span className={`px-2 py-0.5 rounded-full font-bold text-[11px] ${
-                            (Number(editorForm.price) - Number(editorForm.costPrice)) / Number(editorForm.price) >= 0.4
-                              ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
-                              : 'bg-amber-100 text-amber-800 border border-amber-300'
-                          }`}>
-                            Ganancia: ${(Number(editorForm.price) - Number(editorForm.costPrice)).toFixed(1)} MXN ({Math.round(((Number(editorForm.price) - Number(editorForm.costPrice)) / Number(editorForm.price)) * 100)}%)
-                          </span>
-                        </div>
-
-                        <button
-                          type="button"
-                          onClick={() => handleOpenCostBreakdown({
-                            ...editorForm,
-                            id: editingProduct?.id,
-                            name: editorForm.name || 'Nuevo Producto'
-                          })}
-                          className="px-2.5 py-1 rounded-lg bg-white border border-emerald-300 hover:bg-emerald-50 text-[11px] font-bold text-emerald-800 flex items-center gap-1 transition-all cursor-pointer shadow-2xs"
-                        >
-                          <Calculator className="w-3 h-3" />
-                          <span>Desglosar en Taller</span>
-                        </button>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* SECCIÓN DEDICADA: RECETA DE MANUFACTURA, INSUMOS & MERMA DE TALLER (BOM) */}
-                  <div className="rounded-2xl border-2 border-emerald-600/30 bg-gradient-to-br from-stone-50 via-[#FAF9F5] to-emerald-50/20 overflow-hidden shadow-xs">
-                    
-                    {/* Encabezado del Acordeón con Resumen Vivo */}
-                    <div
-                      onClick={() => setEditorRecipeAccordion(prev => !prev)}
-                      className="p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-2.5 cursor-pointer select-none hover:bg-black/[0.02] transition-colors"
-                    >
-                      <div className="flex items-center gap-2.5 min-w-0">
-                        <span className="p-2 rounded-xl bg-emerald-100 text-emerald-800 shadow-2xs shrink-0">
-                          <Layers className="w-4 h-4 text-emerald-800" />
+                    {/* Fotografías adicionales ilimitadas */}
+                    <div className="p-3.5 rounded-2xl bg-stone-50 border border-stone-200 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-stone-800">
+                          Fotos Adicionales Ilimitadas (Kits / Combos):
                         </span>
-                        <div>
-                          <h4 className="font-heading font-black text-xs text-[#1F2421] flex flex-wrap items-center gap-1.5">
-                            <span>Insumos, Receta de Manufactura y Merma (BOM)</span>
-                            <span className="px-2 py-0.2 rounded-full bg-emerald-100 text-emerald-900 text-[10px] font-bold border border-emerald-300">
-                              {(editorForm.manufacturingRecipe?.items || []).length} insumos
-                            </span>
-                            {editorForm.manufacturingRecipe?.totalMaterialCost > 0 && (
-                              <span className="px-2 py-0.2 rounded-full bg-white text-emerald-800 text-[10px] font-mono font-black border border-emerald-200 shadow-2xs">
-                                Total: ${Number(editorForm.manufacturingRecipe.totalMaterialCost).toFixed(2)} MXN
-                              </span>
-                            )}
-                          </h4>
-                          <p className="text-[10.5px] text-gray-500 line-clamp-1">
-                            Control granular de filamento 3D, soportes, torre de purga, corte láser, blanks y cinta térmica. Se descuenta del stock de taller al fabricar.
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-2 shrink-0">
                         <button
                           type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleSyncRecipeToCostPrice();
-                          }}
-                          className="px-2.5 py-1 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-[10.5px] flex items-center gap-1 transition-all shadow-2xs cursor-pointer active:scale-95"
-                          title="Copiar costo total de insumos al campo Costo de Producción del producto"
+                          onClick={handleAddExtraImage}
+                          className="px-2.5 py-1 rounded-lg bg-[#2D4F3E] text-white text-[11px] font-bold hover:bg-[#20392C] transition-colors cursor-pointer"
                         >
-                          <Zap className="w-3 h-3 text-amber-300" />
-                          <span>Sincronizar Costo (${Number(editorForm.manufacturingRecipe?.totalMaterialCost || 0).toFixed(1)})</span>
+                          + Agregar foto
                         </button>
-                        <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${editorRecipeAccordion ? 'rotate-180' : ''}`} />
                       </div>
-                    </div>
 
-                    {/* Contenido desplegable */}
-                    {editorRecipeAccordion && (
-                      <div className="p-3.5 sm:p-4 pt-0 border-t border-emerald-100 space-y-4">
-                        
-                        {/* 1. Barra de Presets Rápidos por Técnica (Combinables) */}
-                        <div className="pt-2 space-y-1.5">
-                          <div className="flex flex-wrap items-center justify-between gap-1 text-[10px]">
-                            <span className="font-bold text-gray-700 uppercase flex items-center gap-1">
-                              <Sparkles className="w-3 h-3 text-emerald-600" />
-                              <span>Plantillas Rápidas de Taller (Combina 2 o más técnicas):</span>
-                            </span>
-                            <span className="text-gray-400">
-                              Haz clic en la técnica para cargarla, o en &quot;+ Añadir&quot; para combinar técnicas
-                            </span>
-                          </div>
-                          <div className="flex flex-wrap items-center gap-1.5">
-                            {[
-                              { id: '3d', label: 'Impresión 3D', icon: '🖨️', desc: 'PLA + Soportes/Purga + 3DLac' },
-                              { id: 'laser_madera', label: 'Madera Natural', icon: '🪵', desc: 'Madera Natural 3mm + Barniz Transparente' },
-                              { id: 'laser_llavero', label: 'Llavero Madera', icon: '🔑', desc: 'Madera 3mm + Barniz + Argolla Metálica + Resistol' },
-                              { id: 'laser_mdf', label: 'MDF Calibrado', icon: '⚡', desc: 'MDF 3mm + Laca Mate' },
-                              { id: 'sublimation', label: 'Sublimación', icon: '☕', desc: 'Taza + Cinta Kapton + Papel' },
-                              { id: 'dtf', label: 'DTF Textil', icon: '👕', desc: 'Film PET + Tinta CMYKW + Poliamida' },
-                              { id: 'impresion_laser', label: 'Impresión Láser', icon: '📄', desc: 'Papel Couché/Opalina + Click Tóner' },
-                              { id: 'vinyl', label: 'Vinil Cameo', icon: '🏷️', desc: 'Vinil Textil/Adhesivo + Transfer' },
-                              { id: 'ensamble', label: 'Armado / Resistol', icon: '💧', desc: 'Resistol 850 en gotas + Cianocrilato' },
-                            ].map(preset => (
+                      {editorForm.gallery && editorForm.gallery.length > 4 ? (
+                        <div className="grid grid-cols-4 gap-2 pt-1">
+                          {editorForm.gallery.slice(4).map((extraUrl, idx) => {
+                            const actualIndex = 4 + idx;
+                            return (
                               <div
-                                key={preset.id}
-                                className="inline-flex rounded-lg border border-stone-200 bg-white overflow-hidden shadow-2xs text-[10px]"
+                                key={actualIndex}
+                                onClick={() => setEditorActiveSlot(actualIndex)}
+                                className={`relative aspect-square rounded-xl overflow-hidden border-2 cursor-pointer ${
+                                  editorActiveSlot === actualIndex ? 'border-[#2D4F3E] ring-2 ring-[#2D4F3E]/20' : 'border-stone-200'
+                                }`}
                               >
+                                <img src={extraUrl || '/uploads/bandeja_vaciabolsillos_ovalada_white.jpg'} alt="" className="w-full h-full object-cover" />
                                 <button
                                   type="button"
-                                  onClick={() => handleApplyRecipePreset(preset.id, false)}
-                                  className="px-2 py-1 font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-900 border-r border-stone-200 transition-colors cursor-pointer"
-                                  title={`Reemplazar receta con plantilla de ${preset.desc}`}
+                                  onClick={(e) => { e.stopPropagation(); handleRemoveExtraImage(actualIndex); }}
+                                  className="absolute top-0.5 right-0.5 p-0.5 rounded-full bg-rose-600 text-white cursor-pointer"
+                                  title="Eliminar foto adicional"
                                 >
-                                  {preset.icon} {preset.label}
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => handleApplyRecipePreset(preset.id, true)}
-                                  className="px-1.5 py-1 font-bold text-emerald-700 hover:bg-emerald-600 hover:text-white transition-colors cursor-pointer"
-                                  title={`Añadir ${preset.label} a la receta actual sin borrar lo anterior`}
-                                >
-                                  + Añadir
+                                  <X className="w-3 h-3" />
                                 </button>
                               </div>
-                            ))}
-                          </div>
+                            );
+                          })}
+                        </div>
+                      ) : (
+                        <p className="text-[11px] text-gray-400 italic">
+                          Solo tiene las 4 fotos base. Pulsa "+ Agregar foto" para sumar más tomas de este paquete o servicio.
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* COLUMNA DERECHA: CAMPOS ESENCIALES DEL PRODUCTO (7 col) */}
+                  <div className="lg:col-span-7 flex flex-col gap-4 text-xs">
+                    
+                    {/* Nombre y Publicación */}
+                    <div className="p-4 rounded-2xl bg-[#FAF9F5] border border-stone-200 space-y-3">
+                      <div>
+                        <label className="font-bold text-gray-800 block mb-1 text-xs">Nombre del Producto o Paquete *</label>
+                        <input
+                          type="text"
+                          required
+                          value={editorForm.name}
+                          onChange={e => setEditorForm({ ...editorForm, name: e.target.value })}
+                          className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 font-bold text-sm text-gray-900 bg-white focus:ring-1 focus:ring-[#2D4F3E]"
+                          placeholder="Ej. Colgador de llaves Bienvenidos con percheros de madera"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                        <div>
+                          <label className="font-bold text-gray-700 block mb-1 text-[11px]">Estado de Publicación en Tienda</label>
+                          <select
+                            value={editorForm.status}
+                            onChange={e => setEditorForm({ ...editorForm, status: e.target.value })}
+                            className="w-full px-3 py-2 rounded-xl border border-stone-300 bg-white font-semibold"
+                          >
+                            <option value="published">🟢 Publicado (visible en tienda)</option>
+                            <option value="draft">🟡 Borrador (oculto en tienda)</option>
+                            <option value="archived">⚪ Archivado</option>
+                          </select>
                         </div>
 
-                        {/* 2. Tabla / Lista de Insumos Actuales de la Receta */}
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between text-[11px] font-bold text-gray-700 uppercase tracking-wider">
-                            <span>Insumos y Materiales Requeridos para 1 Unidad:</span>
-                            <span className="text-gray-400 font-normal lowercase text-[10.5px]">
-                              rinde {(editorForm.manufacturingRecipe?.yieldUnits || 1)} pieza(s)
+                        <div className="flex flex-wrap items-center gap-4 pt-3 sm:col-span-2">
+                          <label className="flex items-center gap-2 cursor-pointer font-bold text-gray-800 select-none">
+                            <input
+                              type="checkbox"
+                              checked={!!editorForm.featured}
+                              onChange={e => setEditorForm({ ...editorForm, featured: e.target.checked })}
+                              className="w-4 h-4 rounded text-[#2D4F3E] focus:ring-0 cursor-pointer"
+                            />
+                            <span>⭐ Destacar en Inicio &amp; Catálogo Principal</span>
+                          </label>
+
+                          <label className="flex items-center gap-2 cursor-pointer font-bold text-purple-900 select-none bg-purple-50 px-2.5 py-1 rounded-xl border border-purple-200">
+                            <input
+                              type="checkbox"
+                              checked={!!editorForm.isBundle}
+                              onChange={e => {
+                                const checked = e.target.checked;
+                                const worlds = editorForm.worlds || [];
+                                const newWorlds = checked
+                                  ? (worlds.includes('paquetes') ? worlds : [...worlds, 'paquetes'])
+                                  : worlds;
+                                setEditorForm({
+                                  ...editorForm,
+                                  isBundle: checked,
+                                  worlds: newWorlds,
+                                  priceUnit: checked ? 'combo' : (editorForm.priceUnit === 'combo' ? 'pieza' : editorForm.priceUnit)
+                                });
+                              }}
+                              className="w-4 h-4 rounded text-purple-700 focus:ring-0 cursor-pointer"
+                            />
+                            <span>🎁 Es un Paquete o Combo Promocional</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Delimitador de Áreas de Activación y Técnicas */}
+                    <div className="p-3.5 bg-[#FAF9F5] rounded-2xl border border-stone-200 space-y-2.5">
+                      <div className="flex items-center justify-between">
+                        <label className="font-bold text-[#1F2421] text-xs uppercase tracking-wider font-heading flex items-center gap-1.5">
+                          <span>🏷️</span>
+                          <span>Áreas del Catálogo donde se exhibirá *</span>
+                        </label>
+                        <span className="text-[10.5px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.2 rounded-full">
+                          {(editorForm.worlds?.length || 0)} de 4 áreas activadas
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        {[
+                          { id: 'hogar', label: 'Hogar', icon: '🏠' },
+                          { id: 'negocios', label: 'Negocios', icon: '💼' },
+                          { id: 'eventos', label: 'Eventos', icon: '🎉' },
+                          { id: 'paquetes', label: 'Paquetes', icon: '🎁' }
+                        ].map(w => {
+                          const isChecked = editorForm.worlds?.includes(w.id);
+                          return (
+                            <button
+                              key={w.id}
+                              type="button"
+                              onClick={() => {
+                                const curr = editorForm.worlds || [];
+                                const updated = isChecked ? curr.filter(x => x !== w.id) : [...curr, w.id];
+                                setEditorForm({
+                                  ...editorForm,
+                                  worlds: updated,
+                                  isBundle: updated.includes('paquetes') ? true : editorForm.isBundle
+                                });
+                              }}
+                              className={`p-2 rounded-xl border transition-all cursor-pointer flex items-center justify-between text-left ${
+                                isChecked
+                                  ? 'bg-white border-[#2D4F3E] text-[#2D4F3E] ring-1 ring-[#2D4F3E]/20 shadow-xs'
+                                  : 'bg-stone-50 border-stone-200 text-gray-500 hover:bg-white'
+                              }`}
+                            >
+                              <span className="font-bold text-xs flex items-center gap-1">
+                                <span>{w.icon}</span>
+                                <span>{w.label}</span>
+                              </span>
+                              <div className={`w-3.5 h-3.5 rounded flex items-center justify-center text-[9px] font-black ${
+                                isChecked ? 'bg-[#2D4F3E] text-white' : 'border border-gray-300'
+                              }`}>
+                                {isChecked && '✓'}
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      {/* Técnicas de Fabricación Combinables */}
+                      <div className="pt-2 border-t border-stone-200 flex flex-wrap items-center gap-1.5">
+                        <span className="text-[10px] font-bold text-gray-500 uppercase mr-1">Técnicas:</span>
+                        {[
+                          { id: '3d', label: 'Impresión 3D' },
+                          { id: 'laser', label: 'Corte/Grabado Láser' },
+                          { id: 'sublimation', label: 'Sublimación' },
+                          { id: 'vinyl', label: 'Vinil Textil/Corte' },
+                          { id: 'impresion_laser', label: 'Impresión Láser (Invitaciones)' },
+                          { id: 'dtf', label: 'DTF Textil' },
+                          { id: 'ensamble', label: 'Armado/Pegado' },
+                          { id: 'nfc', label: 'NFC' }
+                        ].map(tech => {
+                          const isChecked = editorForm.techniques?.includes(tech.id);
+                          return (
+                            <button
+                              key={tech.id}
+                              type="button"
+                              onClick={() => {
+                                const curr = editorForm.techniques || [];
+                                const updated = isChecked ? curr.filter(x => x !== tech.id) : [...curr, tech.id];
+                                setEditorForm({ ...editorForm, techniques: updated });
+                              }}
+                              className={`px-2 py-1 rounded-lg text-[11px] font-semibold transition-all cursor-pointer border ${
+                                isChecked
+                                  ? 'bg-emerald-50 border-emerald-300 text-emerald-800'
+                                  : 'bg-white border-stone-200 text-gray-500 hover:border-stone-300'
+                              }`}
+                            >
+                              {isChecked ? '✓ ' : '+ '}
+                              {tech.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Descripciones Breve y Completa */}
+                    <div className="space-y-2">
+                      <div>
+                        <label className="font-bold text-gray-700 block mb-1 text-[11px]">Descripción Breve (1 línea para catálogo)</label>
+                        <input
+                          type="text"
+                          value={editorForm.shortDescription || ''}
+                          onChange={e => setEditorForm({ ...editorForm, shortDescription: e.target.value })}
+                          className="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white"
+                          placeholder="Resumen atractivo en una línea..."
+                        />
+                      </div>
+
+                      <div>
+                        <label className="font-bold text-gray-700 block mb-1 text-[11px]">Descripción Completa (para la ficha técnica del producto)</label>
+                        <textarea
+                          rows={2}
+                          value={editorForm.fullDescription || ''}
+                          onChange={e => setEditorForm({ ...editorForm, fullDescription: e.target.value })}
+                          className="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white"
+                          placeholder="Detalles sobre maderas, acabados, resistencia y personalización..."
+                        />
+                      </div>
+                    </div>
+
+                    {/* Medidas y Tiempos */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 bg-stone-50 rounded-2xl border border-stone-200">
+                      <div>
+                        <label className="font-semibold text-gray-700 block mb-1 text-[11px]">Medidas / Dimensiones (cm)</label>
+                        <input
+                          type="text"
+                          value={editorForm.specifications?.dimensions || ''}
+                          onChange={e => setEditorForm({
+                            ...editorForm,
+                            specifications: { ...editorForm.specifications, dimensions: e.target.value }
+                          })}
+                          placeholder="Ej: 28 x 14 x 1.8 cm"
+                          className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 bg-white text-xs"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="font-semibold text-gray-700 block mb-1 text-[11px]">Tiempo de Fabricación Estimado</label>
+                        <input
+                          type="text"
+                          value={editorForm.specifications?.estimatedLeadTime || ''}
+                          onChange={e => setEditorForm({
+                            ...editorForm,
+                            specifications: { ...editorForm.specifications, estimatedLeadTime: e.target.value }
+                          })}
+                          placeholder="Ej: 2 a 3 días hábiles"
+                          className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 bg-white text-xs"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Paleta de Colores, Barnices y Acabados */}
+                    <div className="rounded-2xl border border-stone-200 bg-white overflow-hidden shadow-2xs">
+                      <div
+                        onClick={() => setEditorColorsAccordion(prev => !prev)}
+                        className="p-3.5 flex items-center justify-between cursor-pointer select-none hover:bg-stone-50 transition-colors"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Palette className="w-4 h-4 text-purple-600" />
+                          <div>
+                            <h5 className="font-heading font-bold text-xs text-[#1F2421]">
+                              Tintes, Barnices y Colores de Acabado ({getColorVariant()?.options?.length || 0} asignados)
+                            </h5>
+                            <span className="text-[10.5px] text-gray-500">
+                              Paleta elegible por el cliente (barnices para madera: Nogal, Roble, Azul, Verde, etc.)
                             </span>
                           </div>
+                        </div>
+                        <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${editorColorsAccordion ? 'rotate-180' : ''}`} />
+                      </div>
 
-                          {(editorForm.manufacturingRecipe?.items || []).length === 0 ? (
-                            <div className="p-4 bg-white rounded-xl border border-dashed border-stone-300 text-center space-y-1">
-                              <p className="text-xs font-semibold text-gray-600">Este producto aún no tiene insumos configurados.</p>
-                              <p className="text-[11px] text-gray-400">Selecciona un insumo del catálogo abajo o haz clic en una de las plantillas rápidas.</p>
-                            </div>
-                          ) : (
-                            <div className="space-y-2 max-h-72 overflow-y-auto pr-0.5">
-                              {(editorForm.manufacturingRecipe?.items || []).map((item, idx) => {
-                                const matchedMat = rawMaterialsList.find(m => m.id === item.materialId || (item.name && m.name.toLowerCase().trim() === item.name.toLowerCase().trim()));
-                                const netVal = Number(item.netQuantity) || 0;
-                                const wasteVal = Number(item.wasteQuantity) || 0;
-                                const totalVal = netVal + wasteVal;
-                                const costVal = Number(item.totalCost) || 0;
-
-                                // Stock disponible en taller
-                                let stockBadgeText = 'Sin vincular';
-                                let stockBadgeColor = 'bg-gray-100 text-gray-600 border-gray-200';
-                                if (matchedMat) {
-                                  const currentStock = Number(matchedMat.currentStock) || 0;
-                                  const deductionPerUnit = calculateMaterialStockDeduction(matchedMat, totalVal, item.unit);
-                                  const possibleUnits = deductionPerUnit > 0 ? Math.floor(currentStock / deductionPerUnit) : 0;
-                                  
-                                  if (possibleUnits >= 5) {
-                                    stockBadgeText = `🟢 Taller: ${currentStock} ${matchedMat.unit} (~${possibleUnits} pzas)`;
-                                    stockBadgeColor = 'bg-emerald-50 text-emerald-800 border-emerald-200';
-                                  } else if (possibleUnits > 0) {
-                                    stockBadgeText = `⚠️ Taller bajo: ${currentStock} ${matchedMat.unit} (${possibleUnits} pzas)`;
-                                    stockBadgeColor = 'bg-amber-50 text-amber-800 border-amber-200';
-                                  } else {
-                                    stockBadgeText = `🔴 Agotado en taller: ${currentStock} ${matchedMat.unit}`;
-                                    stockBadgeColor = 'bg-rose-50 text-rose-800 border-rose-200';
-                                  }
-                                }
-
-                                return (
-                                  <div
-                                    key={item.id || idx}
-                                    className="p-2.5 sm:p-3 rounded-xl bg-white border border-stone-200 hover:border-emerald-300 transition-all shadow-2xs space-y-2"
-                                  >
-                                    <div className="flex flex-wrap items-center justify-between gap-2">
-                                      <div className="flex items-center gap-2 min-w-0">
-                                        <span className="w-5 h-5 rounded-full bg-[#2D4F3E] text-white flex items-center justify-center font-bold text-[10px] shrink-0">
-                                          {idx + 1}
-                                        </span>
-                                        <div className="min-w-0">
-                                          <div className="font-bold text-xs text-gray-900 truncate flex items-center gap-1.5">
-                                            <span>{item.name}</span>
-                                            {item.category && (
-                                              <span className="px-1.5 py-0.2 rounded bg-stone-100 text-stone-700 text-[9px] uppercase font-bold">
-                                                {item.category}
-                                              </span>
-                                            )}
-                                          </div>
-                                          <div className="flex items-center gap-1.5 mt-0.5">
-                                            <span className={`px-2 py-0.2 rounded-full border text-[9.5px] font-bold ${stockBadgeColor}`}>
-                                              {stockBadgeText}
-                                            </span>
-                                          </div>
-                                        </div>
-                                      </div>
-
-                                      <div className="flex items-center gap-2">
-                                        <span className="text-xs font-mono font-black text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-200">
-                                          ${costVal.toFixed(2)} MXN
-                                        </span>
-                                        <button
-                                          type="button"
-                                          onClick={() => handleRemoveEditorRecipeItem(item.id)}
-                                          className="p-1 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
-                                          title="Eliminar insumo de la receta"
+                      {editorColorsAccordion && (
+                        <div className="p-3.5 pt-0 border-t border-stone-100 space-y-3">
+                          {/* Colores Activos */}
+                          {(() => {
+                            const colorVar = getColorVariant();
+                            const currentColors = colorVar?.options || [];
+                            return (
+                              <div className="space-y-1.5 pt-2">
+                                <span className="text-[10px] font-bold text-gray-600 uppercase block">Opciones asignadas actualmente ({colorVar?.name || 'Color'}):</span>
+                                {currentColors.length > 0 ? (
+                                  <div className="flex flex-wrap gap-1.5 p-2 rounded-xl bg-stone-50 border border-stone-200">
+                                    {currentColors.map(color => {
+                                      const sw = getFilamentColor(color);
+                                      return (
+                                        <span
+                                          key={color}
+                                          className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-white border border-stone-200 text-[11px] font-semibold text-gray-800 shadow-2xs"
                                         >
-                                          <Trash2 className="w-3.5 h-3.5" />
-                                        </button>
-                                      </div>
-                                    </div>
-
-                                    {/* Inputs de Cantidad Neta, Merma y Tipo */}
-                                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 border-t border-stone-100 text-[10px]">
-                                      
-                                      {/* Cantidad Neta */}
-                                      <div>
-                                        <label className="text-gray-500 font-bold block mb-0.5">
-                                          Peso / Cant. Neta ({item.unit}):
-                                        </label>
-                                        <input
-                                          type="number"
-                                          step="any"
-                                          min="0"
-                                          value={item.netQuantity ?? ''}
-                                          onChange={e => handleUpdateEditorRecipeItem(item.id, 'netQuantity', parseFloat(e.target.value) || 0)}
-                                          className="w-full px-2 py-1 rounded-lg border border-gray-300 font-mono font-bold text-xs bg-stone-50/50"
-                                          placeholder="Ej: 45"
-                                        />
-                                        <span className="text-[9px] text-gray-400">En pieza final</span>
-                                      </div>
-
-                                      {/* Merma / Desperdicio */}
-                                      <div>
-                                        <label className="text-amber-800 font-bold block mb-0.5">
-                                          + Merma / Purga ({item.unit}):
-                                        </label>
-                                        <input
-                                          type="number"
-                                          step="any"
-                                          min="0"
-                                          value={item.wasteQuantity ?? ''}
-                                          onChange={e => handleUpdateEditorRecipeItem(item.id, 'wasteQuantity', parseFloat(e.target.value) || 0)}
-                                          className="w-full px-2 py-1 rounded-lg border border-amber-300 bg-amber-50/50 font-mono font-bold text-xs text-amber-900"
-                                          placeholder="Ej: 15"
-                                        />
-                                        <span className="text-[9px] text-amber-700 font-semibold">
-                                          {totalVal > 0 ? `${Math.round((wasteVal / totalVal) * 100)}% merma` : '0%'}
+                                          <span
+                                            className="w-3 h-3 rounded-full border border-black/20 shrink-0"
+                                            style={{ background: sw?.css || '#D1D5DB' }}
+                                          />
+                                          <span>{color}</span>
+                                          <button
+                                            type="button"
+                                            onClick={() => handleRemoveColorOption(color)}
+                                            className="text-gray-400 hover:text-rose-600 font-bold ml-0.5 cursor-pointer"
+                                          >
+                                            ×
+                                          </button>
                                         </span>
-                                      </div>
-
-                                      {/* Tipo de Merma */}
-                                      <div>
-                                        <label className="text-gray-500 font-bold block mb-0.5">
-                                          Motivo de Merma:
-                                        </label>
-                                        <select
-                                          value={item.wasteType || 'supports_purge'}
-                                          onChange={e => handleUpdateEditorRecipeItem(item.id, 'wasteType', e.target.value)}
-                                          className="w-full px-2 py-1 rounded-lg border border-gray-300 font-medium text-[10.5px] bg-white"
-                                        >
-                                          <option value="supports_purge">🖨️ Soportes / Torre Purga (3D)</option>
-                                          <option value="kerf_cut">⚡ Kerf / Retacería (Láser)</option>
-                                          <option value="tape">☕ Cinta Térmica / Fijación</option>
-                                          <option value="trimming">✂️ Recortes / Descarte Papel</option>
-                                          <option value="manual">🪵 Merma Manual / Pruebas</option>
-                                          <option value="none">✓ Sin Merma (Exacto)</option>
-                                        </select>
-                                      </div>
-
-                                      {/* Total y Costo Unitario */}
-                                      <div>
-                                        <label className="text-gray-500 font-bold block mb-0.5">
-                                          Total a Consumir:
-                                        </label>
-                                        <div className="px-2 py-1 rounded-lg bg-stone-100 font-mono font-bold text-xs text-gray-800 flex items-center justify-between">
-                                          <span>{totalVal} {item.unit}</span>
-                                          <span className="text-[9.5px] text-gray-500 font-normal">@ ${Number(item.unitCost).toFixed(3)}</span>
-                                        </div>
-                                        <span className="text-[9px] text-gray-400">Total taller</span>
-                                      </div>
-
-                                    </div>
+                                      );
+                                    })}
                                   </div>
+                                ) : (
+                                  <p className="text-[11px] text-gray-400 italic">Sin colores o acabados asignados.</p>
+                                )}
+                              </div>
+                            );
+                          })()}
+
+                          {/* Paleta Rápida de Tintes y Barnices para Madera */}
+                          <div className="space-y-1">
+                            <span className="text-[10px] font-bold text-amber-900 uppercase flex items-center gap-1">
+                              <span>🪵</span>
+                              <span>Tintes &amp; Barnices para Madera (Láser y Carpintería):</span>
+                            </span>
+                            <div className="flex flex-wrap items-center gap-1.5 p-2 bg-amber-50/60 rounded-xl border border-amber-200/70">
+                              {STANDARD_WOOD_VARNISHES.map(varnish => {
+                                const colorVar = getColorVariant();
+                                const isSelected = (colorVar?.options || []).some(opt => opt.toLowerCase() === varnish.toLowerCase());
+                                const sw = getFilamentColor(varnish);
+                                return (
+                                  <button
+                                    key={varnish}
+                                    type="button"
+                                    onClick={() => handleToggleColorOption(varnish, 'Tono de Barniz y Acabado')}
+                                    className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-lg text-[10.5px] font-semibold transition-all cursor-pointer shadow-2xs ${
+                                      isSelected 
+                                        ? 'bg-amber-900 text-white ring-2 ring-amber-700 ring-offset-1 scale-102' 
+                                        : 'bg-white text-stone-800 border border-amber-200/90 hover:bg-amber-100/50'
+                                    }`}
+                                    title={`Asignar ${varnish}`}
+                                  >
+                                    <span
+                                      className="w-3.5 h-3.5 rounded-full border border-black/20 shrink-0 shadow-2xs"
+                                      style={{ background: sw?.css || '#A27B5C' }}
+                                    />
+                                    <span>{varnish}</span>
+                                    {isSelected && <span className="font-black text-amber-200 text-xs leading-none">✓</span>}
+                                  </button>
                                 );
                               })}
                             </div>
-                          )}
-                        </div>
-
-                        {/* 3. Formulario para Añadir Nuevo Insumo al Producto */}
-                        <div className="p-3 bg-white rounded-xl border border-stone-200 space-y-2.5">
-                          <div className="text-[11px] font-bold text-gray-800 uppercase flex items-center gap-1.5">
-                            <Plus className="w-3.5 h-3.5 text-emerald-700" />
-                            <span>Agregar Materia Prima o Insumo a la Receta:</span>
                           </div>
 
-                          <div className="grid grid-cols-1 sm:grid-cols-12 gap-2 text-xs">
-                            
-                            {/* Selector / Búsqueda de Insumo */}
-                            <div className="sm:col-span-5 space-y-1">
-                              <label className="text-[10px] font-bold text-gray-600 block">
-                                Insumo del Taller ({rawMaterialsList.length} en almacén):
-                              </label>
-                              <select
-                                value={editorRecipeSelectedMatId}
-                                onChange={e => {
-                                  const id = e.target.value;
-                                  setEditorRecipeSelectedMatId(id);
-                                  const mat = rawMaterialsList.find(m => m.id === id);
-                                  if (mat) {
-                                    const pkg = parsePackageInfo(mat);
-                                    setEditorRecipeUnit(pkg.packageMeasurement || 'pza');
-                                    // Sugerir cantidades lógicas según tipo
-                                    const lowerName = (mat.name || '').toLowerCase();
-                                    if (lowerName.includes('resistol') || lowerName.includes('pegamento') || lowerName.includes('cianocrilato') || mat.unit === 'gotas') {
-                                      setEditorRecipeNetQty(10);
-                                      setEditorRecipeWasteQty(2);
-                                      setEditorRecipeWasteType('manual');
-                                      setEditorRecipeUnit('gotas');
-                                    } else if (lowerName.includes('spray') || lowerName.includes('3dlac') || mat.unit === 'disparos') {
-                                      setEditorRecipeNetQty(2);
-                                      setEditorRecipeWasteQty(0);
-                                      setEditorRecipeWasteType('none');
-                                      setEditorRecipeUnit('disparos');
-                                    } else if (lowerName.includes('click') || lowerName.includes('toner') || mat.unit === 'click') {
-                                      setEditorRecipeNetQty(1);
-                                      setEditorRecipeWasteQty(0);
-                                      setEditorRecipeWasteType('none');
-                                      setEditorRecipeUnit('click');
-                                    } else if (mat.category === 'dtf' || lowerName.includes('dtf') || lowerName.includes('pet')) {
-                                      setEditorRecipeNetQty(28);
-                                      setEditorRecipeWasteQty(2);
-                                      setEditorRecipeWasteType('kerf_cut');
-                                      setEditorRecipeUnit('cm');
-                                    } else if (mat.category === '3d') {
-                                      setEditorRecipeNetQty(45);
-                                      setEditorRecipeWasteQty(15);
-                                      setEditorRecipeWasteType('supports_purge');
-                                      setEditorRecipeUnit('g');
-                                    } else if (mat.category === 'laser') {
-                                      setEditorRecipeNetQty(350);
-                                      setEditorRecipeWasteQty(50);
-                                      setEditorRecipeWasteType('kerf_cut');
-                                      setEditorRecipeUnit('cm²');
-                                    } else if (lowerName.includes('cinta')) {
-                                      setEditorRecipeNetQty(15);
-                                      setEditorRecipeWasteQty(5);
-                                      setEditorRecipeWasteType('tape');
-                                      setEditorRecipeUnit('cm');
-                                    } else if (mat.category === 'sublimation' && mat.unit === 'pieza') {
-                                      setEditorRecipeNetQty(1);
-                                      setEditorRecipeWasteQty(0);
-                                      setEditorRecipeWasteType('none');
-                                      setEditorRecipeUnit('pza');
-                                    }
-                                  }
-                                }}
-                                className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-medium text-xs text-gray-800"
-                              >
-                                <option value="">-- Seleccionar insumo de bodega --</option>
-                                <optgroup label="🖨️ Filamentos 3D & Insumos de Cama">
-                                  {rawMaterialsList.filter(m => m.category === '3d').map(m => (
-                                    <option key={m.id} value={m.id}>
-                                      {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
-                                    </option>
-                                  ))}
-                                </optgroup>
-                                <optgroup label="⚡ Placas Láser (MDF, Triplay, Acrílico)">
-                                  {rawMaterialsList.filter(m => m.category === 'laser').map(m => (
-                                    <option key={m.id} value={m.id}>
-                                      {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
-                                    </option>
-                                  ))}
-                                </optgroup>
-                                <optgroup label="☕ Sublimación (Tazas, Blanks, Cinta, Tintas)">
-                                  {rawMaterialsList.filter(m => m.category === 'sublimation').map(m => (
-                                    <option key={m.id} value={m.id}>
-                                      {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
-                                    </option>
-                                  ))}
-                                </optgroup>
-                                <optgroup label="👕 DTF Textil (Film PET, Tinta CMYKW, Poliamida)">
-                                  {rawMaterialsList.filter(m => m.category === 'dtf').map(m => (
-                                    <option key={m.id} value={m.id}>
-                                      {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
-                                    </option>
-                                  ))}
-                                </optgroup>
-                                <optgroup label="📄 Papelería Fina & Impresión Láser (Couché, Opalina, Tóner)">
-                                  {rawMaterialsList.filter(m => m.category === 'impresion_laser' || m.category === 'paper').map(m => (
-                                    <option key={m.id} value={m.id}>
-                                      {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
-                                    </option>
-                                  ))}
-                                </optgroup>
-                                <optgroup label="🏷️ Vinil Textil & Rotulación Cameo">
-                                  {rawMaterialsList.filter(m => m.category === 'vinyl').map(m => (
-                                    <option key={m.id} value={m.id}>
-                                      {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
-                                    </option>
-                                  ))}
-                                </optgroup>
-                                <optgroup label="🪵 Adhesivos, Resistol en Gotas & Silicón">
-                                  {rawMaterialsList.filter(m => m.category === 'ensamble' || m.category === 'glue' || m.name?.toLowerCase().includes('resistol') || m.name?.toLowerCase().includes('pegamento') || m.name?.toLowerCase().includes('cianocrilato') || m.name?.toLowerCase().includes('silicón') || m.name?.toLowerCase().includes('silicon')).map(m => (
-                                    <option key={m.id} value={m.id}>
-                                      {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
-                                    </option>
-                                  ))}
-                                </optgroup>
-                                <optgroup label="📦 Otros Insumos, Blanks & Empaque">
-                                  {rawMaterialsList.filter(m => !['3d', 'laser', 'sublimation', 'dtf', 'impresion_laser', 'paper', 'vinyl', 'ensamble', 'glue'].includes(m.category) && !m.name?.toLowerCase().includes('resistol') && !m.name?.toLowerCase().includes('cianocrilato')).map(m => (
-                                    <option key={m.id} value={m.id}>
-                                      {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
-                                    </option>
-                                  ))}
-                                </optgroup>
-                              </select>
-                              <span className="text-[9.5px] text-gray-400">O escribe uno manual si no está en almacén</span>
+                          {/* Paleta Rápida de Filamentos PLA y Polímeros */}
+                          <div className="space-y-1">
+                            <span className="text-[10px] font-bold text-gray-500 uppercase block">🖨️ Paleta de filamentos 3D (PLA / PETG):</span>
+                            <div className="flex flex-wrap items-center gap-1.5 p-2 bg-stone-50 rounded-xl border border-stone-200">
+                              {STANDARD_PALETTE_COLORS.map(color => {
+                                const colorVar = getColorVariant();
+                                const isSelected = (colorVar?.options || []).some(opt => opt.toLowerCase() === color.toLowerCase());
+                                const sw = getFilamentColor(color);
+                                return (
+                                  <button
+                                    key={color}
+                                    type="button"
+                                    onClick={() => handleToggleColorOption(color, 'Color')}
+                                    className={`w-6 h-6 rounded-full border flex items-center justify-center transition-transform hover:scale-110 cursor-pointer shadow-2xs ${
+                                      isSelected ? 'ring-2 ring-[#2D4F3E] ring-offset-1 scale-105' : 'border-black/20'
+                                    }`}
+                                    style={{ background: sw?.css || '#D1D5DB' }}
+                                    title={color}
+                                  >
+                                    {isSelected && <span className="text-[9px] font-black text-white drop-shadow-sm">✓</span>}
+                                  </button>
+                                );
+                              })}
                             </div>
+                          </div>
 
-                            {/* Opcional: Nombre Personalizado */}
-                            {!editorRecipeSelectedMatId && (
-                              <div className="sm:col-span-3 space-y-1">
-                                <label className="text-[10px] font-bold text-gray-600 block">Nombre manual:</label>
-                                <input
-                                  type="text"
-                                  value={editorRecipeCustomName}
-                                  onChange={e => setEditorRecipeCustomName(e.target.value)}
-                                  className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white text-xs"
-                                  placeholder="Ej: Lija 240 / Cinta..."
-                                />
-                              </div>
-                            )}
-
-                            {/* Cantidad Neta */}
-                            <div className="sm:col-span-2 space-y-1">
-                              <label className="text-[10px] font-bold text-gray-600 block">Cant. Neta:</label>
-                              <input
-                                type="number"
-                                step="any"
-                                min="0"
-                                value={editorRecipeNetQty}
-                                onChange={e => setEditorRecipeNetQty(parseFloat(e.target.value) || 0)}
-                                className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-mono font-bold text-xs"
-                              />
-                            </div>
-
-                            {/* Cantidad Merma */}
-                            <div className="sm:col-span-2 space-y-1">
-                              <label className="text-[10px] font-bold text-amber-800 block">+ Merma:</label>
-                              <input
-                                type="number"
-                                step="any"
-                                min="0"
-                                value={editorRecipeWasteQty}
-                                onChange={e => setEditorRecipeWasteQty(parseFloat(e.target.value) || 0)}
-                                className="w-full px-2 py-1.5 rounded-lg border border-amber-300 bg-amber-50/50 font-mono font-bold text-xs text-amber-900"
-                              />
-                            </div>
-
-                            {/* Unidad */}
-                            <div className="sm:col-span-1 space-y-1">
-                              <label className="text-[10px] font-bold text-gray-600 block">Unidad:</label>
-                              <select
-                                value={editorRecipeUnit}
-                                onChange={e => setEditorRecipeUnit(e.target.value)}
-                                className="w-full px-1.5 py-1.5 rounded-lg border border-gray-300 bg-white font-bold text-xs text-center"
-                              >
-                                <option value="g">g</option>
-                                <option value="kg">kg</option>
-                                <option value="cm²">cm²</option>
-                                <option value="cm">cm</option>
-                                <option value="m">m</option>
-                                <option value="pza">pza</option>
-                                <option value="hoja">hoja</option>
-                                <option value="pliego">pliego</option>
-                                <option value="ml">ml</option>
-                                <option value="gotas">gotas</option>
-                                <option value="disparos">disparos</option>
-                                <option value="click">click</option>
-                              </select>
-                            </div>
-
-                            {/* Botón de Agregar */}
-                            <div className="sm:col-span-2 flex items-end">
-                              <button
-                                type="button"
-                                onClick={handleAddEditorRecipeItem}
-                                className="w-full py-1.5 px-3 rounded-lg bg-[#2D4F3E] hover:bg-[#20392C] text-white font-bold text-xs flex items-center justify-center gap-1 shadow-xs transition-all cursor-pointer active:scale-95"
-                              >
-                                <Plus className="w-3.5 h-3.5" />
-                                <span>Agregar</span>
-                              </button>
-                            </div>
-
+                          {/* Agregar color libre */}
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="text"
+                              value={customColorInput}
+                              onChange={e => setCustomColorInput(e.target.value)}
+                              onKeyDown={e => {
+                                if (e.key === 'Enter') {
+                                  e.preventDefault();
+                                  handleAddCustomColor(customColorInput);
+                                }
+                              }}
+                              placeholder="Escribe otro color o acabado personalizado..."
+                              className="flex-1 px-3 py-1.5 text-xs rounded-xl border border-gray-300 bg-white"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleAddCustomColor(customColorInput)}
+                              className="px-3 py-1.5 rounded-xl bg-[#2D4F3E] text-white text-xs font-bold hover:bg-[#20392C] transition-colors cursor-pointer"
+                            >
+                              + Agregar
+                            </button>
                           </div>
                         </div>
+                      )}
+                    </div>
 
-                        {/* 4. Consumo Eléctrico (Luz CFE) & Tiempos de Fabricación */}
-                        <div className="p-3 bg-white rounded-xl border border-stone-200 space-y-3">
-                          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-stone-100 pb-2">
-                            <div className="flex items-center gap-2">
-                              <span className="p-1 rounded-lg bg-amber-100 text-amber-800">
-                                <Zap className="w-3.5 h-3.5" />
-                              </span>
-                              <div>
-                                <h5 className="font-bold text-xs text-gray-900 flex items-center gap-1.5">
-                                  <span>Consumo Eléctrico (Luz CFE) &amp; Tiempos de Mano de Obra</span>
-                                  <span className="px-2 py-0.2 rounded-full bg-amber-100 text-amber-900 text-[9.5px] font-bold">
-                                    Overhead Exacto
-                                  </span>
-                                </h5>
-                                <span className="text-[10px] text-gray-400">
-                                  Calcula al centavo el gasto de luz según los Watts de la máquina y el tiempo del operador
-                                </span>
-                              </div>
-                            </div>
-                            
-                            <div className="text-right">
-                              <span className="text-[10px] text-gray-400 block">Subtotal Luz + Labor:</span>
-                              <span className="font-mono font-bold text-xs text-amber-900">
-                                ${((Number(editorForm.manufacturingRecipe?.energyCost) || 0) + (Number(editorForm.manufacturingRecipe?.laborCost) || 0)).toFixed(2)} MXN
-                              </span>
-                            </div>
-                          </div>
+                  </div>
+                </div>
+              )}
 
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                            {/* Columna 1: Consumo Eléctrico */}
-                            <div className="p-2.5 rounded-lg bg-amber-50/40 border border-amber-200/60 space-y-2">
-                              <div className="flex items-center justify-between">
-                                <span className="font-bold text-[10.5px] text-amber-950 flex items-center gap-1">
-                                  ⚡ Luz Máquina CFE:
-                                </span>
-                                <span className="font-mono font-bold text-xs text-amber-900 bg-amber-100 px-2 py-0.5 rounded">
-                                  ${Number(editorForm.manufacturingRecipe?.energyCost || 0).toFixed(2)} MXN
-                                </span>
-                              </div>
+              {/* ======================================================== */}
+              {/* PESTAÑA 2: TALLER & INSUMOS (ESCANDALLO DIRECTO/INDIRECTO)*/}
+              {/* ======================================================== */}
+              {editorActiveTab === 'taller' && (() => {
+                const allItems = editorForm.manufacturingRecipe?.items || [];
+                const directItems = allItems.filter(it => it.supplyType !== 'indirect');
+                const indirectItems = allItems.filter(it => it.supplyType === 'indirect');
+                const directCost = Math.round(directItems.reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
+                const indirectCost = Math.round(indirectItems.reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
+                const totalInsumos = Math.round((directCost + indirectCost) * 100) / 100;
+                const energyCost = Number(editorForm.manufacturingRecipe?.energyCost) || 0;
+                const laborCost = Number(editorForm.manufacturingRecipe?.laborCost) || 0;
+                const totalTaller = Math.round((totalInsumos + energyCost + laborCost) * 100) / 100;
 
-                              {/* Presets de Watts de máquinas */}
-                              <div className="space-y-1">
-                                <span className="text-[9.5px] text-gray-500 font-semibold block">Presets de potencia rápida:</span>
-                                <div className="flex flex-wrap gap-1">
-                                  {[
-                                    { label: '3D (250W)', watts: 250 },
-                                    { label: 'Láser Diodo (80W)', watts: 80 },
-                                    { label: 'Láser CO2 (450W)', watts: 450 },
-                                    { label: 'Plancha (1800W)', watts: 1800 },
-                                    { label: 'Imp. Láser (450W)', watts: 450 },
-                                    { label: 'Plotter (60W)', watts: 60 },
-                                  ].map(p => (
-                                    <button
-                                      key={p.label}
-                                      type="button"
-                                      onClick={() => handleUpdateRecipeField('machinePowerWatts', p.watts)}
-                                      className={`px-1.5 py-0.5 rounded text-[9.5px] font-bold border transition-colors cursor-pointer ${
-                                        editorForm.manufacturingRecipe?.machinePowerWatts === p.watts
-                                          ? 'bg-amber-700 text-white border-amber-800'
-                                          : 'bg-white text-gray-700 border-amber-200 hover:bg-amber-100'
-                                      }`}
-                                    >
-                                      {p.label}
-                                    </button>
-                                  ))}
-                                </div>
-                              </div>
-
-                              <div className="grid grid-cols-3 gap-1.5 pt-1 text-[10px]">
-                                <div>
-                                  <label className="text-gray-500 font-bold block mb-0.5">Potencia (W):</label>
-                                  <input
-                                    type="number"
-                                    min="0"
-                                    step="10"
-                                    value={editorForm.manufacturingRecipe?.machinePowerWatts ?? 250}
-                                    onChange={e => handleUpdateRecipeField('machinePowerWatts', parseFloat(e.target.value) || 0)}
-                                    className="w-full px-1.5 py-1 rounded border border-gray-300 bg-white font-mono font-bold text-xs"
-                                  />
-                                </div>
-                                <div>
-                                  <label className="text-gray-500 font-bold block mb-0.5">Tiempo (min):</label>
-                                  <input
-                                    type="number"
-                                    min="0"
-                                    step="5"
-                                    value={editorForm.manufacturingRecipe?.manufacturingTimeMinutes ?? 90}
-                                    onChange={e => handleUpdateRecipeField('manufacturingTimeMinutes', parseFloat(e.target.value) || 0)}
-                                    className="w-full px-1.5 py-1 rounded border border-gray-300 bg-white font-mono font-bold text-xs"
-                                  />
-                                </div>
-                                <div>
-                                  <label className="text-gray-500 font-bold block mb-0.5">Tarifa ($/kWh):</label>
-                                  <input
-                                    type="number"
-                                    min="0"
-                                    step="0.1"
-                                    value={editorForm.manufacturingRecipe?.kwhCost ?? 3.50}
-                                    onChange={e => handleUpdateRecipeField('kwhCost', parseFloat(e.target.value) || 0)}
-                                    className="w-full px-1.5 py-1 rounded border border-gray-300 bg-white font-mono font-bold text-xs"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Columna 2: Mano de Obra y Tiempo de Operador */}
-                            <div className="p-2.5 rounded-lg bg-emerald-50/40 border border-emerald-200/60 space-y-2">
-                              <div className="flex items-center justify-between">
-                                <span className="font-bold text-[10.5px] text-emerald-950 flex items-center gap-1">
-                                  ⏱️ Mano de Obra / Operador:
-                                </span>
-                                <span className="font-mono font-bold text-xs text-emerald-900 bg-emerald-100 px-2 py-0.5 rounded">
-                                  ${Number(editorForm.manufacturingRecipe?.laborCost || 0).toFixed(2)} MXN
-                                </span>
-                              </div>
-
-                              <p className="text-[10px] text-gray-500">
-                                Tiempo que el artesano invierte en preparación, armado, desmolde, depilado o pegado manual.
-                              </p>
-
-                              <div className="grid grid-cols-2 gap-2 pt-1 text-[10px]">
-                                <div>
-                                  <label className="text-gray-500 font-bold block mb-0.5">Labor manual (min):</label>
-                                  <input
-                                    type="number"
-                                    min="0"
-                                    step="5"
-                                    value={editorForm.manufacturingRecipe?.laborTimeMinutes ?? 15}
-                                    onChange={e => handleUpdateRecipeField('laborTimeMinutes', parseFloat(e.target.value) || 0)}
-                                    className="w-full px-2 py-1 rounded border border-gray-300 bg-white font-mono font-bold text-xs"
-                                  />
-                                </div>
-                                <div>
-                                  <label className="text-gray-500 font-bold block mb-0.5">Costo hora ($/hr):</label>
-                                  <input
-                                    type="number"
-                                    min="0"
-                                    step="5"
-                                    value={editorForm.manufacturingRecipe?.laborRatePerHour ?? 75}
-                                    onChange={e => handleUpdateRecipeField('laborRatePerHour', parseFloat(e.target.value) || 0)}
-                                    className="w-full px-2 py-1 rounded border border-gray-300 bg-white font-mono font-bold text-xs"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* 5. Empaque y Logística de Taller (Configurable / Futuro) */}
-                        <div className="p-3 bg-white rounded-xl border border-stone-200 space-y-2.5">
-                          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-stone-100 pb-2">
-                            <div className="flex items-center gap-2">
-                              <span className="p-1 rounded-lg bg-stone-100 text-stone-700">
-                                <Package className="w-3.5 h-3.5" />
-                              </span>
-                              <div>
-                                <h5 className="font-bold text-xs text-gray-900 flex items-center gap-1.5">
-                                  <span>Empaque &amp; Traslado de Taller (Futuro / Modular)</span>
-                                  <span className="px-2 py-0.2 rounded-full bg-stone-100 text-stone-700 text-[9.5px] font-bold">
-                                    Opcional
-                                  </span>
-                                </h5>
-                                <span className="text-[10px] text-gray-400">
-                                  Configura cajas kraft, bolsas celofán, viruta protectora o costo de entrega
-                                </span>
-                              </div>
-                            </div>
-
-                            <label className="flex items-center gap-1.5 cursor-pointer text-xs font-bold text-emerald-800">
-                              <input
-                                type="checkbox"
-                                checked={!!editorForm.manufacturingRecipe?.packagingAndShipping?.enabled}
-                                onChange={e => {
-                                  const currentPkg = editorForm.manufacturingRecipe?.packagingAndShipping || {};
-                                  handleUpdateRecipeField('packagingAndShipping', {
-                                    ...currentPkg,
-                                    enabled: e.target.checked,
-                                    packagingType: currentPkg.packagingType || 'caja_kraft',
-                                    packagingCost: currentPkg.packagingCost ?? 12,
-                                    shippingCost: currentPkg.shippingCost ?? 0,
-                                    notes: currentPkg.notes || ''
-                                  });
-                                }}
-                                className="w-4 h-4 rounded text-emerald-700 cursor-pointer"
-                              />
-                              <span>Activar costo de empaque</span>
-                            </label>
-                          </div>
-
-                          {editorForm.manufacturingRecipe?.packagingAndShipping?.enabled && (
-                            <div className="grid grid-cols-1 sm:grid-cols-12 gap-2 text-xs pt-1">
-                              <div className="sm:col-span-5 space-y-1">
-                                <label className="text-[10px] font-bold text-gray-600 block">Tipo de Empaque:</label>
-                                <select
-                                  value={editorForm.manufacturingRecipe?.packagingAndShipping?.packagingType || 'caja_kraft'}
-                                  onChange={e => {
-                                    const val = e.target.value;
-                                    const currentPkg = editorForm.manufacturingRecipe?.packagingAndShipping || {};
-                                    let suggestedCost = currentPkg.packagingCost || 12;
-                                    if (val === 'caja_kraft') suggestedCost = 12;
-                                    else if (val === 'bolsa_celofan') suggestedCost = 3.5;
-                                    else if (val === 'sobre_rigido') suggestedCost = 6;
-                                    else if (val === 'caja_premium') suggestedCost = 25;
-                                    handleUpdateRecipeField('packagingAndShipping', {
-                                      ...currentPkg,
-                                      packagingType: val,
-                                      packagingCost: suggestedCost
-                                    });
-                                  }}
-                                  className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-medium text-xs"
-                                >
-                                  <option value="caja_kraft">📦 Caja Kraft Microcorrugado con Viruta ($12.00)</option>
-                                  <option value="bolsa_celofan">🛍️ Bolsa Celofán con Cenefa / Sticker ($3.50)</option>
-                                  <option value="sobre_rigido">✉️ Sobre Rígido Papelería Fina ($6.00)</option>
-                                  <option value="caja_premium">🎁 Caja Rígida Premium con Moño ($25.00)</option>
-                                  <option value="custom">✏️ Empaque a Convenir / Personalizado</option>
-                                </select>
-                              </div>
-
-                              <div className="sm:col-span-3 space-y-1">
-                                <label className="text-[10px] font-bold text-gray-600 block">Costo Empaque ($ MXN):</label>
-                                <input
-                                  type="number"
-                                  step="0.5"
-                                  min="0"
-                                  value={editorForm.manufacturingRecipe?.packagingAndShipping?.packagingCost ?? 12}
-                                  onChange={e => {
-                                    const currentPkg = editorForm.manufacturingRecipe?.packagingAndShipping || {};
-                                    handleUpdateRecipeField('packagingAndShipping', {
-                                      ...currentPkg,
-                                      packagingCost: parseFloat(e.target.value) || 0
-                                    });
-                                  }}
-                                  className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-mono font-bold text-xs"
-                                />
-                              </div>
-
-                              <div className="sm:col-span-4 space-y-1">
-                                <label className="text-[10px] font-bold text-gray-600 block">Notas de Logística / Envío:</label>
-                                <input
-                                  type="text"
-                                  value={editorForm.manufacturingRecipe?.packagingAndShipping?.notes || ''}
-                                  onChange={e => {
-                                    const currentPkg = editorForm.manufacturingRecipe?.packagingAndShipping || {};
-                                    handleUpdateRecipeField('packagingAndShipping', {
-                                      ...currentPkg,
-                                      notes: e.target.value
-                                    });
-                                  }}
-                                  placeholder="Ej: Embalar con burbuja para mensajería..."
-                                  className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white text-xs"
-                                />
-                              </div>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* 6. Resumen Financiero Total de la Receta */}
-                        <div className="p-3 bg-stone-100 rounded-xl border border-stone-200 flex flex-wrap items-center justify-between gap-3 text-xs">
-                          <div className="flex flex-wrap items-center gap-2">
-                            <span className="text-gray-500 font-bold uppercase text-[10px]">Costo Total Unitario:</span>
-                            <span className="px-2 py-0.5 rounded-md bg-white border border-stone-300 font-mono text-[11px] text-gray-800">
-                              Insumos: <b>${Number(editorForm.manufacturingRecipe?.totalMaterialCost || 0).toFixed(2)}</b>
-                            </span>
-                            <span className="px-2 py-0.5 rounded-md bg-white border border-stone-300 font-mono text-[11px] text-amber-900">
-                              Luz: <b>${Number(editorForm.manufacturingRecipe?.energyCost || 0).toFixed(2)}</b>
-                            </span>
-                            <span className="px-2 py-0.5 rounded-md bg-white border border-stone-300 font-mono text-[11px] text-emerald-900">
-                              Labor: <b>${Number(editorForm.manufacturingRecipe?.laborCost || 0).toFixed(2)}</b>
-                            </span>
-                            {editorForm.manufacturingRecipe?.packagingAndShipping?.enabled && (
-                              <span className="px-2 py-0.5 rounded-md bg-white border border-stone-300 font-mono text-[11px] text-purple-900">
-                                Empaque: <b>${Number(editorForm.manufacturingRecipe?.packagingAndShipping?.packagingCost || 0).toFixed(2)}</b>
-                              </span>
-                            )}
-                            <span className="px-2.5 py-0.5 rounded-md bg-emerald-800 text-white font-mono font-bold text-xs shadow-2xs">
-                              Total: ${(
-                                (Number(editorForm.manufacturingRecipe?.totalMaterialCost) || 0) +
-                                (Number(editorForm.manufacturingRecipe?.energyCost) || 0) +
-                                (Number(editorForm.manufacturingRecipe?.laborCost) || 0) +
-                                (editorForm.manufacturingRecipe?.packagingAndShipping?.enabled ? (Number(editorForm.manufacturingRecipe?.packagingAndShipping?.packagingCost) || 0) : 0)
-                              ).toFixed(2)} MXN
-                            </span>
-                          </div>
-
+                return (
+                  <div className="p-4 sm:p-6 space-y-5 text-xs">
+                    
+                    {/* Barra KPI Superior de Taller en Vivo */}
+                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 p-3.5 bg-gradient-to-r from-stone-900 via-[#1C2721] to-[#141615] rounded-2xl text-white shadow-md border border-emerald-900/50">
+                      <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
+                        <span className="text-[10px] text-emerald-400 font-bold block uppercase">🪵 Insumos Directos</span>
+                        <span className="font-mono text-base font-black text-white">${directCost.toFixed(2)}</span>
+                        <span className="text-[9.5px] text-gray-400 block">{directItems.length} materiales</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
+                        <span className="text-[10px] text-amber-300 font-bold block uppercase">⚙️ Insumos Indirectos</span>
+                        <span className="font-mono text-base font-black text-amber-200">${indirectCost.toFixed(2)}</span>
+                        <span className="text-[9.5px] text-gray-400 block">{indirectItems.length} consumibles</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
+                        <span className="text-[10px] text-amber-400 font-bold block uppercase">⚡ Luz CFE</span>
+                        <span className="font-mono text-base font-black text-amber-300">${energyCost.toFixed(2)}</span>
+                        <span className="text-[9.5px] text-gray-400 block">{editorForm.manufacturingRecipe?.machinePowerWatts || 250}W</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
+                        <span className="text-[10px] text-purple-300 font-bold block uppercase">⏱️ Mano de Obra</span>
+                        <span className="font-mono text-base font-black text-purple-200">${laborCost.toFixed(2)}</span>
+                        <span className="text-[9.5px] text-gray-400 block">{editorForm.manufacturingRecipe?.laborTimeMinutes || 15} min</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-emerald-600/30 border border-emerald-500/50 col-span-2 sm:col-span-1 flex flex-col justify-between">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] text-emerald-300 font-black uppercase">Total Taller</span>
                           <button
                             type="button"
                             onClick={handleSyncRecipeToCostPrice}
-                            className="px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer active:scale-95"
+                            className="p-1 rounded bg-amber-400 text-stone-950 font-bold text-[9px] hover:bg-amber-300 transition-colors cursor-pointer"
+                            title="Sincronizar a costo de producción"
                           >
-                            <Zap className="w-3.5 h-3.5 text-amber-300" />
-                            <span>Sincronizar a Costo de Producción</span>
+                            ⚡ Copiar
                           </button>
                         </div>
-
-                        {/* 7. Tarjeta de Simulación en Taller & Descuento Inmediato de Inventario */}
-                        <div className="p-3 bg-gradient-to-r from-emerald-900 via-[#1C2721] to-[#141615] rounded-xl text-white space-y-2.5 shadow-md border border-emerald-700/50">
-                          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-2">
-                            <div className="flex items-center gap-2">
-                              <span className="p-1 rounded-lg bg-emerald-500/20 text-emerald-300">
-                                <Hammer className="w-4 h-4" />
-                              </span>
-                              <div>
-                                <h5 className="font-bold text-xs text-white flex items-center gap-1.5">
-                                  <span>Simulador de Fabricación &amp; Control de Descuento de Taller</span>
-                                  <span className="px-2 py-0.2 rounded-full bg-emerald-500/30 text-emerald-300 text-[9.5px] font-bold">
-                                    En Vivo
-                                  </span>
-                                </h5>
-                                <span className="text-[10px] text-gray-300">
-                                  Prueba si tienes stock suficiente para una orden o descuenta las materias primas al instante
-                                </span>
-                              </div>
-                            </div>
-
-                            {/* Resumen Financiero en el Header del Simulador */}
-                            <div className="flex items-center gap-2 text-right">
-                              <div>
-                                <div className="text-[9.5px] text-gray-400">Costo Material Unitario:</div>
-                                <div className="font-mono font-black text-sm text-emerald-300">
-                                  ${Number(editorForm.manufacturingRecipe?.totalMaterialCost || 0).toFixed(2)} MXN
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Control de Unidades a Fabricar */}
-                          <div className="flex flex-wrap items-center justify-between gap-3 text-xs pt-1">
-                            <div className="flex items-center gap-2">
-                              <label className="text-[11px] text-gray-300 font-semibold">
-                                Piezas a fabricar:
-                              </label>
-                              <div className="flex items-center border border-gray-600 rounded-lg bg-black/40 overflow-hidden">
-                                <button
-                                  type="button"
-                                  onClick={() => setRecipeSimulateUnits(Math.max(1, recipeSimulateUnits - 1))}
-                                  className="px-2 py-1 text-gray-300 hover:bg-white/10 cursor-pointer"
-                                >
-                                  -
-                                </button>
-                                <input
-                                  type="number"
-                                  min="1"
-                                  value={recipeSimulateUnits}
-                                  onChange={e => setRecipeSimulateUnits(Math.max(1, parseInt(e.target.value) || 1))}
-                                  className="w-12 text-center font-mono font-bold text-xs bg-transparent text-white focus:outline-none"
-                                />
-                                <button
-                                  type="button"
-                                  onClick={() => setRecipeSimulateUnits(recipeSimulateUnits + 1)}
-                                  className="px-2 py-1 text-gray-300 hover:bg-white/10 cursor-pointer"
-                                >
-                                  +
-                                </button>
-                              </div>
-                              <span className="text-[10.5px] text-emerald-400 font-mono">
-                                = ${(recipeSimulateUnits * Number(editorForm.manufacturingRecipe?.totalMaterialCost || 0)).toFixed(2)} MXN en insumos
-                              </span>
-                            </div>
-
-                            <div className="flex items-center gap-2">
-                              <button
-                                type="button"
-                                onClick={() => handleSimulateProduction(recipeSimulateUnits)}
-                                className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer"
-                              >
-                                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                                <span>Verificar Disponibilidad de Stock</span>
-                              </button>
-
-                              <button
-                                type="button"
-                                disabled={recipeDeductLoading || (editorForm.manufacturingRecipe?.items || []).length === 0}
-                                onClick={() => handleDeductStockNow(recipeSimulateUnits)}
-                                className="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-black text-xs flex items-center gap-1.5 transition-all shadow-md cursor-pointer active:scale-95"
-                                title="Resta de inmediato las cantidades exactas con merma del stock de taller"
-                              >
-                                <Zap className="w-3.5 h-3.5 text-amber-300" />
-                                <span>{recipeDeductLoading ? 'Descontando...' : `Descontar ${recipeSimulateUnits} pza(s) del Taller`}</span>
-                              </button>
-                            </div>
-                          </div>
-
-                        </div>
-
+                        <span className="font-mono text-lg font-black text-emerald-200">${totalTaller.toFixed(2)} MXN</span>
                       </div>
-                    )}
+                    </div>
 
-                  </div>
+                    {/* Presets Rápidos Combinables */}
+                    <div className="p-3.5 bg-white rounded-2xl border border-stone-200 space-y-2">
+                      <div className="flex flex-wrap items-center justify-between gap-1 text-[10px]">
+                        <span className="font-bold text-gray-800 uppercase flex items-center gap-1">
+                          <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                          <span>Plantillas Rápidas de Taller (Combina dos o más técnicas):</span>
+                        </span>
+                        <span className="text-gray-400">
+                          Haz clic para cargar técnica o en "+ Añadir" para combinar
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        {[
+                          { id: 'laser_madera', label: 'Madera Natural', icon: '🪵', desc: 'Madera Natural + Barniz' },
+                          { id: 'laser_llavero', label: 'Llavero Madera', icon: '🔑', desc: 'Madera + Barniz + Argolla + Resistol 850 + Lija' },
+                          { id: '3d', label: 'Impresión 3D', icon: '🖨️', desc: 'PLA + Soportes + 3DLac' },
+                          { id: 'laser_mdf', label: 'MDF Calibrado', icon: '⚡', desc: 'MDF 3mm + Laca Mate' },
+                          { id: 'sublimation', label: 'Sublimación', icon: '☕', desc: 'Taza + Cinta Kapton + Papel' },
+                          { id: 'dtf', label: 'DTF Textil', icon: '👕', desc: 'Film PET + Tintas + Poliamida' },
+                          { id: 'impresion_laser', label: 'Imp. Láser', icon: '📄', desc: 'Papel Couché/Opalina + Tóner' },
+                          { id: 'vinyl', label: 'Vinil Cameo', icon: '🏷️', desc: 'Vinil Textil/Adhesivo + Transfer' },
+                          { id: 'ensamble', label: 'Armado / Resistol', icon: '💧', desc: 'Resistol 850 en gotas' },
+                        ].map(preset => (
+                          <div
+                            key={preset.id}
+                            className="inline-flex rounded-lg border border-stone-200 bg-stone-50 overflow-hidden shadow-2xs text-[10px]"
+                          >
+                            <button
+                              type="button"
+                              onClick={() => handleApplyRecipePreset(preset.id, false)}
+                              className="px-2 py-1 font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-900 border-r border-stone-200 transition-colors cursor-pointer"
+                              title={`Reemplazar receta con plantilla de ${preset.desc}`}
+                            >
+                              {preset.icon} {preset.label}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleApplyRecipePreset(preset.id, true)}
+                              className="px-1.5 py-1 font-bold text-emerald-700 hover:bg-emerald-600 hover:text-white transition-colors cursor-pointer"
+                              title={`Añadir ${preset.label} a la receta actual sin borrar lo anterior`}
+                            >
+                              + Añadir
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
 
-                  {/* CONFIGURACIÓN EXCLUSIVA DE PAQUETE O COMBO PROMOCIONAL */}
-                  {editorForm.isBundle && (
-                    <div className="p-4 rounded-2xl bg-gradient-to-r from-purple-50/80 via-[#FAF9F5] to-amber-50/50 border-2 border-purple-300/90 space-y-3.5 shadow-xs">
-                      <div className="flex items-center justify-between border-b border-purple-100 pb-2">
+                    {/* CARD 1: INSUMOS DIRECTOS (TANGIBLES EN EL PRODUCTO) */}
+                    <div className="p-4 rounded-2xl bg-white border-2 border-emerald-600/30 space-y-3 shadow-xs">
+                      <div className="flex items-center justify-between border-b border-emerald-100 pb-2.5">
                         <div className="flex items-center gap-2">
-                          <span className="p-1.5 rounded-xl bg-purple-100 text-purple-700">
-                            <Boxes className="w-4 h-4" />
+                          <span className="p-1.5 rounded-xl bg-emerald-100 text-emerald-800">
+                            <Layers className="w-4 h-4" />
                           </span>
                           <div>
-                            <h4 className="font-heading font-extrabold text-xs text-purple-950 flex items-center gap-1.5">
-                              <span>Cualidades de Paquete &amp; Combo Promocional</span>
-                              <span className="px-2 py-0.2 rounded-full bg-purple-200 text-purple-900 text-[9.5px] font-bold">
-                                Combo Activo
+                            <h4 className="font-heading font-black text-xs text-gray-900 flex items-center gap-1.5">
+                              <span>Insumos Directos (Materiales Tangibles en la Pieza)</span>
+                              <span className="px-2 py-0.2 rounded-full bg-emerald-100 text-emerald-900 text-[10px] font-bold border border-emerald-300">
+                                {directItems.length} insumo(s)
                               </span>
                             </h4>
                             <p className="text-[10.5px] text-gray-500">
-                              Define qué piezas incluye el combo y el ahorro que verá el cliente
+                              Madera, herrajes, percheros, barniz, Resistol 850 de ensamble, blanks que se entregan físicamente al cliente.
                             </p>
                           </div>
                         </div>
+
+                        <span className="font-mono font-black text-sm text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-xl border border-emerald-200">
+                          Subtotal: ${directCost.toFixed(2)} MXN
+                        </span>
                       </div>
 
-                      {/* Precios de Lista y Ahorro */}
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                        <div>
-                          <label className="font-bold text-gray-700 block mb-1 text-[11px]">
-                            Precio Regular de Lista ($ MXN)
-                          </label>
-                          <input
-                            type="number"
-                            min="0"
-                            value={editorForm.regularPrice ?? ''}
-                            onChange={e => {
-                              const reg = e.target.value ? Number(e.target.value) : 0;
-                              const curPrice = Number(editorForm.price) || 0;
-                              setEditorForm({
-                                ...editorForm,
-                                regularPrice: reg,
-                                savings: Math.max(0, reg - curPrice)
-                              });
-                            }}
-                            className="w-full px-3 py-1.5 rounded-xl border border-gray-300 bg-white font-mono font-bold text-xs text-gray-800"
-                            placeholder="Ej: 649"
-                          />
-                          <span className="text-[9.5px] text-gray-400">Suma del precio individual</span>
-                        </div>
+                      {directItems.length === 0 ? (
+                        <p className="p-3 bg-stone-50 rounded-xl border border-dashed border-stone-300 text-center text-gray-500 italic">
+                          No hay insumos directos en la receta. Agrega uno abajo con el botón verde.
+                        </p>
+                      ) : (
+                        <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
+                          {directItems.map((item, idx) => {
+                            const matchedMat = rawMaterialsList.find(m => m.id === item.materialId || (item.name && m.name.toLowerCase().trim() === item.name.toLowerCase().trim()));
+                            const netVal = Number(item.netQuantity) || 0;
+                            const wasteVal = Number(item.wasteQuantity) || 0;
+                            const totalVal = netVal + wasteVal;
+                            const costVal = Number(item.totalCost) || 0;
 
-                        <div>
-                          <label className="font-bold text-gray-700 block mb-1 text-[11px]">
-                            Ahorro para el Cliente ($ MXN)
-                          </label>
-                          <input
-                            type="number"
-                            min="0"
-                            value={editorForm.savings ?? ''}
-                            onChange={e => setEditorForm({ ...editorForm, savings: e.target.value ? Number(e.target.value) : 0 })}
-                            className="w-full px-3 py-1.5 rounded-xl border border-emerald-300 bg-emerald-50/50 font-mono font-bold text-xs text-emerald-800"
-                            placeholder="Ej: 150"
-                          />
-                          <span className="text-[9.5px] text-emerald-700 font-semibold">
-                            {editorForm.regularPrice && editorForm.price
-                              ? `-${Math.round((((Number(editorForm.regularPrice) - Number(editorForm.price)) / Number(editorForm.regularPrice)) * 100))}% de descuento aplicado`
-                              : 'Descuento visible'}
-                          </span>
-                        </div>
-
-                        <div>
-                          <label className="font-bold text-gray-700 block mb-1 text-[11px]">
-                            Tipo de Presentación
-                          </label>
-                          <div className="flex items-center gap-1.5 pt-1">
-                            <span className="px-2.5 py-1.5 rounded-xl bg-purple-100 text-purple-900 font-bold text-xs flex items-center gap-1">
-                              <span>🎁</span>
-                              <span>Combo Multitécnica</span>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Lista Interactiva de Piezas Incluidas */}
-                      <div className="space-y-2 pt-1 border-t border-purple-100">
-                        <div className="flex items-center justify-between">
-                          <label className="font-bold text-purple-950 text-[11px] uppercase tracking-wider flex items-center gap-1">
-                            <span>📦 Componentes y Piezas Incluidas ({(editorForm.includedItems || []).length} piezas):</span>
-                          </label>
-                          <span className="text-[10px] text-gray-400">Aparecen en viñetas destacadas en la tienda</span>
-                        </div>
-
-                        {/* Lista actual de piezas */}
-                        <div className="space-y-1.5 max-h-48 overflow-y-auto">
-                          {(editorForm.includedItems || []).length === 0 ? (
-                            <p className="text-[11px] text-gray-400 italic p-2 bg-white rounded-xl border border-dashed border-gray-200">
-                              No hay piezas agregadas a este paquete aún. Usa el campo de abajo para agregar las piezas que contiene el combo.
-                            </p>
-                          ) : (
-                            (editorForm.includedItems || []).map((item, idx) => (
-                              <div key={idx} className="flex items-center gap-1.5 bg-white p-1.5 rounded-xl border border-stone-200 shadow-2xs">
-                                <span className="w-5 h-5 rounded-full bg-[#2D4F3E] text-white flex items-center justify-center font-bold text-[10px] shrink-0">
-                                  {idx + 1}
-                                </span>
-                                <input
-                                  type="text"
-                                  value={item}
-                                  onChange={e => handleUpdateIncludedItem(idx, e.target.value)}
-                                  className="flex-1 px-2 py-1 text-xs rounded-lg border border-transparent hover:border-gray-300 focus:border-[#2D4F3E] bg-transparent focus:bg-white font-medium"
-                                />
-                                <button
-                                  type="button"
-                                  onClick={() => handleRemoveIncludedItem(idx)}
-                                  className="p-1 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition-colors shrink-0 cursor-pointer"
-                                  title="Eliminar pieza del paquete"
-                                >
-                                  <Trash2 className="w-3.5 h-3.5" />
-                                </button>
-                              </div>
-                            ))
-                          )}
-                        </div>
-
-                        {/* Input para agregar nueva pieza */}
-                        <div className="flex items-center gap-1.5 pt-1">
-                          <input
-                            type="text"
-                            value={newIncludedItemInput}
-                            onChange={e => setNewIncludedItemInput(e.target.value)}
-                            onKeyDown={e => {
-                              if (e.key === 'Enter') {
-                                e.preventDefault();
-                                handleAddIncludedItem();
+                            let stockBadgeText = 'Sin vincular en bodega';
+                            let stockBadgeColor = 'bg-gray-100 text-gray-600 border-gray-200';
+                            let supplierName = matchedMat?.supplier || 'Proveedor Local';
+                            if (matchedMat) {
+                              const currentStock = Number(matchedMat.currentStock) || 0;
+                              const deductionPerUnit = calculateMaterialStockDeduction(matchedMat, totalVal, item.unit);
+                              const possibleUnits = deductionPerUnit > 0 ? Math.floor(currentStock / deductionPerUnit) : 0;
+                              if (possibleUnits >= 5) {
+                                stockBadgeText = `🟢 Stock: ${currentStock} ${matchedMat.unit} (~rinde ${possibleUnits} pzas)`;
+                                stockBadgeColor = 'bg-emerald-50 text-emerald-800 border-emerald-200';
+                              } else if (possibleUnits > 0) {
+                                stockBadgeText = `⚠️ Stock bajo: ${currentStock} ${matchedMat.unit} (${possibleUnits} pzas)`;
+                                stockBadgeColor = 'bg-amber-50 text-amber-800 border-amber-200';
+                              } else {
+                                stockBadgeText = `🔴 Agotado: ${currentStock} ${matchedMat.unit}`;
+                                stockBadgeColor = 'bg-rose-50 text-rose-800 border-rose-200';
                               }
-                            }}
-                            placeholder="Ej: 1 Bandeja vaciabolsillos curva ergonómica (18 x 12 cm)..."
-                            className="flex-1 px-3 py-1.5 text-xs rounded-xl border border-gray-300 bg-white"
-                          />
-                          <button
-                            type="button"
-                            onClick={handleAddIncludedItem}
-                            className="px-3.5 py-1.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-bold text-xs flex items-center gap-1 transition-all cursor-pointer shadow-2xs shrink-0"
-                          >
-                            <Plus className="w-3.5 h-3.5" />
-                            <span>Agregar Pieza</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                            }
 
-                  {/* 3. Descripciones Breve y Completa */}
-                  <div className="space-y-2">
-                    <div>
-                      <label className="font-bold text-gray-700 block mb-1 text-[11px]">Descripción Breve (1 línea para catálogo)</label>
-                      <input
-                        type="text"
-                        value={editorForm.shortDescription || ''}
-                        onChange={e => setEditorForm({ ...editorForm, shortDescription: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white"
-                        placeholder="Resumen atractivo en una línea..."
-                      />
-                    </div>
+                            return (
+                              <div
+                                key={item.id || idx}
+                                className="p-3 rounded-xl bg-stone-50/70 border border-stone-200 hover:border-emerald-300 transition-all space-y-2"
+                              >
+                                <div className="flex flex-wrap items-center justify-between gap-2">
+                                  <div className="flex items-center gap-2 min-w-0">
+                                    <span className="w-5 h-5 rounded-full bg-[#2D4F3E] text-white flex items-center justify-center font-bold text-[10px] shrink-0">
+                                      {idx + 1}
+                                    </span>
+                                    <div className="min-w-0">
+                                      <div className="font-bold text-xs text-gray-900 truncate flex items-center gap-1.5">
+                                        <span>{item.name}</span>
+                                        <span className="px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-900 text-[9px] uppercase font-bold">
+                                          Directo
+                                        </span>
+                                      </div>
+                                      <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
+                                        <span className={`px-2 py-0.2 rounded-full border text-[9.5px] font-bold ${stockBadgeColor}`}>
+                                          {stockBadgeText}
+                                        </span>
+                                        <span className="text-[9.5px] text-gray-500 font-medium">
+                                          🏢 {supplierName}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
 
-                    <div>
-                      <label className="font-bold text-gray-700 block mb-1 text-[11px]">Descripción Completa (para la ficha detallada)</label>
-                      <textarea
-                        rows={2}
-                        value={editorForm.fullDescription || ''}
-                        onChange={e => setEditorForm({ ...editorForm, fullDescription: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white"
-                        placeholder="Detalles sobre materiales, ventajas y personalización..."
-                      />
-                    </div>
-                  </div>
-
-                  {/* 4. Delimitador de Áreas de Activación y Técnicas */}
-                  <div className="p-3.5 bg-[#FAF9F5] rounded-2xl border border-stone-200 space-y-2.5">
-                    <div className="flex items-center justify-between">
-                      <label className="font-bold text-[#1F2421] text-xs uppercase tracking-wider font-heading flex items-center gap-1.5">
-                        <span>🏷️</span>
-                        <span>Delimitador de Áreas de Activación del Producto *</span>
-                      </label>
-                      <span className="text-[10.5px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.2 rounded-full">
-                        {(editorForm.worlds?.length || 0)} de 4 áreas activadas
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                      {[
-                        { id: 'hogar', label: 'Hogar', icon: '🏠' },
-                        { id: 'negocios', label: 'Negocios', icon: '💼' },
-                        { id: 'eventos', label: 'Eventos', icon: '🎉' },
-                        { id: 'paquetes', label: 'Paquetes', icon: '🎁' }
-                      ].map(w => {
-                        const isChecked = editorForm.worlds?.includes(w.id);
-                        return (
-                          <button
-                            key={w.id}
-                            type="button"
-                            onClick={() => {
-                              const curr = editorForm.worlds || [];
-                              const updated = isChecked ? curr.filter(x => x !== w.id) : [...curr, w.id];
-                              setEditorForm({
-                                ...editorForm,
-                                worlds: updated,
-                                isBundle: updated.includes('paquetes') ? true : editorForm.isBundle
-                              });
-                            }}
-                            className={`p-2 rounded-xl border transition-all cursor-pointer flex items-center justify-between text-left ${
-                              isChecked
-                                ? 'bg-white border-[#2D4F3E] text-[#2D4F3E] ring-1 ring-[#2D4F3E]/20 shadow-xs'
-                                : 'bg-stone-50 border-stone-200 text-gray-500 hover:bg-white'
-                            }`}
-                          >
-                            <span className="font-bold text-xs flex items-center gap-1">
-                              <span>{w.icon}</span>
-                              <span>{w.label}</span>
-                            </span>
-                            <div className={`w-3.5 h-3.5 rounded flex items-center justify-center text-[9px] font-black ${
-                              isChecked ? 'bg-[#2D4F3E] text-white' : 'border border-gray-300'
-                            }`}>
-                              {isChecked && '✓'}
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-
-                    {/* Técnicas de Fabricación */}
-                    <div className="pt-2 border-t border-stone-200 flex flex-wrap items-center gap-1.5">
-                      <span className="text-[10px] font-bold text-gray-500 uppercase mr-1">Técnicas:</span>
-                      {[
-                        { id: '3d', label: 'Impresión 3D' },
-                        { id: 'laser', label: 'Corte/Grabado Láser' },
-                        { id: 'sublimation', label: 'Sublimación' },
-                        { id: 'vinyl', label: 'Vinil Textil/Corte' },
-                        { id: 'impresion_laser', label: 'Impresión Láser (Invitaciones)' },
-                        { id: 'dtf', label: 'DTF Textil' },
-                        { id: 'ensamble', label: 'Armado/Pegado' },
-                        { id: 'nfc', label: 'NFC' }
-                      ].map(tech => {
-                        const isChecked = editorForm.techniques?.includes(tech.id);
-                        return (
-                          <button
-                            key={tech.id}
-                            type="button"
-                            onClick={() => {
-                              const curr = editorForm.techniques || [];
-                              const updated = isChecked ? curr.filter(x => x !== tech.id) : [...curr, tech.id];
-                              setEditorForm({ ...editorForm, techniques: updated });
-                            }}
-                            className={`px-2 py-1 rounded-lg text-[11px] font-semibold transition-all cursor-pointer border ${
-                              isChecked
-                                ? 'bg-emerald-50 border-emerald-300 text-emerald-800'
-                                : 'bg-white border-stone-200 text-gray-500 hover:border-stone-300'
-                            }`}
-                          >
-                            {isChecked ? '✓ ' : '+ '}
-                            {tech.label}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* 5. Acordeón: Sistema Estandarizado de SKU de Taller & Ficha Técnica */}
-                  <div className="rounded-2xl border border-[#D4A359]/60 bg-gradient-to-r from-stone-50 via-[#FAF9F5] to-amber-50/30 overflow-hidden shadow-2xs">
-                    <div
-                      onClick={() => setEditorSkuAccordion(prev => !prev)}
-                      className="p-3.5 flex items-center justify-between cursor-pointer select-none hover:bg-black/[0.02] transition-colors"
-                    >
-                      <div className="flex items-center gap-2">
-                        <Tag className="w-4 h-4 text-[#2D4F3E]" />
-                        <div>
-                          <h4 className="font-heading font-black text-xs text-[#1F2421] flex items-center gap-2">
-                            <span>Sistema Estandarizado de SKU de Taller</span>
-                            <span className="text-[10px] font-mono px-2 py-0.2 rounded-md bg-emerald-100 text-emerald-800 border border-emerald-300">
-                              {editorForm.sku || editorForm.code}
-                            </span>
-                          </h4>
-                          <span className="text-[10.5px] text-gray-500">
-                            Cualidades de maquinaria, material y acabado para bodega y operadores
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            const auto = suggestSkuForProduct(editorForm, products);
-                            const parsed = parseSku(auto);
-                            setEditorForm({
-                              ...editorForm,
-                              code: auto,
-                              sku: auto,
-                              skuArea: parsed.area?.code || 'HOG',
-                              skuTechnique: parsed.tech?.code || '3D',
-                              skuMaterial: parsed.mat?.code || 'PLA',
-                              skuFinish: parsed.fin?.code || 'MAT',
-                              skuSequence: parsed.sequence || '001'
-                            });
-                          }}
-                          className="px-2.5 py-1 rounded-lg bg-gradient-to-r from-[#D4A359] to-amber-500 text-[#17251E] font-black text-[11px] hover:brightness-105 transition-all flex items-center gap-1 cursor-pointer shadow-xs"
-                          title="Calcular automáticamente el SKU óptimo a partir de las técnicas y materiales"
-                        >
-                          <Zap className="w-3 h-3" />
-                          <span>Autogenerar SKU Inteligente</span>
-                        </button>
-                        <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${editorSkuAccordion ? 'rotate-180' : ''}`} />
-                      </div>
-                    </div>
-
-                    {/* Contenido desplegable del SKU */}
-                    {editorSkuAccordion && (
-                      <div className="p-3.5 pt-0 border-t border-[#E8E4DA] space-y-3">
-                        <div className="grid grid-cols-2 sm:grid-cols-6 gap-2 pt-2">
-                          {/* 1. Área */}
-                          <div>
-                            <label className="text-[9.5px] font-bold text-gray-700 uppercase block mb-1">1. Área</label>
-                            <select
-                              value={editorForm.skuArea || 'HOG'}
-                              onChange={e => {
-                                const val = e.target.value;
-                                const newSku = buildSku({
-                                  area: val,
-                                  technique: editorForm.skuTechnique || '3D',
-                                  material: editorForm.skuMaterial || 'PLA',
-                                  finish: editorForm.skuFinish || 'MAT',
-                                  sequence: editorForm.skuSequence || '001'
-                                });
-                                setEditorForm({ ...editorForm, skuArea: val, code: newSku, sku: newSku });
-                              }}
-                              className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-bold text-[11px]"
-                            >
-                              {Object.values(SKU_AREAS).map(a => (
-                                <option key={a.code} value={a.code}>{a.icon} {a.code}</option>
-                              ))}
-                            </select>
-                          </div>
-
-                          {/* 2. Técnica */}
-                          <div>
-                            <label className="text-[9.5px] font-bold text-gray-700 uppercase block mb-1">2. Técnica</label>
-                            <select
-                              value={editorForm.skuTechnique || '3D'}
-                              onChange={e => {
-                                const val = e.target.value;
-                                const newSku = buildSku({
-                                  area: editorForm.skuArea || 'HOG',
-                                  technique: val,
-                                  material: editorForm.skuMaterial || 'PLA',
-                                  finish: editorForm.skuFinish || 'MAT',
-                                  sequence: editorForm.skuSequence || '001'
-                                });
-                                setEditorForm({ ...editorForm, skuTechnique: val, code: newSku, sku: newSku });
-                              }}
-                              className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-bold text-[11px]"
-                            >
-                              {Object.values(SKU_TECHNIQUES).map(t => (
-                                <option key={t.code} value={t.code}>{t.icon} {t.code}</option>
-                              ))}
-                            </select>
-                          </div>
-
-                          {/* 3. Material */}
-                          <div>
-                            <label className="text-[9.5px] font-bold text-gray-700 uppercase block mb-1">3. Material</label>
-                            <select
-                              value={editorForm.skuMaterial || 'PLA'}
-                              onChange={e => {
-                                const val = e.target.value;
-                                const newSku = buildSku({
-                                  area: editorForm.skuArea || 'HOG',
-                                  technique: editorForm.skuTechnique || '3D',
-                                  material: val,
-                                  finish: editorForm.skuFinish || 'MAT',
-                                  sequence: editorForm.skuSequence || '001'
-                                });
-                                setEditorForm({ ...editorForm, skuMaterial: val, code: newSku, sku: newSku });
-                              }}
-                              className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-bold text-[11px]"
-                            >
-                              {Object.values(SKU_MATERIALS).map(m => (
-                                <option key={m.code} value={m.code}>🪵 {m.code}</option>
-                              ))}
-                            </select>
-                          </div>
-
-                          {/* 4. Acabado */}
-                          <div>
-                            <label className="text-[9.5px] font-bold text-gray-700 uppercase block mb-1">4. Acabado</label>
-                            <select
-                              value={editorForm.skuFinish || 'MAT'}
-                              onChange={e => {
-                                const val = e.target.value;
-                                const newSku = buildSku({
-                                  area: editorForm.skuArea || 'HOG',
-                                  technique: editorForm.skuTechnique || '3D',
-                                  material: editorForm.skuMaterial || 'PLA',
-                                  finish: val,
-                                  sequence: editorForm.skuSequence || '001'
-                                });
-                                setEditorForm({ ...editorForm, skuFinish: val, code: newSku, sku: newSku });
-                              }}
-                              className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-bold text-[11px]"
-                            >
-                              {Object.values(SKU_FINISHES).map(f => (
-                                <option key={f.code} value={f.code}>✨ {f.code}</option>
-                              ))}
-                            </select>
-                          </div>
-
-                          {/* 5. Número / Serie */}
-                          <div>
-                            <label className="text-[9.5px] font-bold text-gray-700 uppercase block mb-1">5. Serie</label>
-                            <input
-                              type="text"
-                              value={editorForm.skuSequence || '001'}
-                              onChange={e => {
-                                const val = e.target.value;
-                                const newSku = buildSku({
-                                  area: editorForm.skuArea || 'HOG',
-                                  technique: editorForm.skuTechnique || '3D',
-                                  material: editorForm.skuMaterial || 'PLA',
-                                  finish: editorForm.skuFinish || 'MAT',
-                                  sequence: val
-                                });
-                                setEditorForm({ ...editorForm, skuSequence: val, code: newSku, sku: newSku });
-                              }}
-                              className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-mono font-bold text-[11px] text-center"
-                              placeholder="001"
-                            />
-                          </div>
-
-                          {/* 6. Código / SKU Final */}
-                          <div>
-                            <label className="text-[9.5px] font-bold text-gray-700 uppercase block mb-1">SKU Final *</label>
-                            <input
-                              type="text"
-                              value={editorForm.code || ''}
-                              onChange={e => {
-                                const val = e.target.value.toUpperCase();
-                                setEditorForm({ ...editorForm, code: val, sku: val });
-                              }}
-                              className="w-full px-2 py-1.5 rounded-lg border-2 border-[#2D4F3E] bg-white font-mono font-black text-[11px] text-[#2D4F3E]"
-                              placeholder="HOG-3D-PLA-MAT-001"
-                            />
-                          </div>
-                        </div>
-
-                        {/* Ficha Técnica de Manufactura para Personal Interno */}
-                        {(() => {
-                          const activeSku = editorForm.code || editorForm.sku || 'HOG-3D-PLA-MAT-001';
-                          const breakdown = parseSku(activeSku);
-                          return (
-                            <div className="p-3 rounded-xl bg-white border border-[#2D4F3E]/30 shadow-2xs space-y-2">
-                              <div className="flex items-center justify-between border-b border-gray-100 pb-1.5">
-                                <span className="text-[11px] font-bold text-gray-600 uppercase">Ficha Técnica Interna:</span>
-                                <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                                  ✓ Guía de Preparación para Bodega y Taller
-                                </span>
-                              </div>
-
-                              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10px]">
-                                <div className="p-1.5 rounded-lg bg-gray-50 border border-gray-100">
-                                  <div className="font-bold text-gray-400 uppercase text-[9px]">🏭 Destino / Área</div>
-                                  <div className="font-bold text-gray-800 mt-0.5">{breakdown.explanation.destino}</div>
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-xs font-mono font-black text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-200">
+                                      ${costVal.toFixed(2)} MXN
+                                    </span>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleToggleItemSupplyType(item.id)}
+                                      className="p-1 px-2 rounded-lg text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 font-bold text-[10px] transition-colors cursor-pointer"
+                                      title="Cambiar a Insumo Indirecto / Consumible de taller"
+                                    >
+                                      ↔️ A Indirecto
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleRemoveEditorRecipeItem(item.id)}
+                                      className="p-1 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                                      title="Eliminar insumo de la receta"
+                                    >
+                                      <Trash2 className="w-3.5 h-3.5" />
+                                    </button>
+                                  </div>
                                 </div>
-                                <div className="p-1.5 rounded-lg bg-gray-50 border border-gray-100">
-                                  <div className="font-bold text-gray-400 uppercase text-[9px]">⚙️ Maquinaria / Proceso</div>
-                                  <div className="font-bold text-emerald-800 mt-0.5">{breakdown.explanation.maquinaria}</div>
-                                </div>
-                                <div className="p-1.5 rounded-lg bg-gray-50 border border-gray-100">
-                                  <div className="font-bold text-gray-400 uppercase text-[9px]">🪵 Materia Prima Requerida</div>
-                                  <div className="font-bold text-amber-800 mt-0.5">{breakdown.explanation.materiaPrima}</div>
-                                </div>
-                                <div className="p-1.5 rounded-lg bg-gray-50 border border-gray-100">
-                                  <div className="font-bold text-gray-400 uppercase text-[9px]">✨ Acabado Especificado</div>
-                                  <div className="font-bold text-purple-800 mt-0.5">{breakdown.explanation.acabadoTaller}</div>
+
+                                {/* Inputs Neta, Merma, Unidad */}
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 border-t border-stone-200/60 text-[10px]">
+                                  <div>
+                                    <label className="text-gray-500 font-bold block mb-0.5">Cant. Neta ({item.unit}):</label>
+                                    <input
+                                      type="number"
+                                      step="any"
+                                      min="0"
+                                      value={item.netQuantity ?? ''}
+                                      onChange={e => handleUpdateEditorRecipeItem(item.id, 'netQuantity', parseFloat(e.target.value) || 0)}
+                                      className="w-full px-2 py-1 rounded-lg border border-gray-300 font-mono font-bold text-xs bg-white"
+                                    />
+                                    <span className="text-[9px] text-gray-400">En la pieza</span>
+                                  </div>
+
+                                  <div>
+                                    <label className="text-amber-800 font-bold block mb-0.5">+ Merma ({item.unit}):</label>
+                                    <input
+                                      type="number"
+                                      step="any"
+                                      min="0"
+                                      value={item.wasteQuantity ?? ''}
+                                      onChange={e => handleUpdateEditorRecipeItem(item.id, 'wasteQuantity', parseFloat(e.target.value) || 0)}
+                                      className="w-full px-2 py-1 rounded-lg border border-amber-300 bg-amber-50/50 font-mono font-bold text-xs text-amber-900"
+                                    />
+                                    <span className="text-[9px] text-amber-700 font-semibold">
+                                      {totalVal > 0 ? `${Math.round((wasteVal / totalVal) * 100)}% merma` : '0%'}
+                                    </span>
+                                  </div>
+
+                                  <div>
+                                    <label className="text-gray-500 font-bold block mb-0.5">Motivo Merma:</label>
+                                    <select
+                                      value={item.wasteType || 'supports_purge'}
+                                      onChange={e => handleUpdateEditorRecipeItem(item.id, 'wasteType', e.target.value)}
+                                      className="w-full px-1.5 py-1 rounded-lg border border-gray-300 font-medium text-[10px] bg-white"
+                                    >
+                                      <option value="kerf_cut">⚡ Kerf / Corte Láser</option>
+                                      <option value="supports_purge">🖨️ Soportes / Purga 3D</option>
+                                      <option value="manual">🪵 Ajuste / Ensamble Manual</option>
+                                      <option value="tape">☕ Cinta / Enmascarar</option>
+                                      <option value="trimming">✂️ Descarte / Papelería</option>
+                                      <option value="none">✓ Sin Merma</option>
+                                    </select>
+                                  </div>
+
+                                  <div>
+                                    <label className="text-gray-500 font-bold block mb-0.5">Consumo Total:</label>
+                                    <div className="px-2 py-1 rounded-lg bg-white border border-stone-200 font-mono font-bold text-xs text-gray-800 flex items-center justify-between">
+                                      <span>{totalVal} {item.unit}</span>
+                                      <span className="text-[9px] text-gray-500">@ ${Number(item.unitCost).toFixed(3)}</span>
+                                    </div>
+                                    <span className="text-[9px] text-gray-400">Total taller</span>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          );
-                        })()}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* 6. Acordeón: Colores y Opciones de Acabado */}
-                  <div className="rounded-2xl border border-stone-200 bg-white overflow-hidden shadow-2xs">
-                    <div
-                      onClick={() => setEditorColorsAccordion(prev => !prev)}
-                      className="p-3.5 flex items-center justify-between cursor-pointer select-none hover:bg-stone-50 transition-colors"
-                    >
-                      <div className="flex items-center gap-2">
-                        <Palette className="w-4 h-4 text-purple-600" />
-                        <div>
-                          <h5 className="font-heading font-bold text-xs text-[#1F2421]">
-                            Colores, Tintes y Barnices Disponibles ({getColorVariant()?.options?.length || 0} asignados)
-                          </h5>
-                          <span className="text-[10.5px] text-gray-500">
-                            Paleta seleccionable por el cliente en tienda (barnices de madera, tintes o filamentos)
-                          </span>
+                            );
+                          })}
                         </div>
-                      </div>
-                      <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${editorColorsAccordion ? 'rotate-180' : ''}`} />
+                      )}
                     </div>
 
-                    {editorColorsAccordion && (
-                      <div className="p-3.5 pt-0 border-t border-stone-100 space-y-3">
-                        {/* Colores Activos */}
-                        {(() => {
-                          const colorVar = getColorVariant();
-                          const currentColors = colorVar?.options || [];
-                          return (
-                            <div className="space-y-1.5 pt-2">
-                              <span className="text-[10px] font-bold text-gray-600 uppercase block">Opciones asignadas actualmente ({colorVar?.name || 'Color'}):</span>
-                              {currentColors.length > 0 ? (
-                                <div className="flex flex-wrap gap-1.5 p-2 rounded-xl bg-stone-50 border border-stone-200">
-                                  {currentColors.map(color => {
-                                    const sw = getFilamentColor(color);
-                                    return (
-                                      <span
-                                        key={color}
-                                        className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-white border border-stone-200 text-[11px] font-semibold text-gray-800 shadow-2xs"
-                                      >
-                                        <span
-                                          className="w-3 h-3 rounded-full border border-black/20 shrink-0"
-                                          style={{ background: sw?.css || '#D1D5DB' }}
-                                        />
-                                        <span>{color}</span>
-                                        <button
-                                          type="button"
-                                          onClick={() => handleRemoveColorOption(color)}
-                                          className="text-gray-400 hover:text-rose-600 font-bold ml-0.5"
-                                        >
-                                          ×
-                                        </button>
-                                      </span>
-                                    );
-                                  })}
-                                </div>
-                              ) : (
-                                <p className="text-[11px] text-gray-400 italic">Sin colores o acabados asignados.</p>
-                              )}
-                            </div>
-                          );
-                        })()}
-
-                        {/* Paleta Rápida de Tintes y Barnices para Madera */}
-                        <div className="space-y-1">
-                          <span className="text-[10px] font-bold text-amber-900 uppercase flex items-center gap-1">
-                            <span>🪵</span>
-                            <span>Tintes & Barnices para Madera (Láser y Carpintería):</span>
-                          </span>
-                          <div className="flex flex-wrap items-center gap-1.5 p-2 bg-amber-50/60 rounded-xl border border-amber-200/70">
-                            {STANDARD_WOOD_VARNISHES.map(varnish => {
-                              const colorVar = getColorVariant();
-                              const isSelected = (colorVar?.options || []).some(opt => opt.toLowerCase() === varnish.toLowerCase());
-                              const sw = getFilamentColor(varnish);
-                              return (
-                                <button
-                                  key={varnish}
-                                  type="button"
-                                  onClick={() => handleToggleColorOption(varnish, 'Tono de Barniz y Acabado')}
-                                  className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-lg text-[10.5px] font-semibold transition-all cursor-pointer shadow-2xs ${
-                                    isSelected 
-                                      ? 'bg-amber-900 text-white ring-2 ring-amber-700 ring-offset-1 scale-102' 
-                                      : 'bg-white text-stone-800 border border-amber-200/90 hover:bg-amber-100/50'
-                                  }`}
-                                  title={`Asignar ${varnish}`}
-                                >
-                                  <span
-                                    className="w-3.5 h-3.5 rounded-full border border-black/20 shrink-0 shadow-2xs"
-                                    style={{ background: sw?.css || '#A27B5C' }}
-                                  />
-                                  <span>{varnish}</span>
-                                  {isSelected && <span className="font-black text-amber-200 text-xs leading-none">✓</span>}
-                                </button>
-                              );
-                            })}
-                          </div>
-                        </div>
-
-                        {/* Paleta Rápida de Filamentos PLA y Polímeros */}
-                        <div className="space-y-1">
-                          <span className="text-[10px] font-bold text-gray-500 uppercase block">🖨️ Paleta de filamentos 3D (PLA / PETG):</span>
-                          <div className="flex flex-wrap items-center gap-1.5 p-2 bg-stone-50 rounded-xl border border-stone-200">
-                            {STANDARD_PALETTE_COLORS.map(color => {
-                              const colorVar = getColorVariant();
-                              const isSelected = (colorVar?.options || []).some(opt => opt.toLowerCase() === color.toLowerCase());
-                              const sw = getFilamentColor(color);
-                              return (
-                                <button
-                                  key={color}
-                                  type="button"
-                                  onClick={() => handleToggleColorOption(color, 'Color')}
-                                  className={`w-6 h-6 rounded-full border flex items-center justify-center transition-transform hover:scale-110 cursor-pointer shadow-2xs ${
-                                    isSelected ? 'ring-2 ring-[#2D4F3E] ring-offset-1 scale-105' : 'border-black/20'
-                                  }`}
-                                  style={{ background: sw?.css || '#D1D5DB' }}
-                                  title={color}
-                                >
-                                  {isSelected && <span className="text-[9px] font-black text-white drop-shadow-sm">✓</span>}
-                                </button>
-                              );
-                            })}
-                          </div>
-                        </div>
-
-                        {/* Agregar color libre */}
+                    {/* CARD 2: INSUMOS INDIRECTOS & DESGASTES (LIJAS, SIERRAS, TRAPOS, CINTAS, 3DLAC) */}
+                    <div className="p-4 rounded-2xl bg-white border-2 border-amber-500/30 space-y-3 shadow-xs">
+                      <div className="flex items-center justify-between border-b border-amber-100 pb-2.5">
                         <div className="flex items-center gap-2">
-                          <input
-                            type="text"
-                            value={customColorInput}
-                            onChange={e => setCustomColorInput(e.target.value)}
-                            onKeyDown={e => {
-                              if (e.key === 'Enter') {
-                                e.preventDefault();
-                                handleAddCustomColor(customColorInput);
-                              }
-                            }}
-                            placeholder="Escribe otro color o acabado personalizado..."
-                            className="flex-1 px-3 py-1.5 text-xs rounded-xl border border-gray-300 bg-white"
-                          />
+                          <span className="p-1.5 rounded-xl bg-amber-100 text-amber-800">
+                            <Wrench className="w-4 h-4" />
+                          </span>
+                          <div>
+                            <h4 className="font-heading font-black text-xs text-gray-900 flex items-center gap-1.5">
+                              <span>Insumos Indirectos &amp; Desgastes de Taller (Estilo Cocina/Restaurante)</span>
+                              <span className="px-2 py-0.2 rounded-full bg-amber-100 text-amber-900 text-[10px] font-bold border border-amber-300">
+                                {indirectItems.length} consumible(s)
+                              </span>
+                            </h4>
+                            <p className="text-[10.5px] text-gray-500">
+                              Lija grano 220, desgaste de sierra circular / tubo láser, estopa para barniz, cinta de enmascarar anti-ahumado, spray fijador.
+                            </p>
+                          </div>
+                        </div>
+
+                        <span className="font-mono font-black text-sm text-amber-900 bg-amber-50 px-2.5 py-1 rounded-xl border border-amber-200">
+                          Subtotal: ${indirectCost.toFixed(2)} MXN
+                        </span>
+                      </div>
+
+                      {indirectItems.length === 0 ? (
+                        <p className="p-3 bg-stone-50 rounded-xl border border-dashed border-stone-300 text-center text-gray-500 italic">
+                          No hay insumos indirectos asignados. Agrega lijas, desgaste de cuchilla/sierra o paños con el botón de abajo.
+                        </p>
+                      ) : (
+                        <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
+                          {indirectItems.map((item, idx) => {
+                            const matchedMat = rawMaterialsList.find(m => m.id === item.materialId || (item.name && m.name.toLowerCase().trim() === item.name.toLowerCase().trim()));
+                            const netVal = Number(item.netQuantity) || 0;
+                            const wasteVal = Number(item.wasteQuantity) || 0;
+                            const totalVal = netVal + wasteVal;
+                            const costVal = Number(item.totalCost) || 0;
+                            const supplierName = matchedMat?.supplier || 'Proveedor de Taller';
+
+                            return (
+                              <div
+                                key={item.id || idx}
+                                className="p-3 rounded-xl bg-amber-50/30 border border-amber-200/80 hover:border-amber-400 transition-all space-y-2"
+                              >
+                                <div className="flex flex-wrap items-center justify-between gap-2">
+                                  <div className="flex items-center gap-2 min-w-0">
+                                    <span className="w-5 h-5 rounded-full bg-amber-700 text-white flex items-center justify-center font-bold text-[10px] shrink-0">
+                                      {idx + 1}
+                                    </span>
+                                    <div className="min-w-0">
+                                      <div className="font-bold text-xs text-gray-900 truncate flex items-center gap-1.5">
+                                        <span>{item.name}</span>
+                                        <span className="px-1.5 py-0.2 rounded bg-amber-200 text-amber-950 text-[9px] uppercase font-bold">
+                                          Indirecto / Desgaste
+                                        </span>
+                                      </div>
+                                      <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
+                                        <span className="text-[9.5px] text-gray-500 font-medium">
+                                          🏢 Proveedor: {supplierName}
+                                        </span>
+                                        {matchedMat && (
+                                          <span className="text-[9.5px] text-amber-800 font-bold bg-amber-100/70 px-1.5 py-0.2 rounded">
+                                            Stock bodega: {matchedMat.currentStock} {matchedMat.unit}
+                                          </span>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-xs font-mono font-black text-amber-900 bg-amber-100/60 px-2 py-0.5 rounded-lg border border-amber-300">
+                                      ${costVal.toFixed(2)} MXN
+                                    </span>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleToggleItemSupplyType(item.id)}
+                                      className="p-1 px-2 rounded-lg text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 font-bold text-[10px] transition-colors cursor-pointer"
+                                      title="Cambiar a Insumo Directo"
+                                    >
+                                      ↔️ A Directo
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleRemoveEditorRecipeItem(item.id)}
+                                      className="p-1 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                                      title="Eliminar insumo"
+                                    >
+                                      <Trash2 className="w-3.5 h-3.5" />
+                                    </button>
+                                  </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1 border-t border-amber-200/50 text-[10px]">
+                                  <div>
+                                    <label className="text-gray-500 font-bold block mb-0.5">Consumo ({item.unit}):</label>
+                                    <input
+                                      type="number"
+                                      step="any"
+                                      min="0"
+                                      value={item.netQuantity ?? ''}
+                                      onChange={e => handleUpdateEditorRecipeItem(item.id, 'netQuantity', parseFloat(e.target.value) || 0)}
+                                      className="w-full px-2 py-1 rounded-lg border border-gray-300 font-mono font-bold text-xs bg-white"
+                                    />
+                                    <span className="text-[9px] text-gray-400">Por pieza producida</span>
+                                  </div>
+
+                                  <div>
+                                    <label className="text-gray-500 font-bold block mb-0.5">Costo Unitario:</label>
+                                    <div className="px-2 py-1 rounded-lg bg-white border border-stone-200 font-mono font-bold text-xs text-gray-800">
+                                      ${Number(item.unitCost).toFixed(3)} / {item.unit}
+                                    </div>
+                                    <span className="text-[9px] text-gray-400">Calculado de bodega</span>
+                                  </div>
+
+                                  <div>
+                                    <label className="text-gray-500 font-bold block mb-0.5">Costo Total Consumido:</label>
+                                    <div className="px-2 py-1 rounded-lg bg-amber-100/50 border border-amber-300 font-mono font-bold text-xs text-amber-950">
+                                      ${costVal.toFixed(2)} MXN
+                                    </div>
+                                    <span className="text-[9px] text-amber-800">Por unidad final</span>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* FORMULARIO PARA AÑADIR NUEVO INSUMO (DIRECTO O INDIRECTO) */}
+                    <div className="p-4 bg-gradient-to-r from-stone-50 via-white to-stone-50 rounded-2xl border-2 border-[#2D4F3E]/40 space-y-3">
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-stone-200 pb-2">
+                        <div className="font-bold text-gray-900 text-xs uppercase flex items-center gap-1.5">
+                          <Plus className="w-4 h-4 text-[#2D4F3E]" />
+                          <span>Agregar Materia Prima o Desgaste al Escandallo:</span>
+                        </div>
+
+                        {/* Selector de Insumo Directo vs Indirecto */}
+                        <div className="inline-flex rounded-xl p-0.5 bg-stone-200 border border-stone-300 text-[11px] font-bold">
                           <button
                             type="button"
-                            onClick={() => handleAddCustomColor(customColorInput)}
-                            className="px-3 py-1.5 rounded-xl bg-[#2D4F3E] text-white text-xs font-bold hover:bg-[#20392C] transition-colors"
+                            onClick={() => setEditorNewItemSupplyType('direct')}
+                            className={`px-3 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
+                              editorNewItemSupplyType === 'direct' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-600 hover:text-gray-900'
+                            }`}
                           >
-                            + Agregar
+                            <span>🪵 Directo (Tangible)</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setEditorNewItemSupplyType('indirect')}
+                            className={`px-3 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
+                              editorNewItemSupplyType === 'indirect' ? 'bg-amber-600 text-white shadow-xs' : 'text-gray-600 hover:text-gray-900'
+                            }`}
+                          >
+                            <span>⚙️ Indirecto (Desgaste/Lija/Sierra)</span>
                           </button>
                         </div>
                       </div>
-                    )}
-                  </div>
 
-                  {/* 7. Acordeón: Oferta Flash & Relámpago */}
-                  <div className="rounded-2xl border border-amber-300 bg-gradient-to-r from-amber-50/50 via-stone-50 to-amber-50/30 overflow-hidden shadow-2xs">
-                    <div
-                      onClick={() => setEditorFlashAccordion(prev => !prev)}
-                      className="p-3.5 flex items-center justify-between cursor-pointer select-none hover:bg-black/[0.02] transition-colors"
-                    >
-                      <div className="flex items-center gap-2">
-                        <Flame className="w-4 h-4 text-amber-500 fill-amber-500" />
-                        <div>
-                          <h4 className="font-heading font-extrabold text-xs text-gray-900 flex items-center gap-2">
-                            <span>Control de Oferta Flash &amp; Relámpago</span>
-                            {editorForm.flashDealConfig?.enabled && (
-                              <span className="px-2 py-0.2 rounded-full bg-amber-400 text-stone-950 text-[9.5px] font-black uppercase">
-                                ACTIVA (-{editorForm.flashDealConfig.discountPercent || 20}%)
-                              </span>
-                            )}
-                          </h4>
-                          <span className="text-[10.5px] text-gray-500">
-                            Descuento por tiempo limitado con reloj de cuenta regresiva
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked={Boolean(editorForm.flashDealConfig?.enabled)}
-                          onChange={e => {
-                            e.stopPropagation();
-                            setEditorForm({
-                              ...editorForm,
-                              flashDealConfig: {
-                                ...(editorForm.flashDealConfig || {}),
-                                enabled: e.target.checked,
-                                durationMinutes: editorForm.flashDealConfig?.durationMinutes || 120,
-                                discountPercent: editorForm.flashDealConfig?.discountPercent || 20
+                      <div className="grid grid-cols-1 sm:grid-cols-12 gap-2.5 text-xs">
+                        {/* Selector de Bodega */}
+                        <div className="sm:col-span-5 space-y-1">
+                          <label className="text-[10px] font-bold text-gray-700 block">
+                            Seleccionar Insumo de Bodega ({rawMaterialsList.length} en almacén):
+                          </label>
+                          <select
+                            value={editorRecipeSelectedMatId}
+                            onChange={e => {
+                              const id = e.target.value;
+                              setEditorRecipeSelectedMatId(id);
+                              const mat = rawMaterialsList.find(m => m.id === id);
+                              if (mat) {
+                                const pkg = parsePackageInfo(mat);
+                                setEditorRecipeUnit(pkg.packageMeasurement || 'pza');
+                                const lowerName = (mat.name || '').toLowerCase();
+                                if (lowerName.includes('lija') || lowerName.includes('sierra') || lowerName.includes('estopa') || lowerName.includes('cinta')) {
+                                  setEditorNewItemSupplyType('indirect');
+                                } else {
+                                  setEditorNewItemSupplyType('direct');
+                                }
+                                if (lowerName.includes('resistol') || lowerName.includes('pegamento')) {
+                                  setEditorRecipeNetQty(10);
+                                  setEditorRecipeWasteQty(2);
+                                  setEditorRecipeUnit('gotas');
+                                } else if (lowerName.includes('lija')) {
+                                  setEditorRecipeNetQty(0.2);
+                                  setEditorRecipeWasteQty(0);
+                                  setEditorRecipeUnit('pliego');
+                                } else if (lowerName.includes('sierra') || lowerName.includes('desgaste')) {
+                                  setEditorRecipeNetQty(1);
+                                  setEditorRecipeWasteQty(0);
+                                  setEditorRecipeUnit('pza');
+                                } else if (lowerName.includes('estopa')) {
+                                  setEditorRecipeNetQty(1);
+                                  setEditorRecipeWasteQty(0);
+                                  setEditorRecipeUnit('pza');
+                                }
                               }
-                            });
-                          }}
-                          className="w-4 h-4 rounded text-amber-600 focus:ring-0 cursor-pointer"
-                        />
-                        <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${editorFlashAccordion ? 'rotate-180' : ''}`} />
-                      </div>
-                    </div>
-
-                    {editorFlashAccordion && editorForm.flashDealConfig?.enabled && (
-                      <div className="p-3.5 pt-0 border-t border-amber-200/60 space-y-3">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                          <div>
-                            <label className="text-[11px] font-bold text-gray-700 block mb-1">Duración de la Oferta</label>
-                            <select
-                              value={editorForm.flashDealConfig.durationMinutes || 120}
-                              onChange={e => setEditorForm({
-                                ...editorForm,
-                                flashDealConfig: {
-                                  ...editorForm.flashDealConfig,
-                                  durationMinutes: Number(e.target.value)
-                                }
-                              })}
-                              className="w-full px-2.5 py-1.5 rounded-xl border border-stone-300 bg-white text-xs font-semibold"
-                            >
-                              <option value={15}>⚡ 15 Minutos (Blitz Relámpago)</option>
-                              <option value={60}>1 Hora</option>
-                              <option value={120}>2 Horas (Estándar)</option>
-                              <option value={360}>6 Horas</option>
-                              <option value={1440}>24 Horas (1 Día)</option>
-                            </select>
-                          </div>
-
-                          <div>
-                            <label className="text-[11px] font-bold text-gray-700 block mb-1">Porcentaje de Descuento</label>
-                            <select
-                              value={editorForm.flashDealConfig.discountPercent || 20}
-                              onChange={e => setEditorForm({
-                                ...editorForm,
-                                flashDealConfig: {
-                                  ...editorForm.flashDealConfig,
-                                  discountPercent: Number(e.target.value)
-                                }
-                              })}
-                              className="w-full px-2.5 py-1.5 rounded-xl border border-stone-300 bg-white text-xs font-semibold"
-                            >
-                              <option value={10}>10% de descuento</option>
-                              <option value={15}>15% de descuento</option>
-                              <option value={20}>20% de descuento (Recomendado)</option>
-                              <option value={30}>30% de descuento</option>
-                              <option value={50}>50% de descuento (Liquidación)</option>
-                            </select>
-                          </div>
+                            }}
+                            className="w-full px-2.5 py-2 rounded-xl border border-gray-300 bg-white font-medium text-xs text-gray-900"
+                          >
+                            <option value="">-- Seleccionar insumo de almacén --</option>
+                            <optgroup label="⚙️ Consumibles, Lijas, Sierras & Limpieza (Indirectos)">
+                              {rawMaterialsList.filter(m => m.category === 'consumables' || m.name.toLowerCase().includes('lija') || m.name.toLowerCase().includes('sierra') || m.name.toLowerCase().includes('estopa') || m.name.toLowerCase().includes('cinta')).map(m => (
+                                <option key={m.id} value={m.id}>
+                                  {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit} • {m.supplier || 'Taller'})
+                                </option>
+                              ))}
+                            </optgroup>
+                            <optgroup label="🪵 Placas de Madera, Triplay & MDF (Láser y Carpintería)">
+                              {rawMaterialsList.filter(m => m.category === 'laser' || m.name.toLowerCase().includes('triplay') || m.name.toLowerCase().includes('mdf') || m.name.toLowerCase().includes('madera') || m.name.toLowerCase().includes('perchero')).map(m => (
+                                <option key={m.id} value={m.id}>
+                                  {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
+                                </option>
+                              ))}
+                            </optgroup>
+                            <optgroup label="🖨️ Filamentos 3D & Insumos de Cama">
+                              {rawMaterialsList.filter(m => m.category === '3d').map(m => (
+                                <option key={m.id} value={m.id}>
+                                  {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
+                                </option>
+                              ))}
+                            </optgroup>
+                            <optgroup label="☕ Sublimación & DTF Textil">
+                              {rawMaterialsList.filter(m => m.category === 'sublimation' || m.category === 'dtf').map(m => (
+                                <option key={m.id} value={m.id}>
+                                  {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
+                                </option>
+                              ))}
+                            </optgroup>
+                            <optgroup label="💧 Adhesivos, Resistol 850 & Herrajes">
+                              {rawMaterialsList.filter(m => m.name.toLowerCase().includes('resistol') || m.name.toLowerCase().includes('argolla') || m.category === 'ensamble').map(m => (
+                                <option key={m.id} value={m.id}>
+                                  {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
+                                </option>
+                              ))}
+                            </optgroup>
+                            <optgroup label="📦 Otros Insumos">
+                              {rawMaterialsList.filter(m => !['3d', 'laser', 'sublimation', 'dtf', 'consumables'].includes(m.category) && !m.name.toLowerCase().includes('lija') && !m.name.toLowerCase().includes('sierra')).map(m => (
+                                <option key={m.id} value={m.id}>
+                                  {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
+                                </option>
+                              ))}
+                            </optgroup>
+                          </select>
+                          <span className="text-[9.5px] text-gray-400">O ingresa un insumo manual abajo si es nuevo</span>
                         </div>
 
-                        {editorForm.price && (
-                          <div className="p-2.5 rounded-xl bg-white border border-amber-200 flex items-center justify-between text-xs">
-                            <span className="text-gray-500">Precio normal: <strong className="line-through">${editorForm.price}</strong></span>
-                            <span className="text-[#2D4F3E] font-black text-sm">
-                              Precio Flash: ${Math.round(editorForm.price * (1 - (editorForm.flashDealConfig.discountPercent || 20) / 100))} MXN
-                            </span>
+                        {!editorRecipeSelectedMatId && (
+                          <div className="sm:col-span-3 space-y-1">
+                            <label className="text-[10px] font-bold text-gray-700 block">Nombre manual:</label>
+                            <input
+                              type="text"
+                              value={editorRecipeCustomName}
+                              onChange={e => setEditorRecipeCustomName(e.target.value)}
+                              className="w-full px-2.5 py-2 rounded-xl border border-gray-300 bg-white text-xs"
+                              placeholder="Ej: Lija 220 grano fino"
+                            />
                           </div>
                         )}
+
+                        <div className="sm:col-span-2 space-y-1">
+                          <label className="text-[10px] font-bold text-gray-700 block">Cant. Neta:</label>
+                          <input
+                            type="number"
+                            step="any"
+                            min="0"
+                            value={editorRecipeNetQty}
+                            onChange={e => setEditorRecipeNetQty(parseFloat(e.target.value) || 0)}
+                            className="w-full px-2 py-2 rounded-xl border border-gray-300 bg-white font-mono font-bold text-xs"
+                          />
+                        </div>
+
+                        <div className="sm:col-span-2 space-y-1">
+                          <label className="text-[10px] font-bold text-amber-800 block">+ Merma:</label>
+                          <input
+                            type="number"
+                            step="any"
+                            min="0"
+                            value={editorRecipeWasteQty}
+                            onChange={e => setEditorRecipeWasteQty(parseFloat(e.target.value) || 0)}
+                            className="w-full px-2 py-2 rounded-xl border border-amber-300 bg-amber-50/50 font-mono font-bold text-xs text-amber-900"
+                          />
+                        </div>
+
+                        <div className="sm:col-span-1 space-y-1">
+                          <label className="text-[10px] font-bold text-gray-700 block">Unidad:</label>
+                          <select
+                            value={editorRecipeUnit}
+                            onChange={e => setEditorRecipeUnit(e.target.value)}
+                            className="w-full px-1.5 py-2 rounded-xl border border-gray-300 bg-white font-bold text-xs text-center"
+                          >
+                            <option value="pza">pza</option>
+                            <option value="pliego">pliego</option>
+                            <option value="gotas">gotas</option>
+                            <option value="cm²">cm²</option>
+                            <option value="g">g</option>
+                            <option value="cm">cm</option>
+                            <option value="ml">ml</option>
+                            <option value="hoja">hoja</option>
+                          </select>
+                        </div>
+
+                        <div className="sm:col-span-2 flex items-end">
+                          <button
+                            type="button"
+                            onClick={handleAddEditorRecipeItem}
+                            className="w-full py-2 px-3 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white font-bold text-xs flex items-center justify-center gap-1 shadow-md transition-all cursor-pointer active:scale-95"
+                          >
+                            <Plus className="w-3.5 h-3.5" />
+                            <span>Agregar</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* CALCULADORA DE LUZ CFE & MANO DE OBRA */}
+                    <div className="p-4 bg-white rounded-2xl border border-stone-200 space-y-3">
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-stone-100 pb-2">
+                        <div className="flex items-center gap-2">
+                          <span className="p-1 rounded-lg bg-amber-100 text-amber-800">
+                            <Zap className="w-4 h-4" />
+                          </span>
+                          <div>
+                            <h5 className="font-bold text-xs text-gray-900 flex items-center gap-1.5">
+                              <span>Consumo Eléctrico CFE &amp; Mano de Obra de Taller</span>
+                              <span className="px-2 py-0.2 rounded-full bg-amber-100 text-amber-900 text-[9.5px] font-bold">
+                                Overhead Exacto
+                              </span>
+                            </h5>
+                            <span className="text-[10px] text-gray-400">
+                              Calcula al centavo la luz según Watts y minutos de máquina, más tiempo del artesano
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="text-right">
+                          <span className="text-[10px] text-gray-400 block">Subtotal Luz + Labor:</span>
+                          <span className="font-mono font-bold text-xs text-amber-900">
+                            ${((Number(editorForm.manufacturingRecipe?.energyCost) || 0) + (Number(editorForm.manufacturingRecipe?.laborCost) || 0)).toFixed(2)} MXN
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        {/* CFE */}
+                        <div className="p-3 rounded-xl bg-amber-50/40 border border-amber-200/60 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="font-bold text-[10.5px] text-amber-950">⚡ Luz Máquina CFE:</span>
+                            <span className="font-mono font-bold text-xs text-amber-900 bg-amber-100 px-2 py-0.5 rounded">
+                              ${Number(editorForm.manufacturingRecipe?.energyCost || 0).toFixed(2)} MXN
+                            </span>
+                          </div>
+
+                          <div className="flex flex-wrap gap-1">
+                            {[
+                              { label: '3D (250W)', watts: 250 },
+                              { label: 'Láser Diodo (80W)', watts: 80 },
+                              { label: 'Láser CO2 (450W)', watts: 450 },
+                              { label: 'Plancha (1800W)', watts: 1800 },
+                            ].map(p => (
+                              <button
+                                key={p.label}
+                                type="button"
+                                onClick={() => handleUpdateRecipeField('machinePowerWatts', p.watts)}
+                                className={`px-1.5 py-0.5 rounded text-[9.5px] font-bold border transition-colors cursor-pointer ${
+                                  editorForm.manufacturingRecipe?.machinePowerWatts === p.watts
+                                    ? 'bg-amber-700 text-white border-amber-800'
+                                    : 'bg-white text-gray-700 border-amber-200 hover:bg-amber-100'
+                                }`}
+                              >
+                                {p.label}
+                              </button>
+                            ))}
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-1.5 pt-1 text-[10px]">
+                            <div>
+                              <label className="text-gray-500 font-bold block mb-0.5">Potencia (W):</label>
+                              <input
+                                type="number"
+                                min="0"
+                                value={editorForm.manufacturingRecipe?.machinePowerWatts ?? 250}
+                                onChange={e => handleUpdateRecipeField('machinePowerWatts', parseFloat(e.target.value) || 0)}
+                                className="w-full px-1.5 py-1 rounded border border-gray-300 bg-white font-mono font-bold text-xs"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-gray-500 font-bold block mb-0.5">Minutos:</label>
+                              <input
+                                type="number"
+                                min="0"
+                                value={editorForm.manufacturingRecipe?.manufacturingTimeMinutes ?? 90}
+                                onChange={e => handleUpdateRecipeField('manufacturingTimeMinutes', parseFloat(e.target.value) || 0)}
+                                className="w-full px-1.5 py-1 rounded border border-gray-300 bg-white font-mono font-bold text-xs"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-gray-500 font-bold block mb-0.5">Tarifa ($/kWh):</label>
+                              <input
+                                type="number"
+                                min="0"
+                                step="0.1"
+                                value={editorForm.manufacturingRecipe?.kwhCost ?? 3.50}
+                                onChange={e => handleUpdateRecipeField('kwhCost', parseFloat(e.target.value) || 0)}
+                                className="w-full px-1.5 py-1 rounded border border-gray-300 bg-white font-mono font-bold text-xs"
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Labor */}
+                        <div className="p-3 rounded-xl bg-emerald-50/40 border border-emerald-200/60 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="font-bold text-[10.5px] text-emerald-950">⏱️ Mano de Obra:</span>
+                            <span className="font-mono font-bold text-xs text-emerald-900 bg-emerald-100 px-2 py-0.5 rounded">
+                              ${Number(editorForm.manufacturingRecipe?.laborCost || 0).toFixed(2)} MXN
+                            </span>
+                          </div>
+
+                          <p className="text-[10px] text-gray-500">
+                            Tiempo de preparación, corte, armado, lijado manual y aplicación de barniz.
+                          </p>
+
+                          <div className="grid grid-cols-2 gap-2 pt-1 text-[10px]">
+                            <div>
+                              <label className="text-gray-500 font-bold block mb-0.5">Labor manual (min):</label>
+                              <input
+                                type="number"
+                                min="0"
+                                value={editorForm.manufacturingRecipe?.laborTimeMinutes ?? 15}
+                                onChange={e => handleUpdateRecipeField('laborTimeMinutes', parseFloat(e.target.value) || 0)}
+                                className="w-full px-2 py-1 rounded border border-gray-300 bg-white font-mono font-bold text-xs"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-gray-500 font-bold block mb-0.5">Costo hora ($/hr):</label>
+                              <input
+                                type="number"
+                                min="0"
+                                value={editorForm.manufacturingRecipe?.laborRatePerHour ?? 75}
+                                onChange={e => handleUpdateRecipeField('laborRatePerHour', parseFloat(e.target.value) || 0)}
+                                className="w-full px-2 py-1 rounded border border-gray-300 bg-white font-mono font-bold text-xs"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* SIMULADOR EN VIVO & DESCUENTO INMEDIATO */}
+                    <div className="p-4 bg-gradient-to-r from-emerald-900 via-[#1C2721] to-[#141615] rounded-2xl text-white space-y-3 shadow-md border border-emerald-700/50">
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-2">
+                        <div className="flex items-center gap-2">
+                          <span className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-300">
+                            <Hammer className="w-4 h-4" />
+                          </span>
+                          <div>
+                            <h5 className="font-bold text-xs text-white">
+                              Simulador de Fabricación &amp; Control de Descuento de Taller
+                            </h5>
+                            <span className="text-[10px] text-gray-300">
+                              Verifica disponibilidad o descuenta materias primas y consumibles de inmediato
+                            </span>
+                          </div>
+                        </div>
+                        <span className="font-mono font-black text-sm text-emerald-300">
+                          Total Taller Unitario: ${totalTaller.toFixed(2)} MXN
+                        </span>
+                      </div>
+
+                      <div className="flex flex-wrap items-center justify-between gap-3 text-xs pt-1">
+                        <div className="flex items-center gap-2">
+                          <label className="text-[11px] text-gray-300 font-semibold">Piezas a fabricar:</label>
+                          <div className="flex items-center border border-gray-600 rounded-lg bg-black/40 overflow-hidden">
+                            <button
+                              type="button"
+                              onClick={() => setRecipeSimulateUnits(Math.max(1, recipeSimulateUnits - 1))}
+                              className="px-2 py-1 text-gray-300 hover:bg-white/10 cursor-pointer"
+                            >
+                              -
+                            </button>
+                            <input
+                              type="number"
+                              min="1"
+                              value={recipeSimulateUnits}
+                              onChange={e => setRecipeSimulateUnits(Math.max(1, parseInt(e.target.value) || 1))}
+                              className="w-12 text-center font-mono font-bold text-xs bg-transparent text-white focus:outline-none"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setRecipeSimulateUnits(recipeSimulateUnits + 1)}
+                              className="px-2 py-1 text-gray-300 hover:bg-white/10 cursor-pointer"
+                            >
+                              +
+                            </button>
+                          </div>
+                          <span className="text-[10.5px] text-emerald-400 font-mono">
+                            = ${(recipeSimulateUnits * totalInsumos).toFixed(2)} MXN en insumos
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleSimulateProduction(recipeSimulateUnits)}
+                            className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer"
+                          >
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                            <span>Verificar Stock</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            disabled={recipeDeductLoading || allItems.length === 0}
+                            onClick={() => handleDeductStockNow(recipeSimulateUnits)}
+                            className="px-4 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-black text-xs flex items-center gap-1.5 transition-all shadow-md cursor-pointer active:scale-95"
+                          >
+                            <Zap className="w-3.5 h-3.5 text-amber-300" />
+                            <span>{recipeDeductLoading ? 'Descontando...' : `Descontar ${recipeSimulateUnits} pza(s) del Taller`}</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                );
+              })()}
+
+              {/* ======================================================== */}
+              {/* PESTAÑA 3: EMBALAJE Y ENVÍO NACIONAL                     */}
+              {/* ======================================================== */}
+              {editorActiveTab === 'packaging' && (() => {
+                const pkg = editorForm.manufacturingRecipe?.packagingAndShipping || {
+                  enabled: true,
+                  boxType: 'caja_mediana',
+                  boxCost: 12,
+                  bubbleWrapCost: 3.5,
+                  cushioningCost: 2.5,
+                  labelTapeCost: 2,
+                  packagingCost: 20,
+                  shippingCarrier: 'nacional_estandar',
+                  shippingCost: 149,
+                  includeShippingInPrice: false,
+                  notes: ''
+                };
+
+                const packagingTotal = Number(pkg.packagingCost) || 0;
+                const shippingTotal = Number(pkg.shippingCost) || 0;
+                const totalLogistica = packagingTotal + (pkg.includeShippingInPrice ? shippingTotal : 0);
+
+                return (
+                  <div className="p-4 sm:p-6 space-y-5 text-xs">
+                    
+                    {/* Header de Resumen Logístico */}
+                    <div className="p-3.5 bg-gradient-to-r from-purple-900 via-[#1C2721] to-[#141615] rounded-2xl text-white shadow-md border border-purple-800/50 flex flex-wrap items-center justify-between gap-3">
+                      <div className="flex items-center gap-2.5">
+                        <span className="p-2 rounded-xl bg-purple-500/20 text-purple-300">
+                          <Truck className="w-5 h-5" />
+                        </span>
+                        <div>
+                          <h4 className="font-heading font-black text-sm text-white">
+                            Embalaje &amp; Envío a Toda la República Mexicana
+                          </h4>
+                          <span className="text-[10.5px] text-gray-300">
+                            Cotización exacta de cajas microcorrugadas, protecciones internas y flete nacional
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        <div className="text-right">
+                          <span className="text-[10px] text-gray-400 block">Total Empaque + Flete:</span>
+                          <span className="font-mono font-black text-base text-purple-200">
+                            ${totalLogistica.toFixed(2)} MXN
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={handleSyncRecipeToCostPrice}
+                          className="px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs flex items-center gap-1 transition-all cursor-pointer shadow-sm active:scale-95"
+                          title="Sincronizar costo total aterrizado al producto"
+                        >
+                          <Zap className="w-3.5 h-3.5 text-amber-300" />
+                          <span>Sincronizar a Costo</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* CARD 1: EMBALAJE Y EMPAQUE DE TALLER */}
+                    <div className="p-4 rounded-2xl bg-white border border-stone-200 space-y-3.5 shadow-xs">
+                      <div className="flex items-center justify-between border-b border-stone-200 pb-2.5">
+                        <div className="flex items-center gap-2">
+                          <span className="p-1.5 rounded-xl bg-purple-100 text-purple-800">
+                            <Package className="w-4 h-4" />
+                          </span>
+                          <div>
+                            <h4 className="font-heading font-black text-xs text-gray-900">
+                              Embalaje &amp; Protecciones de Taller
+                            </h4>
+                            <p className="text-[10.5px] text-gray-500">
+                              Cajas de cartón microcorrugado, plástico burbuja de alta densidad y relleno de viruta kraft.
+                            </p>
+                          </div>
+                        </div>
+
+                        <label className="flex items-center gap-2 cursor-pointer font-bold text-purple-900 bg-purple-50 px-3 py-1.5 rounded-xl border border-purple-200 select-none">
+                          <input
+                            type="checkbox"
+                            checked={!!pkg.enabled}
+                            onChange={e => handleUpdatePackagingField('enabled', e.target.checked)}
+                            className="w-4 h-4 rounded text-purple-700 cursor-pointer"
+                          />
+                          <span>Activar Costo de Embalaje</span>
+                        </label>
+                      </div>
+
+                      {pkg.enabled && (
+                        <div className="space-y-4 pt-1">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            {/* Selector de Caja */}
+                            <div>
+                              <label className="font-bold text-gray-700 block mb-1 text-[11px]">
+                                Caja o Presentación de Empaque:
+                              </label>
+                              <select
+                                value={pkg.boxType || 'caja_mediana'}
+                                onChange={e => handleUpdatePackagingField('boxType', e.target.value)}
+                                className="w-full px-3 py-2 rounded-xl border border-gray-300 bg-white font-semibold text-xs"
+                              >
+                                <option value="caja_chica">📦 Caja Microcorrugado Chica (15x15x8 cm) — $8.00</option>
+                                <option value="caja_mediana">📦 Caja Microcorrugado Mediana (25x20x10 cm) — $12.00</option>
+                                <option value="caja_grande">📦 Caja Microcorrugado Grande (35x28x15 cm) — $18.00</option>
+                                <option value="taza">☕ Caja Especial para Taza con Ventana — $9.00</option>
+                                <option value="luxury">🎁 Caja Rígida Luxury con Moño Satinado — $25.00</option>
+                                <option value="sobre_rigido">✉️ Sobre Rígido Antidoblado Papelería Fina — $6.00</option>
+                                <option value="bolsa_celofan">🛍️ Bolsa Celofán con Cenefa y Sticker — $3.50</option>
+                                <option value="custom">✏️ Empaque a Convenir / Personalizado</option>
+                              </select>
+                            </div>
+
+                            {/* Costo Caja */}
+                            <div>
+                              <label className="font-bold text-gray-700 block mb-1 text-[11px]">
+                                Costo Base de la Caja ($ MXN):
+                              </label>
+                              <input
+                                type="number"
+                                step="0.5"
+                                min="0"
+                                value={pkg.boxCost ?? 12}
+                                onChange={e => handleUpdatePackagingField('boxCost', parseFloat(e.target.value) || 0)}
+                                className="w-full px-3 py-2 rounded-xl border border-gray-300 bg-white font-mono font-bold text-xs"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Protecciones Internas */}
+                          <div className="p-3 bg-stone-50 rounded-xl border border-stone-200 space-y-2">
+                            <span className="font-bold text-gray-700 block text-[10.5px] uppercase">
+                              Insumos de Protección Interna para Envíos:
+                            </span>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                              <div>
+                                <label className="text-[10px] text-gray-500 font-bold block mb-0.5">
+                                  Plástico Burbuja Alta Densidad:
+                                </label>
+                                <div className="flex items-center gap-1">
+                                  <span className="text-gray-400 font-bold">$</span>
+                                  <input
+                                    type="number"
+                                    step="0.5"
+                                    min="0"
+                                    value={pkg.bubbleWrapCost ?? 3.5}
+                                    onChange={e => handleUpdatePackagingField('bubbleWrapCost', parseFloat(e.target.value) || 0)}
+                                    className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-mono font-bold text-xs"
+                                  />
+                                </div>
+                                <span className="text-[9px] text-gray-400">Protección antigolpes</span>
+                              </div>
+
+                              <div>
+                                <label className="text-[10px] text-gray-500 font-bold block mb-0.5">
+                                  Relleno Viruta Kraft / Cojín:
+                                </label>
+                                <div className="flex items-center gap-1">
+                                  <span className="text-gray-400 font-bold">$</span>
+                                  <input
+                                    type="number"
+                                    step="0.5"
+                                    min="0"
+                                    value={pkg.cushioningCost ?? 2.5}
+                                    onChange={e => handleUpdatePackagingField('cushioningCost', parseFloat(e.target.value) || 0)}
+                                    className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-mono font-bold text-xs"
+                                  />
+                                </div>
+                                <span className="text-[9px] text-gray-400">Amortiguador ecológico</span>
+                              </div>
+
+                              <div>
+                                <label className="text-[10px] text-gray-500 font-bold block mb-0.5">
+                                  Etiqueta Térmica &amp; Cinta Frágil:
+                                </label>
+                                <div className="flex items-center gap-1">
+                                  <span className="text-gray-400 font-bold">$</span>
+                                  <input
+                                    type="number"
+                                    step="0.5"
+                                    min="0"
+                                    value={pkg.labelTapeCost ?? 2}
+                                    onChange={e => handleUpdatePackagingField('labelTapeCost', parseFloat(e.target.value) || 0)}
+                                    className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-mono font-bold text-xs"
+                                  />
+                                </div>
+                                <span className="text-[9px] text-gray-400">Guía y sellado de seguridad</span>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center justify-between pt-1 border-t border-stone-200">
+                              <span className="font-bold text-gray-600 text-[11px]">Costo Total de Embalaje por Pieza:</span>
+                              <span className="font-mono font-black text-xs text-purple-900 bg-purple-50 px-2.5 py-0.5 rounded-lg border border-purple-200">
+                                ${packagingTotal.toFixed(2)} MXN
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* CARD 2: COTIZADOR DE ENVÍO A TODA LA REPÚBLICA */}
+                    <div className="p-4 rounded-2xl bg-white border border-stone-200 space-y-3.5 shadow-xs">
+                      <div className="flex items-center justify-between border-b border-stone-200 pb-2.5">
+                        <div className="flex items-center gap-2">
+                          <span className="p-1.5 rounded-xl bg-blue-100 text-blue-800">
+                            <Truck className="w-4 h-4" />
+                          </span>
+                          <div>
+                            <h4 className="font-heading font-black text-xs text-gray-900">
+                              Cotizador de Envío a Toda la República Mexicana
+                            </h4>
+                            <p className="text-[10.5px] text-gray-500">
+                              Tarifas estándar FedEx, Estafeta, DHL Express o entrega local en San Luis Potosí.
+                            </p>
+                          </div>
+                        </div>
+
+                        <span className="font-mono font-bold text-xs text-blue-900 bg-blue-50 px-2.5 py-1 rounded-xl border border-blue-200">
+                          Flete: ${shippingTotal.toFixed(2)} MXN
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="font-bold text-gray-700 block mb-1 text-[11px]">
+                            Paquetería / Modalidad de Envío:
+                          </label>
+                          <select
+                            value={pkg.shippingCarrier || 'nacional_estandar'}
+                            onChange={e => handleUpdatePackagingField('shippingCarrier', e.target.value)}
+                            className="w-full px-3 py-2 rounded-xl border border-gray-300 bg-white font-semibold text-xs"
+                          >
+                            <option value="nacional_estandar">🚚 Envío Nacional Estándar (FedEx / Estafeta / DHL, 3-5 días) — $149.00</option>
+                            <option value="nacional_express">⚡ Envío Nacional Express Aéreo (Día Siguiente a todo México) — $220.00</option>
+                            <option value="local_slp">📍 Entrega Local en SLP (Punto de Entrega Taller) — $0.00</option>
+                            <option value="local_domicilio">🛵 Entrega Local en SLP a Domicilio — $45.00</option>
+                            <option value="custom">✏️ Tarifa Personalizada</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="font-bold text-gray-700 block mb-1 text-[11px]">
+                            Costo de Flete Estimado ($ MXN):
+                          </label>
+                          <input
+                            type="number"
+                            step="1"
+                            min="0"
+                            value={pkg.shippingCost ?? 149}
+                            onChange={e => handleUpdatePackagingField('shippingCost', parseFloat(e.target.value) || 0)}
+                            className="w-full px-3 py-2 rounded-xl border border-gray-300 bg-white font-mono font-bold text-xs"
+                          />
+                        </div>
+                      </div>
+
+                      {/* SWITCH INTELIGENTE: ¿INCLUIR FLETE EN EL PRECIO DE VENTA? */}
+                      <div className={`p-3.5 rounded-xl border transition-all ${
+                        pkg.includeShippingInPrice ? 'bg-emerald-50 border-emerald-300 shadow-2xs' : 'bg-stone-50 border-stone-200'
+                      }`}>
+                        <label className="flex items-start gap-2.5 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={!!pkg.includeShippingInPrice}
+                            onChange={e => handleUpdatePackagingField('includeShippingInPrice', e.target.checked)}
+                            className="w-4 h-4 rounded text-[#2D4F3E] focus:ring-0 mt-0.5 cursor-pointer"
+                          />
+                          <div>
+                            <span className="font-bold text-gray-900 block text-xs">
+                              ¿Incluir costo de envío en el precio de venta (Ofrecer "Envío Gratis a todo México" al cliente)?
+                            </span>
+                            <span className="text-[10.5px] text-gray-500 leading-tight block mt-0.5">
+                              {pkg.includeShippingInPrice ? (
+                                <strong className="text-emerald-800">
+                                  ✓ Activado: Los ${shippingTotal} MXN del envío se suman al costo base del producto para que el margen de ganancia cubra el flete sin pérdidas ni déficit de costos.
+                                </strong>
+                              ) : (
+                                'El producto se venderá sin envío incluido. La paquetería se cobrará aparte en la orden al momento de la compra.'
+                              )}
+                            </span>
+                          </div>
+                        </label>
+                      </div>
+
+                      {/* Notas de Empaque y Logística */}
+                      <div>
+                        <label className="font-bold text-gray-700 block mb-1 text-[11px]">
+                          Instrucciones y Notas de Logística para el Personal:
+                        </label>
+                        <input
+                          type="text"
+                          value={pkg.notes || ''}
+                          onChange={e => handleUpdatePackagingField('notes', e.target.value)}
+                          placeholder="Ej: Envolver percheros de madera en plástico burbuja individual para evitar fricción..."
+                          className="w-full px-3 py-2 rounded-xl border border-gray-300 bg-white text-xs"
+                        />
+                      </div>
+                    </div>
+
+                  </div>
+                );
+              })()}
+
+              {/* ======================================================== */}
+              {/* PESTAÑA 4: PRECIOS, MARGEN DE UTILIDAD & DESCUENTOS      */}
+              {/* ======================================================== */}
+              {editorActiveTab === 'pricing' && (() => {
+                const rec = editorForm.manufacturingRecipe || {};
+                const matCost = Number(rec.totalMaterialCost) || 0;
+                const energyCost = Number(rec.energyCost) || 0;
+                const laborCost = Number(rec.laborCost) || 0;
+                const pkg = rec.packagingAndShipping;
+                const packagingCost = pkg?.enabled ? (Number(pkg.packagingCost) || 0) : 0;
+                const shippingCost = (pkg?.enabled && pkg?.includeShippingInPrice) ? (Number(pkg.shippingCost) || 0) : 0;
+                const calculatedLandedCost = Math.round((matCost + energyCost + laborCost + packagingCost + shippingCost) * 100) / 100;
+                const currentCost = Number(editorForm.costPrice) || calculatedLandedCost;
+                const currentPrice = Number(editorForm.price) || 0;
+                const profitAmount = currentPrice > 0 ? (currentPrice - currentCost) : 0;
+                const marginPercent = currentPrice > 0 ? Math.round((profitAmount / currentPrice) * 100) : 0;
+
+                return (
+                  <div className="p-4 sm:p-6 space-y-5 text-xs">
+                    
+                    {/* TARJETA DE FÓRMULA DE COSTO ATERRIZADO TOTAL */}
+                    <div className="p-4 bg-gradient-to-r from-emerald-50 via-[#FAF9F5] to-emerald-50 rounded-2xl border-2 border-emerald-300/80 space-y-3 shadow-xs">
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-emerald-200 pb-2.5">
+                        <div className="flex items-center gap-2">
+                          <span className="p-1.5 rounded-xl bg-emerald-700 text-white shadow-2xs">
+                            <Calculator className="w-4 h-4" />
+                          </span>
+                          <div>
+                            <h4 className="font-heading font-black text-xs text-emerald-950">
+                              Escandallo Minucioso &amp; Fórmula de Costo Total Aterrizado
+                            </h4>
+                            <span className="text-[10.5px] text-gray-500">
+                              Directos + Indirectos + Luz CFE + Labor + Embalaje + Flete = Costo Total sin Fugas
+                            </span>
+                          </div>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={handleSyncRecipeToCostPrice}
+                          className="px-3 py-1.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-sm active:scale-95"
+                          title="Sincronizar la suma exacta al campo Costo de Producción"
+                        >
+                          <Zap className="w-3.5 h-3.5 text-amber-300" />
+                          <span>Sincronizar Costo (${calculatedLandedCost.toFixed(2)})</span>
+                        </button>
+                      </div>
+
+                      {/* Desglose visual de la fórmula */}
+                      <div className="grid grid-cols-2 sm:grid-cols-6 gap-2 text-center text-[10px]">
+                        <div className="p-2 rounded-xl bg-white border border-emerald-200">
+                          <span className="text-gray-400 font-bold block uppercase text-[9px]">1. Insumos</span>
+                          <span className="font-mono font-black text-gray-800 text-xs mt-0.5">${matCost.toFixed(1)}</span>
+                        </div>
+                        <div className="p-2 rounded-xl bg-white border border-emerald-200">
+                          <span className="text-gray-400 font-bold block uppercase text-[9px]">2. Luz CFE</span>
+                          <span className="font-mono font-black text-amber-900 text-xs mt-0.5">${energyCost.toFixed(1)}</span>
+                        </div>
+                        <div className="p-2 rounded-xl bg-white border border-emerald-200">
+                          <span className="text-gray-400 font-bold block uppercase text-[9px]">3. Labor</span>
+                          <span className="font-mono font-black text-purple-900 text-xs mt-0.5">${laborCost.toFixed(1)}</span>
+                        </div>
+                        <div className="p-2 rounded-xl bg-white border border-emerald-200">
+                          <span className="text-gray-400 font-bold block uppercase text-[9px]">4. Embalaje</span>
+                          <span className="font-mono font-black text-purple-800 text-xs mt-0.5">${packagingCost.toFixed(1)}</span>
+                        </div>
+                        <div className="p-2 rounded-xl bg-white border border-emerald-200">
+                          <span className="text-gray-400 font-bold block uppercase text-[9px]">5. Flete</span>
+                          <span className="font-mono font-black text-blue-900 text-xs mt-0.5">${shippingCost.toFixed(1)}</span>
+                        </div>
+                        <div className="p-2 rounded-xl bg-emerald-800 text-white font-bold">
+                          <span className="text-emerald-200 block uppercase text-[9px]">Costo Total</span>
+                          <span className="font-mono font-black text-xs mt-0.5">${calculatedLandedCost.toFixed(2)}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* PRECIO DE VENTA, MARGEN RÁPIDO Y STOCK */}
+                    <div className="p-4 rounded-2xl bg-white border border-stone-200 space-y-4 shadow-xs">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        
+                        {/* Costo de Producción */}
+                        <div>
+                          <label className="font-bold text-gray-800 block mb-1 text-[11px]">
+                            Costo de Producción / Aterrizado ($ MXN)
+                          </label>
+                          <div className="relative">
+                            <span className="absolute left-3 top-2 text-xs font-bold text-gray-400">$</span>
+                            <input
+                              type="number"
+                              step="0.5"
+                              min="0"
+                              value={editorForm.costPrice ?? ''}
+                              onChange={e => setEditorForm({ ...editorForm, costPrice: e.target.value ? parseFloat(e.target.value) : 0 })}
+                              className="w-full pl-6 pr-3 py-2 rounded-xl border border-gray-300 bg-white font-mono font-bold text-xs text-gray-800"
+                              placeholder="0.00"
+                            />
+                          </div>
+                          <span className="text-[9.5px] text-gray-400">Directos + Indirectos + Luz + Empaque</span>
+                        </div>
+
+                        {/* Precio de Venta */}
+                        <div>
+                          <label className="font-bold text-gray-800 block mb-1 text-[11px]">
+                            Precio de Venta al Público (PVP $ MXN) *
+                          </label>
+                          <div className="flex items-center gap-1.5">
+                            <input
+                              type="number"
+                              value={editorForm.price ?? ''}
+                              onChange={e => setEditorForm({ ...editorForm, price: e.target.value ? Number(e.target.value) : null })}
+                              className="w-full px-3 py-2 rounded-xl border-2 border-[#2D4F3E] bg-white font-black text-sm text-[#2D4F3E]"
+                              placeholder="249"
+                            />
+                            <select
+                              value={['pieza', 'lote', 'paquete', 'docena', 'combo'].includes(editorForm.priceUnit) ? editorForm.priceUnit : 'custom'}
+                              onChange={e => {
+                                if (e.target.value !== 'custom') {
+                                  setEditorForm({ ...editorForm, priceUnit: e.target.value });
+                                }
+                              }}
+                              className="px-2 py-2 rounded-xl border border-gray-300 bg-white font-semibold text-xs"
+                            >
+                              <option value="pieza">/ pza</option>
+                              <option value="combo">/ combo</option>
+                              <option value="paquete">/ paq</option>
+                              <option value="lote">/ lote</option>
+                              <option value="docena">/ docena</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        {/* Stock Físico */}
+                        <div>
+                          <label className="font-bold text-gray-800 block mb-1 text-[11px] flex items-center justify-between">
+                            <span>Piezas Físicas (Stock)</span>
+                            <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded ${
+                              editorForm.availability === 'in_stock' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                            }`}>
+                              {editorForm.availability === 'in_stock' ? 'Inmediato' : 'Bajo Pedido'}
+                            </span>
+                          </label>
+                          <div className="flex items-center border border-gray-300 rounded-xl bg-white overflow-hidden shadow-2xs">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const currentQty = Math.max(0, (Number(editorForm.stockQuantity) || 0) - 1);
+                                setEditorForm({
+                                  ...editorForm,
+                                  stockQuantity: currentQty,
+                                  availability: currentQty > 0 ? 'in_stock' : 'made_to_order'
+                                });
+                              }}
+                              className="px-2.5 py-2 text-gray-500 hover:bg-gray-100 transition-colors cursor-pointer"
+                            >
+                              <Minus className="w-3.5 h-3.5" />
+                            </button>
+                            <input
+                              type="number"
+                              min="0"
+                              value={editorForm.stockQuantity ?? 0}
+                              onChange={e => {
+                                const val = Math.max(0, parseInt(e.target.value) || 0);
+                                setEditorForm({
+                                  ...editorForm,
+                                  stockQuantity: val,
+                                  availability: val > 0 ? 'in_stock' : 'made_to_order'
+                                });
+                              }}
+                              className="w-full text-center font-mono font-bold text-xs text-gray-800 focus:outline-none"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const currentQty = (Number(editorForm.stockQuantity) || 0) + 1;
+                                setEditorForm({
+                                  ...editorForm,
+                                  stockQuantity: currentQty,
+                                  availability: 'in_stock'
+                                });
+                              }}
+                              className="px-2.5 py-2 text-gray-500 hover:bg-gray-100 transition-colors cursor-pointer"
+                            >
+                              <Plus className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+
+                      </div>
+
+                      {/* BOTONES DE MARGEN RÁPIDO */}
+                      <div className="space-y-1.5 pt-2 border-t border-stone-100">
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-gray-700 text-[10.5px] uppercase">
+                            Calcular Precio de Venta Sugerido según Margen Objetivo:
+                          </span>
+                          <span className="text-[10px] text-gray-400">Fórmula: PVP = Costo / (1 - Margen%)</span>
+                        </div>
+
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                          {[
+                            { percent: 30, label: '30% Margen', sub: 'Mayoreo / Económico' },
+                            { percent: 40, label: '40% Margen', sub: 'Estándar de Taller' },
+                            { percent: 50, label: '50% Margen', sub: 'Recomendado Artesanal' },
+                            { percent: 60, label: '60% Margen', sub: 'Alta Personalización' }
+                          ].map(m => {
+                            const suggested = currentCost > 0 ? Math.ceil(currentCost / (1 - m.percent / 100)) : 0;
+                            return (
+                              <button
+                                key={m.percent}
+                                type="button"
+                                onClick={() => handleApplyTargetMargin(m.percent)}
+                                className="p-2 rounded-xl border border-stone-200 bg-stone-50 hover:bg-emerald-50 hover:border-emerald-300 text-left transition-all cursor-pointer shadow-2xs group"
+                              >
+                                <div className="font-bold text-xs text-gray-800 group-hover:text-[#2D4F3E] flex items-center justify-between">
+                                  <span>{m.label}</span>
+                                  <span className="font-mono text-emerald-800 font-black">${suggested}</span>
+                                </div>
+                                <span className="text-[9.5px] text-gray-400 block mt-0.5">{m.sub}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Resumen de Margen de Ganancia */}
+                      {currentPrice > 0 && currentCost > 0 && (
+                        <div className="p-3 rounded-xl bg-[#FAF9F5] border border-stone-200 flex flex-wrap items-center justify-between gap-2">
+                          <span className="font-semibold text-gray-700">Margen financiero de la pieza:</span>
+                          <span className={`px-3 py-1 rounded-full font-bold text-xs ${
+                            marginPercent >= 40
+                              ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                              : 'bg-amber-100 text-amber-800 border border-amber-300'
+                          }`}>
+                            Ganancia Neta: ${profitAmount.toFixed(1)} MXN ({marginPercent}% margen)
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* CONFIGURACIÓN EXCLUSIVA DE PAQUETE O COMBO PROMOCIONAL */}
+                    {editorForm.isBundle && (
+                      <div className="p-4 rounded-2xl bg-gradient-to-r from-purple-50/80 via-[#FAF9F5] to-amber-50/50 border-2 border-purple-300/90 space-y-3.5 shadow-xs">
+                        <div className="flex items-center justify-between border-b border-purple-100 pb-2">
+                          <div className="flex items-center gap-2">
+                            <span className="p-1.5 rounded-xl bg-purple-100 text-purple-700">
+                              <Boxes className="w-4 h-4" />
+                            </span>
+                            <div>
+                              <h4 className="font-heading font-extrabold text-xs text-purple-950 flex items-center gap-1.5">
+                                <span>Cualidades de Paquete &amp; Combo Promocional</span>
+                                <span className="px-2 py-0.2 rounded-full bg-purple-200 text-purple-900 text-[9.5px] font-bold">
+                                  Combo Activo
+                                </span>
+                              </h4>
+                              <p className="text-[10.5px] text-gray-500">
+                                Define el precio regular de lista, el ahorro y qué piezas contiene
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          <div>
+                            <label className="font-bold text-gray-700 block mb-1 text-[11px]">
+                              Precio Regular de Lista ($ MXN)
+                            </label>
+                            <input
+                              type="number"
+                              min="0"
+                              value={editorForm.regularPrice ?? ''}
+                              onChange={e => {
+                                const reg = e.target.value ? Number(e.target.value) : 0;
+                                const curPrice = Number(editorForm.price) || 0;
+                                setEditorForm({
+                                  ...editorForm,
+                                  regularPrice: reg,
+                                  savings: Math.max(0, reg - curPrice)
+                                });
+                              }}
+                              className="w-full px-3 py-2 rounded-xl border border-gray-300 bg-white font-mono font-bold text-xs text-gray-800"
+                              placeholder="Ej: 649"
+                            />
+                            <span className="text-[9.5px] text-gray-400">Suma del precio individual de las piezas</span>
+                          </div>
+
+                          <div>
+                            <label className="font-bold text-gray-700 block mb-1 text-[11px]">
+                              Ahorro para el Cliente ($ MXN)
+                            </label>
+                            <input
+                              type="number"
+                              min="0"
+                              value={editorForm.savings ?? ''}
+                              onChange={e => setEditorForm({ ...editorForm, savings: e.target.value ? Number(e.target.value) : 0 })}
+                              className="w-full px-3 py-2 rounded-xl border border-emerald-300 bg-emerald-50/50 font-mono font-bold text-xs text-emerald-800"
+                              placeholder="Ej: 150"
+                            />
+                            <span className="text-[9.5px] text-emerald-700 font-semibold">
+                              {editorForm.regularPrice && editorForm.price
+                                ? `-${Math.round((((Number(editorForm.regularPrice) - Number(editorForm.price)) / Number(editorForm.regularPrice)) * 100))}% de descuento aplicado`
+                                : 'Descuento visible'}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Piezas incluidas */}
+                        <div className="space-y-2 pt-1 border-t border-purple-100">
+                          <label className="font-bold text-purple-950 text-[11px] uppercase tracking-wider block">
+                            Componentes y Piezas Incluidas ({(editorForm.includedItems || []).length} piezas):
+                          </label>
+
+                          <div className="space-y-1.5 max-h-48 overflow-y-auto">
+                            {(editorForm.includedItems || []).length === 0 ? (
+                              <p className="text-[11px] text-gray-400 italic p-2 bg-white rounded-xl border border-dashed border-gray-200">
+                                Sin piezas agregadas. Usa el campo de abajo para agregar las piezas que incluye el combo.
+                              </p>
+                            ) : (
+                              (editorForm.includedItems || []).map((item, idx) => (
+                                <div key={idx} className="flex items-center gap-1.5 bg-white p-1.5 rounded-xl border border-stone-200 shadow-2xs">
+                                  <span className="w-5 h-5 rounded-full bg-[#2D4F3E] text-white flex items-center justify-center font-bold text-[10px] shrink-0">
+                                    {idx + 1}
+                                  </span>
+                                  <input
+                                    type="text"
+                                    value={item}
+                                    onChange={e => handleUpdateIncludedItem(idx, e.target.value)}
+                                    className="flex-1 px-2 py-1 text-xs rounded-lg border border-transparent hover:border-gray-300 focus:border-[#2D4F3E] bg-transparent focus:bg-white font-medium"
+                                  />
+                                  <button
+                                    type="button"
+                                    onClick={() => handleRemoveIncludedItem(idx)}
+                                    className="p-1 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition-colors shrink-0 cursor-pointer"
+                                    title="Eliminar pieza del paquete"
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5" />
+                                  </button>
+                                </div>
+                              ))
+                            )}
+                          </div>
+
+                          <div className="flex items-center gap-1.5 pt-1">
+                            <input
+                              type="text"
+                              value={newIncludedItemInput}
+                              onChange={e => setNewIncludedItemInput(e.target.value)}
+                              onKeyDown={e => {
+                                if (e.key === 'Enter') {
+                                  e.preventDefault();
+                                  handleAddIncludedItem();
+                                }
+                              }}
+                              placeholder="Ej: 1 Bandeja vaciabolsillos curva ergonómica (18 x 12 cm)..."
+                              className="flex-1 px-3 py-1.5 text-xs rounded-xl border border-gray-300 bg-white"
+                            />
+                            <button
+                              type="button"
+                              onClick={handleAddIncludedItem}
+                              className="px-3.5 py-1.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-bold text-xs flex items-center gap-1 transition-all cursor-pointer shadow-2xs shrink-0"
+                            >
+                              <Plus className="w-3.5 h-3.5" />
+                              <span>Agregar Pieza</span>
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     )}
-                  </div>
 
-                  {/* 8. Medidas y Notas Privadas */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 bg-stone-50 rounded-2xl border border-stone-200">
-                    <div>
-                      <label className="font-semibold text-gray-700 block mb-1 text-[11px]">Medidas / Dimensiones (cm)</label>
-                      <input
-                        type="text"
-                        value={editorForm.specifications?.dimensions || ''}
-                        onChange={e => setEditorForm({
-                          ...editorForm,
-                          specifications: { ...editorForm.specifications, dimensions: e.target.value }
-                        })}
-                        placeholder="Ej: 22 x 13 x 2.2 cm"
-                        className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 bg-white text-xs"
-                      />
+                    {/* OFERTA FLASH & RELÁMPAGO */}
+                    <div className="rounded-2xl border border-amber-300 bg-gradient-to-r from-amber-50/50 via-stone-50 to-amber-50/30 overflow-hidden shadow-2xs">
+                      <div
+                        onClick={() => setEditorFlashAccordion(prev => !prev)}
+                        className="p-3.5 flex items-center justify-between cursor-pointer select-none hover:bg-black/[0.02] transition-colors"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Flame className="w-4 h-4 text-amber-500 fill-amber-500" />
+                          <div>
+                            <h4 className="font-heading font-extrabold text-xs text-gray-900 flex items-center gap-2">
+                              <span>Control de Oferta Flash &amp; Relámpago</span>
+                              {editorForm.flashDealConfig?.enabled && (
+                                <span className="px-2 py-0.2 rounded-full bg-amber-400 text-stone-950 text-[9.5px] font-black uppercase">
+                                  ACTIVA (-{editorForm.flashDealConfig.discountPercent || 20}%)
+                                </span>
+                              )}
+                            </h4>
+                            <span className="text-[10.5px] text-gray-500">
+                              Descuento con temporizador de cuenta regresiva visible en catálogo
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={Boolean(editorForm.flashDealConfig?.enabled)}
+                            onChange={e => {
+                              e.stopPropagation();
+                              setEditorForm({
+                                ...editorForm,
+                                flashDealConfig: {
+                                  ...(editorForm.flashDealConfig || {}),
+                                  enabled: e.target.checked,
+                                  durationMinutes: editorForm.flashDealConfig?.durationMinutes || 120,
+                                  discountPercent: editorForm.flashDealConfig?.discountPercent || 20
+                                }
+                              });
+                            }}
+                            className="w-4 h-4 rounded text-amber-600 focus:ring-0 cursor-pointer"
+                          />
+                          <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${editorFlashAccordion ? 'rotate-180' : ''}`} />
+                        </div>
+                      </div>
+
+                      {editorFlashAccordion && editorForm.flashDealConfig?.enabled && (
+                        <div className="p-3.5 pt-0 border-t border-amber-200/60 space-y-3">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                            <div>
+                              <label className="text-[11px] font-bold text-gray-700 block mb-1">Duración de la Oferta</label>
+                              <select
+                                value={editorForm.flashDealConfig.durationMinutes || 120}
+                                onChange={e => setEditorForm({
+                                  ...editorForm,
+                                  flashDealConfig: {
+                                    ...editorForm.flashDealConfig,
+                                    durationMinutes: Number(e.target.value)
+                                  }
+                                })}
+                                className="w-full px-2.5 py-1.5 rounded-xl border border-stone-300 bg-white text-xs font-semibold"
+                              >
+                                <option value={15}>⚡ 15 Minutos (Blitz Relámpago)</option>
+                                <option value={60}>1 Hora</option>
+                                <option value={120}>2 Horas (Estándar)</option>
+                                <option value={360}>6 Horas</option>
+                                <option value={1440}>24 Horas (1 Día)</option>
+                              </select>
+                            </div>
+
+                            <div>
+                              <label className="text-[11px] font-bold text-gray-700 block mb-1">Porcentaje de Descuento</label>
+                              <select
+                                value={editorForm.flashDealConfig.discountPercent || 20}
+                                onChange={e => setEditorForm({
+                                  ...editorForm,
+                                  flashDealConfig: {
+                                    ...editorForm.flashDealConfig,
+                                    discountPercent: Number(e.target.value)
+                                  }
+                                })}
+                                className="w-full px-2.5 py-1.5 rounded-xl border border-stone-300 bg-white text-xs font-semibold"
+                              >
+                                <option value={10}>10% de descuento</option>
+                                <option value={15}>15% de descuento</option>
+                                <option value={20}>20% de descuento (Recomendado)</option>
+                                <option value={30}>30% de descuento</option>
+                                <option value={50}>50% de descuento (Liquidación)</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          {editorForm.price && (
+                            <div className="p-2.5 rounded-xl bg-white border border-amber-200 flex items-center justify-between text-xs">
+                              <span className="text-gray-500">Precio normal: <strong className="line-through">${editorForm.price}</strong></span>
+                              <span className="text-[#2D4F3E] font-black text-sm">
+                                Precio Flash: ${Math.round(editorForm.price * (1 - (editorForm.flashDealConfig.discountPercent || 20) / 100))} MXN
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
 
-                    <div>
-                      <label className="font-semibold text-gray-700 block mb-1 text-[11px]">Tiempo de Elaboración</label>
-                      <input
-                        type="text"
-                        value={editorForm.specifications?.estimatedLeadTime || ''}
-                        onChange={e => setEditorForm({
-                          ...editorForm,
-                          specifications: { ...editorForm.specifications, estimatedLeadTime: e.target.value }
-                        })}
-                        placeholder="Ej: 2 a 3 días hábiles"
-                        className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 bg-white text-xs"
-                      />
+                    {/* SISTEMA ESTANDARIZADO DE SKU DE TALLER */}
+                    <div className="rounded-2xl border border-[#D4A359]/60 bg-gradient-to-r from-stone-50 via-[#FAF9F5] to-amber-50/30 overflow-hidden shadow-2xs">
+                      <div
+                        onClick={() => setEditorSkuAccordion(prev => !prev)}
+                        className="p-3.5 flex items-center justify-between cursor-pointer select-none hover:bg-black/[0.02] transition-colors"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Tag className="w-4 h-4 text-[#2D4F3E]" />
+                          <div>
+                            <h4 className="font-heading font-black text-xs text-[#1F2421] flex items-center gap-2">
+                              <span>Sistema Estandarizado de SKU de Taller</span>
+                              <span className="text-[10px] font-mono px-2 py-0.2 rounded-md bg-emerald-100 text-emerald-800 border border-emerald-300">
+                                {editorForm.sku || editorForm.code}
+                              </span>
+                            </h4>
+                            <span className="text-[10.5px] text-gray-500">
+                              Cualidades de maquinaria, material y acabado para bodega y operadores
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              const auto = suggestSkuForProduct(editorForm, products);
+                              const parsed = parseSku(auto);
+                              setEditorForm({
+                                ...editorForm,
+                                code: auto,
+                                sku: auto,
+                                skuArea: parsed.area?.code || 'HOG',
+                                skuTechnique: parsed.tech?.code || '3D',
+                                skuMaterial: parsed.mat?.code || 'PLA',
+                                skuFinish: parsed.fin?.code || 'MAT',
+                                skuSequence: parsed.sequence || '001'
+                              });
+                            }}
+                            className="px-2.5 py-1 rounded-lg bg-gradient-to-r from-[#D4A359] to-amber-500 text-[#17251E] font-black text-[11px] hover:brightness-105 transition-all flex items-center gap-1 cursor-pointer shadow-xs"
+                            title="Calcular automáticamente el SKU óptimo"
+                          >
+                            <Zap className="w-3 h-3" />
+                            <span>Autogenerar SKU</span>
+                          </button>
+                          <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${editorSkuAccordion ? 'rotate-180' : ''}`} />
+                        </div>
+                      </div>
+
+                      {editorSkuAccordion && (
+                        <div className="p-3.5 pt-0 border-t border-[#E8E4DA] space-y-3">
+                          <div className="grid grid-cols-2 sm:grid-cols-6 gap-2 pt-2">
+                            <div>
+                              <label className="text-[9.5px] font-bold text-gray-700 uppercase block mb-1">1. Área</label>
+                              <select
+                                value={editorForm.skuArea || 'HOG'}
+                                onChange={e => {
+                                  const val = e.target.value;
+                                  const newSku = buildSku({
+                                    area: val,
+                                    technique: editorForm.skuTechnique || '3D',
+                                    material: editorForm.skuMaterial || 'PLA',
+                                    finish: editorForm.skuFinish || 'MAT',
+                                    sequence: editorForm.skuSequence || '001'
+                                  });
+                                  setEditorForm({ ...editorForm, skuArea: val, code: newSku, sku: newSku });
+                                }}
+                                className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-bold text-[11px]"
+                              >
+                                {Object.values(SKU_AREAS).map(a => (
+                                  <option key={a.code} value={a.code}>{a.icon} {a.code}</option>
+                                ))}
+                              </select>
+                            </div>
+
+                            <div>
+                              <label className="text-[9.5px] font-bold text-gray-700 uppercase block mb-1">2. Técnica</label>
+                              <select
+                                value={editorForm.skuTechnique || '3D'}
+                                onChange={e => {
+                                  const val = e.target.value;
+                                  const newSku = buildSku({
+                                    area: editorForm.skuArea || 'HOG',
+                                    technique: val,
+                                    material: editorForm.skuMaterial || 'PLA',
+                                    finish: editorForm.skuFinish || 'MAT',
+                                    sequence: editorForm.skuSequence || '001'
+                                  });
+                                  setEditorForm({ ...editorForm, skuTechnique: val, code: newSku, sku: newSku });
+                                }}
+                                className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-bold text-[11px]"
+                              >
+                                {Object.values(SKU_TECHNIQUES).map(t => (
+                                  <option key={t.code} value={t.code}>{t.icon} {t.code}</option>
+                                ))}
+                              </select>
+                            </div>
+
+                            <div>
+                              <label className="text-[9.5px] font-bold text-gray-700 uppercase block mb-1">3. Material</label>
+                              <select
+                                value={editorForm.skuMaterial || 'PLA'}
+                                onChange={e => {
+                                  const val = e.target.value;
+                                  const newSku = buildSku({
+                                    area: editorForm.skuArea || 'HOG',
+                                    technique: editorForm.skuTechnique || '3D',
+                                    material: val,
+                                    finish: editorForm.skuFinish || 'MAT',
+                                    sequence: editorForm.skuSequence || '001'
+                                  });
+                                  setEditorForm({ ...editorForm, skuMaterial: val, code: newSku, sku: newSku });
+                                }}
+                                className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-bold text-[11px]"
+                              >
+                                {Object.values(SKU_MATERIALS).map(m => (
+                                  <option key={m.code} value={m.code}>🪵 {m.code}</option>
+                                ))}
+                              </select>
+                            </div>
+
+                            <div>
+                              <label className="text-[9.5px] font-bold text-gray-700 uppercase block mb-1">4. Acabado</label>
+                              <select
+                                value={editorForm.skuFinish || 'MAT'}
+                                onChange={e => {
+                                  const val = e.target.value;
+                                  const newSku = buildSku({
+                                    area: editorForm.skuArea || 'HOG',
+                                    technique: editorForm.skuTechnique || '3D',
+                                    material: editorForm.skuMaterial || 'PLA',
+                                    finish: val,
+                                    sequence: editorForm.skuSequence || '001'
+                                  });
+                                  setEditorForm({ ...editorForm, skuFinish: val, code: newSku, sku: newSku });
+                                }}
+                                className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-bold text-[11px]"
+                              >
+                                {Object.values(SKU_FINISHES).map(f => (
+                                  <option key={f.code} value={f.code}>✨ {f.code}</option>
+                                ))}
+                              </select>
+                            </div>
+
+                            <div>
+                              <label className="text-[9.5px] font-bold text-gray-700 uppercase block mb-1">5. Serie</label>
+                              <input
+                                type="text"
+                                value={editorForm.skuSequence || '001'}
+                                onChange={e => {
+                                  const val = e.target.value;
+                                  const newSku = buildSku({
+                                    area: editorForm.skuArea || 'HOG',
+                                    technique: editorForm.skuTechnique || '3D',
+                                    material: editorForm.skuMaterial || 'PLA',
+                                    finish: editorForm.skuFinish || 'MAT',
+                                    sequence: val
+                                  });
+                                  setEditorForm({ ...editorForm, skuSequence: val, code: newSku, sku: newSku });
+                                }}
+                                className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-mono font-bold text-[11px] text-center"
+                                placeholder="001"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="text-[9.5px] font-bold text-gray-700 uppercase block mb-1">SKU Final *</label>
+                              <input
+                                type="text"
+                                value={editorForm.code || ''}
+                                onChange={e => {
+                                  const val = e.target.value.toUpperCase();
+                                  setEditorForm({ ...editorForm, code: val, sku: val });
+                                }}
+                                className="w-full px-2 py-1.5 rounded-lg border-2 border-[#2D4F3E] bg-white font-mono font-black text-[11px] text-[#2D4F3E]"
+                                placeholder="HOG-LAS-MAD-BAR-001"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Ficha Técnica Interna */}
+                          {(() => {
+                            const activeSku = editorForm.code || editorForm.sku || 'HOG-LAS-MAD-BAR-001';
+                            const breakdown = parseSku(activeSku);
+                            return (
+                              <div className="p-3 rounded-xl bg-white border border-[#2D4F3E]/30 shadow-2xs space-y-2">
+                                <div className="flex items-center justify-between border-b border-gray-100 pb-1.5">
+                                  <span className="text-[11px] font-bold text-gray-600 uppercase">Ficha Técnica Interna:</span>
+                                  <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                                    ✓ Guía de Preparación de Taller
+                                  </span>
+                                </div>
+
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10px]">
+                                  <div className="p-1.5 rounded-lg bg-gray-50 border border-gray-100">
+                                    <div className="font-bold text-gray-400 uppercase text-[9px]">🏭 Destino / Área</div>
+                                    <div className="font-bold text-gray-800 mt-0.5">{breakdown.explanation.destino}</div>
+                                  </div>
+                                  <div className="p-1.5 rounded-lg bg-gray-50 border border-gray-100">
+                                    <div className="font-bold text-gray-400 uppercase text-[9px]">⚙️ Maquinaria / Proceso</div>
+                                    <div className="font-bold text-emerald-800 mt-0.5">{breakdown.explanation.maquinaria}</div>
+                                  </div>
+                                  <div className="p-1.5 rounded-lg bg-gray-50 border border-gray-100">
+                                    <div className="font-bold text-gray-400 uppercase text-[9px]">🪵 Materia Prima</div>
+                                    <div className="font-bold text-amber-800 mt-0.5">{breakdown.explanation.materiaPrima}</div>
+                                  </div>
+                                  <div className="p-1.5 rounded-lg bg-gray-50 border border-gray-100">
+                                    <div className="font-bold text-gray-400 uppercase text-[9px]">✨ Acabado Taller</div>
+                                    <div className="font-bold text-purple-800 mt-0.5">{breakdown.explanation.acabadoTaller}</div>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })()}
+                        </div>
+                      )}
                     </div>
 
-                    <div className="sm:col-span-2">
-                      <label className="font-bold text-gray-700 block mb-1 text-[11px]">
-                        Notas Privadas de Manufactura (Solo para ti y el taller, no visibles para clientes)
+                    {/* NOTAS PRIVADAS DE MANUFACTURA */}
+                    <div className="p-3 bg-amber-50/50 rounded-2xl border border-amber-200/70 space-y-1.5">
+                      <label className="font-bold text-gray-800 block text-[11px]">
+                        Notas Privadas de Manufactura y Proveedores (Solo taller, confidencial):
                       </label>
                       <input
                         type="text"
                         value={editorForm.privateNotes || ''}
                         onChange={e => setEditorForm({ ...editorForm, privateNotes: e.target.value })}
-                        className="w-full px-3 py-1.5 rounded-xl border border-stone-300 bg-amber-50/50 text-xs"
-                        placeholder="Parámetros de boquilla, relleno concéntrico al 20%, proveedor de material..."
+                        className="w-full px-3 py-2 rounded-xl border border-stone-300 bg-white text-xs"
+                        placeholder="Proveedor especial de madera, temperatura de boquilla, pegamento especial..."
                       />
                     </div>
-                  </div>
 
+                  </div>
+                );
+              })()}
+
+              {/* FOOTER FIJO (MÓVIL Y ESCRITORIO) CON RESUMEN FINANCIERO Y ACCIONES */}
+              <div className="p-3.5 sm:p-4 px-4 sm:px-6 bg-[#FBF9F5] border-t border-[#E8E4DA] flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0 mt-auto sticky bottom-0 z-20 shadow-lg">
+                <div className="flex flex-wrap items-center justify-between sm:justify-start gap-2 sm:gap-3 w-full sm:w-auto text-[11px]">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-gray-500 font-semibold">Costo Aterrizado:</span>
+                    <span className="font-mono font-bold text-gray-800 bg-white px-2 py-0.5 rounded border border-stone-200">
+                      ${Number(editorForm.costPrice || 0).toFixed(2)} MXN
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-gray-500 font-semibold">Precio Venta:</span>
+                    <span className="font-mono font-black text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                      ${Number(editorForm.price || 0)} MXN
+                    </span>
+                  </div>
+                  {editorForm.price > 0 && editorForm.costPrice > 0 && (
+                    <span className={`px-2 py-0.5 rounded-full font-bold text-[10px] ${
+                      (Number(editorForm.price) - Number(editorForm.costPrice)) / Number(editorForm.price) >= 0.4
+                        ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                        : 'bg-amber-100 text-amber-800 border border-amber-300'
+                    }`}>
+                      Ganancia: ${(Number(editorForm.price) - Number(editorForm.costPrice)).toFixed(1)} ({Math.round(((Number(editorForm.price) - Number(editorForm.costPrice)) / Number(editorForm.price)) * 100)}%)
+                    </span>
+                  )}
                 </div>
 
-              </div>
-
-              {/* Botones Fijos de Acción Inferior */}
-              <div className="p-4 px-6 bg-[#FBF9F5] border-t border-[#E8E4DA] flex items-center justify-between shrink-0 mt-auto">
-                <span className="text-[11px] text-gray-400">
-                  Los cambios se guardan y sincronizan automáticamente con la base de datos de taller.
-                </span>
-
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
                   <button
                     type="button"
                     onClick={() => setIsEditorOpen(false)}
-                    className="px-4 py-2 rounded-xl border border-gray-300 bg-white text-gray-700 font-semibold text-xs hover:bg-gray-50 transition-colors cursor-pointer"
+                    className="flex-1 sm:flex-none px-4 py-2 rounded-xl border border-gray-300 bg-white text-gray-700 font-semibold text-xs hover:bg-gray-50 transition-colors cursor-pointer"
                   >
                     Cancelar
                   </button>
                   <button
                     type="submit"
-                    className="px-6 py-2 rounded-xl bg-[#2D4F3E] text-white font-bold text-xs hover:bg-[#20392C] transition-all cursor-pointer shadow-md active:scale-98"
+                    className="flex-1 sm:flex-none px-6 py-2 rounded-xl bg-[#2D4F3E] text-white font-bold text-xs hover:bg-[#20392C] transition-all cursor-pointer shadow-md active:scale-98"
                   >
                     Guardar Cambios del Producto
                   </button>
