@@ -120,15 +120,19 @@ export default function ProductCard({
       }`}
     >
       
-      {/* Photo Container */}
+      {/* Photo Container con Protección Anti-Piratería (Bloqueo de Arrastre, Clic Derecho y Marca de Agua) */}
       <div
         onClick={handleOpenDetailModal}
+        onContextMenu={(e) => e.preventDefault()}
         className="relative aspect-square sm:aspect-auto sm:h-72 overflow-hidden bg-white cursor-pointer select-none flex items-center justify-center p-2 sm:p-4"
       >
         <img
           src={currentPhoto}
           alt={product.name}
-          className={`w-full h-full transition-all duration-300 group-hover:scale-105 ${
+          draggable={false}
+          onDragStart={(e) => e.preventDefault()}
+          onContextMenu={(e) => e.preventDefault()}
+          className={`w-full h-full transition-all duration-300 group-hover:scale-105 pointer-events-none select-none ${
             !isHovered && !currentPhoto.includes('white_')
               ? 'object-cover rounded-xl'
               : 'object-contain p-1.5 sm:p-2 bg-white'
@@ -139,6 +143,12 @@ export default function ProductCard({
             e.currentTarget.src = '/uploads/img_002.jpg';
           }}
         />
+
+        {/* Marca de Agua Sutil de Taller para Protección de Imagen */}
+        <div className="absolute bottom-2 right-2 z-10 flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-stone-900/35 backdrop-blur-xs text-[8.5px] font-medium text-white/75 pointer-events-none select-none tracking-wide">
+          <span className="text-[#D4A359]">✦</span>
+          <span>Artesano Digital</span>
+        </div>
 
         {/* Top Badges */}
         <div className="absolute top-1.5 left-1.5 right-1.5 sm:top-2.5 sm:left-2.5 sm:right-2.5 flex items-center justify-between pointer-events-none">

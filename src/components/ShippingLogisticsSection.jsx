@@ -25,7 +25,8 @@ import {
   Building2,
   Phone,
   User,
-  Compass
+  Compass,
+  MessageCircle
 } from 'lucide-react';
 
 export default function ShippingLogisticsSection({ businessSettings = {} }) {
@@ -212,6 +213,21 @@ Pedido/Ref Taller: ${labelForm.orderNumber}
     navigator.clipboard.writeText(text);
     setCopiedState(true);
     setTimeout(() => setCopiedState(false), 3000);
+  };
+
+  // Enviar datos de la guía formateada directamente por WhatsApp
+  const handleShareViaWhatsApp = () => {
+    const text = `📦 *SOLICITUD DE GUÍA / ENVÍO - ARTESANO DIGITAL*\n\n` +
+      `👤 *Destinatario:* ${labelForm.recipientName}\n` +
+      `📱 *Teléfono:* ${labelForm.recipientPhone}\n` +
+      `📍 *Dirección:* ${labelForm.street}, Col. ${labelForm.colony}\n` +
+      `📮 *CP:* ${labelForm.postalCode} - ${labelForm.city}, ${labelForm.state}\n` +
+      `🏠 *Referencias:* ${labelForm.references}\n` +
+      `📦 *Contenido:* ${labelForm.contentDescription}\n` +
+      `⚖️ *Peso:* ${labelForm.declaredWeight}\n` +
+      `🏷️ *Ref. Taller:* ${labelForm.orderNumber}`;
+    const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
   };
 
   // Imprimir Etiqueta Térmica
@@ -776,14 +792,26 @@ Pedido/Ref Taller: ${labelForm.orderNumber}
                   <span>Datos del Destinatario (Cliente):</span>
                 </h4>
 
-                <button
-                  type="button"
-                  onClick={handleCopyFormattedAddress}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-xs font-bold transition-all cursor-pointer shadow-xs"
-                >
-                  {copiedState ? <Check className="w-3.5 h-3.5 text-amber-300" /> : <Copy className="w-3.5 h-3.5" />}
-                  <span>{copiedState ? '¡Copiado en Portapapeles!' : 'Copiar para Skydropx'}</span>
-                </button>
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <button
+                    type="button"
+                    onClick={handleShareViaWhatsApp}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all cursor-pointer shadow-xs"
+                    title="Enviar datos formateados por WhatsApp para solicitar guía"
+                  >
+                    <MessageCircle className="w-3.5 h-3.5" />
+                    <span>Pedir por WhatsApp</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleCopyFormattedAddress}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-xs font-bold transition-all cursor-pointer shadow-xs"
+                  >
+                    {copiedState ? <Check className="w-3.5 h-3.5 text-amber-300" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{copiedState ? '¡Copiado!' : 'Copiar Texto'}</span>
+                  </button>
+                </div>
               </div>
 
               <div className="space-y-3 text-xs">
@@ -876,6 +904,31 @@ Pedido/Ref Taller: ${labelForm.orderNumber}
                       onChange={(e) => setLabelForm({ ...labelForm, declaredWeight: e.target.value })}
                       className="w-full px-3 py-2 rounded-xl border border-gray-300 text-gray-900 focus:outline-none focus:border-[#2D4F3E]"
                     />
+                  </div>
+                </div>
+
+                {/* Accesos directos a plataformas de guías */}
+                <div className="pt-2.5 border-t border-stone-200 flex flex-wrap items-center justify-between gap-2 text-[11px] text-gray-500">
+                  <span className="font-semibold text-gray-700">Abrir portal de guías en 1 clic:</span>
+                  <div className="flex items-center gap-2">
+                    <a
+                      href="https://app.skydropx.com"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold flex items-center gap-1 transition-colors"
+                    >
+                      <span>Skydropx</span>
+                      <ExternalLink className="w-3 h-3 text-stone-500" />
+                    </a>
+                    <a
+                      href="https://ship.envia.com"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold flex items-center gap-1 transition-colors"
+                    >
+                      <span>Envia.com</span>
+                      <ExternalLink className="w-3 h-3 text-stone-500" />
+                    </a>
                   </div>
                 </div>
               </div>

@@ -312,19 +312,31 @@ export default function ProductDetailModal({
             <div className="lg:col-span-6 space-y-3.5">
               
               {/* Main Photo Container */}
-              <div className="relative rounded-2xl overflow-hidden bg-white border border-[#E8E4DA] aspect-square shadow-xs group flex items-center justify-center">
+              <div 
+                onContextMenu={(e) => e.preventDefault()}
+                className="relative rounded-2xl overflow-hidden bg-white border border-[#E8E4DA] aspect-square shadow-xs group flex items-center justify-center select-none"
+              >
                 
-                {/* Active Main Image */}
+                {/* Active Main Image con Protección Anti-Piratería */}
                 <img
                   src={activeImage}
                   alt={`${product.name} - ${currentMeta.label}`}
-                  className={`w-full h-full transition-all duration-300 ${
+                  draggable={false}
+                  onDragStart={(e) => e.preventDefault()}
+                  onContextMenu={(e) => e.preventDefault()}
+                  className={`w-full h-full transition-all duration-300 select-none ${
                     activeIdx === 0 
                       ? 'object-cover' 
                       : 'object-contain p-2.5 sm:p-4 bg-white'
                   } ${isZoomed ? 'scale-150 cursor-zoom-out' : 'cursor-zoom-in'}`}
                   onClick={() => setIsZoomed(!isZoomed)}
                 />
+
+                {/* Marca de Agua Sutil de Taller para Protección de Imagen */}
+                <div className="absolute bottom-3 right-3 z-10 flex items-center gap-1 px-2 py-0.5 rounded-lg bg-stone-900/40 backdrop-blur-xs text-[9px] font-medium text-white/85 pointer-events-none select-none tracking-wide border border-white/10 shadow-xs">
+                  <span className="text-[#D4A359]">✦</span>
+                  <span>Artesano Digital</span>
+                </div>
 
                 {/* Top Right: Zoom / Expand button */}
                 <button
@@ -398,11 +410,17 @@ export default function ProductDetailModal({
                             : 'border-[#E8E4DA] bg-white hover:border-gray-300 opacity-80 hover:opacity-100'
                         }`}
                       >
-                        <div className="w-full h-14 rounded-lg overflow-hidden bg-white flex items-center justify-center border border-gray-100">
+                        <div 
+                          onContextMenu={(e) => e.preventDefault()}
+                          className="w-full h-14 rounded-lg overflow-hidden bg-white flex items-center justify-center border border-gray-100 select-none"
+                        >
                           <img
                             src={imgUrl}
                             alt=""
-                            className={`w-full h-full ${idx === 0 ? 'object-cover' : 'object-contain p-1'}`}
+                            draggable={false}
+                            onDragStart={(e) => e.preventDefault()}
+                            onContextMenu={(e) => e.preventDefault()}
+                            className={`w-full h-full select-none pointer-events-none ${idx === 0 ? 'object-cover' : 'object-contain p-1'}`}
                           />
                         </div>
                         <div className="flex items-center justify-center gap-1.5 w-full px-0.5">

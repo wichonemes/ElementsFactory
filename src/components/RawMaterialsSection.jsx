@@ -5,7 +5,7 @@ import {
   Download, FileSpreadsheet, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Layers, Tag,
   Clock, Zap, Sliders, Check, X, ShieldAlert, PackageCheck, Sparkles,
   ArrowRight, ArrowUpRight, ArrowUp, ArrowLeft, Building2, Phone, Mail, Globe, MapPin,
-  MessageCircle, User, ExternalLink, Copy, Cpu, Wrench
+  MessageCircle, User, ExternalLink, Copy, Cpu, Wrench, FileText, Eye, Upload
 } from 'lucide-react';
 
 import ShippingLogisticsSection from './ShippingLogisticsSection';
@@ -154,6 +154,133 @@ export default function RawMaterialsSection({
   // Estados de filtro y búsqueda en Directorio de Proveedores
   const [supplierSearchQuery, setSupplierSearchQuery] = useState('');
   const [supplierCategoryFilter, setSupplierCategoryFilter] = useState('all');
+
+  // Proveedores: Lista de Documentos y PDFs asociados (Listas de precios, catálogos, convenios)
+  const [supplierPdfs, setSupplierPdfs] = useState(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('artesano_supplier_pdfs');
+        if (saved) return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return [
+      {
+        id: 'pdf-sup-1',
+        title: 'Lista de Precios Madera y Triplay de Pino Estufado 2026',
+        supplierName: 'Maderas Finas San Luis',
+        fileName: 'Lista_Precios_Maderas_San_Luis_2026.pdf',
+        fileUrl: '/downloads/catalogo_movil_artesano_digital.pdf',
+        fileSize: '420 KB',
+        date: '10 Oct 2026'
+      },
+      {
+        id: 'pdf-sup-2',
+        title: 'Catálogo Mayorista de Filamentos PLA Plus & Resinas UV',
+        supplierName: '3D Market México',
+        fileName: 'Catalogo_Filamentos_3D_Bambu_Polymaker.pdf',
+        fileUrl: '/downloads/catalogo_movil_artesano_digital.pdf',
+        fileSize: '1.2 MB',
+        date: '02 Oct 2026'
+      },
+      {
+        id: 'pdf-sup-3',
+        title: 'Tarifario y Convenio Paqueterías Nacionales (FedEx / Estafeta)',
+        supplierName: 'Envíos México & Skydropx',
+        fileName: 'Tarifario_Convenio_Paqueterias_Taller.pdf',
+        fileUrl: '/downloads/catalogo_movil_artesano_digital.pdf',
+        fileSize: '280 KB',
+        date: '15 Oct 2026'
+      }
+    ];
+  });
+  const [showPdfModal, setShowPdfModal] = useState(false);
+  const [editingPdfItem, setEditingPdfItem] = useState(null);
+  const [pdfForm, setPdfForm] = useState({ title: '', supplierName: '', fileUrl: '', fileName: '' });
+  const [pdfFile, setPdfFile] = useState(null);
+
+  const saveSupplierPdfs = (newList) => {
+    setSupplierPdfs(newList);
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('artesano_supplier_pdfs', JSON.stringify(newList));
+      }
+    } catch (e) {}
+  };
+
+  const handleOpenNewPdfModal = () => {
+    setEditingPdfItem(null);
+    setPdfForm({ title: '', supplierName: suppliers[0]?.name || 'Maderas Finas San Luis', fileUrl: '', fileName: '' });
+    setPdfFile(null);
+    setShowPdfModal(true);
+  };
+
+  const handleOpenEditPdfModal = (pdf) => {
+    setEditingPdfItem(pdf);
+    setPdfForm({
+      title: pdf.title || '',
+      supplierName: pdf.supplierName || '',
+      fileUrl: pdf.fileUrl || '',
+      fileName: pdf.fileName || ''
+    });
+    setPdfFile(null);
+    setShowPdfModal(true);
+  };
+
+  const handleSavePdfModal = (e) => {
+    e.preventDefault();
+    if (!pdfForm.title.trim()) {
+      setActionMessage({ text: 'Por favor asigna un título al documento PDF.', type: 'error' });
+      return;
+    }
+    let resolvedUrl = pdfForm.fileUrl.trim();
+    let resolvedName = pdfForm.fileName.trim();
+    let resolvedSize = 'PDF';
+
+    if (pdfFile) {
+      resolvedUrl = URL.createObjectURL(pdfFile);
+      resolvedName = pdfFile.name;
+      resolvedSize = pdfFile.size > 1024 * 1024
+        ? `${(pdfFile.size / (1024 * 1024)).toFixed(1)} MB`
+        : `${Math.round(pdfFile.size / 1024)} KB`;
+    }
+
+    if (!resolvedUrl && !editingPdfItem) {
+      resolvedUrl = '/downloads/catalogo_movil_artesano_digital.pdf';
+      resolvedName = `${pdfForm.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}.pdf`;
+    }
+
+    if (editingPdfItem) {
+      const updated = supplierPdfs.map(p => p.id === editingPdfItem.id ? {
+        ...p,
+        title: pdfForm.title.trim(),
+        supplierName: pdfForm.supplierName.trim() || 'General de Taller',
+        fileUrl: resolvedUrl || p.fileUrl,
+        fileName: resolvedName || p.fileName,
+        fileSize: pdfFile ? resolvedSize : p.fileSize
+      } : p);
+      saveSupplierPdfs(updated);
+      setActionMessage({ text: `✓ Documento "${pdfForm.title}" actualizado con éxito.`, type: 'success' });
+    } else {
+      const newPdf = {
+        id: `pdf-${Date.now()}`,
+        title: pdfForm.title.trim(),
+        supplierName: pdfForm.supplierName.trim() || 'General de Taller',
+        fileUrl: resolvedUrl,
+        fileName: resolvedName || `${pdfForm.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}.pdf`,
+        fileSize: resolvedSize,
+        date: new Date().toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' })
+      };
+      saveSupplierPdfs([newPdf, ...supplierPdfs]);
+      setActionMessage({ text: `✓ ¡Nuevo PDF "${pdfForm.title}" agregado a proveedores!`, type: 'success' });
+    }
+    setShowPdfModal(false);
+  };
+
+  const handleDeletePdf = (pdfId, pdfTitle) => {
+    const updated = supplierPdfs.filter(p => p.id !== pdfId);
+    saveSupplierPdfs(updated);
+    setActionMessage({ text: `Documento "${pdfTitle}" eliminado.`, type: 'success' });
+  };
 
   // Estados de filtro y búsqueda en Tablas de Precios en Vivo
   const [pricingCategoryFilter, setPricingCategoryFilter] = useState('all');
@@ -5207,6 +5334,249 @@ Artesano Digital — Taller & Manufactura Inteligente`;
               </button>
             </div>
           </div>
+
+          {/* TARJETA DESTACADA: ESTIMADO RÁPIDO DE PAQUETERÍAS EN MÉXICO POR TAMAÑO */}
+          <div className="bg-gradient-to-r from-amber-500/10 via-stone-50 to-emerald-500/10 p-5 rounded-3xl border border-amber-300/80 shadow-xs space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-amber-500 text-white flex items-center justify-center font-black shadow-xs shrink-0">
+                  <Truck className="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="font-extrabold text-sm text-gray-900 flex items-center gap-2 flex-wrap">
+                    <span>📦 Costo Estimado de Paqueterías en México (Por Tamaño de Pieza)</span>
+                    <span className="text-[10px] bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full font-bold">Convenio Agregador</span>
+                  </h4>
+                  <p className="text-xs text-gray-600">
+                    Tarifas promedio negociadas (RedPack, Estafeta, FedEx, DHL, Paquetexpress) para envíos de taller a cualquier estado del país.
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setSupplierViewMode('shipping')}
+                className="px-4 py-2 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-xs font-bold transition-all shadow-xs flex items-center gap-2 cursor-pointer shrink-0"
+              >
+                <span>Ver Módulo Logístico Completo</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Pastillas de los 4 tamaños principales */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1 text-xs">
+              <div className="p-3 rounded-2xl bg-white border border-stone-200/90 shadow-2xs space-y-1">
+                <div className="flex items-center justify-between text-[11px] text-gray-500 font-semibold">
+                  <span>✉️ Sobre / XS</span>
+                  <span className="font-bold text-gray-700">&lt;0.5 kg</span>
+                </div>
+                <div className="text-sm font-black text-[#2D4F3E]">$115 - $135 MXN</div>
+                <p className="text-[10px] text-gray-500 leading-tight">Llaveros, fotoimanes, viniles, aretes.</p>
+              </div>
+
+              <div className="p-3 rounded-2xl bg-white border border-stone-200/90 shadow-2xs space-y-1">
+                <div className="flex items-center justify-between text-[11px] text-gray-500 font-semibold">
+                  <span>📦 Chico</span>
+                  <span className="font-bold text-gray-700">0.5 a 1.5 kg</span>
+                </div>
+                <div className="text-sm font-black text-[#2D4F3E]">$139 - $149 MXN</div>
+                <p className="text-[10px] text-gray-500 leading-tight">Tazas individuales con burbuja, macetas 3D.</p>
+              </div>
+
+              <div className="p-3 rounded-2xl bg-amber-50/60 border border-amber-300 shadow-2xs space-y-1">
+                <div className="flex items-center justify-between text-[11px] text-amber-800 font-semibold">
+                  <span>📐 Mediano</span>
+                  <span className="font-bold text-amber-900">1.5 a 5 kg</span>
+                </div>
+                <div className="text-sm font-black text-[#2D4F3E]">$165 - $189 MXN</div>
+                <p className="text-[10px] text-amber-900/80 leading-tight">Colgador "Bienvenidos", bandejas, posavasos.</p>
+              </div>
+
+              <div className="p-3 rounded-2xl bg-white border border-stone-200/90 shadow-2xs space-y-1">
+                <div className="flex items-center justify-between text-[11px] text-gray-500 font-semibold">
+                  <span>🪑 Grande / Eventos</span>
+                  <span className="font-bold text-gray-700">5 a 10 kg</span>
+                </div>
+                <div className="text-sm font-black text-[#2D4F3E]">$220 - $265 MXN</div>
+                <p className="text-[10px] text-gray-500 leading-tight">Letreros de bienvenida bodas, cajas mayoreo.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* SECCIÓN: DOCUMENTOS & PDFs DE PROVEEDORES (Listas de precios, catálogos mayoristas, fichas técnicas) */}
+          <div className="bg-white p-5 rounded-3xl border border-stone-200 shadow-xs space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-stone-100">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center font-bold">
+                  <FileText className="w-5 h-5 text-emerald-700" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-sm text-gray-900 flex items-center gap-2">
+                    <span>📁 Listas de Precios &amp; Fichas Técnicas de Proveedores en PDF ({supplierPdfs.length})</span>
+                  </h4>
+                  <p className="text-xs text-gray-500">
+                    Sube, visualiza o elimina catálogos de distribuidores, listas de precios mayoristas de filamento/madera y cotizaciones de flete.
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleOpenNewPdfModal}
+                className="px-3.5 py-2 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer shrink-0"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Subir Lista / Documento PDF</span>
+              </button>
+            </div>
+
+            {supplierPdfs.length === 0 ? (
+              <div className="p-6 rounded-2xl bg-stone-50 border border-dashed border-stone-300 text-center text-xs text-stone-500">
+                <FileText className="w-8 h-8 mx-auto text-stone-400 mb-2" />
+                <p className="font-bold text-stone-700">No hay documentos de proveedores guardados aún.</p>
+                <p className="mt-0.5">Haz clic en «Subir Lista / Documento PDF» para adjuntar listas de precios de distribuidores.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                {supplierPdfs.map(pdf => (
+                  <div key={pdf.id} className="p-3.5 rounded-2xl bg-stone-50/80 border border-stone-200 hover:border-emerald-300 hover:bg-white transition-all space-y-2.5 group">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
+                        <FileText className="w-4 h-4" />
+                      </div>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-900 truncate max-w-[140px]">
+                        {pdf.supplierName}
+                      </span>
+                    </div>
+
+                    <div>
+                      <h5 className="font-bold text-gray-900 line-clamp-2 leading-snug" title={pdf.title}>
+                        {pdf.title}
+                      </h5>
+                      <div className="flex items-center justify-between text-[10px] text-gray-400 mt-1">
+                        <span className="truncate max-w-[130px]">{pdf.fileName}</span>
+                        <span>{pdf.fileSize} · {pdf.date}</span>
+                      </div>
+                    </div>
+
+                    <div className="pt-2 border-t border-stone-200/80 flex items-center justify-between gap-1">
+                      <a
+                        href={pdf.fileUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="px-2.5 py-1 rounded-lg bg-white border border-stone-300 hover:bg-stone-100 text-stone-700 font-bold text-[11px] flex items-center gap-1 transition-colors"
+                        title="Ver o descargar documento"
+                      >
+                        <ExternalLink className="w-3 h-3 text-emerald-700" />
+                        <span>Ver PDF</span>
+                      </a>
+
+                      <div className="flex items-center gap-1">
+                        <button
+                          type="button"
+                          onClick={() => handleOpenEditPdfModal(pdf)}
+                          className="p-1 rounded-lg hover:bg-amber-100 text-amber-700 transition-colors cursor-pointer"
+                          title="Editar título y proveedor"
+                        >
+                          <Edit className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDeletePdf(pdf.id, pdf.title)}
+                          className="p-1 rounded-lg hover:bg-rose-100 text-rose-600 transition-colors cursor-pointer"
+                          title="Eliminar documento"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Modal para Subir / Editar Documento PDF de Proveedor */}
+          {showPdfModal && (
+            <div className="fixed inset-0 z-60 flex items-center justify-center p-3 bg-black/60 backdrop-blur-xs animate-in fade-in">
+              <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-stone-200 space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-stone-200">
+                  <h3 className="font-bold text-sm text-gray-900 flex items-center gap-2">
+                    <FileText className="w-4 h-4 text-[#2D4F3E]" />
+                    <span>{editingPdfItem ? 'Editar Documento PDF' : 'Subir Documento PDF de Proveedor'}</span>
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => setShowPdfModal(false)}
+                    className="w-7 h-7 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 flex items-center justify-center cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <form onSubmit={handleSavePdfModal} className="space-y-3 text-xs">
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Título del Documento *</label>
+                    <input
+                      type="text"
+                      required
+                      value={pdfForm.title}
+                      onChange={e => setPdfForm({ ...pdfForm, title: e.target.value })}
+                      placeholder="Ej. Lista de Precios Mayo 2026 Madera & Triplay"
+                      className="w-full px-3 py-2 rounded-xl border border-stone-300 focus:outline-none focus:border-[#2D4F3E]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Proveedor Asociado:</label>
+                    <input
+                      type="text"
+                      value={pdfForm.supplierName}
+                      onChange={e => setPdfForm({ ...pdfForm, supplierName: e.target.value })}
+                      placeholder="Ej. Maderas Finas San Luis"
+                      className="w-full px-3 py-2 rounded-xl border border-stone-300 focus:outline-none focus:border-[#2D4F3E]"
+                    />
+                  </div>
+
+                  <div className="p-3 rounded-2xl bg-stone-50 border border-stone-200 space-y-2">
+                    <label className="block font-bold text-gray-700">Archivo PDF o Documento:</label>
+                    <input
+                      type="file"
+                      accept=".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx"
+                      onChange={e => setPdfFile(e.target.files?.[0] || null)}
+                      className="w-full text-xs text-stone-600 file:mr-2 file:py-1 file:px-2.5 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#2D4F3E] file:text-white cursor-pointer"
+                    />
+                    <div className="pt-2 border-t border-stone-200">
+                      <label className="block font-semibold text-gray-600 mb-1">O Enlace / URL a Nube (Google Drive, Dropbox):</label>
+                      <input
+                        type="url"
+                        value={pdfForm.fileUrl}
+                        onChange={e => setPdfForm({ ...pdfForm, fileUrl: e.target.value })}
+                        placeholder="https://drive.google.com/..."
+                        className="w-full px-3 py-1.5 rounded-xl border border-stone-300 bg-white"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t border-stone-200 flex items-center justify-end gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setShowPdfModal(false)}
+                      className="px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold cursor-pointer"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-5 py-2 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white font-bold cursor-pointer shadow-xs"
+                    >
+                      {editingPdfItem ? 'Guardar Cambios' : 'Guardar Documento'}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
 
           {/* Barra de Filtros y Búsqueda */}
           <div className="bg-white p-4 rounded-2xl border border-[#E8E4DA] shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs">

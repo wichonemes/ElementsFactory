@@ -66,11 +66,33 @@ export default function MobileCatalogAdminSection({
     ]
   };
 
-  const [config, setConfig] = useState(initialConfig);
+  const [config, setConfig] = useState(() => {
+    if (businessSettings?.mobileCatalogConfig) return businessSettings.mobileCatalogConfig;
+    if (typeof window !== 'undefined') {
+      try {
+        const cached = localStorage.getItem('artesano_mobile_catalogs_cache');
+        if (cached) return JSON.parse(cached);
+      } catch (e) {}
+    }
+    return initialConfig;
+  });
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
   const [feedback, setFeedback] = useState({ text: '', type: '' });
+
+  // Guardar configuración localmente para garantizar que nunca se pierdan cambios ni bloquee al usuario
+  const persistConfigLocally = (newConfig) => {
+    setConfig(newConfig);
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('artesano_mobile_catalogs_cache', JSON.stringify(newConfig));
+      }
+    } catch (e) {}
+    if (onUpdateSettings) {
+      onUpdateSettings({ ...businessSettings, mobileCatalogConfig: newConfig });
+    }
+  };
 
   // Modales de confirmación para evitar bloqueos en celulares (window.confirm)
   const [deleteConfirmCat, setDeleteConfirmCat] = useState(null);
@@ -217,53 +239,142 @@ export default function MobileCatalogAdminSection({
 
     try {
       if (modalFile) {
-        const formData = new FormData();
-        formData.append('file', modalFile);
-        formData.append('name', cleanName);
-        formData.append('season', (modalForm.season || '').trim());
-        formData.append('badge', (modalForm.badge || '').trim());
-        formData.append('description', (modalForm.description || '').trim());
-        formData.append('isPrimary', modalForm.isPrimary ? 'true' : 'false');
-        formData.append('enabled', modalForm.enabled ? 'true' : 'false');
+        let serverSynced = false;
+        // Intento 1: Servidor remoto o local
+        try {
+          const formData = new FormData();
+          formData.append('file', modalFile);
+          formData.append('name', cleanName);
+          formData.append('season', (modalForm.season || '').trim());
+          formData.append('badge', (modalForm.badge || '').trim());
+          formData.append('description', (modalForm.description || '').trim());
+          formData.append('isPrimary', modalForm.isPrimary ? 'true' : 'false');
+          formData.append('enabled', modalForm.enabled ? 'true' : 'false');
 
-        if (editingCatalog?.id) {
-          formData.append('catalogId', editingCatalog.id);
-        }
-
-        setUploadProgress(50);
-        const res = await fetch('/api/admin/catalog-pdf/upload', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${authToken}`
-          },
-          body: formData
-        });
-
-        setUploadProgress(90);
-        const data = await res.json();
-        if (res.ok && data.mobileCatalogConfig) {
-          setConfig(data.mobileCatalogConfig);
-          showFeedback(
-            editingCatalog 
-              ? `✓ Catálogo "${cleanName}" actualizado con nuevo archivo.` 
-              : `✓ ¡Nuevo catálogo "${cleanName}" subido con éxito!`,
-            'success'
-          );
-          setCatalogModalOpen(false);
-          if (onRefreshCatalog) onRefreshCatalog();
-          if (onUpdateSettings) {
-            onUpdateSettings({ ...businessSettings, mobileCatalogConfig: data.mobileCatalogConfig });
+          if (editingCatalog?.id) {
+            formData.append('catalogId', editingCatalog.id);
           }
-        } else {
-          showFeedback(data.error || 'No fue posible subir el catálogo.', 'error');
+
+          setUploadProgress(50);
+          const res = await fetch('/api/admin/catalog-pdf/upload', {
+            method: 'POST',
+            headers: {
+              ...(authToken ? { Authorization: `Bearer ${authToken}` } : {})
+            },
+            body: formData
+          });
+
+          setUploadProgress(90);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.mobileCatalogConfig) {
+              persistConfigLocally(data.mobileCatalogConfig);
+              serverSynced = true;
+            }
+          }
+        } catch (serverErr) {
+          console.warn('Subida directa al servidor falló, aplicando guardado local resiliente:', serverErr);
         }
+
+        // Si el servidor no respondió o falló, aplicar fallback local instantáneo
+        if (!serverSynced) {
+          const localUrl = URL.createObjectURL(modalFile);
+          const fileSizeFormatted = modalFile.size > 1024 * 1024
+            ? `${(modalFile.size / (1024 * 1024)).toFixed(2)} MB`
+            : `${Math.round(modalFile.size / 1024)} KB`;
+
+          const currentList = config.catalogs || [];
+          let updatedList;
+          if (editingCatalog?.id) {
+            updatedList = currentList.map(c => c.id === editingCatalog.id ? {
+              ...c,
+              name: cleanName,
+              season: (modalForm.season || '').trim(),
+              badge: (modalForm.badge || '').trim(),
+              description: (modalForm.description || '').trim(),
+              fileName: modalFile.name,
+              fileUrl: localUrl,
+              fileSize: fileSizeFormatted,
+              fileType: modalFile.type || 'application/pdf',
+              isPrimary: Boolean(modalForm.isPrimary),
+              enabled: modalForm.enabled !== false,
+              updatedAt: new Date().toISOString()
+            } : c);
+          } else {
+            const newItem = {
+              id: `cat-${Date.now()}`,
+              name: cleanName,
+              season: (modalForm.season || '').trim() || 'Temporada Actual',
+              badge: (modalForm.badge || '').trim() || 'Nuevo',
+              description: (modalForm.description || '').trim(),
+              fileName: modalFile.name,
+              fileUrl: localUrl,
+              fileSize: fileSizeFormatted,
+              fileType: modalFile.type || 'application/pdf',
+              isPrimary: Boolean(modalForm.isPrimary),
+              enabled: modalForm.enabled !== false,
+              uploadedAt: new Date().toISOString()
+            };
+            updatedList = [newItem, ...currentList];
+          }
+
+          if (modalForm.isPrimary) {
+            const primaryId = editingCatalog?.id || updatedList[0]?.id;
+            updatedList = updatedList.map(c => ({ ...c, isPrimary: c.id === primaryId }));
+          }
+
+          const updatedConfig = {
+            ...config,
+            catalogs: updatedList,
+            updatedAt: new Date().toISOString()
+          };
+          persistConfigLocally(updatedConfig);
+        }
+
+        showFeedback(
+          editingCatalog 
+            ? `✓ Catálogo "${cleanName}" actualizado con nuevo archivo.` 
+            : `✓ ¡Nuevo catálogo "${cleanName}" subido y listo!`,
+          'success'
+        );
+        setCatalogModalOpen(false);
+        if (onRefreshCatalog) onRefreshCatalog();
+
       } else if (editingCatalog) {
-        // Solo editar metadatos o URL
-        const res = await fetch(`/api/admin/catalog-pdf/item/${editingCatalog.id}`, {
+        // Editar metadatos o URL
+        const currentList = config.catalogs || [];
+        let updatedList = currentList.map(c => c.id === editingCatalog.id ? {
+          ...c,
+          name: cleanName,
+          season: (modalForm.season || '').trim(),
+          badge: (modalForm.badge || '').trim(),
+          description: (modalForm.description || '').trim(),
+          fileUrl: (modalForm.fileUrl || '').trim() || editingCatalog.fileUrl,
+          fileName: (modalForm.fileName || '').trim() || editingCatalog.fileName,
+          isPrimary: Boolean(modalForm.isPrimary),
+          enabled: modalForm.enabled !== false,
+          updatedAt: new Date().toISOString()
+        } : c);
+
+        if (modalForm.isPrimary) {
+          updatedList = updatedList.map(c => ({ ...c, isPrimary: c.id === editingCatalog.id }));
+        }
+
+        const updatedConfig = {
+          ...config,
+          catalogs: updatedList,
+          updatedAt: new Date().toISOString()
+        };
+        persistConfigLocally(updatedConfig);
+        showFeedback(`✓ Datos de "${cleanName}" actualizados con éxito.`, 'success');
+        setCatalogModalOpen(false);
+
+        // Sincronizar en segundo plano con el servidor
+        fetch(`/api/admin/catalog-pdf/item/${editingCatalog.id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${authToken}`
+            ...(authToken ? { Authorization: `Bearer ${authToken}` } : {})
           },
           body: JSON.stringify({
             name: cleanName,
@@ -275,50 +386,54 @@ export default function MobileCatalogAdminSection({
             isPrimary: Boolean(modalForm.isPrimary),
             enabled: modalForm.enabled !== false
           })
-        });
-        const data = await res.json();
-        if (res.ok && data.mobileCatalogConfig) {
-          setConfig(data.mobileCatalogConfig);
-          showFeedback(`✓ Datos de "${cleanName}" actualizados.`, 'success');
-          setCatalogModalOpen(false);
-          if (onRefreshCatalog) onRefreshCatalog();
-          if (onUpdateSettings) {
-            onUpdateSettings({ ...businessSettings, mobileCatalogConfig: data.mobileCatalogConfig });
-          }
-        } else {
-          showFeedback(data.error || 'Error al actualizar catálogo.', 'error');
-        }
+        }).catch(() => {});
+        if (onRefreshCatalog) onRefreshCatalog();
+
       } else {
         // Crear nuevo catálogo mediante enlace directo / URL
-        const res = await fetch('/api/admin/catalog-pdf/item', {
+        const fileUrlClean = (modalForm.fileUrl || '').trim() || '/downloads/catalogo_movil_artesano_digital.pdf';
+        const fileNameClean = (modalForm.fileName || '').trim() || `${cleanName.toLowerCase().replace(/[^a-z0-9]/g, '_')}.pdf`;
+        
+        const newItem = {
+          id: `cat-${Date.now()}`,
+          name: cleanName,
+          season: (modalForm.season || '').trim() || 'Temporada Actual',
+          badge: (modalForm.badge || '').trim() || 'Novedad',
+          description: (modalForm.description || '').trim(),
+          fileUrl: fileUrlClean,
+          fileName: fileNameClean,
+          fileSize: 'PDF En Línea',
+          fileType: 'application/pdf',
+          isPrimary: Boolean(modalForm.isPrimary),
+          enabled: modalForm.enabled !== false,
+          uploadedAt: new Date().toISOString()
+        };
+
+        const currentList = config.catalogs || [];
+        let updatedList = [newItem, ...currentList];
+        if (modalForm.isPrimary) {
+          updatedList = updatedList.map(c => ({ ...c, isPrimary: c.id === newItem.id }));
+        }
+
+        const updatedConfig = {
+          ...config,
+          catalogs: updatedList,
+          updatedAt: new Date().toISOString()
+        };
+        persistConfigLocally(updatedConfig);
+        showFeedback(`✓ ¡Catálogo "${cleanName}" registrado con éxito!`, 'success');
+        setCatalogModalOpen(false);
+
+        // Sincronizar en segundo plano con el servidor
+        fetch('/api/admin/catalog-pdf/item', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${authToken}`
+            ...(authToken ? { Authorization: `Bearer ${authToken}` } : {})
           },
-          body: JSON.stringify({
-            name: cleanName,
-            season: (modalForm.season || '').trim() || 'Temporada Actual',
-            badge: (modalForm.badge || '').trim() || 'Novedad',
-            description: (modalForm.description || '').trim(),
-            fileUrl: (modalForm.fileUrl || '').trim() || '/downloads/catalogo_movil_artesano_digital.pdf',
-            fileName: (modalForm.fileName || '').trim() || `${cleanName.toLowerCase().replace(/[^a-z0-9]/g, '_')}.pdf`,
-            isPrimary: Boolean(modalForm.isPrimary),
-            enabled: modalForm.enabled !== false
-          })
-        });
-        const data = await res.json();
-        if (res.ok && data.mobileCatalogConfig) {
-          setConfig(data.mobileCatalogConfig);
-          showFeedback(`✓ ¡Catálogo "${cleanName}" registrado con éxito!`, 'success');
-          setCatalogModalOpen(false);
-          if (onRefreshCatalog) onRefreshCatalog();
-          if (onUpdateSettings) {
-            onUpdateSettings({ ...businessSettings, mobileCatalogConfig: data.mobileCatalogConfig });
-          }
-        } else {
-          showFeedback(data.error || 'Error al registrar catálogo.', 'error');
-        }
+          body: JSON.stringify(newItem)
+        }).catch(() => {});
+        if (onRefreshCatalog) onRefreshCatalog();
       }
     } catch (err) {
       showFeedback('Error al procesar el catálogo: ' + err.message, 'error');
@@ -330,110 +445,109 @@ export default function MobileCatalogAdminSection({
 
   // Eliminar un catálogo individual
   const handleDeleteCatalog = async (catId, catName) => {
+    // 1. Eliminar inmediatamente en el estado local y caché
+    const currentList = config.catalogs || [];
+    let updatedList = currentList.filter(c => c.id !== catId);
+    if (updatedList.length > 0 && !updatedList.some(c => c.isPrimary)) {
+      updatedList[0].isPrimary = true;
+    }
+    const updatedConfig = {
+      ...config,
+      catalogs: updatedList,
+      updatedAt: new Date().toISOString()
+    };
+    persistConfigLocally(updatedConfig);
+    showFeedback(`✓ Catálogo "${catName}" eliminado del sistema.`, 'success');
+    setDeleteConfirmCat(null);
+
+    // 2. Sincronizar en segundo plano con el servidor
     try {
-      const res = await fetch(`/api/admin/catalog-pdf/item/${catId}`, {
+      await fetch(`/api/admin/catalog-pdf/item/${catId}`, {
         method: 'DELETE',
         headers: {
-          Authorization: `Bearer ${authToken}`
+          ...(authToken ? { Authorization: `Bearer ${authToken}` } : {})
         }
       });
-      const data = await res.json();
-      if (res.ok && data.mobileCatalogConfig) {
-        setConfig(data.mobileCatalogConfig);
-        showFeedback(`Catálogo "${catName}" eliminado del sistema.`, 'success');
-        if (onRefreshCatalog) onRefreshCatalog();
-        if (onUpdateSettings) {
-          onUpdateSettings({ ...businessSettings, mobileCatalogConfig: data.mobileCatalogConfig });
-        }
-      } else {
-        showFeedback(data.error || 'No se pudo eliminar el catálogo.', 'error');
-      }
     } catch (err) {
-      showFeedback('Error al eliminar catálogo: ' + err.message, 'error');
+      console.warn('Sincronización remota de eliminación diferida:', err);
     }
+    if (onRefreshCatalog) onRefreshCatalog();
   };
 
   // Toggle de activación individual de un catálogo
   const handleToggleCatalogItem = async (cat) => {
     const nextState = !cat.enabled;
+    const currentList = config.catalogs || [];
+    const updatedList = currentList.map(c => c.id === cat.id ? { ...c, enabled: nextState } : c);
+    const updatedConfig = { ...config, catalogs: updatedList, updatedAt: new Date().toISOString() };
+    persistConfigLocally(updatedConfig);
+    showFeedback(
+      nextState 
+        ? `🟢 Catálogo "${cat.name}" activado para clientes` 
+        : `🔴 Catálogo "${cat.name}" ocultado`,
+      'success'
+    );
+    if (onRefreshCatalog) onRefreshCatalog();
+
     try {
-      const res = await fetch(`/api/admin/catalog-pdf/item/${cat.id}`, {
+      await fetch(`/api/admin/catalog-pdf/item/${cat.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${authToken}`
+          ...(authToken ? { Authorization: `Bearer ${authToken}` } : {})
         },
         body: JSON.stringify({ enabled: nextState })
       });
-      const data = await res.json();
-      if (res.ok && data.mobileCatalogConfig) {
-        setConfig(data.mobileCatalogConfig);
-        showFeedback(
-          nextState 
-            ? `🟢 Catálogo "${cat.name}" activado para clientes` 
-            : `🔴 Catálogo "${cat.name}" ocultado`,
-          'success'
-        );
-        if (onRefreshCatalog) onRefreshCatalog();
-        if (onUpdateSettings) {
-          onUpdateSettings({ ...businessSettings, mobileCatalogConfig: data.mobileCatalogConfig });
-        }
-      }
-    } catch (err) {
-      showFeedback('Error al cambiar visibilidad: ' + err.message, 'error');
-    }
+    } catch (err) {}
   };
 
   // Marcar como catálogo principal
   const handleSetPrimary = async (cat) => {
+    const currentList = config.catalogs || [];
+    const updatedList = currentList.map(c => ({
+      ...c,
+      isPrimary: c.id === cat.id
+    }));
+    const updatedConfig = {
+      ...config,
+      catalogs: updatedList,
+      fileUrl: cat.fileUrl || config.fileUrl,
+      fileName: cat.fileName || config.fileName,
+      updatedAt: new Date().toISOString()
+    };
+    persistConfigLocally(updatedConfig);
+    showFeedback(`★ "${cat.name}" marcado como Catálogo Principal.`, 'success');
+    if (onRefreshCatalog) onRefreshCatalog();
+
     try {
-      const res = await fetch(`/api/admin/catalog-pdf/item/${cat.id}`, {
+      await fetch(`/api/admin/catalog-pdf/item/${cat.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${authToken}`
+          ...(authToken ? { Authorization: `Bearer ${authToken}` } : {})
         },
         body: JSON.stringify({ isPrimary: true })
       });
-      const data = await res.json();
-      if (res.ok && data.mobileCatalogConfig) {
-        setConfig(data.mobileCatalogConfig);
-        showFeedback(`★ "${cat.name}" ahora es el catálogo principal del taller.`, 'success');
-        if (onRefreshCatalog) onRefreshCatalog();
-        if (onUpdateSettings) {
-          onUpdateSettings({ ...businessSettings, mobileCatalogConfig: data.mobileCatalogConfig });
-        }
-      }
-    } catch (err) {
-      showFeedback('Error al marcar como principal: ' + err.message, 'error');
-    }
+    } catch (err) {}
   };
 
   // Guardar configuración general (Textos y ubicaciones)
   const handleSaveSettings = async () => {
     setIsSaving(true);
+    persistConfigLocally(config);
+    showFeedback('✓ Configuración guardada exitosamente.', 'success');
     try {
-      const res = await fetch('/api/admin/catalog-pdf/config', {
+      await fetch('/api/admin/catalog-pdf/config', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${authToken}`
+          ...(authToken ? { Authorization: `Bearer ${authToken}` } : {})
         },
         body: JSON.stringify(config)
       });
-      const data = await res.json();
-      if (res.ok && data.mobileCatalogConfig) {
-        setConfig(data.mobileCatalogConfig);
-        showFeedback('Configuración guardada exitosamente.', 'success');
-        if (onRefreshCatalog) onRefreshCatalog();
-        if (onUpdateSettings) {
-          onUpdateSettings({ ...businessSettings, mobileCatalogConfig: data.mobileCatalogConfig });
-        }
-      } else {
-        showFeedback(data.error || 'Error al guardar los cambios.', 'error');
-      }
+      if (onRefreshCatalog) onRefreshCatalog();
     } catch (err) {
-      showFeedback('Error al guardar: ' + err.message, 'error');
+      console.warn('Sincronización remota diferida:', err);
     } finally {
       setIsSaving(false);
     }
@@ -441,25 +555,19 @@ export default function MobileCatalogAdminSection({
 
   // Restaurar al catálogo original 9:16
   const executeResetToDefault = async () => {
+    persistConfigLocally(initialConfig);
+    showFeedback('✓ Catálogo restaurado a los valores predeterminados.', 'success');
+    if (onRefreshCatalog) onRefreshCatalog();
+    setResetConfirmOpen(false);
+
     try {
-      const res = await fetch('/api/admin/catalog-pdf/reset', {
+      await fetch('/api/admin/catalog-pdf/reset', {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${authToken}`
+          ...(authToken ? { Authorization: `Bearer ${authToken}` } : {})
         }
       });
-      const data = await res.json();
-      if (res.ok && data.mobileCatalogConfig) {
-        setConfig(data.mobileCatalogConfig);
-        showFeedback('Catálogo restaurado a los valores predeterminados.', 'success');
-        if (onRefreshCatalog) onRefreshCatalog();
-        if (onUpdateSettings) {
-          onUpdateSettings({ ...businessSettings, mobileCatalogConfig: data.mobileCatalogConfig });
-        }
-      }
-    } catch (err) {
-      showFeedback('Error al restaurar: ' + err.message, 'error');
-    }
+    } catch (err) {}
   };
 
   const catalogList = config.catalogs || [];

@@ -89,6 +89,62 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
     ];
   }
 
+  if (tech === '3d_resina') {
+    const resinaMat = findMat('mat-resina-uv-405nm', 'resina') || {
+      id: 'mat-resina-uv-405nm', name: 'Resina Fotopolímero UV 405nm Gris/Negro (1000g)', costPerUnit: 650, packageQuantity: 1000, packageMeasurement: 'g', unit: 'botella (1 kg)'
+    };
+    const alcoholMat = findMat('mat-alcohol-isopropilico', 'isopropilico') || {
+      id: 'mat-alcohol-isopropilico', name: 'Alcohol Isopropílico 99.9% para Lavado de Piezas (1000 ml)', costPerUnit: 120, packageQuantity: 1000, packageMeasurement: 'ml', unit: 'litro'
+    };
+    const lacaMat = findMat('mat-laca-spray', 'laca') || {
+      id: 'mat-laca-spray', name: 'Laca Protectora Selladora Mate UV en Spray (400 ml)', costPerUnit: 120, packageQuantity: 400, packageMeasurement: 'ml', unit: 'lata (400 ml)'
+    };
+    return [
+      {
+        id: `item-res-${Date.now()}-1`,
+        materialId: resinaMat.id,
+        name: resinaMat.name,
+        category: '3d',
+        supplyType: 'direct',
+        netQuantity: 36,
+        wasteQuantity: 8,
+        wasteType: 'supports_and_purge',
+        totalQuantity: 44,
+        unit: 'g',
+        unitCost: Math.round(((Number(resinaMat.costPerUnit) || 650) / 1000) * 100) / 100,
+        totalCost: Math.round(44 * 0.65 * 100) / 100
+      },
+      {
+        id: `item-res-${Date.now()}-2`,
+        materialId: lacaMat.id,
+        name: lacaMat.name,
+        category: 'laser',
+        supplyType: 'finish',
+        netQuantity: 2,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 2,
+        unit: 'ml',
+        unitCost: Math.round(((Number(lacaMat.costPerUnit) || 120) / 400) * 100) / 100,
+        totalCost: Math.round(2 * 0.30 * 100) / 100
+      },
+      {
+        id: `item-res-${Date.now()}-3`,
+        materialId: alcoholMat.id,
+        name: alcoholMat.name,
+        category: 'consumables',
+        supplyType: 'indirect',
+        netQuantity: 15,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 15,
+        unit: 'ml',
+        unitCost: 0.12,
+        totalCost: 1.80
+      }
+    ];
+  }
+
   if (tech === 'laser' || tech === 'laser_madera') {
     const maderaMat = findMat('mat-madera-abedul-3mm', 'abedul') || findMat('mat-madera-triplay-3mm', 'triplay') || {
       id: 'mat-madera-triplay-3mm', name: 'Madera Triplay / Contrachapada Pino 3mm Calidad Láser (60x40 cm)', costPerUnit: 45, packageQuantity: 2400, packageMeasurement: 'cm²', unit: 'placa (60x40 cm)'
@@ -128,7 +184,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: barnizMat.id,
         name: barnizMat.name,
         category: 'laser',
-        supplyType: 'direct',
+        supplyType: 'finish',
         netQuantity: 4,
         wasteQuantity: 0,
         wasteType: 'none',
@@ -139,24 +195,10 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
       },
       {
         id: `item-las-${Date.now()}-3`,
-        materialId: pegamentoMat.id,
-        name: pegamentoMat.name,
-        category: 'ensamble',
-        supplyType: 'direct',
-        netQuantity: 6,
-        wasteQuantity: 1,
-        wasteType: 'manual',
-        totalQuantity: 7,
-        unit: 'gotas',
-        unitCost: 0.0085,
-        totalCost: 0.06
-      },
-      {
-        id: `item-las-${Date.now()}-4`,
         materialId: lijaMat.id,
         name: lijaMat.name,
         category: 'consumables',
-        supplyType: 'indirect',
+        supplyType: 'finish',
         netQuantity: 0.08,
         wasteQuantity: 0.02,
         wasteType: 'manual',
@@ -164,6 +206,20 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         unit: 'pliego',
         unitCost: 14,
         totalCost: 1.40
+      },
+      {
+        id: `item-las-${Date.now()}-4`,
+        materialId: pegamentoMat.id,
+        name: pegamentoMat.name,
+        category: 'assembly',
+        supplyType: 'indirect',
+        netQuantity: 6,
+        wasteQuantity: 1,
+        wasteType: 'manual',
+        totalQuantity: 7,
+        unit: 'gotas',
+        unitCost: 0.0085,
+        totalCost: 0.06
       },
       {
         id: `item-las-${Date.now()}-5`,
@@ -232,20 +288,6 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
       },
       {
         id: `item-lasllav-${Date.now()}-2`,
-        materialId: barnizMat.id,
-        name: barnizMat.name,
-        category: 'laser',
-        supplyType: 'direct',
-        netQuantity: 2,
-        wasteQuantity: 0,
-        wasteType: 'none',
-        totalQuantity: 2,
-        unit: 'ml',
-        unitCost: Math.round(((Number(barnizMat.costPerUnit) || 135) / 400) * 100) / 100,
-        totalCost: Math.round(2 * 0.3375 * 100) / 100
-      },
-      {
-        id: `item-lasllav-${Date.now()}-3`,
         materialId: argollaMat.id,
         name: argollaMat.name,
         category: 'laser',
@@ -259,25 +301,25 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         totalCost: Math.round(1 * 1.20 * 100) / 100
       },
       {
-        id: `item-lasllav-${Date.now()}-4`,
-        materialId: pegamentoMat.id,
-        name: pegamentoMat.name,
-        category: 'ensamble',
-        supplyType: 'direct',
-        netQuantity: 4,
+        id: `item-lasllav-${Date.now()}-3`,
+        materialId: barnizMat.id,
+        name: barnizMat.name,
+        category: 'laser',
+        supplyType: 'finish',
+        netQuantity: 2,
         wasteQuantity: 0,
         wasteType: 'none',
-        totalQuantity: 4,
-        unit: 'gotas',
-        unitCost: Math.round(((Number(pegamentoMat.costPerUnit) || 85) / 10000) * 10000) / 10000,
-        totalCost: Math.round(4 * 0.0085 * 100) / 100
+        totalQuantity: 2,
+        unit: 'ml',
+        unitCost: Math.round(((Number(barnizMat.costPerUnit) || 135) / 400) * 100) / 100,
+        totalCost: Math.round(2 * 0.3375 * 100) / 100
       },
       {
-        id: `item-lasllav-${Date.now()}-5`,
+        id: `item-lasllav-${Date.now()}-4`,
         materialId: lijaMat.id,
         name: lijaMat.name,
         category: 'consumables',
-        supplyType: 'indirect',
+        supplyType: 'finish',
         netQuantity: 0.05,
         wasteQuantity: 0.01,
         wasteType: 'manual',
@@ -285,6 +327,20 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         unit: 'pliego',
         unitCost: 14,
         totalCost: 0.84
+      },
+      {
+        id: `item-lasllav-${Date.now()}-5`,
+        materialId: pegamentoMat.id,
+        name: pegamentoMat.name,
+        category: 'assembly',
+        supplyType: 'indirect',
+        netQuantity: 4,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 4,
+        unit: 'gotas',
+        unitCost: Math.round(((Number(pegamentoMat.costPerUnit) || 85) / 10000) * 10000) / 10000,
+        totalCost: Math.round(4 * 0.0085 * 100) / 100
       },
       {
         id: `item-lasllav-${Date.now()}-6`,
@@ -310,12 +366,16 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
     const lacaMat = findMat('mat-laca-spray', 'laca') || {
       id: 'mat-laca-spray', name: 'Laca Protectora Selladora Mate Spray (400 ml)', costPerUnit: 120, packageQuantity: 400, packageMeasurement: 'ml', unit: 'lata (400 ml)'
     };
+    const sierraMat = findMat('mat-desgaste-corte-sierra-laser', 'desgaste corte') || {
+      id: 'mat-desgaste-corte-sierra-laser', name: 'Consumible Indirecto de Corte (Desgaste Hoja Sierra / Tubo Láser CO2)', costPerUnit: 1.5, packageQuantity: 1, packageMeasurement: 'corte', unit: 'corte'
+    };
     return [
       {
         id: `item-lasmdf-${Date.now()}-1`,
         materialId: mdfMat.id,
         name: mdfMat.name,
         category: 'laser',
+        supplyType: 'direct',
         netQuantity: 380,
         wasteQuantity: 60,
         wasteType: 'cut_remnants',
@@ -329,6 +389,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: lacaMat.id,
         name: lacaMat.name,
         category: 'laser',
+        supplyType: 'finish',
         netQuantity: 3,
         wasteQuantity: 0,
         wasteType: 'none',
@@ -336,6 +397,20 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         unit: 'ml',
         unitCost: Math.round(((Number(lacaMat.costPerUnit) || 120) / 400) * 100) / 100,
         totalCost: Math.round(3 * 0.30 * 100) / 100
+      },
+      {
+        id: `item-lasmdf-${Date.now()}-3`,
+        materialId: sierraMat.id,
+        name: sierraMat.name,
+        category: 'consumables',
+        supplyType: 'indirect',
+        netQuantity: 1,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 1,
+        unit: 'corte',
+        unitCost: 1.5,
+        totalCost: 1.50
       }
     ];
   }
@@ -384,20 +459,6 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
       },
       {
         id: `item-sub-${Date.now()}-3`,
-        materialId: kaptonMat.id,
-        name: kaptonMat.name,
-        category: 'sublimation',
-        supplyType: 'indirect',
-        netQuantity: 20,
-        wasteQuantity: 5,
-        wasteType: 'tape_scrap',
-        totalQuantity: 25,
-        unit: 'cm',
-        unitCost: Math.round(((Number(kaptonMat.costPerUnit) || 90) / 9900) * 10000) / 10000,
-        totalCost: Math.round(25 * 0.0091 * 100) / 100
-      },
-      {
-        id: `item-sub-${Date.now()}-4`,
         materialId: tintaMat.id,
         name: tintaMat.name,
         category: 'sublimation',
@@ -409,6 +470,20 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         unit: 'ml',
         unitCost: Math.round(((Number(tintaMat.costPerUnit) || 480) / 400) * 100) / 100,
         totalCost: Math.round(1.2 * 1.20 * 100) / 100
+      },
+      {
+        id: `item-sub-${Date.now()}-4`,
+        materialId: kaptonMat.id,
+        name: kaptonMat.name,
+        category: 'sublimation',
+        supplyType: 'indirect',
+        netQuantity: 20,
+        wasteQuantity: 5,
+        wasteType: 'tape_scrap',
+        totalQuantity: 25,
+        unit: 'cm',
+        unitCost: Math.round(((Number(kaptonMat.costPerUnit) || 90) / 9900) * 10000) / 10000,
+        totalCost: Math.round(25 * 0.0091 * 100) / 100
       }
     ];
   }
@@ -446,6 +521,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: dtfFilm.id,
         name: dtfFilm.name,
         category: 'vinyl',
+        supplyType: 'direct',
         netQuantity: 28,
         wasteQuantity: 4,
         wasteType: 'cut_remnants',
@@ -459,6 +535,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: dtfTinta.id,
         name: dtfTinta.name,
         category: 'vinyl',
+        supplyType: 'direct',
         netQuantity: 2,
         wasteQuantity: 0.3,
         wasteType: 'printer_purge',
@@ -472,6 +549,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: dtfPolvo.id,
         name: dtfPolvo.name,
         category: 'vinyl',
+        supplyType: 'direct',
         netQuantity: 8,
         wasteQuantity: 2,
         wasteType: 'powder_waste',
@@ -479,6 +557,96 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         unit: 'g',
         unitCost: Math.round(((Number(dtfPolvo.costPerUnit) || 450) / 1000) * 100) / 100,
         totalCost: Math.round(10 * 0.45 * 100) / 100
+      }
+    ];
+  }
+
+  if (tech === 'carpinteria_cnc') {
+    const maderaCnc = findMat('mat-madera-pino-solido-18mm', 'pino solido') || findMat('mat-madera-abedul-3mm', 'madera') || {
+      id: 'mat-madera-pino-solido-18mm', name: 'Madera Natural Pino Estufado Macizo Primera 18mm (60x30 cm)', costPerUnit: 140, packageQuantity: 1800, packageMeasurement: 'cm²', unit: 'tablero'
+    };
+    const barnizNogal = findMat('mat-tinte-nogal-americano', 'nogal') || {
+      id: 'mat-tinte-nogal-americano', name: 'Tinte y Barniz Nogal Americano Base Aceite para Madera (250 ml)', costPerUnit: 110, packageQuantity: 250, packageMeasurement: 'ml', unit: 'bote (250 ml)'
+    };
+    const lijaMat = findMat('mat-lija-madera-fina-220', 'lija') || {
+      id: 'mat-lija-madera-fina-220', name: 'Lija de Madera Fina Grano 220 para Pulido y Cantos Suaves (Pliego)', costPerUnit: 14, packageQuantity: 1, packageMeasurement: 'pliego', unit: 'pliego'
+    };
+    const fresaMat = findMat('mat-desgaste-fresa-cnc', 'fresa') || {
+      id: 'mat-desgaste-fresa-cnc', name: 'Consumible de Desgaste (Fresa de Carburo de Tungsteno CNC / Sierra)', costPerUnit: 3.5, packageQuantity: 1, packageMeasurement: 'corte', unit: 'corte'
+    };
+    const resistolMat = findMat('mat-pegamento-resistol-850', 'resistol') || {
+      id: 'mat-pegamento-resistol-850', name: 'Resistol 850 Pegamento Blanco para Madera Extra Fuerte (Bote 500g)', costPerUnit: 85, packageQuantity: 500, packageMeasurement: 'ml', unit: 'bote (500 ml)'
+    };
+    return [
+      {
+        id: `item-cnc-${Date.now()}-1`,
+        materialId: maderaCnc.id,
+        name: maderaCnc.name,
+        category: 'laser',
+        supplyType: 'direct',
+        netQuantity: 450,
+        wasteQuantity: 50,
+        wasteType: 'cut_remnants',
+        totalQuantity: 500,
+        unit: 'cm²',
+        unitCost: Math.round(((Number(maderaCnc.costPerUnit) || 140) / 1800) * 10000) / 10000,
+        totalCost: Math.round(500 * 0.0778 * 100) / 100
+      },
+      {
+        id: `item-cnc-${Date.now()}-2`,
+        materialId: barnizNogal.id,
+        name: barnizNogal.name,
+        category: 'laser',
+        supplyType: 'finish',
+        netQuantity: 8,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 8,
+        unit: 'ml',
+        unitCost: Math.round(((Number(barnizNogal.costPerUnit) || 110) / 250) * 100) / 100,
+        totalCost: Math.round(8 * 0.44 * 100) / 100
+      },
+      {
+        id: `item-cnc-${Date.now()}-3`,
+        materialId: lijaMat.id,
+        name: lijaMat.name,
+        category: 'consumables',
+        supplyType: 'finish',
+        netQuantity: 0.15,
+        wasteQuantity: 0.05,
+        wasteType: 'manual',
+        totalQuantity: 0.2,
+        unit: 'pliego',
+        unitCost: 14,
+        totalCost: 2.80
+      },
+      {
+        id: `item-cnc-${Date.now()}-4`,
+        materialId: fresaMat.id,
+        name: fresaMat.name,
+        category: 'consumables',
+        supplyType: 'indirect',
+        netQuantity: 1,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 1,
+        unit: 'corte',
+        unitCost: 3.5,
+        totalCost: 3.50
+      },
+      {
+        id: `item-cnc-${Date.now()}-5`,
+        materialId: resistolMat.id,
+        name: resistolMat.name,
+        category: 'assembly',
+        supplyType: 'indirect',
+        netQuantity: 10,
+        wasteQuantity: 2,
+        wasteType: 'manual',
+        totalQuantity: 12,
+        unit: 'gotas',
+        unitCost: 0.0085,
+        totalCost: 0.10
       }
     ];
   }
@@ -499,6 +667,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: papelMat.id,
         name: papelMat.name,
         category: 'sublimation',
+        supplyType: 'direct',
         netQuantity: 1,
         wasteQuantity: 0.1,
         wasteType: 'cut_remnants',
@@ -512,6 +681,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: tonerMat.id,
         name: tonerMat.name,
         category: 'sublimation',
+        supplyType: 'direct',
         netQuantity: 1,
         wasteQuantity: 0.1,
         wasteType: 'printer_purge',
@@ -525,6 +695,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: foilMat.id,
         name: foilMat.name,
         category: 'sublimation',
+        supplyType: 'finish',
         netQuantity: 20,
         wasteQuantity: 5,
         wasteType: 'foil_remnants',
@@ -549,6 +720,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: vinilMat.id,
         name: vinilMat.name,
         category: 'vinyl',
+        supplyType: 'direct',
         netQuantity: 25,
         wasteQuantity: 5,
         wasteType: 'weeding_scrap',
@@ -562,6 +734,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: transferMat.id,
         name: transferMat.name,
         category: 'vinyl',
+        supplyType: 'indirect',
         netQuantity: 25,
         wasteQuantity: 3,
         wasteType: 'tape_scrap',
@@ -573,15 +746,207 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
     ];
   }
 
-  if (tech === 'ensamble') {
+  if (tech === 'finish_nogal') {
+    const barnizNogal = findMat('mat-tinte-nogal-americano', 'nogal') || {
+      id: 'mat-tinte-nogal-americano', name: 'Tinte y Barniz Nogal Americano Base Aceite para Madera (250 ml)', costPerUnit: 110, packageQuantity: 250, packageMeasurement: 'ml', unit: 'bote (250 ml)'
+    };
+    const lijaMat = findMat('mat-lija-madera-fina-220', 'lija') || {
+      id: 'mat-lija-madera-fina-220', name: 'Lija de Madera Fina Grano 220 para Pulido y Cantos Suaves (Pliego)', costPerUnit: 14, packageQuantity: 1, packageMeasurement: 'pliego', unit: 'pliego'
+    };
+    return [
+      {
+        id: `item-fin-${Date.now()}-1`,
+        materialId: barnizNogal.id,
+        name: barnizNogal.name,
+        category: 'laser',
+        supplyType: 'finish',
+        netQuantity: 5,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 5,
+        unit: 'ml',
+        unitCost: 0.44,
+        totalCost: 2.20
+      },
+      {
+        id: `item-fin-${Date.now()}-2`,
+        materialId: lijaMat.id,
+        name: lijaMat.name,
+        category: 'consumables',
+        supplyType: 'finish',
+        netQuantity: 0.08,
+        wasteQuantity: 0.02,
+        wasteType: 'manual',
+        totalQuantity: 0.1,
+        unit: 'pliego',
+        unitCost: 14,
+        totalCost: 1.40
+      }
+    ];
+  }
+
+  if (tech === 'finish_transparente') {
+    const barnizTransp = findMat('mat-barniz-poliuretano-spray', 'barniz spray') || {
+      id: 'mat-barniz-poliuretano-spray', name: 'Barniz Poliuretano Transparente Satinado en Spray (400 ml)', costPerUnit: 135, packageQuantity: 400, packageMeasurement: 'ml', unit: 'lata (400 ml)'
+    };
+    const lijaMat = findMat('mat-lija-madera-fina-220', 'lija') || {
+      id: 'mat-lija-madera-fina-220', name: 'Lija de Madera Fina Grano 220 para Pulido y Cantos Suaves (Pliego)', costPerUnit: 14, packageQuantity: 1, packageMeasurement: 'pliego', unit: 'pliego'
+    };
+    return [
+      {
+        id: `item-fin-${Date.now()}-1`,
+        materialId: barnizTransp.id,
+        name: barnizTransp.name,
+        category: 'laser',
+        supplyType: 'finish',
+        netQuantity: 4,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 4,
+        unit: 'ml',
+        unitCost: 0.3375,
+        totalCost: 1.35
+      },
+      {
+        id: `item-fin-${Date.now()}-2`,
+        materialId: lijaMat.id,
+        name: lijaMat.name,
+        category: 'consumables',
+        supplyType: 'finish',
+        netQuantity: 0.08,
+        wasteQuantity: 0.02,
+        wasteType: 'manual',
+        totalQuantity: 0.1,
+        unit: 'pliego',
+        unitCost: 14,
+        totalCost: 1.40
+      }
+    ];
+  }
+
+  if (tech === 'finish_verde') {
+    const tinteVerde = findMat('mat-tinte-verde-bosque', 'verde') || {
+      id: 'mat-tinte-verde-bosque', name: 'Tinte para Madera Verde Bosque / Olivo Rústico (250 ml)', costPerUnit: 115, packageQuantity: 250, packageMeasurement: 'ml', unit: 'bote (250 ml)'
+    };
+    const lijaMat = findMat('mat-lija-madera-fina-220', 'lija') || {
+      id: 'mat-lija-madera-fina-220', name: 'Lija de Madera Fina Grano 220 para Pulido y Cantos Suaves (Pliego)', costPerUnit: 14, packageQuantity: 1, packageMeasurement: 'pliego', unit: 'pliego'
+    };
+    return [
+      {
+        id: `item-fin-${Date.now()}-1`,
+        materialId: tinteVerde.id,
+        name: tinteVerde.name,
+        category: 'laser',
+        supplyType: 'finish',
+        netQuantity: 5,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 5,
+        unit: 'ml',
+        unitCost: 0.46,
+        totalCost: 2.30
+      },
+      {
+        id: `item-fin-${Date.now()}-2`,
+        materialId: lijaMat.id,
+        name: lijaMat.name,
+        category: 'consumables',
+        supplyType: 'finish',
+        netQuantity: 0.08,
+        wasteQuantity: 0.02,
+        wasteType: 'manual',
+        totalQuantity: 0.1,
+        unit: 'pliego',
+        unitCost: 14,
+        totalCost: 1.40
+      }
+    ];
+  }
+
+  if (tech === 'finish_azul') {
+    const tinteAzul = findMat('mat-tinte-azul-colonial', 'azul') || {
+      id: 'mat-tinte-azul-colonial', name: 'Tinte para Madera Azul Colonial Vintage (250 ml)', costPerUnit: 115, packageQuantity: 250, packageMeasurement: 'ml', unit: 'bote (250 ml)'
+    };
+    const lijaMat = findMat('mat-lija-madera-fina-220', 'lija') || {
+      id: 'mat-lija-madera-fina-220', name: 'Lija de Madera Fina Grano 220 para Pulido y Cantos Suaves (Pliego)', costPerUnit: 14, packageQuantity: 1, packageMeasurement: 'pliego', unit: 'pliego'
+    };
+    return [
+      {
+        id: `item-fin-${Date.now()}-1`,
+        materialId: tinteAzul.id,
+        name: tinteAzul.name,
+        category: 'laser',
+        supplyType: 'finish',
+        netQuantity: 5,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 5,
+        unit: 'ml',
+        unitCost: 0.46,
+        totalCost: 2.30
+      },
+      {
+        id: `item-fin-${Date.now()}-2`,
+        materialId: lijaMat.id,
+        name: lijaMat.name,
+        category: 'consumables',
+        supplyType: 'finish',
+        netQuantity: 0.08,
+        wasteQuantity: 0.02,
+        wasteType: 'manual',
+        totalQuantity: 0.1,
+        unit: 'pliego',
+        unitCost: 14,
+        totalCost: 1.40
+      }
+    ];
+  }
+
+  if (tech === 'finish_caoba') {
+    const tinteCaoba = findMat('mat-tinte-caoba-clasico', 'caoba') || {
+      id: 'mat-tinte-caoba-clasico', name: 'Tinte para Madera Caoba Clásico Rojizo (250 ml)', costPerUnit: 115, packageQuantity: 250, packageMeasurement: 'ml', unit: 'bote (250 ml)'
+    };
+    const lijaMat = findMat('mat-lija-madera-fina-220', 'lija') || {
+      id: 'mat-lija-madera-fina-220', name: 'Lija de Madera Fina Grano 220 para Pulido y Cantos Suaves (Pliego)', costPerUnit: 14, packageQuantity: 1, packageMeasurement: 'pliego', unit: 'pliego'
+    };
+    return [
+      {
+        id: `item-fin-${Date.now()}-1`,
+        materialId: tinteCaoba.id,
+        name: tinteCaoba.name,
+        category: 'laser',
+        supplyType: 'finish',
+        netQuantity: 5,
+        wasteQuantity: 0,
+        wasteType: 'none',
+        totalQuantity: 5,
+        unit: 'ml',
+        unitCost: 0.46,
+        totalCost: 2.30
+      },
+      {
+        id: `item-fin-${Date.now()}-2`,
+        materialId: lijaMat.id,
+        name: lijaMat.name,
+        category: 'consumables',
+        supplyType: 'finish',
+        netQuantity: 0.08,
+        wasteQuantity: 0.02,
+        wasteType: 'manual',
+        totalQuantity: 0.1,
+        unit: 'pliego',
+        unitCost: 14,
+        totalCost: 1.40
+      }
+    ];
+  }
+
+  if (tech === 'ensamble' || tech === 'ensamble_resistol') {
     const resistolMat = findMat('mat-pegamento-resistol-850', 'resistol') || {
       id: 'mat-pegamento-resistol-850', name: 'Resistol 850 Pegamento Blanco para Madera Extra Fuerte (500 ml)', costPerUnit: 85, packageQuantity: 500, packageMeasurement: 'ml', unit: 'bote (500 ml)'
     };
     const cianoMat = findMat('mat-pegamento-cianocrilato-gotas', 'cianoacrilato') || {
       id: 'mat-pegamento-cianocrilato-gotas', name: 'Pegamento Instantáneo Cianocrilato Grado Taller (50g)', costPerUnit: 110, packageQuantity: 50, packageMeasurement: 'g', unit: 'frasco (50g)'
-    };
-    const argollaMat = findMat('mat-argollas-llavero', 'argollas') || {
-      id: 'mat-argollas-llavero', name: 'Argollas Metálicas con Cadena y Eslabón (100 pzas)', costPerUnit: 120, packageQuantity: 100, packageMeasurement: 'pza', unit: 'paquete (100 pzas)'
     };
     return [
       {
@@ -589,6 +954,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: resistolMat.id,
         name: resistolMat.name,
         category: 'assembly',
+        supplyType: 'indirect',
         netQuantity: 10,
         wasteQuantity: 2,
         wasteType: 'glue_residue',
@@ -602,6 +968,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         materialId: cianoMat.id,
         name: cianoMat.name,
         category: 'assembly',
+        supplyType: 'indirect',
         netQuantity: 4,
         wasteQuantity: 1,
         wasteType: 'glue_residue',
@@ -609,19 +976,6 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         unit: 'gotas',
         unitCost: Math.round(((Number(cianoMat.costPerUnit) || 110) / 1000) * 1000) / 1000,
         totalCost: Math.round(5 * 0.11 * 100) / 100
-      },
-      {
-        id: `item-ens-${Date.now()}-3`,
-        materialId: argollaMat.id,
-        name: argollaMat.name,
-        category: 'assembly',
-        netQuantity: 1,
-        wasteQuantity: 0,
-        wasteType: 'none',
-        totalQuantity: 1,
-        unit: 'pza',
-        unitCost: Math.round(((Number(argollaMat.costPerUnit) || 120) / 100) * 100) / 100,
-        totalCost: Math.round(1 * 1.20 * 100) / 100
       }
     ];
   }
@@ -1369,7 +1723,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       materialId: editorRecipeSelectedMatId || '',
       name,
       category,
-      supplyType: editorNewItemSupplyType || (category === 'consumables' || name.toLowerCase().includes('lija') || name.toLowerCase().includes('sierra') || name.toLowerCase().includes('estopa') || name.toLowerCase().includes('cinta') ? 'indirect' : 'direct'),
+      supplyType: editorNewItemSupplyType || (name.toLowerCase().includes('barniz') || name.toLowerCase().includes('tinte') || name.toLowerCase().includes('laca') || name.toLowerCase().includes('sellador') ? 'finish' : (category === 'consumables' || name.toLowerCase().includes('lija') || name.toLowerCase().includes('sierra') || name.toLowerCase().includes('estopa') || name.toLowerCase().includes('cinta') ? 'indirect' : 'direct')),
       netQuantity: netQty,
       wasteQuantity: wasteQty,
       wasteType: editorRecipeWasteType,
@@ -1404,10 +1758,31 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     const currentRecipe = editorForm.manufacturingRecipe || { items: [] };
     const updatedItems = (currentRecipe.items || []).map(it => {
       if (it.id !== itemId) return it;
-      const currentType = it.supplyType === 'indirect' ? 'indirect' : 'direct';
+      let nextType = 'direct';
+      if (it.supplyType === 'direct') nextType = 'finish';
+      else if (it.supplyType === 'finish') nextType = 'indirect';
+      else nextType = 'direct';
       return {
         ...it,
-        supplyType: currentType === 'direct' ? 'indirect' : 'direct'
+        supplyType: nextType
+      };
+    });
+    setEditorForm({
+      ...editorForm,
+      manufacturingRecipe: {
+        ...currentRecipe,
+        items: updatedItems
+      }
+    });
+  };
+
+  const handleSetItemSupplyType = (itemId, newType) => {
+    const currentRecipe = editorForm.manufacturingRecipe || { items: [] };
+    const updatedItems = (currentRecipe.items || []).map(it => {
+      if (it.id !== itemId) return it;
+      return {
+        ...it,
+        supplyType: newType
       };
     });
     setEditorForm({
@@ -1482,23 +1857,62 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     const wastePercentAverage = totalMaterialCost > 0 ? Math.round((totalWasteCost / totalMaterialCost) * 1000) / 10 : 0;
 
     const currentTechs = editorForm.techniques || [];
-    const updatedTechs = currentTechs.includes(presetType) ? currentTechs : [...currentTechs, presetType];
+    const isSpecialFinishOrGlue = presetType.startsWith('finish_') || presetType.startsWith('ensamble');
+    const updatedTechs = isSpecialFinishOrGlue
+      ? currentTechs
+      : (currentTechs.includes(presetType) ? currentTechs : [...currentTechs, presetType]);
+
+    // Parámetros de máquina predefinidos por técnica
+    const techMachineProfiles = {
+      '3d': { watts: 250, mins: 180, laborMins: 8 },
+      '3d_resina': { watts: 60, mins: 90, laborMins: 12 },
+      'laser': { watts: 450, mins: 15, laborMins: 10 },
+      'laser_madera': { watts: 450, mins: 15, laborMins: 10 },
+      'laser_llavero': { watts: 450, mins: 8, laborMins: 6 },
+      'laser_mdf': { watts: 450, mins: 12, laborMins: 8 },
+      'sublimation': { watts: 1800, mins: 5, laborMins: 6 },
+      'dtf': { watts: 1800, mins: 10, laborMins: 10 },
+      'carpinteria_cnc': { watts: 800, mins: 35, laborMins: 20 },
+      'impresion_laser': { watts: 600, mins: 3, laborMins: 6 },
+      'vinyl': { watts: 50, mins: 12, laborMins: 12 }
+    };
+
+    const profile = techMachineProfiles[presetType];
+    let newWatts = currentRecipe.machinePowerWatts || 250;
+    let newMins = currentRecipe.manufacturingTimeMinutes || 30;
+    let newLaborMins = currentRecipe.laborTimeMinutes || 15;
+    let laborRate = Number(currentRecipe.laborRatePerHour) || 75;
+    let kwhRate = Number(currentRecipe.kwhCost) || 3.50;
+
+    if (!append && profile) {
+      newWatts = profile.watts;
+      newMins = profile.mins;
+      newLaborMins = profile.laborMins;
+    }
+
+    const energyCost = Math.round(((newWatts / 1000) * (newMins / 60) * kwhRate) * 100) / 100;
+    const laborCost = Math.round(((newLaborMins / 60) * laborRate) * 100) / 100;
 
     setEditorForm({
       ...editorForm,
       techniques: updatedTechs,
       manufacturingRecipe: {
         ...currentRecipe,
-        technique: updatedTechs[0] || presetType,
+        technique: updatedTechs[0] || currentRecipe.technique || presetType,
         items: updatedItems,
         totalMaterialCost,
         totalWasteCost,
-        wastePercentAverage
+        wastePercentAverage,
+        machinePowerWatts: newWatts,
+        manufacturingTimeMinutes: newMins,
+        laborTimeMinutes: newLaborMins,
+        energyCost,
+        laborCost
       }
     });
 
     setEditorMessage({
-      text: append ? `✓ Insumos de técnica agregados a la receta.` : `✓ Receta inicializada con plantilla de ${presetType.toUpperCase()}.`,
+      text: append ? `✓ Insumos agregados a la receta.` : `✓ Receta inicializada con técnica de ${presetType.toUpperCase()} (${newMins} min máquina / ${newWatts}W).`,
       type: 'success'
     });
     setTimeout(() => setEditorMessage({ text: '', type: '' }), 3000);
@@ -6606,11 +7020,13 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               {/* ======================================================== */}
               {editorActiveTab === 'taller' && (() => {
                 const allItems = editorForm.manufacturingRecipe?.items || [];
-                const directItems = allItems.filter(it => it.supplyType !== 'indirect');
+                const directItems = allItems.filter(it => it.supplyType === 'direct' || (!it.supplyType && it.supplyType !== 'finish' && it.supplyType !== 'indirect'));
+                const finishItems = allItems.filter(it => it.supplyType === 'finish');
                 const indirectItems = allItems.filter(it => it.supplyType === 'indirect');
                 const directCost = Math.round(directItems.reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
+                const finishCost = Math.round(finishItems.reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
                 const indirectCost = Math.round(indirectItems.reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
-                const totalInsumos = Math.round((directCost + indirectCost) * 100) / 100;
+                const totalInsumos = Math.round((directCost + finishCost + indirectCost) * 100) / 100;
                 const energyCost = Number(editorForm.manufacturingRecipe?.energyCost) || 0;
                 const laborCost = Number(editorForm.manufacturingRecipe?.laborCost) || 0;
                 const totalTaller = Math.round((totalInsumos + energyCost + laborCost) * 100) / 100;
@@ -6618,89 +7034,159 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                 return (
                   <div className="p-4 sm:p-6 space-y-5 text-xs">
                     
-                    {/* Barra KPI Superior de Taller en Vivo */}
-                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 p-3.5 bg-gradient-to-r from-stone-900 via-[#1C2721] to-[#141615] rounded-2xl text-white shadow-md border border-emerald-900/50">
-                      <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
-                        <span className="text-[10px] text-emerald-400 font-bold block uppercase">🪵 Insumos Directos</span>
-                        <span className="font-mono text-base font-black text-white">${directCost.toFixed(2)}</span>
-                        <span className="text-[9.5px] text-gray-400 block">{directItems.length} materiales</span>
+                    {/* Barra KPI Superior de Taller en Vivo con 6 Métricas */}
+                    <div className="grid grid-cols-2 sm:grid-cols-6 gap-2 p-3.5 bg-gradient-to-r from-stone-900 via-[#1C2721] to-[#141615] rounded-2xl text-white shadow-md border border-emerald-900/50">
+                      <div className="p-2 rounded-xl bg-white/5 border border-white/10">
+                        <span className="text-[9.5px] text-emerald-400 font-bold block uppercase truncate">🪵 Insumos Directos</span>
+                        <span className="font-mono text-sm sm:text-base font-black text-white">${directCost.toFixed(2)}</span>
+                        <span className="text-[9px] text-gray-400 block">{directItems.length} mat. base</span>
                       </div>
-                      <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
-                        <span className="text-[10px] text-amber-300 font-bold block uppercase">⚙️ Insumos Indirectos</span>
-                        <span className="font-mono text-base font-black text-amber-200">${indirectCost.toFixed(2)}</span>
-                        <span className="text-[9.5px] text-gray-400 block">{indirectItems.length} consumibles</span>
+                      <div className="p-2 rounded-xl bg-white/5 border border-purple-500/20">
+                        <span className="text-[9.5px] text-purple-300 font-bold block uppercase truncate">✨ Acabados &amp; Tintes</span>
+                        <span className="font-mono text-sm sm:text-base font-black text-purple-200">${finishCost.toFixed(2)}</span>
+                        <span className="text-[9px] text-gray-400 block">{finishItems.length} terminaciones</span>
                       </div>
-                      <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
-                        <span className="text-[10px] text-amber-400 font-bold block uppercase">⚡ Luz CFE</span>
-                        <span className="font-mono text-base font-black text-amber-300">${energyCost.toFixed(2)}</span>
-                        <span className="text-[9.5px] text-gray-400 block">{editorForm.manufacturingRecipe?.machinePowerWatts || 250}W</span>
+                      <div className="p-2 rounded-xl bg-white/5 border border-amber-500/20">
+                        <span className="text-[9.5px] text-amber-300 font-bold block uppercase truncate">⚙️ Insumos Indirectos</span>
+                        <span className="font-mono text-sm sm:text-base font-black text-amber-200">${indirectCost.toFixed(2)}</span>
+                        <span className="text-[9px] text-gray-400 block">{indirectItems.length} consumibles</span>
                       </div>
-                      <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
-                        <span className="text-[10px] text-purple-300 font-bold block uppercase">⏱️ Mano de Obra</span>
-                        <span className="font-mono text-base font-black text-purple-200">${laborCost.toFixed(2)}</span>
-                        <span className="text-[9.5px] text-gray-400 block">{editorForm.manufacturingRecipe?.laborTimeMinutes || 15} min</span>
+                      <div className="p-2 rounded-xl bg-white/5 border border-amber-400/20">
+                        <span className="text-[9.5px] text-amber-400 font-bold block uppercase truncate">⚡ Luz CFE</span>
+                        <span className="font-mono text-sm sm:text-base font-black text-amber-300">${energyCost.toFixed(2)}</span>
+                        <span className="text-[9px] text-gray-400 block">{editorForm.manufacturingRecipe?.machinePowerWatts || 250}W</span>
                       </div>
-                      <div className="p-2.5 rounded-xl bg-emerald-600/30 border border-emerald-500/50 col-span-2 sm:col-span-1 flex flex-col justify-between">
+                      <div className="p-2 rounded-xl bg-white/5 border border-white/10">
+                        <span className="text-[9.5px] text-emerald-300 font-bold block uppercase truncate">⏱️ Mano de Obra</span>
+                        <span className="font-mono text-sm sm:text-base font-black text-emerald-200">${laborCost.toFixed(2)}</span>
+                        <span className="text-[9px] text-gray-400 block">{editorForm.manufacturingRecipe?.laborTimeMinutes || 15} min artesano</span>
+                      </div>
+                      <div className="p-2 rounded-xl bg-emerald-600/30 border border-emerald-500/50 col-span-2 sm:col-span-1 flex flex-col justify-between">
                         <div className="flex items-center justify-between">
-                          <span className="text-[10px] text-emerald-300 font-black uppercase">Total Taller</span>
+                          <span className="text-[9.5px] text-emerald-300 font-black uppercase">Total Taller</span>
                           <button
                             type="button"
                             onClick={handleSyncRecipeToCostPrice}
                             className="p-1 rounded bg-amber-400 text-stone-950 font-bold text-[9px] hover:bg-amber-300 transition-colors cursor-pointer"
-                            title="Sincronizar a costo de producción"
+                            title="Sincronizar a costo de producción del producto"
                           >
                             ⚡ Copiar
                           </button>
                         </div>
-                        <span className="font-mono text-lg font-black text-emerald-200">${totalTaller.toFixed(2)} MXN</span>
+                        <span className="font-mono text-sm sm:text-base font-black text-emerald-200">${totalTaller.toFixed(2)} MXN</span>
                       </div>
                     </div>
 
-                    {/* Presets Rápidos Combinables */}
-                    <div className="p-3.5 bg-white rounded-2xl border border-stone-200 space-y-2">
-                      <div className="flex flex-wrap items-center justify-between gap-1 text-[10px]">
-                        <span className="font-bold text-gray-800 uppercase flex items-center gap-1">
+                    {/* Presets Rápidos Combinables organizados en 3 filas */}
+                    <div className="p-3.5 bg-white rounded-2xl border border-stone-200 space-y-3 shadow-xs">
+                      <div className="flex flex-wrap items-center justify-between gap-1 text-[10px] border-b border-stone-100 pb-2">
+                        <span className="font-bold text-gray-800 uppercase flex items-center gap-1.5">
                           <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-                          <span>Plantillas Rápidas de Taller (Combina dos o más técnicas):</span>
+                          <span>Plantillas Rápidas de Manufactura, Acabados y Consumibles:</span>
                         </span>
                         <span className="text-gray-400">
-                          Haz clic para cargar técnica o en "+ Añadir" para combinar
+                          Clic en nombre para cargar o en «+ Añadir» para combinar técnicas
                         </span>
                       </div>
-                      <div className="flex flex-wrap items-center gap-1.5">
-                        {[
-                          { id: 'laser_madera', label: 'Madera Natural', icon: '🪵', desc: 'Madera Natural + Barniz' },
-                          { id: 'laser_llavero', label: 'Llavero Madera', icon: '🔑', desc: 'Madera + Barniz + Argolla + Resistol 850 + Lija' },
-                          { id: '3d', label: 'Impresión 3D', icon: '🖨️', desc: 'PLA + Soportes + 3DLac' },
-                          { id: 'laser_mdf', label: 'MDF Calibrado', icon: '⚡', desc: 'MDF 3mm + Laca Mate' },
-                          { id: 'sublimation', label: 'Sublimación', icon: '☕', desc: 'Taza + Cinta Kapton + Papel' },
-                          { id: 'dtf', label: 'DTF Textil', icon: '👕', desc: 'Film PET + Tintas + Poliamida' },
-                          { id: 'impresion_laser', label: 'Imp. Láser', icon: '📄', desc: 'Papel Couché/Opalina + Tóner' },
-                          { id: 'vinyl', label: 'Vinil Cameo', icon: '🏷️', desc: 'Vinil Textil/Adhesivo + Transfer' },
-                          { id: 'ensamble', label: 'Armado / Resistol', icon: '💧', desc: 'Resistol 850 en gotas' },
-                        ].map(preset => (
-                          <div
-                            key={preset.id}
-                            className="inline-flex rounded-lg border border-stone-200 bg-stone-50 overflow-hidden shadow-2xs text-[10px]"
-                          >
-                            <button
-                              type="button"
-                              onClick={() => handleApplyRecipePreset(preset.id, false)}
-                              className="px-2 py-1 font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-900 border-r border-stone-200 transition-colors cursor-pointer"
-                              title={`Reemplazar receta con plantilla de ${preset.desc}`}
+
+                      {/* FILA 1: TÉCNICAS DE MANUFACTURA E IMPRESIÓN REALES */}
+                      <div className="space-y-1">
+                        <span className="text-[9.5px] font-bold text-gray-500 uppercase tracking-wider block">
+                          1. Técnicas de Manufactura e Impresión Digital (Ajustan CFE y tiempos de máquina):
+                        </span>
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          {[
+                            { id: '3d', label: 'Impresión 3D FDM', icon: '🖨️', desc: 'PLA + Soportes + 3DLac (250W, 90 min)' },
+                            { id: '3d_resina', label: 'Resina UV 4K', icon: '🧪', desc: 'Resina fotosensible + Alcohol Isopropílico (60W, 45 min)' },
+                            { id: 'laser_madera', label: 'Corte Láser Madera', icon: '🔥', desc: 'Pino / Caobilla + Desgaste de Tubo Láser (450W, 8 min)' },
+                            { id: 'laser_mdf', label: 'MDF Láser Calibrado', icon: '⚡', desc: 'MDF 3mm + Desgaste Tubo Láser (450W, 10 min)' },
+                            { id: 'sublimation', label: 'Sublimación Cerámica', icon: '☕', desc: 'Taza + Cinta Kapton + Papel Sublimación (1800W, 5 min)' },
+                            { id: 'dtf', label: 'DTF Textil', icon: '👕', desc: 'Film PET + Tintas DTF + Poliamida (1800W, 4 min)' },
+                            { id: 'carpinteria_cnc', label: 'Carpintería CNC', icon: '🪵', desc: 'Madera Maciza + Fresa Router (800W, 25 min)' },
+                            { id: 'impresion_laser', label: 'Imp. Digital Láser', icon: '📄', desc: 'Papel Couché / Opalina + Tóner (350W, 3 min)' },
+                            { id: 'vinyl', label: 'Vinil Cameo', icon: '🏷️', desc: 'Vinil de Corte + Cinta Transfer (45W, 6 min)' },
+                          ].map(preset => (
+                            <div
+                              key={preset.id}
+                              className="inline-flex rounded-lg border border-stone-200 bg-stone-50 overflow-hidden shadow-2xs text-[10px]"
                             >
-                              {preset.icon} {preset.label}
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => handleApplyRecipePreset(preset.id, true)}
-                              className="px-1.5 py-1 font-bold text-emerald-700 hover:bg-emerald-600 hover:text-white transition-colors cursor-pointer"
-                              title={`Añadir ${preset.label} a la receta actual sin borrar lo anterior`}
+                              <button
+                                type="button"
+                                onClick={() => handleApplyRecipePreset(preset.id, false)}
+                                className="px-2 py-1 font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-900 border-r border-stone-200 transition-colors cursor-pointer"
+                                title={`Cargar ${preset.desc}`}
+                              >
+                                {preset.icon} {preset.label}
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleApplyRecipePreset(preset.id, true)}
+                                className="px-1.5 py-1 font-bold text-emerald-700 hover:bg-emerald-600 hover:text-white transition-colors cursor-pointer"
+                                title={`Añadir ${preset.label} sin borrar la receta actual`}
+                              >
+                                + Añadir
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* FILA 2: ACABADOS & TERMINACIONES RÁPIDAS */}
+                      <div className="space-y-1 pt-1 border-t border-stone-100">
+                        <span className="text-[9.5px] font-bold text-purple-700 uppercase tracking-wider block">
+                          2. Acabados &amp; Tintes Artesanales (Tonos de barniz y lijas finas):
+                        </span>
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          {[
+                            { id: 'finish_nogal', label: 'Tinte Nogal Americano', icon: '🪵', desc: 'Tinte nogal + lija grano 220 + estopa' },
+                            { id: 'finish_verde', label: 'Tinte Verde Olivo', icon: '🌲', desc: 'Tinte verde bosque + lija 220' },
+                            { id: 'finish_azul', label: 'Tinte Azul Colonial', icon: '🌊', desc: 'Tinte azul cálido + sellador' },
+                            { id: 'finish_caoba', label: 'Tinte Caoba Clásico', icon: '🍷', desc: 'Tinte caoba rojizo elegante' },
+                            { id: 'finish_transparente', label: 'Laca Transparente Satinada', icon: '✨', desc: 'Barniz transparente protector' },
+                          ].map(preset => (
+                            <div
+                              key={preset.id}
+                              className="inline-flex rounded-lg border border-purple-200 bg-purple-50/50 overflow-hidden shadow-2xs text-[10px]"
                             >
-                              + Añadir
-                            </button>
-                          </div>
-                        ))}
+                              <button
+                                type="button"
+                                onClick={() => handleApplyRecipePreset(preset.id, true)}
+                                className="px-2 py-1 font-semibold text-purple-900 hover:bg-purple-100 transition-colors cursor-pointer"
+                                title={`Añadir acabado ${preset.label} (${preset.desc})`}
+                              >
+                                {preset.icon} {preset.label}
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* FILA 3: ENSAMBLE MANUAL & CONSUMIBLES DE TALLER */}
+                      <div className="space-y-1 pt-1 border-t border-stone-100">
+                        <span className="text-[9.5px] font-bold text-amber-800 uppercase tracking-wider block">
+                          3. Ensamble Manual &amp; Consumibles de Taller:
+                        </span>
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          {[
+                            { id: 'ensamble_resistol', label: 'Resistol 850 (Gotas Ensamble)', icon: '💧', desc: '10 gotas de Resistol 850 para madera' },
+                            { id: 'ensamble', label: 'Cianoacrilato Rápido', icon: '⚡', desc: 'Gotas de pegamento instantáneo' },
+                            { id: 'finish_nogal', label: 'Lija 220 & Estopa', icon: '🧽', desc: 'Lija de pulido fino y paño' },
+                          ].map(preset => (
+                            <div
+                              key={preset.id}
+                              className="inline-flex rounded-lg border border-amber-200 bg-amber-50/50 overflow-hidden shadow-2xs text-[10px]"
+                            >
+                              <button
+                                type="button"
+                                onClick={() => handleApplyRecipePreset(preset.id, true)}
+                                className="px-2 py-1 font-semibold text-amber-900 hover:bg-amber-100 transition-colors cursor-pointer"
+                                title={`Añadir ${preset.label}`}
+                              >
+                                {preset.icon} {preset.label}
+                              </button>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
 
@@ -6719,7 +7205,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               </span>
                             </h4>
                             <p className="text-[10.5px] text-gray-500">
-                              Madera, herrajes, percheros, barniz, Resistol 850 de ensamble, blanks que se entregan físicamente al cliente.
+                              Placas de madera natural, triplay, MDF base, filamentos, cerámicas, argollas y herrajes físicos que se entregan al cliente.
                             </p>
                           </div>
                         </div>
@@ -6731,7 +7217,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                       {directItems.length === 0 ? (
                         <p className="p-3 bg-stone-50 rounded-xl border border-dashed border-stone-300 text-center text-gray-500 italic">
-                          No hay insumos directos en la receta. Agrega uno abajo con el botón verde.
+                          No hay insumos directos en la receta. Agrega la materia prima abajo con el botón «Agregar».
                         </p>
                       ) : (
                         <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
@@ -6795,11 +7281,19 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                     </span>
                                     <button
                                       type="button"
-                                      onClick={() => handleToggleItemSupplyType(item.id)}
+                                      onClick={() => handleSetItemSupplyType(item.id, 'finish')}
+                                      className="p-1 px-2 rounded-lg text-purple-800 bg-purple-50 hover:bg-purple-100 border border-purple-200 font-bold text-[10px] transition-colors cursor-pointer"
+                                      title="Cambiar a Acabado & Terminación"
+                                    >
+                                      ✨ A Acabado
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleSetItemSupplyType(item.id, 'indirect')}
                                       className="p-1 px-2 rounded-lg text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 font-bold text-[10px] transition-colors cursor-pointer"
                                       title="Cambiar a Insumo Indirecto / Consumible de taller"
                                     >
-                                      ↔️ A Indirecto
+                                      ⚙️ A Indirecto
                                     </button>
                                     <button
                                       type="button"
@@ -6812,7 +7306,6 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   </div>
                                 </div>
 
-                                {/* Inputs Neta, Merma, Unidad */}
                                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 border-t border-stone-200/60 text-[10px]">
                                   <div>
                                     <label className="text-gray-500 font-bold block mb-0.5">Cant. Neta ({item.unit}):</label>
@@ -6845,7 +7338,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   <div>
                                     <label className="text-gray-500 font-bold block mb-0.5">Motivo Merma:</label>
                                     <select
-                                      value={item.wasteType || 'supports_purge'}
+                                      value={item.wasteType || 'kerf_cut'}
                                       onChange={e => handleUpdateEditorRecipeItem(item.id, 'wasteType', e.target.value)}
                                       className="w-full px-1.5 py-1 rounded-lg border border-gray-300 font-medium text-[10px] bg-white"
                                     >
@@ -6874,7 +7367,144 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       )}
                     </div>
 
-                    {/* CARD 2: INSUMOS INDIRECTOS & DESGASTES (LIJAS, SIERRAS, TRAPOS, CINTAS, 3DLAC) */}
+                    {/* CARD 2: ✨ ACABADOS & TERMINACIONES DE TALLER (NUEVO BLOQUE DEDICADO) */}
+                    <div className="p-4 rounded-2xl bg-white border-2 border-purple-500/30 space-y-3 shadow-xs">
+                      <div className="flex items-center justify-between border-b border-purple-100 pb-2.5">
+                        <div className="flex items-center gap-2">
+                          <span className="p-1.5 rounded-xl bg-purple-100 text-purple-800">
+                            <Palette className="w-4 h-4" />
+                          </span>
+                          <div>
+                            <h4 className="font-heading font-black text-xs text-gray-900 flex items-center gap-1.5">
+                              <span>✨ Acabados &amp; Terminaciones de Taller</span>
+                              <span className="px-2 py-0.2 rounded-full bg-purple-100 text-purple-900 text-[10px] font-bold border border-purple-300">
+                                {finishItems.length} terminación(es)
+                              </span>
+                            </h4>
+                            <p className="text-[10.5px] text-gray-500">
+                              Tintes de barniz (nogal americano, verde olivo, azul colonial, caoba clásico, transparente satinado), sellador tapaporos, lijas de terminado grano 150/220/400.
+                            </p>
+                          </div>
+                        </div>
+
+                        <span className="font-mono font-black text-sm text-purple-900 bg-purple-50 px-2.5 py-1 rounded-xl border border-purple-200">
+                          Subtotal: ${finishCost.toFixed(2)} MXN
+                        </span>
+                      </div>
+
+                      {finishItems.length === 0 ? (
+                        <p className="p-3 bg-purple-50/40 rounded-xl border border-dashed border-purple-200 text-center text-purple-700 italic">
+                          No hay acabados asignados a esta pieza. Puedes agregar barniz, tintes o lijas de terminación en las plantillas de arriba o en el formulario de abajo.
+                        </p>
+                      ) : (
+                        <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
+                          {finishItems.map((item, idx) => {
+                            const matchedMat = rawMaterialsList.find(m => m.id === item.materialId || (item.name && m.name.toLowerCase().trim() === item.name.toLowerCase().trim()));
+                            const netVal = Number(item.netQuantity) || 0;
+                            const wasteVal = Number(item.wasteQuantity) || 0;
+                            const totalVal = netVal + wasteVal;
+                            const costVal = Number(item.totalCost) || 0;
+                            const supplierName = matchedMat?.supplier || 'Proveedor de Acabados';
+
+                            return (
+                              <div
+                                key={item.id || idx}
+                                className="p-3 rounded-xl bg-purple-50/30 border border-purple-200/80 hover:border-purple-400 transition-all space-y-2"
+                              >
+                                <div className="flex flex-wrap items-center justify-between gap-2">
+                                  <div className="flex items-center gap-2 min-w-0">
+                                    <span className="w-5 h-5 rounded-full bg-purple-800 text-white flex items-center justify-center font-bold text-[10px] shrink-0">
+                                      {idx + 1}
+                                    </span>
+                                    <div className="min-w-0">
+                                      <div className="font-bold text-xs text-gray-900 truncate flex items-center gap-1.5">
+                                        <span>{item.name}</span>
+                                        <span className="px-1.5 py-0.2 rounded bg-purple-200 text-purple-950 text-[9px] uppercase font-bold">
+                                          Acabado / Tinte
+                                        </span>
+                                      </div>
+                                      <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
+                                        <span className="text-[9.5px] text-gray-500 font-medium">
+                                          🏢 Proveedor: {supplierName}
+                                        </span>
+                                        {matchedMat && (
+                                          <span className="text-[9.5px] text-purple-800 font-bold bg-purple-100/70 px-1.5 py-0.2 rounded">
+                                            Stock bodega: {matchedMat.currentStock} {matchedMat.unit}
+                                          </span>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-xs font-mono font-black text-purple-900 bg-purple-100/60 px-2 py-0.5 rounded-lg border border-purple-300">
+                                      ${costVal.toFixed(2)} MXN
+                                    </span>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleSetItemSupplyType(item.id, 'direct')}
+                                      className="p-1 px-2 rounded-lg text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 font-bold text-[10px] transition-colors cursor-pointer"
+                                      title="Mover a Insumo Directo"
+                                    >
+                                      🪵 A Directo
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleSetItemSupplyType(item.id, 'indirect')}
+                                      className="p-1 px-2 rounded-lg text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 font-bold text-[10px] transition-colors cursor-pointer"
+                                      title="Mover a Insumo Indirecto"
+                                    >
+                                      ⚙️ A Indirecto
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleRemoveEditorRecipeItem(item.id)}
+                                      className="p-1 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                                      title="Eliminar acabado"
+                                    >
+                                      <Trash2 className="w-3.5 h-3.5" />
+                                    </button>
+                                  </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1 border-t border-purple-200/50 text-[10px]">
+                                  <div>
+                                    <label className="text-gray-500 font-bold block mb-0.5">Consumo ({item.unit}):</label>
+                                    <input
+                                      type="number"
+                                      step="any"
+                                      min="0"
+                                      value={item.netQuantity ?? ''}
+                                      onChange={e => handleUpdateEditorRecipeItem(item.id, 'netQuantity', parseFloat(e.target.value) || 0)}
+                                      className="w-full px-2 py-1 rounded-lg border border-gray-300 font-mono font-bold text-xs bg-white"
+                                    />
+                                    <span className="text-[9px] text-gray-400">Por pieza producida</span>
+                                  </div>
+
+                                  <div>
+                                    <label className="text-gray-500 font-bold block mb-0.5">Costo Unitario:</label>
+                                    <div className="px-2 py-1 rounded-lg bg-white border border-stone-200 font-mono font-bold text-xs text-gray-800">
+                                      ${Number(item.unitCost).toFixed(3)} / {item.unit}
+                                    </div>
+                                    <span className="text-[9px] text-gray-400">Calculado de bodega</span>
+                                  </div>
+
+                                  <div>
+                                    <label className="text-gray-500 font-bold block mb-0.5">Costo Total Terminación:</label>
+                                    <div className="px-2 py-1 rounded-lg bg-purple-100/50 border border-purple-300 font-mono font-bold text-xs text-purple-950">
+                                      ${costVal.toFixed(2)} MXN
+                                    </div>
+                                    <span className="text-[9px] text-purple-800">Por unidad final</span>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* CARD 3: INSUMOS INDIRECTOS, CONSUMIBLES & DESGASTES DE TALLER */}
                     <div className="p-4 rounded-2xl bg-white border-2 border-amber-500/30 space-y-3 shadow-xs">
                       <div className="flex items-center justify-between border-b border-amber-100 pb-2.5">
                         <div className="flex items-center gap-2">
@@ -6883,13 +7513,13 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           </span>
                           <div>
                             <h4 className="font-heading font-black text-xs text-gray-900 flex items-center gap-1.5">
-                              <span>Insumos Indirectos &amp; Desgastes de Taller (Estilo Cocina/Restaurante)</span>
+                              <span>⚙️ Insumos Indirectos, Consumibles &amp; Desgastes de Taller</span>
                               <span className="px-2 py-0.2 rounded-full bg-amber-100 text-amber-900 text-[10px] font-bold border border-amber-300">
                                 {indirectItems.length} consumible(s)
                               </span>
                             </h4>
                             <p className="text-[10.5px] text-gray-500">
-                              Lija grano 220, desgaste de sierra circular / tubo láser, estopa para barniz, cinta de enmascarar anti-ahumado, spray fijador.
+                              Gotas de pegamento Resistol 850 / cianoacrilato de ensamble, desgaste de hoja de sierra / fresa router / boquilla / tubo láser CO2, estopa y cinta crepé anti-ahumado.
                             </p>
                           </div>
                         </div>
@@ -6901,7 +7531,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                       {indirectItems.length === 0 ? (
                         <p className="p-3 bg-stone-50 rounded-xl border border-dashed border-stone-300 text-center text-gray-500 italic">
-                          No hay insumos indirectos asignados. Agrega lijas, desgaste de cuchilla/sierra o paños con el botón de abajo.
+                          No hay insumos indirectos asignados. Agrega gotas de Resistol 850, desgaste de sierra o cinta anti-ahumado.
                         </p>
                       ) : (
                         <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
@@ -6949,11 +7579,19 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                     </span>
                                     <button
                                       type="button"
-                                      onClick={() => handleToggleItemSupplyType(item.id)}
+                                      onClick={() => handleSetItemSupplyType(item.id, 'finish')}
+                                      className="p-1 px-2 rounded-lg text-purple-800 bg-purple-50 hover:bg-purple-100 border border-purple-200 font-bold text-[10px] transition-colors cursor-pointer"
+                                      title="Cambiar a Acabado & Terminación"
+                                    >
+                                      ✨ A Acabado
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleSetItemSupplyType(item.id, 'direct')}
                                       className="p-1 px-2 rounded-lg text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 font-bold text-[10px] transition-colors cursor-pointer"
                                       title="Cambiar a Insumo Directo"
                                     >
-                                      ↔️ A Directo
+                                      🪵 A Directo
                                     </button>
                                     <button
                                       type="button"
@@ -7003,15 +7641,15 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       )}
                     </div>
 
-                    {/* FORMULARIO PARA AÑADIR NUEVO INSUMO (DIRECTO O INDIRECTO) */}
-                    <div className="p-4 bg-gradient-to-r from-stone-50 via-white to-stone-50 rounded-2xl border-2 border-[#2D4F3E]/40 space-y-3">
+                    {/* FORMULARIO PARA AÑADIR NUEVO INSUMO (DIRECTO, ACABADO O INDIRECTO) */}
+                    <div className="p-4 bg-gradient-to-r from-stone-50 via-white to-stone-50 rounded-2xl border-2 border-[#2D4F3E]/40 space-y-3 shadow-xs">
                       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-stone-200 pb-2">
                         <div className="font-bold text-gray-900 text-xs uppercase flex items-center gap-1.5">
                           <Plus className="w-4 h-4 text-[#2D4F3E]" />
-                          <span>Agregar Materia Prima o Desgaste al Escandallo:</span>
+                          <span>Agregar Materia Prima, Acabado o Consumible al Escandallo:</span>
                         </div>
 
-                        {/* Selector de Insumo Directo vs Indirecto */}
+                        {/* Selector de 3 Categorías: Directo, Acabado o Indirecto */}
                         <div className="inline-flex rounded-xl p-0.5 bg-stone-200 border border-stone-300 text-[11px] font-bold">
                           <button
                             type="button"
@@ -7024,12 +7662,21 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           </button>
                           <button
                             type="button"
+                            onClick={() => setEditorNewItemSupplyType('finish')}
+                            className={`px-3 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
+                              editorNewItemSupplyType === 'finish' ? 'bg-purple-700 text-white shadow-xs' : 'text-gray-600 hover:text-gray-900'
+                            }`}
+                          >
+                            <span>✨ Acabado (Tinte/Barniz)</span>
+                          </button>
+                          <button
+                            type="button"
                             onClick={() => setEditorNewItemSupplyType('indirect')}
                             className={`px-3 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
                               editorNewItemSupplyType === 'indirect' ? 'bg-amber-600 text-white shadow-xs' : 'text-gray-600 hover:text-gray-900'
                             }`}
                           >
-                            <span>⚙️ Indirecto (Desgaste/Lija/Sierra)</span>
+                            <span>⚙️ Indirecto (Desgaste/Pegamento)</span>
                           </button>
                         </div>
                       </div>
@@ -7050,7 +7697,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 const pkg = parsePackageInfo(mat);
                                 setEditorRecipeUnit(pkg.packageMeasurement || 'pza');
                                 const lowerName = (mat.name || '').toLowerCase();
-                                if (lowerName.includes('lija') || lowerName.includes('sierra') || lowerName.includes('estopa') || lowerName.includes('cinta')) {
+                                if (lowerName.includes('barniz') || lowerName.includes('tinte') || lowerName.includes('laca') || lowerName.includes('sellador')) {
+                                  setEditorNewItemSupplyType('finish');
+                                } else if (lowerName.includes('lija') || lowerName.includes('sierra') || lowerName.includes('estopa') || lowerName.includes('cinta')) {
                                   setEditorNewItemSupplyType('indirect');
                                 } else {
                                   setEditorNewItemSupplyType('direct');
@@ -7063,6 +7712,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   setEditorRecipeNetQty(0.2);
                                   setEditorRecipeWasteQty(0);
                                   setEditorRecipeUnit('pliego');
+                                } else if (lowerName.includes('barniz') || lowerName.includes('tinte')) {
+                                  setEditorRecipeNetQty(15);
+                                  setEditorRecipeWasteQty(2);
+                                  setEditorRecipeUnit('ml');
                                 } else if (lowerName.includes('sierra') || lowerName.includes('desgaste')) {
                                   setEditorRecipeNetQty(1);
                                   setEditorRecipeWasteQty(0);
@@ -7077,8 +7730,8 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             className="w-full px-2.5 py-2 rounded-xl border border-gray-300 bg-white font-medium text-xs text-gray-900"
                           >
                             <option value="">-- Seleccionar insumo de almacén --</option>
-                            <optgroup label="⚙️ Consumibles, Lijas, Sierras & Limpieza (Indirectos)">
-                              {rawMaterialsList.filter(m => m.category === 'consumables' || m.name.toLowerCase().includes('lija') || m.name.toLowerCase().includes('sierra') || m.name.toLowerCase().includes('estopa') || m.name.toLowerCase().includes('cinta')).map(m => (
+                            <optgroup label="✨ Barnices, Tintes, Lacas & Acabados de Taller">
+                              {rawMaterialsList.filter(m => m.name.toLowerCase().includes('barniz') || m.name.toLowerCase().includes('tinte') || m.name.toLowerCase().includes('laca') || m.name.toLowerCase().includes('sellador') || m.category === 'finishing').map(m => (
                                 <option key={m.id} value={m.id}>
                                   {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit} • {m.supplier || 'Taller'})
                                 </option>
@@ -7112,8 +7765,15 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 </option>
                               ))}
                             </optgroup>
+                            <optgroup label="⚙️ Consumibles, Lijas, Sierras & Limpieza (Indirectos)">
+                              {rawMaterialsList.filter(m => m.category === 'consumables' || m.name.toLowerCase().includes('lija') || m.name.toLowerCase().includes('sierra') || m.name.toLowerCase().includes('estopa') || m.name.toLowerCase().includes('cinta')).map(m => (
+                                <option key={m.id} value={m.id}>
+                                  {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit} • {m.supplier || 'Taller'})
+                                </option>
+                              ))}
+                            </optgroup>
                             <optgroup label="📦 Otros Insumos">
-                              {rawMaterialsList.filter(m => !['3d', 'laser', 'sublimation', 'dtf', 'consumables'].includes(m.category) && !m.name.toLowerCase().includes('lija') && !m.name.toLowerCase().includes('sierra')).map(m => (
+                              {rawMaterialsList.filter(m => !['3d', 'laser', 'sublimation', 'dtf', 'consumables', 'finishing'].includes(m.category) && !m.name.toLowerCase().includes('barniz') && !m.name.toLowerCase().includes('lija') && !m.name.toLowerCase().includes('sierra')).map(m => (
                                 <option key={m.id} value={m.id}>
                                   {m.name} (Stock: {m.currentStock} {m.unit} • ${m.costPerUnit})
                                 </option>
@@ -7131,7 +7791,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               value={editorRecipeCustomName}
                               onChange={e => setEditorRecipeCustomName(e.target.value)}
                               className="w-full px-2.5 py-2 rounded-xl border border-gray-300 bg-white text-xs"
-                              placeholder="Ej: Lija 220 grano fino"
+                              placeholder="Ej: Barniz Nogal Americano"
                             />
                           </div>
                         )}
@@ -7170,10 +7830,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             <option value="pza">pza</option>
                             <option value="pliego">pliego</option>
                             <option value="gotas">gotas</option>
+                            <option value="ml">ml</option>
                             <option value="cm²">cm²</option>
                             <option value="g">g</option>
                             <option value="cm">cm</option>
-                            <option value="ml">ml</option>
                             <option value="hoja">hoja</option>
                           </select>
                         </div>
@@ -7192,7 +7852,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     </div>
 
                     {/* CALCULADORA DE LUZ CFE & MANO DE OBRA */}
-                    <div className="p-4 bg-white rounded-2xl border border-stone-200 space-y-3">
+                    <div className="p-4 bg-white rounded-2xl border border-stone-200 space-y-3 shadow-xs">
                       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-stone-100 pb-2">
                         <div className="flex items-center gap-2">
                           <span className="p-1 rounded-lg bg-amber-100 text-amber-800">
@@ -7231,10 +7891,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                           <div className="flex flex-wrap gap-1">
                             {[
-                              { label: '3D (250W)', watts: 250 },
+                              { label: '3D FDM (250W)', watts: 250 },
+                              { label: 'Resina UV (60W)', watts: 60 },
                               { label: 'Láser Diodo (80W)', watts: 80 },
                               { label: 'Láser CO2 (450W)', watts: 450 },
-                              { label: 'Plancha (1800W)', watts: 1800 },
+                              { label: 'CNC Ruteo (800W)', watts: 800 },
+                              { label: 'Plancha Sublimación (1800W)', watts: 1800 },
                             ].map(p => (
                               <button
                                 key={p.label}
@@ -7289,14 +7951,14 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         {/* Labor */}
                         <div className="p-3 rounded-xl bg-emerald-50/40 border border-emerald-200/60 space-y-2">
                           <div className="flex items-center justify-between">
-                            <span className="font-bold text-[10.5px] text-emerald-950">⏱️ Mano de Obra:</span>
+                            <span className="font-bold text-[10.5px] text-emerald-950">⏱️ Mano de Obra Artesanal:</span>
                             <span className="font-mono font-bold text-xs text-emerald-900 bg-emerald-100 px-2 py-0.5 rounded">
                               ${Number(editorForm.manufacturingRecipe?.laborCost || 0).toFixed(2)} MXN
                             </span>
                           </div>
 
                           <p className="text-[10px] text-gray-500">
-                            Tiempo de preparación, corte, armado, lijado manual y aplicación de barniz.
+                            Tiempo de preparación, armado, entintado de barniz y lijado manual del artesano.
                           </p>
 
                           <div className="grid grid-cols-2 gap-2 pt-1 text-[10px]">
@@ -7426,6 +8088,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                 const shippingTotal = Number(pkg.shippingCost) || 0;
                 const totalLogistica = packagingTotal + (pkg.includeShippingInPrice ? shippingTotal : 0);
 
+                // Costo marginal de embalaje por pieza adicional en el mismo paquete
+                const marginalExtraCost = 18; // Caja mayor o viruta extra
+
                 return (
                   <div className="p-4 sm:p-6 space-y-5 text-xs">
                     
@@ -7447,9 +8112,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                       <div className="flex items-center gap-3">
                         <div className="text-right">
-                          <span className="text-[10px] text-gray-400 block">Total Empaque + Flete:</span>
+                          <span className="text-[10px] text-gray-400 block">Total Empaque + Flete (1 pza):</span>
                           <span className="font-mono font-black text-base text-purple-200">
-                            ${totalLogistica.toFixed(2)} MXN
+                            ${(packagingTotal + shippingTotal).toFixed(2)} MXN
                           </span>
                         </div>
                         <button
@@ -7703,6 +8368,91 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </div>
                     </div>
 
+                    {/* CARD 3: DELIMITACIÓN DE ENVÍOS (1 PIEZA VS PAQUETE CONSOLIDADO) */}
+                    <div className="p-4 rounded-2xl bg-gradient-to-br from-blue-50/80 via-white to-purple-50/50 border-2 border-blue-200 space-y-3.5 shadow-xs">
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-blue-100 pb-2.5">
+                        <div className="flex items-center gap-2">
+                          <span className="p-1.5 rounded-xl bg-blue-600 text-white shadow-2xs">
+                            <Boxes className="w-4 h-4" />
+                          </span>
+                          <div>
+                            <h4 className="font-heading font-black text-xs text-blue-950">
+                              Delimitación de Envíos: 1 Pieza ($169) vs. Paquete Consolidado ($18-$20 marginal)
+                            </h4>
+                            <p className="text-[10.5px] text-gray-600">
+                              En México la guía nacional cubre hasta 1 a 5 kg. Al comprar 2 o más piezas no se duplica la guía, solo se agrega el empaque individual.
+                            </p>
+                          </div>
+                        </div>
+
+                        <span className="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-900 font-bold text-[10px] border border-blue-300">
+                          Ahorro por Volumen
+                        </span>
+                      </div>
+
+                      <div className="p-3 bg-white rounded-xl border border-blue-100 space-y-2 text-[11px]">
+                        <p className="text-gray-700 leading-relaxed">
+                          💡 <strong>Regla logística de Artesano Digital:</strong> Si un cliente compra <strong>1 sola pieza</strong>, el costo logístico absorbe la guía completa (${shippingTotal} MXN flete + ${packagingTotal} MXN empaque = <strong>${shippingTotal + packagingTotal} MXN</strong>). Pero si compra <strong>2, 3 o 5 piezas</strong> en el mismo carrito, la guía nacional es fija y cada pieza extra solo añade ~${marginalExtraCost} MXN de volumen/burbuja.
+                        </p>
+
+                        {/* Tabla comparativa de piezas y ahorro */}
+                        <div className="overflow-x-auto pt-1">
+                          <table className="w-full text-left border-collapse text-[10.5px]">
+                            <thead>
+                              <tr className="bg-blue-50/70 border-b border-blue-200 text-blue-900 font-bold">
+                                <th className="p-2 rounded-l-lg">Piezas en el Pedido</th>
+                                <th className="p-2">Flete Guía</th>
+                                <th className="p-2">Embalaje Total</th>
+                                <th className="p-2 font-mono">Total Paquete</th>
+                                <th className="p-2 font-mono text-emerald-800">Costo / Pieza</th>
+                                <th className="p-2 rounded-r-lg text-right">Ahorro Logístico</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-100 font-medium">
+                              {[
+                                { qty: 1, label: '1 pieza (Envío unitario)', extra: 0 },
+                                { qty: 2, label: '2 piezas (Doble pedido)', extra: 1 },
+                                { qty: 3, label: '3 piezas (Trio / Mayoreo)', extra: 2 },
+                                { qty: 5, label: '5 piezas (Pack Familiar)', extra: 4 },
+                                { qty: 10, label: '10 piezas (Distribuidor / Mayoreo)', extra: 9 },
+                              ].map(row => {
+                                const totalEmpaque = packagingTotal + (row.extra * marginalExtraCost);
+                                const totalFleteYEmpaque = shippingTotal + totalEmpaque;
+                                const costPerPiece = totalFleteYEmpaque / row.qty;
+                                const baseUnitCost = shippingTotal + packagingTotal;
+                                const savingsPercent = Math.max(0, Math.round(((baseUnitCost - costPerPiece) / baseUnitCost) * 100));
+
+                                return (
+                                  <tr key={row.qty} className={row.qty === 1 ? 'bg-stone-50/70' : 'hover:bg-blue-50/30'}>
+                                    <td className="p-2 font-bold text-gray-900">{row.label}</td>
+                                    <td className="p-2 font-mono text-gray-600">${shippingTotal.toFixed(0)}</td>
+                                    <td className="p-2 font-mono text-gray-600">${totalEmpaque.toFixed(0)}</td>
+                                    <td className="p-2 font-mono font-bold text-gray-900">${totalFleteYEmpaque.toFixed(2)}</td>
+                                    <td className="p-2 font-mono font-black text-emerald-800 bg-emerald-50/50">
+                                      ${costPerPiece.toFixed(2)} / pza
+                                    </td>
+                                    <td className="p-2 text-right">
+                                      {row.qty === 1 ? (
+                                        <span className="text-gray-400 font-semibold">Base (100%)</span>
+                                      ) : (
+                                        <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[9.5px] border border-emerald-300">
+                                          ¡Ahorra {savingsPercent}%!
+                                        </span>
+                                      )}
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
+                        </div>
+
+                        <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-blue-100 text-[10px] text-gray-500">
+                          <span>✓ Argumento comercial para ventas: Usa este desglose para ofrecer combos o descuentos en la 2da y 3ra pieza sin perder margen.</span>
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
                 );
               })()}
@@ -7946,6 +8696,277 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         </div>
                       )}
                     </div>
+
+                    {/* ======================================================== */}
+                    {/* SIMULADOR DE DESCUENTOS & CONTROL DE MARGEN DE PRECIOS   */}
+                    {/* ======================================================== */}
+                    {currentPrice > 0 && currentCost > 0 && (() => {
+                      const floorPrice = Math.round(currentCost * 1.05 * 100) / 100;
+                      const maxSafeDiscountPercent = Math.max(0, Math.floor(((currentPrice - floorPrice) / currentPrice) * 100));
+
+                      const discountLevels = [10, 15, 20, 30, 50];
+                      if (editorForm.flashDealConfig?.enabled && !discountLevels.includes(editorForm.flashDealConfig.discountPercent)) {
+                        discountLevels.push(editorForm.flashDealConfig.discountPercent);
+                        discountLevels.sort((a, b) => a - b);
+                      }
+
+                      const hasDeficitAt50 = Math.round(currentPrice * 0.5) < floorPrice;
+
+                      return (
+                        <div className="space-y-4">
+                          {/* CARD: SIMULADOR DE DESCUENTOS */}
+                          <div className="p-4 rounded-2xl bg-white border-2 border-emerald-600/30 space-y-3.5 shadow-xs">
+                            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-emerald-100 pb-2.5">
+                              <div className="flex items-center gap-2">
+                                <span className="p-1.5 rounded-xl bg-emerald-100 text-emerald-800">
+                                  <Percent className="w-4 h-4" />
+                                </span>
+                                <div>
+                                  <h4 className="font-heading font-black text-xs text-gray-900 flex items-center gap-1.5">
+                                    <span>Simulador de Descuentos &amp; Control de Margen de Taller</span>
+                                    <span className="px-2 py-0.2 rounded-full bg-emerald-100 text-emerald-900 text-[10px] font-bold border border-emerald-300">
+                                      Análisis Financiero
+                                    </span>
+                                  </h4>
+                                  <p className="text-[10.5px] text-gray-500">
+                                    Conoce con exactitud qué ganancia en pesos y qué porcentaje de margen neto te deja cada nivel de oferta antes de aplicarla.
+                                  </p>
+                                </div>
+                              </div>
+
+                              <span className="text-[11px] font-bold text-gray-500">
+                                PVP Base: <strong className="text-gray-900 font-mono text-xs">${currentPrice} MXN</strong>
+                              </span>
+                            </div>
+
+                            {/* Tabla Interactiva de Descuentos */}
+                            <div className="overflow-x-auto">
+                              <table className="w-full text-left border-collapse text-[11px]">
+                                <thead>
+                                  <tr className="bg-stone-50 border-b border-stone-200 text-gray-700 font-bold">
+                                    <th className="p-2.5 rounded-l-xl">Descuento</th>
+                                    <th className="p-2.5">Precio Oferta</th>
+                                    <th className="p-2.5">Ahorro Cliente</th>
+                                    <th className="p-2.5">Ganancia Neta</th>
+                                    <th className="p-2.5">Margen Neto</th>
+                                    <th className="p-2.5 rounded-r-xl text-right">Viabilidad</th>
+                                  </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-100 font-medium">
+                                  {discountLevels.map(pct => {
+                                    const discPrice = Math.round(currentPrice * (1 - pct / 100));
+                                    const clientSavings = currentPrice - discPrice;
+                                    const netProfit = discPrice - currentCost;
+                                    const netMargin = discPrice > 0 ? Math.round((netProfit / discPrice) * 100) : 0;
+                                    const isDeficit = discPrice < floorPrice || netProfit <= 0;
+                                    const isFlash = editorForm.flashDealConfig?.enabled && editorForm.flashDealConfig.discountPercent === pct;
+
+                                    let badgeColor = 'bg-emerald-50 text-emerald-800 border-emerald-200';
+                                    let badgeText = '🟢 Saludable';
+                                    if (isDeficit) {
+                                      badgeColor = 'bg-rose-100 text-rose-900 border-rose-300 font-black animate-pulse';
+                                      badgeText = '🔴 DÉFICIT / PÉRDIDA';
+                                    } else if (netMargin < 20) {
+                                      badgeColor = 'bg-orange-100 text-orange-900 border-orange-300 font-bold';
+                                      badgeText = '🟠 Mínimo';
+                                    } else if (netMargin < 35) {
+                                      badgeColor = 'bg-amber-50 text-amber-800 border-amber-200';
+                                      badgeText = '🟡 Moderado';
+                                    }
+
+                                    return (
+                                      <tr key={pct} className={`hover:bg-stone-50/60 transition-colors ${isDeficit ? 'bg-rose-50/30' : ''}`}>
+                                        <td className="p-2.5 font-bold text-gray-900 flex items-center gap-1.5">
+                                          <span>-{pct}%</span>
+                                          {isFlash && (
+                                            <span className="px-1.5 py-0.2 rounded bg-amber-400 text-stone-950 font-black text-[9px] uppercase">
+                                              Flash
+                                            </span>
+                                          )}
+                                        </td>
+                                        <td className="p-2.5 font-mono font-bold text-gray-900">${discPrice} MXN</td>
+                                        <td className="p-2.5 font-mono text-gray-500">-${clientSavings} MXN</td>
+                                        <td className={`p-2.5 font-mono font-black ${netProfit >= 0 ? 'text-emerald-800' : 'text-rose-700 font-black'}`}>
+                                          {netProfit >= 0 ? `+$${netProfit.toFixed(1)}` : `-$${Math.abs(netProfit).toFixed(1)}`} MXN
+                                        </td>
+                                        <td className="p-2.5 font-mono font-bold">
+                                          <span className={netMargin >= 35 ? 'text-emerald-700' : netMargin >= 20 ? 'text-amber-700' : 'text-rose-700'}>
+                                            {netMargin}%
+                                          </span>
+                                        </td>
+                                        <td className="p-2.5 text-right">
+                                          <span className={`px-2 py-0.5 rounded-full border text-[9.5px] inline-block ${badgeColor}`}>
+                                            {badgeText}
+                                          </span>
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+
+                          {/* CARD: UMBRAL DE LIQUIDACIÓN MÁXIMA & PRECIO PISO */}
+                          <div className={`p-4 rounded-2xl border-2 space-y-3 transition-all ${
+                            hasDeficitAt50 
+                              ? 'bg-gradient-to-r from-amber-50 via-white to-rose-50 border-amber-300' 
+                              : 'bg-stone-50 border-stone-200'
+                          }`}>
+                            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-stone-200/80 pb-2">
+                              <div className="flex items-center gap-2">
+                                <span className="p-1.5 rounded-xl bg-amber-500 text-white shadow-2xs">
+                                  <AlertTriangle className="w-4 h-4" />
+                                </span>
+                                <div>
+                                  <h5 className="font-heading font-black text-xs text-gray-900">
+                                    Umbral de Liquidación Máxima &amp; Precio de Piso de Seguridad
+                                  </h5>
+                                  <span className="text-[10px] text-gray-500">
+                                    Límite estricto de taller para no subsidiar piezas con dinero propio
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div className="flex items-center gap-2 font-mono">
+                                <span className="text-[10px] text-gray-500">Precio Piso Seguro:</span>
+                                <span className="px-2.5 py-0.5 rounded-lg bg-emerald-100 text-emerald-900 font-black text-xs border border-emerald-300">
+                                  ${floorPrice.toFixed(2)} MXN
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px]">
+                              <div className="p-3 bg-white rounded-xl border border-stone-200 space-y-1">
+                                <span className="text-gray-500 font-bold block text-[10px] uppercase">
+                                  Descuento Máximo de Liquidación Permitido:
+                                </span>
+                                <div className="flex items-baseline gap-2">
+                                  <span className="font-mono text-xl font-black text-amber-700">
+                                    {maxSafeDiscountPercent}%
+                                  </span>
+                                  <span className="text-[10px] text-gray-400">
+                                    (Cualquier descuento mayor entra en pérdidas de taller)
+                                  </span>
+                                </div>
+                                <p className="text-[10px] text-gray-500 leading-tight pt-1">
+                                  Cálculo: Recupera el 100% de materiales directos, acabados, consumibles, luz CFE y mano de obra con 5% de contingencia para comisiones.
+                                </p>
+                              </div>
+
+                              <div className="p-3 bg-white rounded-xl border border-stone-200 flex flex-col justify-between">
+                                <div>
+                                  <span className="text-gray-500 font-bold block text-[10px] uppercase">
+                                    Regla de Liquidación:
+                                  </span>
+                                  <p className="text-[10.5px] text-gray-600 leading-relaxed mt-0.5">
+                                    Si necesitas rematar inventario estancado, puedes aplicar hasta un <strong>{maxSafeDiscountPercent}% de descuento</strong> para recuperar el capital de taller sin perder dinero.
+                                  </p>
+                                </div>
+
+                                {maxSafeDiscountPercent < 30 && (
+                                  <div className="mt-2 p-1.5 rounded-lg bg-rose-50 text-rose-800 border border-rose-200 text-[10px] font-bold flex items-center gap-1.5">
+                                    <AlertTriangle className="w-3.5 h-3.5 shrink-0 text-rose-600" />
+                                    <span>¡Atención! No aplicar 30% ni 50% de descuento en este SKU porque generará déficit directo.</span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* CARD: RESUMEN EJECUTIVO DETALLADO DEL COSTE DETRÁS DEL PRODUCTO */}
+                          {(() => {
+                            const allRecipeItems = rec.items || [];
+                            const recDirectCost = Math.round(allRecipeItems.filter(it => it.supplyType === 'direct' || (!it.supplyType && it.supplyType !== 'finish' && it.supplyType !== 'indirect')).reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
+                            const recFinishCost = Math.round(allRecipeItems.filter(it => it.supplyType === 'finish').reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
+                            const recIndirectCost = Math.round(allRecipeItems.filter(it => it.supplyType === 'indirect').reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
+
+                            const directShown = allRecipeItems.length > 0 ? recDirectCost : (matCost * 0.75);
+                            const finishShown = allRecipeItems.length > 0 ? recFinishCost : (matCost * 0.15);
+                            const indirectShown = allRecipeItems.length > 0 ? recIndirectCost : (matCost * 0.10);
+
+                            return (
+                              <div className="p-4 rounded-2xl bg-gradient-to-br from-stone-900 via-[#1C2721] to-[#121413] text-white space-y-3.5 shadow-md border border-emerald-900/60">
+                                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-2.5">
+                                  <div className="flex items-center gap-2">
+                                    <span className="p-1.5 rounded-xl bg-emerald-500/20 text-emerald-300">
+                                      <FileSpreadsheet className="w-4 h-4" />
+                                    </span>
+                                    <div>
+                                      <h4 className="font-heading font-black text-xs text-white flex items-center gap-1.5">
+                                        <span>Radiografía Completa del Coste Detrás del Producto</span>
+                                        <span className="px-2 py-0.2 rounded-full bg-emerald-500/20 text-emerald-300 text-[9.5px] font-bold">
+                                          Resumen Ejecutivo
+                                        </span>
+                                      </h4>
+                                      <p className="text-[10px] text-gray-400">
+                                        Desglose transparente y fácil de leer para entender cada centavo que compone este SKU
+                                      </p>
+                                    </div>
+                                  </div>
+
+                                  <div className="text-right">
+                                    <span className="text-[9.5px] text-gray-400 block uppercase">Inversión Total Aterrizada:</span>
+                                    <span className="font-mono text-base font-black text-emerald-300">
+                                      ${calculatedLandedCost.toFixed(2)} MXN
+                                    </span>
+                                  </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 sm:grid-cols-6 gap-2 text-[10px]">
+                                  <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
+                                    <span className="text-emerald-400 font-bold block uppercase text-[9px]">1. Material Base</span>
+                                    <span className="font-mono font-black text-sm text-white mt-0.5 block">${directShown.toFixed(2)}</span>
+                                    <span className="text-[9px] text-gray-400">Madera / PLA / Blanks</span>
+                                  </div>
+                                  <div className="p-2.5 rounded-xl bg-white/5 border border-purple-500/20">
+                                    <span className="text-purple-300 font-bold block uppercase text-[9px]">2. Acabados</span>
+                                    <span className="font-mono font-black text-sm text-purple-200 mt-0.5 block">${finishShown.toFixed(2)}</span>
+                                    <span className="text-[9px] text-gray-400">Tintes, Barniz &amp; Lija</span>
+                                  </div>
+                                  <div className="p-2.5 rounded-xl bg-white/5 border border-amber-500/20">
+                                    <span className="text-amber-300 font-bold block uppercase text-[9px]">3. Consumibles</span>
+                                    <span className="font-mono font-black text-sm text-amber-200 mt-0.5 block">${indirectShown.toFixed(2)}</span>
+                                    <span className="text-[9px] text-gray-400">Resistol, Sierra &amp; Estopa</span>
+                                  </div>
+                                  <div className="p-2.5 rounded-xl bg-white/5 border border-amber-400/20">
+                                    <span className="text-amber-400 font-bold block uppercase text-[9px]">4. Luz CFE</span>
+                                    <span className="font-mono font-black text-sm text-amber-300 mt-0.5 block">${energyCost.toFixed(2)}</span>
+                                    <span className="text-[9px] text-gray-400">Máquina digital</span>
+                                  </div>
+                                  <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
+                                    <span className="text-emerald-300 font-bold block uppercase text-[9px]">5. Mano de Obra</span>
+                                    <span className="font-mono font-black text-sm text-emerald-200 mt-0.5 block">${laborCost.toFixed(2)}</span>
+                                    <span className="text-[9px] text-gray-400">Armado y entintado</span>
+                                  </div>
+                                  <div className="p-2.5 rounded-xl bg-white/5 border border-blue-400/20">
+                                    <span className="text-blue-300 font-bold block uppercase text-[9px]">6. Embalaje / Envío</span>
+                                    <span className="font-mono font-black text-sm text-blue-200 mt-0.5 block">${(packagingCost + shippingCost).toFixed(2)}</span>
+                                    <span className="text-[9px] text-gray-400">Caja, burbuja y flete</span>
+                                  </div>
+                                </div>
+
+                                <div className="p-3 rounded-xl bg-white/5 border border-white/10 flex flex-wrap items-center justify-between gap-3 text-[11px]">
+                                  <div className="flex items-center gap-2">
+                                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                                    <span>
+                                      Vendiendo al PVP de <strong>${currentPrice} MXN</strong> obtienes una <strong>ganancia neta de ${profitAmount.toFixed(1)} MXN ({marginPercent}% margen)</strong> por cada unidad.
+                                    </span>
+                                  </div>
+                                  <button
+                                    type="button"
+                                    onClick={handleSyncRecipeToCostPrice}
+                                    className="px-3 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-stone-950 font-bold text-[10px] transition-colors cursor-pointer"
+                                  >
+                                    ⚡ Actualizar Costo de Producción
+                                  </button>
+                                </div>
+                              </div>
+                            );
+                          })()}
+                        </div>
+                      );
+                    })()}
 
                     {/* CONFIGURACIÓN EXCLUSIVA DE PAQUETE O COMBO PROMOCIONAL */}
                     {editorForm.isBundle && (

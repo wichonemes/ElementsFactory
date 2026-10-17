@@ -1426,9 +1426,20 @@ app.post('/api/admin/catalog-pdf/upload', requireAdmin, catalogUpload.single('fi
       : `${Math.round(req.file.size / 1024)} KB`;
 
     if (cloudDb.enabled) {
-      const stored = await storeFile(req.file.buffer, req.file.originalname, req.file.mimetype);
-      fileUrl = stored.url;
-      fileName = stored.filename || req.file.originalname;
+      try {
+        const stored = await storeFile(req.file.buffer, req.file.originalname, req.file.mimetype);
+        fileUrl = stored.url;
+        fileName = stored.filename || req.file.originalname;
+      } catch (storeErr) {
+        console.warn('Almacenamiento en la nube no disponible para PDF, usando almacenamiento local:', storeErr.message);
+        const ext = path.extname(req.file.originalname).toLowerCase() || '.pdf';
+        const cleanBase = path.basename(req.file.originalname, ext).replace(/[^a-zA-Z0-9_-]/g, '_');
+        const fallbackFilename = `${cleanBase}_${Date.now()}${ext}`;
+        const targetPath = path.join(downloadsDir, fallbackFilename);
+        fs.writeFileSync(targetPath, req.file.buffer);
+        fileUrl = `/downloads/${fallbackFilename}`;
+        fileName = req.file.originalname || fallbackFilename;
+      }
     } else {
       fileUrl = `/downloads/${req.file.filename}`;
       fileName = req.file.originalname || req.file.filename;
