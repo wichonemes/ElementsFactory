@@ -1166,6 +1166,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   const [recipeSimulateUnits, setRecipeSimulateUnits] = useState(1);
   const [recipeSimulationModal, setRecipeSimulationModal] = useState(null);
   const [recipeDeductLoading, setRecipeDeductLoading] = useState(false);
+  const [editorActiveWorkshopTech, setEditorActiveWorkshopTech] = useState('laser'); // 'laser' | '3d' | 'sublimation' | 'vinyl'
+  const [editorSpecialSuppliesAccordion, setEditorSpecialSuppliesAccordion] = useState(false);
+  const [editorSpecialSearch, setEditorSpecialSearch] = useState('');
 
   // Photo Studio Modal State (Estudio Fotográfico IA / 4 Fotos)
   const [isPhotoStudioOpen, setIsPhotoStudioOpen] = useState(false);
@@ -1503,6 +1506,8 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     setEditorColorsAccordion(false);
     setEditorFlashAccordion(false);
     setEditorRecipeAccordion(true);
+    setEditorActiveWorkshopTech('3d');
+    setEditorSpecialSuppliesAccordion(false);
     setEditorMessage({ text: '', type: '' });
     setIsEditorOpen(true);
   };
@@ -1516,6 +1521,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     setEditorSkuAccordion(false);
     setEditorColorsAccordion(false);
     setEditorFlashAccordion(false);
+    const prodTech = (prod.techniques && prod.techniques[0]) || (prod.skuBreakdown?.technique === 'LAS' || prod.code?.startsWith('L') ? 'laser' : '3d');
+    setEditorActiveWorkshopTech(['3d', 'laser', 'sublimation', 'vinyl'].includes(prodTech) ? prodTech : 'laser');
+    setEditorSpecialSuppliesAccordion(false);
     setNewIncludedItemInput('');
 
     const gal = prod.gallery && prod.gallery.length > 0 ? [...prod.gallery] : [
@@ -1839,6 +1847,220 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         wastePercentAverage
       }
     });
+  };
+
+  const handleToggleProductTechnique = (techId) => {
+    if (!editorForm) return;
+    const currentTechs = editorForm.techniques || [];
+    let updated = [];
+    const isCurrentlyActive = currentTechs.includes(techId) || (techId === 'laser' && currentTechs.some(t => t.startsWith('laser')));
+
+    if (isCurrentlyActive) {
+      if (currentTechs.length > 1) {
+        updated = currentTechs.filter(t => t !== techId && !(techId === 'laser' && t.startsWith('laser')));
+      } else {
+        updated = [];
+      }
+    } else {
+      updated = [...currentTechs, techId];
+    }
+
+    const techProfiles = {
+      laser: { watts: 450, mins: 15, laborMins: 10 },
+      '3d': { watts: 250, mins: 120, laborMins: 8 },
+      sublimation: { watts: 1800, mins: 5, laborMins: 6 },
+      vinyl: { watts: 50, mins: 12, laborMins: 12 }
+    };
+
+    const currentRecipe = editorForm.manufacturingRecipe || { items: [] };
+    let newWatts = currentRecipe.machinePowerWatts || 250;
+    let newMins = currentRecipe.manufacturingTimeMinutes || 30;
+    let newLaborMins = currentRecipe.laborTimeMinutes || 15;
+
+    if (!isCurrentlyActive && techProfiles[techId]) {
+      newWatts = techProfiles[techId].watts;
+      newMins = techProfiles[techId].mins;
+      newLaborMins = techProfiles[techId].laborMins;
+    }
+
+    const kwhRate = Number(currentRecipe.kwhCost) || 3.50;
+    const laborRate = Number(currentRecipe.laborRatePerHour) || 75;
+    const energyCost = Math.round(((newWatts / 1000) * (newMins / 60) * kwhRate) * 100) / 100;
+    const laborCost = Math.round(((newLaborMins / 60) * laborRate) * 100) / 100;
+
+    setEditorForm({
+      ...editorForm,
+      techniques: updated,
+      manufacturingRecipe: {
+        ...currentRecipe,
+        technique: updated[0] || techId,
+        machinePowerWatts: newWatts,
+        manufacturingTimeMinutes: newMins,
+        laborTimeMinutes: newLaborMins,
+        energyCost,
+        laborCost
+      }
+    });
+    setEditorActiveWorkshopTech(techId);
+  };
+
+  const handleAddDirectMaterialFromPreset = (matId, defaultNetQty, defaultWasteQty, defaultUnit, wasteType = 'kerf_cut') => {
+    if (!editorForm) return;
+    const mat = rawMaterialsList.find(m => m.id === matId) || rawMaterialsList.find(m => (m.name || '').toLowerCase().includes(matId.toLowerCase()));
+    const currentRecipe = editorForm.manufacturingRecipe || { items: [] };
+    const existingIndex = (currentRecipe.items || []).findIndex(it => it.materialId === matId || (mat && it.materialId === mat.id));
+
+    if (existingIndex >= 0) {
+      setEditorMessage({ text: `ℹ️ El insumo "${mat?.name || matId}" ya está en la receta. Puedes editar sus cantidades abajo.`, type: 'info' });
+      setTimeout(() => setEditorMessage({ text: '', type: '' }), 3000);
+      return;
+    }
+
+    const pkg = mat ? parsePackageInfo(mat) : { packageMeasurement: defaultUnit };
+    const unit = defaultUnit || pkg.packageMeasurement || 'g';
+    let unitCost = 0.5;
+    if (mat) {
+      const packageCost = Number(mat.costPerUnit) || 0;
+      const packageQty = Number(mat.packageQuantity) || 1000;
+      unitCost = packageQty > 0 ? (packageCost / packageQty) : packageCost;
+    }
+
+    const totalQty = defaultNetQty + defaultWasteQty;
+    const totalCost = Math.round(totalQty * unitCost * 100) / 100;
+
+    const newItem = {
+      id: `item-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+      materialId: mat ? mat.id : matId,
+      name: mat ? mat.name : matId,
+      category: mat?.category || editorActiveWorkshopTech,
+      supplyType: 'direct',
+      netQuantity: defaultNetQty,
+      wasteQuantity: defaultWasteQty,
+      wasteType,
+      totalQuantity: totalQty,
+      unit,
+      unitCost: Math.round(unitCost * 10000) / 10000,
+      totalCost
+    };
+
+    const updatedItems = [...(currentRecipe.items || []), newItem];
+    const totalMaterialCost = Math.round(updatedItems.reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
+    const totalWasteCost = Math.round(updatedItems.reduce((acc, it) => acc + ((Number(it.wasteQuantity) || 0) * (Number(it.unitCost) || 0)), 0) * 100) / 100;
+    const wastePercentAverage = totalMaterialCost > 0 ? Math.round((totalWasteCost / totalMaterialCost) * 1000) / 10 : 0;
+
+    setEditorForm({
+      ...editorForm,
+      manufacturingRecipe: {
+        ...currentRecipe,
+        items: updatedItems,
+        totalMaterialCost,
+        totalWasteCost,
+        wastePercentAverage
+      }
+    });
+
+    setEditorMessage({ text: `✓ Insumo "${newItem.name}" agregado como Directo a la receta.`, type: 'success' });
+    setTimeout(() => setEditorMessage({ text: '', type: '' }), 3000);
+  };
+
+  const handleAddIndirectPreset = (matId, defaultNetQty, defaultUnit, customName) => {
+    if (!editorForm) return;
+    const mat = rawMaterialsList.find(m => m.id === matId) || rawMaterialsList.find(m => (m.name || '').toLowerCase().includes(matId.toLowerCase()));
+    const currentRecipe = editorForm.manufacturingRecipe || { items: [] };
+
+    let unitCost = 1;
+    if (mat) {
+      const packageCost = Number(mat.costPerUnit) || 0;
+      const packageQty = Number(mat.packageQuantity) || 1;
+      unitCost = packageQty > 0 ? (packageCost / packageQty) : packageCost;
+    }
+
+    const totalQty = defaultNetQty;
+    const totalCost = Math.round(totalQty * unitCost * 100) / 100;
+
+    const newItem = {
+      id: `item-ind-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+      materialId: mat ? mat.id : matId,
+      name: mat ? mat.name : (customName || matId),
+      category: mat?.category || 'consumables',
+      supplyType: 'indirect',
+      netQuantity: defaultNetQty,
+      wasteQuantity: 0,
+      wasteType: 'none',
+      totalQuantity: totalQty,
+      unit: defaultUnit,
+      unitCost: Math.round(unitCost * 10000) / 10000,
+      totalCost
+    };
+
+    const updatedItems = [...(currentRecipe.items || []), newItem];
+    const totalMaterialCost = Math.round(updatedItems.reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
+    const totalWasteCost = Math.round(updatedItems.reduce((acc, it) => acc + ((Number(it.wasteQuantity) || 0) * (Number(it.unitCost) || 0)), 0) * 100) / 100;
+    const wastePercentAverage = totalMaterialCost > 0 ? Math.round((totalWasteCost / totalMaterialCost) * 1000) / 10 : 0;
+
+    setEditorForm({
+      ...editorForm,
+      manufacturingRecipe: {
+        ...currentRecipe,
+        items: updatedItems,
+        totalMaterialCost,
+        totalWasteCost,
+        wastePercentAverage
+      }
+    });
+
+    setEditorMessage({ text: `✓ Consumible "${newItem.name}" agregado a Indirectos.`, type: 'success' });
+    setTimeout(() => setEditorMessage({ text: '', type: '' }), 3000);
+  };
+
+  const handleAddFinishPreset = (matId, defaultNetQty, defaultUnit, customName) => {
+    if (!editorForm) return;
+    const mat = rawMaterialsList.find(m => m.id === matId) || rawMaterialsList.find(m => (m.name || '').toLowerCase().includes(matId.toLowerCase()));
+    const currentRecipe = editorForm.manufacturingRecipe || { items: [] };
+
+    let unitCost = 0.40;
+    if (mat) {
+      const packageCost = Number(mat.costPerUnit) || 0;
+      const packageQty = Number(mat.packageQuantity) || 1;
+      unitCost = packageQty > 0 ? (packageCost / packageQty) : packageCost;
+    }
+
+    const totalQty = defaultNetQty;
+    const totalCost = Math.round(totalQty * unitCost * 100) / 100;
+
+    const newItem = {
+      id: `item-fin-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+      materialId: mat ? mat.id : matId,
+      name: mat ? mat.name : (customName || matId),
+      category: 'finishing',
+      supplyType: 'finish',
+      netQuantity: defaultNetQty,
+      wasteQuantity: 0,
+      wasteType: 'none',
+      totalQuantity: totalQty,
+      unit: defaultUnit,
+      unitCost: Math.round(unitCost * 10000) / 10000,
+      totalCost
+    };
+
+    const updatedItems = [...(currentRecipe.items || []), newItem];
+    const totalMaterialCost = Math.round(updatedItems.reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
+    const totalWasteCost = Math.round(updatedItems.reduce((acc, it) => acc + ((Number(it.wasteQuantity) || 0) * (Number(it.unitCost) || 0)), 0) * 100) / 100;
+    const wastePercentAverage = totalMaterialCost > 0 ? Math.round((totalWasteCost / totalMaterialCost) * 1000) / 10 : 0;
+
+    setEditorForm({
+      ...editorForm,
+      manufacturingRecipe: {
+        ...currentRecipe,
+        items: updatedItems,
+        totalMaterialCost,
+        totalWasteCost,
+        wastePercentAverage
+      }
+    });
+
+    setEditorMessage({ text: `✓ Acabado "${newItem.name}" agregado a Terminaciones de taller.`, type: 'success' });
+    setTimeout(() => setEditorMessage({ text: '', type: '' }), 3000);
   };
 
   const handleApplyRecipePreset = (presetType, append = false) => {
@@ -7016,6 +7238,30 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       )}
                     </div>
 
+                    {/* NAVEGACIÓN UX INFERIOR PESTAÑA 1 */}
+                    <div className="pt-4 border-t border-stone-200 flex flex-wrap items-center justify-between gap-2.5">
+                      <span className="text-[11px] text-gray-500">
+                        Paso 1 de 4: Información comercial y fotos de catálogo
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setEditorActiveTab('pricing')}
+                          className="px-3 py-2 rounded-xl border border-stone-300 bg-white hover:bg-stone-100 text-gray-700 font-bold text-xs transition-colors cursor-pointer"
+                        >
+                          💰 Ir a Precios &amp; Margen
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setEditorActiveTab('taller')}
+                          className="px-4 py-2 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+                        >
+                          <span>Continuar a: 2. Taller &amp; Insumos 🪵</span>
+                          <span>➡️</span>
+                        </button>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               )}
@@ -7082,117 +7328,569 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </div>
                     </div>
 
-                    {/* Presets Rápidos Combinables organizados en 3 filas */}
-                    <div className="p-3.5 bg-white rounded-2xl border border-stone-200 space-y-3 shadow-xs">
-                      <div className="flex flex-wrap items-center justify-between gap-1 text-[10px] border-b border-stone-100 pb-2">
-                        <span className="font-bold text-gray-800 uppercase flex items-center gap-1.5">
-                          <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-                          <span>Plantillas Rápidas de Manufactura, Acabados y Consumibles:</span>
-                        </span>
-                        <span className="text-gray-400">
-                          Clic en nombre para cargar o en «+ Añadir» para combinar técnicas
+                    {/* MODULAR WORKSHOP MACHINERY AREAS & CONTEXTUAL MENUS */}
+                    <div className="p-4 bg-white rounded-2xl border-2 border-[#2D4F3E]/30 space-y-4 shadow-xs">
+                      
+                      {/* HEADER: MAQUINARIAS DE TALLER */}
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-stone-100 pb-2.5">
+                        <div className="flex items-center gap-2">
+                          <span className="p-1.5 rounded-xl bg-[#2D4F3E] text-white">
+                            <Sparkles className="w-4 h-4" />
+                          </span>
+                          <div>
+                            <h4 className="font-heading font-black text-xs text-gray-900 flex items-center gap-2">
+                              <span>Maquinaria &amp; Áreas de Taller Activas</span>
+                              <span className="px-2 py-0.2 rounded-full bg-emerald-100 text-emerald-900 text-[10px] font-bold border border-emerald-300">
+                                {(editorForm.techniques || []).length} área(s) activa(s)
+                              </span>
+                            </h4>
+                            <p className="text-[10.5px] text-gray-500">
+                              Activa o desactiva con el interruptor las máquinas requeridas para esta pieza. Haz clic en la tarjeta para desplegar su menú técnico especializado.
+                            </p>
+                          </div>
+                        </div>
+
+                        <span className="text-[10px] font-bold text-gray-400">
+                          Solo maquinaria física en taller (DTF y confección son maquila externa)
                         </span>
                       </div>
 
-                      {/* FILA 1: TÉCNICAS DE MANUFACTURA E IMPRESIÓN REALES */}
-                      <div className="space-y-1">
-                        <span className="text-[9.5px] font-bold text-gray-500 uppercase tracking-wider block">
-                          1. Técnicas de Manufactura e Impresión Digital (Ajustan CFE y tiempos de máquina):
-                        </span>
-                        <div className="flex flex-wrap items-center gap-1.5">
-                          {[
-                            { id: '3d', label: 'Impresión 3D FDM', icon: '🖨️', desc: 'PLA + Soportes + 3DLac (250W, 90 min)' },
-                            { id: '3d_resina', label: 'Resina UV 4K', icon: '🧪', desc: 'Resina fotosensible + Alcohol Isopropílico (60W, 45 min)' },
-                            { id: 'laser_madera', label: 'Corte Láser Madera', icon: '🔥', desc: 'Pino / Caobilla + Desgaste de Tubo Láser (450W, 8 min)' },
-                            { id: 'laser_mdf', label: 'MDF Láser Calibrado', icon: '⚡', desc: 'MDF 3mm + Desgaste Tubo Láser (450W, 10 min)' },
-                            { id: 'sublimation', label: 'Sublimación Cerámica', icon: '☕', desc: 'Taza + Cinta Kapton + Papel Sublimación (1800W, 5 min)' },
-                            { id: 'dtf', label: 'DTF Textil', icon: '👕', desc: 'Film PET + Tintas DTF + Poliamida (1800W, 4 min)' },
-                            { id: 'carpinteria_cnc', label: 'Carpintería CNC', icon: '🪵', desc: 'Madera Maciza + Fresa Router (800W, 25 min)' },
-                            { id: 'impresion_laser', label: 'Imp. Digital Láser', icon: '📄', desc: 'Papel Couché / Opalina + Tóner (350W, 3 min)' },
-                            { id: 'vinyl', label: 'Vinil Cameo', icon: '🏷️', desc: 'Vinil de Corte + Cinta Transfer (45W, 6 min)' },
-                          ].map(preset => (
+                      {/* LAS 4 TARJETAS DE ÁREAS DE MAQUINARIA CON INTERRUPTOR */}
+                      <div className="grid grid-cols-1 sm:grid-cols-4 gap-2.5">
+                        {[
+                          {
+                            id: 'laser',
+                            name: 'Corte & Grabado Láser',
+                            icon: '🔥',
+                            power: '450W / CO2',
+                            desc: 'Maderas, MDF, Acrílico & Tintes',
+                            isActive: (editorForm.techniques || []).some(t => t === 'laser' || t.startsWith('laser'))
+                          },
+                          {
+                            id: '3d',
+                            name: 'Impresión 3D FDM',
+                            icon: '🖨️',
+                            power: '250W / 210°C',
+                            desc: 'Filamentos PLA/TPU & Soportes',
+                            isActive: (editorForm.techniques || []).includes('3d') || (editorForm.techniques || []).includes('3d_resina')
+                          },
+                          {
+                            id: 'sublimation',
+                            name: 'Sublimación Rígidos',
+                            icon: '☕',
+                            power: '1800W / Plancha',
+                            desc: 'Tazas Blancas, CMYK & Kapton',
+                            isActive: (editorForm.techniques || []).includes('sublimation')
+                          },
+                          {
+                            id: 'vinyl',
+                            name: 'Corte de Vinil Cameo',
+                            icon: '🏷️',
+                            power: '50W / Plotter',
+                            desc: 'Viniles de Corte & Transfer',
+                            isActive: (editorForm.techniques || []).includes('vinyl')
+                          }
+                        ].map(area => {
+                          const isInspecting = editorActiveWorkshopTech === area.id;
+                          return (
                             <div
-                              key={preset.id}
-                              className="inline-flex rounded-lg border border-stone-200 bg-stone-50 overflow-hidden shadow-2xs text-[10px]"
+                              key={area.id}
+                              className={`p-3 rounded-xl border-2 transition-all relative flex flex-col justify-between gap-2.5 cursor-pointer ${
+                                isInspecting
+                                  ? 'border-[#2D4F3E] bg-emerald-50/50 shadow-xs'
+                                  : area.isActive
+                                  ? 'border-emerald-300 bg-white hover:border-emerald-400'
+                                  : 'border-stone-200 bg-stone-50/70 opacity-80 hover:opacity-100 hover:border-stone-300'
+                              }`}
+                              onClick={() => setEditorActiveWorkshopTech(area.id)}
                             >
-                              <button
-                                type="button"
-                                onClick={() => handleApplyRecipePreset(preset.id, false)}
-                                className="px-2 py-1 font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-900 border-r border-stone-200 transition-colors cursor-pointer"
-                                title={`Cargar ${preset.desc}`}
-                              >
-                                {preset.icon} {preset.label}
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => handleApplyRecipePreset(preset.id, true)}
-                                className="px-1.5 py-1 font-bold text-emerald-700 hover:bg-emerald-600 hover:text-white transition-colors cursor-pointer"
-                                title={`Añadir ${preset.label} sin borrar la receta actual`}
-                              >
-                                + Añadir
-                              </button>
+                              <div className="flex items-start justify-between gap-1.5">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xl shrink-0">{area.icon}</span>
+                                  <div>
+                                    <div className="font-heading font-black text-xs text-gray-900 leading-tight">
+                                      {area.name}
+                                    </div>
+                                    <div className="text-[10px] text-gray-500 font-mono mt-0.5">
+                                      {area.power}
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Switch Toggle Activo/Inactivo */}
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleToggleProductTechnique(area.id);
+                                  }}
+                                  className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                                    area.isActive ? 'bg-[#2D4F3E]' : 'bg-stone-300'
+                                  }`}
+                                  title={area.isActive ? `Desactivar ${area.name}` : `Activar ${area.name}`}
+                                >
+                                  <span
+                                    className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out ${
+                                      area.isActive ? 'translate-x-4' : 'translate-x-0'
+                                    }`}
+                                  />
+                                </button>
+                              </div>
+
+                              <div className="flex items-center justify-between text-[10px] pt-1 border-t border-stone-200/60">
+                                <span className="text-gray-500 truncate">{area.desc}</span>
+                                <span className={`px-1.5 py-0.2 rounded font-bold uppercase text-[9px] ${
+                                  area.isActive ? 'bg-emerald-100 text-emerald-900' : 'bg-stone-200 text-stone-600'
+                                }`}>
+                                  {area.isActive ? 'Activa' : 'Inactiva'}
+                                </span>
+                              </div>
+
+                              {isInspecting && (
+                                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-l-2 border-t-2 border-[#2D4F3E] rotate-45" />
+                              )}
                             </div>
-                          ))}
-                        </div>
+                          );
+                        })}
                       </div>
 
-                      {/* FILA 2: ACABADOS & TERMINACIONES RÁPIDAS */}
-                      <div className="space-y-1 pt-1 border-t border-stone-100">
-                        <span className="text-[9.5px] font-bold text-purple-700 uppercase tracking-wider block">
-                          2. Acabados &amp; Tintes Artesanales (Tonos de barniz y lijas finas):
-                        </span>
-                        <div className="flex flex-wrap items-center gap-1.5">
-                          {[
-                            { id: 'finish_nogal', label: 'Tinte Nogal Americano', icon: '🪵', desc: 'Tinte nogal + lija grano 220 + estopa' },
-                            { id: 'finish_verde', label: 'Tinte Verde Olivo', icon: '🌲', desc: 'Tinte verde bosque + lija 220' },
-                            { id: 'finish_azul', label: 'Tinte Azul Colonial', icon: '🌊', desc: 'Tinte azul cálido + sellador' },
-                            { id: 'finish_caoba', label: 'Tinte Caoba Clásico', icon: '🍷', desc: 'Tinte caoba rojizo elegante' },
-                            { id: 'finish_transparente', label: 'Laca Transparente Satinada', icon: '✨', desc: 'Barniz transparente protector' },
-                          ].map(preset => (
-                            <div
-                              key={preset.id}
-                              className="inline-flex rounded-lg border border-purple-200 bg-purple-50/50 overflow-hidden shadow-2xs text-[10px]"
-                            >
+                      {/* ======================================================== */}
+                      {/* PANEL TÉCNICO CONTEXTUAL SEGÚN EL ÁREA SELECCIONADA       */}
+                      {/* ======================================================== */}
+
+                      {/* 1. MENÚ DEDICADO CORTE & GRABADO LÁSER */}
+                      {editorActiveWorkshopTech === 'laser' && (
+                        <div className="p-3.5 rounded-2xl bg-gradient-to-br from-amber-50/40 via-white to-stone-50 border-2 border-amber-600/30 space-y-3.5 shadow-2xs animate-fadeIn">
+                          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-amber-200/60 pb-2">
+                            <div className="flex items-center gap-2">
+                              <span className="p-1 rounded-lg bg-amber-500 text-white font-bold text-xs">🔥</span>
+                              <div>
+                                <h5 className="font-heading font-black text-xs text-gray-950">
+                                  Menú Especializado: Corte &amp; Grabado Láser CO2 (450W)
+                                </h5>
+                                <span className="text-[10px] text-gray-500">
+                                  Maderas, tintes artesanales y consumibles de ensamble con Resistol 850
+                                </span>
+                              </div>
+                            </div>
+                            <span className="text-[10px] font-bold text-amber-900 bg-amber-100/80 px-2 py-0.5 rounded-lg border border-amber-300">
+                              ⚡ Kerf promedio: 0.15mm | Tubo Láser CO2
+                            </span>
+                          </div>
+
+                          {/* A: MATERIA PRIMA DIRECTA (MADERA / MDF / ACRÍLICO) */}
+                          <div className="space-y-1.5">
+                            <span className="text-[10px] font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
+                              <span>🪵 1. Materia Prima Base Tangible (Placas cortadas a medida):</span>
+                              <span className="text-gray-400 font-normal">Clic para agregar a Insumos Directos</span>
+                            </span>
+                            <div className="flex flex-wrap gap-1.5">
+                              {[
+                                { id: 'mat-madera-triplay-3mm', label: 'Madera Triplay Pino 3mm (60x40)', icon: '🪵', net: 380, waste: 60, unit: 'cm²', wasteType: 'cut_remnants' },
+                                { id: 'mat-mdf-3mm', label: 'Placas MDF Calibrado 3mm (60x40)', icon: '⚡', net: 380, waste: 60, unit: 'cm²', wasteType: 'cut_remnants' },
+                                { id: 'mat-madera-pino-solido-18mm', label: 'Madera Maciza Pino Primera 18mm', icon: '🌲', net: 450, waste: 50, unit: 'cm²', wasteType: 'cut_remnants' },
+                                { id: 'mat-acrilico-cristal-3mm', label: 'Acrílico Cristalino Láser 3mm', icon: '💎', net: 300, waste: 40, unit: 'cm²', wasteType: 'cut_remnants' },
+                              ].map(mat => (
+                                <button
+                                  key={mat.id}
+                                  type="button"
+                                  onClick={() => handleAddDirectMaterialFromPreset(mat.id, mat.net, mat.waste, mat.unit, mat.wasteType)}
+                                  className="px-2.5 py-1.5 rounded-xl border border-stone-300 bg-white hover:bg-emerald-50 hover:border-emerald-400 font-semibold text-xs text-gray-800 transition-all cursor-pointer shadow-2xs flex items-center gap-1.5"
+                                  title={`Añadir ${mat.label}`}
+                                >
+                                  <span>{mat.icon}</span>
+                                  <span>{mat.label}</span>
+                                  <span className="text-[9.5px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded">+ Añadir</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* B: TINTAS, COLORES Y ACABADOS DE MADERA */}
+                          <div className="space-y-1.5 pt-2 border-t border-amber-100">
+                            <span className="text-[10px] font-bold text-purple-800 uppercase tracking-wider flex items-center gap-1.5">
+                              <span>✨ 2. Colores, Tintes &amp; Barnices de Madera (Acabados):</span>
+                              <span className="text-gray-400 font-normal">Cargan tinte de color + lija 220</span>
+                            </span>
+                            <div className="flex flex-wrap gap-1.5">
+                              {[
+                                { id: 'finish_nogal', label: 'Tinte Nogal Americano', icon: '🪵', desc: 'Nogal clásico cálido' },
+                                { id: 'finish_verde', label: 'Tinte Verde Olivo Rústico', icon: '🌲', desc: 'Verde bosque botánico' },
+                                { id: 'finish_azul', label: 'Tinte Azul Colonial Vintage', icon: '🌊', desc: 'Azul profundo elegante' },
+                                { id: 'finish_caoba', label: 'Tinte Caoba Clásico Rojizo', icon: '🍷', desc: 'Caoba tradicional' },
+                                { id: 'finish_transparente', label: 'Laca Transparente Satinada', icon: '✨', desc: 'Protector incoloro satinado' },
+                              ].map(fin => (
+                                <button
+                                  key={fin.id}
+                                  type="button"
+                                  onClick={() => handleApplyRecipePreset(fin.id, true)}
+                                  className="px-2.5 py-1.5 rounded-xl border border-purple-200 bg-purple-50/50 hover:bg-purple-100 font-semibold text-xs text-purple-950 transition-all cursor-pointer shadow-2xs flex items-center gap-1.5"
+                                  title={`Añadir ${fin.label}`}
+                                >
+                                  <span>{fin.icon}</span>
+                                  <span>{fin.label}</span>
+                                  <span className="text-[9.5px] font-bold text-purple-800 bg-purple-200/60 px-1.5 py-0.2 rounded">+ Acabado</span>
+                                </button>
+                              ))}
                               <button
                                 type="button"
-                                onClick={() => handleApplyRecipePreset(preset.id, true)}
-                                className="px-2 py-1 font-semibold text-purple-900 hover:bg-purple-100 transition-colors cursor-pointer"
-                                title={`Añadir acabado ${preset.label} (${preset.desc})`}
+                                onClick={() => handleAddFinishPreset('mat-sellador-madera', 8, 'ml', 'Sellador Tapaporos Madera')}
+                                className="px-2.5 py-1.5 rounded-xl border border-purple-200 bg-purple-50/50 hover:bg-purple-100 font-semibold text-xs text-purple-950 transition-all cursor-pointer shadow-2xs flex items-center gap-1.5"
+                                title="Añadir Sellador Tapaporos"
                               >
-                                {preset.icon} {preset.label}
+                                <span>🛡️</span>
+                                <span>Sellador Tapaporos (8 ml)</span>
+                                <span className="text-[9.5px] font-bold text-purple-800 bg-purple-200/60 px-1.5 py-0.2 rounded">+ Acabado</span>
                               </button>
                             </div>
-                          ))}
+                          </div>
+
+                          {/* C: INSUMOS INDIRECTOS & CONSUMIBLES DE CORTE LÁSER */}
+                          <div className="space-y-1.5 pt-2 border-t border-amber-100">
+                            <span className="text-[10px] font-bold text-amber-900 uppercase tracking-wider flex items-center gap-1.5">
+                              <span>⚙️ 3. Insumos Indirectos &amp; Desgastes de Láser:</span>
+                              <span className="text-gray-400 font-normal">Gotas de ensamble, desgaste CO2 y cintas</span>
+                            </span>
+                            <div className="flex flex-wrap gap-1.5">
+                              {[
+                                { id: 'mat-pegamento-resistol-850', label: 'Resistol 850 (10 gotas ensamble)', icon: '💧', qty: 10, unit: 'gotas', name: 'Resistol 850 Extra Fuerte Madera' },
+                                { id: 'mat-desgaste-corte-sierra-laser', label: 'Desgaste Tubo Láser CO2 (1 corte)', icon: '⚡', qty: 1, unit: 'corte', name: 'Desgaste Tubo Láser CO2' },
+                                { id: 'mat-lija-madera-fina-220', label: 'Lija 220 Cantos & Estopa', icon: '🧽', qty: 0.1, unit: 'pliego', name: 'Lija Fina 220 y Paño de Pulido' },
+                                { id: 'mat-cinta-masking', label: 'Cinta Masking Anti-Ahumado', icon: '🏷️', qty: 1, unit: 'rollo', name: 'Cinta Masking Protección Láser' },
+                                { id: 'mat-estopa-limpieza-taller', label: 'Estopa Limpieza con Solvente', icon: '🧼', qty: 1, unit: 'paño', name: 'Estopa de Algodón Fino' },
+                              ].map(ind => (
+                                <button
+                                  key={ind.id}
+                                  type="button"
+                                  onClick={() => handleAddIndirectPreset(ind.id, ind.qty, ind.unit, ind.name)}
+                                  className="px-2.5 py-1.5 rounded-xl border border-amber-200 bg-amber-50/50 hover:bg-amber-100 font-semibold text-xs text-amber-950 transition-all cursor-pointer shadow-2xs flex items-center gap-1.5"
+                                  title={`Añadir ${ind.label}`}
+                                >
+                                  <span>{ind.icon}</span>
+                                  <span>{ind.label}</span>
+                                  <span className="text-[9.5px] font-bold text-amber-800 bg-amber-200/60 px-1.5 py-0.2 rounded">+ Consumible</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
                         </div>
+                      )}
+
+                      {/* 2. MENÚ DEDICADO IMPRESIÓN 3D */}
+                      {editorActiveWorkshopTech === '3d' && (
+                        <div className="p-3.5 rounded-2xl bg-gradient-to-br from-emerald-50/40 via-white to-stone-50 border-2 border-emerald-600/30 space-y-3.5 shadow-2xs animate-fadeIn">
+                          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-emerald-200/60 pb-2">
+                            <div className="flex items-center gap-2">
+                              <span className="p-1 rounded-lg bg-emerald-600 text-white font-bold text-xs">🖨️</span>
+                              <div>
+                                <h5 className="font-heading font-black text-xs text-gray-950">
+                                  Menú Especializado: Impresión 3D FDM (250W / Boquilla 0.4mm)
+                                </h5>
+                                <span className="text-[10px] text-gray-500">
+                                  Filamentos por color y consumibles exclusivos de adhesión (sin barnices ni tintes de madera)
+                                </span>
+                              </div>
+                            </div>
+                            <span className="text-[10px] font-bold text-emerald-900 bg-emerald-100/80 px-2 py-0.5 rounded-lg border border-emerald-300">
+                              🌡️ Boquilla: 210°C | Cama Caliente: 60°C
+                            </span>
+                          </div>
+
+                          {/* A: FILAMENTOS POR COLOR (DIRECTOS) */}
+                          <div className="space-y-1.5">
+                            <span className="text-[10px] font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
+                              <span>🧵 1. Filamento Directo por Color (48g pieza + 16g purga/soporte):</span>
+                              <span className="text-gray-400 font-normal">Clic para agregar a Insumos Directos</span>
+                            </span>
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                              {[
+                                { id: 'mat-pla-olivo', label: 'PLA Verde Olivo Mate', dot: 'bg-emerald-700', net: 48, waste: 16 },
+                                { id: 'mat-pla-blanco', label: 'PLA Blanco Marfil', dot: 'bg-stone-200 border border-stone-400', net: 48, waste: 16 },
+                                { id: 'mat-pla-negro', label: 'PLA Negro Grafito', dot: 'bg-stone-900', net: 48, waste: 16 },
+                                { id: 'mat-pla-terracota', label: 'PLA Terracota / Barro', dot: 'bg-amber-800', net: 48, waste: 16 },
+                                { id: 'mat-pla-mostaza', label: 'PLA Mostaza Cálido', dot: 'bg-amber-400', net: 48, waste: 16 },
+                                { id: 'mat-pla-woodfill', label: 'PLA Woodfill Madera', dot: 'bg-amber-700', net: 48, waste: 16 },
+                                { id: 'mat-tpu-negro', label: 'TPU Flexible Negro', dot: 'bg-stone-800', net: 35, waste: 10 },
+                                { id: 'mat-petg-translucido', label: 'PETG Translúcido', dot: 'bg-cyan-200 border border-cyan-400', net: 40, waste: 10 },
+                              ].map(fil => (
+                                <button
+                                  key={fil.id}
+                                  type="button"
+                                  onClick={() => handleAddDirectMaterialFromPreset(fil.id, fil.net, fil.waste, 'g', 'supports_purge')}
+                                  className="p-2 rounded-xl border border-stone-200 bg-white hover:bg-emerald-50 hover:border-emerald-400 text-left transition-all cursor-pointer shadow-2xs flex items-center justify-between gap-1.5"
+                                  title={`Añadir bobina ${fil.label}`}
+                                >
+                                  <div className="flex items-center gap-2 min-w-0">
+                                    <span className={`w-3.5 h-3.5 rounded-full shrink-0 ${fil.dot}`} />
+                                    <span className="font-semibold text-xs text-gray-800 truncate">{fil.label}</span>
+                                  </div>
+                                  <span className="text-[9px] font-bold text-emerald-800 bg-emerald-100 px-1 py-0.2 rounded shrink-0">+ {fil.net}g</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* B: CONSUMIBLES EXCLUSIVOS DE 3D */}
+                          <div className="space-y-1.5 pt-2 border-t border-emerald-100">
+                            <span className="text-[10px] font-bold text-amber-900 uppercase tracking-wider flex items-center gap-1.5">
+                              <span>⚙️ 2. Consumibles Exclusivos de Taller 3D (Solo insumos de cama y boquilla):</span>
+                              <span className="text-gray-400 font-normal">Cero tintes o barnices ajenos</span>
+                            </span>
+                            <div className="flex flex-wrap gap-1.5">
+                              {[
+                                { id: 'mat-spray-3dlac', label: 'Spray Fijador 3DLac (4 ml)', icon: '💨', qty: 4, unit: 'ml', name: 'Spray Fijador de Cama 3DLac' },
+                                { id: 'mat-alcohol-isopropilico', label: 'Alcohol Isopropílico 99% (15 ml)', icon: '🧪', qty: 15, unit: 'ml', name: 'Alcohol Isopropílico Lavado Cama' },
+                                { id: 'mat-nozzle-laton-04', label: 'Desgaste Boquilla / Nozzle 0.4mm', icon: '🔩', qty: 1, unit: 'ciclo', name: 'Desgaste Nozzle Latón 0.4mm' },
+                              ].map(con => (
+                                <button
+                                  key={con.id}
+                                  type="button"
+                                  onClick={() => handleAddIndirectPreset(con.id, con.qty, con.unit, con.name)}
+                                  className="px-2.5 py-1.5 rounded-xl border border-amber-200 bg-amber-50/50 hover:bg-amber-100 font-semibold text-xs text-amber-950 transition-all cursor-pointer shadow-2xs flex items-center gap-1.5"
+                                  title={`Añadir ${con.label}`}
+                                >
+                                  <span>{con.icon}</span>
+                                  <span>{con.label}</span>
+                                  <span className="text-[9.5px] font-bold text-amber-800 bg-amber-200/60 px-1.5 py-0.2 rounded">+ Consumible</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* 3. MENÚ DEDICADO SUBLIMACIÓN */}
+                      {editorActiveWorkshopTech === 'sublimation' && (
+                        <div className="p-3.5 rounded-2xl bg-gradient-to-br from-blue-50/40 via-white to-stone-50 border-2 border-blue-600/30 space-y-3.5 shadow-2xs animate-fadeIn">
+                          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-blue-200/60 pb-2">
+                            <div className="flex items-center gap-2">
+                              <span className="p-1 rounded-lg bg-blue-600 text-white font-bold text-xs">☕</span>
+                              <div>
+                                <h5 className="font-heading font-black text-xs text-gray-950">
+                                  Menú Especializado: Sublimación Térmica en Cerámica &amp; Rígidos
+                                </h5>
+                                <span className="text-[10px] text-gray-500">
+                                  Tazas grado A+, tintas coreanas CMYK y cinta térmica Kapton dorada
+                                </span>
+                              </div>
+                            </div>
+                            <span className="text-[10px] font-bold text-blue-900 bg-blue-100/80 px-2 py-0.5 rounded-lg border border-blue-300">
+                              🌡️ Prensa Térmica: 1800W / 200°C x 180s
+                            </span>
+                          </div>
+
+                          {/* INSUMOS DIRECTOS SUBLIMACIÓN */}
+                          <div className="space-y-1.5">
+                            <span className="text-[10px] font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
+                              <span>☕ 1. Insumos Directos de Sublimación (Piezas y tintas):</span>
+                            </span>
+                            <div className="flex flex-wrap gap-1.5">
+                              {[
+                                { id: 'mat-tazas-blancas-11oz', label: 'Taza Cerámica Blanca 11oz Grado A+', icon: '☕', net: 1, waste: 0, unit: 'pza', wasteType: 'none' },
+                                { id: 'mat-tazas-magicas-11oz', label: 'Taza Mágica Térmica Negra 11oz', icon: '🪄', net: 1, waste: 0, unit: 'pza', wasteType: 'none' },
+                                { id: 'mat-papel-sublimacion', label: 'Papel Sublimación Secado Rápido A4', icon: '📄', net: 1, waste: 0.1, unit: 'hoja', wasteType: 'trimming' },
+                                { id: 'mat-tintas-sublimacion-cmyk', label: 'Tintas de Sublimación CMYK (1.2 ml)', icon: '🎨', net: 1, waste: 0.2, unit: 'ml', wasteType: 'printer_purge' },
+                              ].map(sub => (
+                                <button
+                                  key={sub.id}
+                                  type="button"
+                                  onClick={() => handleAddDirectMaterialFromPreset(sub.id, sub.net, sub.waste, sub.unit, sub.wasteType)}
+                                  className="px-2.5 py-1.5 rounded-xl border border-stone-300 bg-white hover:bg-blue-50 hover:border-blue-400 font-semibold text-xs text-gray-800 transition-all cursor-pointer shadow-2xs flex items-center gap-1.5"
+                                  title={`Añadir ${sub.label}`}
+                                >
+                                  <span>{sub.icon}</span>
+                                  <span>{sub.label}</span>
+                                  <span className="text-[9.5px] font-bold text-blue-800 bg-blue-100 px-1.5 py-0.2 rounded">+ Añadir</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* CONSUMIBLES INDIRECTOS SUBLIMACIÓN */}
+                          <div className="space-y-1.5 pt-2 border-t border-blue-100">
+                            <span className="text-[10px] font-bold text-amber-900 uppercase tracking-wider flex items-center gap-1.5">
+                              <span>⚙️ 2. Consumibles Indirectos:</span>
+                            </span>
+                            <div className="flex flex-wrap gap-1.5">
+                              <button
+                                type="button"
+                                onClick={() => handleAddIndirectPreset('mat-cinta-termica-kapton', 25, 'cm', 'Cinta Térmica Kapton 10mm')}
+                                className="px-2.5 py-1.5 rounded-xl border border-amber-200 bg-amber-50/50 hover:bg-amber-100 font-semibold text-xs text-amber-950 transition-all cursor-pointer shadow-2xs flex items-center gap-1.5"
+                              >
+                                <span>🟡</span>
+                                <span>Cinta Térmica Kapton (25 cm)</span>
+                                <span className="text-[9.5px] font-bold text-amber-800 bg-amber-200/60 px-1.5 py-0.2 rounded">+ Consumible</span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* 4. MENÚ DEDICADO CORTE VINIL */}
+                      {editorActiveWorkshopTech === 'vinyl' && (
+                        <div className="p-3.5 rounded-2xl bg-gradient-to-br from-purple-50/40 via-white to-stone-50 border-2 border-purple-600/30 space-y-3.5 shadow-2xs animate-fadeIn">
+                          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-purple-200/60 pb-2">
+                            <div className="flex items-center gap-2">
+                              <span className="p-1 rounded-lg bg-purple-600 text-white font-bold text-xs">🏷️</span>
+                              <div>
+                                <h5 className="font-heading font-black text-xs text-gray-950">
+                                  Menú Especializado: Plotter Corte Vinil Cameo / Silhouette (50W)
+                                </h5>
+                                <span className="text-[10px] text-gray-500">
+                                  Vinil adhesivo de rotulación, papel transfer con cuadrícula y consumibles de navaja
+                                </span>
+                              </div>
+                            </div>
+                            <span className="text-[10px] font-bold text-purple-900 bg-purple-100/80 px-2 py-0.5 rounded-lg border border-purple-300">
+                              ✂️ Presión: 14 | Navaja AutoBlade
+                            </span>
+                          </div>
+
+                          {/* INSUMOS DIRECTOS VINIL */}
+                          <div className="space-y-1.5">
+                            <span className="text-[10px] font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
+                              <span>🏷️ 1. Insumos Directos (Viniles de corte):</span>
+                            </span>
+                            <div className="flex flex-wrap gap-1.5">
+                              {[
+                                { id: 'mat-vinil-negro', label: 'Vinil Adhesivo Negro Mate (30 cm)', icon: '⚫', net: 30, waste: 5, unit: 'cm', wasteType: 'weeding_scrap' },
+                                { id: 'mat-vinil-blanco', label: 'Vinil Adhesivo Blanco Brillante (30 cm)', icon: '⚪', net: 30, waste: 5, unit: 'cm', wasteType: 'weeding_scrap' },
+                                { id: 'mat-vinil-dorado', label: 'Vinil Adhesivo Oro Espejo (30 cm)', icon: '✨', net: 30, waste: 5, unit: 'cm', wasteType: 'weeding_scrap' },
+                                { id: 'mat-papel-transfer', label: 'Papel Transfer Cuadriculado (28 cm)', icon: '📐', net: 28, waste: 4, unit: 'cm', wasteType: 'trimming' },
+                              ].map(vin => (
+                                <button
+                                  key={vin.id}
+                                  type="button"
+                                  onClick={() => handleAddDirectMaterialFromPreset(vin.id, vin.net, vin.waste, vin.unit, vin.wasteType)}
+                                  className="px-2.5 py-1.5 rounded-xl border border-stone-300 bg-white hover:bg-purple-50 hover:border-purple-400 font-semibold text-xs text-gray-800 transition-all cursor-pointer shadow-2xs flex items-center gap-1.5"
+                                  title={`Añadir ${vin.label}`}
+                                >
+                                  <span>{vin.icon}</span>
+                                  <span>{vin.label}</span>
+                                  <span className="text-[9.5px] font-bold text-purple-800 bg-purple-100 px-1.5 py-0.2 rounded">+ Añadir</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* CONSUMIBLES INDIRECTOS VINIL */}
+                          <div className="space-y-1.5 pt-2 border-t border-purple-100">
+                            <span className="text-[10px] font-bold text-amber-900 uppercase tracking-wider flex items-center gap-1.5">
+                              <span>⚙️ 2. Desgastes Indirectos:</span>
+                            </span>
+                            <div className="flex flex-wrap gap-1.5">
+                              <button
+                                type="button"
+                                onClick={() => handleAddIndirectPreset('mat-navaja-cameo', 1, 'corte', 'Desgaste Navaja Cameo Autoblade')}
+                                className="px-2.5 py-1.5 rounded-xl border border-amber-200 bg-amber-50/50 hover:bg-amber-100 font-semibold text-xs text-amber-950 transition-all cursor-pointer shadow-2xs flex items-center gap-1.5"
+                              >
+                                <span>🔪</span>
+                                <span>Desgaste Navaja Cameo (1 uso)</span>
+                                <span className="text-[9.5px] font-bold text-amber-800 bg-amber-200/60 px-1.5 py-0.2 rounded">+ Consumible</span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* ======================================================== */}
+                      {/* ACORDEÓN INFERIOR: CATÁLOGO COMPLETO DE BODEGA & HERRAJES */}
+                      {/* ======================================================== */}
+                      <div className="pt-2 border-t border-stone-200">
+                        <button
+                          type="button"
+                          onClick={() => setEditorSpecialSuppliesAccordion(!editorSpecialSuppliesAccordion)}
+                          className="w-full p-2.5 rounded-xl bg-stone-100 hover:bg-stone-200/70 border border-stone-300 font-bold text-xs text-stone-800 flex items-center justify-between transition-colors cursor-pointer"
+                        >
+                          <div className="flex items-center gap-2">
+                            <span>📦</span>
+                            <span>Ver Catálogo Completo de Insumos &amp; Suministros Especiales de Bodega ({rawMaterialsList.length} registrados)</span>
+                            <span className="text-[10px] text-gray-500 font-normal">
+                              (Herrajes, argollas, imanes, acabados no estándar)
+                            </span>
+                          </div>
+                          <span className="text-stone-500 text-sm">
+                            {editorSpecialSuppliesAccordion ? '▲ Ocultar Catálogo' : '▼ Desplegar Catálogo'}
+                          </span>
+                        </button>
+
+                        {editorSpecialSuppliesAccordion && (
+                          <div className="mt-2.5 p-3.5 bg-stone-50 rounded-xl border border-stone-200 space-y-3">
+                            <div className="flex items-center gap-2">
+                              <div className="relative flex-1">
+                                <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-gray-400" />
+                                <input
+                                  type="text"
+                                  value={editorSpecialSearch}
+                                  onChange={e => setEditorSpecialSearch(e.target.value)}
+                                  placeholder="Buscar por nombre, proveedor o categoría (ej: argollas, imán, laca, resistol)..."
+                                  className="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-gray-300 bg-white"
+                                />
+                              </div>
+                              {editorSpecialSearch && (
+                                <button
+                                  type="button"
+                                  onClick={() => setEditorSpecialSearch('')}
+                                  className="text-xs text-gray-500 hover:text-gray-800"
+                                >
+                                  Limpiar
+                                </button>
+                              )}
+                            </div>
+
+                            <div className="max-h-64 overflow-y-auto divide-y divide-stone-200 pr-1">
+                              {rawMaterialsList
+                                .filter(m => {
+                                  if (!editorSpecialSearch) return true;
+                                  const q = editorSpecialSearch.toLowerCase();
+                                  return (m.name || '').toLowerCase().includes(q) || (m.supplier || '').toLowerCase().includes(q) || (m.category || '').toLowerCase().includes(q);
+                                })
+                                .map(mat => (
+                                  <div key={mat.id} className="py-2 flex items-center justify-between gap-2 hover:bg-white/60 px-2 rounded-lg transition-colors">
+                                    <div className="min-w-0">
+                                      <div className="font-bold text-xs text-gray-900 truncate">{mat.name}</div>
+                                      <div className="text-[10px] text-gray-500 flex items-center gap-2">
+                                        <span>Stock: {mat.currentStock} {mat.unit}</span>
+                                        <span>•</span>
+                                        <span>${mat.costPerUnit} / {mat.packageMeasurement || mat.unit}</span>
+                                        <span>•</span>
+                                        <span className="text-gray-400">{mat.supplier || 'Bodega'}</span>
+                                      </div>
+                                    </div>
+
+                                    <div className="flex items-center gap-1.5 shrink-0">
+                                      <button
+                                        type="button"
+                                        onClick={() => handleAddDirectMaterialFromPreset(mat.id, 1, 0, mat.unit || 'pza', 'none')}
+                                        className="px-2 py-1 rounded bg-emerald-100 hover:bg-emerald-200 text-emerald-900 text-[10px] font-bold transition-colors cursor-pointer"
+                                        title="Agregar como Insumo Directo tangible"
+                                      >
+                                        + Directo
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={() => handleAddFinishPreset(mat.id, 1, mat.unit || 'pza', mat.name)}
+                                        className="px-2 py-1 rounded bg-purple-100 hover:bg-purple-200 text-purple-900 text-[10px] font-bold transition-colors cursor-pointer"
+                                        title="Agregar como Acabado / Tinte"
+                                      >
+                                        + Acabado
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={() => handleAddIndirectPreset(mat.id, 1, mat.unit || 'pza', mat.name)}
+                                        className="px-2 py-1 rounded bg-amber-100 hover:bg-amber-200 text-amber-900 text-[10px] font-bold transition-colors cursor-pointer"
+                                        title="Agregar como Consumible Indirecto"
+                                      >
+                                        + Indirecto
+                                      </button>
+                                    </div>
+                                  </div>
+                                ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
 
-                      {/* FILA 3: ENSAMBLE MANUAL & CONSUMIBLES DE TALLER */}
-                      <div className="space-y-1 pt-1 border-t border-stone-100">
-                        <span className="text-[9.5px] font-bold text-amber-800 uppercase tracking-wider block">
-                          3. Ensamble Manual &amp; Consumibles de Taller:
-                        </span>
-                        <div className="flex flex-wrap items-center gap-1.5">
-                          {[
-                            { id: 'ensamble_resistol', label: 'Resistol 850 (Gotas Ensamble)', icon: '💧', desc: '10 gotas de Resistol 850 para madera' },
-                            { id: 'ensamble', label: 'Cianoacrilato Rápido', icon: '⚡', desc: 'Gotas de pegamento instantáneo' },
-                            { id: 'finish_nogal', label: 'Lija 220 & Estopa', icon: '🧽', desc: 'Lija de pulido fino y paño' },
-                          ].map(preset => (
-                            <div
-                              key={preset.id}
-                              className="inline-flex rounded-lg border border-amber-200 bg-amber-50/50 overflow-hidden shadow-2xs text-[10px]"
-                            >
-                              <button
-                                type="button"
-                                onClick={() => handleApplyRecipePreset(preset.id, true)}
-                                className="px-2 py-1 font-semibold text-amber-900 hover:bg-amber-100 transition-colors cursor-pointer"
-                                title={`Añadir ${preset.label}`}
-                              >
-                                {preset.icon} {preset.label}
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
                     </div>
 
                     {/* CARD 1: INSUMOS DIRECTOS (TANGIBLES EN EL PRODUCTO) */}
@@ -8067,6 +8765,38 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </div>
                     </div>
 
+                    {/* NAVEGACIÓN UX INFERIOR PESTAÑA 2 */}
+                    <div className="pt-4 border-t border-stone-200 flex flex-wrap items-center justify-between gap-3 bg-stone-50/80 p-3.5 rounded-2xl">
+                      <div>
+                        <span className="font-bold text-gray-800 text-xs block">
+                          ¿Terminaste de configurar insumos y maquinaria?
+                        </span>
+                        <span className="text-[10.5px] text-gray-500">
+                          Pasa al siguiente paso de logística o ve directamente a definir precios y márgenes.
+                        </span>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setEditorActiveTab('packaging')}
+                          className="px-3.5 py-2 rounded-xl border border-purple-200 bg-purple-50 hover:bg-purple-100 text-purple-900 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+                        >
+                          <span>📦 3. Embalaje &amp; Flete</span>
+                          <span>➡️</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setEditorActiveTab('pricing')}
+                          className="px-4 py-2 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white font-black text-xs flex items-center gap-1.5 shadow-md transition-all cursor-pointer active:scale-95"
+                        >
+                          <span>💰 Continuar a: 4. Precios, Margen &amp; Descuentos</span>
+                          <span>➡️</span>
+                        </button>
+                      </div>
+                    </div>
+
                   </div>
                 );
               })()}
@@ -8458,6 +9188,27 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </div>
                     </div>
 
+                    {/* NAVEGACIÓN UX INFERIOR PESTAÑA 3 */}
+                    <div className="pt-4 border-t border-stone-200 flex flex-wrap items-center justify-between gap-3 bg-stone-50/80 p-3.5 rounded-2xl">
+                      <button
+                        type="button"
+                        onClick={() => setEditorActiveTab('taller')}
+                        className="px-3.5 py-2 rounded-xl border border-stone-300 bg-white hover:bg-stone-100 text-stone-700 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+                      >
+                        <span>⬅️</span>
+                        <span>Volver a: 2. Taller &amp; Insumos</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setEditorActiveTab('pricing')}
+                        className="px-4 py-2 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white font-black text-xs flex items-center gap-1.5 shadow-md transition-all cursor-pointer active:scale-95"
+                      >
+                        <span>💰 Continuar a: 4. Precios, Margen &amp; Descuentos</span>
+                        <span>➡️</span>
+                      </button>
+                    </div>
+
                   </div>
                 );
               })()}
@@ -8688,9 +9439,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </div>
 
                       {/* Resumen de Margen de Ganancia */}
-                      {currentPrice > 0 && currentCost > 0 && (
-                        <div className="p-3 rounded-xl bg-[#FAF9F5] border border-stone-200 flex flex-wrap items-center justify-between gap-2">
-                          <span className="font-semibold text-gray-700">Margen financiero de la pieza:</span>
+                      <div className="p-3 rounded-xl bg-[#FAF9F5] border border-stone-200 flex flex-wrap items-center justify-between gap-2">
+                        <span className="font-semibold text-gray-700">Margen financiero de la pieza:</span>
+                        {currentPrice > 0 && currentCost > 0 ? (
                           <span className={`px-3 py-1 rounded-full font-bold text-xs ${
                             marginPercent >= 40
                               ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
@@ -8698,16 +9449,26 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           }`}>
                             Ganancia Neta: ${profitAmount.toFixed(1)} MXN ({marginPercent}% margen)
                           </span>
-                        </div>
-                      )}
+                        ) : (
+                          <span className="text-[11px] text-amber-800 font-medium bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-200">
+                            💡 Asigna Costo y PVP arriba para calcular la ganancia real en vivo
+                          </span>
+                        )}
+                      </div>
                     </div>
 
                     {/* ======================================================== */}
                     {/* SIMULADOR DE DESCUENTOS & CONTROL DE MARGEN DE PRECIOS   */}
                     {/* ======================================================== */}
-                    {currentPrice > 0 && currentCost > 0 && (() => {
-                      const floorPrice = Math.round(currentCost * 1.05 * 100) / 100;
-                      const maxSafeDiscountPercent = Math.max(0, Math.floor(((currentPrice - floorPrice) / currentPrice) * 100));
+                    {(() => {
+                      const effectiveCost = currentCost > 0 ? currentCost : (calculatedLandedCost > 0 ? calculatedLandedCost : 65);
+                      const effectivePrice = currentPrice > 0 ? currentPrice : Math.ceil(effectiveCost / 0.5);
+                      const isSimulatedPreview = currentPrice <= 0 || currentCost <= 0;
+                      const effProfit = effectivePrice - effectiveCost;
+                      const effMargin = effectivePrice > 0 ? Math.round((effProfit / effectivePrice) * 100) : 0;
+
+                      const floorPrice = Math.round(effectiveCost * 1.05 * 100) / 100;
+                      const maxSafeDiscountPercent = Math.max(0, Math.floor(((effectivePrice - floorPrice) / effectivePrice) * 100));
 
                       const discountLevels = [10, 15, 20, 30, 50];
                       if (editorForm.flashDealConfig?.enabled && !discountLevels.includes(editorForm.flashDealConfig.discountPercent)) {
@@ -8715,7 +9476,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         discountLevels.sort((a, b) => a - b);
                       }
 
-                      const hasDeficitAt50 = Math.round(currentPrice * 0.5) < floorPrice;
+                      const hasDeficitAt50 = Math.round(effectivePrice * 0.5) < floorPrice;
 
                       return (
                         <div className="space-y-4">
@@ -8739,9 +9500,16 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 </div>
                               </div>
 
-                              <span className="text-[11px] font-bold text-gray-500">
-                                PVP Base: <strong className="text-gray-900 font-mono text-xs">${currentPrice} MXN</strong>
-                              </span>
+                              <div className="flex items-center gap-2">
+                                {isSimulatedPreview && (
+                                  <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-bold border border-amber-300">
+                                    Simulación Estimada
+                                  </span>
+                                )}
+                                <span className="text-[11px] font-bold text-gray-500">
+                                  PVP Base: <strong className="text-gray-900 font-mono text-xs">${effectivePrice} MXN</strong>
+                                </span>
+                              </div>
                             </div>
 
                             {/* Tabla Interactiva de Descuentos */}
@@ -8759,9 +9527,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 </thead>
                                 <tbody className="divide-y divide-gray-100 font-medium">
                                   {discountLevels.map(pct => {
-                                    const discPrice = Math.round(currentPrice * (1 - pct / 100));
-                                    const clientSavings = currentPrice - discPrice;
-                                    const netProfit = discPrice - currentCost;
+                                    const discPrice = Math.round(effectivePrice * (1 - pct / 100));
+                                    const clientSavings = effectivePrice - discPrice;
+                                    const netProfit = discPrice - effectiveCost;
                                     const netMargin = discPrice > 0 ? Math.round((netProfit / discPrice) * 100) : 0;
                                     const isDeficit = discPrice < floorPrice || netProfit <= 0;
                                     const isFlash = editorForm.flashDealConfig?.enabled && editorForm.flashDealConfig.discountPercent === pct;
@@ -8955,7 +9723,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   <div className="flex items-center gap-2">
                                     <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                                     <span>
-                                      Vendiendo al PVP de <strong>${currentPrice} MXN</strong> obtienes una <strong>ganancia neta de ${profitAmount.toFixed(1)} MXN ({marginPercent}% margen)</strong> por cada unidad.
+                                      Vendiendo al PVP de <strong>${effectivePrice} MXN</strong> obtienes una <strong>ganancia neta de ${effProfit.toFixed(1)} MXN ({effMargin}% margen)</strong> por cada unidad.
                                     </span>
                                   </div>
                                   <button
@@ -9435,6 +10203,26 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         className="w-full px-3 py-2 rounded-xl border border-stone-300 bg-white text-xs"
                         placeholder="Proveedor especial de madera, temperatura de boquilla, pegamento especial..."
                       />
+                    </div>
+
+                    {/* NAVEGACIÓN UX INFERIOR PESTAÑA 4 */}
+                    <div className="pt-4 border-t border-stone-200 flex flex-wrap items-center justify-between gap-3 bg-stone-50/80 p-3.5 rounded-2xl">
+                      <button
+                        type="button"
+                        onClick={() => setEditorActiveTab('packaging')}
+                        className="px-3.5 py-2 rounded-xl border border-stone-300 bg-white hover:bg-stone-100 text-stone-700 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+                      >
+                        <span>⬅️</span>
+                        <span>Volver a: 3. Embalaje &amp; Flete</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setEditorActiveTab('taller')}
+                        className="px-3.5 py-2 rounded-xl border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+                      >
+                        <span>🪵 Revisar Insumos de Taller</span>
+                      </button>
                     </div>
 
                   </div>
