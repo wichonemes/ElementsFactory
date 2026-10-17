@@ -14,7 +14,8 @@ import {
   ShoppingBag,
   ExternalLink,
   Layers,
-  ArrowRight
+  ArrowRight,
+  Lock
 } from 'lucide-react';
 
 export default function MobileSidebarDrawer({
@@ -248,34 +249,25 @@ export default function MobileSidebarDrawer({
             </button>
           </div>
 
-          {/* GRUPO: ADMINISTRACIÓN */}
-          <div className="p-2 space-y-1">
-            <button
-              type="button"
-              onClick={() => {
-                onClose();
-                if (onOpenAdmin) onOpenAdmin();
-              }}
-              className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-gray-50 active:bg-gray-100 transition-colors text-left group text-gray-600 cursor-pointer"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-gray-100 text-gray-700 flex items-center justify-center shrink-0">
-                  <Shield className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-gray-800">Administrador de Taller</div>
-                  <div className="text-[10px] text-gray-400">Panel de control de precios y catálogo</div>
-                </div>
-              </div>
-              <ChevronRight className="w-4 h-4 text-gray-400 group-hover:translate-x-0.5 transition-transform" />
-            </button>
-          </div>
-
         </div>
 
         {/* 4. FOOTER DEL DRAWER */}
-        <div className="p-3 bg-gray-50 border-t border-gray-200 text-center text-[10px] text-gray-400 shrink-0">
-          Artesano Digital · Hecho en México
+        <div className="p-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between text-[10px] text-gray-400 shrink-0">
+          {/* Acceso discreto para el dueño del taller en la esquina inferior izquierda */}
+          <button
+            type="button"
+            onClick={() => {
+              onClose();
+              if (onOpenAdmin) onOpenAdmin();
+            }}
+            className="text-[10px] text-gray-400/60 hover:text-gray-600 flex items-center gap-1 cursor-pointer transition-colors select-none py-0.5 px-1 rounded hover:bg-gray-200/50"
+            title="Gestión de Taller"
+            aria-label="Gestión de Taller"
+          >
+            <Lock className="w-2.5 h-2.5 opacity-50" />
+            <span>Taller</span>
+          </button>
+          <span className="text-gray-400 select-none">Artesano Digital · Hecho en México</span>
         </div>
       </aside>
     </div>

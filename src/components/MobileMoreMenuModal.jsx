@@ -12,7 +12,8 @@ import {
   ChevronRight,
   Home,
   CheckCircle2,
-  Sparkles
+  Sparkles,
+  Lock
 } from 'lucide-react';
 
 export default function MobileMoreMenuModal({
@@ -188,26 +189,23 @@ export default function MobileMoreMenuModal({
           <ChevronRight className="w-4 h-4 text-gray-400" />
         </button>
 
-        {/* Panel de Administración */}
-        <button
-          type="button"
-          onClick={() => {
-            onClose();
-            if (onOpenAdmin) onOpenAdmin();
-          }}
-          className="w-full flex items-center justify-between p-3.5 hover:bg-amber-50/50 active:bg-amber-100/50 transition-colors text-left"
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center">
-              <Shield className="w-4 h-4" />
-            </div>
-            <div>
-              <div className="text-xs font-bold text-amber-950">Panel de Administración</div>
-              <div className="text-[10px] text-amber-800/80">Acceso exclusivo para el taller</div>
-            </div>
-          </div>
-          <ChevronRight className="w-4 h-4 text-amber-700" />
-        </button>
+        {/* Pie discreto con acceso de taller en la esquina inferior izquierda */}
+        <div className="p-3 bg-gray-50 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-400">
+          <button
+            type="button"
+            onClick={() => {
+              onClose();
+              if (onOpenAdmin) onOpenAdmin();
+            }}
+            className="text-[10px] text-gray-400/60 hover:text-gray-600 flex items-center gap-1 cursor-pointer transition-colors py-0.5 px-1 rounded hover:bg-gray-100"
+            title="Gestión de Taller"
+            aria-label="Gestión de Taller"
+          >
+            <Lock className="w-2.5 h-2.5 opacity-50" />
+            <span>Taller</span>
+          </button>
+          <span className="text-gray-400">Artesano Digital</span>
+        </div>
       </div>
     </div>
   );

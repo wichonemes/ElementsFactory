@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShoppingBag, Search, Menu, X, Shield, Phone, Sparkles } from 'lucide-react';
+import { ShoppingBag, Search, Menu, X, Shield, Phone, Sparkles, Lock } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 import { formatServiceDate } from '../utils/serviceStatus';
 
@@ -315,16 +315,22 @@ export default function Navbar({
               </button>
             )}
 
-            <button
-              onClick={() => {
-                onOpenAdmin();
-                setMobileMenuOpen(false);
-              }}
-              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-amber-300 bg-amber-50 text-amber-900 text-xs font-semibold cursor-pointer"
-            >
-              <Shield className="w-4 h-4 text-amber-600" />
-              Panel de Administración Privado
-            </button>
+            <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-400">
+              <button
+                type="button"
+                onClick={() => {
+                  onOpenAdmin();
+                  setMobileMenuOpen(false);
+                }}
+                className="text-[10px] text-gray-400/60 hover:text-gray-600 flex items-center gap-1 cursor-pointer transition-colors py-0.5 px-1 rounded hover:bg-gray-100"
+                title="Gestión de Taller"
+                aria-label="Gestión de Taller"
+              >
+                <Lock className="w-2.5 h-2.5 opacity-50" />
+                <span>Taller</span>
+              </button>
+              <span className="text-gray-400">Artesano Digital</span>
+            </div>
           </div>
         </div>
       )}

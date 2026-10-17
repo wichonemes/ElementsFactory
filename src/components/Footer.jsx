@@ -121,10 +121,11 @@ export default function Footer({ onSelectWorld, onOpenAdmin, settings }) {
               <div className="pt-2">
                 <button
                   onClick={onOpenAdmin}
-                  className="flex items-center gap-1.5 text-xs text-amber-400/80 hover:text-amber-300 transition-colors"
+                  className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-400 transition-colors cursor-pointer"
+                  title="Gestión de Taller"
                 >
-                  <Shield className="w-3.5 h-3.5" />
-                  <span>Acceso Panel Privado</span>
+                  <Shield className="w-3.5 h-3.5 opacity-60" />
+                  <span>Acceso de Taller</span>
                 </button>
               </div>
             </div>
