@@ -380,12 +380,12 @@ const initialProducts = [
     "techniques": [
       "3d"
     ],
-    "primaryImage": "/uploads/catalog-v2-t38-context-c9a001e0cb.webp",
+    "primaryImage": "/uploads/t38_vista1_contexto.webp",
     "gallery": [
-      "/uploads/catalog-v2-t38-context-c9a001e0cb.webp",
-      "/uploads/catalog-v2-t38-base-9b30224c42.webp",
-      "/uploads/catalog-v2-t38-detail-5646839e28.webp",
-      "/uploads/catalog-v2-t38-scale-2c922d99ea.webp"
+      "/uploads/t38_vista1_contexto.webp",
+      "/uploads/t38_vista2_fondo_blanco.webp",
+      "/uploads/t38_vista3_detalle.webp",
+      "/uploads/t38_vista4_medidas.webp"
     ],
     "shortDescription": "Lámpara ambiental con estructura continua en C de polímero tipo madera y pantalla cónica difusora.",
     "fullDescription": "Pieza de iluminación ambiental que combina manufactura aditiva y diseño contemporáneo. Su estructura continua en forma de C sostiene una pantalla cónica difusora que proyecta una luz cálida suave sobre escritorios, burós o credenzas.",
@@ -416,7 +416,7 @@ const initialProducts = [
     "availability": "in_stock",
     "privateNotes": "Impresión en boquilla 0.6mm a 0.28 altura de capa para acabado sedoso.",
     "createdAt": "2026-10-14T14:44:43.575Z",
-    "whiteBgImage": "/uploads/catalog-v2-t38-base-9b30224c42.webp",
+    "whiteBgImage": "/uploads/t38_vista2_fondo_blanco.webp",
     "galleryMeta": [
       {
         "label": "1. Producto en ambiente real (referencia)",
@@ -439,8 +439,8 @@ const initialProducts = [
         "type": "measures"
       }
     ],
-    "detailImage": "/uploads/catalog-v2-t38-detail-5646839e28.webp",
-    "measureImage": "/uploads/catalog-v2-t38-scale-2c922d99ea.webp",
+    "detailImage": "/uploads/t38_vista3_detalle.webp",
+    "measureImage": "/uploads/t38_vista4_medidas.webp",
     "stockQuantity": 10,
     "costPrice": 160,
     "costBreakdown": {
@@ -482,7 +482,7 @@ const initialProducts = [
         "lote": "#038"
       }
     },
-    "dimensionsImage": "/uploads/catalog-v2-t38-scale-2c922d99ea.webp",
+    "dimensionsImage": "/uploads/t38_vista4_medidas.webp",
     "makerWorldModel": "https://makerworld.com/es/models/1804162",
     "makerWorldAuthor": "Mesmar",
     "makerWorldProfileId": "1924098",
@@ -1914,12 +1914,12 @@ const initialProducts = [
     "techniques": [
       "3d"
     ],
-    "primaryImage": "/uploads/catalog-v2-t10-context-dc513b4b4f.webp",
+    "primaryImage": "/uploads/t10_vista1_contexto.webp",
     "gallery": [
-      "/uploads/catalog-v2-t10-context-dc513b4b4f.webp",
-      "/uploads/catalog-v2-t10-base-2ba7f611cb.webp",
-      "/uploads/catalog-v2-t10-detail-7acc15d62f.webp",
-      "/uploads/catalog-v2-t10-scale-ac2ee179e4.webp"
+      "/uploads/t10_vista1_contexto.webp",
+      "/uploads/t10_vista2_fondo_blanco.webp",
+      "/uploads/t10_vista3_detalle.webp",
+      "/uploads/t10_vista4_medidas.webp"
     ],
     "shortDescription": "Base vertical con ángulo óptimo de lectura y ranura de paso de cable inferior.",
     "fullDescription": "Soporte estilizado compatible con cualquier teléfono con o sin funda. Permite mantener la pantalla a la vista para videollamadas, reloj de mesa o seguimiento de notificaciones mientras se carga el dispositivo.",
@@ -1949,7 +1949,7 @@ const initialProducts = [
     "availability": "in_stock",
     "privateNotes": "Pieza rápida de reposición continua.",
     "createdAt": "2026-10-14T14:44:43.575Z",
-    "whiteBgImage": "/uploads/catalog-v2-t10-base-2ba7f611cb.webp",
+    "whiteBgImage": "/uploads/t10_vista2_fondo_blanco.webp",
     "galleryMeta": [
       {
         "label": "1. Producto en ambiente real (referencia)",
@@ -1972,8 +1972,8 @@ const initialProducts = [
         "type": "measures"
       }
     ],
-    "detailImage": "/uploads/catalog-v2-t10-detail-7acc15d62f.webp",
-    "measureImage": "/uploads/catalog-v2-t10-scale-ac2ee179e4.webp",
+    "detailImage": "/uploads/t10_vista3_detalle.webp",
+    "measureImage": "/uploads/t10_vista4_medidas.webp",
     "stockQuantity": 15,
     "costPrice": 48.6,
     "costBreakdown": {
@@ -2013,7 +2013,7 @@ const initialProducts = [
         "lote": "#010"
       }
     },
-    "dimensionsImage": "/uploads/catalog-v2-t10-scale-ac2ee179e4.webp",
+    "dimensionsImage": "/uploads/t10_vista4_medidas.webp",
     "repository": {
       "platform": "makerworld",
       "makerworldUrl": "https://makerworld.com/es/models/1087279",
@@ -2471,12 +2471,12 @@ const initialProducts = [
     "techniques": [
       "3d"
     ],
-    "primaryImage": "/uploads/pack_barberia_boutique_contexto.jpg",
+    "primaryImage": "/uploads/t16_vista1_contexto.webp",
     "gallery": [
-      "/uploads/pack_barberia_boutique_contexto.jpg",
-      "/uploads/catalog-v2-t16-base-cf7f084e68.webp",
-      "/uploads/catalog-v2-t16-detail-e2c4b4677d.webp",
-      "/uploads/catalog-v2-t16-scale-7dc114b091.webp"
+      "/uploads/t16_vista1_contexto.webp",
+      "/uploads/t16_vista2_fondo_blanco.webp",
+      "/uploads/t16_vista3_detalle.webp",
+      "/uploads/t16_vista4_medidas.webp"
     ],
     "shortDescription": "Placa vertical con código QR de alto relieve bi-tono y logotipo corporativo de tu negocio.",
     "fullDescription": "Permite a tus clientes consultar el menú digital, dejar reseñas en Google, transferir por SPEI o seguir tus redes sociales con un simple escaneo. El código QR está modelado tridimensionalmente en contraste óptico perfecto para una lectura veloz con cualquier cámara.",
@@ -2517,7 +2517,7 @@ const initialProducts = [
     "availability": "made_to_order",
     "privateNotes": "Validar lectura del QR a 30 cm de distancia antes de embalar.",
     "createdAt": "2026-10-14T14:44:43.575Z",
-    "whiteBgImage": "/uploads/catalog-v2-t16-base-cf7f084e68.webp",
+    "whiteBgImage": "/uploads/t16_vista2_fondo_blanco.webp",
     "galleryMeta": [
       {
         "label": "1. Producto en ambiente real (referencia)",
@@ -2540,8 +2540,8 @@ const initialProducts = [
         "type": "measures"
       }
     ],
-    "detailImage": "/uploads/catalog-v2-t16-detail-e2c4b4677d.webp",
-    "measureImage": "/uploads/catalog-v2-t16-scale-7dc114b091.webp",
+    "detailImage": "/uploads/t16_vista3_detalle.webp",
+    "measureImage": "/uploads/t16_vista4_medidas.webp",
     "stockQuantity": 0,
     "costPrice": 96.9,
     "costBreakdown": {
@@ -2575,7 +2575,7 @@ const initialProducts = [
         "lote": "#016"
       }
     },
-    "dimensionsImage": "/uploads/catalog-v2-t16-scale-7dc114b091.webp",
+    "dimensionsImage": "/uploads/t16_vista4_medidas.webp",
     "repository": {
       "platform": "makerworld",
       "makerworldUrl": "https://makerworld.com/es/models/2401859",
@@ -3207,12 +3207,12 @@ const initialProducts = [
       "nfc",
       "laser"
     ],
-    "primaryImage": "/uploads/catalog-v2-t20-context-89a8b5f6cf.webp",
+    "primaryImage": "/uploads/t20_vista1_contexto.webp",
     "gallery": [
-      "/uploads/catalog-v2-t20-context-89a8b5f6cf.webp",
-      "/uploads/catalog-v2-t20-base-a45e8e9e9a.webp",
-      "/uploads/catalog-v2-t20-detail-8c9b0ddfdf.webp",
-      "/uploads/catalog-v2-t20-scale-8283777c87.webp"
+      "/uploads/t20_vista1_contexto.webp",
+      "/uploads/t20_vista2_fondo_blanco.webp",
+      "/uploads/t20_vista3_detalle.webp",
+      "/uploads/t20_vista4_medidas.webp"
     ],
     "shortDescription": "Placa ultraligera en forma de huesito o huella con nombre en relieve y opción de chip NFC.",
     "fullDescription": "La tranquilidad de saber que tu peludo está identificado. Fabricada en relieve 3D ligero para no molestar el cuello de tu perro o gato. Disponible en versión básica con teléfono grabado al reverso o en versión inteligente con chip NFC ($350) que abre tu contacto de WhatsApp o ficha médica al acercar cualquier celular.",
@@ -3256,7 +3256,7 @@ const initialProducts = [
     "availability": "made_to_order",
     "privateNotes": "La versión NFC lleva chip sellado herméticamente al interior.",
     "createdAt": "2026-10-14T14:44:43.576Z",
-    "whiteBgImage": "/uploads/catalog-v2-t20-base-a45e8e9e9a.webp",
+    "whiteBgImage": "/uploads/t20_vista2_fondo_blanco.webp",
     "galleryMeta": [
       {
         "label": "1. Producto en ambiente real (referencia)",
@@ -3279,8 +3279,8 @@ const initialProducts = [
         "type": "measures"
       }
     ],
-    "detailImage": "/uploads/catalog-v2-t20-detail-8c9b0ddfdf.webp",
-    "measureImage": "/uploads/catalog-v2-t20-scale-8283777c87.webp",
+    "detailImage": "/uploads/t20_vista3_detalle.webp",
+    "measureImage": "/uploads/t20_vista4_medidas.webp",
     "stockQuantity": 0,
     "costPrice": 20.3,
     "costBreakdown": {
@@ -3323,7 +3323,7 @@ const initialProducts = [
         "lote": "#020"
       }
     },
-    "dimensionsImage": "/uploads/catalog-v2-t20-scale-8283777c87.webp",
+    "dimensionsImage": "/uploads/t20_vista4_medidas.webp",
     "repository": {
       "platform": "makerworld",
       "makerworldUrl": "https://makerworld.com/es/models/3138490",
@@ -3508,12 +3508,12 @@ const initialProducts = [
     "techniques": [
       "3d"
     ],
-    "primaryImage": "/uploads/catalog-v2-t35-context-1ca7fa753f.webp",
+    "primaryImage": "/uploads/t35_vista1_contexto.webp",
     "gallery": [
-      "/uploads/catalog-v2-t35-context-1ca7fa753f.webp",
-      "/uploads/catalog-v2-t35-base-428bc044e7.webp",
-      "/uploads/catalog-v2-t35-detail-9b61373e15.webp",
-      "/uploads/catalog-v2-t35-scale-266745ffab.webp"
+      "/uploads/t35_vista1_contexto.webp",
+      "/uploads/t35_vista2_fondo_blanco.webp",
+      "/uploads/t35_vista3_detalle.webp",
+      "/uploads/t35_vista4_medidas.webp"
     ],
     "shortDescription": "Set de colección: Figura low-poly de zorrito, llavero miniatura a juego y 2 stickers.",
     "fullDescription": "Nuestra simpática mascota zorrito en un paquete de colección especial. Incluye una figura decorativa facetada de 10 cm con acabado terracota y blanco, llavero miniatura de cabeza de zorrito con herraje metálico y 2 stickers vinílicos resistentes a la intemperie. Precio del paquete $249 (precio individual $278).",
@@ -3542,7 +3542,7 @@ const initialProducts = [
     "availability": "in_stock",
     "privateNotes": "Producto estrella de temporada.",
     "createdAt": "2026-10-14T14:44:43.576Z",
-    "whiteBgImage": "/uploads/catalog-v2-t35-base-428bc044e7.webp",
+    "whiteBgImage": "/uploads/t35_vista2_fondo_blanco.webp",
     "galleryMeta": [
       {
         "label": "1. Producto en ambiente real (referencia)",
@@ -3565,8 +3565,8 @@ const initialProducts = [
         "type": "measures"
       }
     ],
-    "detailImage": "/uploads/catalog-v2-t35-detail-9b61373e15.webp",
-    "measureImage": "/uploads/catalog-v2-t35-scale-266745ffab.webp",
+    "detailImage": "/uploads/t35_vista3_detalle.webp",
+    "measureImage": "/uploads/t35_vista4_medidas.webp",
     "stockQuantity": 14,
     "costPrice": 102,
     "costBreakdown": {
@@ -3600,7 +3600,7 @@ const initialProducts = [
         "lote": "#035"
       }
     },
-    "dimensionsImage": "/uploads/catalog-v2-t35-scale-266745ffab.webp",
+    "dimensionsImage": "/uploads/t35_vista4_medidas.webp",
     "repository": {
       "platform": "makerworld",
       "makerworldUrl": "https://makerworld.com/es/models/2387852",
@@ -3799,12 +3799,12 @@ const initialProducts = [
     "techniques": [
       "3d"
     ],
-    "primaryImage": "/uploads/catalog-v2-t1-context-c7d87a9600.webp",
+    "primaryImage": "/uploads/t1_vista1_contexto.webp",
     "gallery": [
-      "/uploads/catalog-v2-t1-context-c7d87a9600.webp",
-      "/uploads/catalog-v2-t1-base-7d8faa9b08.webp",
-      "/uploads/catalog-v2-t1-detail-91258ba550.webp",
-      "/uploads/catalog-v2-t1-scale-e176e5d87f.webp"
+      "/uploads/t1_vista1_contexto.webp",
+      "/uploads/t1_vista2_fondo_blanco.webp",
+      "/uploads/t1_vista3_detalle.webp",
+      "/uploads/t1_vista4_medidas.webp"
     ],
     "shortDescription": "Llavero personalizado con el nombre de cada invitado en relieve tridimensional.",
     "fullDescription": "El recuerdo favorito para bodas, graduaciones y XV años. Cada invitado recibe su propio llavero personalizado con su nombre en relieve sobre una base estilizada con forma de hoja u ovalada. Descuento por volumen para eventos.",
@@ -3834,7 +3834,7 @@ const initialProducts = [
     "availability": "made_to_order",
     "privateNotes": "Generador de stl por lote.",
     "createdAt": "2026-10-14T14:44:43.576Z",
-    "whiteBgImage": "/uploads/catalog-v2-t1-base-7d8faa9b08.webp",
+    "whiteBgImage": "/uploads/t1_vista2_fondo_blanco.webp",
     "galleryMeta": [
       {
         "label": "1. Producto en ambiente real (referencia)",
@@ -3857,8 +3857,8 @@ const initialProducts = [
         "type": "measures"
       }
     ],
-    "detailImage": "/uploads/catalog-v2-t1-detail-91258ba550.webp",
-    "measureImage": "/uploads/catalog-v2-t1-scale-e176e5d87f.webp",
+    "detailImage": "/uploads/t1_vista3_detalle.webp",
+    "measureImage": "/uploads/t1_vista4_medidas.webp",
     "stockQuantity": 0,
     "costPrice": 21,
     "costBreakdown": {
@@ -3892,7 +3892,7 @@ const initialProducts = [
         "lote": "#001"
       }
     },
-    "dimensionsImage": "/uploads/catalog-v2-t1-scale-e176e5d87f.webp",
+    "dimensionsImage": "/uploads/t1_vista4_medidas.webp",
     "repository": {
       "platform": "makerworld",
       "makerworldUrl": "https://makerworld.com/es/models/1759237",
@@ -4083,12 +4083,12 @@ const initialProducts = [
       "nfc",
       "3d"
     ],
-    "primaryImage": "/uploads/catalog-v2-t33-context-12b8b5fce9.webp",
+    "primaryImage": "/uploads/t33_vista1_contexto.webp",
     "gallery": [
-      "/uploads/catalog-v2-t33-context-12b8b5fce9.webp",
-      "/uploads/catalog-v2-t33-base-6250883938.webp",
-      "/uploads/catalog-v2-t33-detail-66678d9025.webp",
-      "/uploads/catalog-v2-t33-scale-ba716d03fb.webp"
+      "/uploads/t33_vista1_contexto.webp",
+      "/uploads/t33_vista2_fondo_blanco.webp",
+      "/uploads/t33_vista3_detalle.webp",
+      "/uploads/t33_vista4_medidas.webp"
     ],
     "shortDescription": "Acerca tu celular y comparte al instante tu catálogo, redes, WhatsApp o cobro.",
     "fullDescription": "Elimina las tarjetas de papel obsoletas. Este tótem de mostrador permite a tus clientes acercar cualquier celular (iPhone o Android) para abrir tu menú, ficha de contacto vCard, catálogo de productos o enlace de pago en menos de un segundo.",
@@ -4119,7 +4119,7 @@ const initialProducts = [
     "availability": "made_to_order",
     "privateNotes": "Compatible con el 99% de smartphones modernos con NFC.",
     "createdAt": "2026-10-14T14:44:43.576Z",
-    "whiteBgImage": "/uploads/catalog-v2-t33-base-6250883938.webp",
+    "whiteBgImage": "/uploads/t33_vista2_fondo_blanco.webp",
     "galleryMeta": [
       {
         "label": "1. Producto en ambiente real (referencia)",
@@ -4142,8 +4142,8 @@ const initialProducts = [
         "type": "measures"
       }
     ],
-    "detailImage": "/uploads/catalog-v2-t33-detail-66678d9025.webp",
-    "measureImage": "/uploads/catalog-v2-t33-scale-ba716d03fb.webp",
+    "detailImage": "/uploads/t33_vista3_detalle.webp",
+    "measureImage": "/uploads/t33_vista4_medidas.webp",
     "stockQuantity": 0,
     "costPrice": 125.4,
     "costBreakdown": {
@@ -4183,7 +4183,7 @@ const initialProducts = [
         "lote": "#033"
       }
     },
-    "dimensionsImage": "/uploads/catalog-v2-t33-scale-ba716d03fb.webp",
+    "dimensionsImage": "/uploads/t33_vista4_medidas.webp",
     "repository": {
       "platform": "makerworld",
       "makerworldUrl": "https://makerworld.com/es/models/2401859",
@@ -8654,6 +8654,124 @@ const initialProducts = [
     },
     "manufacturingTimeMinutes": 20,
     "postProcessingTimeMinutes": 15
+  },
+  {
+    "id": "tarjetero-negocios-t17",
+    "code": "T17",
+    "name": "Tarjetero de Negocios Minimalista",
+    "sku": "BIZ-3D-PLA-MAT-017",
+    "skuBreakdown": {
+      "standardSku": "BIZ-3D-PLA-MAT-017",
+      "legacyCode": "T17",
+      "area": "BIZ",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "MAT",
+      "sequence": "017",
+      "instructionsForStaff": {
+        "destino": "💼 Negocios, Marcas & Emprendedores",
+        "maquinaria": "🧊 Impresión 3D (FDM / Filamento) (Granja 3D FDM)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Barniz / Textura Mate - Terso sin reflejos, elegante",
+        "lote": "#017"
+      }
+    },
+    "priceType": "starting_at",
+    "price": 149,
+    "regularPrice": 189,
+    "savings": 40,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "negocios",
+      "hogar"
+    ],
+    "categories": [
+      "negocios-oficinas",
+      "negocios-tiendas",
+      "hogar-decoracion"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/tarjetero_vista1_contexto.webp",
+    "whiteBgImage": "/uploads/tarjetero_vista2_fondo_blanco.webp",
+    "detailImage": "/uploads/tarjetero_vista3_detalle.webp",
+    "measureImage": "/uploads/tarjetero_vista4_medidas.webp",
+    "dimensionsImage": "/uploads/tarjetero_vista4_medidas.webp",
+    "gallery": [
+      "/uploads/tarjetero_vista1_contexto.webp",
+      "/uploads/tarjetero_vista2_fondo_blanco.webp",
+      "/uploads/tarjetero_vista3_detalle.webp",
+      "/uploads/tarjetero_vista4_medidas.webp"
+    ],
+    "shortDescription": "Soporte exhibidor minimalista de escritorio para tarjetas de presentación de negocios impreso en 3D.",
+    "fullDescription": "Elegante soporte exhibidor de sobremesa con diseño biselado y ranura inclinada ergonómica. Diseñado para sostener paquetes de tarjetas de visita estándar de forma ordenada y profesional en mostradores, recepciones o escritorios de trabajo.",
+    "specifications": {
+      "dimensions": "9,5 cm ancho × 6,0 cm fondo × 4,5 cm alto",
+      "material": "Polímero biodegradable PLA Grafito / Negro carbón",
+      "finish": "Satinado mate con textura sutil de impresión 3D FDM",
+      "includes": "Soporte para tarjetas de presentación (capacidad ~40 tarjetas estándar)",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Limpieza suave con paño de microfibra seco. No exponer a temperaturas mayores a 50°C."
+    },
+    "variants": [
+      {
+        "name": "Color",
+        "options": [
+          "Grafito carbón",
+          "Negro mate",
+          "Blanco marfil",
+          "Verde olivo",
+          "Madera natural"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Grabado de logotipo en frontal",
+      "Color corporativo a medida"
+    ],
+    "availability": "in_stock",
+    "stockQuantity": 15,
+    "costPrice": 42,
+    "costBreakdown": {
+      "plaGrams": 45,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 5,
+      "machineHours": 1.75,
+      "otherEquipCost": 0,
+      "manualWorkMin": 5,
+      "prepCost": 0,
+      "packagingCost": 8,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Confirmado"
+    },
+    "manufacturingTimes": {
+      "machineHours": 1,
+      "machineMinutes": 45,
+      "postProcessingMinutes": 5,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 105,
+    "postProcessingTimeMinutes": 5,
+    "repository": {
+      "platform": "makerworld",
+      "makerworldUrl": "https://makerworld.com/es/models/1067062",
+      "makerworldModelId": "1067062",
+      "author": "CrazyModding",
+      "license": "Standard Digital File License (Comercial)",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\Tarjetero_CrazyModding\\business_card_stand.3mf",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm, 15% giroide, sin soportes.",
+      "additionalLinks": []
+    },
+    "makerWorldModel": "https://makerworld.com/es/models/1067062",
+    "makerWorldAuthor": "CrazyModding",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\Tarjetero_CrazyModding\\business_card_stand.3mf"
   }
 ];
 
