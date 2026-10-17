@@ -3750,47 +3750,52 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
           <div className="flex-1 flex flex-col md:flex-row overflow-hidden min-w-0 min-h-0">
             
             {/* Navegación Móvil Táctil Dedicada: selector superior con chips deslizables */}
+            {/* Navegación Móvil Táctil Dedicada: selector superior con chips deslizables */}
             <div className="md:hidden bg-white border-b border-[#E8E4DA] p-2.5 shrink-0 shadow-2xs space-y-2">
               <div className="flex items-center justify-between px-1">
                 <span className="text-[10px] font-black uppercase tracking-wider text-gray-500">
                   Sección activa del panel:
                 </span>
                 <span className="text-xs font-black text-[#2D4F3E] bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                  {activeTab === 'products' ? '📦 Productos' :
-                   activeTab === 'flash-deals' ? '⚡ Ofertas Flash' :
-                   activeTab === 'area-banners' ? '🖼️ Banners Áreas' :
-                   activeTab === 'categories' ? '📁 Categorías' :
-                   activeTab === 'raw-materials' ? (rawMaterialsSubTab === 'suppliers' ? '🏢 Proveedores' : '🧱 Stock Insumos') :
-                   activeTab === 'margins' ? '📈 Costos & Márgenes' :
-                   activeTab === 'campaigns' ? '✨ Temporadas' :
-                   activeTab === 'arcade' ? '🎮 Arcade Taller' :
-                   activeTab === 'coupons' ? '🎟️ Cupones' :
-                   activeTab === 'packages' ? '🎁 Paquetes & Kits' :
-                   activeTab === 'sales' ? '📢 Ventas & ROI' :
-                   activeTab === 'stats' ? '📊 Métricas' :
-                   activeTab === 'catalog-mobile' ? '📱 Catálogo Móvil' :
-                   activeTab === 'settings' ? '⚙️ Ajustes' : 'Panel'}
+                  {activeTab === 'products' ? '📦 Catálogo • Productos' :
+                   activeTab === 'packages' ? '🎁 Catálogo • Paquetes & Kits' :
+                   activeTab === 'categories' ? '📁 Catálogo • Categorías' :
+                   activeTab === 'area-banners' ? '🖼️ Catálogo • Banners Áreas' :
+                   activeTab === 'raw-materials' ? (rawMaterialsSubTab === 'suppliers' ? '🏢 Taller • Proveedores & Fletes' : '🧱 Taller • Stock Insumos') :
+                   activeTab === 'margins' ? '📈 Taller • Costos & Márgenes' :
+                   activeTab === 'flash-deals' ? '⚡ Ventas • Ofertas Flash' :
+                   activeTab === 'campaigns' ? '✨ Ventas • Temporadas' :
+                   activeTab === 'coupons' ? '🎟️ Ventas • Cupones' :
+                   activeTab === 'sales' ? '📢 Ventas • Pedidos & ROI' :
+                   activeTab === 'catalog-mobile' ? '📱 Ventas • Catálogos PDF' :
+                   activeTab === 'stats' ? '📊 Negocio • Métricas' :
+                   activeTab === 'settings' ? '⚙️ Negocio • Datos & Cobertura' :
+                   activeTab === 'arcade' ? '🎮 Negocio • Arcade Fidelización' : 'Panel'}
                 </span>
               </div>
 
-              {/* Chips táctiles con scroll suave horizontal */}
+              {/* Chips táctiles con scroll suave horizontal agrupados lógicamente */}
               <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none no-scrollbar">
                 {[
+                  // 1. CATÁLOGO & PRODUCTOS
                   { id: 'products', label: 'Productos', icon: '📦', count: products.length },
-                  { id: 'flash-deals', label: 'Ofertas Flash', icon: '⚡', count: activeFlashList.length },
-                  { id: 'area-banners', label: 'Banners', icon: '🖼️', count: 3 },
-                  { id: 'categories', label: 'Categorías', icon: '📁', count: categories.length },
-                  { id: 'raw-materials-inventory', label: 'Stock Insumos', icon: '🧱' },
-                  { id: 'raw-materials-suppliers', label: 'Proveedores', icon: '🏢' },
-                  { id: 'margins', label: 'Costos & Márgenes', icon: '📈', count: `${marginsStats.avgMargin}%` },
-                  { id: 'campaigns', label: 'Temporadas', icon: '✨' },
-                  { id: 'arcade', label: 'Arcade Taller', icon: '🎮' },
-                  { id: 'coupons', label: 'Cupones', icon: '🎟️' },
                   { id: 'packages', label: 'Paquetes', icon: '🎁', count: products.filter(p => p.isBundle).length },
-                  { id: 'sales', label: 'Ventas', icon: '📢' },
+                  { id: 'categories', label: 'Categorías', icon: '📁', count: categories.length },
+                  { id: 'area-banners', label: 'Banners', icon: '🖼️', count: 3 },
+                  // 2. TALLER & MANUFACTURA
+                  { id: 'raw-materials-inventory', label: 'Stock Insumos', icon: '🧱' },
+                  { id: 'raw-materials-suppliers', label: 'Proveedores & Fletes', icon: '🏢' },
+                  { id: 'margins', label: 'Costos & Márgenes', icon: '📈', count: `${marginsStats.avgMargin}%` },
+                  // 3. VENTAS & PROMOCIONES
+                  { id: 'flash-deals', label: 'Ofertas Flash', icon: '⚡', count: activeFlashList.length },
+                  { id: 'campaigns', label: 'Temporadas', icon: '✨' },
+                  { id: 'coupons', label: 'Cupones', icon: '🎟️' },
+                  { id: 'sales', label: 'Ventas & ROI', icon: '📢' },
+                  { id: 'catalog-mobile', label: 'Catálogos PDF', icon: '📱' },
+                  // 4. NEGOCIO & CONTROL
                   { id: 'stats', label: 'Métricas', icon: '📊' },
-                  { id: 'catalog-mobile', label: 'Catálogo Móvil', icon: '📱' },
-                  { id: 'settings', label: 'Ajustes', icon: '⚙️' },
+                  { id: 'settings', label: 'Ajustes & Taller', icon: '⚙️' },
+                  { id: 'arcade', label: 'Arcade', icon: '🎮' },
                 ].map(item => {
                   const isCurrent = (item.id === 'raw-materials-inventory' && activeTab === 'raw-materials' && rawMaterialsSubTab === 'inventory')
                     || (item.id === 'raw-materials-suppliers' && activeTab === 'raw-materials' && rawMaterialsSubTab === 'suppliers')
@@ -3835,10 +3840,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
             <aside className="hidden md:flex md:w-64 bg-white border-r border-[#E8E4DA] p-2.5 sm:p-3 flex-col justify-between shrink-0 overflow-y-auto scrollbar-thin">
               <nav className="flex md:flex-col gap-2.5 sm:gap-3 w-full min-w-max md:min-w-0">
 
-                {/* GRUPO 1: CATÁLOGO & TIENDA */}
+                {/* GRUPO 1: CATÁLOGO & PRODUCTOS */}
                 <div className="space-y-1">
                   <div className="px-3 text-[10px] font-black uppercase tracking-wider text-gray-400">
-                    Catálogo &amp; Tienda
+                    Catálogo &amp; Productos
                   </div>
 
                   <button
@@ -3849,7 +3854,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   >
                     <div className="flex items-center gap-2">
                       <Package className="w-4 h-4" />
-                      <span>Productos</span>
+                      <span>Productos &amp; SKUs</span>
                     </div>
                     <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
                       activeTab === 'products' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-600'
@@ -3859,36 +3864,19 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   </button>
 
                   <button
-                    onClick={() => setActiveTab('flash-deals')}
+                    onClick={() => setActiveTab('packages')}
                     className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-                      activeTab === 'flash-deals' ? 'bg-[#9E472A] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
+                      activeTab === 'packages' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
                     }`}
                   >
                     <div className="flex items-center gap-2">
-                      <Flame className={`w-4 h-4 ${activeTab === 'flash-deals' ? 'text-white fill-white' : 'text-[#9E472A] fill-[#9E472A]'}`} />
-                      <span>Ofertas Flash &amp; Cupos</span>
+                      <Boxes className="w-4 h-4 text-[#D4A359]" />
+                      <span>Paquetes &amp; Combos</span>
                     </div>
                     <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                      activeTab === 'flash-deals' ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-800'
+                      activeTab === 'packages' ? 'bg-white/20 text-white' : 'bg-purple-50 text-purple-700'
                     }`}>
-                      {activeFlashList.length} activas
-                    </span>
-                  </button>
-
-                  <button
-                    onClick={() => setActiveTab('area-banners')}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-                      activeTab === 'area-banners' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <ImageIcon className="w-4 h-4 text-emerald-600" />
-                      <span>Banners de Áreas</span>
-                    </div>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                      activeTab === 'area-banners' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
-                    }`}>
-                      3 Áreas
+                      {products.filter(p => p.isBundle).length} kits
                     </span>
                   </button>
 
@@ -3906,6 +3894,23 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       activeTab === 'categories' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-600'
                     }`}>
                       {categories.length}
+                    </span>
+                  </button>
+
+                  <button
+                    onClick={() => setActiveTab('area-banners')}
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                      activeTab === 'area-banners' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <ImageIcon className="w-4 h-4 text-emerald-600" />
+                      <span>Banners de Áreas</span>
+                    </div>
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                      activeTab === 'area-banners' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
+                    }`}>
+                      3 Áreas
                     </span>
                   </button>
                 </div>
@@ -3926,8 +3931,8 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     }`}
                   >
                     <div className="flex items-center gap-2">
-                      <Boxes className="w-4 h-4" />
-                      <span>Stock del Taller</span>
+                      <Layers className="w-4 h-4" />
+                      <span>Stock &amp; Recetas BOM</span>
                     </div>
                     <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
                       activeTab === 'raw-materials' && rawMaterialsSubTab === 'inventory' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
@@ -3947,12 +3952,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   >
                     <div className="flex items-center gap-2">
                       <Building2 className="w-4 h-4" />
-                      <span>Proveedores de Taller</span>
+                      <span>Proveedores &amp; Fletes</span>
                     </div>
                     <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
                       activeTab === 'raw-materials' && rawMaterialsSubTab === 'suppliers' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
                     }`}>
-                      Contactos
+                      PDFs &amp; Tarifas
                     </span>
                   </button>
 
@@ -3974,11 +3979,28 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   </button>
                 </div>
 
-                {/* GRUPO 3: MARKETING & PUBLICIDAD */}
+                {/* GRUPO 3: VENTAS & PROMOCIONES */}
                 <div className="space-y-1 pt-1 border-t border-gray-100">
                   <div className="px-3 pt-2 text-[10px] font-black uppercase tracking-wider text-gray-400">
-                    Marketing &amp; Publicidad
+                    Ventas &amp; Promociones
                   </div>
+
+                  <button
+                    onClick={() => setActiveTab('flash-deals')}
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                      activeTab === 'flash-deals' ? 'bg-[#9E472A] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Flame className={`w-4 h-4 ${activeTab === 'flash-deals' ? 'text-white fill-white' : 'text-[#9E472A] fill-[#9E472A]'}`} />
+                      <span>Ofertas Flash &amp; Cupos</span>
+                    </div>
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                      activeTab === 'flash-deals' ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-800'
+                    }`}>
+                      {activeFlashList.length} activas
+                    </span>
+                  </button>
 
                   <button
                     onClick={() => setActiveTab('campaigns')}
@@ -3998,40 +4020,6 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   </button>
 
                   <button
-                    onClick={() => setActiveTab('arcade')}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-                      activeTab === 'arcade' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Gamepad2 className="w-4 h-4 text-amber-500" />
-                      <span>Arcade del Taller</span>
-                    </div>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                      activeTab === 'arcade' ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-800'
-                    }`}>
-                      10 Juegos
-                    </span>
-                  </button>
-
-                  <button
-                    onClick={() => setActiveTab('packages')}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-                      activeTab === 'packages' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Package className="w-4 h-4 text-[#D4A359]" />
-                      <span>Paquetes &amp; Combos</span>
-                    </div>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                      activeTab === 'packages' ? 'bg-white/20 text-white' : 'bg-purple-50 text-purple-700'
-                    }`}>
-                      {products.filter(p => p.isBundle).length} kits
-                    </span>
-                  </button>
-
-                  <button
                     onClick={() => setActiveTab('coupons')}
                     className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
                       activeTab === 'coupons' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
@@ -4039,7 +4027,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   >
                     <div className="flex items-center gap-2">
                       <Tag className="w-4 h-4" />
-                      <span>Cupones &amp; Descuentos</span>
+                      <span>Cupones de Descuento</span>
                     </div>
                     <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
                       activeTab === 'coupons' ? 'bg-white/20 text-white' : 'bg-amber-50 text-amber-800 border border-amber-200'
@@ -4056,7 +4044,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   >
                     <div className="flex items-center gap-2">
                       <Megaphone className="w-4 h-4" />
-                      <span>Ventas y publicaciones</span>
+                      <span>Ventas &amp; ROI Publicitario</span>
                     </div>
                     <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
                       activeTab === 'sales' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
@@ -4064,6 +4052,32 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       ROI
                     </span>
                   </button>
+
+                  <button
+                    onClick={() => setActiveTab('catalog-mobile')}
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                      activeTab === 'catalog-mobile' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Smartphone className="w-4 h-4" />
+                      <span>Catálogos Móviles PDF</span>
+                    </div>
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                      activeTab === 'catalog-mobile'
+                        ? 'bg-white/20 text-white'
+                        : (businessSettings?.mobileCatalogConfig?.enabled !== false ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200')
+                    }`}>
+                      {businessSettings?.mobileCatalogConfig?.enabled !== false ? 'Activo' : 'Oculto'}
+                    </span>
+                  </button>
+                </div>
+
+                {/* GRUPO 4: NEGOCIO & CONTROL */}
+                <div className="space-y-1 pt-1 border-t border-gray-100">
+                  <div className="px-3 pt-2 text-[10px] font-black uppercase tracking-wider text-gray-400">
+                    Negocio &amp; Control
+                  </div>
 
                   <button
                     onClick={() => setActiveTab('stats')}
@@ -4076,32 +4090,6 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       <span>Métricas &amp; Tráfico</span>
                     </div>
                   </button>
-                </div>
-
-                {/* GRUPO 4: AJUSTES */}
-                <div className="space-y-1 pt-1 border-t border-gray-100">
-                  <div className="px-3 pt-2 text-[10px] font-black uppercase tracking-wider text-gray-400">
-                    Ajustes
-                  </div>
-
-                  <button
-                    onClick={() => setActiveTab('catalog-mobile')}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-                      activeTab === 'catalog-mobile' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Smartphone className="w-4 h-4" />
-                      <span>Catálogo Móvil &amp; Descargas</span>
-                    </div>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                      activeTab === 'catalog-mobile'
-                        ? 'bg-white/20 text-white'
-                        : (businessSettings?.mobileCatalogConfig?.enabled !== false ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200')
-                    }`}>
-                      {businessSettings?.mobileCatalogConfig?.enabled !== false ? 'Activo' : 'Oculto'}
-                    </span>
-                  </button>
 
                   <button
                     onClick={() => setActiveTab('settings')}
@@ -4111,12 +4099,29 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   >
                     <div className="flex items-center gap-2">
                       <Settings className="w-4 h-4" />
-                      <span>Datos &amp; Cobertura</span>
+                      <span>Datos del Taller &amp; Cobertura</span>
                     </div>
                     <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold border ${
                       activeTab === 'settings' ? 'bg-white/20 text-white border-white/20' : serviceSummary.color
                     }`}>
                       {serviceSummary.badge}
+                    </span>
+                  </button>
+
+                  <button
+                    onClick={() => setActiveTab('arcade')}
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                      activeTab === 'arcade' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Gamepad2 className="w-4 h-4 text-amber-500" />
+                      <span>Arcade de Fidelización</span>
+                    </div>
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                      activeTab === 'arcade' ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-800'
+                    }`}>
+                      10 Juegos
                     </span>
                   </button>
                 </div>

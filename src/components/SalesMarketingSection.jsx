@@ -670,16 +670,6 @@ export default function SalesMarketingSection({ token, products = [], settings =
             <ShoppingBag className="w-4 h-4" />
             <span>Libro de Pedidos ({orders.length})</span>
           </button>
-
-          <a
-            href={settings?.mobileCatalogConfig?.fileUrl || '/downloads/catalogo_movil_artesano_digital.pdf'}
-            download={settings?.mobileCatalogConfig?.fileName || 'Catalogo_Movil_Artesano_Digital.pdf'}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 transition-all font-bold text-xs cursor-pointer shadow-2xs"
-            title={settings?.mobileCatalogConfig?.title || 'Descargar catálogo PDF vertical 9:16 para celular con enlaces directos MakerWorld'}
-          >
-            <span>📱</span>
-            <span>{settings?.mobileCatalogConfig?.buttonText || 'Catálogo PDF Móvil'}</span>
-          </a>
         </div>
       </div>
 
