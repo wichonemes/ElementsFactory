@@ -8,7 +8,8 @@ import {
   Sliders, DollarSign, Calculator, Boxes, Minus, ChevronDown, ChevronUp, FileSpreadsheet,
   Home, Briefcase, PartyPopper, Printer, Palette, Scissors, Radio, Filter,
   Megaphone, Truck, MapPin, Calendar, Power, AlertCircle, Gift, Building2,
-  Database, Save, Download, Gamepad2, Smartphone, Camera, Wrench, Hammer
+  Database, Save, Download, Gamepad2, Smartphone, Camera, Wrench, Hammer,
+  Link2, HardDrive, Globe
 } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 import SalesMarketingSection from './SalesMarketingSection';
@@ -1497,7 +1498,24 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         code: 'HOG-3D-PLA-001',
         name: 'Nuevo Producto'
       }, rawMaterialsList),
-      privateNotes: ''
+      privateNotes: '',
+      repository: {
+        platform: 'makerworld',
+        makerworldUrl: '',
+        makerworldModelId: '',
+        author: '',
+        license: 'Comercial / Libre',
+        localPath: '',
+        cloudUrl: '',
+        slicerNotes: '',
+        additionalLinks: []
+      },
+      manufacturingTimes: {
+        machineHours: 1,
+        machineMinutes: 30,
+        postProcessingMinutes: 10,
+        leadTimeDays: '2 a 4 días hábiles'
+      }
     });
     setNewIncludedItemInput('');
     setEditorActiveTab('general');
@@ -1609,6 +1627,24 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       }
     } : generateDefaultRecipeForProduct(prod, rawMaterialsList));
 
+    const repo = prod.repository || {};
+    const mwUrl = repo.makerworldUrl || prod.makerWorldModel || prod.makerworldUrl || prod.repositoryUrl || '';
+    const mwId = repo.makerworldModelId || prod.makerWorldProfileId || prod.makerworldId || (mwUrl.match(/models\/(\d+)/)?.[1] || '');
+    const mwAuthor = repo.author || prod.makerWorldAuthor || prod.author || prod.designer || '';
+    const localP = repo.localPath || prod.localPath || prod.localFilesPath || '';
+    const cloudU = repo.cloudUrl || prod.cloudUrl || '';
+    const sNotes = repo.slicerNotes || prod.slicerNotes || prod.privateNotes || '';
+    const addLinks = Array.isArray(repo.additionalLinks) ? [...repo.additionalLinks] : [];
+
+    const mHoursVal = Number(prod.costBreakdown?.machineHours) || 
+                      (Number(resolvedRecipe?.manufacturingTimeMinutes) ? (Number(resolvedRecipe.manufacturingTimeMinutes) / 60) : 1.5);
+    const mH = Math.floor(mHoursVal);
+    const mM = Math.round((mHoursVal - mH) * 60);
+    const postProcMin = Number(prod.postProcessingTimeMinutes) || 
+                        Number(prod.costBreakdown?.manualWorkMin) || 
+                        Number(resolvedRecipe?.laborTimeMinutes) || 15;
+    const leadTime = prod.specifications?.estimatedLeadTime || '2 a 4 días hábiles';
+
     setEditorForm({
       ...prod,
       id: prod.id,
@@ -1652,7 +1688,24 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       },
       specifications: prod.specifications || {},
       variants: Array.isArray(prod.variants) ? [...prod.variants] : [],
-      customizationOptions: Array.isArray(prod.customizationOptions) ? [...prod.customizationOptions] : []
+      customizationOptions: Array.isArray(prod.customizationOptions) ? [...prod.customizationOptions] : [],
+      repository: {
+        platform: repo.platform || (mwUrl ? 'makerworld' : 'local'),
+        makerworldUrl: mwUrl,
+        makerworldModelId: mwId,
+        author: mwAuthor,
+        license: repo.license || prod.license || 'Comercial Autorizado',
+        localPath: localP,
+        cloudUrl: cloudU,
+        slicerNotes: sNotes,
+        additionalLinks: addLinks
+      },
+      manufacturingTimes: prod.manufacturingTimes || {
+        machineHours: mH,
+        machineMinutes: mM,
+        postProcessingMinutes: postProcMin,
+        leadTimeDays: leadTime
+      }
     });
     setEditorRecipeAccordion(true);
     setEditorMessage({ text: '', type: '' });
@@ -3278,6 +3331,32 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         payload.flashDealConfig.expiresAt = Date.now() + (payload.flashDealConfig.durationMinutes || 120) * 60 * 1000;
       }
 
+      // Sincronizar repositorio, archivos 3D y tiempos de manufactura
+      if (editorForm.repository) {
+        payload.repository = editorForm.repository;
+        payload.makerWorldModel = editorForm.repository.makerworldUrl || editorForm.makerWorldModel || '';
+        payload.makerworldUrl = payload.makerWorldModel;
+        payload.makerWorldAuthor = editorForm.repository.author || editorForm.makerWorldAuthor || '';
+        payload.localPath = editorForm.repository.localPath || editorForm.localPath || '';
+        payload.localFilesPath = payload.localPath;
+      }
+      if (editorForm.manufacturingTimes) {
+        payload.manufacturingTimes = editorForm.manufacturingTimes;
+        const totalMachineMins = (Number(editorForm.manufacturingTimes.machineHours) || 0) * 60 + (Number(editorForm.manufacturingTimes.machineMinutes) || 0);
+        const postProcMins = Number(editorForm.manufacturingTimes.postProcessingMinutes) || 0;
+        payload.manufacturingTimeMinutes = totalMachineMins;
+        payload.postProcessingTimeMinutes = postProcMins;
+        if (!payload.costBreakdown) payload.costBreakdown = {};
+        payload.costBreakdown.machineHours = Number((totalMachineMins / 60).toFixed(2));
+        payload.costBreakdown.manualWorkMin = postProcMins;
+        if (payload.manufacturingRecipe) {
+          payload.manufacturingRecipe.manufacturingTimeMinutes = totalMachineMins;
+          payload.manufacturingRecipe.laborTimeMinutes = postProcMins;
+        }
+        if (!payload.specifications) payload.specifications = {};
+        payload.specifications.estimatedLeadTime = editorForm.manufacturingTimes.leadTimeDays || payload.specifications.estimatedLeadTime || '2 a 4 días hábiles';
+      }
+
       const res = await fetch(url, {
         method,
         headers: {
@@ -4750,6 +4829,55 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 <p className="text-[11px] text-gray-500 line-clamp-1 mt-0.5">
                                   {p.shortDescription || 'Sin descripción corta.'}
                                 </p>
+
+                                {/* Badges Grid de Tiempo de Fabricación & Repositorio */}
+                                {(() => {
+                                  const mHoursVal = Number(p.costBreakdown?.machineHours) || 
+                                                    (Number(p.manufacturingRecipe?.manufacturingTimeMinutes) ? (Number(p.manufacturingRecipe.manufacturingTimeMinutes) / 60) : 0);
+                                  const pMinsVal = Number(p.postProcessingTimeMinutes) || Number(p.costBreakdown?.manualWorkMin) || 0;
+                                  const totalMins = Math.round(mHoursVal * 60) + pMinsVal;
+                                  const h = Math.floor(totalMins / 60);
+                                  const m = totalMins % 60;
+                                  const timeStr = totalMins > 0 ? (h > 0 ? `${h}h${m > 0 ? ` ${m}m` : ''}` : `${m}m`) : null;
+                                  const repoUrl = p.repository?.makerworldUrl || p.makerWorldModel || p.makerworldUrl || p.repositoryUrl;
+                                  const hasLocal = Boolean(p.repository?.localPath || p.localPath);
+                                  const mwId = p.repository?.makerworldModelId || p.makerWorldProfileId || (repoUrl?.match(/models\/(\d+)/)?.[1]);
+
+                                  if (!timeStr && !repoUrl && !hasLocal) return null;
+
+                                  return (
+                                    <div className="flex flex-wrap items-center gap-1 mt-1 text-[9px]">
+                                      {timeStr && (
+                                        <span
+                                          className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-md bg-amber-50 text-amber-800 border border-amber-200/80 font-mono font-bold"
+                                        >
+                                          <span>⏱️</span>
+                                          <span>{timeStr}</span>
+                                        </span>
+                                      )}
+                                      {repoUrl && (
+                                        <a
+                                          href={repoUrl}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          onClick={(e) => e.stopPropagation()}
+                                          className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-md bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-bold transition-colors cursor-pointer"
+                                        >
+                                          <span>🌐</span>
+                                          <span>{repoUrl.includes('makerworld') ? `MW${mwId ? ` #${mwId}` : ''}` : 'Fuente'}</span>
+                                          <ExternalLink className="w-2.5 h-2.5" />
+                                        </a>
+                                      )}
+                                      {hasLocal && (
+                                        <span
+                                          className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-md bg-stone-100 text-stone-700 border border-stone-200 font-mono"
+                                        >
+                                          <span>💻 PC</span>
+                                        </span>
+                                      )}
+                                    </div>
+                                  );
+                                })()}
                               </div>
                             </div>
 
@@ -4921,6 +5049,55 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 </span>
                               )}
                             </div>
+
+                            {/* Badges Móvil de Tiempo de Fabricación & Repositorio */}
+                            {(() => {
+                              const mHoursVal = Number(p.costBreakdown?.machineHours) || 
+                                                (Number(p.manufacturingRecipe?.manufacturingTimeMinutes) ? (Number(p.manufacturingRecipe.manufacturingTimeMinutes) / 60) : 0);
+                              const pMinsVal = Number(p.postProcessingTimeMinutes) || Number(p.costBreakdown?.manualWorkMin) || 0;
+                              const totalMins = Math.round(mHoursVal * 60) + pMinsVal;
+                              const h = Math.floor(totalMins / 60);
+                              const m = totalMins % 60;
+                              const timeStr = totalMins > 0 ? (h > 0 ? `${h}h${m > 0 ? ` ${m}m` : ''}` : `${m}m`) : null;
+                              const repoUrl = p.repository?.makerworldUrl || p.makerWorldModel || p.makerworldUrl || p.repositoryUrl;
+                              const hasLocal = Boolean(p.repository?.localPath || p.localPath);
+                              const mwId = p.repository?.makerworldModelId || p.makerWorldProfileId || (repoUrl?.match(/models\/(\d+)/)?.[1]);
+
+                              if (!timeStr && !repoUrl && !hasLocal) return null;
+
+                              return (
+                                <div className="flex flex-wrap items-center gap-1 mt-1 text-[9px]">
+                                  {timeStr && (
+                                    <span
+                                      className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-md bg-amber-50 text-amber-800 border border-amber-200/80 font-mono font-bold"
+                                    >
+                                      <span>⏱️</span>
+                                      <span>{timeStr}</span>
+                                    </span>
+                                  )}
+                                  {repoUrl && (
+                                    <a
+                                      href={repoUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      onClick={(e) => e.stopPropagation()}
+                                      className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-md bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-bold transition-colors cursor-pointer"
+                                    >
+                                      <span>🌐</span>
+                                      <span>{repoUrl.includes('makerworld') ? `MW${mwId ? ` #${mwId}` : ''}` : 'Fuente'}</span>
+                                      <ExternalLink className="w-2.5 h-2.5" />
+                                    </a>
+                                  )}
+                                  {hasLocal && (
+                                    <span
+                                      className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-md bg-stone-100 text-stone-700 border border-stone-200 font-mono"
+                                    >
+                                      <span>💻 PC</span>
+                                    </span>
+                                  )}
+                                </div>
+                              );
+                            })()}
                           </div>
                         </div>
 
@@ -5105,6 +5282,59 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                       <span className="text-[8.5px] text-gray-400 font-medium">
                                         ({colorOpts.length} col.)
                                       </span>
+                                    </div>
+                                  );
+                                })()}
+
+                                {/* Badges de Tiempo de Fabricación & Repositorio */}
+                                {(() => {
+                                  const mHoursVal = Number(p.costBreakdown?.machineHours) || 
+                                                    (Number(p.manufacturingRecipe?.manufacturingTimeMinutes) ? (Number(p.manufacturingRecipe.manufacturingTimeMinutes) / 60) : 0);
+                                  const pMinsVal = Number(p.postProcessingTimeMinutes) || Number(p.costBreakdown?.manualWorkMin) || 0;
+                                  const totalMins = Math.round(mHoursVal * 60) + pMinsVal;
+                                  const h = Math.floor(totalMins / 60);
+                                  const m = totalMins % 60;
+                                  const timeStr = totalMins > 0 ? (h > 0 ? `${h}h${m > 0 ? ` ${m}m` : ''}` : `${m}m`) : null;
+                                  const repoUrl = p.repository?.makerworldUrl || p.makerWorldModel || p.makerworldUrl || p.repositoryUrl;
+                                  const hasLocal = Boolean(p.repository?.localPath || p.localPath);
+                                  const mwId = p.repository?.makerworldModelId || p.makerWorldProfileId || (repoUrl?.match(/models\/(\d+)/)?.[1]);
+
+                                  if (!timeStr && !repoUrl && !hasLocal) return null;
+
+                                  return (
+                                    <div className="flex flex-wrap items-center gap-1 mt-1 text-[9px]">
+                                      {timeStr && (
+                                        <span
+                                          className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-md bg-amber-50 text-amber-800 border border-amber-200/80 font-mono font-bold"
+                                          title={`Tiempo total de taller: ${timeStr} (${mHoursVal.toFixed(1)}h máquina + ${pMinsVal}m acabado)`}
+                                        >
+                                          <span>⏱️</span>
+                                          <span>{timeStr}</span>
+                                        </span>
+                                      )}
+                                      {repoUrl && (
+                                        <a
+                                          href={repoUrl}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          onClick={(e) => e.stopPropagation()}
+                                          className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-md bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-bold transition-colors cursor-pointer"
+                                          title={`Ver en repositorio: ${repoUrl}`}
+                                        >
+                                          <span>🌐</span>
+                                          <span>{repoUrl.includes('makerworld') ? `MW${mwId ? ` #${mwId}` : ''}` : 'Fuente'}</span>
+                                          <ExternalLink className="w-2.5 h-2.5" />
+                                        </a>
+                                      )}
+                                      {hasLocal && (
+                                        <span
+                                          className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-md bg-stone-100 text-stone-700 border border-stone-200 font-mono"
+                                          title={`Archivo local: ${p.repository?.localPath || p.localPath}`}
+                                        >
+                                          <span>💻</span>
+                                          <span>PC</span>
+                                        </span>
+                                      )}
                                     </div>
                                   );
                                 })()}
@@ -6847,6 +7077,22 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   }`}>
                     ${editorForm.price}
                   </span>
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setEditorActiveTab('repo')}
+                className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
+                  editorActiveTab === 'repo'
+                    ? 'bg-[#2D4F3E] text-white shadow-sm'
+                    : 'bg-white text-gray-700 border border-stone-200 hover:bg-stone-50'
+                }`}
+              >
+                <Link2 className="w-3.5 h-3.5" />
+                <span>5. Repositorio &amp; Fabricación</span>
+                {(editorForm.repository?.makerworldUrl || editorForm.makerWorldModel || editorForm.repository?.localPath) && (
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                 )}
               </button>
             </div>
@@ -10402,21 +10648,601 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                     {/* NAVEGACIÓN UX INFERIOR PESTAÑA 4 */}
                     <div className="pt-4 border-t border-stone-200 flex flex-wrap items-center justify-between gap-3 bg-stone-50/80 p-3.5 rounded-2xl">
-                      <button
-                        type="button"
-                        onClick={() => setEditorActiveTab('packaging')}
-                        className="px-3.5 py-2 rounded-xl border border-stone-300 bg-white hover:bg-stone-100 text-stone-700 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
-                      >
-                        <span>⬅️</span>
-                        <span>Volver a: 3. Embalaje &amp; Flete</span>
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setEditorActiveTab('packaging')}
+                          className="px-3.5 py-2 rounded-xl border border-stone-300 bg-white hover:bg-stone-100 text-stone-700 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+                        >
+                          <span>⬅️</span>
+                          <span>Volver a: 3. Embalaje &amp; Flete</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setEditorActiveTab('taller')}
+                          className="px-3.5 py-2 rounded-xl border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+                        >
+                          <span>🪵 Revisar Insumos</span>
+                        </button>
+                      </div>
 
                       <button
                         type="button"
-                        onClick={() => setEditorActiveTab('taller')}
-                        className="px-3.5 py-2 rounded-xl border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+                        onClick={() => setEditorActiveTab('repo')}
+                        className="px-4 py-2 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white font-black text-xs flex items-center gap-1.5 shadow-md transition-all cursor-pointer active:scale-95"
                       >
-                        <span>🪵 Revisar Insumos de Taller</span>
+                        <span>Continuar a: 5. Repositorio &amp; Fabricación</span>
+                        <Link2 className="w-3.5 h-3.5" />
+                        <span>➡️</span>
+                      </button>
+                    </div>
+
+                  </div>
+                );
+              })()}
+
+              {/* ======================================================== */}
+              {/* PESTAÑA 5: REPOSITORIO, ARCHIVOS 3D & FABRICACIÓN         */}
+              {/* ======================================================== */}
+              {editorActiveTab === 'repo' && (() => {
+                const repo = editorForm.repository || {};
+                const times = editorForm.manufacturingTimes || {
+                  machineHours: Math.floor(Number(editorForm.costBreakdown?.machineHours) || 1),
+                  machineMinutes: Math.round(((Number(editorForm.costBreakdown?.machineHours) || 1.5) % 1) * 60),
+                  postProcessingMinutes: Number(editorForm.costBreakdown?.manualWorkMin) || 10,
+                  leadTimeDays: editorForm.specifications?.estimatedLeadTime || '2 a 4 días hábiles'
+                };
+
+                const updateRepo = (patch) => {
+                  setEditorForm(prev => {
+                    const nextRepo = { ...(prev.repository || {}), ...patch };
+                    return {
+                      ...prev,
+                      repository: nextRepo,
+                      makerWorldModel: nextRepo.makerworldUrl || prev.makerWorldModel,
+                      makerworldUrl: nextRepo.makerworldUrl || prev.makerworldUrl,
+                      makerWorldAuthor: nextRepo.author || prev.makerWorldAuthor,
+                      localPath: nextRepo.localPath || prev.localPath
+                    };
+                  });
+                };
+
+                const updateTimes = (patch) => {
+                  setEditorForm(prev => {
+                    const nextTimes = { ...(prev.manufacturingTimes || times), ...patch };
+                    const mH = Number(nextTimes.machineHours) || 0;
+                    const mM = Number(nextTimes.machineMinutes) || 0;
+                    const totalMachineMins = (mH * 60) + mM;
+                    const postProcMins = Number(nextTimes.postProcessingMinutes) || 0;
+                    return {
+                      ...prev,
+                      manufacturingTimes: nextTimes,
+                      manufacturingTimeMinutes: totalMachineMins,
+                      postProcessingTimeMinutes: postProcMins,
+                      costBreakdown: {
+                        ...(prev.costBreakdown || {}),
+                        machineHours: Number((totalMachineMins / 60).toFixed(2)),
+                        manualWorkMin: postProcMins
+                      },
+                      specifications: {
+                        ...(prev.specifications || {}),
+                        estimatedLeadTime: nextTimes.leadTimeDays || prev.specifications?.estimatedLeadTime || '2 a 4 días hábiles'
+                      }
+                    };
+                  });
+                };
+
+                const mH = Number(times.machineHours || 0);
+                const mM = Number(times.machineMinutes || 0);
+                const postM = Number(times.postProcessingMinutes || 0);
+                const totalMins = (mH * 60) + mM + postM;
+                const totalH = Math.floor(totalMins / 60);
+                const totalRemM = totalMins % 60;
+
+                const handleAddLink = () => {
+                  const links = Array.isArray(repo.additionalLinks) ? [...repo.additionalLinks] : [];
+                  links.push({ title: 'Otro repositorio', url: '' });
+                  updateRepo({ additionalLinks: links });
+                };
+
+                const handleUpdateLink = (idx, field, val) => {
+                  const links = Array.isArray(repo.additionalLinks) ? [...repo.additionalLinks] : [];
+                  if (links[idx]) {
+                    links[idx] = { ...links[idx], [field]: val };
+                    updateRepo({ additionalLinks: links });
+                  }
+                };
+
+                const handleRemoveLink = (idx) => {
+                  const links = (repo.additionalLinks || []).filter((_, i) => i !== idx);
+                  updateRepo({ additionalLinks: links });
+                };
+
+                return (
+                  <div className="p-4 sm:p-6 space-y-6 max-w-5xl mx-auto w-full">
+                    
+                    {/* ENCABEZADO EXPLICATIVO */}
+                    <div className="bg-gradient-to-r from-emerald-900 to-[#1F3327] rounded-3xl p-5 text-white shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/30 text-emerald-300 text-[10px] font-bold uppercase tracking-wider border border-emerald-400/20">
+                            Control de Taller &amp; Origen
+                          </span>
+                          <span className="font-mono text-xs text-emerald-200 font-bold">
+                            {editorForm.sku || editorForm.code}
+                          </span>
+                        </div>
+                        <h3 className="text-lg font-black tracking-tight">
+                          5. Repositorio, Archivos 3D &amp; Tiempos de Fabricación
+                        </h3>
+                        <p className="text-xs text-emerald-100/80 mt-0.5 max-w-xl">
+                          Registra dónde se encuentra el modelo 3D (enlace MakerWorld, ruta local en tu PC o nube) y define con precisión los tiempos de impresión y acabado.
+                        </p>
+                      </div>
+
+                      <div className="bg-white/10 backdrop-blur-xs p-3 rounded-2xl border border-white/15 text-center min-w-[170px] shrink-0">
+                        <span className="text-[10px] font-semibold text-emerald-200 block">Tiempo Total en Taller:</span>
+                        <div className="text-xl font-black font-mono text-white mt-0.5">
+                          ⏱️ {totalH > 0 ? `${totalH}h ` : ''}{totalRemM}m
+                        </div>
+                        <span className="text-[10px] text-emerald-300 block font-medium">
+                          ({(mH * 60 + mM)}m maq. + {postM}m manual)
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* BLOQUE 1: REPOSITORIO Y FUENTE DEL MODELO 3D */}
+                    <div className="bg-white rounded-2xl border border-[#E8E4DA] p-4 sm:p-5 shadow-xs space-y-4">
+                      <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold">
+                            <Globe className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-sm text-gray-800">
+                              Repositorio Web del Modelo (MakerWorld, Printables, etc.)
+                            </h4>
+                            <p className="text-[11px] text-gray-500">
+                              Enlace directo para descargar el archivo, consultar la ficha del autor o actualizar perfiles de impresión.
+                            </p>
+                          </div>
+                        </div>
+
+                        {repo.makerworldUrl && (
+                          <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold flex items-center gap-1">
+                            <Check className="w-3 h-3 text-emerald-600" />
+                            <span>Vinculado</span>
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Input Principal URL MakerWorld */}
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-bold text-gray-700 flex items-center justify-between">
+                          <span>URL / Enlace del Modelo en MakerWorld u otra web:</span>
+                          {repo.makerworldUrl && (
+                            <span className="text-[10.5px] text-gray-400 font-normal">
+                              Haz clic en 'Probar Enlace' para verificar
+                            </span>
+                          )}
+                        </label>
+                        <div className="flex items-center gap-2">
+                          <div className="relative flex-1">
+                            <input
+                              type="url"
+                              value={repo.makerworldUrl || ''}
+                              onChange={e => updateRepo({ makerworldUrl: e.target.value })}
+                              placeholder="https://makerworld.com/es/models/1804162 o URL del repositorio..."
+                              className="w-full pl-3 pr-8 py-2 rounded-xl border border-stone-300 text-xs font-mono focus:border-[#2D4F3E] focus:outline-hidden"
+                            />
+                            {repo.makerworldUrl && (
+                              <button
+                                type="button"
+                                onClick={() => updateRepo({ makerworldUrl: '' })}
+                                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs cursor-pointer"
+                                title="Borrar"
+                              >
+                                ✕
+                              </button>
+                            )}
+                          </div>
+
+                          <button
+                            type="button"
+                            disabled={!repo.makerworldUrl}
+                            onClick={() => {
+                              if (repo.makerworldUrl) {
+                                window.open(repo.makerworldUrl, '_blank', 'noopener,noreferrer');
+                              }
+                            }}
+                            className={`px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                              repo.makerworldUrl
+                                ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-xs'
+                                : 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'
+                            }`}
+                            title="Abrir enlace en nueva pestaña"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                            <span>Probar Enlace</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            disabled={!repo.makerworldUrl}
+                            onClick={() => {
+                              if (repo.makerworldUrl) {
+                                navigator.clipboard.writeText(repo.makerworldUrl);
+                                setEditorMessage({ text: '¡Enlace de MakerWorld copiado al portapapeles!', type: 'success' });
+                                setTimeout(() => setEditorMessage({ text: '', type: '' }), 3000);
+                              }
+                            }}
+                            className="p-2 rounded-xl border border-stone-300 bg-white hover:bg-stone-50 text-gray-700 text-xs font-bold cursor-pointer transition-colors"
+                            title="Copiar enlace"
+                          >
+                            <Copy className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Metadatos adicionales de la fuente */}
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                        <div>
+                          <label className="text-[11px] font-bold text-gray-600 block mb-1">
+                            ID / Código del Modelo:
+                          </label>
+                          <input
+                            type="text"
+                            value={repo.makerworldModelId || ''}
+                            onChange={e => updateRepo({ makerworldModelId: e.target.value })}
+                            placeholder="Ej: 1804162"
+                            className="w-full px-3 py-1.5 rounded-xl border border-stone-300 text-xs font-mono"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[11px] font-bold text-gray-600 block mb-1">
+                            Autor / Diseñador Original:
+                          </label>
+                          <input
+                            type="text"
+                            value={repo.author || ''}
+                            onChange={e => updateRepo({ author: e.target.value })}
+                            placeholder="Ej: Mesmar / CrazyModding / Taller"
+                            className="w-full px-3 py-1.5 rounded-xl border border-stone-300 text-xs"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[11px] font-bold text-gray-600 block mb-1">
+                            Licencia de Uso / Comercial:
+                          </label>
+                          <select
+                            value={repo.license || 'Comercial Autorizado'}
+                            onChange={e => updateRepo({ license: e.target.value })}
+                            className="w-full px-3 py-1.5 rounded-xl border border-stone-300 text-xs bg-white cursor-pointer"
+                          >
+                            <option value="Comercial Autorizado">Comercial Autorizado</option>
+                            <option value="Maker's Club / Membresía">Maker's Club / Membresía</option>
+                            <option value="Standard Digital File License">Standard Digital File License</option>
+                            <option value="Creative Commons (CC BY-NC)">Creative Commons (CC BY-NC)</option>
+                            <option value="Creative Commons (CC BY)">Creative Commons (CC BY)</option>
+                            <option value="Diseño Exclusivo Artesano Digital">Diseño Exclusivo Artesano Digital</option>
+                            <option value="Dominio Público / Libre">Dominio Público / Libre</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* Enlace en la nube o Drive */}
+                      <div className="space-y-1 pt-1">
+                        <label className="text-[11px] font-bold text-gray-600 block">
+                          Carpeta o Backup en la Nube (Google Drive, Dropbox, OneDrive, GitHub):
+                        </label>
+                        <input
+                          type="url"
+                          value={repo.cloudUrl || ''}
+                          onChange={e => updateRepo({ cloudUrl: e.target.value })}
+                          placeholder="https://drive.google.com/drive/folders/... (Opcional)"
+                          className="w-full px-3 py-1.5 rounded-xl border border-stone-300 text-xs font-mono"
+                        />
+                      </div>
+                    </div>
+
+                    {/* BLOQUE 2: UBICACIÓN DE ARCHIVOS EN TU COMPUTADORA (LOCAL PC) */}
+                    <div className="bg-white rounded-2xl border border-[#E8E4DA] p-4 sm:p-5 shadow-xs space-y-4">
+                      <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center font-bold">
+                            <HardDrive className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-sm text-gray-800">
+                              Ubicación de Archivos en tu Computadora (PC Local / Taller)
+                            </h4>
+                            <p className="text-[11px] text-gray-500">
+                              Ruta de la carpeta o archivo .3mf / .stl en tu equipo para abrirlo directamente en Bambu Studio, Cura o PrusaSlicer.
+                            </p>
+                          </div>
+                        </div>
+
+                        {repo.localPath && (
+                          <span className="px-2 py-0.5 rounded-full bg-purple-50 text-purple-800 border border-purple-200 text-[10px] font-bold">
+                            💻 Guardado en PC
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Input de Ruta Local */}
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-bold text-gray-700 block">
+                          Ruta completa del archivo o carpeta en tu disco duro:
+                        </label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="text"
+                            value={repo.localPath || ''}
+                            onChange={e => updateRepo({ localPath: e.target.value })}
+                            placeholder="C:\Users\OEM\Modelos3D\Nombre_Producto\archivo.3mf"
+                            className="flex-1 px-3 py-2 rounded-xl border border-stone-300 text-xs font-mono focus:border-[#2D4F3E] focus:outline-hidden"
+                          />
+
+                          <button
+                            type="button"
+                            disabled={!repo.localPath}
+                            onClick={() => {
+                              if (repo.localPath) {
+                                navigator.clipboard.writeText(repo.localPath);
+                                setEditorMessage({ text: '¡Ruta local copiada! Puedes pegarla en el Explorador de Windows o tu laminador.', type: 'success' });
+                                setTimeout(() => setEditorMessage({ text: '', type: '' }), 3500);
+                              }
+                            }}
+                            className={`px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                              repo.localPath
+                                ? 'bg-[#2D4F3E] hover:bg-[#20392C] text-white shadow-xs'
+                                : 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'
+                            }`}
+                            title="Copiar ruta para el Explorador de Windows"
+                          >
+                            <Copy className="w-3.5 h-3.5" />
+                            <span>Copiar Ruta PC</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Notas Técnicas de Rebanado (Slicer) */}
+                      <div className="space-y-1 pt-1">
+                        <label className="text-[11px] font-bold text-gray-600 block">
+                          Notas de Rebanador / Parámetros de Impresión (Boquilla, Relleno, Capas, Soportes):
+                        </label>
+                        <input
+                          type="text"
+                          value={repo.slicerNotes || ''}
+                          onChange={e => updateRepo({ slicerNotes: e.target.value })}
+                          placeholder="Ej: Boquilla 0.4mm, capa 0.20mm, 15% giroide, soportes tipo árbol activados..."
+                          className="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs"
+                        />
+                      </div>
+                    </div>
+
+                    {/* BLOQUE 3: TIEMPOS ESTIMADOS DE FABRICACIÓN Y DESPACHO */}
+                    <div className="bg-white rounded-2xl border border-[#E8E4DA] p-4 sm:p-5 shadow-xs space-y-4">
+                      <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
+                            <Clock className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-sm text-gray-800">
+                              Tiempos Estimados de Fabricación &amp; Entrega
+                            </h4>
+                            <p className="text-[11px] text-gray-500">
+                              Define el tiempo de uso de maquinaria, post-procesado manual y el plazo prometido de despacho al cliente.
+                            </p>
+                          </div>
+                        </div>
+
+                        <span className="px-2.5 py-1 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 font-mono font-bold text-xs">
+                          ⏱️ Total: {totalH > 0 ? `${totalH}h ` : ''}{totalRemM}m
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        
+                        {/* 1. Tiempo de Maquinaria */}
+                        <div className="p-3.5 bg-stone-50 rounded-2xl border border-stone-200/80 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <label className="font-bold text-xs text-gray-800 flex items-center gap-1">
+                              <span>🖨️ Tiempo de Máquina:</span>
+                            </label>
+                            <span className="text-[10px] font-mono text-gray-500">Impresión / Láser</span>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2">
+                            <div>
+                              <span className="text-[10px] text-gray-500 block mb-0.5">Horas:</span>
+                              <input
+                                type="number"
+                                min="0"
+                                max="100"
+                                value={times.machineHours ?? 0}
+                                onChange={e => updateTimes({ machineHours: Math.max(0, parseInt(e.target.value) || 0) })}
+                                className="w-full px-2.5 py-1.5 rounded-xl border border-stone-300 text-xs font-mono font-bold bg-white text-center"
+                              />
+                            </div>
+                            <div>
+                              <span className="text-[10px] text-gray-500 block mb-0.5">Minutos:</span>
+                              <input
+                                type="number"
+                                min="0"
+                                max="59"
+                                value={times.machineMinutes ?? 0}
+                                onChange={e => updateTimes({ machineMinutes: Math.min(59, Math.max(0, parseInt(e.target.value) || 0)) })}
+                                className="w-full px-2.5 py-1.5 rounded-xl border border-stone-300 text-xs font-mono font-bold bg-white text-center"
+                              />
+                            </div>
+                          </div>
+                          <span className="text-[10px] text-gray-500 block text-center">
+                            Subtotal: {(mH * 60) + mM} minutos de máquina
+                          </span>
+                        </div>
+
+                        {/* 2. Tiempo de Post-Procesado */}
+                        <div className="p-3.5 bg-stone-50 rounded-2xl border border-stone-200/80 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <label className="font-bold text-xs text-gray-800 flex items-center gap-1">
+                              <span>🧤 Post-procesado Manual:</span>
+                            </label>
+                            <span className="text-[10px] font-mono text-gray-500">Mano de obra</span>
+                          </div>
+
+                          <div>
+                            <span className="text-[10px] text-gray-500 block mb-0.5">Minutos de acabado / ensamble:</span>
+                            <div className="flex items-center gap-1.5">
+                              <input
+                                type="number"
+                                min="0"
+                                max="600"
+                                value={times.postProcessingMinutes ?? 10}
+                                onChange={e => updateTimes({ postProcessingMinutes: Math.max(0, parseInt(e.target.value) || 0) })}
+                                className="w-full px-2.5 py-1.5 rounded-xl border border-stone-300 text-xs font-mono font-bold bg-white text-center"
+                              />
+                              <span className="text-xs font-bold text-gray-600">min</span>
+                            </div>
+                          </div>
+                          <span className="text-[10px] text-gray-500 block text-center">
+                            Retiro soportes, lijado, argolla, empaque
+                          </span>
+                        </div>
+
+                        {/* 3. Plazo de Entrega al Cliente */}
+                        <div className="p-3.5 bg-stone-50 rounded-2xl border border-stone-200/80 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <label className="font-bold text-xs text-gray-800 flex items-center gap-1">
+                              <span>🚚 Despacho al Cliente:</span>
+                            </label>
+                            <span className="text-[10px] font-mono text-gray-500">Promesa de entrega</span>
+                          </div>
+
+                          <div>
+                            <span className="text-[10px] text-gray-500 block mb-0.5">Plazo visible en ficha técnica:</span>
+                            <select
+                              value={times.leadTimeDays || '2 a 4 días hábiles'}
+                              onChange={e => updateTimes({ leadTimeDays: e.target.value })}
+                              className="w-full px-2.5 py-1.5 rounded-xl border border-stone-300 text-xs bg-white cursor-pointer font-bold text-gray-700"
+                            >
+                              <option value="Mismo día (en stock)">Mismo día (en stock)</option>
+                              <option value="1 a 2 días hábiles">1 a 2 días hábiles (rápido)</option>
+                              <option value="2 a 4 días hábiles">2 a 4 días hábiles (estándar)</option>
+                              <option value="3 a 5 días hábiles">3 a 5 días hábiles (personalizado)</option>
+                              <option value="5 a 7 días hábiles">5 a 7 días hábiles (bajo pedido)</option>
+                            </select>
+                          </div>
+                          <input
+                            type="text"
+                            value={times.leadTimeDays || ''}
+                            onChange={e => updateTimes({ leadTimeDays: e.target.value })}
+                            placeholder="O escribe plazo personalizado..."
+                            className="w-full px-2 py-1 rounded-lg border border-stone-300 text-[11px] bg-white mt-1"
+                          />
+                        </div>
+
+                      </div>
+                    </div>
+
+                    {/* BLOQUE 4: ENLACES ADICIONALES (OPCIONAL) */}
+                    <div className="bg-white rounded-2xl border border-[#E8E4DA] p-4 sm:p-5 shadow-xs space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-bold text-xs text-gray-800">
+                            Enlaces Adicionales de Referencia (Videos, BOM externa, datasheets):
+                          </h4>
+                          <p className="text-[10.5px] text-gray-500">
+                            Agrega enlaces complementarios de ensamble, componentes o recursos del producto.
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={handleAddLink}
+                          className="px-2.5 py-1 rounded-xl bg-stone-100 hover:bg-stone-200 text-gray-700 text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
+                        >
+                          <Plus className="w-3.5 h-3.5" />
+                          <span>Agregar Enlace</span>
+                        </button>
+                      </div>
+
+                      {Array.isArray(repo.additionalLinks) && repo.additionalLinks.length > 0 ? (
+                        <div className="space-y-2 pt-1">
+                          {repo.additionalLinks.map((link, idx) => (
+                            <div key={idx} className="flex items-center gap-2 bg-stone-50 p-2 rounded-xl border border-stone-200">
+                              <input
+                                type="text"
+                                value={link.title || ''}
+                                onChange={e => handleUpdateLink(idx, 'title', e.target.value)}
+                                placeholder="Nombre (ej: Video de ensamble)"
+                                className="w-1/3 px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white"
+                              />
+                              <input
+                                type="url"
+                                value={link.url || ''}
+                                onChange={e => handleUpdateLink(idx, 'url', e.target.value)}
+                                placeholder="https://..."
+                                className="flex-1 px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs font-mono bg-white"
+                              />
+                              {link.url && (
+                                <button
+                                  type="button"
+                                  onClick={() => window.open(link.url, '_blank')}
+                                  className="p-1.5 text-blue-600 hover:text-blue-800 cursor-pointer"
+                                  title="Abrir"
+                                >
+                                  <ExternalLink className="w-3.5 h-3.5" />
+                                </button>
+                              )}
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveLink(idx)}
+                                className="p-1.5 text-rose-500 hover:text-rose-700 cursor-pointer"
+                                title="Eliminar"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-[11px] text-gray-400 italic">
+                          No hay enlaces adicionales registrados para este producto.
+                        </p>
+                      )}
+                    </div>
+
+                    {/* NAVEGACIÓN UX INFERIOR PESTAÑA 5 */}
+                    <div className="pt-4 border-t border-stone-200 flex flex-wrap items-center justify-between gap-3 bg-stone-50/80 p-3.5 rounded-2xl">
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setEditorActiveTab('pricing')}
+                          className="px-3.5 py-2 rounded-xl border border-stone-300 bg-white hover:bg-stone-100 text-stone-700 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+                        >
+                          <span>⬅️ Volver a: 4. Precios &amp; Margen</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setEditorActiveTab('general')}
+                          className="px-3.5 py-2 rounded-xl border border-stone-300 bg-white hover:bg-stone-100 text-stone-700 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+                        >
+                          <span>📋 Ver Galería &amp; Datos</span>
+                        </button>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={handleSaveProduct}
+                        className="px-5 py-2 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white font-black text-xs flex items-center gap-1.5 shadow-md transition-all cursor-pointer active:scale-95"
+                      >
+                        <Save className="w-4 h-4" />
+                        <span>Guardar Producto Ahora</span>
                       </button>
                     </div>
 

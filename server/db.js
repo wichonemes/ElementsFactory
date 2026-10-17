@@ -75,1948 +75,8587 @@ const initialCategories = [
 // Initial Confirmed Products from approved catalog
 const initialProducts = [
   {
-    id: 'colgador-llaves-l14',
-    code: 'L14',
-    name: 'Colgador de llaves Bienvenidos',
-    priceType: 'starting_at',
-    price: 199,
-    priceUnit: 'pieza',
-    status: 'published',
-    featured: true,
-    worlds: ['hogar'],
-    categories: ['hogar-organizacion', 'hogar-decoracion'],
-    techniques: ['laser'],
-    primaryImage: '/uploads/img_002.jpg',
-    gallery: ['/uploads/img_002.jpg', '/uploads/img_001.jpg'],
-    shortDescription: 'Colgador de llaves en madera natural sólida con grabado láser botánico y percheros torneados.',
-    fullDescription: 'Mantén organizadas tus llaves desde que entras a casa. Fabricado en madera natural sólida y triplay de pino estufado (100% libre de MDF) con grabado láser botánico de alta definición y capa protectora de barniz transparente satinado. Incluye 3 perchas torneadas resistentes y orificios discretos para montaje en pared.',
-    specifications: {
-      dimensions: '25 cm de largo x 10 cm de alto x 1.5 cm de espesor',
-      material: 'Madera natural sólida y triplay de pino estufado 5.5mm (libre de MDF)',
-      finish: 'Capa de barniz transparente satinado protector contra humedad y grasa',
-      includes: '3 percheros de madera y cinta de montaje alta adherencia',
-      minQuantity: 1,
-      estimatedLeadTime: '2 a 3 días hábiles',
-      careNotes: 'Limpiar con paño seco o ligeramente húmedo. Madera tratada y sellada contra humedad.'
-    },
-    variants: [
-      { name: 'Grabado', options: ['"Bienvenidos"', 'Apellido familiar', 'Personalizado con nombres'] },
-      { name: 'Tono de Barniz', options: ['Barniz Natural Transparente', 'Nogal Americano', 'Caoba Clásico', 'Roble Claro Nórdico'] }
+    "id": "colgador-llaves-l14",
+    "code": "L14",
+    "name": "Colgador de llaves Bienvenidos",
+    "priceType": "fixed",
+    "price": 143,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "hogar"
     ],
-    customizationOptions: ['Nombre o apellido grabado', 'Diseño de hojas o minimalista'],
-    availability: 'made_to_order',
-    privateNotes: 'Corte y grabado en pino estufado 5.5mm. Lijado fino, capa uniforme de barniz transparente sellador contra humedad, instalación a presión de percheros torneados con gota de Resistol 850.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "hogar-organizacion",
+      "hogar-decoracion"
+    ],
+    "techniques": [
+      "laser"
+    ],
+    "primaryImage": "/uploads/catalog-v2-l14-context-eed2b244ab.webp",
+    "gallery": [
+      "/uploads/catalog-v2-l14-context-eed2b244ab.webp",
+      "/uploads/catalog-v2-l14-base-421cc8218a.webp",
+      "/uploads/catalog-v2-l14-detail-761d32f180.webp",
+      "/uploads/catalog-v2-l14-scale-d9a15f5c0a.webp"
+    ],
+    "shortDescription": "Colgador de llaves en madera natural sólida con grabado láser botánico y percheros torneados.",
+    "fullDescription": "Mantén organizadas tus llaves desde que entras a casa. Fabricado en madera natural sólida y triplay de pino estufado (100% libre de MDF) con grabado láser botánico de alta definición y capa protectora de barniz transparente satinado. Incluye 3 perchas torneadas resistentes y orificios discretos para montaje en pared.",
+    "specifications": {
+      "dimensions": "25 cm de largo x 10 cm de alto x 1.5 cm de espesor",
+      "material": "Madera natural sólida y triplay de pino estufado 5.5mm (libre de MDF)",
+      "finish": "Capa de barniz transparente satinado protector contra humedad y grasa",
+      "includes": "3 percheros de madera y cinta de montaje alta adherencia",
+      "minQuantity": 1,
+      "estimatedLeadTime": "2 a 3 días hábiles",
+      "careNotes": "Limpiar con paño seco o ligeramente húmedo. Madera tratada y sellada contra humedad."
+    },
+    "variants": [
+      {
+        "name": "Grabado",
+        "options": [
+          "\"Bienvenidos\"",
+          "Apellido familiar",
+          "Personalizado con nombres"
+        ]
+      },
+      {
+        "name": "Tono de Barniz",
+        "options": [
+          "Barniz Natural Transparente",
+          "Nogal Americano",
+          "Caoba Clásico",
+          "Roble Claro Nórdico"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Nombre o apellido grabado",
+      "Diseño de hojas o minimalista"
+    ],
+    "availability": "in_stock",
+    "privateNotes": "Corte y grabado en pino estufado 5.5mm. Lijado fino grano 220, capa uniforme de barniz transparente sellador contra humedad, instalación a presión de percheros torneados con gota de Resistol 850.",
+    "createdAt": "2026-10-14T14:44:43.574Z",
+    "whiteBgImage": "/uploads/catalog-v2-l14-base-421cc8218a.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-l14-detail-761d32f180.webp",
+    "measureImage": "/uploads/catalog-v2-l14-scale-d9a15f5c0a.webp",
+    "isBundle": false,
+    "flashDealConfig": {
+      "enabled": false,
+      "durationMinutes": 120,
+      "discountPercent": 20,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-16T05:47:53.103Z",
+    "stockQuantity": 25,
+    "costPrice": 85.5,
+    "costBreakdown": {
+      "plaGrams": 80,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 15,
+      "machineHours": 3.5,
+      "manualWorkMin": 12,
+      "packagingCost": 5,
+      "costStatus": "Verificado"
+    },
+    "sku": "HOG-LAS-PIN-GRA-014",
+    "skuBreakdown": {
+      "standardSku": "HOG-LAS-PIN-GRA-014",
+      "legacyCode": "L14",
+      "area": "HOG",
+      "technique": "LAS",
+      "material": "PIN",
+      "finish": "GRA",
+      "sequence": "014",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Organización",
+        "maquinaria": "⚡ Corte / Grabado Láser CO2 (Láser CO2 / Diodo)",
+        "materiaPrima": "🪵 Madera Natural Pino Estufado 5.5mm (Sin MDF)",
+        "acabadoTaller": "✨ Barniz Transparente Protector Satinado & Pulido 220",
+        "lote": "#014"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-l14-scale-d9a15f5c0a.webp",
+    "previousImagesBackup": null,
+    "manufacturingRecipe": {
+      "yieldUnits": 1,
+      "technique": "laser",
+      "notes": "Placa de pino estufado 5.5mm pulida con lija 220, cortada a láser con 3 percheros torneados fijados con Resistol 850 y barniz sellador.",
+      "lastUpdated": "2026-10-17T15:12:59.644Z",
+      "machinePowerWatts": 450,
+      "manufacturingTimeMinutes": 210,
+      "kwhCost": 3.5,
+      "energyCost": 0.66,
+      "laborTimeMinutes": 12,
+      "laborRatePerHour": 75,
+      "laborCost": 18.75,
+      "items": [
+        {
+          "id": "item-l14-pino5",
+          "materialId": "mat-triplay-pino-5mm",
+          "name": "Madera Triplay Pino 5.5mm para Estructuras Rígidas (60x40 cm)",
+          "category": "laser",
+          "supplyType": "direct",
+          "netQuantity": 260,
+          "wasteQuantity": 60,
+          "wasteType": "cut_remnants",
+          "totalQuantity": 320,
+          "unit": "cm²",
+          "unitCost": 0.0271,
+          "totalCost": 8.67
+        },
+        {
+          "id": "item-l14-perchas",
+          "materialId": "mat-percheros-madera",
+          "name": "Percheros Cilíndricos Torneados de Madera Pino con Perno",
+          "category": "laser",
+          "supplyType": "direct",
+          "netQuantity": 3,
+          "wasteQuantity": 0,
+          "wasteType": "none",
+          "totalQuantity": 3,
+          "unit": "pieza",
+          "unitCost": 12,
+          "totalCost": 36
+        },
+        {
+          "id": "item-l14-barniz",
+          "materialId": "mat-barniz-poliuretano-spray",
+          "name": "Barniz Poliuretano Transparente Satinado en Spray (400 ml)",
+          "category": "laser",
+          "supplyType": "direct",
+          "netQuantity": 5,
+          "wasteQuantity": 0,
+          "wasteType": "none",
+          "totalQuantity": 5,
+          "unit": "ml",
+          "unitCost": 0.3375,
+          "totalCost": 1.69
+        },
+        {
+          "id": "item-l14-resistol",
+          "materialId": "mat-pegamento-resistol-850",
+          "name": "Resistol 850 Pegamento Blanco para Madera Extra Fuerte (Bote 500g)",
+          "category": "ensamble",
+          "supplyType": "direct",
+          "netQuantity": 6,
+          "wasteQuantity": 1,
+          "wasteType": "manual",
+          "totalQuantity": 7,
+          "unit": "gotas",
+          "unitCost": 0.0085,
+          "totalCost": 0.06
+        },
+        {
+          "id": "item-l14-lija",
+          "materialId": "mat-lija-madera-fina-220",
+          "name": "Lija de Madera Fina Grano 220 para Pulido y Cantos Suaves (Pliego)",
+          "category": "consumables",
+          "supplyType": "indirect",
+          "netQuantity": 0.08,
+          "wasteQuantity": 0.02,
+          "wasteType": "manual",
+          "totalQuantity": 0.1,
+          "unit": "pliego",
+          "unitCost": 14,
+          "totalCost": 1.4
+        },
+        {
+          "id": "item-l14-sierra",
+          "materialId": "mat-desgaste-corte-sierra-laser",
+          "name": "Consumible Indirecto de Corte (Desgaste Hoja Sierra / Tubo Láser CO2)",
+          "category": "consumables",
+          "supplyType": "indirect",
+          "netQuantity": 1,
+          "wasteQuantity": 0,
+          "wasteType": "none",
+          "totalQuantity": 1,
+          "unit": "corte",
+          "unitCost": 1.5,
+          "totalCost": 1.5
+        },
+        {
+          "id": "item-l14-estopa",
+          "materialId": "mat-estopa-limpieza-taller",
+          "name": "Estopa de Algodón Fino y Paños para Barnizado y Limpieza (1 kg)",
+          "category": "consumables",
+          "supplyType": "indirect",
+          "netQuantity": 1,
+          "wasteQuantity": 0,
+          "wasteType": "none",
+          "totalQuantity": 1,
+          "unit": "paño",
+          "unitCost": 0.8,
+          "totalCost": 0.8
+        },
+        {
+          "id": "item-l14-cinta",
+          "materialId": "mat-cinta-enmascarar-laser",
+          "name": "Cinta de Enmascarar Crepé Grado Láser 50mm x 50m (Protección Anti-Ahumado)",
+          "category": "consumables",
+          "supplyType": "indirect",
+          "netQuantity": 1.5,
+          "wasteQuantity": 0.2,
+          "wasteType": "trimming",
+          "totalQuantity": 1.7,
+          "unit": "m",
+          "unitCost": 0.96,
+          "totalCost": 1.63
+        }
+      ],
+      "totalMaterialCost": 51.75,
+      "totalWasteCost": 2.15,
+      "wastePercentAverage": 4.2,
+      "packagingAndShipping": {
+        "enabled": true,
+        "packagingType": "caja_kraft",
+        "packagingCost": 12,
+        "packagingDetails": "Caja microcorrugado 30x15x6 cm + poliburbuja protectora + viruta kraft + etiqueta térmica",
+        "shippingNationwideEstimated": 149,
+        "shippingIncludedInPrice": false,
+        "notes": "Envío estándar a cualquier parte de la República Mexicana por FedEx / Estafeta / DHL"
+      }
+    },
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Taller Artesano",
+      "license": "Diseño Exclusivo Artesano Digital",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\L14\\",
+      "cloudUrl": "",
+      "slicerNotes": "Corte MDF/Acrílico 3mm a 65% potencia, grabado 300mm/s.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Taller Artesano",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\L14\\",
+    "manufacturingTimes": {
+      "machineHours": 3,
+      "machineMinutes": 30,
+      "postProcessingMinutes": 12,
+      "leadTimeDays": "2 a 3 días hábiles"
+    },
+    "manufacturingTimeMinutes": 210,
+    "postProcessingTimeMinutes": 12
   },
   {
-    id: 'lampara-mesa-t38',
-    code: 'T38',
-    name: 'Lámpara de mesa moderna',
-    priceType: 'quote',
-    price: null,
-    priceUnit: 'pieza',
-    status: 'published',
-    featured: true,
-    worlds: ['hogar'],
-    categories: ['hogar-decoracion'],
-    techniques: ['3d'],
-    primaryImage: '/uploads/img_002.jpg',
-    gallery: ['/uploads/img_002.jpg', '/uploads/img_001.jpg'],
-    shortDescription: 'Lámpara ambiental con estructura curva tridimensional y pantalla difusora de luz cálida.',
-    fullDescription: 'Pieza de iluminación ambiental que combina manufactura aditiva y diseño nórdico. Su estructura arqueada sostiene una pantalla cónica translúcida que proyecta una luz suave y acogedora sobre credenzas, burós o repisas.',
-    specifications: {
-      dimensions: '30 cm de altura x 16 cm de base',
-      material: 'Polímero biodegradable PLA Plus de alta densidad',
-      finish: 'Textura mate texturizada',
-      includes: 'Socket tipo candelabro, cable trenzado de 1.5m e interruptor de paso',
-      minQuantity: 1,
-      estimatedLeadTime: '4 a 6 días hábiles',
-      careNotes: 'Utilizar exclusivamente focos LED (máximo 7W) para evitar calor excesivo.'
-    },
-    variants: [
-      { name: 'Color de estructura', options: ['Arena / Nogal claro', 'Grafito carbón', 'Blanco tiza'] }
+    "id": "lampara-mesa-t38",
+    "code": "T38",
+    "name": "Lámpara de mesa moderna",
+    "priceType": "fixed",
+    "price": 267,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "hogar"
     ],
-    customizationOptions: ['Color de cable', 'Altura personalizada'],
-    availability: 'made_to_order',
-    privateNotes: 'Impresión en boquilla 0.6mm a 0.28 altura de capa para acabado sedoso.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "hogar-decoracion"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-t38-context-c9a001e0cb.webp",
+    "gallery": [
+      "/uploads/catalog-v2-t38-context-c9a001e0cb.webp",
+      "/uploads/catalog-v2-t38-base-9b30224c42.webp",
+      "/uploads/catalog-v2-t38-detail-5646839e28.webp",
+      "/uploads/catalog-v2-t38-scale-2c922d99ea.webp"
+    ],
+    "shortDescription": "Lámpara ambiental con estructura continua en C de polímero tipo madera y pantalla cónica difusora.",
+    "fullDescription": "Pieza de iluminación ambiental que combina manufactura aditiva y diseño contemporáneo. Su estructura continua en forma de C sostiene una pantalla cónica difusora que proyecta una luz cálida suave sobre escritorios, burós o credenzas.",
+    "specifications": {
+      "dimensions": "26 cm de altura x 18 cm de base",
+      "material": "Polímero biodegradable PLA Plus de alta densidad",
+      "finish": "Textura mate texturizada",
+      "includes": "Socket tipo candelabro, cable trenzado de 1.5m e interruptor de paso",
+      "minQuantity": 1,
+      "estimatedLeadTime": "2 a 4 días hábiles",
+      "careNotes": "Utilizar exclusivamente focos LED (máximo 7W) para evitar calor excesivo."
+    },
+    "variants": [
+      {
+        "name": "Color de estructura",
+        "options": [
+          "Arena / Nogal claro",
+          "Grafito carbón",
+          "Blanco tiza",
+          "🎨 Otro color a elegir (a convenir)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Color de cable",
+      "Altura personalizada"
+    ],
+    "availability": "in_stock",
+    "privateNotes": "Impresión en boquilla 0.6mm a 0.28 altura de capa para acabado sedoso.",
+    "createdAt": "2026-10-14T14:44:43.575Z",
+    "whiteBgImage": "/uploads/catalog-v2-t38-base-9b30224c42.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-t38-detail-5646839e28.webp",
+    "measureImage": "/uploads/catalog-v2-t38-scale-2c922d99ea.webp",
+    "stockQuantity": 10,
+    "costPrice": 160,
+    "costBreakdown": {
+      "plaGrams": 140,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 45,
+      "machineHours": 7.5,
+      "otherEquipCost": 0,
+      "manualWorkMin": 20,
+      "prepCost": 0,
+      "packagingCost": 12,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "updatedAt": "2026-10-15T01:16:39.479Z",
+    "flashDealConfig": {
+      "enabled": false,
+      "durationMinutes": 120,
+      "discountPercent": 20,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "sku": "HOG-3D-PLA-MAT-038",
+    "skuBreakdown": {
+      "standardSku": "HOG-3D-PLA-MAT-038",
+      "legacyCode": "T38",
+      "area": "HOG",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "MAT",
+      "sequence": "038",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "🧊 Impresión 3D (FDM / Filamento) (Granja 3D FDM)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Barniz / Textura Mate - Terso sin reflejos, elegante",
+        "lote": "#038"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-t38-scale-2c922d99ea.webp",
+    "makerWorldModel": "https://makerworld.com/es/models/1804162",
+    "makerWorldAuthor": "Mesmar",
+    "makerWorldProfileId": "1924098",
+    "makerWorldStatus": "elegido",
+    "repository": {
+      "platform": "makerworld",
+      "makerworldUrl": "https://makerworld.com/es/models/1804162",
+      "makerworldModelId": "1804162",
+      "author": "Mesmar",
+      "license": "Standard Digital File License (Comercial)",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\T38_Lampara_Mesmar\\Mesmar_v2.3mf",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm, relleno 15% giroide, sin soportes.",
+      "additionalLinks": []
+    },
+    "makerworldUrl": "https://makerworld.com/es/models/1804162",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\T38_Lampara_Mesmar\\Mesmar_v2.3mf",
+    "manufacturingTimes": {
+      "machineHours": 7,
+      "machineMinutes": 30,
+      "postProcessingMinutes": 20,
+      "leadTimeDays": "2 a 4 días hábiles"
+    },
+    "manufacturingTimeMinutes": 450,
+    "postProcessingTimeMinutes": 20
   },
   {
-    id: 'maceta-espiral-t6',
-    code: 'T6',
-    name: 'Maceta espiral geométrica',
-    priceType: 'starting_at',
-    price: 149,
-    priceUnit: 'pieza',
-    status: 'published',
-    featured: false,
-    worlds: ['hogar'],
-    categories: ['hogar-decoracion'],
-    techniques: ['3d'],
-    primaryImage: '/uploads/img_002.jpg',
-    gallery: ['/uploads/img_002.jpg'],
-    shortDescription: 'Maceta decorativa con ondas en torsión espiral y orificio de drenaje opcional.',
-    fullDescription: 'Maceta contemporánea de geometría helicoidal. Su diseño facetado crea juegos de sombra y luz en cualquier espacio con plantas vivas, suculentas o plantas artificiales.',
-    specifications: {
-      dimensions: '12 cm de diámetro x 11 cm de alto (para maceta 4 pulgadas)',
-      material: 'PLA Premium biodegradable',
-      finish: 'Satinado sedoso en tono verde salvia o terracota',
-      includes: 'Platillo base a juego',
-      minQuantity: 1,
-      estimatedLeadTime: '2 días hábiles',
-      careNotes: 'Apta para interior. Evitar exposición directa a rayos UV intensos prolongados.'
-    },
-    variants: [
-      { name: 'Color', options: ['Verde Salvia', 'Blanco Mármol', 'Grafito Mate', 'Terracota'] },
-      { name: 'Drenaje', options: ['Con orificio de drenaje', 'Cubre-maceta cerrado'] }
+    "id": "maceta-espiral-t6",
+    "code": "T6",
+    "name": "Maceta espiral geométrica",
+    "priceType": "starting_at",
+    "price": 149,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": false,
+    "worlds": [
+      "hogar"
     ],
-    customizationOptions: ['Tamaño a medida (chica, mediana, grande)'],
-    availability: 'in_stock',
-    privateNotes: 'Tiempo de impresión 4h 30m.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "hogar-decoracion"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-t6-context-e32a64d15d.webp",
+    "gallery": [
+      "/uploads/catalog-v2-t6-context-e32a64d15d.webp",
+      "/uploads/catalog-v2-t6-base-144a148bde.webp",
+      "/uploads/catalog-v2-t6-detail-9e43f64db8.webp",
+      "/uploads/catalog-v2-t6-scale-2f06d20c1a.webp"
+    ],
+    "shortDescription": "Maceta decorativa con ondas en torsión espiral y orificio de drenaje opcional.",
+    "fullDescription": "Maceta contemporánea de geometría helicoidal. Su diseño facetado crea juegos de sombra y luz en cualquier espacio con plantas vivas, suculentas o plantas artificiales.",
+    "specifications": {
+      "dimensions": "12 cm de diámetro x 11 cm de alto (para maceta 4 pulgadas)",
+      "material": "PLA Premium biodegradable",
+      "finish": "Satinado sedoso en tono verde salvia o terracota",
+      "includes": "Platillo base a juego",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Apta para interior. Evitar exposición directa a rayos UV intensos prolongados."
+    },
+    "variants": [
+      {
+        "name": "Color",
+        "options": [
+          "Verde Salvia",
+          "Blanco Mármol",
+          "Grafito Mate",
+          "Terracota",
+          "🎨 Otro color a elegir (a convenir)"
+        ]
+      },
+      {
+        "name": "Drenaje",
+        "options": [
+          "Con orificio de drenaje",
+          "Cubre-maceta cerrado"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Tamaño a medida (chica, mediana, grande)"
+    ],
+    "availability": "in_stock",
+    "privateNotes": "Tiempo de impresión 4h 30m.",
+    "createdAt": "2026-10-14T14:44:43.575Z",
+    "whiteBgImage": "/uploads/catalog-v2-t6-base-144a148bde.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-t6-detail-9e43f64db8.webp",
+    "measureImage": "/uploads/catalog-v2-t6-scale-2f06d20c1a.webp",
+    "stockQuantity": 9,
+    "costPrice": 75.7,
+    "costBreakdown": {
+      "plaGrams": 95,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 0,
+      "machineHours": 3.75,
+      "otherEquipCost": 0,
+      "manualWorkMin": 10,
+      "prepCost": 0,
+      "packagingCost": 5,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-14T23:16:38.914Z",
+    "sku": "HOG-3D-PLA-MAT-006",
+    "skuBreakdown": {
+      "standardSku": "HOG-3D-PLA-MAT-006",
+      "legacyCode": "T6",
+      "area": "HOG",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "MAT",
+      "sequence": "006",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "🧊 Impresión 3D (FDM / Filamento) (Granja 3D FDM)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Barniz / Textura Mate - Terso sin reflejos, elegante",
+        "lote": "#006"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-t6-scale-2f06d20c1a.webp",
+    "repository": {
+      "platform": "makerworld",
+      "makerworldUrl": "https://makerworld.com/es/models/1067062",
+      "makerworldModelId": "1067062",
+      "author": "CrazyModding",
+      "license": "Standard Digital File License",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\T6_Maceta_Espiral\\spiral_planter.3mf",
+      "cloudUrl": "",
+      "slicerNotes": "Pared triple (3 perímetros) para evitar fugas de agua.",
+      "additionalLinks": []
+    },
+    "makerWorldModel": "https://makerworld.com/es/models/1067062",
+    "makerworldUrl": "https://makerworld.com/es/models/1067062",
+    "makerWorldAuthor": "CrazyModding",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\T6_Maceta_Espiral\\spiral_planter.3mf",
+    "manufacturingTimes": {
+      "machineHours": 3,
+      "machineMinutes": 45,
+      "postProcessingMinutes": 10,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 225,
+    "postProcessingTimeMinutes": 10
   },
   {
-    id: 'bandeja-vaciabolsillos-t29',
-    code: 'T29',
-    name: 'Bandeja vaciabolsillos ovalada',
-    priceType: 'starting_at',
-    price: 149,
-    priceUnit: 'pieza',
-    status: 'published',
-    featured: false,
-    worlds: ['hogar', 'negocios'],
-    categories: ['hogar-organizacion', 'negocios-joyerias'],
-    techniques: ['3d'],
-    primaryImage: '/uploads/img_002.jpg',
-    gallery: ['/uploads/img_002.jpg', '/uploads/img_022.jpg'],
-    shortDescription: 'Bandeja con borde curvo suave para llaves, monedas, relojes o exhibición de joyería.',
-    fullDescription: 'Bandeja multiusos de superficie tersa y bordes elevados. Diseñada para mantener en orden las pertenencias cotidianas en la entrada de casa, en el buró o como charola de presentación para joyería en mostradores comerciales.',
-    specifications: {
-      dimensions: '22 cm de largo x 13 cm de ancho x 2.2 cm de profundidad',
-      material: 'Polímero compuesto con textura cerámica',
-      finish: 'Mate suave con gomitas protectoras en la base',
-      includes: 'Bandeja con base acolchada',
-      minQuantity: 1,
-      estimatedLeadTime: '2 a 3 días hábiles',
-      careNotes: 'Limpieza con trapo suave.'
-    },
-    variants: [
-      { name: 'Color', options: ['Blanco hueso', 'Verde olivo', 'Negro carbón'] },
-      { name: 'Forma', options: ['Ovalada', 'Flor / Cuadrifolio'] }
+    "id": "bandeja-vaciabolsillos-t29",
+    "code": "T29",
+    "name": "Bandeja vaciabolsillos ovalada",
+    "priceType": "starting_at",
+    "price": 149,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": false,
+    "worlds": [
+      "hogar",
+      "negocios",
+      "eventos"
     ],
-    customizationOptions: ['Grabado de iniciales en el fondo'],
-    availability: 'in_stock',
-    privateNotes: 'Utilizar relleno concéntrico al 20%.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "hogar-organizacion",
+      "negocios-joyerias"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/bandeja_vaciabolsillos_ovalada_contexto.jpg",
+    "gallery": [
+      "/uploads/bandeja_vaciabolsillos_ovalada_contexto.jpg",
+      "/uploads/bandeja_vaciabolsillos_ovalada_white.jpg",
+      "/uploads/catalog-v2-t29-detail-a425b5e774.webp",
+      "/uploads/catalog-v2-t29-scale-dd0637e08b.webp"
+    ],
+    "shortDescription": "Bandeja con borde curvo suave para llaves, monedas, relojes o exhibición de joyería.",
+    "fullDescription": "Bandeja multiusos de superficie tersa y bordes elevados. Diseñada para mantener en orden las pertenencias cotidianas en la entrada de casa, en el buró o como charola de presentación para joyería en mostradores comerciales.",
+    "specifications": {
+      "dimensions": "22 cm de largo x 13 cm de ancho x 2.2 cm de profundidad",
+      "material": "Polímero compuesto con textura cerámica",
+      "finish": "Mate suave con gomitas protectoras en la base",
+      "includes": "Bandeja con base acolchada",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Limpieza con trapo suave."
+    },
+    "variants": [
+      {
+        "name": "Color",
+        "options": [
+          "Blanco hueso",
+          "Verde olivo",
+          "Negro carbón",
+          "🎨 Otro color a elegir (a convenir)"
+        ]
+      },
+      {
+        "name": "Forma",
+        "options": [
+          "Ovalada",
+          "Flor / Cuadrifolio"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Grabado de iniciales en el fondo"
+    ],
+    "availability": "in_stock",
+    "privateNotes": "Utilizar relleno concéntrico al 20%.",
+    "createdAt": "2026-10-14T14:44:43.575Z",
+    "whiteBgImage": "/uploads/bandeja_vaciabolsillos_ovalada_white.jpg",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-t29-detail-a425b5e774.webp",
+    "measureImage": "/uploads/catalog-v2-t29-scale-dd0637e08b.webp",
+    "stockQuantity": 9,
+    "costPrice": 68,
+    "costBreakdown": {
+      "plaGrams": 80,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 0,
+      "machineHours": 3.25,
+      "otherEquipCost": 0,
+      "manualWorkMin": 10,
+      "prepCost": 0,
+      "packagingCost": 5,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "HOG-3D-CER-MAT-029",
+    "skuBreakdown": {
+      "standardSku": "HOG-3D-CER-MAT-029",
+      "legacyCode": "T29",
+      "area": "HOG",
+      "technique": "3D",
+      "material": "CER",
+      "finish": "MAT",
+      "sequence": "029",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "🧊 Impresión 3D (FDM / Filamento) (Granja 3D FDM)",
+        "materiaPrima": "🪵 Cerámica / Vidrio - Inorgánicos",
+        "acabadoTaller": "✨ Barniz / Textura Mate - Terso sin reflejos, elegante",
+        "lote": "#029"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-t29-scale-dd0637e08b.webp",
+    "repository": {
+      "platform": "makerworld",
+      "makerworldUrl": "https://makerworld.com/es/models/2145890",
+      "makerworldModelId": "2145890",
+      "author": "Taller Propio Artesano",
+      "license": "Diseño Exclusivo Artesano Digital",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\T29_Bandeja_Ovalada\\tray_oval.3mf",
+      "cloudUrl": "",
+      "slicerNotes": "Acabado planchado superior (ironing) en la base cóncava.",
+      "additionalLinks": []
+    },
+    "makerWorldModel": "https://makerworld.com/es/models/2145890",
+    "makerworldUrl": "https://makerworld.com/es/models/2145890",
+    "makerWorldAuthor": "Taller Propio Artesano",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\T29_Bandeja_Ovalada\\tray_oval.3mf",
+    "manufacturingTimes": {
+      "machineHours": 3,
+      "machineMinutes": 15,
+      "postProcessingMinutes": 10,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 195,
+    "postProcessingTimeMinutes": 10
   },
   {
-    id: 'marcos-imantados-3d-t2',
-    code: 'T2',
-    name: 'Marcos imantados para refrigerador',
-    priceType: 'starting_at',
-    price: 79,
-    priceUnit: 'c/u',
-    status: 'published',
-    featured: true,
-    worlds: ['hogar'],
-    categories: ['hogar-decoracion', 'hogar-regalos'],
-    techniques: ['3d'],
-    primaryImage: '/uploads/img_005.jpg',
-    gallery: ['/uploads/img_005.jpg', '/uploads/img_003.jpg'],
-    shortDescription: 'Marcos tridimensionales con potente imán de neodimio para fotos instantáneas y recuerdos.',
-    fullDescription: 'Viste tu refrigerador o mampara magnética con recuerdos familiares. Su diseño biselado da profundidad visual tipo galería y permite intercambiar las fotografías fácilmente sin dañarlas.',
-    specifications: {
-      dimensions: 'Para fotos tamaño Polaroid o mini prints (6.5 x 6.5 cm o 7 x 9 cm)',
-      material: 'Estructura rígida en PLA con imán oculto',
-      finish: 'Bicolor o monocromático mate',
-      includes: 'Marco con imán y mica transparente protectora',
-      minQuantity: 1,
-      estimatedLeadTime: '1 a 2 días hábiles',
-      careNotes: 'Evitar caídas sobre superficies duras.'
-    },
-    variants: [
-      { name: 'Color de marco', options: ['Verde bosque', 'Blanco nórdico', 'Grafito', 'Dorado'] },
-      { name: 'Formato', options: ['Cuadrado (6.5 x 6.5)', 'Rectangular (7 x 9 cm)'] }
+    "id": "marcos-imantados-3d-t2",
+    "code": "T2",
+    "name": "Marcos imantados para refrigerador",
+    "priceType": "starting_at",
+    "price": 79,
+    "priceUnit": "c/u",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "hogar",
+      "eventos"
     ],
-    customizationOptions: ['Incluye fotografía impresa si se envía en la cotización'],
-    availability: 'in_stock',
-    privateNotes: 'Usa imán de neodimio 10x2mm.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "hogar-decoracion",
+      "hogar-regalos"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-t2-context-b3bfb45271.webp",
+    "gallery": [
+      "/uploads/catalog-v2-t2-context-b3bfb45271.webp",
+      "/uploads/catalog-v2-t2-base-8b6fa72344.webp",
+      "/uploads/catalog-v2-t2-detail-25e3f42d09.webp",
+      "/uploads/catalog-v2-t2-scale-851dae3290.webp"
+    ],
+    "shortDescription": "Marcos tridimensionales con potente imán de neodimio para fotos instantáneas y recuerdos.",
+    "fullDescription": "Viste tu refrigerador o mampara magnética con recuerdos familiares. Su diseño biselado da profundidad visual tipo galería y permite intercambiar las fotografías fácilmente sin dañarlas.",
+    "specifications": {
+      "dimensions": "Para fotos tamaño Polaroid o mini prints (6.5 x 6.5 cm o 7 x 9 cm)",
+      "material": "Estructura rígida en PLA con imán oculto",
+      "finish": "Bicolor o monocromático mate",
+      "includes": "Marco con imán y mica transparente protectora",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Evitar caídas sobre superficies duras."
+    },
+    "variants": [
+      {
+        "name": "Color de marco",
+        "options": [
+          "Verde bosque",
+          "Blanco nórdico",
+          "Grafito",
+          "Dorado",
+          "🎨 Otro color a elegir (a convenir)"
+        ]
+      },
+      {
+        "name": "Formato",
+        "options": [
+          "Cuadrado (6.5 x 6.5)",
+          "Rectangular (7 x 9 cm)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Incluye fotografía impresa si se envía en la cotización"
+    ],
+    "availability": "in_stock",
+    "privateNotes": "Usa imán de neodimio 10x2mm.",
+    "createdAt": "2026-10-14T14:44:43.575Z",
+    "whiteBgImage": "/uploads/catalog-v2-t2-base-8b6fa72344.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-t2-detail-25e3f42d09.webp",
+    "measureImage": "/uploads/catalog-v2-t2-scale-851dae3290.webp",
+    "stockQuantity": 12,
+    "costPrice": 32,
+    "costBreakdown": {
+      "plaGrams": 25,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 8,
+      "machineHours": 1.2,
+      "otherEquipCost": 0,
+      "manualWorkMin": 5,
+      "prepCost": 0,
+      "packagingCost": 3,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "HOG-3D-TEX-MAT-002",
+    "skuBreakdown": {
+      "standardSku": "HOG-3D-TEX-MAT-002",
+      "legacyCode": "T2",
+      "area": "HOG",
+      "technique": "3D",
+      "material": "TEX",
+      "finish": "MAT",
+      "sequence": "002",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "🧊 Impresión 3D (FDM / Filamento) (Granja 3D FDM)",
+        "materiaPrima": "🪵 Textil / Manta de Algodón - Telas & Confección",
+        "acabadoTaller": "✨ Barniz / Textura Mate - Terso sin reflejos, elegante",
+        "lote": "#002"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-t2-scale-851dae3290.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\T2\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\T2\\",
+    "manufacturingTimes": {
+      "machineHours": 1,
+      "machineMinutes": 12,
+      "postProcessingMinutes": 5,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 72,
+    "postProcessingTimeMinutes": 5
   },
   {
-    id: 'fotoboton-acrilico-s10',
-    code: 'S10',
-    name: 'Fotobotón acrílico con imán',
-    priceType: 'starting_at',
-    price: 39,
-    priceUnit: 'c/u',
-    status: 'published',
-    featured: false,
-    worlds: ['hogar', 'eventos'],
-    categories: ['hogar-regalos', 'eventos-cumpleanos'],
-    techniques: ['sublimation'],
-    primaryImage: '/uploads/img_003.jpg',
-    gallery: ['/uploads/img_003.jpg', '/uploads/img_005.jpg'],
-    shortDescription: 'Botón con foto nítida encapsulada en acrílico de alto brillo con respaldo magnético.',
-    fullDescription: 'Detalle económico, resistente y luminoso para recuerdos familiares, mascotas o eventos. Fotografía impresa con tintas de alta fidelidad protegidas por una cápsula de acrílico transparente de alta óptica.',
-    specifications: {
-      dimensions: '5.5 cm de diámetro',
-      material: 'Acrílico inyectado y disco magnético posterior',
-      finish: 'Brillante ultratransparente',
-      includes: 'Imán adherido listo para colocar',
-      minQuantity: 3,
-      estimatedLeadTime: '1 a 3 días hábiles según volumen',
-      careNotes: 'No rayar con objetos metálicos.'
-    },
-    variants: [
-      { name: 'Forma', options: ['Circular', 'Cuadrado'] }
+    "id": "fotoboton-acrilico-s10",
+    "code": "S10",
+    "name": "Fotobotón acrílico con imán",
+    "priceType": "starting_at",
+    "price": 39,
+    "priceUnit": "c/u",
+    "status": "published",
+    "featured": false,
+    "worlds": [
+      "hogar",
+      "eventos"
     ],
-    customizationOptions: ['Foto proporcionada por el cliente', 'Texto breve o fecha'],
-    availability: 'made_to_order',
-    privateNotes: 'Impresión en papel fotográfico glossy 180g.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "hogar-regalos",
+      "eventos-cumpleanos"
+    ],
+    "techniques": [
+      "sublimation",
+      "sublimacion"
+    ],
+    "primaryImage": "/uploads/catalog-v2-s10-context-485eaf3642.webp",
+    "gallery": [
+      "/uploads/catalog-v2-s10-context-485eaf3642.webp",
+      "/uploads/catalog-v2-s10-base-a9f0d23d3d.webp",
+      "/uploads/catalog-v2-s10-detail-12ca9401e4.webp",
+      "/uploads/catalog-v2-s10-scale-58977e7af8.webp"
+    ],
+    "shortDescription": "Botón con foto nítida encapsulada en acrílico de alto brillo con respaldo magnético.",
+    "fullDescription": "Detalle económico, resistente y luminoso para recuerdos familiares, mascotas o eventos. Fotografía impresa con tintas de alta fidelidad protegidas por una cápsula de acrílico cristalino.",
+    "specifications": {
+      "dimensions": "5.5 cm de diámetro",
+      "material": "Acrílico inyectado y disco magnético posterior",
+      "finish": "Brillante ultratransparente",
+      "includes": "Imán adherido listo para colocar",
+      "minQuantity": 3,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "No rayar con objetos metálicos."
+    },
+    "variants": [
+      {
+        "name": "Forma",
+        "options": [
+          "Circular",
+          "Cuadrado"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Foto proporcionada por el cliente",
+      "Texto breve o fecha"
+    ],
+    "availability": "in_stock",
+    "privateNotes": "Impresión en papel fotográfico glossy 180g.",
+    "createdAt": "2026-10-14T14:44:43.575Z",
+    "whiteBgImage": "/uploads/catalog-v2-s10-base-a9f0d23d3d.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-s10-detail-12ca9401e4.webp",
+    "measureImage": "/uploads/catalog-v2-s10-scale-58977e7af8.webp",
+    "stockQuantity": 10,
+    "costPrice": 16,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 13,
+      "machineHours": 0.25,
+      "otherEquipCost": 0,
+      "manualWorkMin": 10,
+      "prepCost": 0,
+      "packagingCost": 2,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-15T16:11:07.555Z",
+    "sku": "HOG-SUB-ACR-BRI-010",
+    "skuBreakdown": {
+      "standardSku": "HOG-SUB-ACR-BRI-010",
+      "legacyCode": "S10",
+      "area": "HOG",
+      "technique": "SUB",
+      "material": "ACR",
+      "finish": "BRI",
+      "sequence": "010",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "☕ Sublimación Térmica (Prensa de Tazas / Plancha Térmica)",
+        "materiaPrima": "🪵 Acrílico Cristal / Color - Termoplásticos",
+        "acabadoTaller": "✨ Sellador Brillante / Resina - Efecto cristal brillante",
+        "lote": "#010"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-s10-scale-58977e7af8.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\S10\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\S10\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 15,
+      "postProcessingMinutes": 10,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 15,
+    "postProcessingTimeMinutes": 10
   },
   {
-    id: 'fotoiman-madera-l8',
-    code: 'L8',
-    name: 'Fotoimán de madera natural grabado',
-    priceType: 'starting_at',
-    price: 79,
-    priceUnit: 'pieza',
-    status: 'published',
-    featured: false,
-    worlds: ['hogar'],
-    categories: ['hogar-decoracion', 'hogar-regalos'],
-    techniques: ['laser'],
-    primaryImage: '/uploads/img_005.jpg',
-    gallery: ['/uploads/img_005.jpg', '/uploads/img_003.jpg'],
-    shortDescription: 'Retrato familiar o conmemorativo grabado a láser sobre madera natural de abedul con imán posterior.',
-    fullDescription: 'Un recuerdo rústico y cálido. Tu fotografía favorita montada sobre madera natural clara de abedul (sin MDF) con esquinas redondeadas, sellada con una capa de barniz transparente satinado y grabado láser inferior para dedicatorias o nombres de la familia.',
-    specifications: {
-      dimensions: '7.5 x 7.5 cm x 4 mm de espesor',
-      material: 'Madera natural de abedul / pino estufado de 3mm (sin MDF)',
-      finish: 'Capa de barniz transparente protector satinado y sellado de poro',
-      includes: 'Imán posterior de neodimio de alta adherencia',
-      minQuantity: 1,
-      estimatedLeadTime: '2 a 3 días hábiles',
-      careNotes: 'Madera tratada con barniz protector contra humedad ambiental.'
-    },
-    variants: [
-      { name: 'Tono de Barniz', options: ['Barniz Natural Transparente', 'Nogal Americano', 'Caoba Clásico', 'Verde Bosque Rústico'] },
-      { name: 'Grabado inferior', options: ['Con dedicatoria o fecha familiar', 'Solo fotografía grabada'] }
+    "id": "fotoiman-madera-l8",
+    "code": "L8",
+    "name": "Fotoimán de madera natural grabado",
+    "priceType": "starting_at",
+    "price": 79,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": false,
+    "worlds": [
+      "hogar",
+      "eventos"
     ],
-    customizationOptions: ['Nombre de familia', 'Fecha conmemorativa'],
-    availability: 'made_to_order',
-    privateNotes: 'Tramado fotográfico a 300 DPI sobre madera clara de abedul/pino estufado. Capa selladora de barniz transparente para fijar tonalidad y colocación de imán de neodimio N52 al reverso.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "hogar-decoracion",
+      "hogar-regalos"
+    ],
+    "techniques": [
+      "laser"
+    ],
+    "primaryImage": "/uploads/catalog-v2-l8-context-78caa3dc01.webp",
+    "gallery": [
+      "/uploads/catalog-v2-l8-context-78caa3dc01.webp",
+      "/uploads/catalog-v2-l8-base-843e429d93.webp",
+      "/uploads/catalog-v2-l8-detail-8fdec0405d.webp",
+      "/uploads/catalog-v2-l8-scale-c92f64e638.webp"
+    ],
+    "shortDescription": "Retrato familiar o conmemorativo grabado a láser sobre madera natural de abedul con imán posterior.",
+    "fullDescription": "Un recuerdo rústico y cálido. Tu fotografía favorita montada sobre madera natural clara de abedul (sin MDF) con esquinas redondeadas, sellada con una capa de barniz transparente satinado y grabado láser inferior para dedicatorias o nombres de la familia.",
+    "specifications": {
+      "dimensions": "7.5 x 7.5 cm x 4 mm de espesor",
+      "material": "Madera natural de abedul / pino estufado de 3mm (sin MDF)",
+      "finish": "Capa de barniz transparente protector satinado y sellado de poro",
+      "includes": "Imán posterior de neodimio de alta adherencia",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 3 días hábiles",
+      "careNotes": "Madera tratada con barniz protector contra humedad ambiental."
+    },
+    "variants": [
+      {
+        "name": "Tono de Barniz",
+        "options": [
+          "Barniz Natural Transparente",
+          "Nogal Americano",
+          "Caoba Clásico",
+          "Verde Bosque Rústico"
+        ]
+      },
+      {
+        "name": "Grabado inferior",
+        "options": [
+          "Con dedicatoria o fecha familiar",
+          "Solo fotografía grabada"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Nombre de familia",
+      "Fecha conmemorativa"
+    ],
+    "availability": "in_stock",
+    "privateNotes": "Tramado fotográfico a 300 DPI sobre madera clara de abedul/pino estufado. Capa selladora de barniz transparente para fijar tonalidad y colocación de imán de neodimio N52 al reverso.",
+    "createdAt": "2026-10-14T14:44:43.575Z",
+    "whiteBgImage": "/uploads/catalog-v2-l8-base-843e429d93.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-l8-detail-8fdec0405d.webp",
+    "measureImage": "/uploads/catalog-v2-l8-scale-c92f64e638.webp",
+    "stockQuantity": 10,
+    "costPrice": 25,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 16,
+      "machineHours": 0.33,
+      "otherEquipCost": 0,
+      "manualWorkMin": 15,
+      "prepCost": 0,
+      "packagingCost": 4,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-15T16:11:09.163Z",
+    "sku": "HOG-LAS-PIN-GRA-008",
+    "skuBreakdown": {
+      "standardSku": "HOG-LAS-PIN-GRA-008",
+      "legacyCode": "L8",
+      "area": "HOG",
+      "technique": "LAS",
+      "material": "PIN",
+      "finish": "GRA",
+      "sequence": "008",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Recuerdos",
+        "maquinaria": "⚡ Grabado Láser CO2 (Fotográfico)",
+        "materiaPrima": "🪵 Madera Natural Abedul / Pino 3mm (Sin MDF)",
+        "acabadoTaller": "✨ Barniz Transparente Protector Satinado",
+        "lote": "#008"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-l8-scale-c92f64e638.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Taller Artesano",
+      "license": "Diseño Exclusivo Artesano Digital",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\L8\\",
+      "cloudUrl": "",
+      "slicerNotes": "Corte MDF/Acrílico 3mm a 65% potencia, grabado 300mm/s.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Taller Artesano",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\L8\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 20,
+      "postProcessingMinutes": 15,
+      "leadTimeDays": "1 a 3 días hábiles"
+    },
+    "manufacturingTimeMinutes": 20,
+    "postProcessingTimeMinutes": 15
   },
   {
-    id: 'llavero-camarita-l9',
-    code: 'L9',
-    name: 'Llavero Camarita de madera con foto y borla',
-    priceType: 'fixed',
-    price: 100,
-    priceUnit: 'c/u',
-    status: 'published',
-    featured: true,
-    worlds: ['hogar', 'eventos'],
-    categories: ['hogar-regalos', 'eventos-cumpleanos', 'eventos-bodas'],
-    techniques: ['laser'],
-    primaryImage: '/uploads/img_004.jpg',
-    gallery: ['/uploads/img_004.jpg', '/uploads/img_003.jpg'],
-    shortDescription: 'Llavero artesanal en madera natural con forma de cámara retro, foto personalizada en visor y borla sedosa.',
-    fullDescription: 'Nuestra pieza icónica para regalar: fabricada artesanalmente en madera natural de abedul y pino estufado (sin MDF) con corte y grabado láser fino, protegida con barniz transparente hidrófugo y tintes para madera en tonos vintage (Nogal Americano, Verde Bosque, Azul Colonial o Caoba). Lleva tu fotografía miniatura protegida en el visor y una borla decorativa sedosa. Paquete especial de 3 camaritas por $200.',
-    specifications: {
-      dimensions: '4.5 x 3.5 cm x 6 mm de espesor',
-      material: 'Madera natural de abedul y pino estufado de 3mm (100% libre de MDF)',
-      finish: 'Capa protectora de barniz transparente sellador repelente a humedad y tintes para madera',
-      includes: 'Argolla metálica reforzada con cadena, fotografía mini en visor y borla sedosa artesanal',
-      minQuantity: 1,
-      estimatedLeadTime: '2 a 4 días hábiles',
-      careNotes: 'Limpiar con paño seco. Acabado hidrófugo resistente a salpicaduras.'
-    },
-    variants: [
-      { name: 'Tono de Barniz y Acabado', options: ['Barniz Natural Transparente', 'Nogal Americano', 'Verde Bosque Rústico', 'Azul Colonial Vintage', 'Caoba Clásico'] },
-      { name: 'Promoción', options: ['Individual ($100)', 'Paquete 3 Camaritas ($200)'] }
+    "id": "llavero-camarita-l9",
+    "code": "L9",
+    "name": "Llavero Camarita de madera con foto y borla",
+    "priceType": "fixed",
+    "price": 100,
+    "priceUnit": "c/u",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "hogar",
+      "eventos"
     ],
-    customizationOptions: ['Fotografía del cliente en visor', 'Color de borla a elegir'],
-    availability: 'made_to_order',
-    privateNotes: 'Madera de abedul/pino selecta 3mm. Lijado suave grano 220, grabado nítido sin quemaduras. Aplicar capa de barniz protector transparente o tinte de madera elegido. Montar argolla metálica reforzada con eslabón y borla sedosa.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "hogar-regalos",
+      "eventos-cumpleanos",
+      "eventos-bodas"
+    ],
+    "techniques": [
+      "laser"
+    ],
+    "primaryImage": "/uploads/catalog-v2-l9-context-fcbd753172.webp",
+    "gallery": [
+      "/uploads/catalog-v2-l9-context-fcbd753172.webp",
+      "/uploads/catalog-v2-l9-base-ef65055ee0.webp",
+      "/uploads/catalog-v2-l9-detail-58334a3c01.webp",
+      "/uploads/catalog-v2-l9-scale-6760c3ae5c.webp"
+    ],
+    "shortDescription": "Llavero artesanal en madera natural con forma de cámara retro, foto personalizada en visor y borla sedosa.",
+    "fullDescription": "Nuestra pieza icónica para regalar: fabricada artesanalmente en madera natural de abedul y pino estufado (sin MDF) con corte y grabado láser fino, protegida con barniz transparente hidrófugo y tintes para madera en tonos vintage (Nogal Americano, Verde Bosque, Azul Colonial o Caoba). Lleva tu fotografía miniatura protegida en el visor y una borla decorativa sedosa. Paquete especial de 3 camaritas por $200.",
+    "specifications": {
+      "dimensions": "4.5 x 3.5 cm x 6 mm de espesor",
+      "material": "Madera natural de abedul y pino estufado de 3mm (100% libre de MDF)",
+      "finish": "Capa protectora de barniz transparente sellador repelente a humedad y tintes para madera",
+      "includes": "Argolla metálica reforzada con cadena, fotografía mini en visor y borla sedosa artesanal",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 3 días hábiles",
+      "careNotes": "Limpiar con paño seco. Acabado hidrófugo resistente a salpicaduras."
+    },
+    "variants": [
+      {
+        "name": "Tono de Barniz y Acabado",
+        "options": [
+          "Barniz Natural Transparente",
+          "Nogal Americano",
+          "Verde Bosque Rústico",
+          "Azul Colonial Vintage",
+          "Caoba Clásico"
+        ]
+      },
+      {
+        "name": "Promoción",
+        "options": [
+          "Individual ($100)",
+          "Paquete 3 Camaritas ($200)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Fotografía del cliente en visor",
+      "Color de borla a elegir"
+    ],
+    "availability": "in_stock",
+    "privateNotes": "Madera de abedul/pino selecta 3mm. Lijado suave grano 220, grabado nítido sin quemaduras. Aplicar capa de barniz protector transparente o tinte de madera elegido. Montar argolla metálica reforzada con eslabón y borla sedosa.",
+    "createdAt": "2026-10-14T14:44:43.575Z",
+    "whiteBgImage": "/uploads/catalog-v2-l9-base-ef65055ee0.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-l9-detail-58334a3c01.webp",
+    "measureImage": "/uploads/catalog-v2-l9-scale-6760c3ae5c.webp",
+    "stockQuantity": 10,
+    "costPrice": 29,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 16,
+      "machineHours": 0.33,
+      "otherEquipCost": 0,
+      "manualWorkMin": 15,
+      "prepCost": 0,
+      "packagingCost": 3,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-15T16:11:11.859Z",
+    "sku": "HOG-LAS-PIN-GRA-009",
+    "skuBreakdown": {
+      "standardSku": "HOG-LAS-PIN-GRA-009",
+      "legacyCode": "L9",
+      "area": "HOG",
+      "technique": "LAS",
+      "material": "PIN",
+      "finish": "GRA",
+      "sequence": "009",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Regalos Personales",
+        "maquinaria": "⚡ Corte / Grabado Láser CO2 (Láser CO2 / Diodo)",
+        "materiaPrima": "🪵 Madera Natural Pino / Abedul 3mm (Sin MDF)",
+        "acabadoTaller": "✨ Barniz Transparente Sellador & Tintes de Madera",
+        "lote": "#009"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-l9-scale-6760c3ae5c.webp",
+    "manufacturingRecipe": {
+      "yieldUnits": 1,
+      "notes": "Madera natural selecta 3mm cortada a láser, barniz transparente protector y argolla metálica con borla",
+      "lastUpdated": "2026-10-17T05:15:23.781Z",
+      "items": [
+        {
+          "id": "item-l9-madera",
+          "materialId": "mat-madera-abedul-3mm",
+          "name": "Madera Abedul / Pino Calidad Láser Selecta 3mm (60x40 cm)",
+          "category": "laser",
+          "netQuantity": 65,
+          "wasteQuantity": 15,
+          "wasteType": "cut_remnants",
+          "totalQuantity": 80,
+          "unit": "cm²",
+          "unitCost": 0.0242,
+          "totalCost": 1.94
+        },
+        {
+          "id": "item-l9-barniz",
+          "materialId": "mat-barniz-poliuretano-spray",
+          "name": "Barniz Poliuretano Transparente Satinado en Spray (400 ml)",
+          "category": "laser",
+          "netQuantity": 2,
+          "wasteQuantity": 0,
+          "wasteType": "none",
+          "totalQuantity": 2,
+          "unit": "ml",
+          "unitCost": 0.3375,
+          "totalCost": 0.68
+        },
+        {
+          "id": "item-l9-argolla",
+          "materialId": "mat-argollas-llavero",
+          "name": "Argollas Metálicas Niqueladas con Cadena y Eslabón (100 pzas)",
+          "category": "laser",
+          "netQuantity": 1,
+          "wasteQuantity": 0,
+          "wasteType": "none",
+          "totalQuantity": 1,
+          "unit": "pza",
+          "unitCost": 1.2,
+          "totalCost": 1.2
+        },
+        {
+          "id": "item-l9-resistol",
+          "materialId": "mat-pegamento-resistol-850",
+          "name": "Resistol 850 Pegamento Blanco para Madera Extra Fuerte (Bote 500g)",
+          "category": "ensamble",
+          "netQuantity": 4,
+          "wasteQuantity": 0,
+          "wasteType": "none",
+          "totalQuantity": 4,
+          "unit": "gotas",
+          "unitCost": 0.0085,
+          "totalCost": 0.03
+        }
+      ],
+      "totalMaterialCost": 3.85,
+      "manufacturingTimeMinutes": 20,
+      "laborTimeMinutes": 15
+    },
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Taller Artesano",
+      "license": "Diseño Exclusivo Artesano Digital",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\L9\\",
+      "cloudUrl": "",
+      "slicerNotes": "Corte MDF/Acrílico 3mm a 65% potencia, grabado 300mm/s.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Taller Artesano",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\L9\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 20,
+      "postProcessingMinutes": 15,
+      "leadTimeDays": "1 a 3 días hábiles"
+    },
+    "manufacturingTimeMinutes": 20,
+    "postProcessingTimeMinutes": 15
   },
   {
-    id: 'organizador-modular-t37',
-    code: 'T37',
-    name: 'Organizador modular de escritorio',
-    priceType: 'quote',
-    price: null,
-    priceUnit: 'pieza',
-    status: 'published',
-    featured: true,
-    worlds: ['hogar', 'negocios'],
-    categories: ['hogar-estudio', 'negocios-oficinas'],
-    techniques: ['3d'],
-    primaryImage: '/uploads/img_006.jpg',
-    gallery: ['/uploads/img_006.jpg'],
-    shortDescription: 'Estación de organización con soporte para celular, ranuras de plumas, clips y cables.',
-    fullDescription: 'Despeja tu mesa de trabajo con este organizador de líneas limpias. Cuenta con inclinación frontal para ver notificaciones en el celular mientras se carga, compartimentos escalonados para bolígrafos y charola frontal para notas y clips.',
-    specifications: {
-      dimensions: '20 cm de ancho x 12 cm de profundidad x 9 cm de alto',
-      material: 'Polímero técnico texturizado',
-      finish: 'Verde oliva mate o grafito',
-      includes: 'Bases de goma antideslizantes',
-      minQuantity: 1,
-      estimatedLeadTime: '3 a 5 días hábiles',
-      careNotes: 'Limpiar con microfibra.'
-    },
-    variants: [
-      { name: 'Color', options: ['Verde Olivo', 'Grafito Carbón', 'Gris Perla'] }
+    "id": "organizador-modular-t37",
+    "code": "T37",
+    "name": "Organizador modular de escritorio",
+    "priceType": "quote",
+    "price": null,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "hogar",
+      "negocios"
     ],
-    customizationOptions: ['Logotipo en bajorrelieve', 'Iniciales grabadas'],
-    availability: 'made_to_order',
-    privateNotes: 'Configuración modular en 2 partes encajables.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "hogar-estudio",
+      "negocios-oficinas"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-t37-context-dcaee39493.webp",
+    "gallery": [
+      "/uploads/catalog-v2-t37-context-dcaee39493.webp",
+      "/uploads/catalog-v2-t37-base-693a2ab526.webp",
+      "/uploads/catalog-v2-t37-detail-4d0b5d7675.webp",
+      "/uploads/catalog-v2-t37-scale-7611b67469.webp"
+    ],
+    "shortDescription": "Estación de organización con soporte para celular, ranuras de plumas, clips y cables.",
+    "fullDescription": "Despeja tu mesa de trabajo con este organizador de líneas limpias. Cuenta con inclinación frontal para ver notificaciones en el celular mientras se carga, compartimentos escalonados para bolígrafos y charola frontal para notas y clips.",
+    "specifications": {
+      "dimensions": "20 cm de ancho x 12 cm de profundidad x 9 cm de alto",
+      "material": "Polímero técnico texturizado",
+      "finish": "Verde oliva mate o grafito",
+      "includes": "Bases de goma antideslizantes",
+      "minQuantity": 1,
+      "estimatedLeadTime": "2 a 4 días hábiles",
+      "careNotes": "Limpiar con microfibra."
+    },
+    "variants": [
+      {
+        "name": "Color",
+        "options": [
+          "Verde Olivo",
+          "Grafito Carbón",
+          "Gris Perla",
+          "🎨 Otro color a elegir (a convenir)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Logotipo en bajorrelieve",
+      "Iniciales grabadas"
+    ],
+    "availability": "in_stock",
+    "privateNotes": "Configuración modular en 2 partes encajables.",
+    "createdAt": "2026-10-14T14:44:43.575Z",
+    "whiteBgImage": "/uploads/catalog-v2-t37-base-693a2ab526.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-t37-detail-4d0b5d7675.webp",
+    "measureImage": "/uploads/catalog-v2-t37-scale-7611b67469.webp",
+    "stockQuantity": 10,
+    "costPrice": 140,
+    "costBreakdown": {
+      "plaGrams": 160,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 0,
+      "machineHours": 5.5,
+      "otherEquipCost": 0,
+      "manualWorkMin": 15,
+      "prepCost": 0,
+      "packagingCost": 10,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "HOG-3D-PLA-MAT-037",
+    "skuBreakdown": {
+      "standardSku": "HOG-3D-PLA-MAT-037",
+      "legacyCode": "T37",
+      "area": "HOG",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "MAT",
+      "sequence": "037",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "🧊 Impresión 3D (FDM / Filamento) (Granja 3D FDM)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Barniz / Textura Mate - Terso sin reflejos, elegante",
+        "lote": "#037"
+      }
+    },
+    "updatedAt": "2026-10-15T16:11:14.163Z",
+    "dimensionsImage": "/uploads/catalog-v2-t37-scale-7611b67469.webp",
+    "repository": {
+      "platform": "makerworld",
+      "makerworldUrl": "https://makerworld.com/es/models/2087519",
+      "makerworldModelId": "2087519",
+      "author": "Meyui",
+      "license": "Standard Digital File License",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\T37_Organizador_Meyui\\modular_desk_organizer.3mf",
+      "cloudUrl": "",
+      "slicerNotes": "Set de 4 módulos ensamblables sobre charola base.",
+      "additionalLinks": []
+    },
+    "makerWorldModel": "https://makerworld.com/es/models/2087519",
+    "makerworldUrl": "https://makerworld.com/es/models/2087519",
+    "makerWorldAuthor": "Meyui",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\T37_Organizador_Meyui\\modular_desk_organizer.3mf",
+    "manufacturingTimes": {
+      "machineHours": 5,
+      "machineMinutes": 30,
+      "postProcessingMinutes": 15,
+      "leadTimeDays": "2 a 4 días hábiles"
+    },
+    "manufacturingTimeMinutes": 330,
+    "postProcessingTimeMinutes": 15
   },
   {
-    id: 'sujetacables-escritorio-t12',
-    code: 'T12',
-    name: 'Sujetacables minimalistas para escritorio',
-    priceType: 'starting_at',
-    price: 59,
-    priceUnit: 'c/u',
-    status: 'published',
-    featured: false,
-    worlds: ['hogar', 'negocios'],
-    categories: ['hogar-estudio', 'negocios-oficinas'],
-    techniques: ['3d'],
-    primaryImage: '/uploads/img_006.jpg',
-    gallery: ['/uploads/img_006.jpg', '/uploads/img_008.jpg'],
-    shortDescription: 'Bloques pasacables para sujetar cables USB, cargadores y HDMI en el borde de tu mesa.',
-    fullDescription: 'Evita que los cargadores caigan detrás del escritorio al desconectar tus dispositivos. Diseño con guía elástica que sujeta cables gruesos y delgados firmemente.',
-    specifications: {
-      dimensions: '2.5 x 2.5 x 2 cm',
-      material: 'PLA de alta flexibilidad / dureza',
-      finish: 'Mate con grabado de isotipo opcional',
-      includes: 'Adhesivo desmontable 3M extrafuerte',
-      minQuantity: 1,
-      estimatedLeadTime: '1 a 2 días hábiles',
-      careNotes: 'Adherir sobre superficies lisas y limpias.'
-    },
-    variants: [
-      { name: 'Color', options: ['Blanco hueso', 'Verde olivo', 'Negro', 'Madera'] }
+    "id": "sujetacables-escritorio-t12",
+    "code": "T12",
+    "name": "Sujetacables minimalistas para escritorio",
+    "priceType": "starting_at",
+    "price": 59,
+    "priceUnit": "c/u",
+    "status": "published",
+    "featured": false,
+    "worlds": [
+      "hogar",
+      "negocios"
     ],
-    customizationOptions: ['Logotipo corporativo grabado', 'Paquetes de 2, 4 o 6 piezas'],
-    availability: 'in_stock',
-    privateNotes: 'Venta por unidad o blister institucional.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "hogar-estudio",
+      "negocios-oficinas"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-t12-context-2d2b4e982f.webp",
+    "gallery": [
+      "/uploads/catalog-v2-t12-context-2d2b4e982f.webp",
+      "/uploads/catalog-v2-t12-base-af70cc5462.webp",
+      "/uploads/catalog-v2-t12-detail-c0d042f128.webp",
+      "/uploads/catalog-v2-t12-scale-097fdf5ecc.webp"
+    ],
+    "shortDescription": "Bloques pasacables para sujetar cables USB, cargadores y HDMI en el borde de tu mesa.",
+    "fullDescription": "Evita que los cargadores caigan detrás del escritorio al desconectar tus dispositivos. Diseño con guía elástica que sujeta cables gruesos y delgados firmemente.",
+    "specifications": {
+      "dimensions": "2.5 x 2.5 x 2 cm",
+      "material": "PLA de alta flexibilidad / dureza",
+      "finish": "Mate con grabado de isotipo opcional",
+      "includes": "Adhesivo desmontable 3M extrafuerte",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Adherir sobre superficies lisas y limpias."
+    },
+    "variants": [
+      {
+        "name": "Color",
+        "options": [
+          "Blanco hueso",
+          "Verde olivo",
+          "Negro",
+          "Madera",
+          "🎨 Otro color a elegir (a convenir)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Logotipo corporativo grabado",
+      "Paquetes de 2, 4 o 6 piezas"
+    ],
+    "availability": "in_stock",
+    "privateNotes": "Venta por unidad o blister institucional.",
+    "createdAt": "2026-10-14T14:44:43.575Z",
+    "whiteBgImage": "/uploads/catalog-v2-t12-base-af70cc5462.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-t12-detail-c0d042f128.webp",
+    "measureImage": "/uploads/catalog-v2-t12-scale-097fdf5ecc.webp",
+    "stockQuantity": 13,
+    "costPrice": 24,
+    "costBreakdown": {
+      "plaGrams": 20,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 4,
+      "machineHours": 0.83,
+      "otherEquipCost": 0,
+      "manualWorkMin": 5,
+      "prepCost": 0,
+      "packagingCost": 3,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-14T23:16:39.059Z",
+    "sku": "HOG-3D-PLA-GRA-012",
+    "skuBreakdown": {
+      "standardSku": "HOG-3D-PLA-GRA-012",
+      "legacyCode": "T12",
+      "area": "HOG",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "GRA",
+      "sequence": "012",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "🧊 Impresión 3D (FDM / Filamento) (Granja 3D FDM)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Grabado Láser Profundo - Bajo relieve oscurecido por calor",
+        "lote": "#012"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-t12-scale-097fdf5ecc.webp",
+    "repository": {
+      "platform": "makerworld",
+      "makerworldUrl": "https://makerworld.com/es/models/1810947",
+      "makerworldModelId": "1810947",
+      "author": "m@",
+      "license": "Standard Digital File License",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\T12_Sujetacables\\cable_holder_faceted.3mf",
+      "cloudUrl": "",
+      "slicerNotes": "Relleno 20% para rigidez en ranuras de cable.",
+      "additionalLinks": []
+    },
+    "makerWorldModel": "https://makerworld.com/es/models/1810947",
+    "makerworldUrl": "https://makerworld.com/es/models/1810947",
+    "makerWorldAuthor": "m@",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\T12_Sujetacables\\cable_holder_faceted.3mf",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 50,
+      "postProcessingMinutes": 5,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 50,
+    "postProcessingTimeMinutes": 5
   },
   {
-    id: 'identificador-escritorio-l4',
-    code: 'L4',
-    name: 'Nombre de escritorio en madera maciza',
-    priceType: 'starting_at',
-    price: 179,
-    priceUnit: 'pieza',
-    status: 'published',
-    featured: false,
-    worlds: ['negocios', 'hogar'],
-    categories: ['negocios-oficinas', 'hogar-estudio'],
-    techniques: ['laser'],
-    primaryImage: '/uploads/img_006.jpg',
-    gallery: ['/uploads/img_006.jpg', '/uploads/img_008.jpg'],
-    shortDescription: 'Bloque prismático de madera biselada con nombre, profesión y logotipo grabados.',
-    fullDescription: 'El detalle de distinción para oficinas, recepciones, directivos y profesionistas independientes. Fabricado en bloque macizo cepillado con cantos biselados y grabado láser profundo.',
-    specifications: {
-      dimensions: '18 cm de largo x 4.5 cm de alto x 4 cm de base triangular',
-      material: 'Madera natural maciza de pino estufado o nogal americano (sin MDF)',
-      finish: 'Capa de barniz transparente satinado y aceite sellador de grano fino',
-      includes: 'Grabado personalizado en una o dos líneas',
-      minQuantity: 1,
-      estimatedLeadTime: '2 a 3 días hábiles',
-      careNotes: 'Limpieza con paño seco. Nutrir con aceite mineral ocasionalmente.'
-    },
-    variants: [
-      { name: 'Tono de Barniz y Madera', options: ['Barniz Natural Pino Claro', 'Nogal Americano Cálido', 'Caoba Clásico', 'Roble Claro Nórdico'] },
-      { name: 'Tipografía', options: ['Moderna sin serifa', 'Elegante cursiva', 'Institucional mayúsculas'] }
+    "id": "identificador-escritorio-l4",
+    "code": "L4",
+    "name": "Nombre de escritorio en madera maciza",
+    "priceType": "fixed",
+    "price": 108,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": false,
+    "worlds": [
+      "negocios",
+      "hogar",
+      "eventos"
     ],
-    customizationOptions: ['Nombre del profesionista', 'Cargo o especialidad', 'Logotipo vectorial'],
-    availability: 'made_to_order',
-    privateNotes: 'Corte y biselado en madera maciza. Grabado láser de precisión y acabado satinado con barniz transparente.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "negocios-oficinas",
+      "hogar-estudio"
+    ],
+    "techniques": [
+      "laser"
+    ],
+    "primaryImage": "/uploads/catalog-v2-l4-context-277d324e3e.webp",
+    "gallery": [
+      "/uploads/catalog-v2-l4-context-277d324e3e.webp",
+      "/uploads/catalog-v2-l4-base-3f8725aa08.webp",
+      "/uploads/catalog-v2-l4-detail-38817792c1.webp",
+      "/uploads/catalog-v2-l4-scale-43c3f7ca9a.webp"
+    ],
+    "shortDescription": "Bloque prismático de madera biselada con nombre, profesión y logotipo grabados.",
+    "fullDescription": "El detalle de distinción para oficinas, recepciones, directivos y profesionistas independientes. Fabricado en bloque macizo cepillado con cantos biselados y grabado láser profundo.",
+    "specifications": {
+      "dimensions": "18 cm de largo x 4.5 cm de alto x 4 cm de base triangular",
+      "material": "Madera natural maciza de pino estufado o nogal americano (sin MDF)",
+      "finish": "Capa de barniz transparente satinado y aceite sellador de grano fino",
+      "includes": "Grabado personalizado en una o dos líneas",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 3 días hábiles",
+      "careNotes": "Nutrir la madera una vez al año con aceite mineral."
+    },
+    "variants": [
+      {
+        "name": "Tono de Barniz y Madera",
+        "options": [
+          "Barniz Natural Pino Claro",
+          "Nogal Americano Cálido",
+          "Caoba Clásico",
+          "Roble Claro Nórdico"
+        ]
+      },
+      {
+        "name": "Tipografía",
+        "options": [
+          "Moderna sin serifa",
+          "Elegante cursiva",
+          "Institucional mayúsculas"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Nombre del profesionista",
+      "Cargo o especialidad",
+      "Logotipo vectorial"
+    ],
+    "availability": "made_to_order",
+    "privateNotes": "Corte y biselado en madera maciza. Grabado láser de precisión y acabado satinado con barniz transparente.",
+    "createdAt": "2026-10-14T14:44:43.575Z",
+    "whiteBgImage": "/uploads/catalog-v2-l4-base-3f8725aa08.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-l4-detail-38817792c1.webp",
+    "measureImage": "/uploads/catalog-v2-l4-scale-43c3f7ca9a.webp",
+    "stockQuantity": 0,
+    "costPrice": 65,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 42,
+      "machineHours": 0.33,
+      "otherEquipCost": 0,
+      "manualWorkMin": 15,
+      "prepCost": 0,
+      "packagingCost": 8,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "updatedAt": "2026-10-14T23:56:58.023Z",
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "sku": "HOG-LAS-PIN-GRA-004",
+    "skuBreakdown": {
+      "standardSku": "HOG-LAS-PIN-GRA-004",
+      "legacyCode": "L4",
+      "area": "HOG",
+      "technique": "LAS",
+      "material": "PIN",
+      "finish": "GRA",
+      "sequence": "004",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "⚡ Corte / Grabado Láser CO2 (Láser CO2 / Diodo)",
+        "materiaPrima": "🪵 Madera Maciza Pino / Nogal (Sin MDF)",
+        "acabadoTaller": "✨ Barniz Transparente Satinado",
+        "lote": "#004"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-l4-scale-43c3f7ca9a.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Taller Artesano",
+      "license": "Diseño Exclusivo Artesano Digital",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\L4\\",
+      "cloudUrl": "",
+      "slicerNotes": "Corte MDF/Acrílico 3mm a 65% potencia, grabado 300mm/s.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Taller Artesano",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\L4\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 20,
+      "postProcessingMinutes": 15,
+      "leadTimeDays": "1 a 3 días hábiles"
+    },
+    "manufacturingTimeMinutes": 20,
+    "postProcessingTimeMinutes": 15
   },
   {
-    id: 'soporte-celular-t10',
-    code: 'T10',
-    name: 'Soporte vertical para celular',
-    priceType: 'fixed',
-    price: 99,
-    priceUnit: 'pieza',
-    status: 'published',
-    featured: false,
-    worlds: ['hogar', 'negocios'],
-    categories: ['hogar-estudio', 'negocios-oficinas'],
-    techniques: ['3d'],
-    primaryImage: '/uploads/img_007.jpg',
-    gallery: ['/uploads/img_007.jpg'],
-    shortDescription: 'Base vertical con ángulo óptimo de lectura y ranura de paso de cable inferior.',
-    fullDescription: 'Soporte estilizado compatible con cualquier teléfono con o sin funda. Permite mantener la pantalla a la vista para videollamadas, reloj de mesa o seguimiento de notificaciones mientras se carga el dispositivo.',
-    specifications: {
-      dimensions: '10 cm de alto x 7 cm de base x 8 cm de profundidad',
-      material: 'PLA técnico de alta rigidez',
-      finish: 'Grafito carbón o verde con textura rayada sutil',
-      includes: 'Gomas antiderrapantes en la base',
-      minQuantity: 1,
-      estimatedLeadTime: '1 a 2 días hábiles',
-      careNotes: 'No exponer a fuentes de calor directo como estufas.'
-    },
-    variants: [
-      { name: 'Color', options: ['Negro Grafito', 'Verde Olivo', 'Blanco Ártico'] }
+    "id": "soporte-celular-t10",
+    "code": "T10",
+    "name": "Soporte vertical para celular",
+    "priceType": "fixed",
+    "price": 99,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": false,
+    "worlds": [
+      "hogar",
+      "negocios"
     ],
-    customizationOptions: ['Iniciales grabadas en el respaldo'],
-    availability: 'in_stock',
-    privateNotes: 'Pieza rápida de reposición continua.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "hogar-estudio",
+      "negocios-oficinas"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-t10-context-dc513b4b4f.webp",
+    "gallery": [
+      "/uploads/catalog-v2-t10-context-dc513b4b4f.webp",
+      "/uploads/catalog-v2-t10-base-2ba7f611cb.webp",
+      "/uploads/catalog-v2-t10-detail-7acc15d62f.webp",
+      "/uploads/catalog-v2-t10-scale-ac2ee179e4.webp"
+    ],
+    "shortDescription": "Base vertical con ángulo óptimo de lectura y ranura de paso de cable inferior.",
+    "fullDescription": "Soporte estilizado compatible con cualquier teléfono con o sin funda. Permite mantener la pantalla a la vista para videollamadas, reloj de mesa o seguimiento de notificaciones mientras se carga el dispositivo.",
+    "specifications": {
+      "dimensions": "10 cm de alto x 7 cm de base x 8 cm de profundidad",
+      "material": "PLA técnico de alta rigidez",
+      "finish": "Grafito carbón o verde con textura rayada sutil",
+      "includes": "Gomas antiderrapantes en la base",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "No exponer a fuentes de calor directo como estufas."
+    },
+    "variants": [
+      {
+        "name": "Color",
+        "options": [
+          "Negro Grafito",
+          "Verde Olivo",
+          "Blanco Ártico",
+          "🎨 Otro color a elegir (a convenir)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Iniciales grabadas en el respaldo"
+    ],
+    "availability": "in_stock",
+    "privateNotes": "Pieza rápida de reposición continua.",
+    "createdAt": "2026-10-14T14:44:43.575Z",
+    "whiteBgImage": "/uploads/catalog-v2-t10-base-2ba7f611cb.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-t10-detail-7acc15d62f.webp",
+    "measureImage": "/uploads/catalog-v2-t10-scale-ac2ee179e4.webp",
+    "stockQuantity": 15,
+    "costPrice": 48.6,
+    "costBreakdown": {
+      "plaGrams": 60,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 0,
+      "machineHours": 0.92,
+      "otherEquipCost": 0,
+      "manualWorkMin": 5,
+      "prepCost": 0,
+      "packagingCost": 4,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-14T23:16:52.818Z",
+    "sku": "HOG-3D-PLA-MAT-010",
+    "skuBreakdown": {
+      "standardSku": "HOG-3D-PLA-MAT-010",
+      "legacyCode": "T10",
+      "area": "HOG",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "MAT",
+      "sequence": "010",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "🧊 Impresión 3D (FDM / Filamento) (Granja 3D FDM)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Barniz / Textura Mate - Terso sin reflejos, elegante",
+        "lote": "#010"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-t10-scale-ac2ee179e4.webp",
+    "repository": {
+      "platform": "makerworld",
+      "makerworldUrl": "https://makerworld.com/es/models/1087279",
+      "makerworldModelId": "1087279",
+      "author": "mgm86",
+      "license": "Standard Digital File License",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\T10_Soporte_mgm86\\phone_stand_print_in_place.3mf",
+      "cloudUrl": "",
+      "slicerNotes": "Print-in-place, tolerancia 0.3mm, sin soportes.",
+      "additionalLinks": []
+    },
+    "makerWorldModel": "https://makerworld.com/es/models/1087279",
+    "makerworldUrl": "https://makerworld.com/es/models/1087279",
+    "makerWorldAuthor": "mgm86",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\T10_Soporte_mgm86\\phone_stand_print_in_place.3mf",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 55,
+      "postProcessingMinutes": 5,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 55,
+    "postProcessingTimeMinutes": 5
   },
   {
-    id: 'portalapices-facetado-t11',
-    code: 'T11',
-    name: 'Portalápices facetado geométrico',
-    priceType: 'fixed',
-    price: 129,
-    priceUnit: 'pieza',
-    status: 'published',
-    featured: false,
-    worlds: ['hogar', 'negocios'],
-    categories: ['hogar-estudio', 'negocios-oficinas'],
-    techniques: ['3d'],
-    primaryImage: '/uploads/img_007.jpg',
-    gallery: ['/uploads/img_007.jpg'],
-    shortDescription: 'Vaso portalápices con diseño poligonal facetado que juega con las luces de la oficina.',
-    fullDescription: 'Portalápices y organizador de tijeras o pinceles con estructura de caras poliédricas. Su centro de gravedad bajo y boca amplia garantizan estabilidad y fácil acceso a tus herramientas de trabajo.',
-    specifications: {
-      dimensions: '9 cm de diámetro x 10 cm de altura',
-      material: 'PLA de alta definición',
-      finish: 'Blanco perla mate / Mármol',
-      includes: 'Base sólida pesada',
-      minQuantity: 1,
-      estimatedLeadTime: '1 a 2 días hábiles',
-      careNotes: 'Lavar con agua fría si se mancha con tinta.'
-    },
-    variants: [
-      { name: 'Color', options: ['Blanco Mármol', 'Verde Jade', 'Grafito Mate'] }
+    "id": "portalapices-facetado-t11",
+    "code": "T11",
+    "name": "Portalápices facetado geométrico",
+    "priceType": "fixed",
+    "price": 100,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": false,
+    "worlds": [
+      "hogar",
+      "negocios"
     ],
-    customizationOptions: ['Tamaño estándar o maxi'],
-    availability: 'in_stock',
-    privateNotes: 'Infill al 15% grid.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "hogar-estudio",
+      "negocios-oficinas"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-t11-context-0bc4bb00dd.webp",
+    "gallery": [
+      "/uploads/catalog-v2-t11-context-0bc4bb00dd.webp",
+      "/uploads/catalog-v2-t11-base-b83c485fcd.webp",
+      "/uploads/catalog-v2-t11-detail-033ea519c7.webp",
+      "/uploads/catalog-v2-t11-scale-6b24250991.webp"
+    ],
+    "shortDescription": "Vaso portalápices con diseño poligonal facetado que juega con las luces de la oficina.",
+    "fullDescription": "Portalápices y organizador de tijeras o pinceles con estructura de caras poliédricas. Su centro de gravedad bajo y boca amplia garantizan estabilidad y fácil acceso a tus herramientas de trabajo.",
+    "specifications": {
+      "dimensions": "9 cm de diámetro x 10 cm de altura",
+      "material": "PLA de alta definición",
+      "finish": "Blanco perla mate / Mármol",
+      "includes": "Base sólida pesada",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Lavar con agua fría si se mancha con tinta."
+    },
+    "variants": [
+      {
+        "name": "Color",
+        "options": [
+          "Blanco Mármol",
+          "Verde Jade",
+          "Grafito Mate",
+          "🎨 Otro color a elegir (a convenir)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Tamaño estándar o maxi"
+    ],
+    "availability": "in_stock",
+    "privateNotes": "Infill al 15% grid.",
+    "createdAt": "2026-10-14T14:44:43.575Z",
+    "whiteBgImage": "/uploads/catalog-v2-t11-base-b83c485fcd.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-t11-detail-033ea519c7.webp",
+    "measureImage": "/uploads/catalog-v2-t11-scale-6b24250991.webp",
+    "stockQuantity": 12,
+    "costPrice": 60.2,
+    "costBreakdown": {
+      "plaGrams": 75,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 0,
+      "machineHours": 3,
+      "otherEquipCost": 0,
+      "manualWorkMin": 4,
+      "prepCost": 0,
+      "packagingCost": 5,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "updatedAt": "2026-10-15T01:16:34.503Z",
+    "sku": "HOG-3D-PLA-MAT-011",
+    "skuBreakdown": {
+      "standardSku": "HOG-3D-PLA-MAT-011",
+      "legacyCode": "T11",
+      "area": "HOG",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "MAT",
+      "sequence": "011",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "🧊 Impresión 3D (FDM / Filamento) (Granja 3D FDM)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Barniz / Textura Mate - Terso sin reflejos, elegante",
+        "lote": "#011"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-t11-scale-6b24250991.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\T11\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\T11\\",
+    "manufacturingTimes": {
+      "machineHours": 3,
+      "machineMinutes": 0,
+      "postProcessingMinutes": 4,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 180,
+    "postProcessingTimeMinutes": 4
   },
   {
-    id: 'panel-nfc-inteligente-t39',
-    code: 'T39',
-    name: 'Panel NFC inteligente para escritorio o negocio',
-    priceType: 'quote',
-    price: null,
-    priceUnit: 'pieza',
-    status: 'published',
-    featured: true,
-    worlds: ['hogar', 'negocios'],
-    categories: ['hogar-estudio', 'negocios-oficinas', 'negocios-emprendedores'],
-    techniques: ['nfc', '3d'],
-    primaryImage: '/uploads/img_007.jpg',
-    gallery: ['/uploads/img_007.jpg', '/uploads/img_008.jpg', '/uploads/img_018.jpg'],
-    shortDescription: 'Base de botones inteligentes con chips NFC para automatizaciones: música, luz, contacto o WiFi.',
-    fullDescription: 'Lleva la tecnología NFC a tu espacio. Con solo acercar tu celular a cada botón iconográfico, se dispara una acción automática: abrir una playlist de Spotify, activar el modo concentración, encender luces inteligentes o abrir el enlace de cobro y contacto de tu marca.',
-    specifications: {
-      dimensions: '22 cm de largo x 6 cm de profundidad x 4 cm de altura',
-      material: 'Cuerpo compuesto de base oscura con teclas de colores intercambiables',
-      finish: 'Iconos en bajorrelieve y chips NTAG215 reescribibles',
-      includes: '5 botones NFC preconfigurados o libres para programar',
-      minQuantity: 1,
-      estimatedLeadTime: '4 a 6 días hábiles',
-      careNotes: 'Los chips NFC no requieren batería ni mantenimiento.'
-    },
-    variants: [
-      { name: 'Configuración de teclas', options: ['Oficina (Música, Luz, Audio, Pausa, Concentración)', 'Negocio (Menú, Contacto, Reseñas, Pago, Redes)', 'Personalizada'] }
+    "id": "panel-nfc-inteligente-t39",
+    "code": "T39",
+    "name": "Panel NFC inteligente para escritorio o negocio",
+    "priceType": "quote",
+    "price": null,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "hogar",
+      "negocios"
     ],
-    customizationOptions: ['Grabado de marca en la base', 'Enlaces URLs precargados en cada botón'],
-    availability: 'made_to_order',
-    privateNotes: 'Verificar lectura con app NFC Tools en iOS y Android antes del envío.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "hogar-estudio",
+      "negocios-oficinas",
+      "negocios-emprendedores"
+    ],
+    "techniques": [
+      "nfc",
+      "3d"
+    ],
+    "primaryImage": "/uploads/kit_home_office_gamer_contexto.jpg",
+    "gallery": [
+      "/uploads/kit_home_office_gamer_contexto.jpg",
+      "/uploads/catalog-v2-t39-base-ea2a67514c.webp",
+      "/uploads/catalog-v2-t39-detail-aa6679e7ee.webp",
+      "/uploads/catalog-v2-t39-scale-3e82285bdd.webp"
+    ],
+    "shortDescription": "Base de botones inteligentes con chips NFC para automatizaciones: música, luz, contacto o WiFi.",
+    "fullDescription": "Lleva la tecnología NFC a tu espacio. Con solo acercar tu celular a cada botón iconográfico, se dispara una acción automática: abrir una playlist de Spotify, activar el modo concentración, encender luces inteligentes o abrir el enlace de cobro y contacto de tu marca.",
+    "specifications": {
+      "dimensions": "22 cm de largo x 6 cm de profundidad x 4 cm de altura",
+      "material": "Cuerpo compuesto de base oscura con teclas de colores intercambiables",
+      "finish": "Iconos en bajorrelieve y chips NTAG215 reescribibles",
+      "includes": "5 botones NFC preconfigurados o libres para programar",
+      "minQuantity": 1,
+      "estimatedLeadTime": "4 a 6 días hábiles",
+      "careNotes": "Los chips NFC no requieren batería ni mantenimiento."
+    },
+    "variants": [
+      {
+        "name": "Configuración de teclas",
+        "options": [
+          "Oficina (Música, Luz, Audio, Pausa, Concentración)",
+          "Negocio (Menú, Contacto, Reseñas, Pago, Redes)",
+          "Personalizada"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Grabado de marca en la base",
+      "Enlaces URLs precargados en cada botón"
+    ],
+    "availability": "in_stock",
+    "privateNotes": "Verificar lectura con app NFC Tools en iOS y Android antes del envío.",
+    "createdAt": "2026-10-14T14:44:43.575Z",
+    "whiteBgImage": "/uploads/catalog-v2-t39-base-ea2a67514c.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-t39-detail-aa6679e7ee.webp",
+    "measureImage": "/uploads/catalog-v2-t39-scale-3e82285bdd.webp",
+    "stockQuantity": 10,
+    "costPrice": 185,
+    "costBreakdown": {
+      "plaGrams": 120,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 80,
+      "machineHours": 4.5,
+      "otherEquipCost": 0,
+      "manualWorkMin": 20,
+      "prepCost": 0,
+      "packagingCost": 15,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "HOG-NFC-PLA-NFC-039",
+    "skuBreakdown": {
+      "standardSku": "HOG-NFC-PLA-NFC-039",
+      "legacyCode": "T39",
+      "area": "HOG",
+      "technique": "NFC",
+      "material": "PLA",
+      "finish": "NFC",
+      "sequence": "039",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "📶 Tecnología NFC Programada (Estación de Codificación NFC)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Chip NFC Integrado & Enlace - Programado con URL o contacto",
+        "lote": "#039"
+      }
+    },
+    "updatedAt": "2026-10-15T16:11:17.279Z",
+    "dimensionsImage": "/uploads/catalog-v2-t39-scale-3e82285bdd.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\T39\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\T39\\",
+    "manufacturingTimes": {
+      "machineHours": 4,
+      "machineMinutes": 30,
+      "postProcessingMinutes": 20,
+      "leadTimeDays": "4 a 6 días hábiles"
+    },
+    "manufacturingTimeMinutes": 270,
+    "postProcessingTimeMinutes": 20
   },
   {
-    id: 'soporte-gamer-t7',
-    code: 'T7',
-    name: 'Soporte gamer para audífonos y mando',
-    priceType: 'starting_at',
-    price: 199,
-    priceUnit: 'pieza',
-    status: 'published',
-    featured: false,
-    worlds: ['hogar'],
-    categories: ['hogar-hobbies', 'hogar-estudio'],
-    techniques: ['3d'],
-    primaryImage: '/uploads/img_008.jpg',
-    gallery: ['/uploads/img_008.jpg'],
-    shortDescription: 'Torre de descanso para auriculares over-ear y soporte frontal para control de consola o PC.',
-    fullDescription: 'Organiza tu set-up de videojuegos o trabajo. Mantiene los audífonos libres de presión innecesaria en las almohadillas y tu mando favorito siempre en posición lista para jugar.',
-    specifications: {
-      dimensions: '25 cm de altura x 14 cm de base',
-      material: 'PLA técnico con nervaduras internas reforzadas',
-      finish: 'Negro mate con acento de color a elección',
-      includes: 'Base lastrada con gomas para evitar volcaduras',
-      minQuantity: 1,
-      estimatedLeadTime: '3 a 4 días hábiles',
-      careNotes: 'Apto para mandos de Xbox, PlayStation, Switch Pro y genéricos.'
-    },
-    variants: [
-      { name: 'Color de acento', options: ['Negro total', 'Acento Verde', 'Acento Magenta', 'Acento Blanco'] }
+    "id": "soporte-gamer-t7",
+    "code": "T7",
+    "name": "Soporte gamer para audífonos y mando",
+    "priceType": "starting_at",
+    "price": 199,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": false,
+    "worlds": [
+      "hogar"
     ],
-    customizationOptions: ['Gamertag o apodo grabado en la base'],
-    availability: 'made_to_order',
-    privateNotes: 'Diseño estructural con refuerzo en el gancho superior.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "hogar-hobbies",
+      "hogar-estudio"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-t7-context-cff93667c7.webp",
+    "gallery": [
+      "/uploads/catalog-v2-t7-context-cff93667c7.webp",
+      "/uploads/catalog-v2-t7-base-af05fc0d64.webp",
+      "/uploads/catalog-v2-t7-detail-4284fc71a1.webp",
+      "/uploads/catalog-v2-t7-scale-c7ede558e5.webp"
+    ],
+    "shortDescription": "Torre de descanso para auriculares over-ear y soporte frontal para control de consola o PC.",
+    "fullDescription": "Organiza tu set-up de videojuegos o trabajo. Mantiene los audífonos libres de presión innecesaria en las almohadillas y tu mando favorito siempre en posición lista para jugar.",
+    "specifications": {
+      "dimensions": "25 cm de altura x 14 cm de base",
+      "material": "PLA técnico con nervaduras internas reforzadas",
+      "finish": "Negro mate con acento de color a elección",
+      "includes": "Base lastrada con gomas para evitar volcaduras",
+      "minQuantity": 1,
+      "estimatedLeadTime": "3 a 4 días hábiles",
+      "careNotes": "Apto para mandos de Xbox, PlayStation, Switch Pro y genéricos."
+    },
+    "variants": [
+      {
+        "name": "Color de acento",
+        "options": [
+          "Negro total",
+          "Acento Verde",
+          "Acento Magenta",
+          "Acento Blanco",
+          "🎨 Otro color a elegir (a convenir)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Gamertag o apodo grabado en la base"
+    ],
+    "availability": "made_to_order",
+    "privateNotes": "Diseño estructural con refuerzo en el gancho superior.",
+    "createdAt": "2026-10-14T14:44:43.575Z",
+    "whiteBgImage": "/uploads/catalog-v2-t7-base-af05fc0d64.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-t7-detail-4284fc71a1.webp",
+    "measureImage": "/uploads/catalog-v2-t7-scale-c7ede558e5.webp",
+    "stockQuantity": 0,
+    "costPrice": 103,
+    "costBreakdown": {
+      "plaGrams": 130,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 0,
+      "machineHours": 5.5,
+      "otherEquipCost": 0,
+      "manualWorkMin": 8,
+      "prepCost": 0,
+      "packagingCost": 6,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "HOG-3D-PLA-MAT-007",
+    "skuBreakdown": {
+      "standardSku": "HOG-3D-PLA-MAT-007",
+      "legacyCode": "T7",
+      "area": "HOG",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "MAT",
+      "sequence": "007",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "🧊 Impresión 3D (FDM / Filamento) (Granja 3D FDM)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Barniz / Textura Mate - Terso sin reflejos, elegante",
+        "lote": "#007"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-t7-scale-c7ede558e5.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\T7\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\T7\\",
+    "manufacturingTimes": {
+      "machineHours": 5,
+      "machineMinutes": 30,
+      "postProcessingMinutes": 8,
+      "leadTimeDays": "3 a 4 días hábiles"
+    },
+    "manufacturingTimeMinutes": 330,
+    "postProcessingTimeMinutes": 8
   },
   {
-    id: 'soporte-qr-t16',
-    code: 'T16',
-    name: 'Soporte de mostrador para código QR comercial',
-    priceType: 'starting_at',
-    price: 199,
-    priceUnit: 'pieza',
-    status: 'published',
-    featured: true,
-    worlds: ['negocios'],
-    categories: ['negocios-restaurantes', 'negocios-barberias', 'negocios-tiendas', 'negocios-emprendedores'],
-    techniques: ['3d'],
-    primaryImage: '/uploads/img_009.jpg',
-    gallery: ['/uploads/img_009.jpg', '/uploads/img_016.jpg', '/uploads/img_021.jpg'],
-    shortDescription: 'Placa vertical con código QR de alto relieve bi-tono y logotipo corporativo de tu negocio.',
-    fullDescription: 'Permite a tus clientes consultar el menú digital, dejar reseñas en Google, transferir por SPEI o seguir tus redes sociales con un simple escaneo. El código QR está modelado tridimensionalmente en contraste óptico perfecto para una lectura veloz con cualquier cámara.',
-    specifications: {
-      dimensions: '14 cm de alto x 9 cm de ancho x 5 cm de base',
-      material: 'Doble capa de PLA en contraste mate',
-      finish: 'Biselado con logotipo personalizado en la base',
-      includes: 'Placa grabada y código QR vectorizado de tu enlace',
-      minQuantity: 1,
-      estimatedLeadTime: '2 a 3 días hábiles',
-      careNotes: 'Resistente a salpicaduras. Limpiar con paño húmedo.'
-    },
-    variants: [
-      { name: 'Color de base', options: ['Verde bosque', 'Negro carbón', 'Madera nogal', 'Blanco'] },
-      { name: 'Función principal', options: ['Menú digital', 'Pago / Transferencia', 'Reseñas de Google', 'Redes sociales'] }
+    "id": "soporte-qr-t16",
+    "code": "T16",
+    "name": "Soporte de mostrador para código QR comercial",
+    "priceType": "starting_at",
+    "price": 199,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "negocios"
     ],
-    customizationOptions: ['Generación del código QR con tu URL', 'Logotipo de tu marca al frente'],
-    availability: 'made_to_order',
-    privateNotes: 'Validar lectura del QR a 30 cm de distancia antes de embalar.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "negocios-restaurantes",
+      "negocios-barberias",
+      "negocios-tiendas",
+      "negocios-emprendedores"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/pack_barberia_boutique_contexto.jpg",
+    "gallery": [
+      "/uploads/pack_barberia_boutique_contexto.jpg",
+      "/uploads/catalog-v2-t16-base-cf7f084e68.webp",
+      "/uploads/catalog-v2-t16-detail-e2c4b4677d.webp",
+      "/uploads/catalog-v2-t16-scale-7dc114b091.webp"
+    ],
+    "shortDescription": "Placa vertical con código QR de alto relieve bi-tono y logotipo corporativo de tu negocio.",
+    "fullDescription": "Permite a tus clientes consultar el menú digital, dejar reseñas en Google, transferir por SPEI o seguir tus redes sociales con un simple escaneo. El código QR está modelado tridimensionalmente en contraste óptico perfecto para una lectura veloz con cualquier cámara.",
+    "specifications": {
+      "dimensions": "14 cm de alto x 9 cm de ancho x 5 cm de base",
+      "material": "Doble capa de PLA en contraste mate",
+      "finish": "Biselado con logotipo personalizado en la base",
+      "includes": "Placa grabada y código QR vectorizado de tu enlace",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Resistente a salpicaduras. Limpiar con paño húmedo."
+    },
+    "variants": [
+      {
+        "name": "Color de base",
+        "options": [
+          "Verde bosque",
+          "Negro carbón",
+          "Madera nogal",
+          "Blanco",
+          "🎨 Otro color a elegir (a convenir)"
+        ]
+      },
+      {
+        "name": "Función principal",
+        "options": [
+          "Menú digital",
+          "Pago / Transferencia",
+          "Reseñas de Google",
+          "Redes sociales"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Generación del código QR con tu URL",
+      "Logotipo de tu marca al frente"
+    ],
+    "availability": "made_to_order",
+    "privateNotes": "Validar lectura del QR a 30 cm de distancia antes de embalar.",
+    "createdAt": "2026-10-14T14:44:43.575Z",
+    "whiteBgImage": "/uploads/catalog-v2-t16-base-cf7f084e68.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-t16-detail-e2c4b4677d.webp",
+    "measureImage": "/uploads/catalog-v2-t16-scale-7dc114b091.webp",
+    "stockQuantity": 0,
+    "costPrice": 96.9,
+    "costBreakdown": {
+      "plaGrams": 90,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 25,
+      "machineHours": 1.5,
+      "otherEquipCost": 0,
+      "manualWorkMin": 10,
+      "prepCost": 0,
+      "packagingCost": 6,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "NEG-3D-PLA-MAT-016",
+    "skuBreakdown": {
+      "standardSku": "NEG-3D-PLA-MAT-016",
+      "legacyCode": "T16",
+      "area": "NEG",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "MAT",
+      "sequence": "016",
+      "instructionsForStaff": {
+        "destino": "💼 Negocios & Marca",
+        "maquinaria": "🧊 Impresión 3D (FDM / Filamento) (Granja 3D FDM)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Barniz / Textura Mate - Terso sin reflejos, elegante",
+        "lote": "#016"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-t16-scale-7dc114b091.webp",
+    "repository": {
+      "platform": "makerworld",
+      "makerworldUrl": "https://makerworld.com/es/models/2401859",
+      "makerworldModelId": "2401859",
+      "author": "PhantomCommit",
+      "license": "Standard Digital File License",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\T16_Cartel_QR_PhantomCommit\\qr_stand_dual_color.3mf",
+      "cloudUrl": "",
+      "slicerNotes": "Cambio de color en capa 14 para contraste negro/blanco.",
+      "additionalLinks": []
+    },
+    "makerWorldModel": "https://makerworld.com/es/models/2401859",
+    "makerworldUrl": "https://makerworld.com/es/models/2401859",
+    "makerWorldAuthor": "PhantomCommit",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\T16_Cartel_QR_PhantomCommit\\qr_stand_dual_color.3mf",
+    "manufacturingTimes": {
+      "machineHours": 1,
+      "machineMinutes": 30,
+      "postProcessingMinutes": 10,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 90,
+    "postProcessingTimeMinutes": 10
   },
   {
-    id: 'servilletero-botanico-t26',
-    code: 'T26',
-    name: 'Servilletero de diseño botánico para mesa',
-    priceType: 'starting_at',
-    price: 169,
-    priceUnit: 'pieza',
-    status: 'published',
-    featured: false,
-    worlds: ['hogar', 'negocios'],
-    categories: ['hogar-cocina', 'negocios-restaurantes'],
-    techniques: ['3d'],
-    primaryImage: '/uploads/img_009.jpg',
-    gallery: ['/uploads/img_009.jpg'],
-    shortDescription: 'Servilletero estilizado con calado botánico para mesas de cafetería o comedor.',
-    fullDescription: 'Elegancia funcional para restaurantes, cafeterías o el comedor familiar. Mantiene las servilletas firmes y verticales gracias a sus paredes con silueta de follaje estilizado.',
-    specifications: {
-      dimensions: '13 cm de largo x 5 cm de ancho x 9 cm de alto',
-      material: 'PLA rígido apto para contacto alimentario indirecto',
-      finish: 'Blanco hueso mate o verde olivo',
-      includes: 'Servilletero completo con base antideslizante',
-      minQuantity: 1,
-      estimatedLeadTime: '2 a 3 días hábiles',
-      careNotes: 'Lavar a mano con esponja suave.'
-    },
-    variants: [
-      { name: 'Color', options: ['Blanco Hueso', 'Verde Olivo', 'Negro Mate'] }
+    "id": "servilletero-botanico-t26",
+    "code": "T26",
+    "name": "Servilletero de diseño botánico para mesa",
+    "priceType": "starting_at",
+    "price": 169,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": false,
+    "worlds": [
+      "hogar",
+      "negocios",
+      "eventos"
     ],
-    customizationOptions: ['Logotipo del restaurante en la base'],
-    availability: 'in_stock',
-    privateNotes: 'Ideal para cafeterías con estilo natural.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "hogar-cocina",
+      "negocios-restaurantes"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-t26-context-4612689eba.webp",
+    "gallery": [
+      "/uploads/catalog-v2-t26-context-4612689eba.webp",
+      "/uploads/catalog-v2-t26-base-85b806edfd.webp",
+      "/uploads/catalog-v2-t26-detail-d1b53a8f75.webp",
+      "/uploads/catalog-v2-t26-scale-fd71a1e6b8.webp"
+    ],
+    "shortDescription": "Servilletero estilizado con calado botánico para mesas de cafetería o comedor.",
+    "fullDescription": "Elegancia funcional para restaurantes, cafeterías o el comedor familiar. Mantiene las servilletas firmes y verticales gracias a sus paredes con silueta de follaje estilizado.",
+    "specifications": {
+      "dimensions": "13 cm de largo x 5 cm de ancho x 9 cm de alto",
+      "material": "PLA rígido apto para contacto alimentario indirecto",
+      "finish": "Blanco hueso mate o verde olivo",
+      "includes": "Servilletero completo con base antideslizante",
+      "minQuantity": 1,
+      "estimatedLeadTime": "2 a 3 días hábiles",
+      "careNotes": "Lavar a mano con esponja suave."
+    },
+    "variants": [
+      {
+        "name": "Color",
+        "options": [
+          "Blanco Hueso",
+          "Verde Olivo",
+          "Negro Mate",
+          "🎨 Otro color a elegir (a convenir)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Logotipo del restaurante en la base"
+    ],
+    "availability": "in_stock",
+    "privateNotes": "Ideal para cafeterías con estilo natural.",
+    "createdAt": "2026-10-14T14:44:43.575Z",
+    "whiteBgImage": "/uploads/catalog-v2-t26-base-85b806edfd.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-t26-detail-d1b53a8f75.webp",
+    "measureImage": "/uploads/catalog-v2-t26-scale-fd71a1e6b8.webp",
+    "stockQuantity": 10,
+    "costPrice": 86.4,
+    "costBreakdown": {
+      "plaGrams": 110,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 0,
+      "machineHours": 4.5,
+      "otherEquipCost": 0,
+      "manualWorkMin": 5,
+      "prepCost": 0,
+      "packagingCost": 5,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-14T23:17:12.636Z",
+    "sku": "HOG-3D-PLA-MAT-026",
+    "skuBreakdown": {
+      "standardSku": "HOG-3D-PLA-MAT-026",
+      "legacyCode": "T26",
+      "area": "HOG",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "MAT",
+      "sequence": "026",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "🧊 Impresión 3D (FDM / Filamento) (Granja 3D FDM)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Barniz / Textura Mate - Terso sin reflejos, elegante",
+        "lote": "#026"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-t26-scale-fd71a1e6b8.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\T26\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\T26\\",
+    "manufacturingTimes": {
+      "machineHours": 4,
+      "machineMinutes": 30,
+      "postProcessingMinutes": 5,
+      "leadTimeDays": "2 a 3 días hábiles"
+    },
+    "manufacturingTimeMinutes": 270,
+    "postProcessingTimeMinutes": 5
   },
   {
-    id: 'numero-mesa-t25',
-    code: 'T25',
-    name: 'Número de mesa tridimensional con base',
-    priceType: 'starting_at',
-    price: 129,
-    priceUnit: 'pieza',
-    status: 'published',
-    featured: false,
-    worlds: ['negocios', 'eventos'],
-    categories: ['negocios-restaurantes', 'eventos-bodas'],
-    techniques: ['3d'],
-    primaryImage: '/uploads/img_009.jpg',
-    gallery: ['/uploads/img_009.jpg', '/uploads/img_014.jpg'],
-    shortDescription: 'Número en relieve 3D sobre peana independiente para restaurantes o mesas de boda.',
-    fullDescription: 'Indispensable para identificar mesas con buen gusto en banquetes de boda, aniversarios o salones de restaurante. Tipografía voluminosa en dos tonos con excelente visibilidad a distancia.',
-    specifications: {
-      dimensions: '12 cm de alto total con base',
-      material: 'Polímero bicolor de alta precisión',
-      finish: 'Números en relieve claro sobre pedestal verde oliva o madera',
-      includes: 'Número y base encastrable',
-      minQuantity: 5,
-      estimatedLeadTime: '3 a 5 días hábiles según cantidad de mesas',
-      careNotes: 'Fácilmente desmontable para almacenar plano.'
-    },
-    variants: [
-      { name: 'Combinación de colores', options: ['Blanco sobre Verde Olivo', 'Blanco sobre Negro', 'Dorado sobre Crema'] }
+    "id": "numero-mesa-t25",
+    "code": "T25",
+    "name": "Número de mesa tridimensional con base",
+    "priceType": "starting_at",
+    "price": 129,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": false,
+    "worlds": [
+      "negocios",
+      "eventos"
     ],
-    customizationOptions: ['Numeración corrida (ej. 01 al 20)', 'Detalle de nombres de novios o logo'],
-    availability: 'made_to_order',
-    privateNotes: 'Producción por lotes de 10 piezas.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "negocios-restaurantes",
+      "eventos-bodas"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-t25-context-5774c0072b.webp",
+    "gallery": [
+      "/uploads/catalog-v2-t25-context-5774c0072b.webp",
+      "/uploads/catalog-v2-t25-base-3ffc446e6b.webp",
+      "/uploads/catalog-v2-t25-detail-93cbff8d4b.webp",
+      "/uploads/catalog-v2-t25-scale-eeadbf2eb7.webp"
+    ],
+    "shortDescription": "Número en relieve 3D sobre peana independiente para restaurantes o mesas de boda.",
+    "fullDescription": "Indispensable para identificar mesas con buen gusto en banquetes de boda, aniversarios o salones de restaurante. Tipografía voluminosa en dos tonos con excelente visibilidad a distancia.",
+    "specifications": {
+      "dimensions": "12 cm de alto total con base",
+      "material": "Polímero bicolor de alta precisión",
+      "finish": "Números en relieve claro sobre pedestal verde oliva o madera",
+      "includes": "Número y base encastrable",
+      "minQuantity": 5,
+      "estimatedLeadTime": "3 a 5 días hábiles según cantidad de mesas",
+      "careNotes": "Fácilmente desmontable para almacenar plano."
+    },
+    "variants": [
+      {
+        "name": "Combinación de colores",
+        "options": [
+          "Blanco sobre Verde Olivo",
+          "Blanco sobre Negro",
+          "Dorado sobre Crema",
+          "🎨 Otro color a elegir (a convenir)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Numeración corrida (ej. 01 al 20)",
+      "Detalle de nombres de novios o logo"
+    ],
+    "availability": "made_to_order",
+    "privateNotes": "Producción por lotes de 10 piezas.",
+    "createdAt": "2026-10-14T14:44:43.575Z",
+    "whiteBgImage": "/uploads/catalog-v2-t25-base-3ffc446e6b.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-t25-detail-93cbff8d4b.webp",
+    "measureImage": "/uploads/catalog-v2-t25-scale-eeadbf2eb7.webp",
+    "stockQuantity": 0,
+    "costPrice": 52,
+    "costBreakdown": {
+      "plaGrams": 55,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 5,
+      "machineHours": 2.2,
+      "otherEquipCost": 0,
+      "manualWorkMin": 5,
+      "prepCost": 0,
+      "packagingCost": 4,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "durationMinutes": 15,
+      "discountPercent": 10,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-14T23:16:52.698Z",
+    "sku": "NEG-3D-PLA-MAT-025",
+    "skuBreakdown": {
+      "standardSku": "NEG-3D-PLA-MAT-025",
+      "legacyCode": "T25",
+      "area": "NEG",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "MAT",
+      "sequence": "025",
+      "instructionsForStaff": {
+        "destino": "💼 Negocios & Marca",
+        "maquinaria": "🧊 Impresión 3D (FDM / Filamento) (Granja 3D FDM)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Barniz / Textura Mate - Terso sin reflejos, elegante",
+        "lote": "#025"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-t25-scale-eeadbf2eb7.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\T25\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\T25\\",
+    "manufacturingTimes": {
+      "machineHours": 2,
+      "machineMinutes": 12,
+      "postProcessingMinutes": 5,
+      "leadTimeDays": "3 a 5 días hábiles según cantidad de mesas"
+    },
+    "manufacturingTimeMinutes": 132,
+    "postProcessingTimeMinutes": 5
   },
   {
-    id: 'taza-personalizada-s1',
-    code: 'S1',
-    name: 'Taza personalizada con logotipo o nombre',
-    priceType: 'starting_at',
-    price: 70,
-    priceUnit: 'c/u',
-    status: 'published',
-    featured: false,
-    worlds: ['hogar', 'negocios', 'eventos'],
-    categories: ['hogar-cocina', 'negocios-restaurantes', 'eventos-bodas', 'negocios-oficinas'],
-    techniques: ['sublimation'],
-    primaryImage: '/uploads/img_009.jpg',
-    gallery: ['/uploads/img_009.jpg', '/uploads/img_013.jpg'],
-    shortDescription: 'Taza de cerámica de 11 oz con diseño corporativo, monograma o detalle botánico.',
-    fullDescription: 'Taza clásica para café o té con impresión sublimada de alta durabilidad y colores vivos. Ideal para kits de bienvenida en oficinas, cafeterías, regalos para parejas o recuerdos de boda.',
-    specifications: {
-      dimensions: '11 onzas (325 ml)',
-      material: 'Cerámica blanca de alta temperatura con recubrimiento de polímero',
-      finish: 'Brillante o satinado',
-      includes: 'Cajita individual blanca protectora',
-      minQuantity: 1,
-      estimatedLeadTime: '1 a 3 días hábiles',
-      careNotes: 'Apta para lavavajillas y horno de microondas.'
-    },
-    variants: [
-      { name: 'Estilo', options: ['Logotipo empresarial', 'Nombres de pareja con follaje', 'Foto familiar'] }
+    "id": "taza-personalizada-s1",
+    "code": "S1",
+    "name": "Taza personalizada con logotipo o nombre",
+    "priceType": "fixed",
+    "price": 72,
+    "priceUnit": "c/u",
+    "status": "published",
+    "featured": false,
+    "worlds": [
+      "hogar",
+      "negocios",
+      "eventos"
     ],
-    customizationOptions: ['Nombre de cada colaborador', 'Impresión a 1 o 2 caras'],
-    availability: 'in_stock',
-    privateNotes: 'Planchado a 180°C por 180 segundos.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "hogar-cocina",
+      "negocios-restaurantes",
+      "eventos-bodas",
+      "negocios-oficinas"
+    ],
+    "techniques": [
+      "sublimation",
+      "sublimacion"
+    ],
+    "primaryImage": "/uploads/sublimacion_taza_tarro_contexto.jpg",
+    "gallery": [
+      "/uploads/sublimacion_taza_tarro_contexto.jpg",
+      "/uploads/catalog-v2-s1-base-4fc107e773.webp",
+      "/uploads/catalog-v2-s1-detail-918981c0b0.webp",
+      "/uploads/catalog-v2-s1-scale-406d68f108.webp"
+    ],
+    "shortDescription": "Taza / tarro de polímero térmico de 11 oz con diseño corporativo, monograma o detalle botánico.",
+    "fullDescription": "Taza clásica para café o té con impresión de alta durabilidad y colores vivos. Ideal para kits de bienvenida en oficinas, cafeterías, regalos para parejas o recuerdos de boda.",
+    "specifications": {
+      "dimensions": "11 onzas (325 ml)",
+      "material": "Polímero térmico resistente libre de BPA",
+      "finish": "Brillante o satinado",
+      "includes": "Cajita individual blanca protectora",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Apta para bebidas frías y calientes."
+    },
+    "variants": [
+      {
+        "name": "Estilo",
+        "options": [
+          "Logotipo empresarial",
+          "Nombres de pareja con follaje",
+          "Foto familiar"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Nombre de cada colaborador",
+      "Impresión a 1 o 2 caras"
+    ],
+    "availability": "in_stock",
+    "privateNotes": "Planchado a 180°C por 180 segundos.",
+    "createdAt": "2026-10-14T14:44:43.576Z",
+    "whiteBgImage": "/uploads/catalog-v2-s1-base-4fc107e773.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-s1-detail-918981c0b0.webp",
+    "measureImage": "/uploads/catalog-v2-s1-scale-406d68f108.webp",
+    "stockQuantity": 6,
+    "costPrice": 43,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 35,
+      "machineHours": 0.25,
+      "otherEquipCost": 0,
+      "manualWorkMin": 10,
+      "prepCost": 0,
+      "packagingCost": 5,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-14T23:57:03.459Z",
+    "sku": "HOG-SUB-CER-BRI-001",
+    "skuBreakdown": {
+      "standardSku": "HOG-SUB-CER-BRI-001",
+      "legacyCode": "S1",
+      "area": "HOG",
+      "technique": "SUB",
+      "material": "CER",
+      "finish": "BRI",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "☕ Sublimación Térmica (Prensa de Tazas / Plancha Térmica)",
+        "materiaPrima": "🪵 Cerámica / Vidrio - Inorgánicos",
+        "acabadoTaller": "✨ Sellador Brillante / Resina - Efecto cristal brillante",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-s1-scale-406d68f108.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\S1\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\S1\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 15,
+      "postProcessingMinutes": 10,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 15,
+    "postProcessingTimeMinutes": 10
   },
   {
-    id: 'posavasos-madera-l15',
-    code: 'L15',
-    name: 'Posavasos de madera natural grabado con láser',
-    priceType: 'starting_at',
-    price: 49,
-    priceUnit: 'c/u',
-    status: 'published',
-    featured: false,
-    worlds: ['hogar', 'negocios'],
-    categories: ['hogar-cocina', 'negocios-restaurantes'],
-    techniques: ['laser'],
-    primaryImage: '/uploads/img_009.jpg',
-    gallery: ['/uploads/img_009.jpg'],
-    shortDescription: 'Set de posavasos en madera natural con patrones botánicos o logotipo grabado a láser y base de corcho.',
-    fullDescription: 'Protege las mesas con calidez artesanal. Fabricados en madera natural selecta de 5mm (sin MDF) con grabado láser de alta precisión y triple sellado de barniz transparente poliuretano que repele agua, café y alcohol. Con base de corcho natural antideslizante que protege superficies delicadas.',
-    specifications: {
-      dimensions: '9 cm de diámetro x 5 mm de espesor',
-      material: 'Madera natural sólida seleccionada de pino / haya 5mm con base de corcho natural (sin MDF)',
-      finish: 'Triple capa de barniz transparente sellador poliuretano hidrófugo grado mesa',
-      includes: 'Tope de corcho inferior antideslizante',
-      minQuantity: 4,
-      estimatedLeadTime: '2 a 4 días hábiles',
-      careNotes: 'Secar con un trapo tras usar. Protección hidrófuga contra líquidos y calor.'
-    },
-    variants: [
-      { name: 'Tono de Barniz', options: ['Barniz Natural Transparente', 'Nogal Americano', 'Caoba Clásico', 'Roble Claro Nórdico'] },
-      { name: 'Forma', options: ['Circular (9 cm)', 'Cuadrado con cantos redondeados (9 cm)'] }
+    "id": "posavasos-madera-l15",
+    "code": "L15",
+    "name": "Posavasos de madera natural grabado con láser",
+    "priceType": "starting_at",
+    "price": 49,
+    "priceUnit": "c/u",
+    "status": "published",
+    "featured": false,
+    "worlds": [
+      "hogar",
+      "negocios",
+      "eventos"
     ],
-    customizationOptions: ['Logotipo de cafetería', 'Iniciales de evento'],
-    availability: 'made_to_order',
-    privateNotes: 'Corte y grabado en pino selecto 5mm. Aplicación de triple capa de barniz transparente poliuretano hidrófugo por ambas caras y pegado de corcho base. Se entrega atado con cordel de yute en paquetes de 4 o 6.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "hogar-cocina",
+      "negocios-restaurantes"
+    ],
+    "techniques": [
+      "laser"
+    ],
+    "primaryImage": "/uploads/catalog-v2-l15-context-3b6b41e502.webp",
+    "gallery": [
+      "/uploads/catalog-v2-l15-context-3b6b41e502.webp",
+      "/uploads/catalog-v2-l15-base-a7c4b5d3f5.webp",
+      "/uploads/catalog-v2-l15-detail-c27a2576e2.webp",
+      "/uploads/catalog-v2-l15-scale-a42156e5d0.webp"
+    ],
+    "shortDescription": "Set de posavasos en madera natural con patrones botánicos o logotipo grabado a láser y base de corcho.",
+    "fullDescription": "Protege las mesas con calidez artesanal. Fabricados en madera natural selecta de 5mm (sin MDF) con grabado láser de alta precisión y triple sellado de barniz transparente poliuretano que repele agua, café y alcohol. Con base de corcho natural antideslizante que protege superficies delicadas.",
+    "specifications": {
+      "dimensions": "9 cm de diámetro x 5 mm de espesor",
+      "material": "Madera natural sólida seleccionada de pino / haya 5mm con base de corcho natural (sin MDF)",
+      "finish": "Triple capa de barniz transparente sellador poliuretano hidrófugo grado mesa",
+      "includes": "Tope de corcho inferior antideslizante",
+      "minQuantity": 4,
+      "estimatedLeadTime": "1 a 3 días hábiles",
+      "careNotes": "Secar con un trapo tras usar. Protección hidrófuga contra líquidos y calor."
+    },
+    "variants": [
+      {
+        "name": "Tono de Barniz",
+        "options": [
+          "Barniz Natural Transparente",
+          "Nogal Americano",
+          "Caoba Clásico",
+          "Roble Claro Nórdico"
+        ]
+      },
+      {
+        "name": "Forma",
+        "options": [
+          "Circular (9 cm)",
+          "Cuadrado con cantos redondeados (9 cm)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Logotipo de cafetería",
+      "Iniciales de evento"
+    ],
+    "availability": "made_to_order",
+    "privateNotes": "Corte y grabado en pino selecto 5mm. Aplicación de triple capa de barniz transparente poliuretano hidrófugo por ambas caras y pegado de corcho base. Se entrega atado con cordel de yute en paquetes de 4 o 6.",
+    "createdAt": "2026-10-14T14:44:43.576Z",
+    "whiteBgImage": "/uploads/catalog-v2-l15-base-a7c4b5d3f5.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-l15-detail-c27a2576e2.webp",
+    "measureImage": "/uploads/catalog-v2-l15-scale-a42156e5d0.webp",
+    "stockQuantity": 0,
+    "costPrice": 16,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 10,
+      "machineHours": 0.33,
+      "otherEquipCost": 0,
+      "manualWorkMin": 15,
+      "prepCost": 0,
+      "packagingCost": 2,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-14T23:16:39.012Z",
+    "sku": "HOG-LAS-PIN-GRA-015",
+    "skuBreakdown": {
+      "standardSku": "HOG-LAS-PIN-GRA-015",
+      "legacyCode": "L15",
+      "area": "HOG",
+      "technique": "LAS",
+      "material": "PIN",
+      "finish": "GRA",
+      "sequence": "015",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Mesa",
+        "maquinaria": "⚡ Corte / Grabado Láser CO2 (Láser CO2 / Diodo)",
+        "materiaPrima": "🪵 Madera Natural Pino / Haya 5mm (Sin MDF)",
+        "acabadoTaller": "✨ Triple Barniz Transparente Hidrófugo",
+        "lote": "#015"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-l15-scale-a42156e5d0.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Taller Artesano",
+      "license": "Diseño Exclusivo Artesano Digital",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\L15\\",
+      "cloudUrl": "",
+      "slicerNotes": "Corte MDF/Acrílico 3mm a 65% potencia, grabado 300mm/s.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Taller Artesano",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\L15\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 20,
+      "postProcessingMinutes": 15,
+      "leadTimeDays": "1 a 3 días hábiles"
+    },
+    "manufacturingTimeMinutes": 20,
+    "postProcessingTimeMinutes": 15
   },
   {
-    id: 'chapita-mascota-t20',
-    code: 'T20',
-    name: 'Chapita de identificación para mascotas con o sin NFC',
-    priceType: 'starting_at',
-    price: 69,
-    priceUnit: 'c/u',
-    status: 'published',
-    featured: true,
-    worlds: ['hogar', 'negocios'],
-    categories: ['hogar-mascotas', 'negocios-veterinarias'],
-    techniques: ['3d', 'nfc', 'laser'],
-    primaryImage: '/uploads/img_010.jpg',
-    gallery: ['/uploads/img_010.jpg', '/uploads/img_011.jpg'],
-    shortDescription: 'Placa ultraligera en forma de huesito o huella con nombre en relieve y opción de chip NFC.',
-    fullDescription: 'La tranquilidad de saber que tu peludo está identificado. Fabricada en relieve 3D ligero para no molestar el cuello de tu perro o gato. Disponible en versión básica con teléfono grabado al reverso o en versión inteligente con chip NFC ($350) que abre tu contacto de WhatsApp o ficha médica al acercar cualquier celular.',
-    specifications: {
-      dimensions: 'Chica (3 cm para gatos/perros mini) o Mediana (4 cm para perros medianos/grandes)',
-      material: 'PLA de grado no tóxico y argolla metálica reforzada',
-      finish: 'Bicolor con contraste visible',
-      includes: 'Argolla doble reforzada para el collar',
-      minQuantity: 1,
-      estimatedLeadTime: '1 a 2 días hábiles',
-      careNotes: 'No remojar en solventes. Resistente a lluvia y paseos normales.'
-    },
-    variants: [
-      { name: 'Modelo', options: ['Huellita 3D ($69)', 'Huesito 3D ($69)', 'Madera contrachapado L10 ($69)', 'Placa recubierta metal L7 ($79)', 'Inteligente 3D con NFC ($350)'] },
-      { name: 'Color', options: ['Verde Olivo y Blanco', 'Negro y Blanco', 'Azul Marino', 'Rojo', 'Rosa Pastel'] }
+    "id": "chapita-mascota-t20",
+    "code": "T20",
+    "name": "Chapita de identificación para mascotas con o sin NFC",
+    "priceType": "starting_at",
+    "price": 69,
+    "priceUnit": "c/u",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "hogar",
+      "negocios"
     ],
-    customizationOptions: ['Nombre de la mascota al frente', '1 o 2 números de teléfono al reverso', 'Dirección o frase corta'],
-    availability: 'made_to_order',
-    privateNotes: 'La versión NFC lleva chip sellado herméticamente al interior.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "hogar-mascotas",
+      "negocios-veterinarias"
+    ],
+    "techniques": [
+      "3d",
+      "nfc",
+      "laser"
+    ],
+    "primaryImage": "/uploads/catalog-v2-t20-context-89a8b5f6cf.webp",
+    "gallery": [
+      "/uploads/catalog-v2-t20-context-89a8b5f6cf.webp",
+      "/uploads/catalog-v2-t20-base-a45e8e9e9a.webp",
+      "/uploads/catalog-v2-t20-detail-8c9b0ddfdf.webp",
+      "/uploads/catalog-v2-t20-scale-8283777c87.webp"
+    ],
+    "shortDescription": "Placa ultraligera en forma de huesito o huella con nombre en relieve y opción de chip NFC.",
+    "fullDescription": "La tranquilidad de saber que tu peludo está identificado. Fabricada en relieve 3D ligero para no molestar el cuello de tu perro o gato. Disponible en versión básica con teléfono grabado al reverso o en versión inteligente con chip NFC ($350) que abre tu contacto de WhatsApp o ficha médica al acercar cualquier celular.",
+    "specifications": {
+      "dimensions": "Chica (3 cm para gatos/perros mini) o Mediana (4 cm para perros medianos/grandes)",
+      "material": "PLA de grado no tóxico y argolla metálica reforzada",
+      "finish": "Bicolor con contraste visible",
+      "includes": "Argolla doble reforzada para el collar",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "No remojar en solventes. Resistente a lluvia y paseos normales."
+    },
+    "variants": [
+      {
+        "name": "Modelo",
+        "options": [
+          "Huellita 3D ($69)",
+          "Huesito 3D ($69)",
+          "Madera natural selecta L10 ($69)",
+          "Placa recubierta metal L7 ($79)",
+          "Inteligente 3D con NFC ($350)"
+        ]
+      },
+      {
+        "name": "Color",
+        "options": [
+          "Verde Olivo y Blanco",
+          "Negro y Blanco",
+          "Azul Marino",
+          "Rojo",
+          "Rosa Pastel",
+          "🎨 Otro color a elegir (a convenir)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Nombre de la mascota al frente",
+      "1 o 2 números de teléfono al reverso",
+      "Dirección o frase corta"
+    ],
+    "availability": "made_to_order",
+    "privateNotes": "La versión NFC lleva chip sellado herméticamente al interior.",
+    "createdAt": "2026-10-14T14:44:43.576Z",
+    "whiteBgImage": "/uploads/catalog-v2-t20-base-a45e8e9e9a.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-t20-detail-8c9b0ddfdf.webp",
+    "measureImage": "/uploads/catalog-v2-t20-scale-8283777c87.webp",
+    "stockQuantity": 0,
+    "costPrice": 20.3,
+    "costBreakdown": {
+      "plaGrams": 12,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 5,
+      "machineHours": 0.42,
+      "otherEquipCost": 0,
+      "manualWorkMin": 5,
+      "prepCost": 0,
+      "packagingCost": 2,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": true,
+      "isBlitz": true,
+      "durationMinutes": 15,
+      "discountPercent": 20,
+      "startedAt": 1792123047288,
+      "expiresAt": 1792123887288
+    },
+    "updatedAt": "2026-10-14T23:16:52.793Z",
+    "sku": "HOG-HYB-PLA-NFC-020",
+    "skuBreakdown": {
+      "standardSku": "HOG-HYB-PLA-NFC-020",
+      "legacyCode": "T20",
+      "area": "HOG",
+      "technique": "HYB",
+      "material": "PLA",
+      "finish": "NFC",
+      "sequence": "020",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "🔄 Híbrido (Láser + Impresión 3D) (Láser + Impresión 3D)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Chip NFC Integrado & Enlace - Programado con URL o contacto",
+        "lote": "#020"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-t20-scale-8283777c87.webp",
+    "repository": {
+      "platform": "makerworld",
+      "makerworldUrl": "https://makerworld.com/es/models/3138490",
+      "makerworldModelId": "3138490",
+      "author": "Ryno_man",
+      "license": "Standard Digital File License",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\T20_Chapita_Ryno_man\\bone_dog_tag.3mf",
+      "cloudUrl": "",
+      "slicerNotes": "Pausa para inserción o cambio de color en letras en relieve.",
+      "additionalLinks": []
+    },
+    "makerWorldModel": "https://makerworld.com/es/models/3138490",
+    "makerworldUrl": "https://makerworld.com/es/models/3138490",
+    "makerWorldAuthor": "Ryno_man",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\T20_Chapita_Ryno_man\\bone_dog_tag.3mf",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 25,
+      "postProcessingMinutes": 5,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 25,
+    "postProcessingTimeMinutes": 5
   },
   {
-    id: 'portabolsas-paseo-t21',
-    code: 'T21',
-    name: 'Portabolsas sanitario para paseo de mascotas',
-    priceType: 'starting_at',
-    price: 139,
-    priceUnit: 'c/u',
-    status: 'published',
-    featured: false,
-    worlds: ['hogar'],
-    categories: ['hogar-mascotas'],
-    techniques: ['3d'],
-    primaryImage: '/uploads/img_010.jpg',
-    gallery: ['/uploads/img_010.jpg'],
-    shortDescription: 'Cápsula dispensadora de rollos sanitarios con ventana de huellita y mosquetón.',
-    fullDescription: 'Haz tus paseos más cómodos y ordenados. Dispensador resistente con tapa de rosca rápida y ranura frontal con silueta de huella para extraer bolsas fácilmente sin atascos.',
-    specifications: {
-      dimensions: '8.5 cm de largo x 4 cm de diámetro',
-      material: 'Polímero resistente a caídas',
-      finish: 'Verde salvia mate o arena',
-      includes: 'Mosquetón metálico negro y 1 rollo de bolsas biodegradable de cortesía',
-      minQuantity: 1,
-      estimatedLeadTime: '1 a 2 días hábiles',
-      careNotes: 'Apto para cualquier rollo de bolsas estándar de 15 piezas.'
-    },
-    variants: [
-      { name: 'Color', options: ['Verde Salvia', 'Arena / Crema', 'Grafito'] }
+    "id": "portabolsas-paseo-t21",
+    "code": "T21",
+    "name": "Portabolsas sanitario para paseo de mascotas",
+    "priceType": "starting_at",
+    "price": 139,
+    "priceUnit": "c/u",
+    "status": "published",
+    "featured": false,
+    "worlds": [
+      "hogar"
     ],
-    customizationOptions: ['Nombre de tu mascota grabado en relieve'],
-    availability: 'in_stock',
-    privateNotes: 'Tapa con rosca métrica de fácil ensamble.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "hogar-mascotas"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-t21-context-6b58d43678.webp",
+    "gallery": [
+      "/uploads/catalog-v2-t21-context-6b58d43678.webp",
+      "/uploads/catalog-v2-t21-base-6abf5860db.webp",
+      "/uploads/catalog-v2-t21-detail-2e76c2b71e.webp",
+      "/uploads/catalog-v2-t21-scale-b72e3fcb99.webp"
+    ],
+    "shortDescription": "Cápsula dispensadora de rollos sanitarios con ventana de huellita y mosquetón.",
+    "fullDescription": "Haz tus paseos más cómodos y ordenados. Dispensador resistente con tapa de rosca rápida y ranura frontal con silueta de huella para extraer bolsas fácilmente sin atascos.",
+    "specifications": {
+      "dimensions": "8.5 cm de largo x 4 cm de diámetro",
+      "material": "Polímero resistente a caídas",
+      "finish": "Verde salvia mate o arena",
+      "includes": "Mosquetón metálico negro y 1 rollo de bolsas biodegradable de cortesía",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Apto para cualquier rollo de bolsas estándar de 15 piezas."
+    },
+    "variants": [
+      {
+        "name": "Color",
+        "options": [
+          "Verde Salvia",
+          "Arena / Crema",
+          "Grafito",
+          "🎨 Otro color a elegir (a convenir)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Nombre de tu mascota grabado en relieve"
+    ],
+    "availability": "in_stock",
+    "privateNotes": "Tapa con rosca métrica de fácil ensamble.",
+    "createdAt": "2026-10-14T14:44:43.576Z",
+    "whiteBgImage": "/uploads/catalog-v2-t21-base-6abf5860db.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-t21-detail-2e76c2b71e.webp",
+    "measureImage": "/uploads/catalog-v2-t21-scale-b72e3fcb99.webp",
+    "stockQuantity": 16,
+    "costPrice": 58,
+    "costBreakdown": {
+      "plaGrams": 65,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 8,
+      "machineHours": 2.8,
+      "otherEquipCost": 0,
+      "manualWorkMin": 6,
+      "prepCost": 0,
+      "packagingCost": 4,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-14T23:16:59.002Z",
+    "sku": "HOG-3D-PLA-MAT-021",
+    "skuBreakdown": {
+      "standardSku": "HOG-3D-PLA-MAT-021",
+      "legacyCode": "T21",
+      "area": "HOG",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "MAT",
+      "sequence": "021",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "🧊 Impresión 3D (FDM / Filamento) (Granja 3D FDM)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Barniz / Textura Mate - Terso sin reflejos, elegante",
+        "lote": "#021"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-t21-scale-b72e3fcb99.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\T21\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\T21\\",
+    "manufacturingTimes": {
+      "machineHours": 2,
+      "machineMinutes": 48,
+      "postProcessingMinutes": 6,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 168,
+    "postProcessingTimeMinutes": 6
   },
   {
-    id: 'paquete-zorrito-t35',
-    code: 'T35',
-    name: 'Paquete Zorrito Colección (Figura + Llavero + Stickers)',
-    priceType: 'fixed',
-    price: 249,
-    priceUnit: 'paquete',
-    status: 'published',
-    featured: true,
-    worlds: ['hogar'],
-    categories: ['hogar-decoracion', 'hogar-infantil', 'hogar-hobbies'],
-    techniques: ['3d'],
-    primaryImage: '/uploads/img_012.jpg',
-    gallery: ['/uploads/img_012.jpg'],
-    shortDescription: 'Set de colección: Figura low-poly de zorrito, llavero miniatura a juego y 2 stickers.',
-    fullDescription: 'Nuestra simpática mascota zorrito en un paquete de colección especial. Incluye una figura decorativa facetada de 10 cm con acabado terracota y blanco, llavero miniatura de cabeza de zorrito con herraje metálico y 2 stickers vinílicos resistentes a la intemperie. Precio del paquete $249 (precio individual $278).',
-    specifications: {
-      dimensions: 'Figura: 10 cm de altura; Llavero: 3.5 cm; Stickers: 6 cm',
-      material: 'PLA premium multicolor y vinil laminado brillante',
-      finish: 'Facetado poliédrico mate con ojos brillantes',
-      includes: '1 figura T35 + 1 llavero + 2 stickers D5 en empaque especial',
-      minQuantity: 1,
-      estimatedLeadTime: '2 a 3 días hábiles',
-      careNotes: 'Pieza decorativa de colección.'
-    },
-    variants: [
-      { name: 'Presentación', options: ['Paquete Completo ($249)', 'Solo Figura T35 ($179)', 'Solo Llavero ($42)'] }
+    "id": "paquete-zorrito-t35",
+    "code": "T35",
+    "name": "Paquete Zorrito Colección (Figura + Llavero + Stickers)",
+    "priceType": "fixed",
+    "price": 249,
+    "priceUnit": "paquete",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "hogar"
     ],
-    customizationOptions: ['Dedicatoria en la base de la figura'],
-    availability: 'in_stock',
-    privateNotes: 'Producto estrella de temporada.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "hogar-decoracion",
+      "hogar-infantil",
+      "hogar-hobbies"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-t35-context-1ca7fa753f.webp",
+    "gallery": [
+      "/uploads/catalog-v2-t35-context-1ca7fa753f.webp",
+      "/uploads/catalog-v2-t35-base-428bc044e7.webp",
+      "/uploads/catalog-v2-t35-detail-9b61373e15.webp",
+      "/uploads/catalog-v2-t35-scale-266745ffab.webp"
+    ],
+    "shortDescription": "Set de colección: Figura low-poly de zorrito, llavero miniatura a juego y 2 stickers.",
+    "fullDescription": "Nuestra simpática mascota zorrito en un paquete de colección especial. Incluye una figura decorativa facetada de 10 cm con acabado terracota y blanco, llavero miniatura de cabeza de zorrito con herraje metálico y 2 stickers vinílicos resistentes a la intemperie. Precio del paquete $249 (precio individual $278).",
+    "specifications": {
+      "dimensions": "Figura: 10 cm de altura; Llavero: 3.5 cm; Stickers: 6 cm",
+      "material": "PLA premium multicolor y vinil laminado brillante",
+      "finish": "Facetado poliédrico mate con ojos brillantes",
+      "includes": "1 figura T35 + 1 llavero + 2 stickers D5 en empaque especial",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Pieza decorativa de colección."
+    },
+    "variants": [
+      {
+        "name": "Presentación",
+        "options": [
+          "Paquete Completo ($249)",
+          "Solo Figura T35 ($179)",
+          "Solo Llavero ($42)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Dedicatoria en la base de la figura"
+    ],
+    "availability": "in_stock",
+    "privateNotes": "Producto estrella de temporada.",
+    "createdAt": "2026-10-14T14:44:43.576Z",
+    "whiteBgImage": "/uploads/catalog-v2-t35-base-428bc044e7.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-t35-detail-9b61373e15.webp",
+    "measureImage": "/uploads/catalog-v2-t35-scale-266745ffab.webp",
+    "stockQuantity": 14,
+    "costPrice": 102,
+    "costBreakdown": {
+      "plaGrams": 80,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 25,
+      "machineHours": 2.25,
+      "otherEquipCost": 0,
+      "manualWorkMin": 10,
+      "prepCost": 0,
+      "packagingCost": 15,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "HOG-3D-PLA-BRI-035",
+    "skuBreakdown": {
+      "standardSku": "HOG-3D-PLA-BRI-035",
+      "legacyCode": "T35",
+      "area": "HOG",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "BRI",
+      "sequence": "035",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "🧊 Impresión 3D (FDM / Filamento) (Granja 3D FDM)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Sellador Brillante / Resina - Efecto cristal brillante",
+        "lote": "#035"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-t35-scale-266745ffab.webp",
+    "repository": {
+      "platform": "makerworld",
+      "makerworldUrl": "https://makerworld.com/es/models/2387852",
+      "makerworldModelId": "2387852",
+      "author": "MrGravity",
+      "license": "Standard Digital File License",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\T35_CuteFox_MrGravity\\cute_fox_pair.3mf",
+      "cloudUrl": "",
+      "slicerNotes": "Multicolor AMS o capas alternadas blanco/naranja.",
+      "additionalLinks": []
+    },
+    "makerWorldModel": "https://makerworld.com/es/models/2387852",
+    "makerworldUrl": "https://makerworld.com/es/models/2387852",
+    "makerWorldAuthor": "MrGravity",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\T35_CuteFox_MrGravity\\cute_fox_pair.3mf",
+    "manufacturingTimes": {
+      "machineHours": 2,
+      "machineMinutes": 15,
+      "postProcessingMinutes": 10,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 135,
+    "postProcessingTimeMinutes": 10
   },
   {
-    id: 'letrero-boda-l2',
-    code: 'L2',
-    name: 'Letrero de bienvenida o presidencia para boda y eventos',
-    priceType: 'starting_at',
-    price: 249,
-    priceUnit: 'pieza',
-    status: 'published',
-    featured: true,
-    worlds: ['eventos', 'negocios'],
-    categories: ['eventos-bodas', 'negocios-oficinas'],
-    techniques: ['laser'],
-    primaryImage: '/uploads/img_014.jpg',
-    gallery: ['/uploads/img_014.jpg', '/uploads/img_015.jpg'],
-    shortDescription: 'Placa en silueta de arco en madera natural selecta o acrílico con nombres caligráficos y fecha grabada.',
-    fullDescription: 'La pieza que da la bienvenida a tus invitados y enmarca las fotos del día más especial. Corte en arco contemporáneo en madera natural seleccionada (100% libre de MDF) con tipografía elegante y motivos botánicos grabados a láser, sellado con capa de barniz transparente satinado que protege la madera sin alterar su textura.',
-    specifications: {
-      dimensions: 'Desde 30 x 20 cm hasta 60 x 40 cm según el uso (mesa o caballete)',
-      material: 'Madera natural sólida de haya / pino estufado de 6 mm o acrílico cristal (sin MDF)',
-      finish: 'Capa protectora de barniz transparente satinado y bordes pulidos',
-      includes: 'Letrero en silueta de arco con base de madera independiente ranurada',
-      minQuantity: 1,
-      estimatedLeadTime: '3 a 5 días hábiles',
-      careNotes: 'Empaque especial acolchado para traslado.'
-    },
-    variants: [
-      { name: 'Acabado y Barniz', options: ['Barniz Natural Transparente Pino Nórdico', 'Nogal Americano Clásico', 'Caoba Elegante', 'Acrílico Blanco Esmerilado'] },
-      { name: 'Tamaño', options: ['Mesa de dulces / firmas (30 x 20 cm)', 'Entrada al salón (50 x 35 cm)'] }
+    "id": "letrero-boda-l2",
+    "code": "L2",
+    "name": "Letrero de bienvenida o presidencia para boda y eventos",
+    "priceType": "starting_at",
+    "price": 249,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "eventos",
+      "negocios"
     ],
-    customizationOptions: ['Nombres de los novios o festejados', 'Fecha del evento', 'Frase personalizada'],
-    availability: 'made_to_order',
-    privateNotes: 'Corte limpio en arco sobre madera natural de haya/pino 6mm. Grabado de nombres y sellado con barniz transparente satinado. Base ranurada ajustada a medida.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "eventos-bodas",
+      "negocios-oficinas"
+    ],
+    "techniques": [
+      "laser"
+    ],
+    "primaryImage": "/uploads/catalog-v2-l2-context-71f389541b.webp",
+    "gallery": [
+      "/uploads/catalog-v2-l2-context-71f389541b.webp",
+      "/uploads/catalog-v2-l2-base-1f573d901e.webp",
+      "/uploads/catalog-v2-l2-detail-28fc8cd38d.webp",
+      "/uploads/catalog-v2-l2-scale-1d8cf493d0.webp"
+    ],
+    "shortDescription": "Placa en silueta de arco en madera natural selecta o acrílico con nombres caligráficos y fecha grabada.",
+    "fullDescription": "La pieza que da la bienvenida a tus invitados y enmarca las fotos del día más especial. Corte en arco contemporáneo en madera natural seleccionada (100% libre de MDF) con tipografía elegante y motivos botánicos grabados a láser, sellado con capa de barniz transparente satinado que protege la madera sin alterar su textura.",
+    "specifications": {
+      "dimensions": "Desde 30 x 20 cm hasta 60 x 40 cm según el uso (mesa o caballete)",
+      "material": "Madera natural sólida de haya / pino estufado de 6 mm o acrílico cristal (sin MDF)",
+      "finish": "Capa protectora de barniz transparente satinado y bordes pulidos",
+      "includes": "Base de madera independiente o ranuras para caballete",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 3 días hábiles",
+      "careNotes": "Empaque especial acolchado para traslado."
+    },
+    "variants": [
+      {
+        "name": "Acabado y Barniz",
+        "options": [
+          "Barniz Natural Transparente Pino Nórdico",
+          "Nogal Americano Clásico",
+          "Caoba Elegante",
+          "Acrílico Blanco Esmerilado"
+        ]
+      },
+      {
+        "name": "Tamaño",
+        "options": [
+          "Mesa de dulces / firmas (30 x 20 cm)",
+          "Entrada al salón (50 x 35 cm)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Nombres de los novios o festejados",
+      "Fecha del evento",
+      "Frase personalizada"
+    ],
+    "availability": "made_to_order",
+    "privateNotes": "Corte limpio en arco sobre madera natural de haya/pino 6mm. Grabado de nombres y sellado con barniz transparente satinado. Base ranurada ajustada a medida.",
+    "createdAt": "2026-10-14T14:44:43.576Z",
+    "whiteBgImage": "/uploads/catalog-v2-l2-base-1f573d901e.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-l2-detail-28fc8cd38d.webp",
+    "measureImage": "/uploads/catalog-v2-l2-scale-1d8cf493d0.webp",
+    "stockQuantity": 0,
+    "costPrice": 83,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 53,
+      "machineHours": 0.33,
+      "otherEquipCost": 0,
+      "manualWorkMin": 15,
+      "prepCost": 0,
+      "packagingCost": 12,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-14T23:17:12.610Z",
+    "sku": "EVE-LAS-PIN-GRA-002",
+    "skuBreakdown": {
+      "standardSku": "EVE-LAS-PIN-GRA-002",
+      "legacyCode": "L2",
+      "area": "EVE",
+      "technique": "LAS",
+      "material": "PIN",
+      "finish": "GRA",
+      "sequence": "002",
+      "instructionsForStaff": {
+        "destino": "🎉 Eventos & Bodas",
+        "maquinaria": "⚡ Corte / Grabado Láser CO2 (Láser CO2 / Diodo)",
+        "materiaPrima": "🪵 Madera Natural Haya / Pino 6mm (Sin MDF)",
+        "acabadoTaller": "✨ Barniz Transparente Protector Satinado",
+        "lote": "#002"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-l2-scale-1d8cf493d0.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Taller Artesano",
+      "license": "Diseño Exclusivo Artesano Digital",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\L2\\",
+      "cloudUrl": "",
+      "slicerNotes": "Corte MDF/Acrílico 3mm a 65% potencia, grabado 300mm/s.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Taller Artesano",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\L2\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 20,
+      "postProcessingMinutes": 15,
+      "leadTimeDays": "1 a 3 días hábiles"
+    },
+    "manufacturingTimeMinutes": 20,
+    "postProcessingTimeMinutes": 15
   },
   {
-    id: 'llavero-nombre-t1',
-    code: 'T1',
-    name: 'Llavero con nombre en relieve y silueta botánica',
-    priceType: 'starting_at',
-    price: 49,
-    priceUnit: 'c/u',
-    status: 'published',
-    featured: false,
-    worlds: ['hogar', 'eventos', 'negocios'],
-    categories: ['hogar-regalos', 'eventos-bodas', 'eventos-cumpleanos', 'negocios-tiendas'],
-    techniques: ['3d'],
-    primaryImage: '/uploads/img_014.jpg',
-    gallery: ['/uploads/img_014.jpg', '/uploads/img_013.jpg'],
-    shortDescription: 'Llavero personalizado con el nombre de cada invitado en relieve tridimensional.',
-    fullDescription: 'El recuerdo favorito para bodas, graduaciones y XV años. Cada invitado recibe su propio llavero personalizado con su nombre en relieve sobre una base estilizada con forma de hoja u ovalada. Descuento por volumen para eventos.',
-    specifications: {
-      dimensions: '6 a 8 cm de largo según la longitud del nombre x 2.5 cm de ancho',
-      material: 'PLA bicolor de alta tenacidad',
-      finish: 'Letras en alto relieve con contraste visible',
-      includes: 'Argolla metálica reforzada con cadena',
-      minQuantity: 5,
-      estimatedLeadTime: '3 a 6 días hábiles según volumen de lista de nombres',
-      careNotes: 'Ligero y resistente para llevar en las llaves diarias.'
-    },
-    variants: [
-      { name: 'Combinación', options: ['Verde olivo con letras crema', 'Gris carbón con letras blancas', 'Terracota con letras arena'] }
+    "id": "llavero-nombre-t1",
+    "code": "T1",
+    "name": "Llavero con nombre en relieve y silueta botánica",
+    "priceType": "starting_at",
+    "price": 49,
+    "priceUnit": "c/u",
+    "status": "published",
+    "featured": false,
+    "worlds": [
+      "hogar",
+      "eventos",
+      "negocios"
     ],
-    customizationOptions: ['Lista de nombres enviada en Excel o mensaje', 'Fecha o iniciales al reverso'],
-    availability: 'made_to_order',
-    privateNotes: 'Generador de stl por lote.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "hogar-regalos",
+      "eventos-bodas",
+      "eventos-cumpleanos",
+      "negocios-tiendas"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-t1-context-c7d87a9600.webp",
+    "gallery": [
+      "/uploads/catalog-v2-t1-context-c7d87a9600.webp",
+      "/uploads/catalog-v2-t1-base-7d8faa9b08.webp",
+      "/uploads/catalog-v2-t1-detail-91258ba550.webp",
+      "/uploads/catalog-v2-t1-scale-e176e5d87f.webp"
+    ],
+    "shortDescription": "Llavero personalizado con el nombre de cada invitado en relieve tridimensional.",
+    "fullDescription": "El recuerdo favorito para bodas, graduaciones y XV años. Cada invitado recibe su propio llavero personalizado con su nombre en relieve sobre una base estilizada con forma de hoja u ovalada. Descuento por volumen para eventos.",
+    "specifications": {
+      "dimensions": "6 a 8 cm de largo según la longitud del nombre x 2.5 cm de ancho",
+      "material": "PLA bicolor de alta tenacidad",
+      "finish": "Letras en alto relieve con contraste visible",
+      "includes": "Argolla metálica reforzada con cadena",
+      "minQuantity": 5,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Ligero y resistente para llevar en las llaves diarias."
+    },
+    "variants": [
+      {
+        "name": "Combinación",
+        "options": [
+          "Verde olivo con letras crema",
+          "Gris carbón con letras blancas",
+          "Terracota con letras arena"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Lista de nombres enviada en Excel o mensaje",
+      "Fecha o iniciales al reverso"
+    ],
+    "availability": "made_to_order",
+    "privateNotes": "Generador de stl por lote.",
+    "createdAt": "2026-10-14T14:44:43.576Z",
+    "whiteBgImage": "/uploads/catalog-v2-t1-base-7d8faa9b08.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-t1-detail-91258ba550.webp",
+    "measureImage": "/uploads/catalog-v2-t1-scale-e176e5d87f.webp",
+    "stockQuantity": 0,
+    "costPrice": 21,
+    "costBreakdown": {
+      "plaGrams": 18,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 2.5,
+      "machineHours": 0.58,
+      "otherEquipCost": 0,
+      "manualWorkMin": 5,
+      "prepCost": 0,
+      "packagingCost": 2,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "HOG-3D-PLA-MAT-001",
+    "skuBreakdown": {
+      "standardSku": "HOG-3D-PLA-MAT-001",
+      "legacyCode": "T1",
+      "area": "HOG",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "MAT",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "🧊 Impresión 3D (FDM / Filamento) (Granja 3D FDM)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Barniz / Textura Mate - Terso sin reflejos, elegante",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-t1-scale-e176e5d87f.webp",
+    "repository": {
+      "platform": "makerworld",
+      "makerworldUrl": "https://makerworld.com/es/models/1759237",
+      "makerworldModelId": "1759237",
+      "author": "Haledesigns3d",
+      "license": "Standard Digital File License",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\T1_Llavero_Haledesigns3d\\keychain_custom_name.3mf",
+      "cloudUrl": "",
+      "slicerNotes": "Bicolor base oscura y texto blanco con planchado superficial.",
+      "additionalLinks": []
+    },
+    "makerWorldModel": "https://makerworld.com/es/models/1759237",
+    "makerworldUrl": "https://makerworld.com/es/models/1759237",
+    "makerWorldAuthor": "Haledesigns3d",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\T1_Llavero_Haledesigns3d\\keychain_custom_name.3mf",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 35,
+      "postProcessingMinutes": 5,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 35,
+    "postProcessingTimeMinutes": 5
   },
   {
-    id: 'taza-magica-s8',
-    code: 'S8',
-    name: 'Taza mágica térmica con revelado fotográfico',
-    priceType: 'fixed',
-    price: 150,
-    priceUnit: 'pieza',
-    status: 'published',
-    featured: true,
-    worlds: ['hogar', 'eventos'],
-    categories: ['hogar-regalos', 'eventos-cumpleanos', 'eventos-temporada'],
-    techniques: ['sublimation'],
-    primaryImage: '/uploads/img_017.jpg',
-    gallery: ['/uploads/img_017.jpg'],
-    shortDescription: 'Taza negra mate que al verter café o té caliente revela tu fotografía oculta.',
-    fullDescription: 'Una sorpresa cada mañana. En frío se ve como una elegante taza negra mate; en cuanto sirves tu bebida caliente preferida, el recubrimiento térmico se vuelve transparente de abajo hacia arriba revelando la fotografía, mensaje o diseño a todo color. Precio individual $150, 10+ piezas a $140 c/u, o promoción especial de 2 tazas por $270.',
-    specifications: {
-      dimensions: '11 onzas (325 ml)',
-      material: 'Cerámica con pintura termocrómica sensible al calor',
-      finish: 'Negro mate en frío / Blanco fotográfico en caliente',
-      includes: 'Caja protectora individual',
-      minQuantity: 1,
-      estimatedLeadTime: '1 a 2 días hábiles',
-      careNotes: 'Lavar a mano con esponja suave. No apta para microondas continuado ni lavavajillas fuerte.'
-    },
-    variants: [
-      { name: 'Promoción', options: ['1 Pieza ($150)', 'Paquete Magia 2 Tazas ($270)', 'Mayoreo 10+ piezas ($140 c/u)'] }
+    "id": "taza-magica-s8",
+    "code": "S8",
+    "name": "Taza mágica térmica con revelado fotográfico",
+    "priceType": "fixed",
+    "price": 150,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "hogar",
+      "eventos"
     ],
-    customizationOptions: ['Fotografía para el revelado', 'Dedicatoria para mamá, papá o pareja'],
-    availability: 'in_stock',
-    privateNotes: 'Revisar uniformidad del pigmento negro antes de empacar.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "hogar-regalos",
+      "eventos-cumpleanos",
+      "eventos-temporada"
+    ],
+    "techniques": [
+      "sublimation",
+      "sublimacion"
+    ],
+    "primaryImage": "/uploads/catalog-v2-s8-context-cccc31c006.webp",
+    "gallery": [
+      "/uploads/catalog-v2-s8-context-cccc31c006.webp",
+      "/uploads/catalog-v2-s8-base-165fccc9a7.webp",
+      "/uploads/catalog-v2-s8-detail-b17aab8fed.webp",
+      "/uploads/catalog-v2-s8-scale-24ae10f387.webp"
+    ],
+    "shortDescription": "Taza mágica térmica negra mate que al verter café o té caliente revela tu fotografía oculta.",
+    "fullDescription": "Una sorpresa cada mañana. En frío se ve como una elegante taza negra mate; en cuanto sirves tu bebida caliente preferida, el recubrimiento térmico se vuelve transparente de abajo hacia arriba revelando la fotografía, mensaje o diseño a todo color. Precio individual $150, 10+ piezas a $140 c/u, o promoción especial de 2 tazas por $270.",
+    "specifications": {
+      "dimensions": "11 onzas (325 ml)",
+      "material": "Polímero térmico con acabado termocrómico sensible al calor",
+      "finish": "Negro mate en frío / Blanco fotográfico en caliente",
+      "includes": "Caja protectora individual",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Lavar a mano con esponja suave. No usar fibras abrasivas."
+    },
+    "variants": [
+      {
+        "name": "Promoción",
+        "options": [
+          "1 Pieza ($150)",
+          "Paquete Magia 2 Tazas ($270)",
+          "Mayoreo 10+ piezas ($140 c/u)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Fotografía para el revelado",
+      "Dedicatoria para mamá, papá o pareja"
+    ],
+    "availability": "in_stock",
+    "privateNotes": "Revisar uniformidad del pigmento negro antes de empacar.",
+    "createdAt": "2026-10-14T14:44:43.576Z",
+    "whiteBgImage": "/uploads/catalog-v2-s8-base-165fccc9a7.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-s8-detail-b17aab8fed.webp",
+    "measureImage": "/uploads/catalog-v2-s8-scale-24ae10f387.webp",
+    "stockQuantity": 14,
+    "costPrice": 68,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 58,
+      "machineHours": 0.25,
+      "otherEquipCost": 0,
+      "manualWorkMin": 10,
+      "prepCost": 0,
+      "packagingCost": 6,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-14T23:16:58.968Z",
+    "sku": "HOG-SUB-CER-MAT-008",
+    "skuBreakdown": {
+      "standardSku": "HOG-SUB-CER-MAT-008",
+      "legacyCode": "S8",
+      "area": "HOG",
+      "technique": "SUB",
+      "material": "CER",
+      "finish": "MAT",
+      "sequence": "008",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "☕ Sublimación Térmica (Prensa de Tazas / Plancha Térmica)",
+        "materiaPrima": "🪵 Cerámica / Vidrio - Inorgánicos",
+        "acabadoTaller": "✨ Barniz / Textura Mate - Terso sin reflejos, elegante",
+        "lote": "#008"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-s8-scale-24ae10f387.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\S8\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\S8\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 15,
+      "postProcessingMinutes": 10,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 15,
+    "postProcessingTimeMinutes": 10
   },
   {
-    id: 'soporte-contacto-nfc-inteligente',
-    code: 'T33',
-    name: 'Soporte de contacto inteligente NFC',
-    priceType: 'starting_at',
-    price: 299,
-    priceUnit: 'pieza',
-    status: 'published',
-    featured: true,
-    worlds: ['negocios'],
-    categories: ['negocios-oficinas', 'negocios-emprendedores', 'negocios-restaurantes', 'negocios-tiendas'],
-    techniques: ['nfc', '3d'],
-    primaryImage: '/uploads/img_018.jpg',
-    gallery: ['/uploads/img_018.jpg', '/uploads/img_019.jpg'],
-    shortDescription: 'Acerca tu celular y comparte al instante tu catálogo, redes, WhatsApp o cobro.',
-    fullDescription: 'Elimina las tarjetas de papel obsoletas. Este tótem de mostrador permite a tus clientes acercar cualquier celular (iPhone o Android) para abrir tu menú, ficha de contacto vCard, catálogo de productos o enlace de pago en menos de un segundo.',
-    specifications: {
-      dimensions: '13 cm de alto x 9 cm de ancho x 5 cm de base',
-      material: 'PLA técnico con chip NTAG de alta sensibilidad encapsulado',
-      finish: 'Frontal con serigrafía o relieve "Acerca tu celular"',
-      includes: 'Configuración y prueba del enlace web antes de la entrega',
-      minQuantity: 1,
-      estimatedLeadTime: '2 a 3 días hábiles',
-      careNotes: 'No requiere pilas ni conexión eléctrica.'
-    },
-    variants: [
-      { name: 'Color', options: ['Verde Salvia', 'Grafito Carbón', 'Blanco Minimal'] }
+    "id": "soporte-contacto-nfc-inteligente",
+    "code": "T33",
+    "name": "Soporte de contacto inteligente NFC",
+    "priceType": "starting_at",
+    "price": 299,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "negocios"
     ],
-    customizationOptions: ['Logotipo de tu marca al frente', 'Enlace preprogramado a tu elección'],
-    availability: 'made_to_order',
-    privateNotes: 'Compatible con el 99% de smartphones modernos con NFC.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "negocios-oficinas",
+      "negocios-emprendedores",
+      "negocios-restaurantes",
+      "negocios-tiendas"
+    ],
+    "techniques": [
+      "nfc",
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-t33-context-12b8b5fce9.webp",
+    "gallery": [
+      "/uploads/catalog-v2-t33-context-12b8b5fce9.webp",
+      "/uploads/catalog-v2-t33-base-6250883938.webp",
+      "/uploads/catalog-v2-t33-detail-66678d9025.webp",
+      "/uploads/catalog-v2-t33-scale-ba716d03fb.webp"
+    ],
+    "shortDescription": "Acerca tu celular y comparte al instante tu catálogo, redes, WhatsApp o cobro.",
+    "fullDescription": "Elimina las tarjetas de papel obsoletas. Este tótem de mostrador permite a tus clientes acercar cualquier celular (iPhone o Android) para abrir tu menú, ficha de contacto vCard, catálogo de productos o enlace de pago en menos de un segundo.",
+    "specifications": {
+      "dimensions": "13 cm de alto x 9 cm de ancho x 5 cm de base",
+      "material": "PLA técnico con chip NTAG de alta sensibilidad encapsulado",
+      "finish": "Frontal con serigrafía o relieve \"Acerca tu celular\"",
+      "includes": "Configuración y prueba del enlace web antes de la entrega",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "No requiere pilas ni conexión eléctrica."
+    },
+    "variants": [
+      {
+        "name": "Color",
+        "options": [
+          "Verde Salvia",
+          "Grafito Carbón",
+          "Blanco Minimal",
+          "🎨 Otro color a elegir (a convenir)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Logotipo de tu marca al frente",
+      "Enlace preprogramado a tu elección"
+    ],
+    "availability": "made_to_order",
+    "privateNotes": "Compatible con el 99% de smartphones modernos con NFC.",
+    "createdAt": "2026-10-14T14:44:43.576Z",
+    "whiteBgImage": "/uploads/catalog-v2-t33-base-6250883938.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-t33-detail-66678d9025.webp",
+    "measureImage": "/uploads/catalog-v2-t33-scale-ba716d03fb.webp",
+    "stockQuantity": 0,
+    "costPrice": 125.4,
+    "costBreakdown": {
+      "plaGrams": 110,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 40,
+      "machineHours": 1.5,
+      "otherEquipCost": 0,
+      "manualWorkMin": 10,
+      "prepCost": 0,
+      "packagingCost": 6,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-14T23:17:12.540Z",
+    "sku": "NEG-NFC-PLA-NFC-033",
+    "skuBreakdown": {
+      "standardSku": "NEG-NFC-PLA-NFC-033",
+      "legacyCode": "T33",
+      "area": "NEG",
+      "technique": "NFC",
+      "material": "PLA",
+      "finish": "NFC",
+      "sequence": "033",
+      "instructionsForStaff": {
+        "destino": "💼 Negocios & Marca",
+        "maquinaria": "📶 Tecnología NFC Programada (Estación de Codificación NFC)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Chip NFC Integrado & Enlace - Programado con URL o contacto",
+        "lote": "#033"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-t33-scale-ba716d03fb.webp",
+    "repository": {
+      "platform": "makerworld",
+      "makerworldUrl": "https://makerworld.com/es/models/2401859",
+      "makerworldModelId": "2401859",
+      "author": "PhantomCommit",
+      "license": "Standard Digital File License",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\T33_Soporte_NFC\\nfc_smart_stand.3mf",
+      "cloudUrl": "",
+      "slicerNotes": "Ranura interna para chip NFC NTAG213/215 adhesivo de 25mm.",
+      "additionalLinks": []
+    },
+    "makerWorldModel": "https://makerworld.com/es/models/2401859",
+    "makerworldUrl": "https://makerworld.com/es/models/2401859",
+    "makerWorldAuthor": "PhantomCommit",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\T33_Soporte_NFC\\nfc_smart_stand.3mf",
+    "manufacturingTimes": {
+      "machineHours": 1,
+      "machineMinutes": 30,
+      "postProcessingMinutes": 10,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 90,
+    "postProcessingTimeMinutes": 10
   },
   {
-    id: 'starter-pack-gym-t32',
-    code: 'T32',
-    name: 'Starter Pack GYM y Centros Deportivos',
-    priceType: 'starting_at',
-    price: 299,
-    priceUnit: 'paquete',
-    status: 'published',
-    featured: true,
-    worlds: ['negocios'],
-    categories: ['negocios-gym'],
-    techniques: ['3d', 'nfc', 'laser', 'vinyl'],
-    primaryImage: '/uploads/img_020.jpg',
-    gallery: ['/uploads/img_020.jpg'],
-    shortDescription: 'Kit de imagen y control para gimnasios: Placa QR+NFC, medalla de retos, llaveros y termo.',
-    fullDescription: 'Todo lo necesario para proyectar una imagen profesional y moderna en tu centro de entrenamiento. Incluye placa de mostrador QR + NFC para registro rápido de entrada o cobro, medalla tridimensional personalizada para torneos o retos, llavero soporte para celular de vestidores y playera con marca.',
-    specifications: {
-      dimensions: 'Paquete con 5 elementos coordinados',
-      material: 'PLA de alto impacto, herrajes metálicos reforzados y madera grabada',
-      finish: 'Colores corporativos de tu gimnasio',
-      includes: 'Placa QR+NFC, medalla conmemorativa, llaveros disco y termo grabado opcional',
-      minQuantity: 1,
-      estimatedLeadTime: '4 a 6 días hábiles',
-      careNotes: 'Piezas resistentes a uso rudo.'
-    },
-    variants: [
-      { name: 'Configuración', options: ['Kit Esencial (Placa + Llaveros + Medalla)', 'Kit Completo (con Termo y Playera V1)'] }
+    "id": "starter-pack-gym-t32",
+    "code": "T32",
+    "name": "Starter Pack GYM y Centros Deportivos",
+    "priceType": "starting_at",
+    "price": 299,
+    "priceUnit": "paquete",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "negocios"
     ],
-    customizationOptions: ['Logotipo del gimnasio', 'Enlaces de registro o redes en QR/NFC'],
-    availability: 'made_to_order',
-    privateNotes: 'Se cotizan adiciones por volumen de membresías.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "negocios-gym"
+    ],
+    "techniques": [
+      "3d",
+      "nfc",
+      "laser",
+      "vinyl",
+      "vinil"
+    ],
+    "primaryImage": "/uploads/catalog-v2-t32-context-6aef39410e.webp",
+    "gallery": [
+      "/uploads/catalog-v2-t32-context-6aef39410e.webp",
+      "/uploads/catalog-v2-t32-base-0cd1628b22.webp",
+      "/uploads/catalog-v2-t32-detail-654a48c225.webp",
+      "/uploads/catalog-v2-t32-scale-fbb59a194e.webp"
+    ],
+    "shortDescription": "Kit de imagen y control para gimnasios: Placa QR+NFC, medalla de retos, llaveros y termo.",
+    "fullDescription": "Todo lo necesario para proyectar una imagen profesional y moderna en tu centro de entrenamiento. Incluye placa de mostrador QR + NFC para registro rápido de entrada o cobro, medalla tridimensional personalizada para torneos o retos, llavero soporte para celular de vestidores y playera con marca.",
+    "specifications": {
+      "dimensions": "Paquete con 5 elementos coordinados",
+      "material": "PLA de alto impacto, herrajes metálicos reforzados y madera grabada",
+      "finish": "Colores corporativos de tu gimnasio",
+      "includes": "Placa QR+NFC, medalla conmemorativa, llaveros disco y termo grabado opcional",
+      "minQuantity": 1,
+      "estimatedLeadTime": "4 a 6 días hábiles",
+      "careNotes": "Piezas resistentes a uso rudo."
+    },
+    "variants": [
+      {
+        "name": "Configuración",
+        "options": [
+          "Kit Esencial (Placa + Llaveros + Medalla)",
+          "Kit Completo (con Termo y Playera V1)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Logotipo del gimnasio",
+      "Enlaces de registro o redes en QR/NFC"
+    ],
+    "availability": "made_to_order",
+    "privateNotes": "Se cotizan adiciones por volumen de membresías.",
+    "createdAt": "2026-10-14T14:44:43.576Z",
+    "whiteBgImage": "/uploads/catalog-v2-t32-base-0cd1628b22.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-t32-detail-654a48c225.webp",
+    "measureImage": "/uploads/catalog-v2-t32-scale-fbb59a194e.webp",
+    "stockQuantity": 0,
+    "costPrice": 128,
+    "costBreakdown": {
+      "plaGrams": 150,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 18,
+      "machineHours": 5.5,
+      "otherEquipCost": 0,
+      "manualWorkMin": 12,
+      "prepCost": 0,
+      "packagingCost": 8,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-14T23:17:12.578Z",
+    "sku": "NEG-HYB-PLA-NFC-032",
+    "skuBreakdown": {
+      "standardSku": "NEG-HYB-PLA-NFC-032",
+      "legacyCode": "T32",
+      "area": "NEG",
+      "technique": "HYB",
+      "material": "PLA",
+      "finish": "NFC",
+      "sequence": "032",
+      "instructionsForStaff": {
+        "destino": "💼 Negocios & Marca",
+        "maquinaria": "🔄 Híbrido (Láser + Impresión 3D) (Láser + Impresión 3D)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Chip NFC Integrado & Enlace - Programado con URL o contacto",
+        "lote": "#032"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-t32-scale-fbb59a194e.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\T32\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\T32\\",
+    "manufacturingTimes": {
+      "machineHours": 5,
+      "machineMinutes": 30,
+      "postProcessingMinutes": 12,
+      "leadTimeDays": "4 a 6 días hábiles"
+    },
+    "manufacturingTimeMinutes": 330,
+    "postProcessingTimeMinutes": 12
   },
   {
-    id: 'starter-pack-barberia-t18',
-    code: 'T18',
-    name: 'Starter Pack Barbería y Salón de Belleza',
-    priceType: 'starting_at',
-    price: 199,
-    priceUnit: 'paquete',
-    status: 'published',
-    featured: true,
-    worlds: ['negocios'],
-    categories: ['negocios-barberias'],
-    techniques: ['3d'],
-    primaryImage: '/uploads/img_021.jpg',
-    gallery: ['/uploads/img_021.jpg'],
-    shortDescription: 'Set de estación de corte: Soporte QR para citas/reseñas, portatijeras vertical y organizador de peines.',
-    fullDescription: 'Optimiza el espacio y la estética de tus estaciones de barbería. Mantén tus peines guías de máquina alineados, tus tijeras protegidas verticalmente y facilita a tus clientes calificar tu servicio o agendar su siguiente cita con el tótem QR.',
-    specifications: {
-      dimensions: 'Organizador peines: 24 x 6 cm; Portatijeras: 9 x 5 cm; Soporte QR: 13 x 8 cm',
-      material: 'PLA rígido texturizado resistente a productos capilares',
-      finish: 'Negro carbón mate y acentos verde/blanco',
-      includes: 'Organizador de 8 peines guía, base para tijeras y soporte QR de mostrador',
-      minQuantity: 1,
-      estimatedLeadTime: '3 a 5 días hábiles',
-      careNotes: 'Fácilmente lavable con agua tibia y jabón neutro.'
-    },
-    variants: [
-      { name: 'Color principal', options: ['Negro Barber Clásico', 'Gris Carbón', 'Verde Olivo'] }
+    "id": "starter-pack-barberia-t18",
+    "code": "T18",
+    "name": "Starter Pack Barbería y Salón de Belleza",
+    "priceType": "starting_at",
+    "price": 199,
+    "priceUnit": "paquete",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "negocios"
     ],
-    customizationOptions: ['Nombre de la barbería en cada pieza', 'Enlace a citas o Instagram en QR'],
-    availability: 'made_to_order',
-    privateNotes: 'Espaciado calibrado para peines Wahl, Andis y Babyliss.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "negocios-barberias"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-t18-context-d75b6efc45.webp",
+    "gallery": [
+      "/uploads/catalog-v2-t18-context-d75b6efc45.webp",
+      "/uploads/catalog-v2-t18-base-9469d2ce9b.webp",
+      "/uploads/catalog-v2-t18-detail-dd7ea8cd5c.webp",
+      "/uploads/catalog-v2-t18-scale-8108f2560e.webp"
+    ],
+    "shortDescription": "Set de estación de corte: Soporte QR para citas/reseñas, portatijeras vertical y organizador de peines.",
+    "fullDescription": "Optimiza el espacio y la estética de tus estaciones de barbería. Mantén tus peines guías de máquina alineados, tus tijeras protegidas verticalmente y facilita a tus clientes calificar tu servicio o agendar su siguiente cita con el tótem QR.",
+    "specifications": {
+      "dimensions": "Organizador peines: 24 x 6 cm; Portatijeras: 9 x 5 cm; Soporte QR: 13 x 8 cm",
+      "material": "PLA rígido texturizado resistente a productos capilares",
+      "finish": "Negro carbón mate y acentos verde/blanco",
+      "includes": "Organizador de 8 peines guía, base para tijeras y soporte QR de mostrador",
+      "minQuantity": 1,
+      "estimatedLeadTime": "3 a 5 días hábiles",
+      "careNotes": "Fácilmente lavable con agua tibia y jabón neutro."
+    },
+    "variants": [
+      {
+        "name": "Color principal",
+        "options": [
+          "Negro Barber Clásico",
+          "Gris Carbón",
+          "Verde Olivo",
+          "🎨 Otro color a elegir (a convenir)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Nombre de la barbería en cada pieza",
+      "Enlace a citas o Instagram en QR"
+    ],
+    "availability": "made_to_order",
+    "privateNotes": "Espaciado calibrado para peines Wahl, Andis y Babyliss.",
+    "createdAt": "2026-10-14T14:44:43.576Z",
+    "whiteBgImage": "/uploads/catalog-v2-t18-base-9469d2ce9b.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-t18-detail-dd7ea8cd5c.webp",
+    "measureImage": "/uploads/catalog-v2-t18-scale-8108f2560e.webp",
+    "stockQuantity": 0,
+    "costPrice": 98,
+    "costBreakdown": {
+      "plaGrams": 110,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 15,
+      "machineHours": 4,
+      "otherEquipCost": 0,
+      "manualWorkMin": 10,
+      "prepCost": 0,
+      "packagingCost": 8,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "NEG-3D-PLA-MAT-018",
+    "skuBreakdown": {
+      "standardSku": "NEG-3D-PLA-MAT-018",
+      "legacyCode": "T18",
+      "area": "NEG",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "MAT",
+      "sequence": "018",
+      "instructionsForStaff": {
+        "destino": "💼 Negocios & Marca",
+        "maquinaria": "🧊 Impresión 3D (FDM / Filamento) (Granja 3D FDM)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Barniz / Textura Mate - Terso sin reflejos, elegante",
+        "lote": "#018"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-t18-scale-8108f2560e.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\T18\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\T18\\",
+    "manufacturingTimes": {
+      "machineHours": 4,
+      "machineMinutes": 0,
+      "postProcessingMinutes": 10,
+      "leadTimeDays": "3 a 5 días hábiles"
+    },
+    "manufacturingTimeMinutes": 240,
+    "postProcessingTimeMinutes": 10
   },
   {
-    id: 'starter-pack-joyeria-t27',
-    code: 'T27',
-    name: 'Starter Pack Joyería y Boutique de Accesorios',
-    priceType: 'starting_at',
-    price: 249,
-    priceUnit: 'paquete',
-    status: 'published',
-    featured: true,
-    worlds: ['negocios'],
-    categories: ['negocios-joyerias', 'negocios-tiendas'],
-    techniques: ['3d', 'laser'],
-    primaryImage: '/uploads/img_022.jpg',
-    gallery: ['/uploads/img_022.jpg'],
-    shortDescription: 'Exhibición de lujo para vitrinas: Conos de anillos, soporte de aretes nube, bandeja y portaprecios.',
-    fullDescription: 'Eleva el valor percibido de tus joyas y accesorios artesanales. El juego incluye exhibidor múltiple de anillos con conos cónicos, soporte vertical de aretes con silueta de arco/nube, bandeja con forma de flor para collares o pulseras, mini letrero de marca en madera y portaprecios de mostrador.',
-    specifications: {
-      dimensions: 'Exhibidor de anillos: 18 x 5 cm; Soporte aretes: 14 x 10 cm; Bandeja: 14 cm de diámetro',
-      material: 'Polímeros con acabado cerámico sedoso y madera fina',
-      finish: 'Verde salvia mate y marfil texturizado',
-      includes: '5 piezas de exhibición comercial para mostrador o fotografía de catálogo',
-      minQuantity: 1,
-      estimatedLeadTime: '3 a 5 días hábiles',
-      careNotes: 'Superficie no abrasiva para proteger metales preciosos.'
-    },
-    variants: [
-      { name: 'Combinación', options: ['Verde Salvia y Marfil', 'Rosa Blush y Blanco', 'Negro Mate de Lujo'] }
+    "id": "starter-pack-joyeria-t27",
+    "code": "T27",
+    "name": "Starter Pack Joyería y Boutique de Accesorios",
+    "priceType": "starting_at",
+    "price": 249,
+    "priceUnit": "paquete",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "negocios"
     ],
-    customizationOptions: ['Letrero de madera con logotipo de tu marca', 'Portaprecios con tu tipografía'],
-    availability: 'made_to_order',
-    privateNotes: 'Fotografiado en el catálogo oficial página 23.',
-    createdAt: new Date().toISOString()
+    "categories": [
+      "negocios-joyerias",
+      "negocios-tiendas"
+    ],
+    "techniques": [
+      "3d",
+      "laser"
+    ],
+    "primaryImage": "/uploads/catalog-v2-t27-context-541d21ddd3.webp",
+    "gallery": [
+      "/uploads/catalog-v2-t27-context-541d21ddd3.webp",
+      "/uploads/catalog-v2-t27-base-848060235a.webp",
+      "/uploads/catalog-v2-t27-detail-159392852e.webp",
+      "/uploads/catalog-v2-t27-scale-33b7bb81ef.webp"
+    ],
+    "shortDescription": "Exhibición de lujo para vitrinas: Conos de anillos, soporte de aretes nube, bandeja y portaprecios.",
+    "fullDescription": "Eleva el valor percibido de tus joyas y accesorios artesanales. El juego incluye exhibidor múltiple de anillos con conos cónicos, soporte vertical de aretes con silueta de arco/nube, bandeja con forma de flor para collares o pulseras, mini letrero de marca en madera y portaprecios de mostrador.",
+    "specifications": {
+      "dimensions": "Exhibidor de anillos: 18 x 5 cm; Soporte aretes: 14 x 10 cm; Bandeja: 14 cm de diámetro",
+      "material": "Polímeros con acabado cerámico sedoso y madera fina",
+      "finish": "Verde salvia mate y marfil texturizado",
+      "includes": "5 piezas de exhibición comercial para mostrador o fotografía de catálogo",
+      "minQuantity": 1,
+      "estimatedLeadTime": "3 a 5 días hábiles",
+      "careNotes": "Superficie no abrasiva para proteger metales preciosos."
+    },
+    "variants": [
+      {
+        "name": "Combinación",
+        "options": [
+          "Verde Salvia y Marfil",
+          "Rosa Blush y Blanco",
+          "Negro Mate de Lujo"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Letrero de madera con logotipo de tu marca",
+      "Portaprecios con tu tipografía"
+    ],
+    "availability": "made_to_order",
+    "privateNotes": "Fotografiado en el catálogo oficial página 23.",
+    "createdAt": "2026-10-14T14:44:43.576Z",
+    "whiteBgImage": "/uploads/catalog-v2-t27-base-848060235a.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-t27-detail-159392852e.webp",
+    "measureImage": "/uploads/catalog-v2-t27-scale-33b7bb81ef.webp",
+    "stockQuantity": 0,
+    "costPrice": 105,
+    "costBreakdown": {
+      "plaGrams": 120,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 15,
+      "machineHours": 4.8,
+      "otherEquipCost": 0,
+      "manualWorkMin": 10,
+      "prepCost": 0,
+      "packagingCost": 8,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "NEG-HYB-PLA-MAT-027",
+    "skuBreakdown": {
+      "standardSku": "NEG-HYB-PLA-MAT-027",
+      "legacyCode": "T27",
+      "area": "NEG",
+      "technique": "HYB",
+      "material": "PLA",
+      "finish": "MAT",
+      "sequence": "027",
+      "instructionsForStaff": {
+        "destino": "💼 Negocios & Marca",
+        "maquinaria": "🔄 Híbrido (Láser + Impresión 3D) (Láser + Impresión 3D)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Barniz / Textura Mate - Terso sin reflejos, elegante",
+        "lote": "#027"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-t27-scale-33b7bb81ef.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\T27\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\T27\\",
+    "manufacturingTimes": {
+      "machineHours": 4,
+      "machineMinutes": 48,
+      "postProcessingMinutes": 10,
+      "leadTimeDays": "3 a 5 días hábiles"
+    },
+    "manufacturingTimeMinutes": 288,
+    "postProcessingTimeMinutes": 10
+  },
+  {
+    "id": "servicio-patch-bar-en-vivo",
+    "code": "EV-PATCHBAR",
+    "name": "Servicio Patch Bar en Vivo (Gorras & Totes)",
+    "priceType": "starting_at",
+    "price": 6500,
+    "priceUnit": "evento (50 invitados)",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "eventos",
+      "negocios"
+    ],
+    "categories": [
+      "eventos-bodas",
+      "eventos-xvanos",
+      "eventos-cumpleanos",
+      "eventos-empresariales",
+      "eventos-graduaciones"
+    ],
+    "techniques": [
+      "sublimacion",
+      "vinil",
+      "laser",
+      "vinyl",
+      "sublimation"
+    ],
+    "primaryImage": "/uploads/catalog-v2-ev-patchbar-context-8546dd9248.webp",
+    "whiteBgImage": "/uploads/catalog-v2-ev-patchbar-base-10d9832b42.webp",
+    "gallery": [
+      "/uploads/catalog-v2-ev-patchbar-context-8546dd9248.webp",
+      "/uploads/catalog-v2-ev-patchbar-base-10d9832b42.webp",
+      "/uploads/catalog-v2-ev-patchbar-detail-10076432c6.webp",
+      "/uploads/catalog-v2-ev-patchbar-scale-d63f586482.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Estación móvil interactiva para eventos: tus invitados eligen gorra o tote bag, escogen sus parches y los planchamos al instante.",
+    "fullDescription": "La experiencia más atractiva y recordada para bodas, XV años, cumpleaños y activaciones de marca corporativas. Montamos nuestro stand artesanal en madera con gorras trucker o bolsas tote de manta, charolas exhibidoras con parches temáticos y nuestra prensa de calor industrial de alta velocidad. En menos de 45 segundos por pieza, cada invitado personaliza su recuerdo y se lo lleva puesto.",
+    "specifications": {
+      "dimensions": "Estación de servicio: 160 x 80 cm · Altura 190 cm",
+      "material": "Gorras trucker poliéster/malla o Totes manta 100% algodón · Parches bordados/térmicos HD",
+      "finish": "Fijación térmica industrial de alta presión permanente, lavable y durable",
+      "includes": "Mobiliario de madera, exhibidores, prensa de calor, operador calificado (3 hrs) e insumos para invitados",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Prendas lavables a mano o ciclo delicado con agua fría."
+    },
+    "variants": [
+      {
+        "name": "Base a personalizar",
+        "options": [
+          "Gorras Trucker",
+          "Tote Bags de Manta",
+          "Mixto (Gorras + Totes)"
+        ]
+      },
+      {
+        "name": "Número de Invitados",
+        "options": [
+          "Paquete Básico (50 pzas)",
+          "Paquete Medio (100 pzas)",
+          "Paquete Grande (150+ pzas)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Parches con iniciales de novios o festejado",
+      "Frases divertidas de fiesta / stickers textiles",
+      "Logotipo empresarial para eventos corporativos"
+    ],
+    "availability": "made_to_order",
+    "createdAt": "2026-10-14T15:49:23.583Z",
+    "detailImage": "/uploads/catalog-v2-ev-patchbar-detail-10076432c6.webp",
+    "measureImage": "/uploads/catalog-v2-ev-patchbar-scale-d63f586482.webp",
+    "stockQuantity": 0,
+    "costPrice": 2400,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 1900,
+      "machineHours": 0.25,
+      "otherEquipCost": 0,
+      "manualWorkMin": 10,
+      "prepCost": 0,
+      "packagingCost": 150,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": true,
+      "durationMinutes": 120,
+      "discountPercent": 20,
+      "startedAt": 1792031887134,
+      "expiresAt": 1792039087134
+    },
+    "updatedAt": "2026-10-15T00:56:23.870Z",
+    "sku": "NEG-LAS-TEX-GRA-001",
+    "skuBreakdown": {
+      "standardSku": "NEG-LAS-TEX-GRA-001",
+      "legacyCode": "EV-PATCHBAR",
+      "area": "NEG",
+      "technique": "LAS",
+      "material": "TEX",
+      "finish": "GRA",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "💼 Negocios & Marca",
+        "maquinaria": "⚡ Corte / Grabado Láser CO2 (Láser CO2 / Diodo)",
+        "materiaPrima": "🪵 Textil / Manta de Algodón - Telas & Confección",
+        "acabadoTaller": "✨ Grabado Láser Profundo - Bajo relieve oscurecido por calor",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-ev-patchbar-scale-d63f586482.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-PATCHBAR\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-PATCHBAR\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 15,
+      "postProcessingMinutes": 10,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 15,
+    "postProcessingTimeMinutes": 10
+  },
+  {
+    "id": "set-suite-nupcial-novia-novio",
+    "code": "EV-SUITE",
+    "name": "Set Suite Nupcial Novia & Novio (6 piezas)",
+    "priceType": "starting_at",
+    "price": 890,
+    "priceUnit": "set completo",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "eventos"
+    ],
+    "categories": [
+      "eventos-bodas"
+    ],
+    "techniques": [
+      "laser",
+      "vinil",
+      "vinyl"
+    ],
+    "primaryImage": "/uploads/catalog-v2-ev-suite-context-762c11d0f0.webp",
+    "whiteBgImage": "/uploads/catalog-v2-ev-suite-base-b000c78e8a.webp",
+    "gallery": [
+      "/uploads/catalog-v2-ev-suite-context-762c11d0f0.webp",
+      "/uploads/catalog-v2-ev-suite-base-b000c78e8a.webp",
+      "/uploads/catalog-v2-ev-suite-detail-0d1bdfdaa8.webp",
+      "/uploads/catalog-v2-ev-suite-scale-0742a13507.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Kit exclusivo para la preparación y fotos de los novios: ganchos de madera grabados, alhajero con terciopelo, cosmetiquera y termos.",
+    "fullDescription": "El conjunto imprescindible para la sesión de fotos de la preparación nupcial ('getting ready'). Incluye 2 ganchos de madera maciza grabados con 'Novia' y 'Novio' más fecha conmemorativa, alhajero de madera con interior en terciopelo esmeralda para anillos/arras, cosmetiquera de manta con cremallera dorada y 2 vasos térmicos skinny grabados.",
+    "specifications": {
+      "dimensions": "Ganchos: 44 cm ancho · Alhajero: 10 x 6 x 4 cm · Cosmetiquera: 22 x 15 cm · Vasos: 20 oz",
+      "material": "Madera maciza de haya, terciopelo esmeralda, manta de algodón y vasos térmicos de polímero con vinil",
+      "finish": "Grabado láser de alta precisión y vinil satinado indeleble",
+      "includes": "2 ganchos grabados, 1 alhajero con terciopelo, 1 cosmetiquera nupcial, 2 vasos térmicos",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 3 días hábiles",
+      "careNotes": "Ganchos y alhajero: limpiar con paño seco. Cosmetiquera lavable con agua fría."
+    },
+    "variants": [
+      {
+        "name": "Tono de Madera de Ganchos",
+        "options": [
+          "Madera Natural Clara",
+          "Nogal Oscuro Clásico",
+          "Blanco Satinado"
+        ]
+      },
+      {
+        "name": "Color de Vasos Térmicos",
+        "options": [
+          "Blanco perla & Negro mate",
+          "Blanco & Oro rosado",
+          "Verde Olivo & Blanco"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Nombres de los novios y fecha de boda",
+      "Color de terciopelo interior (Esmeralda, Negro o Rosa)"
+    ],
+    "availability": "made_to_order",
+    "createdAt": "2026-10-14T15:49:23.585Z",
+    "detailImage": "/uploads/catalog-v2-ev-suite-detail-0d1bdfdaa8.webp",
+    "measureImage": "/uploads/catalog-v2-ev-suite-scale-0742a13507.webp",
+    "stockQuantity": 0,
+    "costPrice": 320,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 250,
+      "machineHours": 0.33,
+      "otherEquipCost": 0,
+      "manualWorkMin": 15,
+      "prepCost": 0,
+      "packagingCost": 25,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "EVE-LAS-PIN-GRA-001",
+    "skuBreakdown": {
+      "standardSku": "EVE-LAS-PIN-GRA-001",
+      "legacyCode": "EV-SUITE",
+      "area": "EVE",
+      "technique": "LAS",
+      "material": "PIN",
+      "finish": "GRA",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🎉 Eventos Especiales",
+        "maquinaria": "⚡ Corte / Grabado Láser CO2 (Láser CO2 / Diodo)",
+        "materiaPrima": "🪵 Madera Maciza / Pino Natural - Maderas Naturales",
+        "acabadoTaller": "✨ Grabado Láser Profundo - Bajo relieve oscurecido por calor",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-ev-suite-scale-0742a13507.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Taller Artesano",
+      "license": "Diseño Exclusivo Artesano Digital",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-SUITE\\",
+      "cloudUrl": "",
+      "slicerNotes": "Corte MDF/Acrílico 3mm a 65% potencia, grabado 300mm/s.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Taller Artesano",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-SUITE\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 20,
+      "postProcessingMinutes": 15,
+      "leadTimeDays": "1 a 3 días hábiles"
+    },
+    "manufacturingTimeMinutes": 20,
+    "postProcessingTimeMinutes": 15
+  },
+  {
+    "id": "set-bienvenida-ceremonia-nupcial",
+    "code": "EV-CEREMONIA",
+    "name": "Set de Bienvenida & Ceremonia Nupcial (Letrero, Conos & QR)",
+    "priceType": "starting_at",
+    "price": 1450,
+    "priceUnit": "set ceremonial",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "eventos"
+    ],
+    "categories": [
+      "eventos-bodas"
+    ],
+    "techniques": [
+      "laser",
+      "3d",
+      "vinil",
+      "vinyl"
+    ],
+    "primaryImage": "/uploads/catalog-v2-ev-ceremonia-context-f0ff2fe35c.webp",
+    "whiteBgImage": "/uploads/catalog-v2-ev-ceremonia-base-68f9e6eda9.webp",
+    "gallery": [
+      "/uploads/catalog-v2-ev-ceremonia-context-f0ff2fe35c.webp",
+      "/uploads/catalog-v2-ev-ceremonia-base-68f9e6eda9.webp",
+      "/uploads/catalog-v2-ev-ceremonia-detail-42a1ba517b.webp",
+      "/uploads/catalog-v2-ev-ceremonia-scale-e08a0d52ea.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Kit ceremonial para entrada: letrero para caballete, canastilla con conos de pétalos, letreros de sillas de honor y tótem QR.",
+    "fullDescription": "Crea una primera impresión inolvidable al llegar a la ceremonia. Incluye letrero de bienvenida silueta arco para caballete, canastilla artesanal con 25 conos de papel kraft para pétalos ('Lágrimas de Felicidad'), 2 letreros de madera colgantes para lugares de honor reservados y tótem con código QR para que los invitados descarguen el programa digital o itinerario.",
+    "specifications": {
+      "dimensions": "Letrero principal: 60 x 80 cm · Tótem QR: 15 x 20 cm · Conos: 18 cm largo",
+      "material": "Madera natural de 6 mm (sin MDF), acrílico esmerilado, cordón de yute y papel artesanal kraft",
+      "finish": "Grabado láser profundo, corte CNC limpio y sellado mate resistente a exteriores",
+      "includes": "1 letrero para caballete, 25 conos armados, canastilla, 2 letreros de sillas, 1 tótem QR",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 3 días hábiles",
+      "careNotes": "Proteger de lluvia directa. Apto para ceremonias en jardín, salón o playa."
+    },
+    "variants": [
+      {
+        "name": "Estilo del Letrero Principal",
+        "options": [
+          "Silueta Arco Madera Natural Barniz Transparente",
+          "Madera Nogal Americano Rústico",
+          "Acrílico Esmerilado"
+        ]
+      },
+      {
+        "name": "Cantidad de Conos para Pétalos",
+        "options": [
+          "25 conos incluidos",
+          "50 conos (+ $250)",
+          "100 conos (+ $500)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Nombres completos de los novios y fecha",
+      "Enlace QR a itinerario o mesa de regalos",
+      "Frase de bienvenida personalizada"
+    ],
+    "availability": "made_to_order",
+    "createdAt": "2026-10-14T15:49:23.585Z",
+    "detailImage": "/uploads/catalog-v2-ev-ceremonia-detail-42a1ba517b.webp",
+    "measureImage": "/uploads/catalog-v2-ev-ceremonia-scale-e08a0d52ea.webp",
+    "stockQuantity": 0,
+    "costPrice": 520,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 420,
+      "machineHours": 0.33,
+      "otherEquipCost": 0,
+      "manualWorkMin": 15,
+      "prepCost": 0,
+      "packagingCost": 40,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "EVE-HYB-ACR-GRA-001",
+    "skuBreakdown": {
+      "standardSku": "EVE-HYB-ACR-GRA-001",
+      "legacyCode": "EV-CEREMONIA",
+      "area": "EVE",
+      "technique": "HYB",
+      "material": "ACR",
+      "finish": "GRA",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🎉 Eventos Especiales",
+        "maquinaria": "🔄 Híbrido (Láser + Impresión 3D) (Láser + Impresión 3D)",
+        "materiaPrima": "🪵 Acrílico Cristal / Color - Termoplásticos",
+        "acabadoTaller": "✨ Grabado Láser Profundo - Bajo relieve oscurecido por calor",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-ev-ceremonia-scale-e08a0d52ea.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Taller Artesano",
+      "license": "Diseño Exclusivo Artesano Digital",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-CEREMONIA\\",
+      "cloudUrl": "",
+      "slicerNotes": "Corte MDF/Acrílico 3mm a 65% potencia, grabado 300mm/s.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Taller Artesano",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-CEREMONIA\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 20,
+      "postProcessingMinutes": 15,
+      "leadTimeDays": "1 a 3 días hábiles"
+    },
+    "manufacturingTimeMinutes": 20,
+    "postProcessingTimeMinutes": 15
+  },
+  {
+    "id": "centro-mesa-presidencial-3d-copas",
+    "code": "EV-PRESIDENCIAL",
+    "name": "Centro de Mesa Presidencial 3D & Copas Grabadas",
+    "priceType": "starting_at",
+    "price": 680,
+    "priceUnit": "set presidencial",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "eventos"
+    ],
+    "categories": [
+      "eventos-bodas"
+    ],
+    "techniques": [
+      "3d",
+      "laser"
+    ],
+    "primaryImage": "/uploads/catalog-v2-ev-presidencial-context-ff09182fe6.webp",
+    "whiteBgImage": "/uploads/catalog-v2-ev-presidencial-base-fe12db69a1.webp",
+    "gallery": [
+      "/uploads/catalog-v2-ev-presidencial-context-ff09182fe6.webp",
+      "/uploads/catalog-v2-ev-presidencial-base-fe12db69a1.webp",
+      "/uploads/catalog-v2-ev-presidencial-detail-d5501f753a.webp",
+      "/uploads/catalog-v2-ev-presidencial-scale-d717e16ef3.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Nombres en relieve 3D sobre base de nogal con fecha, acompañados de 2 portavasos botánicos de madera grabados al láser para el brindis.",
+    "fullDescription": "El elemento protagónico para la mesa de honor de los recién casados. Las letras 3D volumétricas con los nombres de la pareja y la fecha descansan sobre una base biselada de madera de nogal. Incluye set de portavasos de madera de alta definición grabados al láser con monograma o 'Sr. & Sra.' para el brindis principal.",
+    "specifications": {
+      "dimensions": "Letras 3D con base: 35 cm largo x 12 cm alto x 4 cm fondo · Portavasos: 10 cm diámetro",
+      "material": "PLA premium mate de alta densidad y base de madera tratada con grabado láser",
+      "finish": "Letras satinadas suaves al tacto y grabado láser nítido en madera",
+      "includes": "1 letrero 3D con base de madera, 2 portavasos de madera grabados y estuche protector",
+      "minQuantity": 1,
+      "estimatedLeadTime": "3 a 5 días hábiles",
+      "careNotes": "Limpiar letras con paño de microfibra suave. No sumergir la madera en agua."
+    },
+    "variants": [
+      {
+        "name": "Color de Letras 3D",
+        "options": [
+          "Blanco Marfil Mate",
+          "Verde Olivo Artesano",
+          "Grafito Antracita",
+          "Dorado Perlado",
+          "🎨 Otro color a elegir (a convenir)"
+        ]
+      },
+      {
+        "name": "Grabado en Copas",
+        "options": [
+          "Monograma con Iniciales",
+          "\"Sr. & Sra.\" + Apellido",
+          "Nombres caligráficos"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Nombres de la pareja",
+      "Fecha del enlace matrimonial",
+      "Dedicatoria corta en la base de madera"
+    ],
+    "availability": "made_to_order",
+    "createdAt": "2026-10-14T15:49:23.585Z",
+    "detailImage": "/uploads/catalog-v2-ev-presidencial-detail-d5501f753a.webp",
+    "measureImage": "/uploads/catalog-v2-ev-presidencial-scale-d717e16ef3.webp",
+    "stockQuantity": 0,
+    "costPrice": 245,
+    "costBreakdown": {
+      "plaGrams": 90,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 140,
+      "machineHours": 3.5,
+      "otherEquipCost": 0,
+      "manualWorkMin": 30,
+      "prepCost": 0,
+      "packagingCost": 20,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "EVE-HYB-PLA-GRA-001",
+    "skuBreakdown": {
+      "standardSku": "EVE-HYB-PLA-GRA-001",
+      "legacyCode": "EV-PRESIDENCIAL",
+      "area": "EVE",
+      "technique": "HYB",
+      "material": "PLA",
+      "finish": "GRA",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🎉 Eventos Especiales",
+        "maquinaria": "🔄 Híbrido (Láser + Impresión 3D) (Láser + Impresión 3D)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Grabado Láser Profundo - Bajo relieve oscurecido por calor",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-ev-presidencial-scale-d717e16ef3.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-PRESIDENCIAL\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-PRESIDENCIAL\\",
+    "manufacturingTimes": {
+      "machineHours": 3,
+      "machineMinutes": 30,
+      "postProcessingMinutes": 30,
+      "leadTimeDays": "3 a 5 días hábiles"
+    },
+    "manufacturingTimeMinutes": 210,
+    "postProcessingTimeMinutes": 30
+  },
+  {
+    "id": "kit-anticruda-manta-llaveros",
+    "code": "EV-ANTICRUDA",
+    "name": "Kit Anticruda en Manta con Llaveros de Madera",
+    "priceType": "starting_at",
+    "price": 45,
+    "priceUnit": "pieza (mín. 25 pzas)",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "eventos"
+    ],
+    "categories": [
+      "eventos-bodas",
+      "eventos-xvanos",
+      "eventos-cumpleanos",
+      "eventos-otras"
+    ],
+    "techniques": [
+      "sublimacion",
+      "laser",
+      "sublimation"
+    ],
+    "primaryImage": "/uploads/catalog-v2-ev-anticruda-context-9a92fcbe06.webp",
+    "whiteBgImage": "/uploads/catalog-v2-ev-anticruda-base-8f0205fbda.webp",
+    "gallery": [
+      "/uploads/catalog-v2-ev-anticruda-context-9a92fcbe06.webp",
+      "/uploads/catalog-v2-ev-anticruda-base-8f0205fbda.webp",
+      "/uploads/catalog-v2-ev-anticruda-detail-8feed7eac7.webp",
+      "/uploads/catalog-v2-ev-anticruda-scale-8f3ed9c922.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Morralitos de manta 100% algodón con jareta y frases divertidas, más llaveros de madera grabados con la fecha del evento.",
+    "fullDescription": "El detalle más agradecido por los invitados al día siguiente de la fiesta. Morralitos de manta de algodón natural con jareta corrediza, serigrafiados con frases como 'Para que la fiesta no pare' o diseño personalizado del evento. Cada kit incluye un llavero de madera grabado con láser con la fecha del festejo.",
+    "specifications": {
+      "dimensions": "Morralito: 15 cm x 20 cm · Llavero: 5.5 x 2.8 cm x 4 mm espesor",
+      "material": "Manta 100% algodón crudo de alto gramaje, cordón de algodón y llaveros de madera natural sólida de haya con argolla metálica (sin MDF)",
+      "finish": "Estampado DTF textil de alta fijación y grabado láser en madera con capa de barniz transparente sellador",
+      "includes": "Morralito de manta personalizado + llavero de madera con argolla (se entrega listo para rellenar)",
+      "minQuantity": 25,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Morralitos lavables con agua fría. No planchar directo sobre el estampado."
+    },
+    "variants": [
+      {
+        "name": "Frase del Morralito",
+        "options": [
+          "\"Para que la fiesta no pare (Kit Anticruda)\"",
+          "\"Sobreviví a la boda de los novios\"",
+          "\"Diseño personalizado con nuestros nombres\""
+        ]
+      },
+      {
+        "name": "Tono de Barniz de Llaveros",
+        "options": [
+          "Barniz Natural Transparente",
+          "Nogal Americano",
+          "Caoba Clásico"
+        ]
+      },
+      {
+        "name": "Cantidad de Kits",
+        "options": [
+          "Paquete 25 piezas ($1,125)",
+          "Paquete 50 piezas ($2,100)",
+          "Paquete 100 piezas ($3,900)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Nombres del evento o de la pareja",
+      "Fecha y lugar conmemorativo",
+      "Diseño gráfico especial para corporativo o cumpleaños"
+    ],
+    "availability": "made_to_order",
+    "createdAt": "2026-10-14T15:49:23.585Z",
+    "detailImage": "/uploads/catalog-v2-ev-anticruda-detail-8feed7eac7.webp",
+    "measureImage": "/uploads/catalog-v2-ev-anticruda-scale-8f3ed9c922.webp",
+    "stockQuantity": 0,
+    "costPrice": 18,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 14,
+      "machineHours": 0.25,
+      "otherEquipCost": 0,
+      "manualWorkMin": 10,
+      "prepCost": 0,
+      "packagingCost": 2,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "EVE-LAS-TEX-GRA-001",
+    "skuBreakdown": {
+      "standardSku": "EVE-LAS-TEX-GRA-001",
+      "legacyCode": "EV-ANTICRUDA",
+      "area": "EVE",
+      "technique": "LAS",
+      "material": "TEX",
+      "finish": "GRA",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🎉 Eventos Especiales",
+        "maquinaria": "⚡ Corte / Grabado Láser CO2 (Láser CO2 / Diodo)",
+        "materiaPrima": "🪵 Textil / Manta de Algodón - Telas & Confección",
+        "acabadoTaller": "✨ Grabado Láser Profundo - Bajo relieve oscurecido por calor",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-ev-anticruda-scale-8f3ed9c922.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-ANTICRUDA\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-ANTICRUDA\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 15,
+      "postProcessingMinutes": 10,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 15,
+    "postProcessingTimeMinutes": 10
+  },
+  {
+    "id": "combo-hogar-recibidor-calido",
+    "code": "PROMO-HOG-1",
+    "name": "Combo Hogar & Recibidor Cálido (4 piezas)",
+    "priceType": "exact",
+    "price": 449,
+    "regularPrice": 548,
+    "savings": 99,
+    "discountPercent": 18,
+    "priceUnit": "combo completo",
+    "isBundle": true,
+    "status": "published",
+    "featured": true,
+    "badge": "COMBO RECOMENDADO",
+    "worlds": [
+      "hogar"
+    ],
+    "categories": [
+      "hogar-organizacion",
+      "hogar-decoracion",
+      "hogar-regalos"
+    ],
+    "techniques": [
+      "laser",
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-promo-hog-1-context-04a2e25cdd.webp",
+    "whiteBgImage": "/uploads/catalog-v2-promo-hog-1-base-4b30853eea.webp",
+    "gallery": [
+      "/uploads/catalog-v2-promo-hog-1-context-04a2e25cdd.webp",
+      "/uploads/catalog-v2-promo-hog-1-base-4b30853eea.webp",
+      "/uploads/catalog-v2-promo-hog-1-detail-5c907bdc2b.webp",
+      "/uploads/catalog-v2-promo-hog-1-scale-a202394984.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "El trío perfecto para tu entrada: colgador de llaves en madera Bienvenidos, bandeja vaciabolsillos y 2 llaveros familiares polaroid.",
+    "fullDescription": "Transforma el acceso a tu casa con este paquete coordinado en madera natural y detalles artesanales. Incluye el colgador de llaves 'Bienvenidos' con percheros torneados de madera, la bandeja vaciabolsillos para monedas y cartera, más 2 llaveros de madera en capas estilo Polaroid con foto grabada y borla de gamuza.",
+    "includedItems": [
+      "1 Colgador de llaves Bienvenidos en madera natural (25 x 10 cm)",
+      "1 Bandeja vaciabolsillos curva ergonómica (18 x 12 cm)",
+      "2 Llaveros familiares Polaroid con foto grabada a láser y borla"
+    ],
+    "specifications": {
+      "dimensions": "Colgador: 25 x 10 cm · Bandeja: 18 x 12 cm · Llaveros: 6 x 5 cm",
+      "material": "Madera natural de pino/haya tratada y PLA satinado",
+      "finish": "Sellador satinado protector de humedad y grabado láser HD",
+      "includes": "4 piezas completas listas para colocar con cinta de montaje incluida",
+      "minQuantity": 1,
+      "estimatedLeadTime": "2 a 3 días hábiles",
+      "careNotes": "Limpiar con paño ligeramente húmedo o seco."
+    },
+    "variants": [
+      {
+        "name": "Tono de Madera",
+        "options": [
+          "Madera Natural Clara",
+          "Nogal Clásico Cálido"
+        ]
+      },
+      {
+        "name": "Texto del Colgador",
+        "options": [
+          "\"Bienvenidos\"",
+          "Apellido Familiar (ej. Fam. García)",
+          "Nombre Personalizado"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Foto y dedicatoria para los llaveros Polaroid",
+      "Apellido o texto grabado en el colgador"
+    ],
+    "availability": "made_to_order",
+    "createdAt": "2026-10-14T16:07:55.946Z",
+    "detailImage": "/uploads/catalog-v2-promo-hog-1-detail-5c907bdc2b.webp",
+    "measureImage": "/uploads/catalog-v2-promo-hog-1-scale-a202394984.webp",
+    "stockQuantity": 0,
+    "costPrice": 168,
+    "costBreakdown": {
+      "plaGrams": 40,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 120,
+      "machineHours": 1.5,
+      "otherEquipCost": 0,
+      "manualWorkMin": 25,
+      "prepCost": 0,
+      "packagingCost": 18,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "PAQ-HYB-PIN-GRA-001",
+    "skuBreakdown": {
+      "standardSku": "PAQ-HYB-PIN-GRA-001",
+      "legacyCode": "PROMO-HOG-1",
+      "area": "PAQ",
+      "technique": "HYB",
+      "material": "PIN",
+      "finish": "GRA",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🎁 Paquetes & Combos",
+        "maquinaria": "🔄 Híbrido (Láser + Impresión 3D) (Láser + Impresión 3D)",
+        "materiaPrima": "🪵 Madera Maciza / Pino Natural - Maderas Naturales",
+        "acabadoTaller": "✨ Grabado Láser Profundo - Bajo relieve oscurecido por calor",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-promo-hog-1-scale-a202394984.webp",
+    "updatedAt": "2026-10-15T16:40:53.987Z",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Taller Artesano",
+      "license": "Diseño Exclusivo Artesano Digital",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\PROMO-HOG-1\\",
+      "cloudUrl": "",
+      "slicerNotes": "Corte MDF/Acrílico 3mm a 65% potencia, grabado 300mm/s.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Taller Artesano",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\PROMO-HOG-1\\",
+    "manufacturingTimes": {
+      "machineHours": 1,
+      "machineMinutes": 30,
+      "postProcessingMinutes": 25,
+      "leadTimeDays": "2 a 3 días hábiles"
+    },
+    "manufacturingTimeMinutes": 90,
+    "postProcessingTimeMinutes": 25
+  },
+  {
+    "id": "kit-home-office-gamer-pro",
+    "code": "PROMO-HOG-2",
+    "name": "Kit Home Office & Gamer Pro (4 piezas)",
+    "priceType": "exact",
+    "price": 520,
+    "regularPrice": 647,
+    "savings": 127,
+    "discountPercent": 20,
+    "priceUnit": "kit completo",
+    "isBundle": true,
+    "status": "published",
+    "featured": true,
+    "badge": "MÁS VENDIDO ESCRITORIO",
+    "worlds": [
+      "hogar"
+    ],
+    "categories": [
+      "hogar-estudio",
+      "hogar-organizacion",
+      "hogar-hobbies"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/kit_home_office_gamer_contexto.jpg",
+    "whiteBgImage": "/uploads/catalog-v2-promo-hog-2-base-d97c3d97d4.webp",
+    "gallery": [
+      "/uploads/kit_home_office_gamer_contexto.jpg",
+      "/uploads/catalog-v2-promo-hog-2-base-d97c3d97d4.webp",
+      "/uploads/catalog-v2-promo-hog-2-detail-239a9c3dda.webp",
+      "/uploads/catalog-v2-promo-hog-2-scale-1c5a412a91.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Organización total para tu escritorio: soporte gamer para audífonos y mando, organizador modular, portalápices y base de celular.",
+    "fullDescription": "Diseñado para quienes pasan horas frente a la computadora trabajando o jugando. Este kit en relieve 3D limpia tu mesa de cables y desorden: soporte vertical dual para diadema y control, organizador modular de accesorios, portalápices geométrico y soporte ergonómico para celular con ranura de carga.",
+    "includedItems": [
+      "1 Soporte gamer dual para audífonos de diadema y mando de videojuegos",
+      "1 Organizador modular de accesorios y memorias USB",
+      "1 Portalápices geométrico facetado de alta estabilidad",
+      "1 Soporte vertical para celular con ranura para cable de carga"
+    ],
+    "specifications": {
+      "dimensions": "Soporte gamer: 22 x 12 x 14 cm · Portalápices: 10 x 8 cm · Base cel: 9 x 8 x 8 cm",
+      "material": "PLA premium de alta densidad con base antideslizante",
+      "finish": "Textura mate anti-reflejante suave al tacto",
+      "includes": "4 piezas de organización con gomas de silicón antivibración",
+      "minQuantity": 1,
+      "estimatedLeadTime": "2 a 4 días hábiles",
+      "careNotes": "No exponer a temperaturas superiores a 60°C. Limpiar en seco."
+    },
+    "variants": [
+      {
+        "name": "Combinación de Color",
+        "options": [
+          "Negro Grafito & Verde Olivo",
+          "Negro Grafito & Magenta Neón",
+          "Blanco Marfil Minimalista",
+          "Gris Ceniza & Naranja",
+          "🎨 Otro color a elegir (a convenir)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Gamertag o iniciales grabadas en relieve en el soporte",
+      "Color personalizado de acento"
+    ],
+    "availability": "made_to_order",
+    "createdAt": "2026-10-14T16:07:55.947Z",
+    "detailImage": "/uploads/catalog-v2-promo-hog-2-detail-239a9c3dda.webp",
+    "measureImage": "/uploads/catalog-v2-promo-hog-2-scale-1c5a412a91.webp",
+    "stockQuantity": 0,
+    "costPrice": 205,
+    "costBreakdown": {
+      "plaGrams": 220,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 10,
+      "machineHours": 9,
+      "otherEquipCost": 0,
+      "manualWorkMin": 20,
+      "prepCost": 0,
+      "packagingCost": 18,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "PAQ-3D-PLA-ENS-002",
+    "skuBreakdown": {
+      "standardSku": "PAQ-3D-PLA-ENS-002",
+      "legacyCode": "PROMO-HOG-2",
+      "area": "PAQ",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "ENS",
+      "sequence": "002",
+      "instructionsForStaff": {
+        "destino": "🎁 Paquetes & Combos",
+        "maquinaria": "🧊 Impresión 3D (FDM / Filamento) (Granja 3D FDM)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Ensamblado Artesanal - Pegado multicapa y curado",
+        "lote": "#002"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-promo-hog-2-scale-1c5a412a91.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\PROMO-HOG-2\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\PROMO-HOG-2\\",
+    "manufacturingTimes": {
+      "machineHours": 9,
+      "machineMinutes": 0,
+      "postProcessingMinutes": 20,
+      "leadTimeDays": "2 a 4 días hábiles"
+    },
+    "manufacturingTimeMinutes": 540,
+    "postProcessingTimeMinutes": 20
+  },
+  {
+    "id": "pack-consentido-peludo-mascotas",
+    "code": "PROMO-HOG-3",
+    "name": "Pack Consentido Peludo (Mascotas - 4 piezas)",
+    "priceType": "exact",
+    "price": 299,
+    "regularPrice": 366,
+    "savings": 67,
+    "discountPercent": 18,
+    "priceUnit": "pack completo",
+    "isBundle": true,
+    "status": "published",
+    "featured": true,
+    "badge": "PET FRIENDLY",
+    "worlds": [
+      "hogar"
+    ],
+    "categories": [
+      "hogar-mascotas",
+      "hogar-regalos",
+      "hogar-decoracion"
+    ],
+    "techniques": [
+      "3d",
+      "laser"
+    ],
+    "primaryImage": "/uploads/catalog-v2-promo-hog-3-context-0f40182f71.webp",
+    "whiteBgImage": "/uploads/catalog-v2-promo-hog-3-base-89f91a601c.webp",
+    "gallery": [
+      "/uploads/catalog-v2-promo-hog-3-context-0f40182f71.webp",
+      "/uploads/catalog-v2-promo-hog-3-base-89f91a601c.webp",
+      "/uploads/catalog-v2-promo-hog-3-detail-05fb365d65.webp",
+      "/uploads/catalog-v2-promo-hog-3-scale-6a0903aae4.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Identificación y paseo seguro: chapita personalizada 3D con teléfono, portabolsas sanitario para correa, marco imantado y fotoimán.",
+    "fullDescription": "Todo lo que necesitas para tu perrito o gatito en un solo paquete consentidor: placa de identificación ligera en relieve con nombre y número de contacto, dispensador portátil de bolsitas para sujetar a la correa, un marco 3D para la foto favorita y un imán de madera con su silueta para el refrigerador.",
+    "includedItems": [
+      "1 Chapita de identificación ligera con nombre al frente y teléfono grabado",
+      "1 Portabolsas sanitario cilíndrico con mosquetón para correa de paseo",
+      "1 Marco imantado 3D para foto en refrigerador (6 x 6 cm)",
+      "1 Fotoimán de madera con grabado láser"
+    ],
+    "specifications": {
+      "dimensions": "Placa: 3.5 x 3.5 cm (ultraligera 8g) · Portabolsas: 8 x 4 cm · Marco: 6 x 6 cm",
+      "material": "Polímero 3D no tóxico, argolla metálica reforzada y madera natural",
+      "finish": "Bordes redondeados para no lastimar el pelaje y grabado indeleble",
+      "includes": "Argolla metálica reforzada, mosquetón para correa y rollito de bolsitas de regalo",
+      "minQuantity": 1,
+      "estimatedLeadTime": "2 a 3 días hábiles",
+      "careNotes": "Lavable con agua tibia y jabón neutro."
+    },
+    "variants": [
+      {
+        "name": "Silueta de la Chapita",
+        "options": [
+          "Huellita canina/felina",
+          "Huesito clásico",
+          "Círculo minimalista",
+          "Gatito con orejitas"
+        ]
+      },
+      {
+        "name": "Color de la Chapita",
+        "options": [
+          "Verde Olivo Artesano",
+          "Magenta Vibrante",
+          "Grafito Antracita",
+          "Azul Pastel",
+          "🎨 Otro color a elegir (a convenir)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Nombre de la mascota (frente)",
+      "Hasta 2 teléfonos de contacto (reverso)",
+      "Fotografía para el marco e imán"
+    ],
+    "availability": "made_to_order",
+    "createdAt": "2026-10-14T16:07:55.947Z",
+    "detailImage": "/uploads/catalog-v2-promo-hog-3-detail-05fb365d65.webp",
+    "measureImage": "/uploads/catalog-v2-promo-hog-3-scale-6a0903aae4.webp",
+    "stockQuantity": 0,
+    "costPrice": 118,
+    "costBreakdown": {
+      "plaGrams": 75,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 40,
+      "machineHours": 3,
+      "otherEquipCost": 0,
+      "manualWorkMin": 15,
+      "prepCost": 0,
+      "packagingCost": 12,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "PAQ-HYB-PLA-GRA-003",
+    "skuBreakdown": {
+      "standardSku": "PAQ-HYB-PLA-GRA-003",
+      "legacyCode": "PROMO-HOG-3",
+      "area": "PAQ",
+      "technique": "HYB",
+      "material": "PLA",
+      "finish": "GRA",
+      "sequence": "003",
+      "instructionsForStaff": {
+        "destino": "🎁 Paquetes & Combos",
+        "maquinaria": "🔄 Híbrido (Láser + Impresión 3D) (Láser + Impresión 3D)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Grabado Láser Profundo - Bajo relieve oscurecido por calor",
+        "lote": "#003"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-promo-hog-3-scale-6a0903aae4.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\PROMO-HOG-3\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\PROMO-HOG-3\\",
+    "manufacturingTimes": {
+      "machineHours": 3,
+      "machineMinutes": 0,
+      "postProcessingMinutes": 15,
+      "leadTimeDays": "2 a 3 días hábiles"
+    },
+    "manufacturingTimeMinutes": 180,
+    "postProcessingTimeMinutes": 15
+  },
+  {
+    "id": "pack-apertura-restaurante-cafe",
+    "code": "PROMO-BIZ-1",
+    "name": "Súper Pack Restaurante & Cafetería (16 piezas)",
+    "priceType": "exact",
+    "price": 1890,
+    "regularPrice": 2364,
+    "savings": 474,
+    "discountPercent": 20,
+    "priceUnit": "pack comercial",
+    "isBundle": true,
+    "status": "published",
+    "featured": true,
+    "badge": "MÁS POPULAR RESTAURANTES",
+    "worlds": [
+      "negocios"
+    ],
+    "categories": [
+      "negocios-restaurantes"
+    ],
+    "techniques": [
+      "3d",
+      "laser"
+    ],
+    "primaryImage": "/uploads/catalog-v2-promo-biz-1-context-0771c723a1.webp",
+    "whiteBgImage": "/uploads/catalog-v2-promo-biz-1-base-9af86dadec.webp",
+    "gallery": [
+      "/uploads/catalog-v2-promo-biz-1-context-0771c723a1.webp",
+      "/uploads/catalog-v2-promo-biz-1-base-9af86dadec.webp",
+      "/uploads/catalog-v2-promo-biz-1-detail-2803b7aefa.webp",
+      "/uploads/catalog-v2-promo-biz-1-scale-8d57b77857.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "La presentación completa para tus comensales: 10 números de mesa 3D, 4 servilleteros botánicos y 2 soportes QR de mostrador.",
+    "fullDescription": "El paquete integral para cafeterías, reposterías, bares y restaurantes que buscan una imagen moderna y profesional. Incluye 10 números de mesa volumétricos con base estable, 4 servilleteros botánicos o calados y 2 soportes para código QR de menú digital o pago en caja con el logo de tu negocio grabado sin costo adicional.",
+    "includedItems": [
+      "10 Números de mesa 3D con base rectangular biselada (del 01 al 10)",
+      "4 Servilleteros de mesa modernos con diseño calado de alta capacidad",
+      "2 Soportes de mostrador con placa grabada para código QR (menú o cobro)"
+    ],
+    "specifications": {
+      "dimensions": "Números 3D: 10 x 8 x 4 cm · Servilleteros: 14 x 10 x 5 cm · Soportes QR: 15 x 10 cm",
+      "material": "PLA de grado alimentario lavable y acrílico de alto impacto",
+      "finish": "Textura mate satinada antimanchas y grabado láser indeleble",
+      "includes": "16 piezas con numeración correlativa y generación de códigos QR vectoriales",
+      "minQuantity": 1,
+      "estimatedLeadTime": "3 a 5 días hábiles",
+      "careNotes": "Lavables con agua y jabón común. No meter a lavavajillas a altas temperaturas."
+    },
+    "variants": [
+      {
+        "name": "Tono de Números 3D",
+        "options": [
+          "Verde Olivo Artesano",
+          "Negro Grafito Elegante",
+          "Blanco Marfil Nórdico",
+          "Terracota Cálido"
+        ]
+      },
+      {
+        "name": "Rango de Numeración",
+        "options": [
+          "Mesas del 01 al 10",
+          "Mesas del 11 al 20",
+          "Numeración personalizada"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Logotipo de tu restaurante grabado en soportes QR",
+      "Enlaces a tu menú digital, redes o cobro CoDi/MercadoPago"
+    ],
+    "availability": "made_to_order",
+    "createdAt": "2026-10-14T16:07:55.947Z",
+    "detailImage": "/uploads/catalog-v2-promo-biz-1-detail-2803b7aefa.webp",
+    "measureImage": "/uploads/catalog-v2-promo-biz-1-scale-8d57b77857.webp",
+    "stockQuantity": 0,
+    "costPrice": 710,
+    "costBreakdown": {
+      "plaGrams": 650,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 80,
+      "machineHours": 25,
+      "otherEquipCost": 0,
+      "manualWorkMin": 50,
+      "prepCost": 0,
+      "packagingCost": 40,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "PAQ-HYB-ACR-GRA-001",
+    "skuBreakdown": {
+      "standardSku": "PAQ-HYB-ACR-GRA-001",
+      "legacyCode": "PROMO-BIZ-1",
+      "area": "PAQ",
+      "technique": "HYB",
+      "material": "ACR",
+      "finish": "GRA",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🎁 Paquetes & Combos",
+        "maquinaria": "🔄 Híbrido (Láser + Impresión 3D) (Láser + Impresión 3D)",
+        "materiaPrima": "🪵 Acrílico Cristal / Color - Termoplásticos",
+        "acabadoTaller": "✨ Grabado Láser Profundo - Bajo relieve oscurecido por calor",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-promo-biz-1-scale-8d57b77857.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\PROMO-BIZ-1\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\PROMO-BIZ-1\\",
+    "manufacturingTimes": {
+      "machineHours": 25,
+      "machineMinutes": 0,
+      "postProcessingMinutes": 50,
+      "leadTimeDays": "3 a 5 días hábiles"
+    },
+    "manufacturingTimeMinutes": 1500,
+    "postProcessingTimeMinutes": 50
+  },
+  {
+    "id": "kit-mostrador-smart-nfc-identidad",
+    "code": "PROMO-BIZ-2",
+    "name": "Kit Mostrador Smart NFC & Identidad (10 piezas)",
+    "priceType": "exact",
+    "price": 780,
+    "regularPrice": 932,
+    "savings": 152,
+    "discountPercent": 16,
+    "priceUnit": "kit comercial",
+    "isBundle": true,
+    "status": "published",
+    "featured": true,
+    "badge": "CONECTIVIDAD SMART",
+    "worlds": [
+      "negocios"
+    ],
+    "categories": [
+      "negocios-oficinas",
+      "negocios-tiendas",
+      "negocios-consultorios"
+    ],
+    "techniques": [
+      "nfc",
+      "laser",
+      "sublimacion",
+      "sublimation"
+    ],
+    "primaryImage": "/uploads/pack_gym_fitness_marca_contexto.jpg",
+    "whiteBgImage": "/uploads/catalog-v2-promo-biz-2-base-9ef8a299d1.webp",
+    "gallery": [
+      "/uploads/pack_gym_fitness_marca_contexto.jpg",
+      "/uploads/catalog-v2-promo-biz-2-base-9ef8a299d1.webp",
+      "/uploads/catalog-v2-promo-biz-2-detail-8feaf311de.webp",
+      "/uploads/catalog-v2-promo-biz-2-scale-7310c244c1.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Comparte tu catálogo o redes al instante: soporte piramidal con chip NFC, soporte QR vertical, 6 posavasos de madera y 2 tazas de marca.",
+    "fullDescription": "Convierte cada visita en un cliente conectado. Tus clientes solo acercan su teléfono (sin escanear ni descargar apps) y se abre tu WhatsApp de pedidos, reseña de Google Maps o enlace de catálogo. Complementado con soporte QR tradicional, posavasos de madera natural grabados y tazas con la identidad de tu empresa.",
+    "includedItems": [
+      "1 Soporte piramidal de contacto inteligente con chip NFC programado",
+      "1 Soporte QR de acrílico y madera para mostrador de caja",
+      "6 Posavasos de madera natural de haya grabados al láser con tu logo",
+      "2 Tazas de cerámica brillante con logotipo empresarial full color"
+    ],
+    "specifications": {
+      "dimensions": "Soporte NFC: 11 x 9 x 8 cm · Soporte QR: 15 x 10 cm · Posavasos: 9.5 cm diámetro",
+      "material": "PLA técnico, chip NFC NTAG213/215, madera de haya y cerámica",
+      "finish": "Grabado láser de alta definición e impresión térmica indeleble",
+      "includes": "Programación inicial del chip NFC con tu enlace y pruebas de compatibilidad",
+      "minQuantity": 1,
+      "estimatedLeadTime": "3 a 4 días hábiles",
+      "careNotes": "Chip NFC pasivo (no requiere pilas ni recarga). Resistente al agua."
+    },
+    "variants": [
+      {
+        "name": "Función del Chip NFC",
+        "options": [
+          "Reseñas en Google Maps",
+          "Menú Digital / Catálogo",
+          "WhatsApp directo de atención",
+          "Tarjeta de presentación digital vCard"
+        ]
+      },
+      {
+        "name": "Tono del Soporte NFC",
+        "options": [
+          "Verde Olivo Corporativo",
+          "Negro Grafito Mate",
+          "Blanco Satinado"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Enlace web a programar en el chip NFC",
+      "Logotipo vectorizado para tazas y posavasos"
+    ],
+    "availability": "made_to_order",
+    "createdAt": "2026-10-14T16:07:55.947Z",
+    "detailImage": "/uploads/catalog-v2-promo-biz-2-detail-8feaf311de.webp",
+    "measureImage": "/uploads/catalog-v2-promo-biz-2-scale-7310c244c1.webp",
+    "stockQuantity": 0,
+    "costPrice": 295,
+    "costBreakdown": {
+      "plaGrams": 200,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 120,
+      "machineHours": 7.5,
+      "otherEquipCost": 0,
+      "manualWorkMin": 30,
+      "prepCost": 0,
+      "packagingCost": 20,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "PAQ-LAS-CER-NFC-002",
+    "skuBreakdown": {
+      "standardSku": "PAQ-LAS-CER-NFC-002",
+      "legacyCode": "PROMO-BIZ-2",
+      "area": "PAQ",
+      "technique": "LAS",
+      "material": "CER",
+      "finish": "NFC",
+      "sequence": "002",
+      "instructionsForStaff": {
+        "destino": "🎁 Paquetes & Combos",
+        "maquinaria": "⚡ Corte / Grabado Láser CO2 (Láser CO2 / Diodo)",
+        "materiaPrima": "🪵 Cerámica / Vidrio - Inorgánicos",
+        "acabadoTaller": "✨ Chip NFC Integrado & Enlace - Programado con URL o contacto",
+        "lote": "#002"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-promo-biz-2-scale-7310c244c1.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\PROMO-BIZ-2\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\PROMO-BIZ-2\\",
+    "manufacturingTimes": {
+      "machineHours": 7,
+      "machineMinutes": 30,
+      "postProcessingMinutes": 30,
+      "leadTimeDays": "3 a 4 días hábiles"
+    },
+    "manufacturingTimeMinutes": 450,
+    "postProcessingTimeMinutes": 30
+  },
+  {
+    "id": "starter-pack-barberia-salon-boutique",
+    "code": "PROMO-BIZ-3",
+    "name": "Starter Pack Barbería & Boutique (27 piezas)",
+    "priceType": "exact",
+    "price": 890,
+    "regularPrice": 1098,
+    "savings": 208,
+    "discountPercent": 19,
+    "priceUnit": "pack comercial",
+    "isBundle": true,
+    "status": "published",
+    "featured": true,
+    "badge": "FIDELIZACIÓN CLIENTES",
+    "worlds": [
+      "negocios"
+    ],
+    "categories": [
+      "negocios-barberias",
+      "negocios-tiendas",
+      "negocios-joyerias"
+    ],
+    "techniques": [
+      "3d",
+      "laser"
+    ],
+    "primaryImage": "/uploads/pack_barberia_boutique_contexto.jpg",
+    "whiteBgImage": "/uploads/catalog-v2-promo-biz-3-base-ab3c6c6ff8.webp",
+    "gallery": [
+      "/uploads/pack_barberia_boutique_contexto.jpg",
+      "/uploads/catalog-v2-promo-biz-3-base-ab3c6c6ff8.webp",
+      "/uploads/catalog-v2-promo-biz-3-detail-04a190d0f1.webp",
+      "/uploads/catalog-v2-promo-biz-3-scale-00d81fef57.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Fideliza clientes y equipa tu estación: 1 tótem QR para citas/Instagram, 1 bandeja organizadora y 25 llaveros con tu marca grabada.",
+    "fullDescription": "Ideal para estéticas, barberías, estudios de tatuaje o tiendas de accesorios. Cuenta con un tótem de código QR para que tus clientes agenden su próxima cita o te sigan en redes, una bandeja organizadora para herramientas de estación de trabajo y 25 llaveros de madera grabados con tu logotipo para obsequiar en compras o servicios premium.",
+    "includedItems": [
+      "1 Tótem QR para citas, catálogo o perfil de Instagram",
+      "1 Bandeja organizadora para peines, tijeras, tarjetas o accesorios",
+      "25 Llaveros promocionales de madera con grabado láser de tu marca"
+    ],
+    "specifications": {
+      "dimensions": "Tótem QR: 15 x 10 cm · Bandeja: 20 x 14 x 4 cm · Llaveros: 5.5 x 2.8 cm",
+      "material": "Madera tratada, acrílico rígido y argollas metálicas niqueladas",
+      "finish": "Grabado láser indeleble y pulido fino en madera natural",
+      "includes": "27 piezas completas con argollas montadas listas para entrega a clientes",
+      "minQuantity": 1,
+      "estimatedLeadTime": "3 a 5 días hábiles",
+      "careNotes": "Madera sellada contra salpicaduras y polvo."
+    },
+    "variants": [
+      {
+        "name": "Forma de los Llaveros Promocionales",
+        "options": [
+          "Rectangular clásico",
+          "Cilindro moneda",
+          "Silueta personalizada con forma de tu logo"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Logotipo de tu marca vectorizado",
+      "Enlace QR a agenda, Instagram o Google Reviews"
+    ],
+    "availability": "made_to_order",
+    "createdAt": "2026-10-14T16:07:55.947Z",
+    "detailImage": "/uploads/catalog-v2-promo-biz-3-detail-04a190d0f1.webp",
+    "measureImage": "/uploads/catalog-v2-promo-biz-3-scale-00d81fef57.webp",
+    "stockQuantity": 0,
+    "costPrice": 320,
+    "costBreakdown": {
+      "plaGrams": 90,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 180,
+      "machineHours": 3.5,
+      "otherEquipCost": 0,
+      "manualWorkMin": 40,
+      "prepCost": 0,
+      "packagingCost": 25,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "PAQ-HYB-ACR-GRA-003",
+    "skuBreakdown": {
+      "standardSku": "PAQ-HYB-ACR-GRA-003",
+      "legacyCode": "PROMO-BIZ-3",
+      "area": "PAQ",
+      "technique": "HYB",
+      "material": "ACR",
+      "finish": "GRA",
+      "sequence": "003",
+      "instructionsForStaff": {
+        "destino": "🎁 Paquetes & Combos",
+        "maquinaria": "🔄 Híbrido (Láser + Impresión 3D) (Láser + Impresión 3D)",
+        "materiaPrima": "🪵 Acrílico Cristal / Color - Termoplásticos",
+        "acabadoTaller": "✨ Grabado Láser Profundo - Bajo relieve oscurecido por calor",
+        "lote": "#003"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-promo-biz-3-scale-00d81fef57.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\PROMO-BIZ-3\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\PROMO-BIZ-3\\",
+    "manufacturingTimes": {
+      "machineHours": 3,
+      "machineMinutes": 30,
+      "postProcessingMinutes": 40,
+      "leadTimeDays": "3 a 5 días hábiles"
+    },
+    "manufacturingTimeMinutes": 210,
+    "postProcessingTimeMinutes": 40
+  },
+  {
+    "id": "paquete-boda-de-ensueno-todo-incluido",
+    "code": "PROMO-EV-1",
+    "name": "Paquete Boda de Ensueño (Todo Incluido - 3 Sets)",
+    "priceType": "exact",
+    "price": 2490,
+    "regularPrice": 3020,
+    "savings": 530,
+    "discountPercent": 18,
+    "priceUnit": "paquete nupcial",
+    "isBundle": true,
+    "status": "published",
+    "featured": true,
+    "badge": "PAQUETE BODA TOTAL",
+    "worlds": [
+      "eventos"
+    ],
+    "categories": [
+      "eventos-bodas"
+    ],
+    "techniques": [
+      "laser",
+      "3d",
+      "vinil",
+      "vinyl"
+    ],
+    "primaryImage": "/uploads/catalog-v2-promo-ev-1-context-1aabc7517d.webp",
+    "whiteBgImage": "/uploads/catalog-v2-promo-ev-1-base-215d657be0.webp",
+    "gallery": [
+      "/uploads/catalog-v2-promo-ev-1-context-1aabc7517d.webp",
+      "/uploads/catalog-v2-promo-ev-1-base-215d657be0.webp",
+      "/uploads/catalog-v2-promo-ev-1-detail-0d5351b213.webp",
+      "/uploads/catalog-v2-promo-ev-1-scale-7c45b34c88.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "La ambientación nupcial completa: Set Suite para fotos de preparación, Set Bienvenida ceremonial y Centro 3D de mesa con portavasos grabados.",
+    "fullDescription": "El paquete integral más solicitado por parejas: reúne la Suite Nupcial (ganchos Novia/Novio, alhajero con terciopelo, cosmetiquera y termos con vinil), el Set de Bienvenida y Ceremonia (letrero de arco para caballete, 25 conos de pétalos, letreros de sillas y QR) más el Centro de Mesa Presidencial 3D sobre nogal y el set de portavasos nupciales grabados al láser para el brindis.",
+    "includedItems": [
+      "Set Suite Nupcial (2 ganchos grabados, 1 alhajero con terciopelo, 1 cosmetiquera, 2 termos con vinil)",
+      "Set Bienvenida Ceremonia (Letrero caballete 60x80 cm, 25 conos armados, canastilla, letreros sillas, QR)",
+      "Centro Presidencial 3D sobre madera de nogal con nombres y fecha + 2 Portavasos de madera grabados"
+    ],
+    "specifications": {
+      "dimensions": "Letrero: 60 x 80 cm · Letras 3D: 35 x 12 cm · Ganchos: 44 cm · Portavasos: 10 cm",
+      "material": "Madera maciza tratada, acrílico esmerilado, PLA mate, terciopelo y papel fino",
+      "finish": "Grabado láser de alta precisión, sellado mate exterior y corte volumétrico 3D",
+      "includes": "Los 3 sets completos empacados de forma individual para protección",
+      "minQuantity": 1,
+      "estimatedLeadTime": "5 a 8 días hábiles",
+      "careNotes": "Proteger madera de lluvia torrencial. Limpiar piezas con paño seco y suave."
+    },
+    "variants": [
+      {
+        "name": "Estilo del Letrero de Bienvenida",
+        "options": [
+          "Silueta Arco Madera Natural",
+          "Rectangular Rústico",
+          "Acrílico Esmerilado Moderno"
+        ]
+      },
+      {
+        "name": "Color de las Letras 3D Presidenciales",
+        "options": [
+          "Blanco Marfil Mate",
+          "Verde Olivo Artesano",
+          "Grafito Antracita",
+          "Dorado Perlado",
+          "🎨 Otro color a elegir (a convenir)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Nombres completos de los novios y fecha del enlace",
+      "Dedicatoria para la base de madera de presidencia",
+      "Código QR para fotos del evento o mesa de regalos"
+    ],
+    "availability": "made_to_order",
+    "createdAt": "2026-10-14T16:07:55.947Z",
+    "detailImage": "/uploads/catalog-v2-promo-ev-1-detail-0d5351b213.webp",
+    "measureImage": "/uploads/catalog-v2-promo-ev-1-scale-7c45b34c88.webp",
+    "stockQuantity": 0,
+    "costPrice": 890,
+    "costBreakdown": {
+      "plaGrams": 90,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 680,
+      "machineHours": 3.5,
+      "otherEquipCost": 0,
+      "manualWorkMin": 90,
+      "prepCost": 0,
+      "packagingCost": 50,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "PAQ-HYB-PIN-GRA-001",
+    "skuBreakdown": {
+      "standardSku": "PAQ-HYB-PIN-GRA-001",
+      "legacyCode": "PROMO-EV-1",
+      "area": "PAQ",
+      "technique": "HYB",
+      "material": "PIN",
+      "finish": "GRA",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🎁 Paquetes & Combos",
+        "maquinaria": "🔄 Híbrido (Láser + Impresión 3D) (Láser + Impresión 3D)",
+        "materiaPrima": "🪵 Madera Maciza / Pino Natural - Maderas Naturales",
+        "acabadoTaller": "✨ Grabado Láser Profundo - Bajo relieve oscurecido por calor",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-promo-ev-1-scale-7c45b34c88.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Taller Artesano",
+      "license": "Diseño Exclusivo Artesano Digital",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\PROMO-EV-1\\",
+      "cloudUrl": "",
+      "slicerNotes": "Corte MDF/Acrílico 3mm a 65% potencia, grabado 300mm/s.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Taller Artesano",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\PROMO-EV-1\\",
+    "manufacturingTimes": {
+      "machineHours": 3,
+      "machineMinutes": 30,
+      "postProcessingMinutes": 90,
+      "leadTimeDays": "5 a 8 días hábiles"
+    },
+    "manufacturingTimeMinutes": 210,
+    "postProcessingTimeMinutes": 90
+  },
+  {
+    "id": "combo-fiesta-recuerdos-patch-bar-anticruda",
+    "code": "PROMO-EV-2",
+    "name": "Combo Fiesta Total: Patch Bar + 50 Kits Anticruda",
+    "priceType": "exact",
+    "price": 7490,
+    "regularPrice": 8600,
+    "savings": 1110,
+    "discountPercent": 13,
+    "priceUnit": "combo experiencia",
+    "isBundle": true,
+    "status": "published",
+    "featured": true,
+    "badge": "EXPERIENCIA ESTRELLA",
+    "worlds": [
+      "eventos",
+      "negocios"
+    ],
+    "categories": [
+      "eventos-bodas",
+      "eventos-xvanos",
+      "eventos-cumpleanos",
+      "eventos-empresariales"
+    ],
+    "techniques": [
+      "sublimacion",
+      "vinil",
+      "laser",
+      "vinyl",
+      "sublimation"
+    ],
+    "primaryImage": "/uploads/catalog-v2-promo-ev-2-context-032d61f829.webp",
+    "whiteBgImage": "/uploads/catalog-v2-promo-ev-2-base-156e9889c5.webp",
+    "gallery": [
+      "/uploads/catalog-v2-promo-ev-2-context-032d61f829.webp",
+      "/uploads/catalog-v2-promo-ev-2-base-156e9889c5.webp",
+      "/uploads/catalog-v2-promo-ev-2-detail-90b0dd966a.webp",
+      "/uploads/catalog-v2-promo-ev-2-scale-6fc7e58b74.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "La experiencia de fiesta más recordada: Servicio Patch Bar en vivo durante el evento + 50 morralitos Kit Anticruda con llaveros.",
+    "fullDescription": "Combina la diversión en vivo durante la celebración con el recuerdo más agradecido al amanecer: 3 horas de servicio de Patch Bar interactivo (los invitados personalizan sus gorras trucker o bolsas tote con parches al instante) más 50 morralitos de manta 100% algodón serigrafiados con frases divertidas y llaveros de madera grabados para la mesa de amenidades.",
+    "includedItems": [
+      "Servicio Patch Bar en Vivo durante 3 horas con stand de madera y prensa térmica profesional",
+      "50 Prendas a elegir (Gorras trucker transpirables o Tote bags de manta 100% algodón)",
+      "Muestrarios de parches y stickers temáticos exclusivos con planchado ilimitado en vivo",
+      "50 Morralitos Kit Anticruda en manta serigrafiados con frases de fiesta + 50 llaveros de madera grabados"
+    ],
+    "specifications": {
+      "dimensions": "Estación Patch Bar: 160 x 80 cm · Morralitos: 15 x 20 cm · Llaveros: 5.5 x 2.8 cm",
+      "material": "Manta 100% algodón, poliéster de gorras, madera natural y parches térmicos HD",
+      "finish": "Termofijación permanente lavable y serigrafía textil de alto anclaje",
+      "includes": "Operador calificado de Patch Bar, mobiliario, prensa de calor y 50 kits anticruda armados",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Prendas lavables en agua fría. Llaveros resistentes de madera natural."
+    },
+    "variants": [
+      {
+        "name": "Base de Patch Bar a Personalizar",
+        "options": [
+          "Gorras Trucker Variados Colores",
+          "Tote Bags de Manta Cruda",
+          "Mixto (25 Gorras + 25 Totes)"
+        ]
+      },
+      {
+        "name": "Frase de los Morralitos Anticruda",
+        "options": [
+          "\"Para que la fiesta no pare (Kit Anticruda)\"",
+          "\"Sobreviví a la mejor boda\"",
+          "\"Personalizado con nuestros nombres\""
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Diseño de parches con iniciales de la pareja o festejado",
+      "Nombres y fecha grabados en los 50 llaveros de madera",
+      "Adaptación con logotipo corporativo para eventos de empresa"
+    ],
+    "availability": "made_to_order",
+    "createdAt": "2026-10-14T16:07:55.947Z",
+    "detailImage": "/uploads/catalog-v2-promo-ev-2-detail-90b0dd966a.webp",
+    "measureImage": "/uploads/catalog-v2-promo-ev-2-scale-6fc7e58b74.webp",
+    "stockQuantity": 0,
+    "costPrice": 2950,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 2400,
+      "machineHours": 0.25,
+      "otherEquipCost": 0,
+      "manualWorkMin": 10,
+      "prepCost": 0,
+      "packagingCost": 180,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "PAQ-LAS-TEX-GRA-002",
+    "skuBreakdown": {
+      "standardSku": "PAQ-LAS-TEX-GRA-002",
+      "legacyCode": "PROMO-EV-2",
+      "area": "PAQ",
+      "technique": "LAS",
+      "material": "TEX",
+      "finish": "GRA",
+      "sequence": "002",
+      "instructionsForStaff": {
+        "destino": "🎁 Paquetes & Combos",
+        "maquinaria": "⚡ Corte / Grabado Láser CO2 (Láser CO2 / Diodo)",
+        "materiaPrima": "🪵 Textil / Manta de Algodón - Telas & Confección",
+        "acabadoTaller": "✨ Grabado Láser Profundo - Bajo relieve oscurecido por calor",
+        "lote": "#002"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-promo-ev-2-scale-6fc7e58b74.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\PROMO-EV-2\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\PROMO-EV-2\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 15,
+      "postProcessingMinutes": 10,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 15,
+    "postProcessingTimeMinutes": 10
+  },
+  {
+    "id": "set-xv-anos-graduaciones-inolvidables",
+    "code": "PROMO-EV-3",
+    "name": "Set XV Años & Graduaciones (37 piezas)",
+    "priceType": "exact",
+    "price": 1750,
+    "regularPrice": 2163,
+    "savings": 413,
+    "discountPercent": 19,
+    "priceUnit": "set celebración",
+    "isBundle": true,
+    "status": "published",
+    "featured": true,
+    "badge": "FIESTAS & GRADUACIONES",
+    "worlds": [
+      "eventos"
+    ],
+    "categories": [
+      "eventos-xvanos",
+      "eventos-graduaciones",
+      "eventos-cumpleanos"
+    ],
+    "techniques": [
+      "3d",
+      "laser"
+    ],
+    "primaryImage": "/uploads/catalog-v2-promo-ev-3-context-917c77e7a6.webp",
+    "whiteBgImage": "/uploads/catalog-v2-promo-ev-3-base-80f44d12d5.webp",
+    "gallery": [
+      "/uploads/catalog-v2-promo-ev-3-context-917c77e7a6.webp",
+      "/uploads/catalog-v2-promo-ev-3-base-80f44d12d5.webp",
+      "/uploads/catalog-v2-promo-ev-3-detail-bc71d859c5.webp",
+      "/uploads/catalog-v2-promo-ev-3-scale-c8a6e4b916.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Recuerdos únicos para tus amigos y familia: 1 letrero silueta arco para caballete, 35 llaveros en relieve 3D con nombre y 1 tótem QR de fotos.",
+    "fullDescription": "La bienvenida y el recuerdo más bonito para una quinceañera o graduado(a). Incluye el letrero de recepción para caballete en silueta arco de madera o acrílico, 35 llaveros con nombres personalizados en relieve 3D botánico (con argolla metálica reforzada) y un tótem QR de mesa para que los invitados suban y descarguen las fotos del festejo.",
+    "includedItems": [
+      "1 Letrero de bienvenida silueta arco para caballete (50 x 70 cm)",
+      "35 Llaveros en relieve 3D botánico personalizados con nombre individual",
+      "1 Tótem QR para compartir álbum de Google Fotos o Instagram"
+    ],
+    "specifications": {
+      "dimensions": "Letrero arco: 50 x 70 cm · Llaveros 3D: 6.5 x 2.2 cm · Tótem QR: 15 x 10 cm",
+      "material": "Madera natural selecta de 6 mm (sin MDF), acrílico y PLA de alta resolución",
+      "finish": "Grabado láser profundo, pulido fino y relieve táctil 3D",
+      "includes": "37 piezas listas para el día del evento con argollas montadas",
+      "minQuantity": 1,
+      "estimatedLeadTime": "4 a 6 días hábiles",
+      "careNotes": "Llaveros resistentes a caídas y uso diario en llaves o mochilas."
+    },
+    "variants": [
+      {
+        "name": "Combinación de Color de Llaveros 3D",
+        "options": [
+          "Verde Olivo & Blanco Marfil",
+          "Rosa Pastel & Blanco",
+          "Grafito & Oro Perlado",
+          "Lavanda & Blanco",
+          "🎨 Otro color a elegir (a convenir)"
+        ]
+      },
+      {
+        "name": "Material del Letrero de Bienvenida",
+        "options": [
+          "Madera Natural Haya Barniz Transparente",
+          "Madera Tinte Nogal Americano",
+          "Acrílico Esmerilado Blanco"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Nombre de la quinceañera / festejado(a) o generación",
+      "Fecha del festejo",
+      "Lista de nombres para los 35 llaveros individuales"
+    ],
+    "availability": "made_to_order",
+    "createdAt": "2026-10-14T16:07:55.947Z",
+    "detailImage": "/uploads/catalog-v2-promo-ev-3-detail-bc71d859c5.webp",
+    "measureImage": "/uploads/catalog-v2-promo-ev-3-scale-c8a6e4b916.webp",
+    "stockQuantity": 0,
+    "costPrice": 620,
+    "costBreakdown": {
+      "plaGrams": 350,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 320,
+      "machineHours": 14,
+      "otherEquipCost": 0,
+      "manualWorkMin": 50,
+      "prepCost": 0,
+      "packagingCost": 35,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "PAQ-HYB-ACR-GRA-003",
+    "skuBreakdown": {
+      "standardSku": "PAQ-HYB-ACR-GRA-003",
+      "legacyCode": "PROMO-EV-3",
+      "area": "PAQ",
+      "technique": "HYB",
+      "material": "ACR",
+      "finish": "GRA",
+      "sequence": "003",
+      "instructionsForStaff": {
+        "destino": "🎁 Paquetes & Combos",
+        "maquinaria": "🔄 Híbrido (Láser + Impresión 3D) (Láser + Impresión 3D)",
+        "materiaPrima": "🪵 Acrílico Cristal / Color - Termoplásticos",
+        "acabadoTaller": "✨ Grabado Láser Profundo - Bajo relieve oscurecido por calor",
+        "lote": "#003"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-promo-ev-3-scale-c8a6e4b916.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\PROMO-EV-3\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\PROMO-EV-3\\",
+    "manufacturingTimes": {
+      "machineHours": 14,
+      "machineMinutes": 0,
+      "postProcessingMinutes": 50,
+      "leadTimeDays": "4 a 6 días hábiles"
+    },
+    "manufacturingTimeMinutes": 840,
+    "postProcessingTimeMinutes": 50
+  },
+  {
+    "id": "bolsa-tote-bag-manta-vinil-textil",
+    "code": "VN-TOTE-01",
+    "name": "Bolsa Tote Bag de Manta con Vinil Textil / Sublimación",
+    "priceType": "starting_at",
+    "price": 120,
+    "regularPrice": 150,
+    "priceUnit": "pieza (desde $85 mayoreo)",
+    "status": "published",
+    "featured": true,
+    "badge": "TEXTIL FAVORITO",
+    "worlds": [
+      "hogar",
+      "negocios",
+      "eventos"
+    ],
+    "categories": [
+      "hogar-regalos",
+      "negocios-tiendas",
+      "eventos-bodas",
+      "eventos-empresariales"
+    ],
+    "techniques": [
+      "vinil",
+      "vinyl",
+      "sublimacion",
+      "sublimation"
+    ],
+    "primaryImage": "/uploads/catalog-v2-vn-tote-01-context-1029da08c6.webp",
+    "whiteBgImage": "/uploads/catalog-v2-vn-tote-01-base-51998bdc2a.webp",
+    "gallery": [
+      "/uploads/catalog-v2-vn-tote-01-context-1029da08c6.webp",
+      "/uploads/catalog-v2-vn-tote-01-base-51998bdc2a.webp",
+      "/uploads/catalog-v2-vn-tote-01-detail-0c36441473.webp",
+      "/uploads/catalog-v2-vn-tote-01-scale-77b996cf91.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Tote bag ecológica en manta 100% algodón crudo (38x42 cm) con asas reforzadas, personalizada con vinil textil HD o sublimación a todo color.",
+    "fullDescription": "Bolsa reutilizable fabricada en manta natural de alto gramaje con costuras reforzadas en X en las asas. Ideal para recuerdos de bodas, kit de bienvenida en convenciones empresariales, empaque ecológico para tiendas boutique o uso diario. Personalizable con vinil textil de alta adhesión (mate, metálico, glitter) o sublimación a todo color.",
+    "specifications": {
+      "dimensions": "38 cm ancho x 42 cm alto · Asas de 60 cm al hombro",
+      "material": "Manta 100% algodón crudo 240g sin blanquear",
+      "finish": "Fijación térmica de vinil textil de alta elasticidad y resistencia al lavado",
+      "includes": "1 Tote bag lista para usar empacada individualmente",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Lavar al revés con agua fría. No planchar directo sobre el estampado."
+    },
+    "variants": [
+      {
+        "name": "Tipo de Personalización",
+        "options": [
+          "Vinil Textil 1 Color (Negro/Blanco/Dorado)",
+          "Vinil Textil Bicolor",
+          "Sublimación Full Color"
+        ]
+      },
+      {
+        "name": "Acabado del Vinil",
+        "options": [
+          "Mate Premium",
+          "Metálico Oro / Plata",
+          "Efecto Glitter"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Logotipo vectorial de empresa o negocio",
+      "Monograma o nombres para eventos y bodas",
+      "Ilustración o frase personalizada"
+    ],
+    "availability": "in_stock",
+    "sourceCrop": "white_kit_anticruda.jpg",
+    "detailImage": "/uploads/catalog-v2-vn-tote-01-detail-0c36441473.webp",
+    "measureImage": "/uploads/catalog-v2-vn-tote-01-scale-77b996cf91.webp",
+    "stockQuantity": 6,
+    "costPrice": 58,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 50,
+      "machineHours": 0.25,
+      "otherEquipCost": 0,
+      "manualWorkMin": 10,
+      "prepCost": 0,
+      "packagingCost": 4,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-14T23:16:38.861Z",
+    "sku": "HOG-SUB-TEX-MAT-001",
+    "skuBreakdown": {
+      "standardSku": "HOG-SUB-TEX-MAT-001",
+      "legacyCode": "VN-TOTE-01",
+      "area": "HOG",
+      "technique": "SUB",
+      "material": "TEX",
+      "finish": "MAT",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "☕ Sublimación Térmica (Prensa de Tazas / Plancha Térmica)",
+        "materiaPrima": "🪵 Textil / Manta de Algodón - Telas & Confección",
+        "acabadoTaller": "✨ Barniz / Textura Mate - Terso sin reflejos, elegante",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-vn-tote-01-scale-77b996cf91.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\VN-TOTE-01\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\VN-TOTE-01\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 15,
+      "postProcessingMinutes": 10,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 15,
+    "postProcessingTimeMinutes": 10
+  },
+  {
+    "id": "gorra-trucker-personalizada-vinil-parche",
+    "code": "VN-GORRA-01",
+    "name": "Gorra Trucker Ajustable con Vinil Textil & Parche",
+    "priceType": "starting_at",
+    "price": 145,
+    "regularPrice": 180,
+    "priceUnit": "pieza (desde $99 mayoreo)",
+    "status": "published",
+    "featured": true,
+    "badge": "MÁS VENDIDO",
+    "worlds": [
+      "hogar",
+      "negocios",
+      "eventos"
+    ],
+    "categories": [
+      "negocios-emprendedores",
+      "eventos-graduaciones",
+      "eventos-cumpleanos",
+      "hogar-regalos"
+    ],
+    "techniques": [
+      "vinil",
+      "vinyl"
+    ],
+    "primaryImage": "/uploads/catalog-v2-vn-gorra-01-context-8e05d0e774.webp",
+    "whiteBgImage": "/uploads/catalog-v2-vn-gorra-01-base-f7a573d623.webp",
+    "gallery": [
+      "/uploads/catalog-v2-vn-gorra-01-context-8e05d0e774.webp",
+      "/uploads/catalog-v2-vn-gorra-01-base-f7a573d623.webp",
+      "/uploads/catalog-v2-vn-gorra-01-detail-bdfe928286.webp",
+      "/uploads/catalog-v2-vn-gorra-01-scale-6cb8facc19.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Gorra clásica trucker de 5 paneles con frente acolchado y malla transpirable, personalizada con vinil textil termotransferible o parche.",
+    "fullDescription": "La gorra favorita para celebraciones de despedidas de soltera, bodas, aniversarios, graduaciones y uniformes de personal. Frente de poliéster de alta densidad que permite estampados nítidos sin deformaciones. Broche ajustable tipo snapback de doble hilera.",
+    "specifications": {
+      "dimensions": "Circunferencia ajustable 54 a 60 cm · Visera curva 7 cm",
+      "material": "Frente de poliéster acolchado y laterales/malla de ventilación",
+      "finish": "Vinil textil termo-adherido a 160°C o parche bordado de alta definición",
+      "includes": "1 Gorra trucker personalizada lista para usar",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Limpiar con cepillo suave o paño húmedo. No usar secadora."
+    },
+    "variants": [
+      {
+        "name": "Color de Gorra",
+        "options": [
+          "Negro Total",
+          "Negro con Frente Blanco",
+          "Verde Olivo",
+          "Rosa Pastel",
+          "Azul Marino"
+        ]
+      },
+      {
+        "name": "Tipo de Estampado",
+        "options": [
+          "Vinil Textil Mate",
+          "Vinil Textil Glitter",
+          "Parche Estilo Patch Bar"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Iniciales, monograma o apodo",
+      "Frases de fiesta (\"Groom Squad\", \"Team Bride\", etc.)",
+      "Logotipo de tu negocio o gimnasio"
+    ],
+    "availability": "in_stock",
+    "sourceCrop": "white_patch_bar.jpg",
+    "detailImage": "/uploads/catalog-v2-vn-gorra-01-detail-bdfe928286.webp",
+    "measureImage": "/uploads/catalog-v2-vn-gorra-01-scale-6cb8facc19.webp",
+    "stockQuantity": 7,
+    "costPrice": 70,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 62,
+      "machineHours": 0.25,
+      "otherEquipCost": 0,
+      "manualWorkMin": 10,
+      "prepCost": 0,
+      "packagingCost": 4,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-14T23:16:59.067Z",
+    "sku": "HOG-VIN-TEX-TER-001",
+    "skuBreakdown": {
+      "standardSku": "HOG-VIN-TEX-TER-001",
+      "legacyCode": "VN-GORRA-01",
+      "area": "HOG",
+      "technique": "VIN",
+      "material": "TEX",
+      "finish": "TER",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "✂️ Vinil Adhesivo / Textil (Plotter de Corte)",
+        "materiaPrima": "🪵 Textil / Manta de Algodón - Telas & Confección",
+        "acabadoTaller": "✨ Termofijado Textil - Sellado con presión y calor",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-vn-gorra-01-scale-6cb8facc19.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\VN-GORRA-01\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\VN-GORRA-01\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 15,
+      "postProcessingMinutes": 10,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 15,
+    "postProcessingTimeMinutes": 10
+  },
+  {
+    "id": "playera-algodon-personalizada-vinil-textil",
+    "code": "VN-PLAYERA-01",
+    "name": "Playera 100% Algodón Peinado con Vinil Textil HD",
+    "priceType": "starting_at",
+    "price": 185,
+    "regularPrice": 230,
+    "priceUnit": "pieza (desde $135 mayoreo)",
+    "status": "published",
+    "featured": true,
+    "badge": "CALIDAD PREMIUM",
+    "worlds": [
+      "hogar",
+      "negocios",
+      "eventos"
+    ],
+    "categories": [
+      "hogar-regalos",
+      "negocios-emprendedores",
+      "eventos-graduaciones",
+      "eventos-empresariales"
+    ],
+    "techniques": [
+      "vinil",
+      "vinyl",
+      "sublimacion",
+      "sublimation"
+    ],
+    "primaryImage": "/uploads/catalog-v2-vn-playera-01-context-32b52e9fc4.webp",
+    "whiteBgImage": "/uploads/catalog-v2-vn-playera-01-base-d397470269.webp",
+    "gallery": [
+      "/uploads/catalog-v2-vn-playera-01-context-32b52e9fc4.webp",
+      "/uploads/catalog-v2-vn-playera-01-base-d397470269.webp",
+      "/uploads/catalog-v2-vn-playera-01-detail-4c183e34fb.webp",
+      "/uploads/catalog-v2-vn-playera-01-scale-5b114e25f4.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Playera de algodón peinado de tacto ultrasuave (corte unisex o dama) personalizada con vinil textil elástico sin sensación plástica gruesa.",
+    "fullDescription": "Confeccionada con algodón de hilo peinado de 180g que no encoge ni pierde color. Aplicamos vinil textil importado de microgrosor (menos de 90 micras) que se integra con el tejido sin acartonar la prenda. Excelente para playeras de cumpleaños familiares, playeras de pareja, uniformes y eventos deportivos.",
+    "specifications": {
+      "dimensions": "Tallas disponibles: Juvenil, CH, M, G, XG, 2XG",
+      "material": "100% Algodón peinado premium (tapa-costura en cuello)",
+      "finish": "Vinil textil elástico microfino resistente a más de 50 lavadas",
+      "includes": "1 Playera empacada individualmente",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Lavar con agua fría al revés. Planchar por la parte trasera."
+    },
+    "variants": [
+      {
+        "name": "Talla",
+        "options": [
+          "CH (Chica)",
+          "M (Mediana)",
+          "G (Grande)",
+          "XG (Extra Grande)"
+        ]
+      },
+      {
+        "name": "Corte",
+        "options": [
+          "Corte Regular Unisex",
+          "Corte Silueta Dama"
+        ]
+      },
+      {
+        "name": "Color de Prenda",
+        "options": [
+          "Negro Intenso",
+          "Blanco Puro",
+          "Verde Olivo Artesano",
+          "Gris Jaspe"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Texto en pecho, espalda o manga",
+      "Ilustración o número estilo jersey deportivo",
+      "Logotipo de empresa o taller"
+    ],
+    "availability": "in_stock",
+    "sourceCrop": "white_kit_anticruda.jpg",
+    "detailImage": "/uploads/catalog-v2-vn-playera-01-detail-4c183e34fb.webp",
+    "measureImage": "/uploads/catalog-v2-vn-playera-01-scale-5b114e25f4.webp",
+    "stockQuantity": 14,
+    "costPrice": 99,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 90,
+      "machineHours": 0.25,
+      "otherEquipCost": 0,
+      "manualWorkMin": 10,
+      "prepCost": 0,
+      "packagingCost": 4,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-14T23:16:52.767Z",
+    "sku": "HOG-SUB-TEX-MAT-001",
+    "skuBreakdown": {
+      "standardSku": "HOG-SUB-TEX-MAT-001",
+      "legacyCode": "VN-PLAYERA-01",
+      "area": "HOG",
+      "technique": "SUB",
+      "material": "TEX",
+      "finish": "MAT",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "☕ Sublimación Térmica (Prensa de Tazas / Plancha Térmica)",
+        "materiaPrima": "🪵 Textil / Manta de Algodón - Telas & Confección",
+        "acabadoTaller": "✨ Barniz / Textura Mate - Terso sin reflejos, elegante",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-vn-playera-01-scale-5b114e25f4.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\VN-PLAYERA-01\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\VN-PLAYERA-01\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 15,
+      "postProcessingMinutes": 10,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 15,
+    "postProcessingTimeMinutes": 10
+  },
+  {
+    "id": "taza-magica-termica-sublimada",
+    "code": "SB-TAZA-01",
+    "name": "Taza Mágica Térmica Reveladora / Cerámica Sublimada",
+    "priceType": "starting_at",
+    "price": 140,
+    "regularPrice": 175,
+    "priceUnit": "pieza (desde $95 mayoreo)",
+    "status": "published",
+    "featured": true,
+    "badge": "EFECTO MÁGICO",
+    "worlds": [
+      "hogar",
+      "negocios",
+      "eventos"
+    ],
+    "categories": [
+      "hogar-cocina",
+      "hogar-regalos",
+      "negocios-oficinas",
+      "eventos-bodas"
+    ],
+    "techniques": [
+      "sublimacion",
+      "sublimation"
+    ],
+    "primaryImage": "/uploads/sublimacion_taza_tarro_contexto.jpg",
+    "whiteBgImage": "/uploads/catalog-v2-sb-taza-01-base-165fccc9a7.webp",
+    "gallery": [
+      "/uploads/sublimacion_taza_tarro_contexto.jpg",
+      "/uploads/catalog-v2-sb-taza-01-base-165fccc9a7.webp",
+      "/uploads/catalog-v2-sb-taza-01-detail-b17aab8fed.webp",
+      "/uploads/catalog-v2-sb-taza-01-scale-473238632a.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Taza de cerámica de 11 oz con polímero termosensible: en frío es negro mate elegante y al verter café o té caliente revela tu diseño a color.",
+    "fullDescription": "El regalo sorpresa por excelencia. La taza negra mate oculta completamente la imagen hasta que entra en contacto con líquido caliente (+45°C), revelando fotografías de alta resolución, dedicatorias o logotipos corporativos con colores vibrantes y acabado brillante.",
+    "specifications": {
+      "dimensions": "Capacidad 11 oz (325 ml) · Altura 9.5 cm · Diámetro 8.2 cm",
+      "material": "Cerámica de grado alimenticio AAA con recubrimiento térmico",
+      "finish": "Sublimación de alta definición fotográfica integrada al esmalte",
+      "includes": "1 Taza en caja blanca protectora individual para regalo",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Lavar a mano con esponja suave para proteger el recubrimiento termosensible. No microondas prolongado."
+    },
+    "variants": [
+      {
+        "name": "Tipo de Taza",
+        "options": [
+          "Taza Mágica Negro Mate (Revela con calor)",
+          "Taza Cerámica Blanca Clásica (Color permanente)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Foto familiar, de pareja o mascota",
+      "Dedicatoria para mamá, papá, maestros o amigos",
+      "Logotipo de empresa para obsequio a colaboradores"
+    ],
+    "availability": "in_stock",
+    "sourceCrop": "white_s8_taza_magica.jpg",
+    "detailImage": "/uploads/catalog-v2-sb-taza-01-detail-b17aab8fed.webp",
+    "measureImage": "/uploads/catalog-v2-sb-taza-01-scale-473238632a.webp",
+    "stockQuantity": 16,
+    "costPrice": 68,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 58,
+      "machineHours": 0.25,
+      "otherEquipCost": 0,
+      "manualWorkMin": 10,
+      "prepCost": 0,
+      "packagingCost": 6,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "durationMinutes": 60,
+      "discountPercent": 20,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-14T23:16:38.825Z",
+    "sku": "HOG-SUB-CER-BRI-001",
+    "skuBreakdown": {
+      "standardSku": "HOG-SUB-CER-BRI-001",
+      "legacyCode": "SB-TAZA-01",
+      "area": "HOG",
+      "technique": "SUB",
+      "material": "CER",
+      "finish": "BRI",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Decoración",
+        "maquinaria": "☕ Sublimación Térmica (Prensa de Tazas / Plancha Térmica)",
+        "materiaPrima": "🪵 Cerámica / Vidrio - Inorgánicos",
+        "acabadoTaller": "✨ Sellador Brillante / Resina - Efecto cristal brillante",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-sb-taza-01-scale-473238632a.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\SB-TAZA-01\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\SB-TAZA-01\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 15,
+      "postProcessingMinutes": 10,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 15,
+    "postProcessingTimeMinutes": 10
+  },
+  {
+    "id": "termo-metalico-termico-20oz-personalizado",
+    "code": "SB-TERMO-01",
+    "name": "Termo Metálico Térmico 20 oz con Vinil Permanente / Grabado",
+    "priceType": "starting_at",
+    "price": 230,
+    "regularPrice": 280,
+    "priceUnit": "pieza (desde $165 mayoreo)",
+    "status": "published",
+    "featured": true,
+    "badge": "DOBLE CAPA INOX",
+    "worlds": [
+      "hogar",
+      "negocios",
+      "eventos"
+    ],
+    "categories": [
+      "hogar-estudio",
+      "hogar-regalos",
+      "negocios-gym",
+      "eventos-bodas"
+    ],
+    "techniques": [
+      "vinil",
+      "vinyl",
+      "laser",
+      "sublimacion",
+      "sublimation"
+    ],
+    "primaryImage": "/uploads/pack_gym_fitness_marca_contexto.jpg",
+    "whiteBgImage": "/uploads/catalog-v2-sb-termo-01-base-d0fc82c7af.webp",
+    "gallery": [
+      "/uploads/pack_gym_fitness_marca_contexto.jpg",
+      "/uploads/catalog-v2-sb-termo-01-base-d0fc82c7af.webp",
+      "/uploads/catalog-v2-sb-termo-01-detail-15c4eb91f2.webp",
+      "/uploads/catalog-v2-sb-termo-01-scale-3899286d90.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Vaso térmico 'Skinny Tumbler' de 20 oz de doble pared libre de BPA: conserva bebidas frescas y cuenta con vinil de corte de alta adherencia.",
+    "fullDescription": "Vaso ergonómico libre de BPA con tapa acrílica antiderrame y popote reutilizable. Personalizado con vinil permanente de grado automotriz cortado con alta precisión en Silhouette Cameo según el diseño solicitado.",
+    "specifications": {
+      "dimensions": "Capacidad 20 oz (590 ml) · Altura 21 cm · Diámetro 7 cm",
+      "material": "Polímero térmico libre de BPA de doble pared con tapa acrílica",
+      "finish": "Acabado mate antideslizante con vinil de alta adhesión",
+      "includes": "1 Vaso térmico + Tapa hermética acrílica + Popote reutilizable",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Lavar a mano con agua tibia y jabón neutro. No usar fibras metálicas."
+    },
+    "variants": [
+      {
+        "name": "Color del Termo",
+        "options": [
+          "Blanco Nácar Mate",
+          "Negro Mate Antracita",
+          "Rosa Pastel Satinado",
+          "Verde Olivo"
+        ]
+      },
+      {
+        "name": "Técnica de Personalización",
+        "options": [
+          "Vinil Holográfico / Tornasol",
+          "Vinil Oro Rosa Metálico",
+          "Grabado Láser de Precisión"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Nombre en tipografía caligráfica elegante",
+      "Monograma Novia / Novio / Dama de Honor",
+      "Logotipo de estudio o clínica"
+    ],
+    "availability": "in_stock",
+    "sourceCrop": "white_suite_nupcial.jpg",
+    "detailImage": "/uploads/catalog-v2-sb-termo-01-detail-15c4eb91f2.webp",
+    "measureImage": "/uploads/catalog-v2-sb-termo-01-scale-3899286d90.webp",
+    "stockQuantity": 8,
+    "costPrice": 111,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 95,
+      "machineHours": 0.25,
+      "otherEquipCost": 0,
+      "manualWorkMin": 10,
+      "prepCost": 0,
+      "packagingCost": 8,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-14T23:16:52.730Z",
+    "sku": "HOG-SUB-MET-MAT-001",
+    "skuBreakdown": {
+      "standardSku": "HOG-SUB-MET-MAT-001",
+      "legacyCode": "SB-TERMO-01",
+      "area": "HOG",
+      "technique": "SUB",
+      "material": "MET",
+      "finish": "MAT",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🏠 Hogar & Bebidas Térmicas",
+        "maquinaria": "☕ Sublimación Térmica / Láser / Vinil",
+        "materiaPrima": "🥤 Termo Acero Inoxidable Doble Pared 20 oz",
+        "acabadoTaller": "✨ Vinil Permanente / Grabado Láser",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-sb-termo-01-scale-3899286d90.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\SB-TERMO-01\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\SB-TERMO-01\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 15,
+      "postProcessingMinutes": 10,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 15,
+    "postProcessingTimeMinutes": 10
+  },
+  {
+    "id": "topper-pastel-boda-ev-topper",
+    "code": "EV-TOPPER-01",
+    "name": "Cake Topper para Pastel en Madera Calada & Acrílico Espejo",
+    "priceType": "fixed",
+    "price": 149,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "eventos"
+    ],
+    "categories": [
+      "eventos-bodas",
+      "eventos-xvanos"
+    ],
+    "techniques": [
+      "laser"
+    ],
+    "primaryImage": "/uploads/catalog-v2-ev-topper-01-context-08531cc210.webp",
+    "whiteBgImage": "/uploads/catalog-v2-ev-topper-01-base-8def7494bf.webp",
+    "detailImage": "/uploads/catalog-v2-ev-topper-01-detail-e2b8084fe6.webp",
+    "measureImage": "/uploads/catalog-v2-ev-topper-01-scale-a04d8b9223.webp",
+    "gallery": [
+      "/uploads/catalog-v2-ev-topper-01-context-08531cc210.webp",
+      "/uploads/catalog-v2-ev-topper-01-base-8def7494bf.webp",
+      "/uploads/catalog-v2-ev-topper-01-detail-e2b8084fe6.webp",
+      "/uploads/catalog-v2-ev-topper-01-scale-a04d8b9223.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Topper con caligrafía fluida y silueta botánica calada a láser en madera o acrílico.",
+    "fullDescription": "La corona ideal para el pastel de bodas, XV años o aniversario. Diseñado con tipografía fina resistente con corte láser Sculpfun S9 y vástago integrado para inserción firme sin dañar el decorado.",
+    "specifications": {
+      "dimensions": "18 cm de ancho x 22 cm de alto (incluye 6 cm de vástago)",
+      "material": "Madera natural selecta de 4 mm o acrílico espejo grado alimenticio (sin MDF)",
+      "finish": "Capa de barniz transparente sellador no tóxico en estructura y vástago apto para repostería",
+      "includes": "1 Cake Topper con base protectora para conservación posterior",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 3 días hábiles",
+      "careNotes": "Limpiar con paño suave seco; guardar como recuerdo en su caja."
+    },
+    "variants": [
+      {
+        "name": "Material y Tono de Barniz",
+        "options": [
+          "Madera Natural Barniz Transparente",
+          "Madera Tinte Nogal Americano",
+          "Acrílico Espejo Dorado",
+          "Acrílico Espejo Plata"
+        ]
+      },
+      {
+        "name": "Motivo",
+        "options": [
+          "\"Nuestra Boda\" con silueta de olivo",
+          "\"Mis XV Años\"",
+          "Nombres entrelazados"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Nombres de los festejados",
+      "Fecha del evento",
+      "Silueta complementaria"
+    ],
+    "availability": "in_stock",
+    "createdAt": "2026-10-14T19:14:22.883Z",
+    "stockQuantity": 10,
+    "costPrice": 46,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 32,
+      "machineHours": 0.33,
+      "otherEquipCost": 0,
+      "manualWorkMin": 15,
+      "prepCost": 0,
+      "packagingCost": 8,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "EVE-LAS-PIN-GRA-001",
+    "skuBreakdown": {
+      "standardSku": "EVE-LAS-PIN-GRA-001",
+      "legacyCode": "EV-TOPPER-01",
+      "area": "EVE",
+      "technique": "LAS",
+      "material": "PIN",
+      "finish": "GRA",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🎉 Eventos Especiales",
+        "maquinaria": "⚡ Corte / Grabado Láser CO2 (Láser CO2 / Diodo)",
+        "materiaPrima": "🪵 Madera Natural Selecta 4mm (Sin MDF)",
+        "acabadoTaller": "✨ Barniz Transparente Grado Repostería",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-ev-topper-01-scale-a04d8b9223.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Taller Artesano",
+      "license": "Diseño Exclusivo Artesano Digital",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-TOPPER-01\\",
+      "cloudUrl": "",
+      "slicerNotes": "Corte MDF/Acrílico 3mm a 65% potencia, grabado 300mm/s.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Taller Artesano",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-TOPPER-01\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 20,
+      "postProcessingMinutes": 15,
+      "leadTimeDays": "1 a 3 días hábiles"
+    },
+    "manufacturingTimeMinutes": 20,
+    "postProcessingTimeMinutes": 15
+  },
+  {
+    "id": "place-cards-hexagonales-ev-place",
+    "code": "EV-PLACE-01",
+    "name": "Identificadores de Asiento / Place Cards Hexagonales (Set 10 pzas)",
+    "priceType": "fixed",
+    "price": 179,
+    "priceUnit": "set",
+    "status": "published",
+    "featured": false,
+    "worlds": [
+      "eventos"
+    ],
+    "categories": [
+      "eventos-bodas",
+      "eventos-empresariales"
+    ],
+    "techniques": [
+      "laser",
+      "vinyl"
+    ],
+    "primaryImage": "/uploads/catalog-v2-ev-place-01-context-26ae56aec3.webp",
+    "whiteBgImage": "/uploads/catalog-v2-ev-place-01-base-7894ac7661.webp",
+    "detailImage": "/uploads/catalog-v2-ev-place-01-detail-78e4e6cecf.webp",
+    "measureImage": "/uploads/catalog-v2-ev-place-01-scale-6b1bd49a2b.webp",
+    "gallery": [
+      "/uploads/catalog-v2-ev-place-01-context-26ae56aec3.webp",
+      "/uploads/catalog-v2-ev-place-01-base-7894ac7661.webp",
+      "/uploads/catalog-v2-ev-place-01-detail-78e4e6cecf.webp",
+      "/uploads/catalog-v2-ev-place-01-scale-6b1bd49a2b.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Plaquitas geométricas para asignar asientos a los invitados con grabado o vinil dorado.",
+    "fullDescription": "Elegancia pura en la vajilla de cada invitado. Tarjetas hexagonales en madera natural o acrílico traslúcido con el nombre de cada invitado para orientar el banquete nupcial o cena de gala.",
+    "specifications": {
+      "dimensions": "8 x 7 cm cada hexágono, espesor 3 mm",
+      "material": "Madera fina de abedul o acrílico cristal",
+      "finish": "Grabado láser Sculpfun S9 o vinil metalizado Silhouette Cameo",
+      "includes": "Set de 10 identificadores personalizados individualmente",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 3 días hábiles",
+      "careNotes": "Los invitados los conservan como recuerdo personal."
+    },
+    "variants": [
+      {
+        "name": "Formato",
+        "options": [
+          "Madera grabado láser",
+          "Acrílico con letras doradas",
+          "Acrílico esmerilado con blanco"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Lista de nombres de los invitados",
+      "Número de mesa"
+    ],
+    "availability": "made_to_order",
+    "createdAt": "2026-10-14T19:14:22.886Z",
+    "stockQuantity": 0,
+    "costPrice": 64,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 48,
+      "machineHours": 0.33,
+      "otherEquipCost": 0,
+      "manualWorkMin": 15,
+      "prepCost": 0,
+      "packagingCost": 5,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "EVE-LAS-ACR-GRA-001",
+    "skuBreakdown": {
+      "standardSku": "EVE-LAS-ACR-GRA-001",
+      "legacyCode": "EV-PLACE-01",
+      "area": "EVE",
+      "technique": "LAS",
+      "material": "ACR",
+      "finish": "GRA",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🎉 Eventos Especiales",
+        "maquinaria": "⚡ Corte / Grabado Láser CO2 (Láser CO2 / Diodo)",
+        "materiaPrima": "🪵 Acrílico Cristal / Color - Termoplásticos",
+        "acabadoTaller": "✨ Grabado Láser Profundo - Bajo relieve oscurecido por calor",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-ev-place-01-scale-6b1bd49a2b.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Taller Artesano",
+      "license": "Diseño Exclusivo Artesano Digital",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-PLACE-01\\",
+      "cloudUrl": "",
+      "slicerNotes": "Corte MDF/Acrílico 3mm a 65% potencia, grabado 300mm/s.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Taller Artesano",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-PLACE-01\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 20,
+      "postProcessingMinutes": 15,
+      "leadTimeDays": "1 a 3 días hábiles"
+    },
+    "manufacturingTimeMinutes": 20,
+    "postProcessingTimeMinutes": 15
+  },
+  {
+    "id": "libro-firmas-rustico-madera-ev-guest",
+    "code": "EV-GUEST-01",
+    "name": "Libro de Firmas Rústico con Portada de Madera Grabada",
+    "priceType": "fixed",
+    "price": 349,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "eventos"
+    ],
+    "categories": [
+      "eventos-bodas",
+      "eventos-xvanos"
+    ],
+    "techniques": [
+      "laser"
+    ],
+    "primaryImage": "/uploads/catalog-v2-ev-guest-01-context-624c0572b5.webp",
+    "whiteBgImage": "/uploads/catalog-v2-ev-guest-01-base-833cfff915.webp",
+    "detailImage": "/uploads/catalog-v2-ev-guest-01-detail-ef051863f2.webp",
+    "measureImage": "/uploads/catalog-v2-ev-guest-01-scale-d57c627388.webp",
+    "gallery": [
+      "/uploads/catalog-v2-ev-guest-01-context-624c0572b5.webp",
+      "/uploads/catalog-v2-ev-guest-01-base-833cfff915.webp",
+      "/uploads/catalog-v2-ev-guest-01-detail-ef051863f2.webp",
+      "/uploads/catalog-v2-ev-guest-01-scale-d57c627388.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Álbum con pastas de madera natural grabada, arillos rústicos y hojas opalina para dedicatorias.",
+    "fullDescription": "Guarda los mejores deseos de tus seres queridos para siempre. Portada rígida de madera natural contrachapada grabada a láser con diseño botánico, encuadernación metálica oculta y 35 hojas gruesas de cartulina opalina color crema.",
+    "specifications": {
+      "dimensions": "28 x 21 cm (Formato apaisado / horizontal)",
+      "material": "Tapas de madera natural sólida / abedul fino de 4 mm (sin MDF), hojas de cartulina opalina de 180 g",
+      "finish": "Capa protectora de barniz transparente satinado y tintes para madera",
+      "includes": "Libro completo con 35 hojas (70 páginas útiles) + bolígrafo de madera a juego",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 3 días hábiles",
+      "careNotes": "Conservar en ambiente seco alejado de luz solar directa."
+    },
+    "variants": [
+      {
+        "name": "Tono de Barniz de Portada",
+        "options": [
+          "Barniz Natural Transparente Pino Nórdico",
+          "Nogal Americano Cálido",
+          "Caoba Clásico",
+          "Roble Claro"
+        ]
+      },
+      {
+        "name": "Estilo de carátula",
+        "options": [
+          "Monograma con ramas de olivo",
+          "Texto caligráfico de nombres y fecha"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Nombres y fecha grabados",
+      "Frase conmemorativa en contraportada"
+    ],
+    "availability": "in_stock",
+    "createdAt": "2026-10-14T19:14:22.886Z",
+    "stockQuantity": 10,
+    "costPrice": 128,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 95,
+      "machineHours": 0.33,
+      "otherEquipCost": 0,
+      "manualWorkMin": 15,
+      "prepCost": 0,
+      "packagingCost": 15,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "EVE-LAS-PIN-GRA-001",
+    "skuBreakdown": {
+      "standardSku": "EVE-LAS-PIN-GRA-001",
+      "legacyCode": "EV-GUEST-01",
+      "area": "EVE",
+      "technique": "LAS",
+      "material": "PIN",
+      "finish": "GRA",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🎉 Eventos Especiales",
+        "maquinaria": "⚡ Corte / Grabado Láser CO2 (Láser CO2 / Diodo)",
+        "materiaPrima": "🪵 Madera Natural Abedul 4mm (Sin MDF)",
+        "acabadoTaller": "✨ Barniz Transparente Protector Satinado",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-ev-guest-01-scale-d57c627388.webp",
+    "privateNotes": "Madera natural de abedul 4mm. Grabado profundo de carátula, capa uniforme de barniz transparente sellador y encuadernado artesanal con herrajes.",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Taller Artesano",
+      "license": "Diseño Exclusivo Artesano Digital",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-GUEST-01\\",
+      "cloudUrl": "",
+      "slicerNotes": "Corte MDF/Acrílico 3mm a 65% potencia, grabado 300mm/s.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Taller Artesano",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-GUEST-01\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 20,
+      "postProcessingMinutes": 15,
+      "leadTimeDays": "1 a 3 días hábiles"
+    },
+    "manufacturingTimeMinutes": 20,
+    "postProcessingTimeMinutes": 15
+  },
+  {
+    "id": "cajitas-souvenir-botanicas-ev-cajitas",
+    "code": "EV-CAJITAS-01",
+    "name": "Cajitas Souvenir de Recuerdo con Calado Botánico (Set 12 pzas)",
+    "priceType": "fixed",
+    "price": 199,
+    "priceUnit": "set",
+    "status": "published",
+    "featured": false,
+    "worlds": [
+      "eventos"
+    ],
+    "categories": [
+      "eventos-bodas",
+      "eventos-bautizos"
+    ],
+    "techniques": [
+      "laser"
+    ],
+    "primaryImage": "/uploads/catalog-v2-ev-cajitas-01-context-bd0d133482.webp",
+    "whiteBgImage": "/uploads/catalog-v2-ev-cajitas-01-base-c8207603ba.webp",
+    "detailImage": "/uploads/catalog-v2-ev-cajitas-01-detail-373d619672.webp",
+    "measureImage": "/uploads/catalog-v2-ev-cajitas-01-scale-c2a7f3aa8c.webp",
+    "gallery": [
+      "/uploads/catalog-v2-ev-cajitas-01-context-bd0d133482.webp",
+      "/uploads/catalog-v2-ev-cajitas-01-base-c8207603ba.webp",
+      "/uploads/catalog-v2-ev-cajitas-01-detail-373d619672.webp",
+      "/uploads/catalog-v2-ev-cajitas-01-scale-c2a7f3aa8c.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Mini cajas para almendras confitadas o dulces finos con filigrana botánica calada.",
+    "fullDescription": "El agradecimiento perfecto para cada mesa. Cajitas armables con corte láser de alta definición en cartulina rígida kraft o madera natural calada de 3 mm (sin MDF), con listón de satín para anudar.",
+    "specifications": {
+      "dimensions": "6.5 x 6.5 x 6.5 cm cada cajita",
+      "material": "Madera natural calada de 3mm o cartulina kraft gruesa artesanal (sin MDF)",
+      "finish": "Corte limpio sin quemaduras visibles, barniz transparente y listón de seda",
+      "includes": "Set de 12 cajitas armadas con sus listones",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 3 días hábiles",
+      "careNotes": "Aptas para dulces envueltos, bombones o joyería de recuerdo."
+    },
+    "variants": [
+      {
+        "name": "Material y Tono",
+        "options": [
+          "Madera Natural Barniz Transparente",
+          "Madera Tinte Nogal Americano",
+          "Cartulina Kraft Artesanal",
+          "Blanco Marfil Aperlado"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Iniciales grabadas en la tapa",
+      "Color de listón"
+    ],
+    "availability": "in_stock",
+    "createdAt": "2026-10-14T19:14:22.886Z",
+    "stockQuantity": 6,
+    "costPrice": 72,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 55,
+      "machineHours": 0.33,
+      "otherEquipCost": 0,
+      "manualWorkMin": 15,
+      "prepCost": 0,
+      "packagingCost": 6,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "EVE-LAS-PIN-GRA-001",
+    "skuBreakdown": {
+      "standardSku": "EVE-LAS-PIN-GRA-001",
+      "legacyCode": "EV-CAJITAS-01",
+      "area": "EVE",
+      "technique": "LAS",
+      "material": "PIN",
+      "finish": "GRA",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🎉 Eventos Especiales",
+        "maquinaria": "⚡ Corte / Grabado Láser CO2 (Láser CO2 / Diodo)",
+        "materiaPrima": "🪵 Madera Natural Calada 3mm o Kraft Artesanal (Sin MDF)",
+        "acabadoTaller": "✨ Calado Láser Limpio & Barniz Transparente",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-ev-cajitas-01-scale-c2a7f3aa8c.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Taller Artesano",
+      "license": "Diseño Exclusivo Artesano Digital",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-CAJITAS-01\\",
+      "cloudUrl": "",
+      "slicerNotes": "Corte MDF/Acrílico 3mm a 65% potencia, grabado 300mm/s.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Taller Artesano",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-CAJITAS-01\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 20,
+      "postProcessingMinutes": 15,
+      "leadTimeDays": "1 a 3 días hábiles"
+    },
+    "manufacturingTimeMinutes": 20,
+    "postProcessingTimeMinutes": 15
+  },
+  {
+    "id": "abanicos-jardin-grabados-ev-abanico",
+    "code": "EV-ABANICO-01",
+    "name": "Abanicos de Mano Grabados para Ceremonias de Jardín (Set 6 pzas)",
+    "priceType": "fixed",
+    "price": 219,
+    "priceUnit": "set",
+    "status": "published",
+    "featured": false,
+    "worlds": [
+      "eventos"
+    ],
+    "categories": [
+      "eventos-bodas",
+      "eventos-temporada"
+    ],
+    "techniques": [
+      "laser"
+    ],
+    "primaryImage": "/uploads/catalog-v2-ev-abanico-01-context-5005b0a926.webp",
+    "whiteBgImage": "/uploads/catalog-v2-ev-abanico-01-base-fcdb34ca9d.webp",
+    "detailImage": "/uploads/catalog-v2-ev-abanico-01-detail-e11c776d78.webp",
+    "measureImage": "/uploads/catalog-v2-ev-abanico-01-scale-2fcc7e991d.webp",
+    "gallery": [
+      "/uploads/catalog-v2-ev-abanico-01-context-5005b0a926.webp",
+      "/uploads/catalog-v2-ev-abanico-01-base-fcdb34ca9d.webp",
+      "/uploads/catalog-v2-ev-abanico-01-detail-e11c776d78.webp",
+      "/uploads/catalog-v2-ev-abanico-01-scale-2fcc7e991d.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Abanicos de madera fina con varillaje grabado a láser con los nombres y fecha del evento.",
+    "fullDescription": "Confort y frescura con estilo para ceremonias civiles, religiosas o recepciones en jardines y haciendas. Varillas de madera suave con grabado láser de alta precisión y tela ligera blanca o crema.",
+    "specifications": {
+      "dimensions": "21 cm cerrado, apertura de 38 cm",
+      "material": "Varillaje de madera natural de abedul pulida (sin MDF) y tela poliéster transpirable",
+      "finish": "Grabado láser nítido en varilla principal con capa de barniz transparente sellador",
+      "includes": "Set de 6 abanicos en bolsita individual de celofán",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 3 días hábiles",
+      "careNotes": "Evitar mojar la madera."
+    },
+    "variants": [
+      {
+        "name": "Color de tela",
+        "options": [
+          "Blanco puro ceremonial",
+          "Crema marfil",
+          "Rosa pálido"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Nombres y fecha grabados en varilla"
+    ],
+    "availability": "in_stock",
+    "createdAt": "2026-10-14T19:14:22.886Z",
+    "stockQuantity": 8,
+    "costPrice": 82,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 65,
+      "machineHours": 0.33,
+      "otherEquipCost": 0,
+      "manualWorkMin": 15,
+      "prepCost": 0,
+      "packagingCost": 8,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "EVE-LAS-PIN-GRA-001",
+    "skuBreakdown": {
+      "standardSku": "EVE-LAS-PIN-GRA-001",
+      "legacyCode": "EV-ABANICO-01",
+      "area": "EVE",
+      "technique": "LAS",
+      "material": "PIN",
+      "finish": "GRA",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🎉 Eventos Especiales",
+        "maquinaria": "⚡ Corte / Grabado Láser CO2 (Láser CO2 / Diodo)",
+        "materiaPrima": "🪵 Madera Natural de Abedul Pulida (Sin MDF)",
+        "acabadoTaller": "✨ Grabado Láser Fino & Barniz Sellador",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-ev-abanico-01-scale-2fcc7e991d.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Taller Artesano",
+      "license": "Diseño Exclusivo Artesano Digital",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-ABANICO-01\\",
+      "cloudUrl": "",
+      "slicerNotes": "Corte MDF/Acrílico 3mm a 65% potencia, grabado 300mm/s.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Taller Artesano",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-ABANICO-01\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 20,
+      "postProcessingMinutes": 15,
+      "leadTimeDays": "1 a 3 días hábiles"
+    },
+    "manufacturingTimeMinutes": 20,
+    "postProcessingTimeMinutes": 15
+  },
+  {
+    "id": "copas-brindis-vinil-metalico-ev-copas",
+    "code": "EV-COPAS-01",
+    "name": "Par de Copas de Brindis con Vinil Permanente Dorado / Blanco",
+    "priceType": "fixed",
+    "price": 229,
+    "priceUnit": "set",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "eventos"
+    ],
+    "categories": [
+      "eventos-bodas",
+      "eventos-xvanos"
+    ],
+    "techniques": [
+      "vinyl"
+    ],
+    "primaryImage": "/uploads/catalog-v2-ev-copas-01-context-5240efee53.webp",
+    "whiteBgImage": "/uploads/catalog-v2-ev-copas-01-base-40a29f4357.webp",
+    "detailImage": "/uploads/catalog-v2-ev-copas-01-detail-d9f7395a3f.webp",
+    "measureImage": "/uploads/catalog-v2-ev-copas-01-scale-9850945541.webp",
+    "gallery": [
+      "/uploads/catalog-v2-ev-copas-01-context-5240efee53.webp",
+      "/uploads/catalog-v2-ev-copas-01-base-40a29f4357.webp",
+      "/uploads/catalog-v2-ev-copas-01-detail-d9f7395a3f.webp",
+      "/uploads/catalog-v2-ev-copas-01-scale-9850945541.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Dúo de copas estilizadas tipo flauta para el brindis de honor de los novios o festejada.",
+    "fullDescription": "El momento cumbre del brindis merece piezas memorables. Dos copas tipo flauta de vidrio de fiesta decoradas con vinil adhesivo permanente de grado profesional cortado en Silhouette Cameo.",
+    "specifications": {
+      "dimensions": "22 cm de alto, capacidad 190 ml",
+      "material": "Vidrio transparente cristalino y vinil adhesivo permanente Oracal 651",
+      "finish": "Acabado brillante oro metalizado o blanco esmerilado",
+      "includes": "2 copas personalizadas en caja de seguridad acolchada",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Lavar a mano suavemente con esponja; no tallar sobre el vinil."
+    },
+    "variants": [
+      {
+        "name": "Tono de vinil",
+        "options": [
+          "Oro metalizado brillante",
+          "Blanco tiza mate",
+          "Plata espejo"
+        ]
+      },
+      {
+        "name": "Diseño",
+        "options": [
+          "\"Sr. & Sra.\" con fecha",
+          "Nombres de pila con corazón",
+          "\"Mis XV\" con corona"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Nombres de los homenajeados",
+      "Fecha del brindis"
+    ],
+    "availability": "in_stock",
+    "createdAt": "2026-10-14T19:14:22.886Z",
+    "stockQuantity": 8,
+    "costPrice": 88,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 70,
+      "machineHours": 0.25,
+      "otherEquipCost": 0,
+      "manualWorkMin": 10,
+      "prepCost": 0,
+      "packagingCost": 10,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "EVE-VIN-TEX-BRI-001",
+    "skuBreakdown": {
+      "standardSku": "EVE-VIN-TEX-BRI-001",
+      "legacyCode": "EV-COPAS-01",
+      "area": "EVE",
+      "technique": "VIN",
+      "material": "TEX",
+      "finish": "BRI",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🎉 Eventos Especiales",
+        "maquinaria": "✂️ Vinil Adhesivo / Textil (Plotter de Corte)",
+        "materiaPrima": "🪵 Textil / Manta de Algodón - Telas & Confección",
+        "acabadoTaller": "✨ Sellador Brillante / Resina - Efecto cristal brillante",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-ev-copas-01-scale-9850945541.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-COPAS-01\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-COPAS-01\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 15,
+      "postProcessingMinutes": 10,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 15,
+    "postProcessingTimeMinutes": 10
+  },
+  {
+    "id": "charms-marcacopas-botanicos-ev-charms",
+    "code": "EV-CHARMS-01",
+    "name": "Marcacopas / Charms Botánicos para Invitados (Set 12 pzas)",
+    "priceType": "fixed",
+    "price": 129,
+    "priceUnit": "set",
+    "status": "published",
+    "featured": false,
+    "worlds": [
+      "eventos"
+    ],
+    "categories": [
+      "eventos-bodas",
+      "eventos-empresariales"
+    ],
+    "techniques": [
+      "3d",
+      "laser"
+    ],
+    "primaryImage": "/uploads/catalog-v2-ev-charms-01-context-ba2b75a544.webp",
+    "whiteBgImage": "/uploads/catalog-v2-ev-charms-01-base-8ff4040282.webp",
+    "detailImage": "/uploads/catalog-v2-ev-charms-01-detail-49a316c101.webp",
+    "measureImage": "/uploads/catalog-v2-ev-charms-01-scale-e94b9ebbe4.webp",
+    "gallery": [
+      "/uploads/catalog-v2-ev-charms-01-context-ba2b75a544.webp",
+      "/uploads/catalog-v2-ev-charms-01-base-8ff4040282.webp",
+      "/uploads/catalog-v2-ev-charms-01-detail-49a316c101.webp",
+      "/uploads/catalog-v2-ev-charms-01-scale-e94b9ebbe4.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Anillos con dije botánico o inicial para el tallo de las copas en cocteles y banquetes.",
+    "fullDescription": "Evita confusiones en la barra de bebidas y da un toque de distinción a cada copa. Argollas flexibles con mini dijes de madera o PLA botánico en relieve para colocar en el tallo de cada copa.",
+    "specifications": {
+      "dimensions": "Argolla 2.5 cm diámetro, dije 2 x 2 cm",
+      "material": "Argolla metálica con dije de madera fina o PLA biodegradable",
+      "finish": "Grabado nítido con siluetas florales y letras",
+      "includes": "Set de 12 marcacopas surtidos",
+      "minQuantity": 1,
+      "estimatedLeadTime": "2 días hábiles",
+      "careNotes": "Reutilizables y lavables."
+    },
+    "variants": [
+      {
+        "name": "Material del dije",
+        "options": [
+          "Madera natural grabada",
+          "PLA verde olivo botánico",
+          "Acrílico traslúcido"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Iniciales individuales o siluetas botánicas"
+    ],
+    "availability": "in_stock",
+    "createdAt": "2026-10-14T19:14:22.886Z",
+    "stockQuantity": 10,
+    "costPrice": 48,
+    "costBreakdown": {
+      "plaGrams": 40,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 15,
+      "machineHours": 1.8,
+      "otherEquipCost": 0,
+      "manualWorkMin": 8,
+      "prepCost": 0,
+      "packagingCost": 5,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "EVE-HYB-PLA-GRA-001",
+    "skuBreakdown": {
+      "standardSku": "EVE-HYB-PLA-GRA-001",
+      "legacyCode": "EV-CHARMS-01",
+      "area": "EVE",
+      "technique": "HYB",
+      "material": "PLA",
+      "finish": "GRA",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🎉 Eventos Especiales",
+        "maquinaria": "🔄 Híbrido (Láser + Impresión 3D) (Láser + Impresión 3D)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Grabado Láser Profundo - Bajo relieve oscurecido por calor",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-ev-charms-01-scale-e94b9ebbe4.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Diseño 3D",
+      "license": "Comercial Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-CHARMS-01\\",
+      "cloudUrl": "",
+      "slicerNotes": "Boquilla 0.4mm, capa 0.20mm estándar FDM.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Diseño 3D",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-CHARMS-01\\",
+    "manufacturingTimes": {
+      "machineHours": 1,
+      "machineMinutes": 48,
+      "postProcessingMinutes": 8,
+      "leadTimeDays": "2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 108,
+    "postProcessingTimeMinutes": 8
+  },
+  {
+    "id": "mini-letrero-qr-candybar-ev-candy",
+    "code": "EV-CANDY-01",
+    "name": "Mini Letrero de Estación con Código QR (Candy Bar / Fotos)",
+    "priceType": "fixed",
+    "price": 169,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": false,
+    "worlds": [
+      "eventos"
+    ],
+    "categories": [
+      "eventos-bodas",
+      "eventos-xvanos"
+    ],
+    "techniques": [
+      "laser",
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-ev-candy-01-context-302c2af2a0.webp",
+    "whiteBgImage": "/uploads/catalog-v2-ev-candy-01-base-6662c610ab.webp",
+    "detailImage": "/uploads/catalog-v2-ev-candy-01-detail-9e12396cdf.webp",
+    "measureImage": "/uploads/catalog-v2-ev-candy-01-scale-f2621c7555.webp",
+    "gallery": [
+      "/uploads/catalog-v2-ev-candy-01-context-302c2af2a0.webp",
+      "/uploads/catalog-v2-ev-candy-01-base-6662c610ab.webp",
+      "/uploads/catalog-v2-ev-candy-01-detail-9e12396cdf.webp",
+      "/uploads/catalog-v2-ev-candy-01-scale-f2621c7555.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "shortDescription": "Placa con peana de madera para guiar a los invitados: \"Mesa de Dulces\", \"Audio Guestbook\" o \"Comparte tus fotos\".",
+    "fullDescription": "Señalización estética para las mesas clave del evento. Código QR grabado que enlaza directo al álbum de Google Fotos o Instagram para recopilar las fotos tomadas por los asistentes en tiempo real.",
+    "specifications": {
+      "dimensions": "18 x 13 cm con peana de apoyo",
+      "material": "Madera fina de abedul de 4 mm con base ranurada sólida",
+      "finish": "Corte láser biselado y barniz mate",
+      "includes": "1 placa grabada con QR + 1 base de apoyo",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 3 días hábiles",
+      "careNotes": "Colocar en superficie plana."
+    },
+    "variants": [
+      {
+        "name": "Función",
+        "options": [
+          "\"Comparte tus fotos\" (QR)",
+          "\"Mesa de Dulces / Disfruten\"",
+          "\"Libro de Firmas / Dedícanos unas palabras\""
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Enlace web o QR a codificar",
+      "Nombres de los anfitriones"
+    ],
+    "availability": "in_stock",
+    "createdAt": "2026-10-14T19:14:22.886Z",
+    "stockQuantity": 5,
+    "costPrice": 62,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 45,
+      "machineHours": 0.33,
+      "otherEquipCost": 0,
+      "manualWorkMin": 15,
+      "prepCost": 0,
+      "packagingCost": 6,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "sku": "EVE-HYB-PLA-GRA-001",
+    "skuBreakdown": {
+      "standardSku": "EVE-HYB-PLA-GRA-001",
+      "legacyCode": "EV-CANDY-01",
+      "area": "EVE",
+      "technique": "HYB",
+      "material": "PLA",
+      "finish": "GRA",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🎉 Eventos Especiales",
+        "maquinaria": "🔄 Híbrido (Láser + Impresión 3D) (Láser + Impresión 3D)",
+        "materiaPrima": "🪵 Filamento PLA - Polímeros 3D",
+        "acabadoTaller": "✨ Grabado Láser Profundo - Bajo relieve oscurecido por calor",
+        "lote": "#001"
+      }
+    },
+    "dimensionsImage": "/uploads/catalog-v2-ev-candy-01-scale-f2621c7555.webp",
+    "repository": {
+      "platform": "local",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Taller Artesano",
+      "license": "Diseño Exclusivo Artesano Digital",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-CANDY-01\\",
+      "cloudUrl": "",
+      "slicerNotes": "Corte MDF/Acrílico 3mm a 65% potencia, grabado 300mm/s.",
+      "additionalLinks": []
+    },
+    "makerWorldAuthor": "Taller Artesano",
+    "localPath": "C:\\Users\\OEM\\Modelos3D\\EV-CANDY-01\\",
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 20,
+      "postProcessingMinutes": 15,
+      "leadTimeDays": "1 a 3 días hábiles"
+    },
+    "manufacturingTimeMinutes": 20,
+    "postProcessingTimeMinutes": 15
   }
 ];
-
-const initialWorkshopMachines = [
-  {
-    id: 'mach-creator-5',
-    code: '3D-01',
-    name: 'FlashForge Creator 5',
-    alias: 'la creator 5',
-    category: '3d',
-    categoryName: 'Impresión 3D',
-    icon: '🖨️',
-    powerWatts: 550,
-    kwhRate: 3.20,
-    powerCostPerHour: 1.76,
-    wearCostPerHour: 4.50,
-    maintenanceCostPerHour: 2.50,
-    totalHourlyRate: 8.76,
-    unitMetric: 'cm3',
-    unitMetricLabel: 'cm³ (milímetro/cm cúbico)',
-    unitCost: 0.48,
-    specs: 'Doble extrusor independiente (IDEX), volumen 500x500x500 mm, boquilla hasta 350°C, cama caliente hasta 120°C',
-    status: 'active',
-    amortizedHours: 1850,
-    hourlyDepreciationCost: 3.00,
-    speedFactorMmSec: 150,
-    speedEfficiency: 100,
-    sizeCategory: 'Industrial',
-    compatibleMaterials: ["PLA","PETG","ABS","TPU","Nylon","PVA Soluble"],
-    notes: 'Impresora industrial de gran volumen para piezas estructurales, piezas con soporte soluble (PVA) y doble color.'
-  },
-  {
-    id: 'mach-bambu-a1-mini',
-    code: '3D-02',
-    name: 'Bambu Lab A1 Mini',
-    alias: 'la bambu lab mini',
-    category: '3d',
-    categoryName: 'Impresión 3D',
-    icon: '⚡',
-    powerWatts: 150,
-    kwhRate: 3.20,
-    powerCostPerHour: 0.48,
-    wearCostPerHour: 2.20,
-    maintenanceCostPerHour: 1.20,
-    totalHourlyRate: 3.88,
-    unitMetric: 'cm3',
-    unitMetricLabel: 'cm³ (milímetro/cm cúbico)',
-    unitCost: 0.38,
-    specs: 'Volumen 180x180x180 mm, aceleración activa de 500 mm/s, calibración totalmente automática',
-    status: 'active',
-    amortizedHours: 620,
-    hourlyDepreciationCost: 1.80,
-    speedFactorMmSec: 500,
-    speedEfficiency: 100,
-    sizeCategory: 'Chica',
-    compatibleMaterials: ["PLA","PETG","TPU"],
-    notes: 'Impresora de alta velocidad y máxima precisión para piezas de alta rotación, llaveros y organizadores compactos.'
-  },
-  {
-    id: 'mach-bambu-a1',
-    code: '3D-03',
-    name: 'Bambu Lab A1 (A2L Multicolor)',
-    alias: 'la bambu lab a2l',
-    category: '3d',
-    categoryName: 'Impresión 3D',
-    icon: '🎨',
-    powerWatts: 250,
-    kwhRate: 3.20,
-    powerCostPerHour: 0.80,
-    wearCostPerHour: 3.10,
-    maintenanceCostPerHour: 1.60,
-    totalHourlyRate: 5.50,
-    unitMetric: 'cm3',
-    unitMetricLabel: 'cm³ (milímetro/cm cúbico)',
-    unitCost: 0.44,
-    specs: 'Volumen 256x256x256 mm, sistema multicolor AMS Lite 4 carretes, sensor de tensión de correa',
-    status: 'active',
-    amortizedHours: 940,
-    hourlyDepreciationCost: 2.40,
-    speedFactorMmSec: 500,
-    speedEfficiency: 100,
-    sizeCategory: 'Mediana',
-    compatibleMaterials: ["PLA Multicolor (AMS)","PETG","TPU"],
-    notes: 'Impresión multicolor sin desperdicio excesivo para figuras decorativas, letreros con capas de color y trofeos.'
-  },
-  {
-    id: 'mach-cameo',
-    code: 'PLT-01',
-    name: 'Silhouette Cameo',
-    alias: 'la shiluete cameo',
-    category: 'vinyl',
-    categoryName: 'Plotters & Vinil',
-    icon: '✂️',
-    powerWatts: 80,
-    kwhRate: 3.20,
-    powerCostPerHour: 0.26,
-    wearCostPerHour: 2.80,
-    maintenanceCostPerHour: 1.00,
-    totalHourlyRate: 4.06,
-    unitMetric: 'metro_lineal',
-    unitMetricLabel: 'Metro Lineal (o cm²)',
-    unitCost: 3.20,
-    specs: 'Ancho de corte 30.5 cm (12 pulgadas), hasta 3 metros de largo continuo, fuerza de corte 5000g',
-    status: 'active',
-    amortizedHours: 780,
-    hourlyDepreciationCost: 1.50,
-    speedFactorMmSec: 300,
-    speedEfficiency: 100,
-    sizeCategory: 'Mediana',
-    compatibleMaterials: ["Vinil textil puff","Vinil adhesivo","Cartulina kraft","Mylar"],
-    notes: 'Plotter principal para vinil textil puff, vinil adhesivo mate/brillante y cartulinas pesadas de empaque.'
-  },
-  {
-    id: 'mach-portrait-2',
-    code: 'PLT-02',
-    name: 'Silhouette Portrait 2',
-    alias: 'portrait2',
-    category: 'vinyl',
-    categoryName: 'Plotters & Vinil',
-    icon: '📐',
-    powerWatts: 50,
-    kwhRate: 3.20,
-    powerCostPerHour: 0.16,
-    wearCostPerHour: 2.10,
-    maintenanceCostPerHour: 0.80,
-    totalHourlyRate: 3.06,
-    unitMetric: 'metro_lineal',
-    unitMetricLabel: 'Metro Lineal (o cm²)',
-    unitCost: 2.80,
-    specs: 'Ancho de corte 20.3 cm (8 pulgadas) tamaño carta/A4, cuchilla AutoBlade, Bluetooth integrado',
-    status: 'active',
-    amortizedHours: 410,
-    hourlyDepreciationCost: 1.20,
-    speedFactorMmSec: 250,
-    speedEfficiency: 100,
-    sizeCategory: 'Chica',
-    compatibleMaterials: ["Vinil adhesivo","Stickers troquelados","Cartulina 180g"],
-    notes: 'Plotter secundario para etiquetas en tirajes cortos, calcomanías die-cut y detalles de stickers troquelados.'
-  },
-  {
-    id: 'mach-twotrees-ts1',
-    code: 'LSR-01',
-    name: 'TwoTrees Mini TS1',
-    alias: 'la cortadora laser twootrees mini ts1',
-    category: 'laser',
-    categoryName: 'Corte & Grabado Láser',
-    icon: '🔥',
-    powerWatts: 45,
-    kwhRate: 3.20,
-    powerCostPerHour: 0.14,
-    wearCostPerHour: 3.50,
-    maintenanceCostPerHour: 1.80,
-    totalHourlyRate: 5.44,
-    unitMetric: 'cm2',
-    unitMetricLabel: 'cm² grabado / cortado',
-    unitCost: 0.0040,
-    specs: 'Área de grabado 180x180 mm, diodo láser focalizado de 5.5W ópticos, precisión de 0.08mm',
-    status: 'active',
-    amortizedHours: 320,
-    hourlyDepreciationCost: 1.60,
-    speedFactorMmSec: 100,
-    speedEfficiency: 100,
-    sizeCategory: 'Chica',
-    compatibleMaterials: ["Madera pino","MDF 3mm","Acrílico negro","Cuero vacuno"],
-    notes: 'Grabado preciso de llaveros de madera, placas de cuero para carteras y piezas compactas de acrílico.'
-  },
-  {
-    id: 'mach-acmer-mini',
-    code: 'LSR-02',
-    name: 'ACMER Mini Láser Diodo',
-    alias: 'la acmer mini',
-    category: 'laser',
-    categoryName: 'Corte & Grabado Láser',
-    icon: '🎯',
-    powerWatts: 60,
-    kwhRate: 3.20,
-    powerCostPerHour: 0.19,
-    wearCostPerHour: 4.20,
-    maintenanceCostPerHour: 2.10,
-    totalHourlyRate: 6.49,
-    unitMetric: 'cm2',
-    unitMetricLabel: 'cm² grabado / cortado',
-    unitCost: 0.0050,
-    specs: 'Área de trabajo 300x300 mm, diodo 10W ópticos con asistencia de aire Air Assist y lente colimada',
-    status: 'active',
-    amortizedHours: 510,
-    hourlyDepreciationCost: 2.20,
-    speedFactorMmSec: 160,
-    speedEfficiency: 100,
-    sizeCategory: 'Mediana',
-    compatibleMaterials: ["Triplay 3mm/5mm","MDF 3mm","Acrílico opaco","Madera pino"],
-    notes: 'Corte limpio de triplay de 3mm y 5mm, MDF de soporte y acrílico opaco sin carbonización excesiva.'
-  },
-  {
-    id: 'mach-sculpfun-s9',
-    code: 'LSR-03',
-    name: 'Sculpfun S9 (Extensión 90x60 cm)',
-    alias: 'la sculfun s9 de 90x60 cm',
-    category: 'laser',
-    categoryName: 'Corte & Grabado Láser',
-    icon: '⚡',
-    powerWatts: 90,
-    kwhRate: 3.20,
-    powerCostPerHour: 0.29,
-    wearCostPerHour: 5.80,
-    maintenanceCostPerHour: 2.90,
-    totalHourlyRate: 8.99,
-    unitMetric: 'cm2',
-    unitMetricLabel: 'cm² grabado / cortado',
-    unitCost: 0.0062,
-    specs: 'Área de corte extendida gigante de 900x600 mm (0.54 m²), haz láser ultrafino de 0.06mm',
-    status: 'active',
-    amortizedHours: 890,
-    hourlyDepreciationCost: 3.20,
-    speedFactorMmSec: 180,
-    speedEfficiency: 100,
-    sizeCategory: 'Grande',
-    compatibleMaterials: ["Planchas MDF 90x60","Triplay 3mm/5mm","Madera pino","Acrílico"],
-    notes: 'Producción de letreros monumentales para bodas y negocios, cuadros botánicos calados y planchas completas.'
-  },
-  {
-    id: 'mach-pc-diseno',
-    code: 'OFC-01',
-    name: 'Computadora de Diseño & Control de Taller',
-    alias: 'mi computadora',
-    category: 'print_pc',
-    categoryName: 'Computadora & Papelería',
-    icon: '💻',
-    powerWatts: 350,
-    kwhRate: 3.20,
-    powerCostPerHour: 1.12,
-    wearCostPerHour: 2.00,
-    maintenanceCostPerHour: 1.00,
-    totalHourlyRate: 4.12,
-    unitMetric: 'hora',
-    unitMetricLabel: 'Hora de diseño / laminado',
-    unitCost: 4.12,
-    specs: 'Workstation Core i7 / GPU RTX, doble monitor calibrado, licencias CAD, LightBurn, Bambu Studio y Cura',
-    status: 'active',
-    amortizedHours: 2400,
-    hourlyDepreciationCost: 2.50,
-    speedFactorMmSec: 0,
-    speedEfficiency: 100,
-    sizeCategory: 'Estándar',
-    compatibleMaterials: ["Modelos CAD/STL","G-Code","Vectores SVG/DXF"],
-    notes: 'Computadora central para modelado 3D, preparación de archivos G-Code, vectorizado de logotipos y control.'
-  },
-  {
-    id: 'mach-impresora-normal',
-    code: 'OFC-02',
-    name: 'Impresora de Inyección Normal',
-    alias: 'la impresora normal',
-    category: 'print_pc',
-    categoryName: 'Computadora & Papelería',
-    icon: '📄',
-    powerWatts: 25,
-    kwhRate: 3.20,
-    powerCostPerHour: 0.08,
-    wearCostPerHour: 0.60,
-    maintenanceCostPerHour: 0.40,
-    totalHourlyRate: 1.08,
-    unitMetric: 'hoja',
-    unitMetricLabel: 'Hoja estándar impresa',
-    unitCost: 0.45,
-    specs: 'Inyección de tinta estándar para documentos, notas de entrega, guías de envío y muestras de prueba',
-    status: 'active',
-    amortizedHours: 350,
-    hourlyDepreciationCost: 0.50,
-    speedFactorMmSec: 0,
-    speedEfficiency: 100,
-    sizeCategory: 'Chica',
-    compatibleMaterials: ["Papel bond","Papel autocopiante","Guías de envío"],
-    notes: 'Impresión rápida de albaranes de entrega para clientes y hojas de trabajo interno de taller.'
-  },
-  {
-    id: 'mach-hp-laserjet-m276',
-    code: 'OFC-03',
-    name: 'HP LaserJet Pro MFP M276 (Láser Color)',
-    alias: 'la impresora laser hp laser jet mfp md276',
-    category: 'print_pc',
-    categoryName: 'Computadora & Papelería',
-    icon: '🖨️',
-    powerWatts: 300,
-    kwhRate: 3.20,
-    powerCostPerHour: 0.96,
-    wearCostPerHour: 1.80,
-    maintenanceCostPerHour: 0.90,
-    totalHourlyRate: 3.66,
-    unitMetric: 'hoja',
-    unitMetricLabel: 'Hoja láser color (tóner)',
-    unitCost: 1.25,
-    specs: 'Láser color multifuncional de tóner electrostático hasta 600x600 dpi, alimentador ADF y escáner plano',
-    status: 'active',
-    amortizedHours: 1100,
-    hourlyDepreciationCost: 1.50,
-    speedFactorMmSec: 0,
-    speedEfficiency: 100,
-    sizeCategory: 'Mediana',
-    compatibleMaterials: ["Papel opalina","Cartulina sulfatada","Papel transfer láser"],
-    notes: 'Impresión nítida e indeleble en papel opalina, sulfatada, tarjetas de presentación y certificados de autenticidad.'
-  },
-  {
-    id: 'mach-epson-120',
-    code: 'SUB-01',
-    name: 'Epson EcoTank L120 (Tintas Sublimación)',
-    alias: 'la epson 120 para sublimacion',
-    category: 'sublimation',
-    categoryName: 'Sublimación & Transfer',
-    icon: '💧',
-    powerWatts: 15,
-    kwhRate: 3.20,
-    powerCostPerHour: 0.05,
-    wearCostPerHour: 1.50,
-    maintenanceCostPerHour: 1.00,
-    totalHourlyRate: 2.55,
-    unitMetric: 'hoja',
-    unitMetricLabel: 'Hoja transfer sublimación A4',
-    unitCost: 1.10,
-    specs: 'Cabezal piezoeléctrico de 4 canales adaptado con tintas coreanas de sublimación de alta gama cromática',
-    status: 'active',
-    amortizedHours: 1450,
-    hourlyDepreciationCost: 1.00,
-    speedFactorMmSec: 0,
-    speedEfficiency: 100,
-    sizeCategory: 'Chica',
-    compatibleMaterials: ["Papel sublimación A4","Tintas coreanas sublimación"],
-    notes: 'Dedicada exclusivamente a impresión de transfer para sublimar en tazas, termos, playeras y madera tratada.'
-  },
-  {
-    id: 'mach-plancha-playeras',
-    code: 'SUB-02',
-    name: 'Plancha Plana de Sublimación para Playeras (38x38 cm)',
-    alias: 'las planchas de sublilmacion de playeras 1',
-    category: 'sublimation',
-    categoryName: 'Sublimación & Transfer',
-    icon: '👕',
-    powerWatts: 1800,
-    kwhRate: 3.20,
-    powerCostPerHour: 5.76,
-    wearCostPerHour: 2.50,
-    maintenanceCostPerHour: 1.20,
-    totalHourlyRate: 9.46,
-    unitMetric: 'bajada_ciclo',
-    unitMetricLabel: 'Bajada / ciclo de prensado',
-    unitCost: 0.65,
-    specs: 'Plancha plana térmica basculante 38x38 cm, control de tiempo digital y temperatura hasta 250°C, teflonada',
-    status: 'active',
-    amortizedHours: 1600,
-    hourlyDepreciationCost: 2.00,
-    speedFactorMmSec: 0,
-    speedEfficiency: 100,
-    sizeCategory: 'Grande',
-    compatibleMaterials: ["Playeras poliéster","Bolsas tote manta","Fundas cojín","Mousepads"],
-    notes: 'Transferencia térmica para textiles, playeras poliéster/dry-fit, fundas de cojín, bolsas tote y mousepads.'
-  },
-  {
-    id: 'mach-plancha-tazas-1',
-    code: 'SUB-03',
-    name: 'Prensa Térmica para Tazas #1 (Cilíndrica 11oz)',
-    alias: '3 de tazas - prensa 1',
-    category: 'sublimation',
-    categoryName: 'Sublimación & Transfer',
-    icon: '☕',
-    powerWatts: 350,
-    kwhRate: 3.20,
-    powerCostPerHour: 1.12,
-    wearCostPerHour: 2.80,
-    maintenanceCostPerHour: 0.80,
-    totalHourlyRate: 4.72,
-    unitMetric: 'bajada_ciclo',
-    unitMetricLabel: 'Bajada / ciclo de prensado',
-    unitCost: 0.35,
-    specs: 'Resistencia cilíndrica de silicón para tazas estándar de 11oz y 15oz, horneado uniforme a 180-200°C',
-    status: 'active',
-    amortizedHours: 1320,
-    hourlyDepreciationCost: 1.20,
-    speedFactorMmSec: 0,
-    speedEfficiency: 100,
-    sizeCategory: 'Chica',
-    compatibleMaterials: ["Tazas cerámicas 11oz","Tazas mágicas termosensibles","Tazas peltre"],
-    notes: 'Línea de producción continua #1 para tazas cerámicas blancas y tazas mágicas termosensibles.'
-  },
-  {
-    id: 'mach-plancha-tazas-2',
-    code: 'SUB-04',
-    name: 'Prensa Térmica para Tazas #2 (Cónica & Tarros)',
-    alias: '3 de tazas - prensa 2',
-    category: 'sublimation',
-    categoryName: 'Sublimación & Transfer',
-    icon: '☕',
-    powerWatts: 350,
-    kwhRate: 3.20,
-    powerCostPerHour: 1.12,
-    wearCostPerHour: 2.80,
-    maintenanceCostPerHour: 0.80,
-    totalHourlyRate: 4.72,
-    unitMetric: 'bajada_ciclo',
-    unitMetricLabel: 'Bajada / ciclo de prensado',
-    unitCost: 0.35,
-    specs: 'Resistencia intercambiable para tazas cónicas de 12oz, tarros cerveceros satinados y tazas cónicas latte',
-    status: 'active',
-    amortizedHours: 980,
-    hourlyDepreciationCost: 1.20,
-    speedFactorMmSec: 0,
-    speedEfficiency: 100,
-    sizeCategory: 'Chica',
-    compatibleMaterials: ["Tazas cónicas 12oz","Tarros cerveceros","Tazas latte"],
-    notes: 'Línea de producción continua #2 para formatos especiales de tazas y tarros.'
-  },
-  {
-    id: 'mach-plancha-tazas-3',
-    code: 'SUB-05',
-    name: 'Prensa Térmica para Tazas #3 (Termos Skinny & Botellas)',
-    alias: '3 de tazas - prensa 3',
-    category: 'sublimation',
-    categoryName: 'Sublimación & Transfer',
-    icon: '🥤',
-    powerWatts: 350,
-    kwhRate: 3.20,
-    powerCostPerHour: 1.12,
-    wearCostPerHour: 2.80,
-    maintenanceCostPerHour: 0.80,
-    totalHourlyRate: 4.72,
-    unitMetric: 'bajada_ciclo',
-    unitMetricLabel: 'Bajada / ciclo de prensado',
-    unitCost: 0.35,
-    specs: 'Resistencia extralarga para botellas de aluminio y termos de acero inoxidable skinny de 20oz a 30oz',
-    status: 'active',
-    amortizedHours: 640,
-    hourlyDepreciationCost: 1.20,
-    speedFactorMmSec: 0,
-    speedEfficiency: 100,
-    sizeCategory: 'Mediana',
-    compatibleMaterials: ["Termos skinny 20oz/30oz","Botellas aluminio","Vasos viajeros"],
-    notes: 'Línea de producción continua #3 especializada en termos térmicos y botellas cilíndricas altas.'
-  },
-  {
-    id: 'mach-plancha-lapiceros',
-    code: 'SUB-06',
-    name: 'Plancha Térmica para Lapiceros / Bolígrafos',
-    alias: 'una de lapiceros',
-    category: 'sublimation',
-    categoryName: 'Sublimación & Transfer',
-    icon: '🖊️',
-    powerWatts: 450,
-    kwhRate: 3.20,
-    powerCostPerHour: 1.44,
-    wearCostPerHour: 2.20,
-    maintenanceCostPerHour: 0.90,
-    totalHourlyRate: 4.54,
-    unitMetric: 'pieza',
-    unitMetricLabel: 'Pieza de bolígrafo transferida',
-    unitCost: 0.18,
-    specs: 'Ranurado cuádruple simultáneo para termofijado de hasta 6 bolígrafos por bajada de calor',
-    status: 'active',
-    amortizedHours: 480,
-    hourlyDepreciationCost: 1.00,
-    speedFactorMmSec: 0,
-    speedEfficiency: 100,
-    sizeCategory: 'Chica',
-    compatibleMaterials: ["Bolígrafos plásticos para transfer","Lápices ecológicos"],
-    notes: 'Plancha especializada para sublimación y transfer de bolígrafos promocionales en tirajes de volumen.'
-  },
-  {
-    id: 'mach-mini-plancha',
-    code: 'SUB-07',
-    name: 'Mini Prensa Térmica para Estampados Pequeños & Parches',
-    alias: 'una mini para estampados pequeños',
-    category: 'sublimation',
-    categoryName: 'Sublimación & Transfer',
-    icon: '🏷️',
-    powerWatts: 250,
-    kwhRate: 3.20,
-    powerCostPerHour: 0.80,
-    wearCostPerHour: 1.20,
-    maintenanceCostPerHour: 0.50,
-    totalHourlyRate: 2.50,
-    unitMetric: 'bajada_ciclo',
-    unitMetricLabel: 'Bajada / ciclo de prensado',
-    unitCost: 0.20,
-    specs: 'Suela compacta de precisión de 6.2 x 10.6 cm con 3 niveles térmicos regulables (140°C, 165°C, 205°C)',
-    status: 'active',
-    amortizedHours: 390,
-    hourlyDepreciationCost: 0.80,
-    speedFactorMmSec: 0,
-    speedEfficiency: 100,
-    sizeCategory: 'Chica',
-    compatibleMaterials: ["Parches bordados","Cuellos y mangas","Calzado de lona"],
-    notes: 'Ideal para parches bordados, esquinas de bolsas, mangas, cuellos, calzado de tela y vinil textil de detalle.'
-  }
-];
-
-const initialWorkshopWorkers = [
-  {
-    id: 'op-juan',
-    name: 'Juan (Técnico Especialista CNC / 3D)',
-    role: 'Técnico Especialista CNC / 3D',
-    salaryPeriod: 'monthly',
-    salary: 14000,
-    hoursPerDay: 8,
-    daysPerWeek: 5,
-    efficiency: 90,
-    hourlyRate: 300,
-    hourlyRateManual: false,
-    desc: 'Laminado, nivelación de cama, G-Code y operación de alta precisión',
-    notes: 'Operador senior. Puede operar hasta 4 impresoras 3D y 2 lásers en simultáneo.'
-  },
-  {
-    id: 'op-pedro',
-    name: 'Pedro (Operador Estándar de Taller)',
-    role: 'Operador Estándar de Taller',
-    salaryPeriod: 'monthly',
-    salary: 9500,
-    hoursPerDay: 8,
-    daysPerWeek: 5,
-    efficiency: 85,
-    hourlyRate: 200,
-    hourlyRateManual: false,
-    desc: 'Retiro de piezas, cambio de filamento, supervisión de tirajes',
-    notes: 'Operador de piso. Carga materiales, supervisa impresiones y opera prensas de calor.'
-  },
-  {
-    id: 'op-auxiliar',
-    name: 'Auxiliar de Acabados & Ensamblaje',
-    role: 'Auxiliar de Acabados & Ensamblaje',
-    salaryPeriod: 'weekly',
-    salary: 2000,
-    hoursPerDay: 7,
-    daysPerWeek: 5,
-    efficiency: 80,
-    hourlyRate: 120,
-    hourlyRateManual: false,
-    desc: 'Desgranado de soportes, lijado artesanal, empaque y limpieza',
-    notes: 'Post-proceso manual, limpieza fina, ensamble de herrajes y empaque para envío.'
-  },
-  {
-    id: 'op-dueno',
-    name: 'Dueño / Dirección Creativa & Control',
-    role: 'Dueño / Dirección Creativa & Control',
-    salaryPeriod: 'monthly',
-    salary: 18000,
-    hoursPerDay: 8,
-    daysPerWeek: 6,
-    efficiency: 95,
-    hourlyRate: 250,
-    hourlyRateManual: false,
-    desc: 'Costeo, revisión de tolerancias, control de calidad y empaque premium',
-    notes: 'Dirección de taller, cotizaciones a clientes, control de calidad y logística mayorista.'
-  }
-];
-
-// Default Seasonal Campaigns Configuration
-const defaultCampaignsConfig = {
-  activeSeasonId: 'invierno',
-  title: 'Especial Navideño & Fin de Año: Paquetes y Regalos Corporativos',
-  subtitle: 'Ahorra hasta un 25% llevando kits coordinados en ensamble artesanal, listos para obsequiar con grabado láser personalizado sin costo.',
-  bannerBadge: '🎄 Temporada Navideña Activa',
-  bannerImage: '/uploads/bundle_promo_hogar_1.jpg',
-  promoNotice: '🎁 Envío gratis a todo México en paquetes superiores a $800 + grabado láser de cortesía.',
-  highlightedBundleId: 'kit-home-office-gamer-pro',
-  accentTheme: 'navidad',
-  textColorMode: 'auto', // 'auto' | 'black' | 'white'
-  seasonalEffect: 'snow', // 'none' | 'snow' | 'autumn_leaves' | 'day_of_dead' | 'spring_blossom' | 'summer_sun' | 'confetti' | 'valentines'
-  monthlyEvents: {
-    baseEventMode: 'major', // 'major' | 'mid' — o es uno o es otro para el evento base mensual
-    majorEvent: {
-      id: 'major-event',
-      active: true,
-      title: 'Gran Bazar Artesanal de Fin de Mes',
-      subtitle: 'Descuento especial en paquetes de taller + envoltura de cortesía y grabado láser de nombres sin costo.',
-      badge: '🔥 EVENTO GRANDE DEL MES',
-      discountText: '15% OFF',
-      couponCode: 'GRANMES15',
-      startDate: '2026-10-24',
-      endDate: '2026-10-31',
-      progressPercent: 84,
-      benefitType: 'free_gift',
-      benefitText: 'Envío Prioritario + Detalle Grabado de Cortesía'
-    },
-    midMonthEvent: {
-      id: 'mid-month-event',
-      active: false,
-      title: 'Quincena Relámpago Artesanal',
-      subtitle: '¡Llegó la quincena! Llévate kits coordinados para hogar o negocio con precio de taller y 2X monedas arcade.',
-      badge: '⚡ QUINCENA ARTESANAL FLASH',
-      discountText: '10% OFF',
-      couponCode: 'QUINCENA10',
-      startDate: '2026-10-12',
-      endDate: '2026-10-18',
-      progressPercent: 68,
-      benefitType: 'double_coins',
-      benefitText: '2X Monedas para Juegos + 10% Directo'
-    },
-    flashSpecial: {
-      id: 'flash-special-event',
-      active: false,
-      title: 'Venta Relámpago de Fin de Semana & Liquidación',
-      subtitle: '¡Especial de Fin de Semana! Promociones relámpago, últimas piezas y liquidaciones de taller con cupón exclusivo.',
-      badge: '⚡ OFERTA RELÁMPAGO DE FIN DE SEMANA',
-      discountText: '30% OFF',
-      couponCode: 'FLASHFINDE30',
-      startDate: '2026-10-17',
-      endDate: '2026-10-19',
-      progressPercent: 92,
-      benefitType: 'liquidation',
-      benefitText: 'Promociones Relámpago + Liquidación de Taller + Envío Express'
-    }
-  },
-  seasons: [
-    {
-      id: 'invierno',
-      name: 'Invierno & Navidad',
-      icon: '❄️',
-      badge: '🎄 Edición Especial Navideña',
-      title: 'Especial de Navidad & Año Nuevo: Regalos y Paquetes Corporativos',
-      subtitle: 'Kits coordinados en madera, grabado láser y piezas 3D con hasta 25% de ahorro para empresas y familias.',
-      bannerImage: '/uploads/bundle_promo_hogar_1.jpg',
-      promoNotice: '🎁 Envoltura de regalo de cortesía y grabado de nombres sin costo en pedidos de temporada.',
-      themeColor: 'rose',
-      seasonalEffect: 'snow',
-      suggestedBundles: ['kit-home-office-gamer-pro', 'set-suite-nupcial-novia-novio', 'PROMO-HOG-1']
-    },
-    {
-      id: 'otono',
-      name: 'Otoño & Día de Muertos',
-      icon: '🍂',
-      badge: '🍁 Edición Especial de Otoño',
-      title: 'Colección Otoño & Tradición: Maderas Cálidas y Piezas de Taller',
-      subtitle: 'Detalles artesanales conmemorativos, bandejas vaciabolsillos y porta-velas en maderas nobles.',
-      bannerImage: '/uploads/bundle_promo_biz_1.jpg',
-      promoNotice: '🍂 15% de descuento adicional en paquetes de madera natural tratada.',
-      themeColor: 'amber',
-      seasonalEffect: 'day_of_dead',
-      suggestedBundles: ['PROMO-HOG-1', 'PROMO-HOG-3', 'starter-pack-barberia-t18']
-    },
-    {
-      id: 'verano',
-      name: 'Verano & Vacaciones',
-      icon: '☀️',
-      badge: '🏖️ Especial de Verano',
-      title: 'Temporada de Verano: Gorras, Termos y Accesorios de Viaje',
-      subtitle: 'Paquetes playeros, gorras trucker personalizadas con parche y termos térmicos para tus escapadas.',
-      bannerImage: '/uploads/bundle_promo_ev_1.jpg',
-      promoNotice: '☀️ Llévate 2 llaveros de viaje de cortesía al adquirir cualquier paquete de verano.',
-      themeColor: 'blue',
-      seasonalEffect: 'summer_sun',
-      suggestedBundles: ['pack-consentido-peludo-mascotas', 'gorra-trucker-personalizada-vinil-parche', 'termo-metalico-termico-20oz-personalizado']
-    },
-    {
-      id: 'primavera',
-      name: 'Primavera, Amor & Madres',
-      icon: '🌸',
-      badge: '💝 Especial San Valentín & Día de las Madres',
-      title: 'Especial de Primavera: Recuerdos Inolvidables para Mamá y Parejas',
-      subtitle: 'Llaveros familiares Polaroid, tazas mágicas reveladoras y detalles con grabado botánico.',
-      bannerImage: '/uploads/bundle_promo_hogar_2.jpg',
-      promoNotice: '🌸 Caja kraft decorada y tarjeta con dedicatoria personalizada incluida.',
-      themeColor: 'emerald',
-      seasonalEffect: 'spring_blossom',
-      suggestedBundles: ['PROMO-HOG-1', 'PROMO-HOG-2', 'llavero-camarita-l9']
-    },
-    {
-      id: 'bodas',
-      name: 'Bodas, XV Años & Graduaciones',
-      icon: '🎓',
-      badge: '💍 Temporada de Celebraciones',
-      title: 'Suite Nupcial & Eventos: Paquetes Todo Incluido para Tu Fiesta',
-      subtitle: 'Letreros de bienvenida, copas de brindis, números de mesa 3D y servicio Patch Bar en vivo.',
-      bannerImage: '/uploads/bienvenida_ceremonia_boda.jpg',
-      promoNotice: '💍 Reserva con 15 días de anticipación y recibe 10 marcacopas de cortesía.',
-      themeColor: 'amber',
-      seasonalEffect: 'confetti',
-      suggestedBundles: ['set-suite-nupcial-novia-novio', 'centro-mesa-presidencial-3d-copas', 'paquete-boda-de-ensueno-todo-incluido']
-    },
-    {
-      id: 'custom',
-      name: 'Especial del Mes Personalizado',
-      icon: '⭐',
-      badge: '⭐ Promoción del Mes de Taller',
-      title: 'Especial del Mes: Combos Destacados de Artesano Digital',
-      subtitle: 'Nuestros paquetes más vendidos combinados con precios de fábrica y entrega prioritaria.',
-      bannerImage: '/uploads/bundle_promo_biz_2.jpg',
-      promoNotice: '⭐ Personalización gratuita de logotipo y tipografía en cualquier paquete seleccionado.',
-      themeColor: 'emerald',
-      seasonalEffect: 'confetti',
-      suggestedBundles: ['kit-home-office-gamer-pro', 'starter-pack-barberia-t18']
-    }
-  ]
-};
-
-// Presets de Temporada Preconfigurados para el Arcade del Taller
-const defaultSeasonPresets = [
-  {
-    id: 'preset-navidad',
-    name: 'Navidad & Fin de Año',
-    season: 'navidad',
-    icon: '🎄',
-    description: 'Ambiente navideño con nieve retro, 1 moneda cada 10 min, tope de 8 monedas y cupones festivos.',
-    config: {
-      activeTheme: 'navidad',
-      selectionMode: 'manual',
-      activeGameIds: ['stacker', 'runner', 'dino'],
-      coinsEarnRateMinutes: 10,
-      maxCoinsCap: 8,
-      costPerGame: 1,
-      coinToCreditCost: 2,
-      timeLimitSeconds: 180,
-      discountTiers: [
-        { id: 'tier-5', coinsRequired: 25, code: 'NAVIDAD5', label: '5% Descuento Navideño', description: 'Válido en cualquier regalo o paquete', discountPercent: 5, discountAmount: 0, minPurchase: 0 },
-        { id: 'tier-10', coinsRequired: 50, code: 'NAVIDAD10', label: '10% Descuento Taller Navideño', description: 'Válido en compras mínimas de $250', discountPercent: 10, discountAmount: 0, minPurchase: 250 },
-        { id: 'tier-50', coinsRequired: 80, code: 'REGALO50', label: '$50 MXN Bono Navideño', description: 'Ahorro directo en órdenes mayores a $200 MXN', discountPercent: 0, discountAmount: 50, minPurchase: 200 },
-        { id: 'tier-vip', coinsRequired: 120, code: 'VIPNAVIDAD', label: '15% Descuento VIP + Adorno Navideño', description: '15% de descuento + esfera navideña 3D de regalo', discountPercent: 15, discountAmount: 0, minPurchase: 300 }
-      ]
-    }
-  },
-  {
-    id: 'preset-halloween',
-    name: 'Halloween & Día de Muertos',
-    season: 'halloween',
-    icon: '🎃',
-    description: 'Estilo catrina y misterio con recompensas especiales para eventos temáticos.',
-    config: {
-      activeTheme: 'catrina',
-      selectionMode: 'daily_random',
-      activeGameIds: ['dino', 'pacman', 'spaceinvaders'],
-      coinsEarnRateMinutes: 12,
-      maxCoinsCap: 6,
-      costPerGame: 1,
-      coinToCreditCost: 2,
-      timeLimitSeconds: 180,
-      discountTiers: [
-        { id: 'tier-5', coinsRequired: 30, code: 'MUERTOS5', label: '5% Especial Día de Muertos', description: 'Válido en toda la tienda', discountPercent: 5, discountAmount: 0, minPurchase: 0 },
-        { id: 'tier-10', coinsRequired: 60, code: 'CATRINA10', label: '10% Ofrenda Creativa', description: 'Descuento en compras mínimas de $250', discountPercent: 10, discountAmount: 0, minPurchase: 250 },
-        { id: 'tier-50', coinsRequired: 90, code: 'CALAVERA50', label: '$50 MXN Descuento Místico', description: 'Ahorro en órdenes mayores a $200 MXN', discountPercent: 0, discountAmount: 50, minPurchase: 200 },
-        { id: 'tier-vip', coinsRequired: 140, code: 'VIPMUERTOS', label: '15% Catrina VIP + Llavero Calaverita', description: '15% + llavero 3D de calaverita artesanal', discountPercent: 15, discountAmount: 0, minPurchase: 300 }
-      ]
-    }
-  },
-  {
-    id: 'preset-sanvalentin',
-    name: 'San Valentín & Amor y Amistad',
-    season: 'sanvalentin',
-    icon: '💘',
-    description: 'Colores cálidos, combos románticos de pareja y premios para regalos personalizados.',
-    config: {
-      activeTheme: 'vaporwave',
-      selectionMode: 'manual',
-      activeGameIds: ['pong', 'stacker', 'tetris'],
-      coinsEarnRateMinutes: 12,
-      maxCoinsCap: 6,
-      costPerGame: 1,
-      coinToCreditCost: 2,
-      timeLimitSeconds: 180,
-      discountTiers: [
-        { id: 'tier-5', coinsRequired: 25, code: 'AMOR5', label: '5% Detalle de Amor', description: 'Válido en cualquier regalo coordinado', discountPercent: 5, discountAmount: 0, minPurchase: 0 },
-        { id: 'tier-10', coinsRequired: 50, code: 'AMOR10', label: '10% Parejas y Amistad', description: 'Válido en pedidos desde $200 MXN', discountPercent: 10, discountAmount: 0, minPurchase: 200 },
-        { id: 'tier-50', coinsRequired: 80, code: 'CUPIDO50', label: '$50 MXN Bono Cupido', description: 'Descuento en compras mayores a $200 MXN', discountPercent: 0, discountAmount: 50, minPurchase: 200 },
-        { id: 'tier-vip', coinsRequired: 130, code: 'VIPAMOR', label: '15% Love VIP + Portafoto Grabado', description: '15% + marco mini polaroid personalizado', discountPercent: 15, discountAmount: 0, minPurchase: 300 }
-      ]
-    }
-  },
-  {
-    id: 'preset-buenfin',
-    name: 'Buen Fin & Liquidaciones Flash',
-    season: 'buenfin',
-    icon: '⚡',
-    description: 'Monedas aceleradas cada 8 min, tope de 10 monedas y descuentos de alta conversión.',
-    config: {
-      activeTheme: 'neon',
-      selectionMode: 'daily_random',
-      activeGameIds: ['stacker', 'flappy', 'runner', 'dino'],
-      coinsEarnRateMinutes: 8,
-      maxCoinsCap: 10,
-      costPerGame: 1,
-      coinToCreditCost: 2,
-      timeLimitSeconds: 120,
-      discountTiers: [
-        { id: 'tier-5', coinsRequired: 20, code: 'FLASH5', label: '5% Flash Buen Fin', description: 'Válido en cualquier compra', discountPercent: 5, discountAmount: 0, minPurchase: 0 },
-        { id: 'tier-10', coinsRequired: 40, code: 'FLASH10', label: '10% Ahorro Inmediato', description: 'Válido desde $200 MXN', discountPercent: 10, discountAmount: 0, minPurchase: 200 },
-        { id: 'tier-50', coinsRequired: 70, code: 'BUENFIN50', label: '$50 MXN Descuento Relámpago', description: 'Descuento directo en compras mayores a $200 MXN', discountPercent: 0, discountAmount: 50, minPurchase: 200 },
-        { id: 'tier-vip', coinsRequired: 110, code: 'VIPBUENFIN', label: '15% Descuento Master Buen Fin', description: '15% VIP con compra mínima de $350 MXN', discountPercent: 15, discountAmount: 0, minPurchase: 350 }
-      ]
-    }
-  },
-  {
-    id: 'preset-estandar',
-    name: 'Taller Diario (Estándar)',
-    season: 'clasico',
-    icon: '🌿',
-    description: 'Configuración equilibrada para todo el año: 1 moneda/15 min, tope 5 monedas y rotación diaria.',
-    config: {
-      activeTheme: 'clasico',
-      selectionMode: 'daily_random',
-      activeGameIds: ['dino', 'stacker'],
-      coinsEarnRateMinutes: 15,
-      maxCoinsCap: 5,
-      costPerGame: 1,
-      coinToCreditCost: 2,
-      timeLimitSeconds: 180,
-      discountTiers: [
-        { id: 'tier-5', coinsRequired: 30, code: 'TALLER5', label: '5% de Descuento', description: 'Válido en cualquier compra o paquete', discountPercent: 5, discountAmount: 0, minPurchase: 0 },
-        { id: 'tier-10', coinsRequired: 60, code: 'TALLER10', label: '10% de Descuento', description: 'Válido en productos o paquetes coordinados', discountPercent: 10, discountAmount: 0, minPurchase: 200 },
-        { id: 'tier-50', coinsRequired: 100, code: 'MAESTRO50', label: '$50 MXN de Descuento', description: 'Ahorro directo en órdenes desde $200 MXN', discountPercent: 0, discountAmount: 50, minPurchase: 200 },
-        { id: 'tier-vip', coinsRequired: 150, code: 'VIPARTESANO', label: '15% de Descuento + Detalle', description: 'Descuento VIP + sorpresa de taller', discountPercent: 15, discountAmount: 0, minPurchase: 300 }
-      ]
-    }
-  }
-];
-
-// Arcade & Mini-Juegos Config
-const defaultArcadeConfig = {
-  enabled: true,
-  selectionMode: 'daily_random', // 'daily_random' (2 al azar por día determinista) | 'manual' (elegidos por admin)
-  activeGameIds: ['dino', 'stacker'],
-  activeTheme: 'clasico', // 'clasico' | 'navidad' | 'otono' | 'sanvalentin' | 'primavera' | 'verano' | 'buenfin'
-  timeLimitSeconds: 180, // 3 minutos
-  showInProductModal: true,
-  showFloatingEasterEgg: true,
-  rewardRateMultiplier: 1.0,
-  coinsEarnRateMinutes: 15,
-  maxCoinsCap: 5,
-  costPerGame: 1,
-  coinToCreditCost: 2,
-  lastResetTimestamp: 0,
-  seasonPresets: defaultSeasonPresets,
-  discountTiers: [
-    {
-      id: 'tier-5',
-      coinsRequired: 30,
-      code: 'TALLER5',
-      label: '5% de Descuento',
-      description: 'Válido en cualquier compra o paquete del taller',
-      discountPercent: 5,
-      discountAmount: 0,
-      minPurchase: 0
-    },
-    {
-      id: 'tier-10',
-      coinsRequired: 60,
-      code: 'TALLER10',
-      label: '10% de Descuento',
-      description: 'Válido en productos o paquetes coordinados',
-      discountPercent: 10,
-      discountAmount: 0,
-      minPurchase: 200
-    },
-    {
-      id: 'tier-50',
-      coinsRequired: 100,
-      code: 'MAESTRO50',
-      label: '$50 MXN de Descuento',
-      description: 'Ahorro directo en efectivo en tu pedido (Mínimo $200 MXN)',
-      discountPercent: 0,
-      discountAmount: 50,
-      minPurchase: 200
-    },
-    {
-      id: 'tier-vip',
-      coinsRequired: 150,
-      code: 'VIPARTESANO',
-      label: '15% de Descuento + Detalle',
-      description: 'Descuento VIP + sorpresa de taller en tu paquete',
-      discountPercent: 15,
-      discountAmount: 0,
-      minPurchase: 300
-    }
-  ]
-};
-
-// Default Mobile Catalog Config (9:16 vertical PDF with MakerWorld links, customizable)
-export const defaultMobileCatalogConfig = {
-  enabled: true,
-  title: 'Catálogos Oficiales de Temporada (PDF Móvil)',
-  subtitle: 'Descarga nuestros catálogos en PDF vertical para celular con enlaces directos MakerWorld',
-  buttonText: '📱 Catálogos PDF',
-  fileName: 'Catalogo_Movil_Artesano_Digital.pdf',
-  fileUrl: '/downloads/catalogo_movil_artesano_digital.pdf',
-  fileSize: '1,312 KB',
-  fileType: 'application/pdf',
-  updatedAt: new Date().toISOString(),
-  showInNavbar: true,
-  showInDrawer: true,
-  showInFooter: true,
-  catalogs: [
-    {
-      id: 'cat-general-oficial',
-      name: 'Catálogo Móvil Oficial 2026 (9:16)',
-      season: 'Todo el año',
-      badge: 'Colección General',
-      description: 'Llaveros, macetas, letreros, tazas y piezas 3D con enlaces a MakerWorld.',
-      fileName: 'Catalogo_Movil_Artesano_Digital.pdf',
-      fileUrl: '/downloads/catalogo_movil_artesano_digital.pdf',
-      fileSize: '1,312 KB',
-      fileType: 'application/pdf',
-      enabled: true,
-      isPrimary: true,
-      uploadedAt: new Date().toISOString()
-    }
-  ]
-};
-
-// Initial Settings
-const initialSettings = {
-  workshopMachines: initialWorkshopMachines,
-  campaignsConfig: defaultCampaignsConfig,
-  arcadeConfig: defaultArcadeConfig,
-  mobileCatalogConfig: defaultMobileCatalogConfig,
-  businessName: 'Artesano Digital',
-  tagline: 'Si lo piensas, se hace.',
-  subtagline: 'Productos y detalles personalizados · Impresión 3D · Láser · Sublimación · Vinil',
-  whatsappNumber: '524442818795', // San Luis Potosí, México
-  businessEmail: 'contactoartesanodigital@gmail.com',
-  serviceZone: 'Toda la República Mexicana (Envíos nacionales) y entregas locales',
-  businessHours: 'Lunes a Viernes de 9:00 a 18:00 hrs · Sábados de 10:00 a 14:00 hrs',
-  quoteNoteDefault: 'Precios en MXN. Los tiempos de producción inician tras confirmar el diseño y anticipo.',
-  freeShippingNotice: 'Cotizamos envíos a toda la República con paqueterías seguras (DHL, FedEx, Estafeta).',
-  serviceStatus: {
-    localService: true,
-    localDetails: 'Entregas en taller y zona metropolitana de San Luis Potosí',
-    nationalService: true,
-    nationalDetails: 'Envíos a toda la República Mexicana por paquetería (DHL, FedEx, Estafeta)',
-    isPaused: false,
-    pausedUntilDate: '',
-    pausedReason: 'Mantenimiento preventivo y surtido de taller',
-    pausedCustomMessage: 'Taller en periodo de mantenimiento y descanso técnico. Reanudamos producción de pedidos el próximo día hábil. Las cotizaciones recibidas se responderán por orden de llegada.'
-  },
-  flashDealsStatus: {
-    isGloballyPaused: false,
-    pausedAreas: {
-      hogar: false,
-      negocios: false,
-      eventos: false,
-      paquetes: false
-    },
-    lastResetAt: new Date().toISOString()
-  },
-  flashDealsLimits: {
-    hogar: 3,
-    negocios: 3,
-    eventos: 5,
-    paquetes: 1
-  }
-};
 
 // Initial Admin User (password will be hashed)
 const createInitialDb = () => {
