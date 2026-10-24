@@ -33,21 +33,21 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
   const currentTabObj = tabs.find(t => t.id === activeTab) || tabs[0];
 
   return (
-    <section className="py-8 sm:py-12 bg-[#0B0D11] border-y border-white/10 overflow-hidden text-stone-100">
+    <section className="py-8 sm:py-12 bg-gradient-to-b from-[#F4F0E8] to-[#FBF9F5] rounded-3xl border border-[#E8E4DA] overflow-hidden text-stone-900 my-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-500/15 text-pink-400 border border-pink-500/30 text-xs font-black uppercase tracking-wider shadow-sm">
+        <div className="text-center max-w-3xl mx-auto mb-10 space-y-2.5">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#D82B6E]/10 text-[#D82B6E] text-xs font-black uppercase tracking-wider shadow-2xs">
             <Flame className="w-3.5 h-3.5" />
             <span>Experiencia en Vivo · Activación para Eventos</span>
           </div>
           
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-white font-heading tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1F2421] font-heading tracking-tight">
             Servicio Patch Bar en Vivo
           </h2>
           
-          <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
+          <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
             La dinámica más divertida para <strong>bodas, XV años, cumpleaños y eventos empresariales</strong>. Llevamos nuestro stand de madera artesanal y tus invitados personalizan y planchan su propia gorra o tote bag al instante.
           </p>
         </div>
@@ -56,73 +56,73 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
           
           {/* Paso 1 */}
-          <div className="bg-[#131622] rounded-3xl p-5 sm:p-6 border border-white/10 hover:border-emerald-500/50 shadow-lg transition-all relative overflow-hidden group">
-            <div className="w-10 h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-black text-sm mb-4 shadow-sm">
+          <div className="bg-white rounded-3xl p-5 sm:p-6 border border-[#E8E4DA] hover:border-[#2D4F3E] shadow-xs hover:shadow-md transition-all relative overflow-hidden group">
+            <div className="w-9 h-9 rounded-2xl bg-[#2D4F3E] text-white flex items-center justify-center font-black text-sm mb-3.5 shadow-2xs">
               1
             </div>
-            <h3 className="text-base sm:text-lg font-bold text-white mb-1.5 font-heading">
+            <h3 className="text-base sm:text-lg font-bold text-[#1F2421] mb-1 font-heading">
               Elige tu base favorita
             </h3>
-            <p className="text-xs text-stone-300 leading-relaxed mb-4">
+            <p className="text-xs text-stone-600 leading-relaxed mb-3">
               Tus invitados escogen entre gorras estilo <strong>trucker</strong> (varios colores neutros con malla fresca) o <strong>tote bags</strong> de manta 100% algodón crudo.
             </p>
-            <div className="flex flex-wrap gap-1.5 text-[11px] font-semibold text-emerald-300">
-              <span className="px-2.5 py-0.5 rounded-lg bg-emerald-500/15 border border-emerald-500/30">Gorras trucker</span>
-              <span className="px-2.5 py-0.5 rounded-lg bg-emerald-500/15 border border-emerald-500/30">Tote bags manta</span>
+            <div className="flex flex-wrap gap-1.5 text-[11px] font-semibold text-[#2D4F3E]">
+              <span className="px-2.5 py-0.5 rounded-lg bg-emerald-50 border border-emerald-200">Gorras trucker</span>
+              <span className="px-2.5 py-0.5 rounded-lg bg-emerald-50 border border-emerald-200">Tote bags manta</span>
             </div>
           </div>
 
           {/* Paso 2 */}
-          <div className="bg-[#131622] rounded-3xl p-5 sm:p-6 border border-white/10 hover:border-pink-500/50 shadow-lg transition-all relative overflow-hidden group">
-            <div className="w-10 h-10 rounded-2xl bg-[#D82B6E] text-white flex items-center justify-center font-black text-sm mb-4 shadow-sm">
+          <div className="bg-white rounded-3xl p-5 sm:p-6 border border-[#E8E4DA] hover:border-[#D82B6E] shadow-xs hover:shadow-md transition-all relative overflow-hidden group">
+            <div className="w-9 h-9 rounded-2xl bg-[#D82B6E] text-white flex items-center justify-center font-black text-sm mb-3.5 shadow-2xs">
               2
             </div>
-            <h3 className="text-base sm:text-lg font-bold text-white mb-1.5 font-heading">
+            <h3 className="text-base sm:text-lg font-bold text-[#1F2421] mb-1 font-heading">
               Selecciona tus parches
             </h3>
-            <p className="text-xs text-stone-300 leading-relaxed mb-4">
+            <p className="text-xs text-stone-600 leading-relaxed mb-3">
               Charolas con diseños exclusivos del evento: <strong>iniciales de los novios o festejado</strong>, frases icónicas de fiesta, flores botánicas y stickers textiles.
             </p>
-            <div className="flex flex-wrap gap-1.5 text-[11px] font-semibold text-pink-300">
-              <span className="px-2.5 py-0.5 rounded-lg bg-pink-500/15 border border-pink-500/30">Parches temáticos</span>
-              <span className="px-2.5 py-0.5 rounded-lg bg-pink-500/15 border border-pink-500/30">Monogramas D&amp;A</span>
+            <div className="flex flex-wrap gap-1.5 text-[11px] font-semibold text-[#D82B6E]">
+              <span className="px-2.5 py-0.5 rounded-lg bg-rose-50 border border-rose-200">Parches temáticos</span>
+              <span className="px-2.5 py-0.5 rounded-lg bg-rose-50 border border-rose-200">Monogramas D&amp;A</span>
             </div>
           </div>
 
           {/* Paso 3 */}
-          <div className="bg-[#131622] rounded-3xl p-5 sm:p-6 border border-white/10 hover:border-amber-500/50 shadow-lg transition-all relative overflow-hidden group">
-            <div className="w-10 h-10 rounded-2xl bg-amber-500 text-stone-950 flex items-center justify-center font-black text-sm mb-4 shadow-sm">
+          <div className="bg-white rounded-3xl p-5 sm:p-6 border border-[#E8E4DA] hover:border-[#D4A359] shadow-xs hover:shadow-md transition-all relative overflow-hidden group">
+            <div className="w-9 h-9 rounded-2xl bg-[#1F2421] text-white flex items-center justify-center font-black text-sm mb-3.5 shadow-2xs">
               3
             </div>
-            <h3 className="text-base sm:text-lg font-bold text-white mb-1.5 font-heading">
+            <h3 className="text-base sm:text-lg font-bold text-[#1F2421] mb-1 font-heading">
               ¡Planchado en vivo!
             </h3>
-            <p className="text-xs text-stone-300 leading-relaxed mb-4">
+            <p className="text-xs text-stone-600 leading-relaxed mb-3">
               Nuestro operador calificado aplica cada parche con <strong>prensa térmica de alta presión</strong> en menos de 45 segundos. Listo para usarse durante la fiesta.
             </p>
-            <div className="flex flex-wrap gap-1.5 text-[11px] font-semibold text-amber-300">
-              <span className="px-2.5 py-0.5 rounded-lg bg-amber-500/15 border border-amber-500/30">&lt; 45 segundos</span>
-              <span className="px-2.5 py-0.5 rounded-lg bg-amber-500/15 border border-amber-500/30">Fijación lavable</span>
+            <div className="flex flex-wrap gap-1.5 text-[11px] font-semibold text-stone-700">
+              <span className="px-2.5 py-0.5 rounded-lg bg-stone-100 border border-stone-200">&lt; 45 segundos</span>
+              <span className="px-2.5 py-0.5 rounded-lg bg-stone-100 border border-stone-200">Fijación lavable</span>
             </div>
           </div>
 
         </div>
 
         {/* Visual Showcase with Interactive Tabs */}
-        <div className="bg-[#131622] rounded-3xl border border-white/10 shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-0">
+        <div className="bg-white rounded-3xl border border-[#E8E4DA] shadow-md overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-0">
           
           {/* Left / Top: Interactive Photo Display */}
-          <div className="lg:col-span-7 bg-[#0D1017] p-5 sm:p-8 flex flex-col justify-between relative min-h-[380px] sm:min-h-[460px]">
+          <div className="lg:col-span-7 bg-[#1F2421] p-5 sm:p-7 flex flex-col justify-between relative min-h-[360px] sm:min-h-[420px]">
             {/* View Switcher Tabs */}
-            <div className="flex flex-wrap gap-2 z-10 mb-4">
+            <div className="flex flex-wrap gap-2 z-10 mb-3">
               {tabs.map(tab => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                  className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
                     activeTab === tab.id
-                      ? 'bg-gradient-to-r from-[#D82B6E] to-[#FF2D78] text-white shadow-md scale-102'
-                      : 'bg-white/10 text-stone-300 hover:bg-white/20 hover:text-white'
+                      ? 'bg-white text-stone-950 shadow-md font-black scale-102'
+                      : 'bg-white/15 text-stone-200 hover:bg-white/25 hover:text-white'
                   }`}
                 >
                   {tab.label}
@@ -131,90 +131,90 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
             </div>
 
             {/* Displayed Image */}
-            <div className="flex-1 flex items-center justify-center overflow-hidden rounded-2xl bg-black/60 border border-white/10 relative my-2">
+            <div className="flex-1 flex items-center justify-center overflow-hidden rounded-2xl bg-black/40 border border-white/10 relative my-2">
               <img
                 src={currentTabObj.image}
                 alt={currentTabObj.label}
-                className="w-full h-full object-contain max-h-[420px] transition-all duration-500"
+                className="w-full h-full object-contain max-h-[380px] transition-all duration-500"
               />
             </div>
 
             {/* Caption */}
-            <p className="text-xs text-stone-300 mt-3 z-10 leading-relaxed">
+            <p className="text-xs text-stone-300 mt-2 z-10 leading-relaxed">
               {currentTabObj.caption}
             </p>
           </div>
 
           {/* Right / Bottom: Specifications & Actions */}
-          <div className="lg:col-span-5 p-5 sm:p-8 flex flex-col justify-between space-y-6 bg-[#161B27]">
+          <div className="lg:col-span-5 p-5 sm:p-7 flex flex-col justify-between space-y-5 bg-white">
             
-            <div className="space-y-4">
+            <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <span className="px-2.5 py-1 rounded bg-pink-500/15 border border-pink-500/30 text-pink-300 text-xs font-mono font-bold">
+                <span className="px-2.5 py-1 rounded bg-[#2D4F3E]/10 text-[#2D4F3E] text-xs font-mono font-bold">
                   EV-PATCHBAR
                 </span>
-                <span className="text-xs font-bold text-stone-400">
+                <span className="text-xs font-bold text-stone-500">
                   Servicio Integral Todo Incluido
                 </span>
               </div>
 
-              <h3 className="text-xl sm:text-2xl font-extrabold text-white font-heading">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-[#1F2421] font-heading">
                 ¿Qué incluye nuestro servicio?
               </h3>
 
-              <ul className="space-y-3 text-xs sm:text-sm text-stone-300">
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+              <ul className="space-y-2.5 text-xs text-stone-600">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-[#2D4F3E] shrink-0 mt-0.5" />
                   <span><strong>Mobiliario artesanal de madera:</strong> Repisas de exhibición, charolas organizadoras y letrero tallado.</span>
                 </li>
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-[#2D4F3E] shrink-0 mt-0.5" />
                   <span><strong>Gorras o Totes personalizables:</strong> Paquetes desde 50 hasta 300+ piezas para tus invitados.</span>
                 </li>
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-[#2D4F3E] shrink-0 mt-0.5" />
                   <span><strong>Parches exclusivos de tu evento:</strong> Diseños a medida (monogramas, fechas, frases divertidas de fiesta o logotipos).</span>
                 </li>
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-[#2D4F3E] shrink-0 mt-0.5" />
                   <span><strong>Prensa térmica industrial &amp; Operador:</strong> Personal uniformado que asiste a tus invitados durante 3 horas.</span>
                 </li>
               </ul>
             </div>
 
             {/* Pricing Reference & Guarantees */}
-            <div className="bg-[#0D1017] rounded-2xl p-4 border border-white/10 space-y-2">
+            <div className="bg-[#FAF8F5] rounded-2xl p-3.5 border border-[#E8DFC8] space-y-1.5">
               <div className="flex items-baseline justify-between">
-                <span className="text-xs font-bold text-stone-400 uppercase">Paquete de Inicio</span>
+                <span className="text-xs font-bold text-stone-500 uppercase">Paquete de Inicio</span>
                 <div className="text-right">
-                  <span className="text-2xl font-black text-pink-400 font-heading">Desde $6,500</span>
-                  <span className="text-xs text-stone-400 block font-mono">MXN (hasta 50 invitados)</span>
+                  <span className="text-2xl font-black text-[#2D4F3E] font-heading">Desde $6,500</span>
+                  <span className="text-[11px] text-stone-500 block font-mono">MXN (hasta 50 invitados)</span>
                 </div>
               </div>
-              <p className="text-[11px] text-stone-400 leading-tight">
+              <p className="text-[10.5px] text-stone-500 leading-tight">
                 * El costo final se ajusta al número de invitados, tipo de prendas y horas de servicio requeridas.
               </p>
             </div>
 
             {/* Action Buttons */}
-            <div className="space-y-2.5 pt-2">
+            <div className="space-y-2 pt-1">
               <a
                 href={patchBarWhatsAppUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3.5 px-6 rounded-2xl bg-[#25D366] hover:bg-[#20BA5A] text-white font-bold text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2.5 cursor-pointer"
+                className="w-full py-3 px-5 rounded-2xl bg-[#25D366] hover:bg-[#20BA5A] text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                <MessageCircle className="w-5 h-5 fill-white text-[#25D366]" />
+                <MessageCircle className="w-4.5 h-4.5 fill-white text-[#25D366]" />
                 <span>Cotizar Patch Bar por WhatsApp</span>
               </a>
 
               {onOpenPatchBarProduct && (
                 <button
                   onClick={onOpenPatchBarProduct}
-                  className="w-full py-3 px-6 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-stone-200 font-bold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-2.5 px-4 rounded-2xl bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  <span>Ver ficha técnica y agregar a cotización</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-stone-400" />
+                  <span>Ver ficha técnica y fotos completas</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-stone-500" />
                 </button>
               )}
             </div>

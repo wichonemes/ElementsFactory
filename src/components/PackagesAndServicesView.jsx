@@ -1144,6 +1144,10 @@ export default function PackagesAndServicesView({
    * - Hogar: Ámbar Cálido & Naranja Sunset (#F59E0B, #F97316)
    * - Especial: Oro Cibernético / Corona (#FACC15, #EAB308)
    */
+  /**
+   * Paletas de color limpias y armoniosas para fondo blanco / crema:
+   * El producto y la fotografía son los protagonistas absolutos.
+   */
   const getModuleTheme = (promo, explicitArea) => {
     const isPatchBar = promo.code === 'EV-PATCHBAR' || promo.code?.includes('PATCH');
     const isStarred = Boolean(
@@ -1158,16 +1162,9 @@ export default function PackagesAndServicesView({
         area: 'especial',
         label: 'Especial del Mes',
         icon: Crown,
-        cardBorder: 'border-yellow-400/80 ring-2 ring-yellow-400/40 shadow-xl shadow-yellow-500/10',
-        cardHover: 'hover:border-yellow-300 hover:shadow-[0_0_30px_rgba(234,179,8,0.3)]',
-        bgBadge: 'bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 text-stone-950 font-black',
-        priceColor: 'text-yellow-400',
-        savingsPill: 'bg-yellow-400/20 text-yellow-300 border border-yellow-400/50',
-        bulletDot: 'text-yellow-400',
-        btnPrimary: 'bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 hover:from-yellow-300 hover:to-amber-400 text-stone-950 font-black shadow-lg shadow-yellow-500/25',
-        btnSecondary: 'bg-yellow-400/15 hover:bg-yellow-400/25 text-yellow-300 border border-yellow-400/40',
-        accentRing: 'ring-yellow-400/40',
-        glowBg: 'from-yellow-500/15 via-transparent to-transparent'
+        badgeBg: 'bg-amber-100 text-amber-900 border-amber-300',
+        accentColor: '#D4A359',
+        bulletDot: 'text-amber-600'
       };
     }
 
@@ -1176,16 +1173,9 @@ export default function PackagesAndServicesView({
         area: 'patchbar',
         label: 'Patch Bar en Vivo',
         icon: Flame,
-        cardBorder: 'border-pink-500/80 ring-2 ring-pink-500/40 shadow-xl shadow-pink-500/20',
-        cardHover: 'hover:border-pink-400 hover:shadow-[0_0_35px_rgba(216,43,110,0.4)]',
-        bgBadge: 'bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 text-white font-black',
-        priceColor: 'text-pink-400',
-        savingsPill: 'bg-pink-500/20 text-pink-300 border border-pink-500/50',
-        bulletDot: 'text-pink-400',
-        btnPrimary: 'bg-gradient-to-r from-[#D82B6E] via-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-black shadow-lg shadow-pink-500/35',
-        btnSecondary: 'bg-pink-500/15 hover:bg-pink-500/25 text-pink-300 border border-pink-500/40',
-        accentRing: 'ring-pink-500/50',
-        glowBg: 'from-pink-500/20 via-rose-500/10 to-transparent'
+        badgeBg: 'bg-rose-100 text-[#D82B6E] border-rose-300',
+        accentColor: '#D82B6E',
+        bulletDot: 'text-[#D82B6E]'
       };
     }
 
@@ -1200,16 +1190,9 @@ export default function PackagesAndServicesView({
         area: 'negocios',
         label: 'Negocios & Marcas',
         icon: Briefcase,
-        cardBorder: 'border-emerald-500/60 hover:border-emerald-400 shadow-lg shadow-emerald-500/10',
-        cardHover: 'hover:border-emerald-400 hover:shadow-[0_0_30px_rgba(16,185,129,0.35)]',
-        bgBadge: 'bg-gradient-to-r from-emerald-500 to-teal-500 text-stone-950 font-black',
-        priceColor: 'text-emerald-400',
-        savingsPill: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/50',
-        bulletDot: 'text-emerald-400',
-        btnPrimary: 'bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black shadow-lg shadow-emerald-500/25',
-        btnSecondary: 'bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/40',
-        accentRing: 'ring-emerald-400/40',
-        glowBg: 'from-emerald-500/15 via-transparent to-transparent'
+        badgeBg: 'bg-amber-50 text-amber-900 border-amber-200',
+        accentColor: '#B47820',
+        bulletDot: 'text-amber-700'
       };
     }
 
@@ -1218,16 +1201,9 @@ export default function PackagesAndServicesView({
         area: 'eventos',
         label: 'Eventos & Fiestas',
         icon: CalendarHeart,
-        cardBorder: 'border-fuchsia-500/60 hover:border-fuchsia-400 shadow-lg shadow-fuchsia-500/10',
-        cardHover: 'hover:border-fuchsia-400 hover:shadow-[0_0_30px_rgba(217,70,239,0.35)]',
-        bgBadge: 'bg-gradient-to-r from-fuchsia-500 via-purple-500 to-pink-500 text-white font-black',
-        priceColor: 'text-fuchsia-400',
-        savingsPill: 'bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/50',
-        bulletDot: 'text-fuchsia-400',
-        btnPrimary: 'bg-gradient-to-r from-fuchsia-600 to-pink-600 hover:from-fuchsia-500 hover:to-pink-500 text-white font-black shadow-lg shadow-fuchsia-500/25',
-        btnSecondary: 'bg-fuchsia-500/15 hover:bg-fuchsia-500/25 text-fuchsia-300 border border-fuchsia-500/40',
-        accentRing: 'ring-fuchsia-400/40',
-        glowBg: 'from-fuchsia-500/15 via-transparent to-transparent'
+        badgeBg: 'bg-pink-50 text-pink-900 border-pink-200',
+        accentColor: '#C23363',
+        bulletDot: 'text-pink-600'
       };
     }
 
@@ -1236,22 +1212,17 @@ export default function PackagesAndServicesView({
       area: 'hogar',
       label: 'Hogar & Espacios',
       icon: Home,
-      cardBorder: 'border-amber-500/60 hover:border-amber-400 shadow-lg shadow-amber-500/10',
-      cardHover: 'hover:border-amber-400 hover:shadow-[0_0_30px_rgba(245,158,11,0.35)]',
-      bgBadge: 'bg-gradient-to-r from-amber-500 to-orange-500 text-stone-950 font-black',
-      priceColor: 'text-amber-400',
-      savingsPill: 'bg-amber-500/20 text-amber-300 border border-amber-500/50',
-      bulletDot: 'text-amber-400',
-      btnPrimary: 'bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-black shadow-lg shadow-amber-500/25',
-      btnSecondary: 'bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/40',
-      accentRing: 'ring-amber-400/40',
-      glowBg: 'from-amber-500/15 via-transparent to-transparent'
+      badgeBg: 'bg-emerald-50 text-emerald-900 border-emerald-200',
+      accentColor: '#2D4F3E',
+      bulletDot: 'text-emerald-700'
     };
   };
 
   /**
-   * Tarjetas cuadradas, compactas ("más lite") y altamente cliclables
-   * inspiradas en el gestor de paquetes de catálogo del panel de control.
+   * Tarjetas de Paquetes enfocadas en la FOTOGRAFÍA del producto:
+   * 1. Al inicio: Solo imagen grande en alta calidad + título + precio.
+   * 2. Botoncito "Ver qué incluye el paquete" para desplegar limpiamente detalles y los 3 niveles.
+   * 3. Navegación rápida, limpia y sin saturación visual.
    */
   const renderBundleCard = (promo, explicitArea = null) => {
     const tiers = getBundleTiers(promo);
@@ -1281,397 +1252,248 @@ export default function PackagesAndServicesView({
       <div
         key={promo.code === 'EV-PATCHBAR' ? 'patch-bar-event-card' : (promo.id || promo.code)}
         id={promo.code === 'EV-PATCHBAR' ? 'patch-bar-event-card' : `bundle-card-${promo.id || promo.code}`}
-        className={`bg-[#121622] rounded-3xl border transition-all duration-300 flex flex-col justify-between overflow-hidden relative shadow-lg ${
-          isStarred
-            ? theme.cardBorder
-            : isExpanded
-            ? `${theme.cardBorder} ring-2 ring-white/30`
-            : `${theme.cardBorder} ${theme.cardHover}`
-        }`}
+        className="bg-white rounded-3xl border border-[#E8DFC8] hover:border-[#C8BBA0] hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-xs group"
       >
-        {/* Cinta de Paquete Estrella del Mes si aplica */}
-        {isStarred && (
-          <div className="bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 text-stone-950 px-3.5 py-1 text-[11px] font-black uppercase tracking-wider flex items-center justify-between shadow-xs">
-            <div className="flex items-center gap-1.5">
-              <Crown className="w-3.5 h-3.5 fill-stone-950 text-stone-950" />
-              <span>Paquete Estrella del Mes</span>
-            </div>
-            <span className="text-[10px] bg-stone-950 text-yellow-300 px-2 py-0.2 rounded-full font-bold">
-              Beneficio Exclusivo
-            </span>
-          </div>
-        )}
-
-        {/* Ribbon de Evento Comercial Activo afectando la promoción */}
-        {hasEventCoupon && (
-          <div className="bg-gradient-to-r from-amber-500/20 via-pink-500/15 to-amber-500/20 border-b border-amber-400/30 px-3.5 py-1 flex items-center justify-between text-[11px]">
-            <span className="font-bold text-stone-200 flex items-center gap-1.5 truncate">
-              <Flame className="w-3.5 h-3.5 text-amber-400 fill-amber-400 shrink-0" />
-              <span className="truncate">{activeMonthlyEvent.title || 'Evento Especial de Taller'}</span>
-            </span>
-            <span className="font-black text-amber-300 bg-amber-500/20 border border-amber-400/40 px-2 py-0.2 rounded-full shrink-0 flex items-center gap-1">
-              <Tag className="w-2.5 h-2.5" />
-              <span>{activeMonthlyEvent.couponCode} (-{eventDiscountPct}%)</span>
-            </span>
-          </div>
-        )}
-
-        {/* Contenido Principal con Estética de Placa Artesanal Patch Bar en Fondo Oscuro */}
-        <div className="p-4 sm:p-5 space-y-3.5 bg-gradient-to-b from-[#181D2A] via-[#121622] to-[#121622]">
-          
-          {/* Fila Superior: Miniatura Cuadrada en Marco Artesanal + SKU Placa + Título */}
-          <div className="flex items-start gap-3">
-            <div
-              onClick={() => onSelectProduct(promo)}
-              className="relative w-16 h-16 sm:w-18 sm:h-18 rounded-2xl overflow-hidden bg-[#0D1017] border border-white/15 shrink-0 cursor-pointer group/thumb shadow-inner"
-              title="Clic para ver fotos de estudio del paquete"
-            >
-              <img
-                src={promo.primaryImage || promo.gallery?.[0] || promo.whiteBgImage}
-                alt={promo.name}
-                className="w-full h-full object-cover group-hover/thumb:scale-108 transition-transform duration-300"
-              />
-              <div className="absolute inset-0 bg-black/0 group-hover/thumb:bg-black/40 transition-colors flex items-center justify-center">
-                <Layers className="w-4 h-4 text-white opacity-0 group-hover/thumb:opacity-100 transition-opacity drop-shadow-md" />
-              </div>
-            </div>
-
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-1.5 flex-wrap">
-                <span className={`px-2.5 py-0.5 rounded-full text-[9.5px] uppercase tracking-wider flex items-center gap-1 shadow-xs ${theme.bgBadge}`}>
-                  {theme.icon && typeof theme.icon !== 'string' && <theme.icon className="w-3 h-3" />}
-                  <span>{theme.label}</span>
-                </span>
-              </div>
-
-              <h4
-                onClick={() => onSelectProduct(promo)}
-                className="font-extrabold text-sm sm:text-base text-white hover:text-amber-300 leading-snug line-clamp-2 transition-colors cursor-pointer font-heading mt-1"
-                title={promo.name}
-              >
-                {promo.name}
-              </h4>
-
-              <div className="text-[11px] text-stone-400 capitalize truncate mt-0.5">
-                {promo.worlds?.join(', ')}
-              </div>
-            </div>
+        {/* FOTO GRANDE DEL PRODUCTO — PROTAGONISTA INDISCUTIBLE */}
+        <div
+          onClick={() => onSelectProduct(promo)}
+          className="relative w-full aspect-[4/3] bg-[#FAF8F5] overflow-hidden cursor-pointer group/thumb"
+          title="Clic para ver fotos en alta resolución del paquete"
+        >
+          <img
+            src={promo.primaryImage || promo.gallery?.[0] || promo.whiteBgImage}
+            alt={promo.name}
+            className="w-full h-full object-cover group-hover/thumb:scale-104 transition-transform duration-500"
+          />
+          <div className="absolute inset-0 bg-black/0 group-hover/thumb:bg-black/15 transition-colors flex items-center justify-center">
+            <Layers className="w-6 h-6 text-white opacity-0 group-hover/thumb:opacity-100 transition-opacity drop-shadow-md" />
           </div>
 
-          {/* Bloque de Precios y Ahorro estilo Escaparate Patch Bar */}
-          <div className="p-3 rounded-2xl bg-[#181D2A] border border-white/10 space-y-1.5 shadow-inner">
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-[11px] text-stone-500 line-through mr-1.5 font-mono">${regularPrice}</span>
-                <span className={`font-black text-base sm:text-lg font-mono ${hasEventCoupon ? 'text-stone-500 line-through text-xs' : theme.priceColor}`}>
-                  ${promo.price} <span className="text-[10px] font-normal text-stone-400">MXN</span>
-                </span>
-                {hasEventCoupon && (
-                  <span className={`font-black text-base sm:text-lg font-mono ml-1.5 ${theme.priceColor}`}>
-                    ${eventPrice} <span className="text-[10px] font-normal text-stone-400">MXN</span>
-                  </span>
-                )}
-              </div>
-              <span className={`px-2.5 py-0.5 rounded-lg text-[10px] font-black ${theme.savingsPill}`}>
-                Ahorro ${totalSavings} (-{totalDiscountPercent}%)
+          {/* Pastilla de Categoría */}
+          <div className="absolute top-3 left-3">
+            <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold border shadow-xs flex items-center gap-1.5 ${theme.badgeBg}`}>
+              {theme.icon && <theme.icon className="w-3 h-3" />}
+              <span>{theme.label}</span>
+            </span>
+          </div>
+
+          {/* Pastilla de Ahorro */}
+          <div className="absolute top-3 right-3">
+            <span className="px-2.5 py-1 rounded-full text-[10.5px] font-black bg-[#2D4F3E] text-white shadow-xs">
+              Ahorro ${totalSavings} (-{totalDiscountPercent}%)
+            </span>
+          </div>
+
+          {/* Estrella si es el Destacado del Mes */}
+          {isStarred && (
+            <div className="absolute bottom-3 left-3">
+              <span className="px-2.5 py-1 rounded-full text-[9.5px] font-black uppercase tracking-wider bg-amber-400 text-stone-950 shadow-xs flex items-center gap-1">
+                <Crown className="w-3 h-3 fill-stone-950" />
+                <span>Especial del Mes</span>
               </span>
+            </div>
+          )}
+        </div>
+
+        {/* CONTENIDO LIMPIO: NOMBRE, PRECIO Y BOTÓN DE DESPLIEGUE */}
+        <div className="p-4 sm:p-5 flex flex-col justify-between flex-1 space-y-3.5">
+          
+          <div className="space-y-1.5">
+            <h3
+              onClick={() => onSelectProduct(promo)}
+              className="font-extrabold text-base sm:text-lg text-stone-900 hover:text-[#9E472A] leading-snug line-clamp-2 transition-colors cursor-pointer font-heading"
+              title={promo.name}
+            >
+              {promo.name}
+            </h3>
+
+            {/* Precios Claros y Destacados */}
+            <div className="flex items-baseline gap-2 pt-0.5">
+              <span className="text-xl sm:text-2xl font-black text-[#1F2421] font-mono">
+                ${hasEventCoupon ? eventPrice : promo.price}
+                <span className="text-xs font-normal text-stone-500 ml-1">MXN</span>
+              </span>
+              {regularPrice && (
+                <span className="text-xs text-stone-400 line-through font-mono">
+                  ${regularPrice}
+                </span>
+              )}
             </div>
 
             {hasEventCoupon && (
-              <div className="flex items-center justify-between text-[10.5px] bg-amber-500/15 border border-amber-400/30 px-2 py-0.5 rounded-xl font-bold text-amber-300">
-                <span className="flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-amber-400 fill-amber-400" />
-                  <span>Con cupón <strong>{activeMonthlyEvent.couponCode}</strong>:</span>
-                </span>
-                <span className="text-emerald-400 font-black">
-                  -${eventExtraSavings} MXN extra
-                </span>
+              <div className="text-[10.5px] text-amber-900 font-bold bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200 inline-flex items-center gap-1">
+                <Sparkles className="w-3 h-3 text-amber-600 fill-amber-600" />
+                <span>Cupón {activeMonthlyEvent.couponCode}: -${eventExtraSavings} MXN extra</span>
               </div>
             )}
           </div>
 
-          {/* Lista "Incluye:" con badges para piezas adicionales estilo Combo */}
-          {promo.includedItems && promo.includedItems.length > 0 && (
-            <div className="space-y-1.5 text-xs">
-              <div className="font-bold text-[11px] text-stone-300 uppercase tracking-wider flex items-center justify-between">
-                <span>✦ Incluye en tu paquete:</span>
-                <span className="text-[10px] text-emerald-300 font-bold bg-emerald-500/15 px-1.5 py-0.2 rounded border border-emerald-500/30">
-                  Combo de Taller
-                </span>
-              </div>
-              <ul className="space-y-1.5 text-stone-300">
-                {promo.includedItems.slice(0, 3).map((item, idx) => {
-                  const isAdded = item.startsWith('+');
-                  return (
-                    <li
-                      key={idx}
-                      className={`flex items-start gap-1.5 text-[11.5px] leading-snug rounded-lg p-1 ${
-                        isAdded 
-                          ? 'bg-emerald-500/15 text-emerald-200 font-bold border border-emerald-500/30 shadow-2xs' 
-                          : 'text-stone-300'
-                      }`}
-                    >
-                      {isAdded ? (
-                        <span className="w-4 h-4 rounded-full bg-emerald-500 text-stone-950 font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
-                          +
-                        </span>
-                      ) : (
-                        <CheckCircle2 className={`w-3.5 h-3.5 ${theme.bulletDot} shrink-0 mt-0.5`} />
-                      )}
-                      <span className="truncate">{item.replace(/^\+\s*/, '')}</span>
-                    </li>
-                  );
-                })}
-              </ul>
-              {promo.includedItems.length > 3 && (
-                <div className="text-[10.5px] text-stone-400 font-semibold pl-1 flex items-center gap-1">
-                  <span className="w-3.5 h-3.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[9px] font-black flex items-center justify-center">+</span>
-                  <span>{promo.includedItems.length - 3} piezas y extras más en los paquetes superiores...</span>
+          {/* BOTÓN PARA DESPLEGAR DETALLES + BOTÓN WHATSAPP */}
+          <div className="pt-2 border-t border-stone-100 flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setExpandedPackageId(isExpanded ? null : promo.id)}
+              className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs ${
+                isExpanded
+                  ? 'bg-stone-900 text-white'
+                  : 'bg-stone-100 hover:bg-stone-200 text-stone-800'
+              }`}
+            >
+              <span>{isExpanded ? 'Ocultar detalles' : 'Ver qué incluye y opciones'}</span>
+              {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5 text-stone-500" />}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleWhatsAppQuote(promo)}
+              className="p-2 rounded-xl bg-[#25D366] hover:bg-[#20BA5A] text-white transition-all cursor-pointer shadow-2xs shrink-0"
+              title="Cotizar paquete por WhatsApp"
+            >
+              <MessageCircle className="w-4 h-4 fill-white text-[#25D366]" />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => onSelectProduct(promo)}
+              className="w-8 h-8 rounded-full bg-stone-100 hover:bg-[#2D4F3E] hover:text-white text-stone-700 transition-all flex items-center justify-center cursor-pointer shrink-0"
+              title="Ver fotos de estudio y ficha completa"
+            >
+              <Plus className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* PANEL DESPLEGABLE: TODO LO QUE CONTIENE EL PAQUETE (SOLO AL ABRIR) */}
+          {isExpanded && (
+            <div className="pt-3 border-t border-stone-200 space-y-3 animate-in fade-in text-xs">
+              
+              {/* Lista de Componentes Incluidos */}
+              {promo.includedItems && promo.includedItems.length > 0 && (
+                <div className="space-y-1.5 bg-[#FAF8F5] p-3 rounded-2xl border border-stone-200">
+                  <span className="font-bold text-[11px] text-stone-800 uppercase tracking-wider block">
+                    ✦ Incluye en tu paquete:
+                  </span>
+                  <ul className="space-y-1 text-stone-700">
+                    {promo.includedItems.map((item, idx) => {
+                      const isAdded = item.startsWith('+');
+                      return (
+                        <li
+                          key={idx}
+                          className={`flex items-start gap-1.5 text-[11.5px] leading-snug rounded-lg p-0.5 ${
+                            isAdded ? 'font-bold text-emerald-900' : 'text-stone-700'
+                          }`}
+                        >
+                          {isAdded ? (
+                            <span className="w-3.5 h-3.5 rounded-full bg-emerald-600 text-white font-black text-[9px] flex items-center justify-center shrink-0 mt-0.5">
+                              +
+                            </span>
+                          ) : (
+                            <CheckCircle2 className="w-3.5 h-3.5 text-[#2D4F3E] shrink-0 mt-0.5" />
+                          )}
+                          <span>{item.replace(/^\+\s*/, '')}</span>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </div>
               )}
+
+              {/* Selector de los 3 Niveles */}
+              <div className="space-y-2">
+                <span className="text-[11px] font-bold text-stone-800 block">
+                  Configuración del paquete:
+                </span>
+                <div className="grid grid-cols-3 gap-1 p-1 bg-stone-100 rounded-xl">
+                  {tiers.map(tier => {
+                    const isSelected = activeTier.id === tier.id;
+                    const tierEventPrice = hasEventCoupon ? Math.round(tier.price * (1 - eventDiscountPct / 100)) : tier.price;
+                    return (
+                      <button
+                        key={tier.id}
+                        type="button"
+                        onClick={() => setSelectedTierByPackage(prev => ({ ...prev, [promo.id]: tier.id }))}
+                        className={`py-1.5 px-1 rounded-lg text-center transition-all cursor-pointer ${
+                          isSelected
+                            ? 'bg-white text-stone-950 font-black shadow-xs ring-1 ring-stone-300'
+                            : 'text-stone-600 hover:text-stone-900 font-semibold text-[10.5px]'
+                        }`}
+                      >
+                        <span className="text-[9px] uppercase tracking-wider block font-bold truncate">
+                          {tier.id === 'pro' ? 'Recomendado' : tier.id === 'maestra' ? 'VIP' : 'Base'}
+                        </span>
+                        <span className="text-[10px] block truncate">{tier.name.replace('Nivel ', '')}</span>
+                        <span className="text-[10.5px] font-black block mt-0.5 font-mono text-[#2D4F3E]">
+                          ${hasEventCoupon ? tierEventPrice : tier.price}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Acciones para el Nivel Seleccionado */}
+              <div className="flex items-center gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const tierEventPrice = hasEventCoupon ? Math.round(activeTier.price * (1 - eventDiscountPct / 100)) : activeTier.price;
+                    onAddToCart && onAddToCart({
+                      product: {
+                        ...promo,
+                        id: `${promo.id}-${activeTier.id}`,
+                        name: `${promo.name} (${activeTier.name})`,
+                        price: tierEventPrice,
+                        regularPrice: activeTier.regularPrice,
+                        savings: activeTier.savings,
+                        appliedCoupon: hasEventCoupon ? activeMonthlyEvent.couponCode : null
+                      },
+                      quantity: 1,
+                      selectedVariants: { Nivel: activeTier.name },
+                      customText: ''
+                    });
+                  }}
+                  className="flex-1 py-2 px-2.5 rounded-xl bg-white border border-[#2D4F3E] text-[#2D4F3E] hover:bg-emerald-50 text-xs font-bold transition-all flex items-center justify-center gap-1 cursor-pointer"
+                >
+                  <ShoppingBag className="w-3.5 h-3.5" />
+                  <span>Al Carrito</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleWhatsAppQuote(promo, activeTier)}
+                  className="flex-1 py-2 px-2.5 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-xs font-bold transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer"
+                >
+                  <MessageCircle className="w-3.5 h-3.5" />
+                  <span>Cotizar Nivel</span>
+                </button>
+              </div>
+
             </div>
           )}
 
-          {/* Pastillas de 3 Niveles estilo Combo (Básico / Más Conveniente / Todo Incluido) */}
-          <div className="flex items-center gap-1.5 pt-0.5 text-[10px] font-bold flex-wrap">
-            <span className="px-2 py-0.5 rounded-lg bg-stone-800 text-stone-300 border border-stone-700">
-              Kit Base
-            </span>
-            <span className="px-2 py-0.5 rounded-lg bg-emerald-500/15 text-emerald-300 border border-emerald-500/40 font-black flex items-center gap-1">
-              <span className="w-3 h-3 rounded-full bg-emerald-500 text-stone-950 text-[8px] flex items-center justify-center font-black">+</span>
-              <span>Pro (Más Conveniente)</span>
-            </span>
-            <span className="px-2 py-0.5 rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/40 font-black flex items-center gap-1">
-              <span className="w-3 h-3 rounded-full bg-amber-500 text-stone-950 text-[8px] flex items-center justify-center font-black">+</span>
-              <span>VIP (Todo Incluido)</span>
-            </span>
-          </div>
-
         </div>
-
-        {/* Barra de Acciones Cliclables con botón de símbolo '+' como en los productos */}
-        <div className="p-3 sm:p-4 bg-[#0D1017] border-t border-white/10 flex items-center justify-between gap-2">
-          <button
-            type="button"
-            onClick={() => onSelectProduct(promo)}
-            className={`flex-1 py-2 px-3 rounded-xl ${theme.btnPrimary} font-black text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-md`}
-            title="Ver los 3 paquetes y detalles en ventana emergente"
-          >
-            <span>Ver 3 Paquetes &amp; Opciones</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleWhatsAppQuote(promo)}
-            className="p-2.5 rounded-xl bg-[#25D366] hover:bg-[#20BA5A] text-white transition-all cursor-pointer shadow-md shrink-0 hover:shadow-green-500/25"
-            title="Cotizar paquete por WhatsApp"
-          >
-            <MessageCircle className="w-4 h-4 fill-white text-[#25D366]" />
-          </button>
-
-          {/* Botón con símbolo de más '+' como en el de los productos */}
-          <button
-            type="button"
-            onClick={() => onSelectProduct(promo)}
-            className="w-9 h-9 rounded-full bg-white/10 border border-white/20 text-stone-200 hover:bg-white/20 hover:text-white shadow-xs hover:shadow-md flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 cursor-pointer group/btn shrink-0"
-            title="Ver los 3 paquetes en ventana emergente"
-            aria-label="Ver 3 paquetes en ventana emergente"
-          >
-            <Plus className="w-4.5 h-4.5 stroke-[2.8] text-stone-200 group-hover/btn:text-white transition-all duration-200 group-hover/btn:rotate-90" />
-          </button>
-        </div>
-
-        {/* Despliegue de los 3 Niveles cuando está Expandido */}
-        {isExpanded && (
-          <div className="p-4 bg-[#0D1017] border-t border-white/10 space-y-3 animate-in fade-in">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-black uppercase tracking-wider text-stone-200">
-                Selecciona tu nivel:
-              </span>
-              <span className="text-[10px] text-stone-500 font-normal">
-                3 opciones de taller
-              </span>
-            </div>
-
-            {/* Selector de Nivel en 3 Pastillas estilo Combo */}
-            <div className="grid grid-cols-3 gap-1.5 p-1 bg-stone-900 rounded-2xl border border-white/10">
-              {tiers.map(tier => {
-                const isSelected = activeTier.id === tier.id;
-                const tierEventPrice = hasEventCoupon ? Math.round(tier.price * (1 - eventDiscountPct / 100)) : tier.price;
-                const isPro = tier.id === 'pro';
-                const isMaestra = tier.id === 'maestra';
-                return (
-                  <button
-                    key={tier.id}
-                    type="button"
-                    onClick={() => setSelectedTierByPackage(prev => ({ ...prev, [promo.id]: tier.id }))}
-                    className={`py-1.5 px-1 rounded-xl text-center transition-all cursor-pointer relative ${
-                      isSelected
-                        ? isPro
-                          ? 'bg-emerald-600 text-white font-black shadow-md ring-2 ring-emerald-500/40'
-                          : isMaestra
-                          ? 'bg-amber-500 text-stone-950 font-black shadow-md ring-2 ring-amber-400/40'
-                          : 'bg-stone-700 text-white font-black shadow-md'
-                        : 'text-stone-400 hover:text-white font-semibold text-[11px]'
-                    }`}
-                  >
-                    <span className="text-[9px] uppercase tracking-wider block font-black opacity-90 truncate">
-                      {isPro ? 'Conveniente' : isMaestra ? 'VIP' : 'Kit Base'}
-                    </span>
-                    <span className="text-[10px] block leading-tight truncate">{tier.name.replace('Nivel ', '')}</span>
-                    <span className={`text-[10.5px] font-black block mt-0.5 font-mono ${isSelected ? (isMaestra ? 'text-stone-950' : 'text-white') : 'text-amber-400'}`}>
-                      ${hasEventCoupon ? tierEventPrice : tier.price}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Ficha del Nivel Activo */}
-            {(() => {
-              const activeTierEventPrice = hasEventCoupon ? Math.round(activeTier.price * (1 - eventDiscountPct / 100)) : activeTier.price;
-              const activeTierExtraSavings = activeTier.price - activeTierEventPrice;
-              const activeTierTotalSavings = hasEventCoupon ? (activeTier.regularPrice - activeTierEventPrice) : activeTier.savings;
-
-              return (
-                <div className="p-3 rounded-2xl bg-[#151924] border border-white/10 space-y-2.5 text-xs text-stone-200">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="font-extrabold text-white text-xs block">{activeTier.name}</span>
-                      <span className="text-[10px] text-emerald-300 font-bold bg-emerald-500/20 px-2 py-0.5 rounded border border-emerald-500/40 inline-block mt-0.5">
-                        {activeTier.tierBadge || activeTier.badge}
-                      </span>
-                    </div>
-                    <div className="text-right">
-                      {hasEventCoupon ? (
-                        <>
-                          <span className="font-black text-sm text-emerald-400 block font-mono">${activeTierEventPrice} MXN</span>
-                          <span className="text-[10px] text-stone-500 line-through mr-1 font-mono">${activeTier.regularPrice}</span>
-                          <span className="text-[10px] text-emerald-400 font-bold">Ahorras ${activeTierTotalSavings}</span>
-                        </>
-                      ) : (
-                        <>
-                          <span className="font-black text-sm text-emerald-400 block font-mono">${activeTier.price} MXN</span>
-                          <span className="text-[10px] text-stone-500 line-through mr-1 font-mono">${activeTier.regularPrice}</span>
-                          <span className="text-[10px] text-emerald-400 font-bold">Ahorras ${activeTier.savings}</span>
-                        </>
-                      )}
-                    </div>
-                  </div>
-
-                  {activeTier.valueCallout && (
-                    <div className="p-2 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-[11px] font-bold text-emerald-200 flex items-center gap-1.5 shadow-2xs">
-                      <Sparkles className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                      <span>{activeTier.valueCallout}</span>
-                    </div>
-                  )}
-
-                  {hasEventCoupon && (
-                    <div className="p-1.5 rounded-lg bg-amber-500/15 border border-amber-400/30 text-[10px] font-bold text-amber-300 flex items-center justify-between">
-                      <span>Cupón {activeMonthlyEvent.couponCode} aplicado:</span>
-                      <span className="text-emerald-400 font-black">-${activeTierExtraSavings} MXN extra</span>
-                    </div>
-                  )}
-
-                  <p className="text-[11px] text-stone-300 italic">
-                    &ldquo;{activeTier.summary}&rdquo;
-                  </p>
-
-                  <div className="space-y-1.5 pt-1 border-t border-white/10">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block">
-                      ✦ Componentes incluidos en este nivel:
-                    </span>
-                    <ul className="text-[11px] space-y-1.5">
-                      {activeTier.includedItems.map((item, idx) => {
-                        const isAdded = item.startsWith('+');
-                        return (
-                          <li
-                            key={idx}
-                            className={`flex items-start gap-1.5 p-1 rounded-lg ${
-                              isAdded
-                                ? 'bg-emerald-500/15 text-emerald-200 font-bold border border-emerald-500/30 shadow-2xs'
-                                : 'text-stone-300'
-                            }`}
-                          >
-                            {isAdded ? (
-                              <span className="w-4 h-4 rounded-full bg-emerald-500 text-stone-950 font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
-                                +
-                              </span>
-                            ) : (
-                              <Check className="w-3.5 h-3.5 text-stone-400 shrink-0 mt-0.5" />
-                            )}
-                            <span className="leading-snug">{item.replace(/^\+\s*/, '')}</span>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-
-                  {/* Botones para Agregar y Cotizar el Nivel Seleccionado */}
-                  <div className="flex items-center gap-2 pt-2 border-t border-white/10">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        onAddToCart && onAddToCart({
-                          product: {
-                            ...promo,
-                            id: `${promo.id}-${activeTier.id}`,
-                            name: `${promo.name} (${activeTier.name})`,
-                            price: activeTierEventPrice,
-                            regularPrice: activeTier.regularPrice,
-                            savings: activeTierTotalSavings,
-                            appliedCoupon: hasEventCoupon ? activeMonthlyEvent.couponCode : null
-                          },
-                          quantity: 1,
-                          selectedVariants: { Nivel: activeTier.name },
-                          customText: ''
-                        });
-                      }}
-                      className="flex-1 py-2 px-2.5 rounded-xl bg-white/10 border border-white/20 text-white hover:bg-white/20 text-xs font-bold transition-all flex items-center justify-center gap-1 cursor-pointer"
-                    >
-                      <ShoppingBag className="w-3.5 h-3.5" />
-                      <span>Al Carrito</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => handleWhatsAppQuote(promo, activeTier)}
-                      className="flex-1 py-2 px-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all flex items-center justify-center gap-1 shadow-md cursor-pointer"
-                    >
-                      <MessageCircle className="w-3.5 h-3.5 text-white" />
-                      <span>Cotizar por WhatsApp</span>
-                    </button>
-                  </div>
-                </div>
-              );
-            })()}
-
-          </div>
-        )}
       </div>
     );
   };
 
   return (
-    <div className="bg-[#0B0D11] text-stone-100 min-h-screen">
+    <div className="bg-[#FBF9F5] text-stone-900 min-h-screen">
       
-      {/* CABECERA COMPACTA EN MODO OSCURO: Cero banners gigantes, directa a los productos sin scroll */}
-      <div className="sticky top-0 z-30 bg-[#0B0D11]/95 backdrop-blur-md border-b border-white/10 px-4 sm:px-6 lg:px-8 py-3.5">
+      {/* CABECERA COMPACTA EN BLANCO: Cero banners gigantes, directa a los productos sin scroll */}
+      <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-[#E8DFC8] px-4 sm:px-6 lg:px-8 py-3.5 shadow-2xs">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-3">
           
           <div className="flex items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#D82B6E] animate-pulse"></span>
-                <span className="text-[11px] font-black uppercase tracking-wider text-pink-400">
+                <span className="w-2 h-2 rounded-full bg-[#2D4F3E] animate-pulse"></span>
+                <span className="text-[11px] font-black uppercase tracking-wider text-[#2D4F3E]">
                   Kits &amp; Combos con Ahorro
                 </span>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/10 text-stone-300">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-600">
                   {allBundles.length} Paquetes
                 </span>
               </div>
-              <h1 className="text-xl sm:text-2xl font-black font-heading text-white tracking-tight mt-0.5">
+              <h1 className="text-xl sm:text-2xl font-black font-heading text-stone-900 tracking-tight mt-0.5">
                 Paquetes del Taller
               </h1>
             </div>
@@ -1679,7 +1501,7 @@ export default function PackagesAndServicesView({
             <button
               type="button"
               onClick={() => setPackagesSeed(Date.now())}
-              className="md:hidden text-xs text-amber-400 font-bold flex items-center gap-1 bg-white/5 px-2.5 py-1 rounded-lg border border-white/10 cursor-pointer"
+              className="md:hidden text-xs text-[#2D4F3E] font-bold flex items-center gap-1 bg-stone-100 px-2.5 py-1 rounded-lg border border-stone-200 cursor-pointer"
               title="Girar rotación de paquetes"
             >
               <Sparkles className="w-3.5 h-3.5" />
@@ -1709,18 +1531,18 @@ export default function PackagesAndServicesView({
                   className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap shrink-0 transition-all flex items-center gap-1.5 cursor-pointer ${
                     isSelected
                       ? tab.isPatchBar
-                        ? 'bg-gradient-to-r from-[#D82B6E] to-[#FF2D78] text-white font-black shadow-lg shadow-pink-500/30 scale-102'
-                        : 'bg-gradient-to-r from-amber-400 to-amber-500 text-stone-950 font-black shadow-lg shadow-amber-500/20 scale-102'
+                        ? 'bg-[#D82B6E] text-white font-black shadow-xs scale-102'
+                        : 'bg-[#2D4F3E] text-white font-black shadow-xs scale-102'
                       : tab.isPatchBar
-                      ? 'bg-pink-500/15 text-pink-300 border border-pink-500/40 hover:bg-pink-500/25'
-                      : 'bg-white/5 text-stone-300 hover:bg-white/10 border border-white/10'
+                      ? 'bg-rose-50 text-[#D82B6E] border border-rose-200 hover:bg-rose-100'
+                      : 'bg-stone-100 text-stone-700 hover:bg-stone-200 border border-stone-200/60'
                   }`}
                 >
                   <span>{tab.label}</span>
                   <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
                     isSelected 
-                      ? 'bg-black/25 text-inherit' 
-                      : 'bg-white/10 text-stone-400'
+                      ? 'bg-black/20 text-white' 
+                      : 'bg-white text-stone-500'
                   }`}>
                     {tab.count}
                   </span>
@@ -1738,14 +1560,14 @@ export default function PackagesAndServicesView({
         {/* VISTA 1: TODOS LOS PAQUETES CON ROTACIÓN DINÁMICA (INCLUYE PATCH BAR) */}
         {activeAreaFilter === 'all' && (
           <section className="space-y-6">
-            <div className="flex items-center justify-between pb-2 border-b border-white/10">
-              <p className="text-xs sm:text-sm text-stone-400">
-                Combos coordinados con descuento directo de taller. Todos los paquetes rotan dinámicamente con Patch Bar en vivo.
+            <div className="flex items-center justify-between pb-2 border-b border-[#E8DFC8]">
+              <p className="text-xs sm:text-sm text-stone-600">
+                Elige tu paquete favorito. Haz clic en <strong>Ver qué incluye y opciones</strong> para desplegar sus componentes.
               </p>
               <button
                 type="button"
                 onClick={() => setPackagesSeed(Date.now())}
-                className="hidden md:flex text-xs text-amber-400 hover:text-amber-300 font-bold items-center gap-1.5 cursor-pointer bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-xl border border-white/10 transition-all shadow-xs"
+                className="hidden md:flex text-xs text-[#2D4F3E] hover:text-[#20392C] font-bold items-center gap-1.5 cursor-pointer bg-white hover:bg-stone-50 px-3 py-1.5 rounded-xl border border-stone-200 shadow-2xs"
                 title="Girar ruleta de rotación de paquetes"
               >
                 <Sparkles className="w-3.5 h-3.5" />
@@ -1753,7 +1575,7 @@ export default function PackagesAndServicesView({
               </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
               {allBundles.map(bundle => renderBundleCard(bundle))}
             </div>
           </section>
@@ -1762,22 +1584,22 @@ export default function PackagesAndServicesView({
         {/* SECCIÓN ESPECIAL: TEMPORADA ACTIVA & SELECCIÓN DEL MES */}
         {activeAreaFilter === 'especial' && (
           <section id="paquetes-especial" className="space-y-6">
-            <div className="flex items-center justify-between pb-2 border-b border-white/10">
+            <div className="flex items-center justify-between pb-2 border-b border-[#E8DFC8]">
               <div className="space-y-1">
-                <div className="flex items-center gap-2 text-xs font-bold text-yellow-400 uppercase tracking-wider">
+                <div className="flex items-center gap-2 text-xs font-bold text-amber-700 uppercase tracking-wider">
                   <Crown className="w-4 h-4" />
                   <span>Selección Especial de Temporada</span>
                 </div>
-                <h2 className="text-xl sm:text-2xl font-extrabold text-white font-heading">
+                <h2 className="text-xl sm:text-2xl font-extrabold text-stone-900 font-heading">
                   Paquetes Destacados del Mes
                 </h2>
               </div>
-              <span className="text-xs font-bold px-3 py-1 rounded-full bg-yellow-400/15 border border-yellow-400/30 text-yellow-300">
+              <span className="text-xs font-bold px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800">
                 {especialBundles.length} seleccionados
               </span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
               {especialBundles.map(bundle => renderBundleCard(bundle, 'especial'))}
             </div>
           </section>
@@ -1786,26 +1608,26 @@ export default function PackagesAndServicesView({
         {/* SECCIÓN 1: PAQUETES DE HOGAR */}
         {activeAreaFilter === 'hogar' && (
           <section id="paquetes-hogar" className="space-y-6">
-            <div className="flex items-center justify-between pb-2 border-b border-white/10">
+            <div className="flex items-center justify-between pb-2 border-b border-[#E8DFC8]">
               <div className="space-y-1">
-                <div className="flex items-center gap-2 text-xs font-bold text-amber-400 uppercase tracking-wider">
+                <div className="flex items-center gap-2 text-xs font-bold text-emerald-800 uppercase tracking-wider">
                   <Home className="w-4 h-4" />
                   <span>Área Hogar &amp; Decoración</span>
                 </div>
-                <h2 className="text-xl sm:text-2xl font-extrabold text-white font-heading">
+                <h2 className="text-xl sm:text-2xl font-extrabold text-stone-900 font-heading">
                   Paquetes para el Hogar
                 </h2>
-                <p className="text-xs sm:text-sm text-stone-400">
-                  Combos de recibidor, estaciones gamer/home office y kits consentidos para mascotas.
+                <p className="text-xs sm:text-sm text-stone-600">
+                  Combos de recibidor, estaciones gamer/home office y kits para mascotas.
                 </p>
               </div>
 
-              <span className="text-xs font-bold px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300">
+              <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800">
                 {hogarBundles.length} combos con descuento
               </span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
               {hogarBundles.map(bundle => renderBundleCard(bundle, 'hogar'))}
             </div>
           </section>
@@ -1814,26 +1636,26 @@ export default function PackagesAndServicesView({
         {/* SECCIÓN 2: PAQUETES DE NEGOCIOS */}
         {activeAreaFilter === 'negocios' && (
           <section id="paquetes-negocios" className="space-y-6">
-            <div className="flex items-center justify-between pb-2 border-b border-white/10">
+            <div className="flex items-center justify-between pb-2 border-b border-[#E8DFC8]">
               <div className="space-y-1">
-                <div className="flex items-center gap-2 text-xs font-bold text-emerald-400 uppercase tracking-wider">
+                <div className="flex items-center gap-2 text-xs font-bold text-amber-800 uppercase tracking-wider">
                   <Briefcase className="w-4 h-4" />
                   <span>Área Negocios &amp; Marcas</span>
                 </div>
-                <h2 className="text-xl sm:text-2xl font-extrabold text-white font-heading">
+                <h2 className="text-xl sm:text-2xl font-extrabold text-stone-900 font-heading">
                   Paquetes para Negocios &amp; Comercios
                 </h2>
-                <p className="text-xs sm:text-sm text-stone-400">
+                <p className="text-xs sm:text-sm text-stone-600">
                   Starter packs de señalética, soportes QR para menú o cobro, placas inteligentes NFC y merchandising grabado a láser.
                 </p>
               </div>
 
-              <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300">
+              <span className="text-xs font-bold px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800">
                 {negociosBundles.length} combos con descuento
               </span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
               {negociosBundles.map(bundle => renderBundleCard(bundle, 'negocios'))}
             </div>
           </section>
@@ -1842,26 +1664,26 @@ export default function PackagesAndServicesView({
         {/* SECCIÓN 3: PAQUETES DE EVENTOS ESPECIALES */}
         {activeAreaFilter === 'eventos' && (
           <section id="paquetes-eventos" className="space-y-6">
-            <div className="flex items-center justify-between pb-2 border-b border-white/10">
+            <div className="flex items-center justify-between pb-2 border-b border-[#E8DFC8]">
               <div className="space-y-1">
-                <div className="flex items-center gap-2 text-xs font-bold text-fuchsia-400 uppercase tracking-wider">
+                <div className="flex items-center gap-2 text-xs font-bold text-pink-800 uppercase tracking-wider">
                   <CalendarHeart className="w-4 h-4" />
                   <span>Área Eventos Especiales</span>
                 </div>
-                <h2 className="text-xl sm:text-2xl font-extrabold text-white font-heading">
+                <h2 className="text-xl sm:text-2xl font-extrabold text-stone-900 font-heading">
                   Paquetes de Eventos &amp; Fiestas
                 </h2>
-                <p className="text-xs sm:text-sm text-stone-400">
+                <p className="text-xs sm:text-sm text-stone-600">
                   Kits nupciales, bodas, quince años, graduaciones y recuerdos coordinados todo incluido.
                 </p>
               </div>
 
-              <span className="text-xs font-bold px-3 py-1 rounded-full bg-fuchsia-500/15 border border-fuchsia-500/30 text-fuchsia-300">
+              <span className="text-xs font-bold px-3 py-1 rounded-full bg-pink-50 border border-pink-200 text-pink-800">
                 {eventosBundles.length} paquetes para fiestas
               </span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
               {eventosBundles.map(bundle => renderBundleCard(bundle, 'eventos'))}
             </div>
           </section>
@@ -1870,16 +1692,16 @@ export default function PackagesAndServicesView({
         {/* SECCIÓN 4: PATCH BAR EN VIVO DEDICADA */}
         {activeAreaFilter === 'servicios' && (
           <section id="servicios-patchbar-area" className="space-y-6">
-            <div className="flex items-center justify-between pb-2 border-b border-white/10">
+            <div className="flex items-center justify-between pb-2 border-b border-[#E8DFC8]">
               <div className="space-y-1">
-                <div className="flex items-center gap-2 text-xs font-bold text-pink-400 uppercase tracking-wider">
+                <div className="flex items-center gap-2 text-xs font-bold text-[#D82B6E] uppercase tracking-wider">
                   <Flame className="w-4 h-4" />
                   <span>Servicio Estrella para Bodas y Fiestas</span>
                 </div>
-                <h2 className="text-xl sm:text-2xl font-extrabold text-white font-heading">
+                <h2 className="text-xl sm:text-2xl font-extrabold text-stone-900 font-heading">
                   Servicio Patch Bar en Vivo (Gorras &amp; Totes)
                 </h2>
-                <p className="text-xs sm:text-sm text-stone-400">
+                <p className="text-xs sm:text-sm text-stone-600">
                   Llevamos nuestro stand de madera artesanal y prensa térmica a tu evento para que tus invitados personalicen su recuerdo al momento.
                 </p>
               </div>
@@ -1900,23 +1722,23 @@ export default function PackagesAndServicesView({
           </section>
         )}
 
-        {/* SECCIÓN INFORMATIVA DE PATCH BAR AL FINAL DE 'ALL' PARA QUIENES DESEEN EXPLORAR EL MOBILIARIO COMPLETO */}
+        {/* SECCIÓN INFORMATIVA DE PATCH BAR AL FINAL DE 'ALL' */}
         {activeAreaFilter === 'all' && (
-          <section id="servicios-taller" className="pt-6 border-t border-white/10 space-y-4">
+          <section id="servicios-taller" className="pt-6 border-t border-[#E8DFC8] space-y-4">
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
-                <div className="flex items-center gap-2 text-xs font-bold text-pink-400 uppercase tracking-wider">
+                <div className="flex items-center gap-2 text-xs font-bold text-[#D82B6E] uppercase tracking-wider">
                   <Flame className="w-4 h-4" />
                   <span>Experiencia en Vivo para Fiestas &amp; Bodas</span>
                 </div>
-                <h3 className="text-lg sm:text-xl font-extrabold text-white font-heading">
+                <h3 className="text-lg sm:text-xl font-extrabold text-stone-900 font-heading">
                   ¿Cómo funciona el servicio de Patch Bar?
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setActiveAreaFilter('servicios')}
-                className="text-xs text-pink-400 hover:text-pink-300 font-bold flex items-center gap-1 cursor-pointer"
+                className="text-xs text-[#D82B6E] hover:text-[#b01e54] font-bold flex items-center gap-1 cursor-pointer"
               >
                 <span>Ver módulo completo</span>
                 <ArrowRight className="w-3.5 h-3.5" />

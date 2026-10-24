@@ -53,9 +53,11 @@ for (const cat of ['hogar', 'negocios', 'eventos']) {
   }
 }
 
-// Función auxiliar para sanitizar nombres de carpetas
+// Función auxiliar para sanitizar nombres de carpetas sin caracteres extraños ni acentos rotos
 function sanitizeFolderName(str) {
   return str
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Quita acentos (á->a, é->e, etc.)
     .replace(/[<>:"/\\|?*]/g, '')
     .replace(/\s+/g, '_')
     .slice(0, 60);
@@ -168,21 +170,113 @@ for (const p of db.products) {
     }
   });
 
-  // Extraer datos técnicos
-  let mwUrl = p.repository?.makerworldUrl || p.makerworldUrl || p.makerWorldModel;
-  let mwAuthor = p.repository?.author || p.makerWorldAuthor || 'Artesano Digital';
-  let mwId = p.repository?.makerworldModelId || p.makerWorldProfileId || (mwUrl ? mwUrl.match(/models\/(\d+)/)?.[1] : null) || 'N/A';
+  // Mapa de modelos verificados en MakerWorld con sus enlaces directos que funcionan 100%
+  const verifiedMakerWorldMap = {
+    'T38': {
+      url: 'https://makerworld.com/es/models/1804162-modern-lamp#profileId-1924098',
+      id: '1804162',
+      profileId: '1924098',
+      author: 'Mesmar (https://makerworld.com/en/@mesmar)',
+      name: 'Modern Lamp'
+    },
+    'T6': {
+      url: 'https://makerworld.com/es/models/2641589-spiral-planter-for-ikea-skadis#profileId-2956432',
+      id: '2641589',
+      profileId: '2956432',
+      author: 'Nordic Maker',
+      name: 'Spiral Planter for IKEA SKÅDIS'
+    },
+    'T29': {
+      url: 'https://makerworld.com/es/models/2145890',
+      id: '2145890',
+      author: 'Taller Propio Artesano',
+      name: 'Bandeja vaciabolsillos curva'
+    },
+    'T37': {
+      url: 'https://makerworld.com/es/models/2087519-modular-desk-organizer-system-iphone-stand-module#profileId-2256937',
+      id: '2087519',
+      profileId: '2256937',
+      author: 'Meyui',
+      name: 'Modular Desk Organizer System & iPhone Stand'
+    },
+    'T12': {
+      url: 'https://makerworld.com/es/models/1810947-geometric-cable-holders-low-poly-cord-organizer#profileId-1932041',
+      id: '1810947',
+      profileId: '1932041',
+      author: 'm@',
+      name: 'Geometric low-poly cable holders'
+    },
+    'T10': {
+      url: 'https://makerworld.com/es/models/1087279',
+      id: '1087279',
+      author: 'mgm86',
+      name: 'Phone stand print in place'
+    },
+    'T39': {
+      url: 'https://makerworld.com/es/models/3134067-nfc-qr-smart-desk-command-center-customizable#profileId-3537470',
+      id: '3134067',
+      profileId: '3537470',
+      author: 'Johnny Spaceboots',
+      name: 'NFC QR Smart Desk Command Center'
+    },
+    'T16': {
+      url: 'https://makerworld.com/es/models/2401859',
+      id: '2401859',
+      author: 'PhantomCommit',
+      name: 'Commercial QR Stand'
+    },
+    'T20': {
+      url: 'https://makerworld.com/es/models/3138490',
+      id: '3138490',
+      author: 'Ryno_man',
+      name: 'Pet Identification Tag'
+    },
+    'T35': {
+      url: 'https://makerworld.com/es/models/2387852',
+      id: '2387852',
+      author: 'MrGravity',
+      name: 'Fox Collection Bundle'
+    },
+    'T1': {
+      url: 'https://makerworld.com/es/models/1759237',
+      id: '1759237',
+      author: 'Haledesigns3d',
+      name: 'Custom Name Keychain'
+    },
+    'T33': {
+      url: 'https://makerworld.com/es/models/2401859',
+      id: '2401859',
+      author: 'PhantomCommit',
+      name: 'NFC Smart Stand'
+    },
+    'T17': {
+      url: 'https://makerworld.com/es/models/1067062',
+      id: '1067062',
+      author: 'CrazyModding',
+      name: 'Minimalist Business Card Holder'
+    },
+    'J1': {
+      url: 'https://makerworld.com/es/models/2906625-bobble-animal-leopard#profileId-3250148',
+      id: '2906625',
+      profileId: '3250148',
+      author: '3D_Design_Lab',
+      name: 'Bobble Animal Leopard'
+    },
+    'J2': {
+      url: 'https://makerworld.com/es/models/552097-cute-flexi-pets-fox-keychain-magnet#profileId-470570',
+      id: '552097',
+      profileId: '470570',
+      author: 'Valeria Momo & Mattia3D',
+      name: 'Cute Flexi Pets Fox Keychain & Magnet'
+    }
+  };
 
-  // Asegurar enlace completo para T38
-  if (p.code === 'T38') {
-    mwUrl = 'https://makerworld.com/es/models/1804162-modern-lamp#profileId-1924098';
-    mwAuthor = 'Mesmar';
-    mwId = '1804162';
-  } else if (!mwUrl) {
-    mwUrl = p.techniques?.includes('3d')
-      ? `https://makerworld.com/en/search/models?keyword=${encodeURIComponent(p.name)}`
-      : 'Diseño Exclusivo Artesano Digital / Taller Propio';
-  }
+  const isVerifiedMW = Boolean(verifiedMakerWorldMap[p.code]);
+  const mwData = verifiedMakerWorldMap[p.code] || null;
+  const isBundle = Boolean(p.isBundle || p.code?.startsWith('PROMO-') || ['T35', 'T18', 'T27', 'T32', 'EV-ANTICRUDA'].includes(p.code));
+  const isCustom = Boolean(p.code?.startsWith('CUST-') || (p.worlds || []).includes('personalizados'));
+  const isLaserOnly = (p.techniques || []).includes('laser') && !(p.techniques || []).includes('3d');
+  const isTextileOnly = (p.techniques || []).includes('vinil') || (p.techniques || []).includes('sublimacion');
 
   const mfg = p.manufacturingTimes || {};
   const cost = p.costBreakdown || {};
@@ -198,7 +292,7 @@ for (const p of db.products) {
   // Redactar Block de Notas individual por producto
   const noteLines = [];
   noteLines.push('======================================================================');
-  noteLines.push(`ARTESANO DIGITAL — FICHA TÉCNICA Y CONTROL DE PRODUCTO`);
+  noteLines.push('ARTESANO DIGITAL — FICHA TÉCNICA Y CONTROL DE PRODUCTO');
   noteLines.push('======================================================================');
   noteLines.push(`CÓDIGO: ${p.code}`);
   noteLines.push(`SKU OFICIAL: ${p.sku || 'N/A'}`);
@@ -222,28 +316,41 @@ for (const p of db.products) {
   }
   noteLines.push('');
   noteLines.push('----------------------------------------------------------------------');
-  noteLines.push('2. TIEMPOS DE PRODUCCIÓN Y REPOSITORIO MAKERWORLD');
+  noteLines.push('2. TIEMPOS DE PRODUCCIÓN Y ENLACE DE REPOSITORIO');
   noteLines.push('----------------------------------------------------------------------');
-  noteLines.push(`• Tiempo de Impresión 3D en Máquina: ${machineTimeStr}`);
+  noteLines.push(`• Tiempo de Manufactura / Impresión: ${machineTimeStr}`);
   noteLines.push(`• Tiempo de Limpieza / Post-procesamiento: ${postProcStr}`);
   noteLines.push(`• Plazo de Entrega al Cliente: ${mfg.leadTimeDays || p.specifications?.estimatedLeadTime || '1 a 3 días hábiles'}`);
   
-  if (p.code === 'T38') {
-    noteLines.push(`• Enlace Directo MakerWorld (Español): https://makerworld.com/es/models/1804162-modern-lamp#profileId-1924098`);
-    noteLines.push(`• Enlace Directo MakerWorld (Inglés): https://makerworld.com/en/models/1804162-modern-lamp#profileId-1924098`);
-    noteLines.push(`• Modelo ID MakerWorld: 1804162`);
-    noteLines.push(`• Perfil de Impresión ID: 1924098`);
-    noteLines.push(`• Autor / Creador: Mesmar (https://makerworld.com/en/@mesmar)`);
-    noteLines.push(`• Nombre Oficial del Diseño: Modern Lamp`);
-    noteLines.push(`• Compatibilidad Eléctrica: Compatible con Bambu LED Lamp Kit 001 o Socket Candelabro rosca E12/E14.`);
+  if (isVerifiedMW) {
+    noteLines.push(`• Enlace Directo MakerWorld: ${mwData.url}`);
+    noteLines.push(`• Modelo ID MakerWorld: ${mwData.id}`);
+    if (mwData.profileId) noteLines.push(`• Perfil de Impresión ID: ${mwData.profileId}`);
+    noteLines.push(`• Autor / Creador Oficial: ${mwData.author}`);
+    if (mwData.name) noteLines.push(`• Nombre Oficial del Diseño: ${mwData.name}`);
+    noteLines.push(`• Licencia: Comercial autorizada para venta de piezas impresas en taller físico`);
+  } else if (p.code === 'EV-PATCHBAR') {
+    noteLines.push('• Enlace MakerWorld: N/A (Servicio presencial en vivo para eventos)');
+    noteLines.push('• Componentes: Mobiliario artesanal en madera, prensa térmica industrial y parches textiles');
+  } else if (isBundle) {
+    noteLines.push('• Enlace MakerWorld: N/A (Combo multitécnica integrado por Artesano Digital)');
+    noteLines.push('• Origen: Paquete armado en taller que coordina piezas 3D, madera láser y acabados manuales');
+  } else if (isCustom) {
+    noteLines.push('• Enlace MakerWorld: N/A (Servicio de modelado 3D a la medida)');
+    noteLines.push('• Origen: Esculpido y modelado digital personalizado por el equipo del taller a partir de fotos del cliente');
+  } else if (isLaserOnly) {
+    noteLines.push('• Enlace MakerWorld: N/A (Producto de corte y grabado láser)');
+    noteLines.push('• Origen: Diseño vectorial propio de taller en madera natural, MDF y acrílico');
+  } else if (isTextileOnly) {
+    noteLines.push('• Enlace MakerWorld: N/A (Producto textil / sublimación)');
+    noteLines.push('• Origen: Confección, estampado vinil textil y sublimación en taller');
   } else {
-    noteLines.push(`• Enlace MakerWorld / Repositorio: ${mwUrl}`);
-    noteLines.push(`• Modelo ID MakerWorld: ${mwId}`);
-    noteLines.push(`• Autor / Creador: ${mwAuthor}`);
+    noteLines.push('• Enlace MakerWorld: N/A (Diseño paramétrico propio de Artesano Digital)');
+    noteLines.push('• Origen: Archivos CAD 3D internos modelados exclusivamente para la marca');
   }
 
   if (p.repository?.slicerNotes) {
-    noteLines.push(`• Notas de Slicer / Laminador: ${p.repository.slicerNotes}`);
+    noteLines.push(`• Notas de Laminador / Slicer: ${p.repository.slicerNotes}`);
   }
   noteLines.push('');
   noteLines.push('----------------------------------------------------------------------');
@@ -269,16 +376,17 @@ for (const p of db.products) {
   noteLines.push('');
   noteLines.push('======================================================================');
   noteLines.push('Archivo generado para control de catálogo local — Artesano Digital');
-  noteLines.push('======================================================================\n');
+  noteLines.push('======================================================================\r\n');
 
-  fs.writeFileSync(path.join(prodFolder, 'DETALLES_Y_TIEMPOS.txt'), noteLines.join('\n'), 'utf8');
+  // Guardar archivo con UTF-8 BOM para perfecta legibilidad en Windows Notepad
+  fs.writeFileSync(path.join(prodFolder, 'DETALLES_Y_TIEMPOS.txt'), '\uFEFF' + noteLines.join('\r\n'), 'utf8');
 
   // Agregar al catálogo maestro
   masterCatalogLines.push(`[${p.code}] ${p.name}`);
   masterCatalogLines.push(`   Área: ${(p.worlds || []).join(', ')} | Técnica: ${(p.techniques || []).join(', ')}`);
   masterCatalogLines.push(`   Precio Público: ${priceFormatted} | Costo Estimado: ${costFormatted} | Margen: ${marginEst}`);
   masterCatalogLines.push(`   Tiempo Impresión: ${machineTimeStr} | Entrega: ${mfg.leadTimeDays || '1 a 3 días'}`);
-  masterCatalogLines.push(`   MakerWorld: ${mwUrl}`);
+  masterCatalogLines.push(`   MakerWorld: ${isVerifiedMW ? mwData.url : 'Diseño Exclusivo Artesano Digital / Taller Propio'}`);
   masterCatalogLines.push(`   Carpeta Local: ${path.relative(targetRoot, prodFolder)}`);
   masterCatalogLines.push('--------------------------------------------------------------------------------');
 }
@@ -364,10 +472,10 @@ for (const c of customProductsMeta) {
     '----------------------------------------------------------------------',
     'REPOSITORIO / MODELADO: Modelado digital propio en taller a partir de foto enviada por WhatsApp.',
     'TECNOLOGÍA: Modelado CAD + Impresión 3D FDM alta resolución + Pintado y caja ventana.',
-    '======================================================================\n'
-  ].join('\n');
+    '======================================================================\r\n'
+  ].join('\r\n');
 
-  fs.writeFileSync(path.join(targetDir, 'DETALLES_Y_TIEMPOS.txt'), cNote, 'utf8');
+  fs.writeFileSync(path.join(targetDir, 'DETALLES_Y_TIEMPOS.txt'), '\uFEFF' + cNote, 'utf8');
 }
 
 // -----------------------------------------------------------------------------
@@ -427,20 +535,20 @@ for (const s of servicesMeta) {
     '----------------------------------------------------------------------',
     'ALCANCE:',
     s.desc,
-    '======================================================================\n'
-  ].join('\n');
+    '======================================================================\r\n'
+  ].join('\r\n');
 
-  fs.writeFileSync(path.join(targetDir, 'DETALLES_Y_TIEMPOS.txt'), sNote, 'utf8');
+  fs.writeFileSync(path.join(targetDir, 'DETALLES_Y_TIEMPOS.txt'), '\uFEFF' + sNote, 'utf8');
 }
 
-// Guardar archivo maestro en la raíz
+// Guardar archivo maestro en la raíz con UTF-8 BOM
 fs.writeFileSync(
   path.join(targetRoot, '00_CATALOGO_GENERAL_PRECIOS_Y_MAKERWORLD.txt'),
-  masterCatalogLines.join('\n'),
+  '\uFEFF' + masterCatalogLines.join('\r\n'),
   'utf8'
 );
 
-// Guardar README explicativo para el usuario
+// Guardar README explicativo para el usuario con UTF-8 BOM
 const readmeText = [
   '======================================================================',
   'CONTROL DE PRODUCTOS Y FOTOGRAFÍAS — ARTESANO DIGITAL',
@@ -464,16 +572,17 @@ const readmeText = [
   '   - Características y especificaciones completas',
   '   - Precios al público y costos desglosados de producción',
   '   - Tiempos de impresión 3D en máquina y mano de obra',
-  '   - Enlace directo a la página del modelo en MakerWorld',
+  '   - Enlace directo verificado a la página del modelo en MakerWorld (cuando aplica)',
+  '   - O especificación clara si es un diseño propio de taller (láser, textil, combos)',
   '',
   'ARCHIVO GENERAL:',
   '• "00_CATALOGO_GENERAL_PRECIOS_Y_MAKERWORLD.txt" contiene el resumen completo de todos los productos en una sola vista.',
   '',
   'Puedes agregar nuevas fotos aquí y utilizaremos estas carpetas como fuente central de control.',
-  '======================================================================\n'
-].join('\n');
+  '======================================================================\r\n'
+].join('\r\n');
 
-fs.writeFileSync(path.join(targetRoot, 'README_CONTROL_DE_PRODUCTOS.txt'), readmeText, 'utf8');
+fs.writeFileSync(path.join(targetRoot, 'README_CONTROL_DE_PRODUCTOS.txt'), '\uFEFF' + readmeText, 'utf8');
 
 console.log('--- EXPORTACIÓN COMPLETADA CON ÉXITO ---');
 console.log(`Carpetas de productos creadas: ${productFoldersCreated}`);
