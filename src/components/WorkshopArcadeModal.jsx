@@ -2113,11 +2113,11 @@ export default function WorkshopArcadeModal({
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center ${isLandscapeMode ? 'p-0' : 'p-1.5 sm:p-4'} bg-black/85 backdrop-blur-md animate-fadeIn`}
+      className={`fixed inset-0 z-50 flex items-center justify-center ${isLandscapeMode ? 'p-0' : 'p-0 sm:p-4'} bg-black/85 backdrop-blur-md animate-fadeIn`}
       onClick={onClose}
     >
       <div
-        className={`relative w-full ${isLandscapeMode ? 'h-full max-h-screen max-w-full rounded-none' : 'max-w-4xl max-h-[96vh] rounded-3xl'} bg-gradient-to-br ${currentTheme.cabinetBg} text-white border-2 ${currentTheme.cabinetBorder} shadow-2xl overflow-hidden flex flex-col transition-all duration-300`}
+        className={`relative w-full ${isLandscapeMode ? 'h-full max-h-screen max-w-full rounded-none' : 'h-[100dvh] sm:h-auto sm:max-h-[96vh] sm:max-w-4xl rounded-none sm:rounded-3xl'} bg-gradient-to-br ${currentTheme.cabinetBg} text-white border-0 sm:border-2 ${currentTheme.cabinetBorder} shadow-2xl overflow-hidden flex flex-col transition-all duration-300`}
         onClick={e => e.stopPropagation()}
       >
         {/* Lluvia de confeti de recompensa estacional */}
@@ -2284,78 +2284,82 @@ export default function WorkshopArcadeModal({
           )}
 
           {activeTab === 'play' && (
-            <div className="space-y-2.5 sm:space-y-4">
-              {/* Selector Deslizable Compacto para Celular (Ultra compacto ~38px: ¡El juego queda arriba de inmediato!) */}
-              <div className="flex sm:hidden items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
-                <span className="text-[10px] font-bold text-gray-400 shrink-0 font-mono px-1">🕹️ Juegos:</span>
-                {currentAvailableGames.map(g => {
-                  const isSel = selectedGameId === g.id;
-                  const active = isGameActive(g.id);
-                  return (
-                    <button
-                      key={`mob-${g.id}`}
-                      type="button"
-                      disabled={!active}
-                      onClick={() => {
-                        if (!active) {
-                          soundSynth.play('hit');
-                          return;
-                        }
-                        setSelectedGameId(g.id);
-                        initGameLogic(g.id);
-                        setGameState('ready');
-                        soundSynth.play('stack');
-                      }}
-                      className={`px-2.5 py-1.5 rounded-xl text-xs font-bold shrink-0 flex items-center gap-1.5 border transition-all cursor-pointer ${
-                        !active
-                          ? 'opacity-40 cursor-not-allowed bg-red-950/20 border-red-500/30 text-rose-300'
-                          : isSel
-                            ? 'bg-[#2D4F3E] border-[#D4A359] text-[#F5D061] ring-2 ring-[#D4A359]/60 shadow-sm'
-                            : 'bg-black/40 border-white/15 text-gray-200 hover:bg-white/10'
-                      }`}
-                      title={!active ? 'Juego inactivo' : g.title}
-                    >
-                      <span className="text-sm">{g.icon}</span>
-                      <span className="text-[11px] font-semibold whitespace-nowrap">{g.title.split(' ')[0]}</span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Selector de Dificultad Dinámica y Asistida por Monedas */}
-              <div className="flex items-center justify-between p-2 rounded-2xl bg-black/40 border border-[#D4A359]/30 text-xs gap-2 flex-wrap sm:flex-nowrap">
-                <div className="flex items-center gap-1.5 shrink-0">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                  <span className="font-bold text-[11px] text-gray-200">Dificultad:</span>
+            <div className="space-y-2 sm:space-y-3">
+              {/* Selector Deslizable Compacto para Celular (Oculto durante partida para no empujar la pantalla) */}
+              {gameState !== 'playing' && (
+                <div className="flex sm:hidden items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+                  <span className="text-[10px] font-bold text-gray-400 shrink-0 font-mono px-1">🕹️ Juegos:</span>
+                  {currentAvailableGames.map(g => {
+                    const isSel = selectedGameId === g.id;
+                    const active = isGameActive(g.id);
+                    return (
+                      <button
+                        key={`mob-${g.id}`}
+                        type="button"
+                        disabled={!active}
+                        onClick={() => {
+                          if (!active) {
+                            soundSynth.play('hit');
+                            return;
+                          }
+                          setSelectedGameId(g.id);
+                          initGameLogic(g.id);
+                          setGameState('ready');
+                          soundSynth.play('stack');
+                        }}
+                        className={`px-2.5 py-1.5 rounded-xl text-xs font-bold shrink-0 flex items-center gap-1.5 border transition-all cursor-pointer ${
+                          !active
+                            ? 'opacity-40 cursor-not-allowed bg-red-950/20 border-red-500/30 text-rose-300'
+                            : isSel
+                              ? 'bg-[#2D4F3E] border-[#D4A359] text-[#F5D061] ring-2 ring-[#D4A359]/60 shadow-sm'
+                              : 'bg-black/40 border-white/15 text-gray-200 hover:bg-white/10'
+                        }`}
+                        title={!active ? 'Juego inactivo' : g.title}
+                      >
+                        <span className="text-sm">{g.icon}</span>
+                        <span className="text-[11px] font-semibold whitespace-nowrap">{g.title.split(' ')[0]}</span>
+                      </button>
+                    );
+                  })}
                 </div>
+              )}
 
-                <div className="flex items-center gap-1 overflow-x-auto no-scrollbar w-full sm:w-auto">
-                  {[
-                    { id: 'easy', label: '⭐ Fácil (Móvil)', hint: 'Velocidad suave & 4 vidas' },
-                    { id: 'normal', label: '⚡ Normal', hint: 'Velocidad estándar & 3 vidas' },
-                    { id: 'pro', label: '🔥 Pro (x2)', hint: 'Mayor velocidad & doble moneda' },
-                    { id: 'auto_coins', label: '🪙 Adaptable', hint: 'Se adapta automáticamente a tu saldo de monedas' }
-                  ].map(m => (
-                    <button
-                      key={m.id}
-                      type="button"
-                      onClick={() => changeDifficultyMode(m.id)}
-                      className={`px-2 py-1 rounded-lg text-[10px] sm:text-[11px] font-bold border transition-all cursor-pointer whitespace-nowrap shrink-0 ${
-                        difficultyMode === m.id
-                          ? 'bg-[#D4A359] text-[#17251E] border-amber-300 shadow-sm font-extrabold ring-1 ring-amber-300/60'
-                          : 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/15'
-                      }`}
-                      title={m.hint}
-                    >
-                      {m.label}
-                    </button>
-                  ))}
-                </div>
+              {/* Selector de Dificultad Dinámica y Asistida por Monedas (Oculto durante partida) */}
+              {gameState !== 'playing' && (
+                <div className="flex items-center justify-between p-2 rounded-2xl bg-black/40 border border-[#D4A359]/30 text-xs gap-2 flex-wrap sm:flex-nowrap">
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                    <span className="font-bold text-[11px] text-gray-200">Dificultad:</span>
+                  </div>
 
-                <div className="text-[10px] text-amber-300 font-mono hidden md:flex items-center gap-1 shrink-0">
-                  <span>{diffSettings.hint}</span>
+                  <div className="flex items-center gap-1 overflow-x-auto no-scrollbar w-full sm:w-auto">
+                    {[
+                      { id: 'easy', label: '⭐ Fácil (Móvil)', hint: 'Velocidad suave & 4 vidas' },
+                      { id: 'normal', label: '⚡ Normal', hint: 'Velocidad estándar & 3 vidas' },
+                      { id: 'pro', label: '🔥 Pro (x2)', hint: 'Mayor velocidad & doble moneda' },
+                      { id: 'auto_coins', label: '🪙 Adaptable', hint: 'Se adapta automáticamente a tu saldo de monedas' }
+                    ].map(m => (
+                      <button
+                        key={m.id}
+                        type="button"
+                        onClick={() => changeDifficultyMode(m.id)}
+                        className={`px-2 py-1 rounded-lg text-[10px] sm:text-[11px] font-bold border transition-all cursor-pointer whitespace-nowrap shrink-0 ${
+                          difficultyMode === m.id
+                            ? 'bg-[#D4A359] text-[#17251E] border-amber-300 shadow-sm font-extrabold ring-1 ring-amber-300/60'
+                            : 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/15'
+                        }`}
+                        title={m.hint}
+                      >
+                        {m.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="text-[10px] text-amber-300 font-mono hidden md:flex items-center gap-1 shrink-0">
+                    <span>{diffSettings.hint}</span>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Selector de Mini-Juegos para Escritorio (Preservado en cuadrícula de 5 columnas) */}
               <div className="hidden sm:grid sm:grid-cols-5 gap-2">
@@ -2424,18 +2428,18 @@ export default function WorkshopArcadeModal({
               </div>
 
               {/* HUD Superior de la Partida */}
-              <div className="flex items-center justify-between px-3 sm:px-4 py-2 rounded-2xl bg-black/40 border border-[#D4A359]/30 text-xs font-mono flex-wrap gap-2">
+              <div className="flex items-center justify-between px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-2xl bg-black/40 border border-[#D4A359]/30 text-xs font-mono flex-wrap gap-1.5 sm:gap-2">
                 {/* Vidas Dinámicas */}
-                <div className="flex items-center gap-1.5">
-                  <span className="text-gray-400 text-[11px]">Vidas:</span>
-                  <div className="flex gap-1 text-sm">
+                <div className="flex items-center gap-1">
+                  <span className="text-gray-400 text-[10px] sm:text-[11px]">Vidas:</span>
+                  <div className="flex gap-0.5 text-xs sm:text-sm">
                     {Array.from({ length: Math.max(diffSettings.initialLives, lives) }, (_, i) => i + 1).map(heartIdx => (
                       <span key={heartIdx} className={heartIdx <= lives ? 'opacity-100' : 'opacity-25 grayscale'}>
                         ❤️
                       </span>
                     ))}
                     {hasShield && (
-                      <span className="text-sm animate-pulse" title="🛡️ Escudo Asistido Activo (absorbe 1 fallo)">
+                      <span className="text-xs sm:text-sm animate-pulse" title="🛡️ Escudo Asistido Activo (absorbe 1 fallo)">
                         🛡️
                       </span>
                     )}
@@ -2443,39 +2447,49 @@ export default function WorkshopArcadeModal({
                 </div>
 
                 {/* Nivel y Dificultad Dinámica */}
-                <div className="flex items-center gap-1.5 text-amber-300">
+                <div className="flex items-center gap-1 text-amber-300">
                   <Flame className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
-                  <span className="font-bold text-[11px] sm:text-xs">
-                    Nivel {currentLevel} · {diffSettings.badge} · +{coinsEarned}🪙
+                  <span className="font-bold text-[10px] sm:text-xs">
+                    Nv {currentLevel} · +{coinsEarned}🪙
                   </span>
                 </div>
 
                 {/* Reloj regresivo */}
-                <div className="flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-emerald-400" />
-                  <span className={`font-bold ${timeLeft < 30 ? 'text-red-400 animate-ping' : 'text-emerald-300'}`}>
+                <div className="flex items-center gap-1">
+                  <Clock className="w-3 h-3 text-emerald-400" />
+                  <span className={`font-bold text-xs ${timeLeft < 30 ? 'text-red-400 animate-ping' : 'text-emerald-300'}`}>
                     {formatTime(timeLeft)}
                   </span>
                 </div>
 
-                {/* Puntos y Botón de Giro en Pantalla */}
-                <div className="flex items-center gap-2">
-                  <span className="text-gray-300">Pts: <strong className="text-white">{score}</strong></span>
+                {/* Puntos y Botón de Pausa / Giro */}
+                <div className="flex items-center gap-1.5">
+                  <span className="text-gray-300 text-[11px] sm:text-xs">Pts: <strong className="text-white">{score}</strong></span>
+                  {gameState === 'playing' && (
+                    <button
+                      type="button"
+                      onClick={() => setGameState('ready')}
+                      className="px-2 py-0.5 rounded-lg bg-red-600/80 hover:bg-red-700 text-white text-[10px] font-bold cursor-pointer transition-all active:scale-95"
+                      title="Detener o cambiar juego"
+                    >
+                      Pausar
+                    </button>
+                  )}
                   <button
                     type="button"
                     onClick={toggleOrientationMode}
-                    className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-amber-300 border border-white/20 text-[11px] flex items-center gap-1 cursor-pointer transition-colors active:scale-95"
+                    className="p-1 rounded-lg bg-white/10 hover:bg-white/20 text-amber-300 border border-white/20 text-[10px] sm:text-[11px] flex items-center gap-1 cursor-pointer transition-colors active:scale-95"
                     title={isLandscapeMode ? "Modo normal" : "Modo horizontal / pantalla completa"}
                   >
-                    <RotateCw className={`w-3.5 h-3.5 ${isLandscapeMode ? 'rotate-90 text-amber-200' : ''}`} />
+                    <RotateCw className={`w-3 h-3 ${isLandscapeMode ? 'rotate-90 text-amber-200' : ''}`} />
                     <span className="hidden sm:inline">{isLandscapeMode ? 'Normal' : 'Girar'}</span>
                   </button>
                 </div>
               </div>
 
-              {/* PANTALLA CANVAS DEL JUEGO CON BORDE TEMÁTICO */}
+              {/* PANTALLA CANVAS DEL JUEGO CON BORDE TEMÁTICO (Optimizado táctil touch-none) */}
               <div
-                className={`relative w-full aspect-video ${isLandscapeMode ? 'max-h-[55vh] sm:max-h-[65vh]' : 'max-h-[380px]'} bg-black rounded-3xl overflow-hidden border-2 ${currentTheme.screenBorder} shadow-inner flex items-center justify-center cursor-pointer select-none`}
+                className={`relative w-full aspect-video ${isLandscapeMode ? 'max-h-[55vh] sm:max-h-[65vh]' : 'max-h-[35vh] sm:max-h-[380px]'} bg-black rounded-2xl sm:rounded-3xl overflow-hidden border-2 ${currentTheme.screenBorder} shadow-inner flex items-center justify-center cursor-pointer select-none touch-none`}
                 onClick={handleAction}
                 onMouseMove={handleCanvasMouseMove}
                 onTouchMove={handleCanvasTouchMove}
@@ -2596,13 +2610,13 @@ export default function WorkshopArcadeModal({
                 )}
               </div>
 
-              {/* CONTROLES VIRTUALES COMPLETOS PARA CELULAR (GAMEPAD MÓVIL) */}
+              {/* CONTROLES VIRTUALES COMPLETOS PARA CELULAR (GAMEPAD MÓVIL OPTIMIZADO) */}
               {gameState === 'playing' && (
-                <div className="pt-2 pb-1 space-y-2.5 select-none animate-fadeIn">
+                <div className="pt-1.5 pb-1 space-y-2 select-none touch-manipulation animate-fadeIn">
                   
                   {/* Mezclador de Tintas: 4 botones de selección CMYK táctiles */}
                   {selectedGameId === 'inkmixer' && (
-                    <div className="grid grid-cols-4 gap-2 pt-1">
+                    <div className="grid grid-cols-4 gap-1.5 pt-1">
                       {[
                         { key: 'cyan', label: '🔵 Cian', hex: 'bg-cyan-600' },
                         { key: 'magenta', label: '🔴 Magenta', hex: 'bg-pink-600' },
@@ -2613,7 +2627,7 @@ export default function WorkshopArcadeModal({
                           key={ink.key}
                           type="button"
                           onClick={() => handleSelectInk(ink.key)}
-                          className={`py-3 rounded-2xl text-xs font-black text-white shadow-md cursor-pointer hover:scale-105 active:scale-95 transition-all text-center ${ink.hex}`}
+                          className={`py-2.5 sm:py-3 rounded-2xl text-xs font-black text-white shadow-md cursor-pointer hover:scale-105 active:scale-95 transition-all text-center touch-manipulation ${ink.hex}`}
                         >
                           {ink.label}
                         </button>
@@ -2623,15 +2637,15 @@ export default function WorkshopArcadeModal({
 
                   {/* Sierra Ninja: Pista táctil interactiva */}
                   {selectedGameId === 'saw' && (
-                    <div className="py-2.5 px-4 rounded-2xl bg-amber-500/20 border border-amber-400/40 text-amber-200 text-xs font-bold text-center flex items-center justify-center gap-2">
-                      <span className="text-lg">🪚</span>
+                    <div className="py-2 px-3 rounded-2xl bg-amber-500/20 border border-amber-400/40 text-amber-200 text-xs font-bold text-center flex items-center justify-center gap-2">
+                      <span className="text-base">🪚</span>
                       <span>¡Desliza tu dedo sobre la pantalla para cortar las piezas en el aire! Esquiva tornillos 🔩</span>
                     </div>
                   )}
 
                   {/* Controles de Movimiento Izquierda / Derecha para Atrapa-Piezas y Rompemuros */}
                   {(selectedGameId === 'collector' || selectedGameId === 'breaker') && (
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-2 gap-2.5">
                       <button
                         type="button"
                         onClick={handleMoveLeft}
@@ -2639,9 +2653,9 @@ export default function WorkshopArcadeModal({
                           e.preventDefault();
                           handleMoveLeft();
                         }}
-                        className="h-14 sm:h-16 rounded-2xl bg-gradient-to-b from-white/20 to-white/10 hover:bg-white/25 active:bg-[#D4A359] active:text-[#17251E] text-white font-black text-sm flex items-center justify-center gap-2 border-2 border-white/30 shadow-lg active:scale-95 transition-all cursor-pointer"
+                        className="h-12 sm:h-14 rounded-2xl bg-gradient-to-b from-white/20 to-white/10 hover:bg-white/25 active:bg-[#D4A359] active:text-[#17251E] text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 border-2 border-white/30 shadow-lg active:scale-95 transition-all cursor-pointer touch-manipulation"
                       >
-                        <span className="text-2xl">◀</span>
+                        <span className="text-xl sm:text-2xl">◀</span>
                         <span>Mover Izquierda</span>
                       </button>
 
@@ -2652,10 +2666,10 @@ export default function WorkshopArcadeModal({
                           e.preventDefault();
                           handleMoveRight();
                         }}
-                        className="h-14 sm:h-16 rounded-2xl bg-gradient-to-b from-white/20 to-white/10 hover:bg-white/25 active:bg-[#D4A359] active:text-[#17251E] text-white font-black text-sm flex items-center justify-center gap-2 border-2 border-white/30 shadow-lg active:scale-95 transition-all cursor-pointer"
+                        className="h-12 sm:h-14 rounded-2xl bg-gradient-to-b from-white/20 to-white/10 hover:bg-white/25 active:bg-[#D4A359] active:text-[#17251E] text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 border-2 border-white/30 shadow-lg active:scale-95 transition-all cursor-pointer touch-manipulation"
                       >
                         <span>Mover Derecha</span>
-                        <span className="text-2xl">▶</span>
+                        <span className="text-xl sm:text-2xl">▶</span>
                       </button>
                     </div>
                   )}
@@ -2670,9 +2684,9 @@ export default function WorkshopArcadeModal({
                           e.preventDefault();
                           handleAction();
                         }}
-                        className="w-full h-14 sm:h-16 rounded-2xl bg-gradient-to-r from-amber-400 via-[#F5D061] to-amber-500 hover:brightness-110 active:scale-95 text-[#17251E] font-black text-base transition-all shadow-[0_8px_25px_rgba(245,158,11,0.5)] border-2 border-white/80 flex items-center justify-center gap-3 cursor-pointer"
+                        className="w-full h-12 sm:h-14 rounded-2xl bg-gradient-to-r from-amber-400 via-[#F5D061] to-amber-500 hover:brightness-110 active:scale-95 text-[#17251E] font-black text-sm sm:text-base transition-all shadow-[0_6px_20px_rgba(245,158,11,0.4)] border-2 border-white/80 flex items-center justify-center gap-2.5 cursor-pointer touch-manipulation"
                       >
-                        <span className="text-2xl">{getGameActionLabel(selectedGameId).icon}</span>
+                        <span className="text-xl sm:text-2xl">{getGameActionLabel(selectedGameId).icon}</span>
                         <span>{getGameActionLabel(selectedGameId).label}</span>
                       </button>
                     </div>

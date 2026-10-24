@@ -10,6 +10,7 @@ import {
   MessageCircle,
   ExternalLink,
   ChevronRight,
+  ChevronDown,
   CheckCircle2,
   ShieldCheck,
   Send,
@@ -32,6 +33,7 @@ export default function PublicidadDesarrolloView({
   onSelectWorld
 }) {
   const [activeTab, setActiveTab] = useState('servicios'); // 'servicios' | 'portafolio' | 'cotizador' | 'visor'
+  const [expandedService, setExpandedService] = useState('branding'); // 'branding' | 'publicidad' | 'web' | 'modelado' | 'audiovisual'
   const [portfolioFilter, setPortfolioFilter] = useState('all'); // 'all' | 'identidad' | 'impresos' | 'interfaces' | 'modelado'
   const [selectedProject, setSelectedProject] = useState(null);
 
@@ -351,44 +353,25 @@ ${quoteNotes ? `📝 *Detalles de mi idea:* ${quoteNotes}\n` : ''}
                 </div>
               </div>
 
-              {/* Botones de Acción */}
-              <div className="flex flex-wrap items-center gap-3 pt-4">
+              {/* Botón de Acción Principal y Compacto */}
+              <div className="pt-2">
                 <button
                   type="button"
                   onClick={() => setActiveTab('cotizador')}
-                  className="px-6 py-3.5 rounded-2xl bg-[#e8b84f] hover:bg-[#d9a83e] text-[#121519] font-black text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer"
+                  className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-[#e8b84f] hover:bg-[#d9a83e] text-[#121519] font-black text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <MessageCircle className="w-4 h-4 fill-[#121519]" />
                   <span>Cotizar Proyecto a Medida</span>
                 </button>
-
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('portafolio')}
-                  className="px-5 py-3.5 rounded-2xl bg-white/10 hover:bg-white/15 text-white font-bold text-sm border border-white/20 transition-all flex items-center gap-2 cursor-pointer"
-                >
-                  <Eye className="w-4 h-4" />
-                  <span>Ver Trabajos Realizados</span>
-                </button>
-
-                <a
-                  href="/maquetado-inicio-wicho-v2/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="px-4 py-3.5 rounded-2xl bg-transparent hover:bg-white/5 text-stone-400 hover:text-white font-medium text-xs transition-colors flex items-center gap-1.5"
-                >
-                  <span>Abrir Portafolio UX (v2)</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
               </div>
             </div>
 
             {/* Columna Derecha: Tarjeta de Wicho Nemes */}
             <div className="lg:col-span-5">
-              <div className="relative rounded-3xl bg-gradient-to-br from-[#1d2228] to-[#14171b] border border-stone-700/60 p-6 sm:p-7 shadow-2xl">
+              <div className="relative rounded-3xl bg-gradient-to-br from-[#1d2228] to-[#14171b] border border-stone-700/60 p-5 sm:p-7 shadow-2xl">
                 
                 {/* Header de la tarjeta */}
-                <div className="flex items-center justify-between pb-4 border-b border-white/10">
+                <div className="flex items-center justify-between pb-3.5 border-b border-white/10">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl border border-[#e8b84f]/40 bg-[#101215] flex items-center justify-center p-1.5 shadow-inner">
                       <img
@@ -410,8 +393,8 @@ ${quoteNotes ? `📝 *Detalles de mi idea:* ${quoteNotes}\n` : ''}
                 </div>
 
                 {/* Retrato y Presentación */}
-                <div className="py-5 flex items-center gap-5">
-                  <div className="w-24 h-28 sm:w-28 sm:h-32 shrink-0 rounded-2xl bg-gradient-to-b from-[#252b33] to-[#121519] border border-white/15 overflow-hidden shadow-lg">
+                <div className="py-4 flex items-center gap-4 sm:gap-5">
+                  <div className="w-20 h-24 sm:w-26 sm:h-30 shrink-0 rounded-2xl bg-gradient-to-b from-[#252b33] to-[#121519] border border-white/15 overflow-hidden shadow-lg">
                     <img
                       src="/maquetado-inicio-wicho-v2/assets/perfil-sin-fondo.png"
                       alt="Wicho Nemes"
@@ -422,7 +405,7 @@ ${quoteNotes ? `📝 *Detalles de mi idea:* ${quoteNotes}\n` : ''}
                     />
                   </div>
 
-                  <div className="space-y-2 text-xs text-stone-300 leading-relaxed font-normal">
+                  <div className="space-y-1.5 text-xs text-stone-300 leading-relaxed font-normal">
                     <p className="italic text-stone-200">
                       "Ideas claras. Diseño con intención. Cada pieza visual debe resolver un propósito comercial real."
                     </p>
@@ -432,17 +415,30 @@ ${quoteNotes ? `📝 *Detalles de mi idea:* ${quoteNotes}\n` : ''}
                   </div>
                 </div>
 
-                {/* Atajos Rápidos */}
-                <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs text-stone-400">
-                  <span>8 Disciplinas Integradas</span>
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab('visor')}
-                    className="text-[#e8b84f] hover:underline font-bold flex items-center gap-1 cursor-pointer"
-                  >
-                    <span>Explorar maqueta UX</span>
-                    <ChevronRight className="w-3.5 h-3.5" />
-                  </button>
+                {/* Atajos de Portafolio: Ubicados exactamente al lado de Explorar Maqueta UX */}
+                <div className="pt-3 border-t border-white/10 flex flex-wrap items-center justify-between gap-2 text-xs">
+                  <span className="text-stone-400 text-[11px] font-medium">Portafolio personal:</span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab('portafolio')}
+                      className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-[11px] transition-all flex items-center gap-1.5 cursor-pointer border border-white/15 active:scale-95 shadow-xs"
+                      title="Ver catálogo de proyectos reales"
+                    >
+                      <Eye className="w-3.5 h-3.5 text-[#e8b84f]" />
+                      <span>Ver Trabajos</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab('visor')}
+                      className="px-3 py-1.5 rounded-xl bg-[#e8b84f]/15 hover:bg-[#e8b84f]/25 text-[#e8b84f] font-bold text-[11px] transition-all flex items-center gap-1.5 cursor-pointer border border-[#e8b84f]/30 active:scale-95 shadow-xs"
+                      title="Explorar maqueta interactiva completa"
+                    >
+                      <Monitor className="w-3.5 h-3.5" />
+                      <span>Explorar Maqueta UX</span>
+                      <ChevronRight className="w-3 h-3" />
+                    </button>
+                  </div>
                 </div>
 
               </div>
@@ -531,110 +527,166 @@ ${quoteNotes ? `📝 *Detalles de mi idea:* ${quoteNotes}\n` : ''}
       {/* 3. CONTENIDO SEGÚN LA PESTAÑA ACTIVA */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
 
-        {/* ================= PESTAÑA: SERVICIOS ================= */}
+        {/* ================= PESTAÑA: SERVICIOS (ACORDEÓN / PESTAÑAS COMPACTAS) ================= */}
         {activeTab === 'servicios' && (
-          <div className="space-y-12">
+          <div className="space-y-6 max-w-4xl mx-auto">
             
-            <div className="text-center max-w-2xl mx-auto space-y-2">
+            <div className="text-center max-w-xl mx-auto space-y-1.5">
               <span className="text-xs font-bold uppercase tracking-wider text-[#D4A359]">
-                Lo que hacemos en el taller
+                Especialidades de Taller
               </span>
-              <h2 className="text-2xl sm:text-4xl font-extrabold font-heading text-stone-900 tracking-tight">
-                Cinco disciplinas para impulsar tu negocio
+              <h2 className="text-xl sm:text-3xl font-extrabold font-heading text-stone-900 tracking-tight">
+                Elige un servicio para ver lo que incluye
               </h2>
-              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed font-normal">
-                Desde diseñar tu logotipo o rotular tu fachada, hasta programar tu tienda web e imprimir piezas en 3D.
+              <p className="text-xs text-stone-600 font-normal">
+                Toca cada categoría para desplegar la información completa de sus paquetes y entregables.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-              {servicesList.map((srv) => {
+            {/* Selector de Pestañas Compacto (Píldoras rápidas para celular) */}
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+              {servicesList.map(srv => {
+                const isSelected = expandedService === srv.id;
                 const Icon = srv.icon;
+                return (
+                  <button
+                    key={srv.id}
+                    type="button"
+                    onClick={() => setExpandedService(srv.id)}
+                    className={`px-3.5 py-2 rounded-2xl text-xs font-bold transition-all shrink-0 flex items-center gap-2 cursor-pointer ${
+                      isSelected
+                        ? 'bg-[#17251E] text-white shadow-md ring-2 ring-[#D4A359]/70'
+                        : 'bg-white border border-stone-200 text-stone-700 hover:bg-stone-50'
+                    }`}
+                  >
+                    <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-[#D4A359]' : 'text-stone-500'}`} />
+                    <span>{srv.tag}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Acordeón Interactivo Desplegable (Cero scroll excesivo) */}
+            <div className="space-y-3">
+              {servicesList.map(srv => {
+                const isExpanded = expandedService === srv.id;
+                const Icon = srv.icon;
+
                 return (
                   <div
                     key={srv.id}
-                    className="bg-white rounded-3xl border border-stone-200 p-6 sm:p-7 shadow-xs hover:shadow-xl transition-all flex flex-col justify-between space-y-6 group"
+                    className={`rounded-3xl border transition-all overflow-hidden ${
+                      isExpanded
+                        ? 'bg-white border-[#2D4F3E] ring-2 ring-[#2D4F3E]/20 shadow-lg'
+                        : 'bg-white/80 border-stone-200 hover:border-stone-300 shadow-xs'
+                    }`}
                   >
-                    <div className="space-y-4">
-                      
-                      <div className="flex items-center justify-between">
-                        <div className="w-12 h-12 rounded-2xl bg-stone-100 border border-stone-200 flex items-center justify-center text-stone-800 group-hover:scale-105 transition-transform">
-                          <Icon className="w-6 h-6 text-[#2D4F3E]" />
+                    {/* Fila Cabecera del Servicio (Tocable para abrir o cerrar) */}
+                    <button
+                      type="button"
+                      onClick={() => setExpandedService(isExpanded ? '' : srv.id)}
+                      className="w-full p-4 sm:p-5 flex items-center justify-between gap-4 text-left cursor-pointer transition-colors hover:bg-stone-50/50"
+                    >
+                      <div className="flex items-center gap-3.5 min-w-0">
+                        <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 transition-transform ${
+                          isExpanded ? 'bg-[#17251E] text-[#D4A359] scale-105' : 'bg-stone-100 text-stone-700'
+                        }`}>
+                          <Icon className="w-5 h-5" />
                         </div>
-                        <span className="text-[11px] font-bold text-stone-500 bg-stone-100 px-3 py-1 rounded-full">
-                          {srv.tag}
-                        </span>
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500 bg-stone-100 px-2 py-0.5 rounded-md">
+                              {srv.tag}
+                            </span>
+                            {isExpanded && (
+                              <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">
+                                Abierto
+                              </span>
+                            )}
+                          </div>
+                          <h3 className="font-heading font-black text-sm sm:text-base text-stone-900 mt-0.5 truncate">
+                            {srv.title}
+                          </h3>
+                        </div>
                       </div>
 
-                      <div className="space-y-1.5">
-                        <h3 className="text-lg font-bold text-stone-900 font-heading">
-                          {srv.title}
-                        </h3>
-                        <p className="text-xs text-stone-600 leading-relaxed font-normal">
+                      <div className="shrink-0 flex items-center gap-2">
+                        <span className="text-xs font-bold text-stone-500 hidden sm:inline">
+                          {isExpanded ? 'Ocultar detalles' : 'Ver lo que incluye'}
+                        </span>
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center border transition-transform ${
+                          isExpanded ? 'bg-[#17251E] text-white rotate-180 border-[#17251E]' : 'bg-stone-100 text-stone-600 border-stone-200'
+                        }`}>
+                          <ChevronDown className="w-4 h-4" />
+                        </div>
+                      </div>
+                    </button>
+
+                    {/* Contenido Desplegable Completo del Paquete */}
+                    {isExpanded && (
+                      <div className="px-4 sm:px-6 pb-6 pt-2 border-t border-stone-100 space-y-5 animate-fadeIn">
+                        
+                        <p className="text-xs sm:text-sm text-stone-700 leading-relaxed font-normal">
                           {srv.summary}
                         </p>
-                      </div>
 
-                      {/* Lista de entregables */}
-                      <div className="space-y-2 pt-2 border-t border-stone-100">
-                        <div className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
-                          Entregables incluidos:
+                        {/* Entregables incluidos en el paquete */}
+                        <div className="bg-[#FAF9F5] p-4 sm:p-5 rounded-2xl border border-stone-200/80 space-y-3">
+                          <div className="text-[11px] font-black uppercase tracking-wider text-stone-800 flex items-center gap-1.5">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                            <span>Lo que incluye cada paquete de {srv.title.split('&')[0].trim()}:</span>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                            {srv.deliverables.map((item, idx) => (
+                              <div key={idx} className="flex items-start gap-2 text-xs text-stone-700 font-normal">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 mt-1.5 shrink-0" />
+                                <span className="leading-snug">{item}</span>
+                              </div>
+                            ))}
+                          </div>
                         </div>
-                        <ul className="space-y-1.5">
-                          {srv.deliverables.map((item, idx) => (
-                            <li key={idx} className="flex items-start gap-2 text-xs text-stone-700 font-normal">
-                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                              <span className="leading-snug">{item}</span>
-                            </li>
-                          ))}
-                        </ul>
+
+                        {/* Ideal para + Botones de Acción */}
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
+                          <div className="text-[11px] text-stone-600 italic max-w-md">
+                            <strong>Ideal para:</strong> {srv.idealFor}
+                          </div>
+
+                          <div className="flex items-center gap-2 shrink-0">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setQuoteService(srv.id === 'audiovisual' ? 'branding' : srv.id);
+                                setActiveTab('cotizador');
+                              }}
+                              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#17251E] hover:bg-[#2D4F3E] text-white font-bold text-xs transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
+                            >
+                              <span>Cotizar este paquete</span>
+                              <ArrowRight className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+
                       </div>
-
-                    </div>
-
-                    <div className="pt-4 border-t border-stone-100 space-y-3">
-                      <div className="text-[11px] text-stone-500 italic bg-[#F7F4EC] p-2.5 rounded-xl border border-stone-200/60">
-                        <strong>Ideal para:</strong> {srv.idealFor}
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setQuoteService(srv.id === 'audiovisual' ? 'branding' : srv.id);
-                          setActiveTab('cotizador');
-                        }}
-                        className="w-full py-2.5 rounded-xl bg-stone-900 hover:bg-[#2D4F3E] text-white font-bold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
-                      >
-                        <span>Cotizar este servicio</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-
+                    )}
                   </div>
                 );
               })}
             </div>
 
-            {/* Banner de Sinergia Físico + Digital */}
-            <div className="rounded-3xl bg-gradient-to-r from-[#17251E] via-[#243B2F] to-[#1F2421] text-white p-8 sm:p-10 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
-              <div className="space-y-2 max-w-2xl">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#D4A359]">
-                  La ventaja única de Artesano Digital
-                </span>
-                <h3 className="text-2xl sm:text-3xl font-extrabold font-heading">
-                  ¿Por qué contratar diseño con quien también fabrica en taller?
-                </h3>
-                <p className="text-xs sm:text-sm text-stone-300 leading-relaxed font-normal">
-                  Los diseñadores de escritorio suelen diseñar cosas imposibles de imprimir o fabricar. En Artesano Digital diseñamos conociendo el gramaje del papel, las tolerancias del láser, las densidades de la lona y la retracción del plástico 3D. Tu proyecto saldrá perfecto a la primera.
-                </p>
+            {/* Sinergia Taller banner compacto */}
+            <div className="rounded-3xl bg-gradient-to-r from-[#17251E] via-[#243B2F] to-[#1F2421] text-white p-5 sm:p-7 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="space-y-1 text-center sm:text-left">
+                <div className="text-xs font-bold text-[#D4A359]">¿Tienes un proyecto especial o medidas específicas?</div>
+                <div className="text-sm text-stone-200">Cotizamos directo en taller con medidas exactas y pruebas previas.</div>
               </div>
-
               <button
                 type="button"
                 onClick={() => setActiveTab('cotizador')}
-                className="shrink-0 px-6 py-3.5 rounded-2xl bg-[#D4A359] hover:bg-[#c39247] text-[#17251E] font-black text-xs sm:text-sm transition-all shadow-md cursor-pointer"
+                className="shrink-0 px-5 py-2.5 rounded-xl bg-[#D4A359] hover:bg-[#c39247] text-[#17251E] font-black text-xs transition-all shadow-md cursor-pointer"
               >
-                Solicitar Asesoría de Taller
+                Abrir Cotizador Rápido
               </button>
             </div>
 
