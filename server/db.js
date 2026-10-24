@@ -70,53 +70,283 @@ const initialWorlds = [
 
 // Initial Categories Taxonomy (Empty ones remain hidden to public until products are assigned!)
 const initialCategories = [
-  // HOGAR
-  { id: 'hogar-organizacion', worldId: 'hogar', name: 'Organización y almacenamiento', order: 1 },
-  { id: 'hogar-decoracion', worldId: 'hogar', name: 'Decoración y espacios', order: 2 },
-  { id: 'hogar-mascotas', worldId: 'hogar', name: 'Mascotas', order: 3 },
-  { id: 'hogar-infantil', worldId: 'hogar', name: 'Juguetes y actividades infantiles', order: 4 },
-  { id: 'hogar-estudio', worldId: 'hogar', name: 'Estudio, escritorio y home office', order: 5 },
-  { id: 'hogar-cocina', worldId: 'hogar', name: 'Cocina y mesa', order: 6 },
-  { id: 'hogar-regalos', worldId: 'hogar', name: 'Regalos y detalles personales', order: 7 },
-  { id: 'hogar-hobbies', worldId: 'hogar', name: 'Hobbies y colecciones', order: 8 },
-
-  // NEGOCIOS
-  { id: 'negocios-restaurantes', worldId: 'negocios', name: 'Restaurantes, cafeterías y reposterías', order: 1 },
-  { id: 'negocios-barberias', worldId: 'negocios', name: 'Barberías, salones de belleza y uñas', order: 2 },
-  { id: 'negocios-tiendas', worldId: 'negocios', name: 'Tiendas, boutiques y comercios', order: 3 },
-  { id: 'negocios-joyerias', worldId: 'negocios', name: 'Joyerías y accesorios', order: 4 },
-  { id: 'negocios-arte', worldId: 'negocios', name: 'Arte, diseño y fotografía', order: 5 },
-  { id: 'negocios-veterinarias', worldId: 'negocios', name: 'Veterinarias y estéticas caninas', order: 6 },
-  { id: 'negocios-gym', worldId: 'negocios', name: 'Gimnasios y centros deportivos', order: 7 },
-  { id: 'negocios-oficinas', worldId: 'negocios', name: 'Oficinas, profesionales y coworking', order: 8 },
-  { id: 'negocios-escuelas', worldId: 'negocios', name: 'Escuelas y centros de aprendizaje', order: 9 },
-  { id: 'negocios-consultorios', worldId: 'negocios', name: 'Consultorios y bienestar', order: 10 },
-  { id: 'negocios-hoteles', worldId: 'negocios', name: 'Hoteles, alojamientos y turismo', order: 11 },
-  { id: 'negocios-emprendedores', worldId: 'negocios', name: 'Emprendedores, ferias y exposiciones', order: 12 },
-
-  // EVENTOS ESPECIALES
-  { id: 'eventos-cumpleanos', worldId: 'eventos', name: 'Cumpleaños', order: 1 },
-  { id: 'eventos-bautizos', worldId: 'eventos', name: 'Bautizos', order: 2 },
-  { id: 'eventos-comunion', worldId: 'eventos', name: 'Primera comunión y confirmación', order: 3 },
-  { id: 'eventos-xvanos', worldId: 'eventos', name: 'XV años', order: 4 },
-  { id: 'eventos-bodas', worldId: 'eventos', name: 'Bodas y aniversarios', order: 5 },
-  { id: 'eventos-babyshower', worldId: 'eventos', name: 'Baby shower y bienvenida', order: 6 },
-  { id: 'eventos-graduaciones', worldId: 'eventos', name: 'Graduaciones', order: 7 },
-  { id: 'eventos-temporada', worldId: 'eventos', name: 'Celebraciones de temporada', order: 8 },
-  { id: 'eventos-empresariales', worldId: 'eventos', name: 'Eventos empresariales', order: 9 },
-  { id: 'eventos-otras', worldId: 'eventos', name: 'Otras celebraciones', order: 10 },
-
-  // JUGUETES & CREATIVIDAD INFANTIL
-  { id: 'juguetes-movimiento', worldId: 'juguetes', name: 'Juguetes con movimiento mecánico y acción', order: 1 },
-  { id: 'juguetes-articulados', worldId: 'juguetes', name: 'Juguetes articulados print-in-place', order: 2 },
-  { id: 'juguetes-fidget', worldId: 'juguetes', name: 'Fidget toys y rompecabezas de destreza', order: 3 },
-  { id: 'juguetes-vehiculos', worldId: 'juguetes', name: 'Autos y vehículos miniatura', order: 4 },
-
-  // INDUSTRIA & PROTOTIPADO 3D
-  { id: 'industria-automotriz', worldId: 'industria', name: 'Refacciones y componentes automotrices', order: 1 },
-  { id: 'industria-calibracion', worldId: 'industria', name: 'Herramientas de taller y galgas de medición', order: 2 },
-  { id: 'industria-utillaje', worldId: 'industria', name: 'Utillaje, guías y plantillas de ensamble', order: 3 },
-  { id: 'industria-gabinetes', worldId: 'industria', name: 'Carcasas técnicas y prototipos de ingeniería', order: 4 }
+  {
+    "id": "hogar-organizacion",
+    "worldId": "hogar",
+    "name": "Organización y almacenamiento",
+    "order": 1
+  },
+  {
+    "id": "hogar-decoracion",
+    "worldId": "hogar",
+    "name": "Decoración y espacios",
+    "order": 2
+  },
+  {
+    "id": "hogar-mascotas",
+    "worldId": "hogar",
+    "name": "Mascotas",
+    "order": 3
+  },
+  {
+    "id": "hogar-infantil",
+    "worldId": "hogar",
+    "name": "Juguetes y actividades infantiles",
+    "order": 4
+  },
+  {
+    "id": "hogar-estudio",
+    "worldId": "hogar",
+    "name": "Estudio, escritorio y home office",
+    "order": 5
+  },
+  {
+    "id": "hogar-cocina",
+    "worldId": "hogar",
+    "name": "Cocina y mesa",
+    "order": 6
+  },
+  {
+    "id": "hogar-regalos",
+    "worldId": "hogar",
+    "name": "Regalos y detalles personales",
+    "order": 7
+  },
+  {
+    "id": "hogar-hobbies",
+    "worldId": "hogar",
+    "name": "Hobbies y colecciones",
+    "order": 8
+  },
+  {
+    "id": "negocios-restaurantes",
+    "worldId": "negocios",
+    "name": "Restaurantes, cafeterías y reposterías",
+    "order": 1
+  },
+  {
+    "id": "negocios-barberias",
+    "worldId": "negocios",
+    "name": "Barberías, salones de belleza y uñas",
+    "order": 2
+  },
+  {
+    "id": "negocios-tiendas",
+    "worldId": "negocios",
+    "name": "Tiendas, boutiques y comercios",
+    "order": 3
+  },
+  {
+    "id": "negocios-joyerias",
+    "worldId": "negocios",
+    "name": "Joyerías y accesorios",
+    "order": 4
+  },
+  {
+    "id": "negocios-arte",
+    "worldId": "negocios",
+    "name": "Arte, diseño y fotografía",
+    "order": 5,
+    "isHidden": false
+  },
+  {
+    "id": "negocios-veterinarias",
+    "worldId": "negocios",
+    "name": "Veterinarias y estéticas caninas",
+    "order": 6
+  },
+  {
+    "id": "negocios-gym",
+    "worldId": "negocios",
+    "name": "Gimnasios y centros deportivos",
+    "order": 7
+  },
+  {
+    "id": "negocios-oficinas",
+    "worldId": "negocios",
+    "name": "Oficinas, profesionales y coworking",
+    "order": 8
+  },
+  {
+    "id": "negocios-escuelas",
+    "worldId": "negocios",
+    "name": "Escuelas y centros de aprendizaje",
+    "order": 9
+  },
+  {
+    "id": "negocios-consultorios",
+    "worldId": "negocios",
+    "name": "Consultorios y bienestar",
+    "order": 10
+  },
+  {
+    "id": "negocios-hoteles",
+    "worldId": "negocios",
+    "name": "Hoteles, alojamientos y turismo",
+    "order": 11
+  },
+  {
+    "id": "negocios-emprendedores",
+    "worldId": "negocios",
+    "name": "Emprendedores, ferias y exposiciones",
+    "order": 12
+  },
+  {
+    "id": "eventos-cumpleanos",
+    "worldId": "eventos",
+    "name": "Cumpleaños",
+    "order": 1
+  },
+  {
+    "id": "eventos-bautizos",
+    "worldId": "eventos",
+    "name": "Bautizos",
+    "order": 2
+  },
+  {
+    "id": "eventos-comunion",
+    "worldId": "eventos",
+    "name": "Primera comunión y confirmación",
+    "order": 3
+  },
+  {
+    "id": "eventos-xvanos",
+    "worldId": "eventos",
+    "name": "XV años",
+    "order": 4
+  },
+  {
+    "id": "eventos-bodas",
+    "worldId": "eventos",
+    "name": "Bodas y aniversarios",
+    "order": 5
+  },
+  {
+    "id": "eventos-babyshower",
+    "worldId": "eventos",
+    "name": "Baby shower y bienvenida",
+    "order": 6
+  },
+  {
+    "id": "eventos-graduaciones",
+    "worldId": "eventos",
+    "name": "Graduaciones",
+    "order": 7
+  },
+  {
+    "id": "eventos-temporada",
+    "worldId": "eventos",
+    "name": "Celebraciones de temporada",
+    "order": 8
+  },
+  {
+    "id": "eventos-empresariales",
+    "worldId": "eventos",
+    "name": "Eventos empresariales",
+    "order": 9
+  },
+  {
+    "id": "eventos-otras",
+    "worldId": "eventos",
+    "name": "Otras celebraciones",
+    "order": 10
+  },
+  {
+    "id": "juguetes-movimiento",
+    "worldId": "juguetes",
+    "name": "Juguetes con movimiento mecánico y acción",
+    "order": 1
+  },
+  {
+    "id": "juguetes-articulados",
+    "worldId": "juguetes",
+    "name": "Juguetes articulados print-in-place",
+    "order": 2
+  },
+  {
+    "id": "juguetes-fidget",
+    "worldId": "juguetes",
+    "name": "Fidget toys y rompecabezas de destreza",
+    "order": 3
+  },
+  {
+    "id": "juguetes-vehiculos",
+    "worldId": "juguetes",
+    "name": "Autos y vehículos miniatura",
+    "order": 4
+  },
+  {
+    "id": "industria-automotriz",
+    "worldId": "industria",
+    "name": "Refacciones y componentes automotrices",
+    "order": 1
+  },
+  {
+    "id": "industria-calibracion",
+    "worldId": "industria",
+    "name": "Herramientas de taller y galgas de medición",
+    "order": 2
+  },
+  {
+    "id": "industria-utillaje",
+    "worldId": "industria",
+    "name": "Utillaje, guías y plantillas de ensamble",
+    "order": 3
+  },
+  {
+    "id": "industria-gabinetes",
+    "worldId": "industria",
+    "name": "Carcasas técnicas y prototipos de ingeniería",
+    "order": 4
+  },
+  {
+    "id": "personalizados-individual",
+    "worldId": "personalizados",
+    "name": "Retrato Individual",
+    "order": 1
+  },
+  {
+    "id": "personalizados-mascotas",
+    "worldId": "personalizados",
+    "name": "Mascotas",
+    "order": 2
+  },
+  {
+    "id": "personalizados-parejas",
+    "worldId": "personalizados",
+    "name": "Parejas & Aniversario",
+    "order": 3
+  },
+  {
+    "id": "personalizados-profesiones",
+    "worldId": "personalizados",
+    "name": "Profesiones & Graduaciones",
+    "order": 4
+  },
+  {
+    "id": "personalizados-amigos",
+    "worldId": "personalizados",
+    "name": "Amigos & Cumpleaños",
+    "order": 5
+  },
+  {
+    "id": "personalizados-familia",
+    "worldId": "personalizados",
+    "name": "Pack Familiar",
+    "order": 6
+  },
+  {
+    "id": "personalizados-abuelitos",
+    "worldId": "personalizados",
+    "name": "Homenaje a los Abuelitos",
+    "order": 7
+  },
+  {
+    "id": "personalizados-dibujo",
+    "worldId": "personalizados",
+    "name": "De Dibujo a 3D",
+    "order": 8
+  }
 ];
 
 // Initial Confirmed Products from approved catalog

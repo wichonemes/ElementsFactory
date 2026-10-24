@@ -104,6 +104,15 @@ export default function ProductCard({
   const techBadge = techniqueLabels[primaryTech] || { label: primaryTech, color: 'bg-gray-100 text-gray-800' };
   const colorOptions = getProductColorOptions(product);
 
+  const isPackageOrTiered = 
+    Boolean(product.isBundle) || 
+    Boolean(product.priceTiers && product.priceTiers.length > 1) || 
+    Boolean(product.code?.startsWith('PROMO-')) || 
+    Boolean(product.worlds?.includes('paquetes-servicios')) ||
+    Boolean(product.worlds?.includes('personalizados')) ||
+    Boolean(product.customizationTiers && product.customizationTiers.length > 1) ||
+    Boolean(product.priceType === 'starting_at');
+
   // Photo display: Resting shows real warm context lifestyle photo; hover shows pure white background angle of the same item
   const basePhoto = product.primaryImage || product.gallery?.[0] || product.whiteBgImage;
   const hoverPhoto = product.whiteBgImage || (product.gallery && product.gallery[1]) || basePhoto;
@@ -229,23 +238,6 @@ export default function ProductCard({
           </span>
         </div>
 
-
-        {/* Quick Add Floating Button estilo Mercado Libre */}
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            if (onAddToCart) onAddToCart(product, 1);
-            else if (onQuickAdd) onQuickAdd(product);
-            else handleOpenDetailModal(e);
-          }}
-          className="absolute bottom-2 right-2 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/95 hover:bg-white text-emerald-800 border border-gray-200/90 shadow-md flex items-center justify-center active:scale-90 hover:scale-105 transition-all cursor-pointer z-10"
-          title="Agregar a cotización"
-          aria-label="Agregar"
-        >
-          <Plus className="w-4 h-4 stroke-[2.5]" />
-        </button>
-
         {/* Quick View Overlay on Desktop */}
         <div className="absolute inset-0 bg-black/15 opacity-0 group-hover:opacity-100 transition-opacity hidden sm:flex items-center justify-center pointer-events-none">
           <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-[#1F2421] text-xs font-bold shadow-lg transform -translate-y-1 group-hover:translate-y-0 transition-all">
@@ -331,14 +323,40 @@ export default function ProductCard({
               {formatPrice()}
             </div>
 
-            <button
-              onClick={handleOpenDetailModal}
-              className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#EBF5EE] border border-[#2D4F3E]/30 text-[#2D4F3E] hover:bg-[#2D4F3E] hover:text-white shadow-2xs hover:shadow-md flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 cursor-pointer group/btn shrink-0"
-              title="Agregar / Ver opciones"
-              aria-label="Agregar / Ver opciones"
-            >
-              <Plus className="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5 stroke-[2.8] text-[#2D4F3E] group-hover/btn:text-white transition-all duration-200 group-hover/btn:rotate-90" />
-            </button>
+            {isPackageOrTiered ? (
+              <button
+                type="button"
+                onClick={handleOpenDetailModal}
+                className="h-7 sm:h-9 px-2.5 sm:px-3 rounded-full bg-[#EBF5EE] border border-[#2D4F3E]/30 text-[#2D4F3E] hover:bg-[#2D4F3E] hover:text-white shadow-2xs hover:shadow-md flex items-center gap-1 transition-all duration-200 active:scale-95 cursor-pointer shrink-0 font-bold text-[11px] sm:text-xs"
+                title="Ver opciones y configurar"
+                aria-label="Ver opciones y configurar"
+              >
+                <span>Opciones</span>
+                <ArrowUpRight className="w-3.5 h-3.5 stroke-[2.5]" />
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (onAddToCart) {
+                    onAddToCart({
+                      product,
+                      quantity: 1,
+                      selectedVariants: {},
+                      customText: ''
+                    });
+                  } else {
+                    handleOpenDetailModal(e);
+                  }
+                }}
+                className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#EBF5EE] border border-[#2D4F3E]/30 text-[#2D4F3E] hover:bg-[#2D4F3E] hover:text-white shadow-2xs hover:shadow-md flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 cursor-pointer group/btn shrink-0"
+                title="Agregar a cotización"
+                aria-label="Agregar a cotización"
+              >
+                <Plus className="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5 stroke-[2.8] text-[#2D4F3E] group-hover/btn:text-white transition-all duration-200 group-hover/btn:rotate-90" />
+              </button>
+            )}
           </div>
 
           {/* Sello de Taller & Envío Seguro estilo Mercado Libre */}

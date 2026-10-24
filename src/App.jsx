@@ -16,7 +16,6 @@ import FloatingSideNav from './components/FloatingSideNav';
 import TemuUrgencyModule from './components/TemuUrgencyModule';
 import PackagesAndServicesView from './components/PackagesAndServicesView';
 import PublicidadDesarrolloView from './components/PublicidadDesarrolloView';
-import CustomProductsSection from './components/CustomProductsSection';
 import BlitzClockWidget from './components/BlitzClockWidget';
 import CatalogBottomNav from './components/CatalogBottomNav';
 import WorkshopArcadeModal from './components/WorkshopArcadeModal';
@@ -465,31 +464,43 @@ export default function App() {
   };
 
   // Cart operations
-  const handleAddToCart = (newItem) => {
+  const handleAddToCart = (rawItem) => {
+    if (!rawItem) return;
+    const itemToAdd = rawItem.product
+      ? rawItem
+      : {
+          product: rawItem,
+          quantity: 1,
+          selectedVariants: {},
+          customText: ''
+        };
+
     playCoinSound();
     setCartItems(prev => {
       // Find if duplicate with exact same variants & text exists
       const existingIdx = prev.findIndex(item => 
-        item.product.id === newItem.product.id &&
-        JSON.stringify(item.selectedVariants) === JSON.stringify(newItem.selectedVariants) &&
-        item.customText === newItem.customText
+        item.product?.id === itemToAdd.product?.id &&
+        JSON.stringify(item.selectedVariants || {}) === JSON.stringify(itemToAdd.selectedVariants || {}) &&
+        (item.customText || '') === (itemToAdd.customText || '')
       );
 
       if (existingIdx !== -1) {
         const updated = [...prev];
-        updated[existingIdx].quantity += newItem.quantity;
+        updated[existingIdx].quantity = (updated[existingIdx].quantity || 1) + (itemToAdd.quantity || 1);
         return updated;
       } else {
-        return [...prev, newItem];
+        return [...prev, itemToAdd];
       }
     });
 
     // Record quote started event
-    fetch('/api/analytics/event', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: 'quote_started', payload: { productId: newItem.product.id, code: newItem.product.code } })
-    }).catch(() => {});
+    if (itemToAdd.product?.id) {
+      fetch('/api/analytics/event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'quote_started', payload: { productId: itemToAdd.product.id, code: itemToAdd.product.code } })
+      }).catch(() => {});
+    }
 
     setIsCartOpen(true);
     setSelectedProduct(null);
@@ -799,7 +810,7 @@ export default function App() {
       )}
 
       {/* Area Cover Banner (when a specific area is selected) */}
-      {activeWorld !== 'all' && activeWorld !== 'paquetes-servicios' && activeWorld !== 'publicidad-desarrollo' && activeWorld !== 'personalizados' && currentWorldObj && (
+      {activeWorld !== 'all' && activeWorld !== 'paquetes-servicios' && activeWorld !== 'publicidad-desarrollo' && currentWorldObj && (
         <div className="relative bg-[#1F2421] text-white overflow-hidden py-10 sm:py-14 border-b border-black/20">
           <div className="absolute inset-0 opacity-20">
             <img src={currentWorldObj.image} alt="" className="w-full h-full object-cover" />
@@ -860,14 +871,6 @@ export default function App() {
           initialAreaFilter={packagesInitialArea}
           searchQuery={searchQuery}
           onClearSearch={() => setSearchQuery('')}
-        />
-      ) : activeWorld === 'personalizados' ? (
-        <CustomProductsSection
-          settings={settings}
-          onGoHome={handleGoHome}
-          onSelectProduct={(prod) => setSelectedProduct(prod)}
-          onAddToCart={handleAddToCart}
-          onOpenCalculator={handleOpenCalculator}
         />
       ) : (
         /* Main Catalog Section */

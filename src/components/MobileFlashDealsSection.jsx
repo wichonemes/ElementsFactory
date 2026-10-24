@@ -132,7 +132,14 @@ export default function MobileFlashDealsSection({
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
-                if (onAddToCart) onAddToCart(featured, 1);
+                if (onAddToCart) {
+                  onAddToCart({
+                    product: featured,
+                    quantity: 1,
+                    selectedVariants: {},
+                    customText: ''
+                  });
+                }
               }}
               className="absolute bottom-2.5 right-2.5 w-7 h-7 rounded-full bg-[#2D4F3E] text-white flex items-center justify-center shadow-md active:scale-90 transition-transform cursor-pointer"
               title="Agregar al carrito"
