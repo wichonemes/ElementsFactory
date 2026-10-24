@@ -18,6 +18,7 @@ const categoryMap = {
   hogar: path.join(targetRoot, 'hogar'),
   negocios: path.join(targetRoot, 'negocios'),
   eventos: path.join(targetRoot, 'eventos'),
+  paquetes: path.join(targetRoot, 'paquetes'),
   personalizados: path.join(targetRoot, 'personalizados'),
   servicios: path.join(targetRoot, 'servicios')
 };
@@ -26,6 +27,29 @@ const categoryMap = {
 for (const dir of Object.values(categoryMap)) {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
+  }
+}
+
+// Limpiar paquetes de carpetas individuales para que queden centralizados en \paquetes
+const packageCodes = [
+  'PROMO-HOG-1', 'PROMO-HOG-2', 'PROMO-HOG-3',
+  'PROMO-BIZ-1', 'PROMO-BIZ-2', 'PROMO-BIZ-3',
+  'PROMO-EV-1', 'PROMO-EV-2', 'PROMO-EV-3',
+  'T35', 'T18', 'T27', 'T32', 'EV-ANTICRUDA'
+];
+
+for (const cat of ['hogar', 'negocios', 'eventos']) {
+  const catDir = categoryMap[cat];
+  if (fs.existsSync(catDir)) {
+    for (const sub of fs.readdirSync(catDir)) {
+      if (packageCodes.some(c => sub.startsWith(c))) {
+        const oldPath = path.join(catDir, sub);
+        try {
+          fs.rmSync(oldPath, { recursive: true, force: true });
+          console.log(`Relocalizando paquete ${sub} hacia /paquetes...`);
+        } catch (e) {}
+      }
+    }
   }
 }
 
@@ -42,41 +66,49 @@ function getProductTargetFolder(p) {
   const code = p.code || '';
   const worlds = p.worlds || [];
 
-  // Juguetes
+  // 1. Paquetes y Combos (Mover a la carpeta 'paquetes')
+  const isPackage =
+    code.startsWith('PROMO-') ||
+    ['T35', 'T18', 'T27', 'T32', 'EV-ANTICRUDA'].includes(code) ||
+    worlds.includes('paquetes') ||
+    worlds.includes('paquetes-servicios');
+
+  if (isPackage) {
+    return path.join(categoryMap.paquetes, `${code}_${sanitizeFolderName(p.name)}`);
+  }
+
+  // 2. Juguetes
   if (code === 'J2') {
-    // Si la carpeta "zorrito" ya existe, usarla
-    const zorritoPath = path.join(categoryMap.juguetes, 'zorrito');
-    return zorritoPath;
+    return path.join(categoryMap.juguetes, 'zorrito');
   }
   if (code === 'J1' || worlds.includes('juguetes')) {
     return path.join(categoryMap.juguetes, `${code}_${sanitizeFolderName(p.name)}`);
   }
 
-  // Industria
+  // 3. Industria
   if (code.startsWith('IND') || worlds.includes('industria')) {
     return path.join(categoryMap.industra, `${code}_${sanitizeFolderName(p.name)}`);
   }
 
-  // Personalizados
+  // 4. Personalizados
   if (code.startsWith('CUST-') || worlds.includes('personalizados')) {
     return path.join(categoryMap.personalizados, `${code}_${sanitizeFolderName(p.name)}`);
   }
 
-  // Eventos
-  if (code.startsWith('EV-') || code.startsWith('PROMO-EV-') || (worlds.includes('eventos') && !worlds.includes('hogar'))) {
+  // 5. Eventos
+  if (code.startsWith('EV-') || (worlds.includes('eventos') && !worlds.includes('hogar'))) {
     return path.join(categoryMap.eventos, `${code}_${sanitizeFolderName(p.name)}`);
   }
 
-  // Negocios
+  // 6. Negocios
   if (
-    code.startsWith('PROMO-BIZ-') ||
-    ['T16', 'T33', 'T39', 'T17', 'T25', 'T32', 'T18', 'T27', 'L4'].includes(code) ||
+    ['T16', 'T33', 'T39', 'T17', 'T25', 'L4'].includes(code) ||
     (worlds.includes('negocios') && !worlds.includes('hogar'))
   ) {
     return path.join(categoryMap.negocios, `${code}_${sanitizeFolderName(p.name)}`);
   }
 
-  // Hogar por defecto
+  // 7. Hogar por defecto
   return path.join(categoryMap.hogar, `${code}_${sanitizeFolderName(p.name)}`);
 }
 
@@ -137,9 +169,20 @@ for (const p of db.products) {
   });
 
   // Extraer datos técnicos
-  const mwUrl = p.repository?.makerworldUrl || p.makerworldUrl || p.makerWorldModel || (p.techniques?.includes('3d') ? `https://makerworld.com/en/search/models?keyword=${encodeURIComponent(p.name)}` : 'Diseño Exclusivo Artesano Digital / Taller Propio');
-  const mwAuthor = p.repository?.author || p.makerWorldAuthor || 'Artesano Digital';
-  const mwId = p.repository?.makerworldModelId || p.makerWorldProfileId || (mwUrl.match(/models\/(\d+)/)?.[1] || 'N/A');
+  let mwUrl = p.repository?.makerworldUrl || p.makerworldUrl || p.makerWorldModel;
+  let mwAuthor = p.repository?.author || p.makerWorldAuthor || 'Artesano Digital';
+  let mwId = p.repository?.makerworldModelId || p.makerWorldProfileId || (mwUrl ? mwUrl.match(/models\/(\d+)/)?.[1] : null) || 'N/A';
+
+  // Asegurar enlace completo para T38
+  if (p.code === 'T38') {
+    mwUrl = 'https://makerworld.com/es/models/1804162-modern-lamp#profileId-1924098';
+    mwAuthor = 'Mesmar';
+    mwId = '1804162';
+  } else if (!mwUrl) {
+    mwUrl = p.techniques?.includes('3d')
+      ? `https://makerworld.com/en/search/models?keyword=${encodeURIComponent(p.name)}`
+      : 'Diseño Exclusivo Artesano Digital / Taller Propio';
+  }
 
   const mfg = p.manufacturingTimes || {};
   const cost = p.costBreakdown || {};
@@ -184,9 +227,21 @@ for (const p of db.products) {
   noteLines.push(`• Tiempo de Impresión 3D en Máquina: ${machineTimeStr}`);
   noteLines.push(`• Tiempo de Limpieza / Post-procesamiento: ${postProcStr}`);
   noteLines.push(`• Plazo de Entrega al Cliente: ${mfg.leadTimeDays || p.specifications?.estimatedLeadTime || '1 a 3 días hábiles'}`);
-  noteLines.push(`• Enlace MakerWorld / Repositorio: ${mwUrl}`);
-  noteLines.push(`• Modelo ID MakerWorld: ${mwId}`);
-  noteLines.push(`• Autor / Creador: ${mwAuthor}`);
+  
+  if (p.code === 'T38') {
+    noteLines.push(`• Enlace Directo MakerWorld (Español): https://makerworld.com/es/models/1804162-modern-lamp#profileId-1924098`);
+    noteLines.push(`• Enlace Directo MakerWorld (Inglés): https://makerworld.com/en/models/1804162-modern-lamp#profileId-1924098`);
+    noteLines.push(`• Modelo ID MakerWorld: 1804162`);
+    noteLines.push(`• Perfil de Impresión ID: 1924098`);
+    noteLines.push(`• Autor / Creador: Mesmar (https://makerworld.com/en/@mesmar)`);
+    noteLines.push(`• Nombre Oficial del Diseño: Modern Lamp`);
+    noteLines.push(`• Compatibilidad Eléctrica: Compatible con Bambu LED Lamp Kit 001 o Socket Candelabro rosca E12/E14.`);
+  } else {
+    noteLines.push(`• Enlace MakerWorld / Repositorio: ${mwUrl}`);
+    noteLines.push(`• Modelo ID MakerWorld: ${mwId}`);
+    noteLines.push(`• Autor / Creador: ${mwAuthor}`);
+  }
+
   if (p.repository?.slicerNotes) {
     noteLines.push(`• Notas de Slicer / Laminador: ${p.repository.slicerNotes}`);
   }
@@ -238,142 +293,121 @@ const customProductsMeta = [
     tag: 'Tu perrito, gatito o animal de compañía en figura 3D',
     price: '$650 MXN',
     cost: '$180 MXN (Filamento, impresión, caja ventana, pintura y ensamble)',
-    time: '4 h 30 min de impresión 3D + 45 min de acabado manual',
-    lead: '3 a 5 días hábiles',
-    url: 'https://makerworld.com/en/search/models?keyword=funko+custom+pet',
-    imgSrc: path.join(baseDir, 'public/uploads/personalizados-figuras-funko.jpg')
+    lead: '2 a 3 días hábiles',
+    desc: 'Figura 3D personalizada modelada a partir de fotos de tu mascota. Incluye caja protectora de colección con ventana transparente de acetato.'
   },
   {
     folder: '02_Funko_Parejas',
     name: 'Figura Funko Custom — Parejas',
-    tag: 'Set de 2 figuras personalizadas para novios, aniversarios o bodas',
-    price: '$1,250 MXN (Set Doble)',
-    cost: '$320 MXN (2 figuras 3D, caja doble o individual de colección, pintura)',
-    time: '8 h 15 min de impresión 3D + 1 h 20 min de acabado y caja',
-    lead: '4 a 6 días hábiles',
-    url: 'https://makerworld.com/en/search/models?keyword=funko+custom+couple',
-    imgSrc: path.join(baseDir, 'public/uploads/personalizados-figuras-funko.jpg')
+    tag: 'Tú y tu pareja con ropa icónica, pose especial y detalles',
+    price: '$1,190 MXN (Dúo)',
+    cost: '$320 MXN (2 figuras completas + caja doble de exhibición)',
+    lead: '3 a 4 días hábiles',
+    desc: 'Set de 2 figuras Funko Pop personalizadas para aniversarios, bodas o regalos de San Valentín. Diseñado a partir de fotos de ambos.'
   },
   {
     folder: '03_Funko_Profesiones',
-    name: 'Figura Funko Custom — Profesiones & Graduaciones',
-    tag: 'Médicos, ingenieros, enfermeros, maestros, abogados con uniforme y herramientas',
-    price: '$680 MXN',
-    cost: '$190 MXN (Figura 3D, accesorios profesionales modelados, caja POP! Custom)',
-    time: '4 h 45 min de impresión 3D + 50 min de detallado de uniforme',
-    lead: '3 a 5 días hábiles',
-    url: 'https://makerworld.com/en/search/models?keyword=funko+custom+profession',
-    imgSrc: path.join(baseDir, 'public/uploads/personalizados-figuras-funko.jpg')
+    name: 'Figura Funko Custom — Profesiones',
+    tag: 'Médicos, ingenieros, chefs, licenciados con sus herramientas',
+    price: '$690 MXN',
+    cost: '$190 MXN (Figura + accesorios de profesión + caja personalizada)',
+    lead: '2 a 3 días hábiles',
+    desc: 'Figura con indumentaria profesional y accesorios de trabajo (estetoscopio, plano, espátula, laptop, etc.). Excelente para graduaciones.'
   },
   {
     folder: '04_Funko_Amigos',
-    name: 'Figura Funko Custom — Amigos & Cumpleaños',
-    tag: 'Mejores amigos, anécdotas, vestimentas icónicas y hobbies',
-    price: '$650 MXN',
-    cost: '$180 MXN (Modelado digital a partir de fotos, impresión 3D y caja)',
-    time: '4 h 20 min de impresión 3D + 40 min de acabado',
+    name: 'Figura Funko Custom — Amigos & Squad',
+    tag: 'Para el grupo de mejores amigos o roomies inseparables',
+    price: 'Desde $620 MXN c/u (Descuento en pack de 3 o más)',
+    cost: '$170 MXN por figura en lote',
     lead: '3 a 5 días hábiles',
-    url: 'https://makerworld.com/en/search/models?keyword=funko+custom+friend',
-    imgSrc: path.join(baseDir, 'public/uploads/personalizados-figuras-funko.jpg')
+    desc: 'Figuras personalizadas con atuendos coordinados o recuerdos de viaje para grupos de amigos.'
   },
   {
     folder: '05_Funko_Familia',
-    name: 'Figura Funko Custom — Familia & Abuelitos',
-    tag: 'El detalle más conmovedor para el Día del Padre, Día de la Madre o abuelitos',
-    price: '$680 MXN',
-    cost: '$190 MXN (Figura 3D con rasgos distintivos, lentes, peinados y caja)',
-    time: '4 h 40 min de impresión 3D + 45 min de acabado',
-    lead: '3 a 5 días hábiles',
-    url: 'https://makerworld.com/en/search/models?keyword=funko+custom+family',
-    imgSrc: path.join(baseDir, 'public/uploads/personalizados-figuras-funko.jpg')
+    name: 'Figura Funko Custom — Familia Completa',
+    tag: 'Papá, mamá, hijos y mascotas juntos en su vitrina familiar',
+    price: 'Desde $1,450 MXN (Pack Familiar de 3 a 5 integrantes)',
+    cost: '$420 MXN lote completo con repisa base de exhibición',
+    lead: '4 a 6 días hábiles',
+    desc: 'Retablo tridimensional familiar con caja panorámica grabada con apellido o dedicatoria.'
   },
   {
     folder: '06_De_Dibujo_Infantil_a_Figura_3D',
-    name: 'Crea tu Personaje 3D desde un Dibujo Infantil',
-    tag: 'El dibujo o boceto de tu pequeño en volumen 3D real',
-    price: '$580 MXN (básico) a $850 MXN (con pintura multicapa)',
-    cost: '$140 MXN - $210 MXN (Digitalización 3D, filamento alta tenacidad, acabados)',
-    time: '2 h a 4 h de digitalización 3D + 3 h a 6 h de impresión 3D',
-    lead: '3 a 6 días hábiles',
-    url: 'https://makerworld.com/en/search/models?keyword=drawing+to+3d+dragon',
-    imgSrc: path.join(baseDir, 'public/uploads/personalizados-dibujo-figura-3d.jpg')
+    name: 'De Dibujo Infantil a Figura 3D Real',
+    tag: 'El trazo o garabato de tu niño convertido en escultura física coleccionable',
+    price: '$480 MXN (Figura 10-12 cm con peana de madera grabada)',
+    cost: '$135 MXN (Modelado CAD orgánico, filamento PLA multicromático y peana láser)',
+    lead: '2 a 3 días hábiles',
+    desc: 'Subes la foto del dibujo hecho en papel por tu hijo/a y en el taller lo modelamos en relieve 3D respetando fielmente sus proporciones, colores y ternura original.'
   }
 ];
 
-for (const cp of customProductsMeta) {
-  const targetDir = path.join(categoryMap.personalizados, cp.folder);
+for (const c of customProductsMeta) {
+  const targetDir = path.join(categoryMap.personalizados, c.folder);
   if (!fs.existsSync(targetDir)) {
     fs.mkdirSync(targetDir, { recursive: true });
   }
 
-  // Copiar imagen
-  if (fs.existsSync(cp.imgSrc)) {
-    const ext = path.extname(cp.imgSrc);
-    fs.copyFileSync(cp.imgSrc, path.join(targetDir, `01_poster_oficial${ext}`));
-    copiedImagesCount++;
-  }
-
-  const cpNote = [
+  const cNote = [
     '======================================================================',
-    'ARTESANO DIGITAL — PRODUCTO PERSONALIZADO',
+    'ARTESANO DIGITAL — PRODUCTO PERSONALIZADO BAJO DEMANDA',
     '======================================================================',
-    `NOMBRE: ${cp.name}`,
-    `CONCEPTO: ${cp.tag}`,
-    `PRECIO ORIENTATIVO: ${cp.price}`,
-    `COSTO ESTIMADO DE TALLER: ${cp.cost}`,
-    `TIEMPO DE IMPRESIÓN Y DIGITALIZACIÓN: ${cp.time}`,
-    `PLAZO DE ELABORACIÓN: ${cp.lead}`,
-    `REFERENCIA MAKERWORLD / BÚSQUEDA: ${cp.url}`,
+    `PRODUCTO: ${c.name}`,
+    `CONCEPTO: ${c.tag}`,
+    `PRECIO AL PÚBLICO: ${c.price}`,
+    `COSTO DE PRODUCCIÓN: ${c.cost}`,
+    `PLAZO DE ENTREGA: ${c.lead}`,
     '----------------------------------------------------------------------',
-    'CARACTERÍSTICAS:',
-    '• Modelado 3D desde cero a partir de fotografías o bocetos enviados por el cliente.',
-    '• Incluye muestra digital previa enviada por WhatsApp antes de pasar a manufactura.',
-    '• Empaque personalizado exclusivo de colección con ventana transparente.',
-    '• Garantía de satisfacción de taller: Cero sorpresas en dimensiones y acabados.',
+    'DESCRIPCIÓN Y DETALLES:',
+    c.desc,
+    '----------------------------------------------------------------------',
+    'REPOSITORIO / MODELADO: Modelado digital propio en taller a partir de foto enviada por WhatsApp.',
+    'TECNOLOGÍA: Modelado CAD + Impresión 3D FDM alta resolución + Pintado y caja ventana.',
     '======================================================================\n'
   ].join('\n');
 
-  fs.writeFileSync(path.join(targetDir, 'DETALLES_Y_TIEMPOS.txt'), cpNote, 'utf8');
+  fs.writeFileSync(path.join(targetDir, 'DETALLES_Y_TIEMPOS.txt'), cNote, 'utf8');
 }
 
 // -----------------------------------------------------------------------------
-// Agregar desglose para la carpeta 'servicios'
+// Agregar desglose para los 5 Servicios Digitales en carpeta 'servicios'
 // -----------------------------------------------------------------------------
 const servicesMeta = [
   {
     folder: '01_Branding_e_Identidad_Visual',
-    name: 'Branding & Identidad Visual de Marca',
-    price: '$1,800 MXN base (Inicial) / $3,400 MXN (Estándar Pro) / $5,800 MXN (VIP)',
-    desc: 'Diseño de logotipo, isotipo, paleta de colores, tipografías corporativas, manual de identidad y aplicaciones para corte láser y packaging.',
-    lead: '4 a 7 días hábiles'
+    name: 'Diseño Gráfico & Branding Corporativo',
+    price: 'Desde $1,800 MXN (Básico) hasta $5,500 MXN (Manual Completo)',
+    lead: '3 a 7 días hábiles',
+    desc: 'Logotipo maestro, versiones vectoriales, paleta cromática, manual de marca, papelería y aplicaciones para rotulación comercial.'
   },
   {
     folder: '02_Diseno_y_Desarrollo_Web',
-    name: 'Diseño & Desarrollo Web / Tienda Online',
-    price: '$2,900 MXN base (Landing Page) / $5,200 MXN (Sitio Pro) / $8,900 MXN (Tienda Completa)',
-    desc: 'Sitios web modernos, rápidos, adaptados a celular (Mobile-First), con catálogo, integración de WhatsApp y panel de administración.',
-    lead: '7 a 14 días hábiles'
+    name: 'Desarrollo Web & Tiendas Online Interactivas',
+    price: 'Desde $2,900 MXN (Landing / Catálogo WhatsApp) hasta $11,500 MXN (E-Commerce Completo)',
+    lead: '5 a 12 días hábiles',
+    desc: 'Sitios web responsivos de alto rendimiento, optimizados para celular, catálogo de productos dinámico y conexión directa a WhatsApp.'
   },
   {
     folder: '03_Publicidad_y_Campanas_Trafico',
-    name: 'Publicidad & Campañas de Tráfico Digital',
-    price: '$1,500 MXN base (Gestión mensual) / $3,200 MXN (Campaña integral)',
-    desc: 'Estrategias de pauta publicitaria en Meta Ads (Facebook e Instagram) y Google Ads para atraer clientes potenciales directos a WhatsApp.',
-    lead: 'Configuración en 3 días hábiles + seguimiento continuo'
+    name: 'Publicidad Comercial, Lonas & Gran Formato',
+    price: 'Desde $850 MXN (Lona 2x1m reforzada) hasta $4,900 MXN (Rotulación Integral)',
+    lead: '1 a 3 días hábiles',
+    desc: 'Lonas frontlite 13oz con ojillos reforzados, lona microperforada mesh, vinil autoadhesivo para cristales y rotulación de vehículos.'
   },
   {
     folder: '04_Modelado_3D_y_Renders',
-    name: 'Modelado 3D & Renders Comerciales',
-    price: '$850 MXN base (Pieza sencilla) / $1,800 MXN (Ensamble complejo)',
-    desc: 'Diseño paramétrico en CAD, modelado poligonal de figuras orgánicas y preparación de archivos .3MF / .STL listos para imprimir.',
-    lead: '2 a 4 días hábiles'
+    name: 'Modelado 3D CAD & Renders Técnicos Fotorrealistas',
+    price: 'Desde $1,200 MXN (Pieza técnica) hasta $6,000 MXN (Prototipo funcional + ensamble)',
+    lead: '2 a 5 días hábiles',
+    desc: 'Diseño paramétrico en Fusion 360, generación de archivos .STEP / .STL / .3MF, renders para catálogo comercial y pruebas físicas de ajuste.'
   },
   {
     folder: '05_Servicio_Patch_Bar_en_Vivo',
-    name: 'Servicio Patch Bar en Vivo para Eventos',
-    price: 'Desde $4,800 MXN (50 personas) / $7,490 MXN (100 personas) / $12,900 MXN (VIP)',
-    desc: 'Estación de madera artesanal con prensa térmica industrial y charolas de parches para gorras trucker y tote bags planchadas en vivo en menos de 45 segundos.',
-    lead: 'Reserva con 1 a 4 semanas de anticipación'
+    name: 'Patch Bar — Estación de Personalización en Vivo para Eventos',
+    price: 'Desde $4,500 MXN (50 parches termo-adheribles + prensa en vivo en tu evento)',
+    lead: 'Apartar con 10 días de anticipación',
+    desc: 'Llevamos la prensa térmica y estación móvil a tu boda, fiesta de graduación o activación de marca para que tus invitados elijan parches y personalicen sus gorras o tote bags al instante.'
   }
 ];
 
@@ -417,11 +451,12 @@ const readmeText = [
   'CARPETAS INCLUIDAS:',
   '1. \\hogar          -> Lámparas, macetas, cuadros, colgadores, tazas, termos, organizadores.',
   '2. \\negocios       -> Soportes QR/NFC, señalética, placas de madera, identificadores.',
-  '3. \\eventos        -> Recuerdos de boda, centros de mesa, copas, abanicos, Patch Bar.',
-  '4. \\juguetes       -> Zorrito articulado (con tus fotos originales + oficiales) y Leopardo bobble head.',
-  '5. \\industra       -> Toberas automotrices técnicas, galgas de tornillería.',
-  '6. \\personalizados -> 6 categorías separadas (Mascotas, Parejas, Profesiones, Amigos, Familia, Dibujo a 3D).',
-  '7. \\servicios      -> Branding, Desarrollo Web, Campañas, Modelado 3D y Patch Bar.',
+  '3. \\eventos        -> Recuerdos de boda, centros de mesa, copas, abanicos.',
+  '4. \\paquetes       -> Combos coordinados, kits promocionales, Starter Packs de negocio y eventos.',
+  '5. \\juguetes       -> Zorrito articulado (con tus fotos originales + oficiales) y Leopardo bobble head.',
+  '6. \\industra       -> Toberas automotrices técnicas, galgas de tornillería.',
+  '7. \\personalizados -> 6 categorías separadas (Mascotas, Parejas, Profesiones, Amigos, Familia, Dibujo a 3D).',
+  '8. \\servicios      -> Branding, Desarrollo Web, Campañas, Modelado 3D y Patch Bar.',
   '',
   'QUÉ ENCONTRARÁS DENTRO DE CADA PRODUCTO:',
   '• Fotos oficiales en alta resolución (contexto, base blanca, detalle y escala con medidas).',

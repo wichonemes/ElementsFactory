@@ -1079,13 +1079,13 @@ const initialProducts = [
       }
     },
     "dimensionsImage": "/uploads/t38_vista4_medidas.webp",
-    "makerWorldModel": "https://makerworld.com/es/models/1804162",
+    "makerWorldModel": "https://makerworld.com/es/models/1804162-modern-lamp#profileId-1924098",
     "makerWorldAuthor": "Mesmar",
     "makerWorldProfileId": "1924098",
     "makerWorldStatus": "elegido",
     "repository": {
       "platform": "makerworld",
-      "makerworldUrl": "https://makerworld.com/es/models/1804162",
+      "makerworldUrl": "https://makerworld.com/es/models/1804162-modern-lamp#profileId-1924098",
       "makerworldModelId": "1804162",
       "author": "Mesmar",
       "license": "Standard Digital File License (Comercial)",
@@ -1094,7 +1094,7 @@ const initialProducts = [
       "slicerNotes": "Boquilla 0.4mm, capa 0.20mm, relleno 15% giroide, sin soportes.",
       "additionalLinks": []
     },
-    "makerworldUrl": "https://makerworld.com/es/models/1804162",
+    "makerworldUrl": "https://makerworld.com/es/models/1804162-modern-lamp#profileId-1924098",
     "localPath": "C:\\Users\\OEM\\Modelos3D\\T38_Lampara_Mesmar\\Mesmar_v2.3mf",
     "manufacturingTimes": {
       "machineHours": 7,
