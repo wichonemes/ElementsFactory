@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useRef } from 'react';
 import {
-  Sparkles,
   Palette,
   Globe,
   Box,
@@ -10,15 +9,11 @@ import {
   ExternalLink,
   ChevronDown,
   CheckCircle2,
-  Send,
-  Zap,
   ArrowRight,
-  Briefcase,
-  Sliders,
   DollarSign,
-  Clock,
   Eye,
-  Check
+  Check,
+  Sparkles
 } from 'lucide-react';
 
 export default function PublicidadDesarrolloView({
@@ -30,21 +25,19 @@ export default function PublicidadDesarrolloView({
   const [activeTab, setActiveTab] = useState('servicios'); // 'servicios' | 'cotizador'
   const [expandedService, setExpandedService] = useState('branding');
   
-  // Estado del configurador en 3 pasos
+  // Cotizador en 2 pasos
   const [quoteService, setQuoteService] = useState('branding');
   const [quoteScope, setQuoteScope] = useState('estandar');
-  const [quoteUrgency, setQuoteUrgency] = useState('normal');
   const [quoteNotes, setQuoteNotes] = useState('');
   
   const cotizadorRef = useRef(null);
   const whatsappPhone = (settings?.whatsappNumber || '5214440000000').replace(/[^0-9]/g, '');
 
-  // 1. Catálogo con Estructura de Color Única por Especialidad
+  // Catálogo de Servicios con Estructura de Color
   const servicesList = [
     {
       id: 'branding',
       icon: Palette,
-      colorName: 'amber',
       tag: 'Identidad Visual',
       badgeColor: 'bg-amber-100 text-amber-900 border-amber-300',
       activeBorder: 'border-amber-400 ring-2 ring-amber-400/25',
@@ -65,7 +58,6 @@ export default function PublicidadDesarrolloView({
     {
       id: 'publicidad',
       icon: Printer,
-      colorName: 'rose',
       tag: 'Gran Formato & Rotulación',
       badgeColor: 'bg-rose-100 text-rose-900 border-rose-300',
       activeBorder: 'border-rose-400 ring-2 ring-rose-400/25',
@@ -86,7 +78,6 @@ export default function PublicidadDesarrolloView({
     {
       id: 'web',
       icon: Globe,
-      colorName: 'emerald',
       tag: 'E-Commerce & Digital',
       badgeColor: 'bg-emerald-100 text-emerald-900 border-emerald-300',
       activeBorder: 'border-emerald-400 ring-2 ring-emerald-400/25',
@@ -107,7 +98,6 @@ export default function PublicidadDesarrolloView({
     {
       id: 'modelado',
       icon: Box,
-      colorName: 'sky',
       tag: 'Prototipado & 3D',
       badgeColor: 'bg-sky-100 text-sky-900 border-sky-300',
       activeBorder: 'border-sky-400 ring-2 ring-sky-400/25',
@@ -128,7 +118,6 @@ export default function PublicidadDesarrolloView({
     {
       id: 'audiovisual',
       icon: Film,
-      colorName: 'purple',
       tag: 'Contenido & Editorial',
       badgeColor: 'bg-purple-100 text-purple-900 border-purple-300',
       activeBorder: 'border-purple-400 ring-2 ring-purple-400/25',
@@ -147,7 +136,7 @@ export default function PublicidadDesarrolloView({
     }
   ];
 
-  // Cálculo estimativo en tiempo real del cotizador
+  // Cálculo estimativo en tiempo real del cotizador (en 2 pasos)
   const quoteEstimate = useMemo(() => {
     let base = 1500;
     let label = 'Paquete Base';
@@ -169,10 +158,8 @@ export default function PublicidadDesarrolloView({
       label = 'Paquete Integral (Marca + Web + Físico)';
     }
 
-    if (quoteUrgency === 'express') base = Math.round(base * 1.25);
-
     return { base, label };
-  }, [quoteService, quoteScope, quoteUrgency]);
+  }, [quoteService, quoteScope]);
 
   const handleOpenCotizador = (serviceId) => {
     if (serviceId) setQuoteService(serviceId);
@@ -192,14 +179,9 @@ export default function PublicidadDesarrolloView({
     };
 
     const scopeMap = {
-      inicio: 'Nivel Inicial / Emprendedor',
-      estandar: 'Nivel Profesional / Más Completo',
-      completo: 'Nivel Máximo / Todo Incluido'
-    };
-
-    const urgencyMap = {
-      normal: 'Plazo habitual de taller',
-      express: 'Entrega prioritaria / Express'
+      inicio: 'Inicial / Emprendedor',
+      estandar: 'Estándar Profesional',
+      completo: 'Edición VIP Todo Incluido'
     };
 
     const text = `Hola Wicho / Artesano Digital! 🚀
@@ -207,10 +189,9 @@ Me interesa una cotización de *Publicidad & Desarrollo Digital*:
 
 📌 *1. Especialidad:* ${serviceNameMap[quoteService] || quoteService}
 📦 *2. Alcance:* ${scopeMap[quoteScope] || quoteScope}
-⏱️ *3. Plazo:* ${urgencyMap[quoteUrgency]}
 💰 *Estimado orientativo:* $${quoteEstimate.base.toLocaleString('es-MX')} MXN
-
-${quoteNotes.trim() ? `💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}¿Podemos platicar sobre este proyecto?`;
+${quoteNotes.trim() ? `\n💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}
+¿Podemos platicar sobre este proyecto?`;
 
     const url = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
@@ -219,71 +200,45 @@ ${quoteNotes.trim() ? `💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}¿Podemos pl
   return (
     <div className="bg-[#FAF9F5] text-stone-900 min-h-screen">
       
-      {/* 1. HERO INSTITUCIONAL: WICHO NEMES & ARTESANO DIGITAL */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-[#101215] via-[#171a1f] to-[#1F2421] text-white pt-8 pb-12 sm:pt-12 sm:pb-16 px-4 sm:px-6 lg:px-8 border-b border-stone-800">
+      {/* 1. HERO INSTITUCIONAL */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-[#101215] via-[#171a1f] to-[#1F2421] text-white pt-6 pb-10 sm:pt-10 sm:pb-14 px-4 sm:px-6 lg:px-8 border-b border-stone-800">
         
-        {/* Glows y atmósfera decorativa */}
-        <div className="absolute top-0 right-1/4 w-80 h-80 bg-[#e8b84f]/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-10 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-
         <div className="max-w-7xl mx-auto relative z-10">
           
-          {/* Tag de Encabezado */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs font-bold text-[#e8b84f] mb-4">
-            <Sparkles className="w-3.5 h-3.5 text-[#e8b84f]" />
-            <span>División de Servicios Digitales, Publicidad &amp; Marca</span>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
             
-            {/* Columna Izquierda: Mensaje y Filosofía */}
-            <div className="lg:col-span-7 space-y-4 sm:space-y-5">
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black font-heading tracking-tight leading-[1.08]">
+            {/* Columna Izquierda: Mensaje Directo y Botón */}
+            <div className="lg:col-span-7 space-y-3 sm:space-y-4">
+              <h1 className="text-3xl sm:text-5xl font-black font-heading tracking-tight leading-[1.08]">
                 Publicidad &amp; <br />
                 <span className="text-[#e8b84f]">Desarrollo Digital</span>
               </h1>
               
-              <p className="text-sm sm:text-base text-stone-300 font-normal leading-relaxed max-w-2xl">
-                Unimos la estrategia de identidad, la rotulación comercial de gran formato, el desarrollo web interactivo y la manufactura física de taller en un solo flujo continuo.
+              <p className="text-xs sm:text-sm text-stone-300 font-normal leading-relaxed max-w-xl">
+                Estrategia de identidad, lonas de gran formato, rotulación en vinil, desarrollo web interactivo y modelado 3D de taller.
               </p>
 
-              {/* Puntos Clave con Estructura de Color */}
-              <div className="grid grid-cols-3 gap-2 sm:gap-3 pt-1">
-                <div className="p-2.5 sm:p-3 rounded-2xl bg-amber-500/10 border border-amber-500/25">
-                  <div className="text-amber-400 font-black text-xs sm:text-sm">01. Branding</div>
-                  <div className="text-[10px] sm:text-xs text-stone-300 mt-0.5 leading-tight">Marcas con sistema</div>
-                </div>
-                <div className="p-2.5 sm:p-3 rounded-2xl bg-rose-500/10 border border-rose-500/25">
-                  <div className="text-rose-400 font-black text-xs sm:text-sm">02. Publicidad</div>
-                  <div className="text-[10px] sm:text-xs text-stone-300 mt-0.5 leading-tight">Lonas y gran formato</div>
-                </div>
-                <div className="p-2.5 sm:p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/25">
-                  <div className="text-emerald-400 font-black text-xs sm:text-sm">03. Web &amp; 3D</div>
-                  <div className="text-[10px] sm:text-xs text-stone-300 mt-0.5 leading-tight">Pantallas y prototipos</div>
-                </div>
-              </div>
-
-              {/* Botón de Acción Principal Directo al Cotizador Inmediato */}
-              <div className="pt-2">
+              {/* Botón de Acción Principal Directo al Cotizador en 2 Pasos */}
+              <div className="pt-1">
                 <button
                   type="button"
                   onClick={() => handleOpenCotizador('branding')}
-                  className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-gradient-to-r from-[#e8b84f] to-[#d4a359] hover:from-[#d4a359] hover:to-[#c29235] text-[#121519] font-black text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer active:scale-98"
+                  className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-[#e8b84f] to-[#d4a359] hover:from-[#d4a359] hover:to-[#c29235] text-[#121519] font-black text-xs sm:text-sm transition-all shadow-lg active:scale-98 cursor-pointer flex items-center justify-center gap-2"
                 >
-                  <Sliders className="w-4 h-4 fill-[#121519]" />
-                  <span>Cotizar Proyecto a Medida (3 Pasos)</span>
+                  <span>Cotizar Proyecto (2 Pasos)</span>
+                  <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             </div>
 
             {/* Columna Derecha: Tarjeta de Wicho Nemes */}
             <div className="lg:col-span-5">
-              <div className="relative rounded-3xl bg-gradient-to-br from-[#1d2228] to-[#14171b] border border-stone-700/60 p-4 sm:p-6 shadow-2xl">
+              <div className="relative rounded-3xl bg-gradient-to-br from-[#1d2228] to-[#14171b] border border-stone-700/60 p-4 sm:p-5 shadow-2xl">
                 
                 {/* Header de la tarjeta */}
-                <div className="flex items-center justify-between pb-3 border-b border-white/10">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl border border-[#e8b84f]/40 bg-[#101215] flex items-center justify-center p-1.5 shadow-inner">
+                <div className="flex items-center justify-between pb-2.5 border-b border-white/10">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-9 h-9 rounded-xl border border-[#e8b84f]/40 bg-[#101215] flex items-center justify-center p-1.5 shadow-inner">
                       <img
                         src="/maquetado-inicio-wicho-v2/assets/marca-wicho.png"
                         alt="Wicho Nemes Logo"
@@ -292,19 +247,19 @@ ${quoteNotes.trim() ? `💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}¿Podemos pl
                       />
                     </div>
                     <div>
-                      <div className="font-heading font-black text-white text-sm sm:text-base tracking-tight">Wicho Nemes</div>
-                      <div className="text-[11px] text-[#e8b84f] font-bold">Diseñador Gráfico &amp; Digital</div>
+                      <div className="font-heading font-black text-white text-sm tracking-tight">Wicho Nemes</div>
+                      <div className="text-[10px] text-[#e8b84f] font-bold">Diseñador Gráfico &amp; Digital</div>
                     </div>
                   </div>
 
-                  <span className="px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[10px] font-bold">
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[10px] font-bold">
                     Taller Abierto
                   </span>
                 </div>
 
                 {/* Retrato y Presentación */}
-                <div className="py-3.5 flex items-center gap-3.5 sm:gap-4">
-                  <div className="w-18 h-22 sm:w-22 sm:h-26 shrink-0 rounded-2xl bg-gradient-to-b from-[#252b33] to-[#121519] border border-white/15 overflow-hidden shadow-lg">
+                <div className="py-3 flex items-center gap-3">
+                  <div className="w-16 h-20 sm:w-20 sm:h-24 shrink-0 rounded-2xl bg-gradient-to-b from-[#252b33] to-[#121519] border border-white/15 overflow-hidden shadow-lg">
                     <img
                       src="/maquetado-inicio-wicho-v2/assets/perfil-sin-fondo.png"
                       alt="Wicho Nemes"
@@ -316,24 +271,24 @@ ${quoteNotes.trim() ? `💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}¿Podemos pl
                   </div>
 
                   <div className="space-y-1 text-xs text-stone-300 leading-relaxed font-normal">
-                    <p className="italic text-stone-200 line-clamp-2">
+                    <p className="italic text-stone-200 text-[11px] line-clamp-2">
                       "Ideas claras. Diseño con intención. Cada pieza visual debe resolver un propósito comercial real."
                     </p>
-                    <div className="text-[11px] text-stone-400">
-                      📍 San Luis Potosí, SLP · Servicio local y nacional.
+                    <div className="text-[10px] text-stone-400">
+                      📍 San Luis Potosí, SLP · Envíos nacionales.
                     </div>
                   </div>
                 </div>
 
-                {/* Botón Activo: Ver Trabajos (redirige directo al portafolio) */}
-                <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-2">
-                  <span className="text-stone-400 text-xs font-medium">Portafolio personal:</span>
+                {/* Botón Activo: Ver Trabajos */}
+                <div className="pt-2.5 border-t border-white/10 flex items-center justify-between gap-2">
+                  <span className="text-stone-400 text-[11px] font-medium">Portafolio personal:</span>
                   <a
                     href="/maquetado-inicio-wicho-v2/"
                     target="_blank"
                     rel="noreferrer"
-                    className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#e8b84f] to-[#d4a359] hover:from-[#f0c765] hover:to-[#e8b84f] text-[#121519] font-black text-xs transition-all flex items-center gap-1.5 shadow-md active:scale-95 cursor-pointer"
-                    title="Abrir portafolio interactivo de Wicho Nemes"
+                    className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#e8b84f] to-[#d4a359] hover:from-[#f0c765] hover:to-[#e8b84f] text-[#121519] font-black text-xs transition-all flex items-center gap-1.5 shadow-md active:scale-95 cursor-pointer"
+                    title="Abrir portafolio de Wicho Nemes"
                   >
                     <Eye className="w-3.5 h-3.5" />
                     <span>Ver Trabajos</span>
@@ -350,9 +305,9 @@ ${quoteNotes.trim() ? `💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}¿Podemos pl
 
       </section>
 
-      {/* 2. BARRA DE NAVEGACIÓN COMPACTA (MÓVIL PRIMERO) */}
+      {/* 2. BARRA DE NAVEGACIÓN LIMPIA Y COMPACTA */}
       <div className="sticky top-20 z-30 bg-[#FBF9F5]/95 backdrop-blur-md border-b border-stone-200 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-2 py-2">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-2 py-2">
           
           <div className="flex items-center gap-2">
             <button
@@ -364,7 +319,7 @@ ${quoteNotes.trim() ? `💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}¿Podemos pl
                   : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
               }`}
             >
-              <span>Servicios &amp; Especialidades</span>
+              <span>Servicios &amp; Paquetes</span>
             </button>
 
             <button
@@ -376,7 +331,7 @@ ${quoteNotes.trim() ? `💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}¿Podemos pl
                   : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
               }`}
             >
-              <span>Cotizador Inmediato</span>
+              <span>Cotizador Rápido</span>
             </button>
           </div>
 
@@ -386,7 +341,7 @@ ${quoteNotes.trim() ? `💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}¿Podemos pl
               onClick={onGoHome}
               className="text-xs text-stone-500 hover:text-stone-900 font-medium shrink-0 ml-auto cursor-pointer"
             >
-              ← Volver a la Tienda
+              ← Tienda
             </button>
           )}
 
@@ -394,48 +349,13 @@ ${quoteNotes.trim() ? `💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}¿Podemos pl
       </div>
 
       {/* 3. CONTENIDO PRINCIPAL */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10">
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-8">
 
-        {/* ================= SECCIÓN 1: SERVICIOS Y ESPECIALIDADES CON ESTRUCTURA DE COLOR ================= */}
+        {/* ================= SECCIÓN 1: SERVICIOS DIRECTOS (SIN BARRITA REPETIDA) ================= */}
         {activeTab === 'servicios' && (
-          <div className="space-y-5 animate-fadeIn">
-            
-            <div className="text-center max-w-xl mx-auto space-y-1">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#D4A359]">
-                Especialidades de Taller
-              </span>
-              <h2 className="text-xl sm:text-2xl font-black font-heading text-stone-900 tracking-tight">
-                Elige una disciplina para ver lo que incluye
-              </h2>
-              <p className="text-xs text-stone-600 font-normal">
-                Toca cada tarjeta para desplegar sus entregables y cotizarla de inmediato.
-              </p>
-            </div>
+          <div className="space-y-4 animate-fadeIn">
 
-            {/* Píldoras de Selección Rápida en Móvil con Acentos de Color */}
-            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-              {servicesList.map(srv => {
-                const isSelected = expandedService === srv.id;
-                const Icon = srv.icon;
-                return (
-                  <button
-                    key={srv.id}
-                    type="button"
-                    onClick={() => setExpandedService(srv.id)}
-                    className={`px-3 py-1.5 rounded-2xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 cursor-pointer ${
-                      isSelected
-                        ? 'bg-[#17251E] text-white shadow-md ring-2 ring-[#D4A359]/70'
-                        : 'bg-white border border-stone-200 text-stone-700 hover:bg-stone-50'
-                    }`}
-                  >
-                    <Icon className="w-3.5 h-3.5" />
-                    <span>{srv.tag}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Acordeón de Servicios con Estructura de Color Personalizada */}
+            {/* Acordeón de Servicios Directo sin duplicar opciones */}
             <div className="space-y-3">
               {servicesList.map(srv => {
                 const isExpanded = expandedService === srv.id;
@@ -470,11 +390,6 @@ ${quoteNotes.trim() ? `💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}¿Podemos pl
                             <span className={`text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md border ${srv.badgeColor}`}>
                               {srv.tag}
                             </span>
-                            {isExpanded && (
-                              <span className="text-[9px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded-md">
-                                Abierto
-                              </span>
-                            )}
                           </div>
                           <h3 className="font-heading font-black text-sm text-stone-900 mt-0.5 truncate">
                             {srv.title}
@@ -484,7 +399,7 @@ ${quoteNotes.trim() ? `💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}¿Podemos pl
 
                       <div className="shrink-0 flex items-center gap-1.5">
                         <span className="text-xs font-bold text-stone-500 hidden sm:inline">
-                          {isExpanded ? 'Ocultar' : 'Ver detalle'}
+                          {isExpanded ? 'Ocultar' : 'Ver lo que incluye'}
                         </span>
                         <div className={`w-7 h-7 rounded-full flex items-center justify-center border transition-transform ${
                           isExpanded ? 'bg-[#17251E] text-white rotate-180 border-[#17251E]' : 'bg-stone-100 text-stone-600 border-stone-200'
@@ -496,20 +411,20 @@ ${quoteNotes.trim() ? `💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}¿Podemos pl
 
                     {/* Contenido Desplegable Completo del Paquete */}
                     {isExpanded && (
-                      <div className="px-4 pb-5 pt-1 border-t border-stone-100 space-y-4 animate-fadeIn">
+                      <div className="px-4 pb-5 pt-1 border-t border-stone-100 space-y-3.5 animate-fadeIn">
                         
                         <p className="text-xs text-stone-700 leading-relaxed font-normal">
                           {srv.summary}
                         </p>
 
                         {/* Entregables incluidos en el paquete */}
-                        <div className="bg-[#FAF9F5] p-3.5 sm:p-4 rounded-xl border border-stone-200/80 space-y-2.5">
+                        <div className="bg-[#FAF9F5] p-3.5 sm:p-4 rounded-xl border border-stone-200/80 space-y-2">
                           <div className="text-[10px] font-black uppercase tracking-wider text-stone-800 flex items-center gap-1.5">
                             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                            <span>Lo que incluye cada paquete de {srv.title.split('&')[0].trim()}:</span>
+                            <span>Lo que incluye cada paquete:</span>
                           </div>
 
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-0.5">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 pt-0.5">
                             {srv.deliverables.map((item, idx) => (
                               <div key={idx} className="flex items-start gap-2 text-xs text-stone-700 font-normal">
                                 <span className={`w-4 h-4 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${srv.checkColor}`}>
@@ -521,7 +436,7 @@ ${quoteNotes.trim() ? `💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}¿Podemos pl
                           </div>
                         </div>
 
-                        {/* Ideal para + Botón Directo para Cotizar este Paquete */}
+                        {/* Botón Directo para Cotizar este Servicio */}
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
                           <div className="text-[11px] text-stone-600 italic">
                             <strong>Ideal para:</strong> {srv.idealFor}
@@ -530,11 +445,10 @@ ${quoteNotes.trim() ? `💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}¿Podemos pl
                           <button
                             type="button"
                             onClick={() => handleOpenCotizador(srv.id === 'audiovisual' ? 'branding' : srv.id)}
-                            className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-[#17251E] hover:bg-[#2D4F3E] text-white font-black text-xs transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 shrink-0"
+                            className="w-full sm:w-auto px-4 py-2 rounded-xl bg-[#17251E] hover:bg-[#2D4F3E] text-white font-black text-xs transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 shrink-0"
                           >
-                            <Sliders className="w-3.5 h-3.5 text-[#e8b84f]" />
-                            <span>Configurar y cotizar este servicio</span>
-                            <ArrowRight className="w-3 h-3" />
+                            <span>Cotizar este servicio</span>
+                            <ArrowRight className="w-3.5 h-3.5 text-[#e8b84f]" />
                           </button>
                         </div>
 
@@ -546,50 +460,38 @@ ${quoteNotes.trim() ? `💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}¿Podemos pl
             </div>
 
             {/* Banner Compacto de Cotización */}
-            <div className="rounded-2xl bg-gradient-to-r from-[#17251E] via-[#243B2F] to-[#1F2421] text-white p-4 sm:p-5 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="rounded-2xl bg-gradient-to-r from-[#17251E] via-[#243B2F] to-[#1F2421] text-white p-4 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-3">
               <div className="space-y-0.5 text-center sm:text-left">
-                <div className="text-xs font-bold text-[#D4A359]">¿Tienes un proyecto especial o medidas específicas?</div>
-                <div className="text-xs text-stone-200">Cotiza en 3 pasos con cálculo de costo al instante.</div>
+                <div className="text-xs font-bold text-[#D4A359]">¿Tienes un proyecto especial con medidas específicas?</div>
+                <div className="text-xs text-stone-200">Cotiza en 2 pasos con cálculo de costo al instante.</div>
               </div>
               <button
                 type="button"
                 onClick={() => handleOpenCotizador('branding')}
                 className="w-full sm:w-auto shrink-0 px-4 py-2 rounded-xl bg-[#D4A359] hover:bg-[#c39247] text-[#17251E] font-black text-xs transition-all shadow-md cursor-pointer"
               >
-                Abrir Cotizador Inmediato
+                Abrir Cotizador
               </button>
             </div>
 
           </div>
         )}
 
-        {/* ================= SECCIÓN 2: COTIZADOR INTERACTIVO EN 3 PASOS (MÓVIL PRIMERO) ================= */}
+        {/* ================= SECCIÓN 2: COTIZADOR INTERACTIVO EN 2 PASOS ================= */}
         {activeTab === 'cotizador' && (
-          <div ref={cotizadorRef} className="space-y-6 animate-fadeIn">
+          <div ref={cotizadorRef} className="space-y-5 animate-fadeIn">
             
-            <div className="text-center space-y-1">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#D4A359]">
-                Cotizador Rápido en 3 Pasos
-              </span>
-              <h2 className="text-xl sm:text-2xl font-black font-heading text-stone-900 tracking-tight">
-                Elige tus opciones y ve el costo a la primera
-              </h2>
-              <p className="text-xs text-stone-600 font-normal">
-                Sin escroleo innecesario: selecciona especialidad, alcance y plazos para calcular el estimado en tiempo real.
-              </p>
-            </div>
-
-            {/* TARJETA DESTACADA DEL COSTO ORIENTATIVO (VISIBLE A LA PRIMERA) */}
-            <div className="sticky top-32 z-20 p-4 rounded-2xl bg-gradient-to-r from-[#17251E] to-[#2D4F3E] text-white shadow-xl border border-[#D4A359]/30 flex items-center justify-between gap-3">
+            {/* TARJETA DESTACADA DEL COSTO ORIENTATIVO */}
+            <div className="sticky top-32 z-20 p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-[#17251E] to-[#2D4F3E] text-white shadow-xl border border-[#D4A359]/30 flex items-center justify-between gap-3">
               <div className="space-y-0.5">
                 <div className="text-[10px] font-bold uppercase tracking-wider text-[#D4A359] flex items-center gap-1">
                   <DollarSign className="w-3 h-3" />
-                  <span>Inversión Estimada Orientativa:</span>
+                  <span>Inversión Estimada:</span>
                 </div>
                 <div className="text-2xl sm:text-3xl font-black font-heading text-white tracking-tight">
                   ${quoteEstimate.base.toLocaleString('es-MX')} <span className="text-xs font-normal text-stone-300">MXN</span>
                 </div>
-                <div className="text-[10px] text-stone-300 truncate max-w-[240px] sm:max-w-md">
+                <div className="text-[10px] text-stone-300 truncate max-w-[220px] sm:max-w-md">
                   {quoteEstimate.label} · {quoteScope === 'inicio' ? 'Básico' : quoteScope === 'estandar' ? 'Profesional' : 'VIP Todo Incluido'}
                 </div>
               </div>
@@ -600,16 +502,15 @@ ${quoteNotes.trim() ? `💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}¿Podemos pl
                 className="shrink-0 px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-xs transition-all shadow-md active:scale-95 flex items-center gap-1.5 cursor-pointer"
               >
                 <MessageCircle className="w-4 h-4 fill-white" />
-                <span className="hidden sm:inline">Cotizar por WhatsApp</span>
-                <span className="sm:hidden">WhatsApp</span>
+                <span>WhatsApp</span>
               </button>
             </div>
 
-            {/* CONTENEDOR DE LOS 3 PASOS */}
-            <div className="bg-white rounded-3xl border border-stone-200 p-4 sm:p-6 shadow-sm space-y-6">
+            {/* CONTENEDOR DE LOS 2 PASOS */}
+            <div className="bg-white rounded-3xl border border-stone-200 p-4 sm:p-6 shadow-sm space-y-5">
               
               {/* PASO 1: ESPECIALIDAD O SERVICIO */}
-              <div className="space-y-2.5">
+              <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-black uppercase tracking-wider text-stone-800 flex items-center gap-1.5">
                     <span className="w-5 h-5 rounded-full bg-[#17251E] text-white text-[11px] flex items-center justify-center font-bold">1</span>
@@ -639,8 +540,8 @@ ${quoteNotes.trim() ? `💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}¿Podemos pl
                         }`}
                       >
                         <div className="min-w-0">
-                          <div className="font-black text-xs text-stone-900 flex items-center gap-1.5">
-                            <span>{s.title}</span>
+                          <div className="font-black text-xs text-stone-900 truncate">
+                            {s.title}
                           </div>
                           <div className="text-[11px] text-stone-500 truncate">{s.desc}</div>
                         </div>
@@ -654,7 +555,7 @@ ${quoteNotes.trim() ? `💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}¿Podemos pl
               </div>
 
               {/* PASO 2: ALCANCE DE PROYECTO */}
-              <div className="space-y-2.5">
+              <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-black uppercase tracking-wider text-stone-800 flex items-center gap-1.5">
                     <span className="w-5 h-5 rounded-full bg-[#17251E] text-white text-[11px] flex items-center justify-center font-bold">2</span>
@@ -689,75 +590,35 @@ ${quoteNotes.trim() ? `💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}¿Podemos pl
                 </div>
               </div>
 
-              {/* PASO 3: PLAZOS DE ENTREGA */}
-              <div className="space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <label className="text-xs font-black uppercase tracking-wider text-stone-800 flex items-center gap-1.5">
-                    <span className="w-5 h-5 rounded-full bg-[#17251E] text-white text-[11px] flex items-center justify-center font-bold">3</span>
-                    <span>Plazos de Entrega:</span>
-                  </label>
-                  <span className="text-[11px] text-stone-500 font-medium">Tiempo de taller</span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setQuoteUrgency('normal')}
-                    className={`p-3 rounded-2xl border text-xs font-bold cursor-pointer transition-all flex items-center justify-center gap-2 ${
-                      quoteUrgency === 'normal'
-                        ? 'border-[#2D4F3E] bg-[#2D4F3E] text-white shadow-xs'
-                        : 'border-stone-200 bg-white text-stone-700 hover:bg-stone-50'
-                    }`}
-                  >
-                    <Clock className="w-3.5 h-3.5" />
-                    <span>Plazo Normal de Taller</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setQuoteUrgency('express')}
-                    className={`p-3 rounded-2xl border text-xs font-bold cursor-pointer transition-all flex items-center justify-center gap-2 ${
-                      quoteUrgency === 'express'
-                        ? 'border-amber-500 bg-amber-500 text-white shadow-xs'
-                        : 'border-stone-200 bg-white text-stone-700 hover:bg-stone-50'
-                    }`}
-                  >
-                    <Zap className="w-3.5 h-3.5" />
-                    <span>⚡ Entrega Express (+25%)</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* SECCIÓN FINAL: CUÉNTANOS TU IDEA Y COTIZAR POR WHATSAPP */}
-              <div className="pt-4 border-t border-stone-200 space-y-4">
+              {/* ACCIÓN PRINCIPAL: BOTÓN DE COTIZAR POR WHATSAPP */}
+              <div className="pt-3 border-t border-stone-200 space-y-4">
                 
-                <div className="space-y-1.5">
-                  <label className="text-xs font-black uppercase tracking-wider text-stone-800 flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-[#D4A359]" />
-                    <span>Cuéntanos tu idea:</span>
-                  </label>
-                  <textarea
-                    rows="2"
-                    value={quoteNotes}
-                    onChange={(e) => setQuoteNotes(e.target.value)}
-                    placeholder="Escribe brevemente tu proyecto: Ej. Requiero lona para inauguración de 2x1 metros y diseño de logotipo..."
-                    className="w-full p-3 rounded-2xl border border-stone-300 text-xs text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#2D4F3E] bg-[#FAF9F5]"
-                  />
-                </div>
-
-                {/* BOTÓN PROMINENTE DE COTIZAR POR WHATSAPP */}
                 <button
                   type="button"
                   onClick={handleSendWhatsAppQuote}
-                  className="w-full py-4 px-6 rounded-2xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-sm sm:text-base transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2.5 cursor-pointer active:scale-98"
+                  className="w-full py-3.5 px-5 rounded-2xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-sm sm:text-base transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer active:scale-98"
                 >
                   <MessageCircle className="w-5 h-5 fill-white" />
                   <span>Cotizar por WhatsApp con Wicho (${quoteEstimate.base.toLocaleString('es-MX')} MXN)</span>
                 </button>
 
-                <p className="text-[11px] text-stone-500 text-center">
-                  Te responderemos directamente por WhatsApp para afinar medidas, archivos y muestra visual previa.
-                </p>
+                {/* CUÉNTANOS TU IDEA: UBICADO ABAJO DEL BOTÓN DE COTIZAR */}
+                <div className="p-3.5 rounded-2xl bg-[#FAF9F5] border border-stone-200/80 space-y-1.5">
+                  <label className="text-xs font-bold text-stone-800 flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-[#D4A359]" />
+                    <span>Cuéntanos tu idea (opcional):</span>
+                  </label>
+                  <textarea
+                    rows="2"
+                    value={quoteNotes}
+                    onChange={(e) => setQuoteNotes(e.target.value)}
+                    placeholder="Escribe brevemente tu idea si deseas añadir medidas o detalles (ej. Lona de 3x2m para inauguración y diseño de logo)..."
+                    className="w-full p-2.5 rounded-xl border border-stone-300 text-xs text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#2D4F3E] bg-white"
+                  />
+                  <p className="text-[10px] text-stone-500">
+                    Si escribes detalles aquí, se incluirán automáticamente en tu mensaje de WhatsApp al pulsar el botón de arriba.
+                  </p>
+                </div>
 
               </div>
 
