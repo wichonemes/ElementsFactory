@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Eye, Plus, MessageCircle, Sparkles, Layers, Image as ImageIcon, Calculator, ShoppingBag, Flame, Clock, Zap } from 'lucide-react';
-import TemuUrgencyModule from './TemuUrgencyModule';
 
 export default function ProductCard({
   product,
@@ -61,10 +60,6 @@ export default function ProductCard({
               {discountPercent}% OFF
             </span>
             <span className="text-xs text-gray-400 line-through font-semibold">${product.price}</span>
-            <span className="text-[9px] font-bold text-amber-700 bg-amber-50 px-1 rounded flex items-center gap-0.5">
-              <Zap className="w-2.5 h-2.5 fill-amber-500 text-amber-500" />
-              <span>Flash</span>
-            </span>
           </div>
           <div className="flex items-baseline gap-1 mt-0.5 truncate">
             <span className="text-base sm:text-lg font-black text-stone-900 font-heading">
@@ -126,7 +121,7 @@ export default function ProductCard({
       onMouseLeave={() => setIsHovered(false)}
       className={`group bg-white rounded-2xl border overflow-hidden flex flex-col justify-between transition-all duration-300 ${
         isFlashDeal 
-          ? 'border-[#D4A359] shadow-lg ring-2 ring-[#D4A359]/30' 
+          ? 'border-amber-400 shadow-[0_0_22px_rgba(245,158,11,0.32)] ring-2 ring-amber-400/60 hover:shadow-[0_0_30px_rgba(245,158,11,0.5)]' 
           : 'border-[#E8E4DA] hover:border-[#2D4F3E]/40 hover:shadow-xl'
       }`}
     >
@@ -160,9 +155,9 @@ export default function ProductCard({
           {/* Left: Flash Deal or Combo Badge */}
           <div>
             {isFlashDeal ? (
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 sm:px-2 rounded-md bg-amber-500 text-stone-950 text-[8.5px] sm:text-[9.5px] font-black shadow-xs">
-                <Flame className="w-2.5 h-2.5 fill-current shrink-0" />
-                <span>FLASH 2H</span>
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 rounded-md bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500 text-white text-[8.5px] sm:text-[9.5px] font-black shadow-md border border-amber-300/80 animate-pulse">
+                <Flame className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-200 text-amber-100 drop-shadow-[0_0_8px_rgba(255,255,255,1)] shrink-0 animate-bounce" />
+                <span className="tracking-tight text-white font-black drop-shadow-xs">FLASH 2H</span>
               </span>
             ) : product.isBundle ? (
               <span className="px-1.5 py-0.5 sm:px-2 rounded-md text-[8.5px] sm:text-[9.5px] font-black shadow-xs bg-[#D82B6E] text-white">
@@ -231,15 +226,6 @@ export default function ProductCard({
             <span className="text-[#9E472A]">Personalizable</span>
           </div>
         </div>
-
-        {/* Oferta Flash Rotativa de 2 Horas */}
-        {isFlashDeal && (
-          <TemuUrgencyModule
-            product={product}
-            flashDeal={flashDeal}
-            variant="card"
-          />
-        )}
 
         {/* Price & Circular '+' Action */}
         <div className="pt-2 border-t border-[#E8E4DA]/60 space-y-1">
