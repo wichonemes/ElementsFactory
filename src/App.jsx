@@ -16,6 +16,7 @@ import FloatingSideNav from './components/FloatingSideNav';
 import TemuUrgencyModule from './components/TemuUrgencyModule';
 import PackagesAndServicesView from './components/PackagesAndServicesView';
 import PublicidadDesarrolloView from './components/PublicidadDesarrolloView';
+import HomePackageCard from './components/HomePackageCard';
 import BlitzClockWidget from './components/BlitzClockWidget';
 import CatalogBottomNav from './components/CatalogBottomNav';
 import WorkshopArcadeModal from './components/WorkshopArcadeModal';
@@ -294,7 +295,7 @@ export default function App() {
   // so the visitor immediately sees a rich, balanced mix of everything the workshop creates ("aparezcan de todo").
   const regularProducts = useMemo(() => {
     const isHome = activeWorld === 'all' && selectedCategory === 'all' && selectedTechnique === 'all' && !searchQuery;
-    const baseList = isHome ? filteredProducts : filteredProducts.filter(p => !p.isBundle);
+    const baseList = filteredProducts.filter(p => !p.isBundle);
     if (!baseList || baseList.length === 0) return [];
 
     const flashIds = flashDeal?.activeFlashProductIds || [];
@@ -321,17 +322,17 @@ export default function App() {
 
     let list = baseList;
     if (isHome) {
-      // Balanced interleaving by technique & combos so the home feed shows a diverse kaleidoscope of everything
+      // Balanced interleaving by technique & personalizados al azar para que aparezca de todo
       const buckets = {
-        '3d': shuffle(baseList.filter(p => p.techniques?.includes('3d') && !p.isBundle)),
-        'laser': shuffle(baseList.filter(p => p.techniques?.includes('laser') && !p.isBundle)),
-        'sublimation': shuffle(baseList.filter(p => (p.techniques?.includes('sublimation') || p.techniques?.includes('sublimacion')) && !p.isBundle)),
-        'bundle': shuffle(baseList.filter(p => p.isBundle)),
-        'vinyl': shuffle(baseList.filter(p => (p.techniques?.includes('vinyl') || p.techniques?.includes('vinil')) && !p.isBundle)),
-        'nfc': shuffle(baseList.filter(p => p.techniques?.includes('nfc') && !p.isBundle))
+        '3d': shuffle(baseList.filter(p => p.techniques?.includes('3d') && !p.worlds?.includes('personalizados'))),
+        'laser': shuffle(baseList.filter(p => p.techniques?.includes('laser'))),
+        'sublimation': shuffle(baseList.filter(p => (p.techniques?.includes('sublimation') || p.techniques?.includes('sublimacion')))),
+        'personalizados': shuffle(baseList.filter(p => p.worlds?.includes('personalizados'))),
+        'vinyl': shuffle(baseList.filter(p => (p.techniques?.includes('vinyl') || p.techniques?.includes('vinil')))),
+        'nfc': shuffle(baseList.filter(p => p.techniques?.includes('nfc')))
       };
 
-      const keys = shuffle(['3d', 'laser', 'sublimation', 'bundle', 'vinyl', 'nfc']);
+      const keys = shuffle(['3d', 'laser', 'sublimation', 'personalizados', 'vinyl', 'nfc']);
       const maxLen = Math.max(...Object.values(buckets).map(b => b.length));
       const seen = new Set();
       const interleaved = [];
@@ -377,6 +378,26 @@ export default function App() {
 
     return result;
   }, [filteredProducts, flashDeal?.activeFlashProductIds, catalogSeed, activeWorld, selectedCategory, selectedTechnique, searchQuery]);
+
+  // Paquetes destacados ordenados aleatoriamente para los bloques de la página principal
+  const homePackagesList = useMemo(() => {
+    const list = products.filter(p => p.isBundle);
+    if (!list || list.length === 0) return [];
+    let s = ((catalogSeed + 5431) * 9301 + 49297) % 233280;
+    const rnd = () => {
+      s = (s * 9301 + 49297) % 233280;
+      return s / 233280;
+    };
+    const res = [...list];
+    let m = res.length, t, i;
+    while (m) {
+      i = Math.floor(rnd() * m--);
+      t = res[m];
+      res[m] = res[i];
+      res[i] = t;
+    }
+    return res;
+  }, [products, catalogSeed]);
 
   // Bucle infinito estilo Marketplace en la pantalla principal (scrolleo continuo de catálogo)
   const [infiniteLoopBatches, setInfiniteLoopBatches] = useState(1);
@@ -1039,21 +1060,92 @@ export default function App() {
               </div>
             ) : (
               <div className="space-y-10">
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
-                  {loopedCatalogProducts.map(product => (
-                    <ProductCard
-                      key={product.loopKey || product.id}
-                      product={product}
-                      isFlashDeal={flashDeal.isProductOnFlashDeal(product.id)}
-                      flashDeal={flashDeal}
-                      onSelectProduct={() => setSelectedProduct(product)}
-                      onOpenDetail={() => setSelectedProduct(product)}
-                      onQuickAdd={() => setSelectedProduct(product)}
-                      onAddToCart={handleAddToCart}
-                      onOpenCalculator={handleOpenCalculator}
-                    />
-                  ))}
-                </div>
+                {activeWorld === 'all' && selectedCategory === 'all' && selectedTechnique === 'all' && !searchQuery ? (
+                  /* Flujo en Principal: tandas de 8 productos en cuadrícula normal seguidas de un bloque designado de 2 paquetes */
+                  <div className="space-y-8 sm:space-y-12">
+                    {Array.from({ length: Math.ceil(loopedCatalogProducts.length / 8) }).map((_, chunkIdx) => {
+                      const chunkProds = loopedCatalogProducts.slice(chunkIdx * 8, (chunkIdx + 1) * 8);
+                      const p1 = homePackagesList.length > 0 ? homePackagesList[(chunkIdx * 2) % homePackagesList.length] : null;
+                      const p2 = homePackagesList.length > 1 ? homePackagesList[(chunkIdx * 2 + 1) % homePackagesList.length] : null;
+                      const packagePair = [p1, p2].filter(Boolean);
+
+                      return (
+                        <React.Fragment key={`home-chunk-${chunkIdx}`}>
+                          {/* Cuadrícula de 8 productos (3D, láser, sublimación, vinil, NFC y personalizados al azar) */}
+                          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+                            {chunkProds.map(product => (
+                              <ProductCard
+                                key={product.loopKey || `${product.id}-${chunkIdx}`}
+                                product={product}
+                                isFlashDeal={flashDeal.isProductOnFlashDeal(product.id)}
+                                flashDeal={flashDeal}
+                                onSelectProduct={() => setSelectedProduct(product)}
+                                onOpenDetail={() => setSelectedProduct(product)}
+                                onQuickAdd={() => setSelectedProduct(product)}
+                                onAddToCart={handleAddToCart}
+                                onOpenCalculator={handleOpenCalculator}
+                              />
+                            ))}
+                          </div>
+
+                          {/* Bloque designado de 2 Paquetes de Taller */}
+                          {packagePair.length > 0 && (
+                            <div className="my-6 sm:my-8 p-3.5 sm:p-6 rounded-3xl bg-gradient-to-br from-[#FAF8F5] via-[#F4EFE6] to-[#ECE5D8] border border-[#E8E4DA] shadow-xs">
+                              <div className="flex items-center justify-between pb-2.5 sm:pb-3 mb-3 sm:mb-4 border-b border-[#E8E4DA]/80">
+                                <div className="flex items-center gap-2">
+                                  <span className="w-2.5 h-2.5 rounded-full bg-[#D82B6E] animate-pulse"></span>
+                                  <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-[#1F2421] font-heading">
+                                    Paquetes &amp; Combos de Ahorro
+                                  </span>
+                                  <span className="hidden md:inline text-xs text-stone-500 font-medium">
+                                    · Soluciones coordinadas de taller
+                                  </span>
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={() => handleSelectWorld('paquetes-servicios')}
+                                  className="text-[11px] sm:text-xs font-bold text-[#2D4F3E] hover:text-[#20392C] flex items-center gap-1 cursor-pointer bg-white px-2.5 sm:px-3 py-1 rounded-full border border-[#E8E4DA] shadow-2xs hover:shadow-xs transition-all"
+                                >
+                                  <span>Ver todos los paquetes</span>
+                                  <ChevronRight className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-6">
+                                {packagePair.map((pkg, pIdx) => (
+                                  <HomePackageCard
+                                    key={`home-pkg-${chunkIdx}-${pkg.id}-${pIdx}`}
+                                    packageItem={pkg}
+                                    onSelectProduct={() => setSelectedProduct(pkg)}
+                                    onAddToCart={handleAddToCart}
+                                    onOpenCalculator={handleOpenCalculator}
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </React.Fragment>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  /* Cuadrícula estándar para áreas individuales o búsquedas */
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+                    {loopedCatalogProducts.map(product => (
+                      <ProductCard
+                        key={product.loopKey || product.id}
+                        product={product}
+                        isFlashDeal={flashDeal.isProductOnFlashDeal(product.id)}
+                        flashDeal={flashDeal}
+                        onSelectProduct={() => setSelectedProduct(product)}
+                        onOpenDetail={() => setSelectedProduct(product)}
+                        onQuickAdd={() => setSelectedProduct(product)}
+                        onAddToCart={handleAddToCart}
+                        onOpenCalculator={handleOpenCalculator}
+                      />
+                    ))}
+                  </div>
+                )}
 
                 {/* Centinela de Scrolleo Infinito en Bucle Estilo Marketplace */}
                 <div ref={infiniteSentinelRef} className="py-6 flex flex-col items-center justify-center">

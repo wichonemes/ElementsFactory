@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Eye, ArrowUpRight, Plus, MessageCircle, Sparkles, Layers, Image as ImageIcon, Calculator, ShoppingBag, Flame, Clock, Zap } from 'lucide-react';
+import { Eye, Plus, MessageCircle, Sparkles, Layers, Image as ImageIcon, Calculator, ShoppingBag, Flame, Clock, Zap } from 'lucide-react';
 import TemuUrgencyModule from './TemuUrgencyModule';
-import { getFilamentColor, getProductColorOptions } from '../utils/colorUtils';
 
 export default function ProductCard({
   product,
@@ -46,7 +45,7 @@ export default function ProductCard({
   const formatPrice = () => {
     if (product.priceType === 'quote' || product.price === null) {
       return (
-        <span className="text-sm font-bold text-[#2D4F3E] bg-[#F4F0E8] px-2.5 py-1 rounded-md">
+        <span className="text-xs sm:text-sm font-bold text-[#2D4F3E] bg-[#F4F0E8] px-2 py-0.5 rounded-md inline-block">
           A cotizar
         </span>
       );
@@ -56,7 +55,7 @@ export default function ProductCard({
       const discountPercent = product.flashDealConfig?.discountPercent || productTime?.discountPercent || flashDeal?.discountPercent || 20;
       const flashPrice = Math.round(product.price * (1 - discountPercent / 100));
       return (
-        <div className="flex flex-col">
+        <div className="flex flex-col min-w-0">
           <div className="flex items-center gap-1.5 flex-wrap">
             <span className="text-[10px] font-black text-white bg-emerald-600 px-1.5 py-0.2 rounded shadow-2xs">
               {discountPercent}% OFF
@@ -67,34 +66,47 @@ export default function ProductCard({
               <span>Flash</span>
             </span>
           </div>
-          <div className="flex items-baseline gap-1 mt-0.5">
-            <span className="text-base sm:text-lg font-black text-stone-900 font-heading">${flashPrice}</span>
+          <div className="flex items-baseline gap-1 mt-0.5 truncate">
+            <span className="text-base sm:text-lg font-black text-stone-900 font-heading">
+              ${Number(flashPrice).toLocaleString('es-MX')}
+            </span>
             <span className="text-xs text-gray-500 font-medium">MXN</span>
           </div>
         </div>
       );
     }
 
-    const amount = `$${product.price}`;
+    const formattedAmount = `$${Number(product.price).toLocaleString('es-MX')}`;
     const prefix = product.priceType === 'starting_at' ? 'Desde ' : '';
-    const unit = product.priceUnit ? ` ${product.priceUnit}` : '';
+
+    // Clean, short unit (e.g. "pieza", "set", "c/u", "combo")
+    let cleanUnit = '';
+    if (product.priceUnit) {
+      let u = product.priceUnit.replace(/\s*\(.*?\)/g, '').trim();
+      if (u.toLowerCase().startsWith('set')) u = 'set';
+      else if (u.toLowerCase().startsWith('pieza')) u = 'pieza';
+      else if (u.toLowerCase().startsWith('combo')) u = 'combo';
+      cleanUnit = ` ${u}`;
+    }
 
     return (
-      <div className="flex flex-col">
+      <div className="flex flex-col min-w-0">
         {product.regularPrice && (
-          <div className="flex items-center gap-1.5">
-            <span className="text-xs text-gray-400 line-through font-semibold">${product.regularPrice} MXN</span>
+          <div className="flex items-center gap-1.5 truncate">
+            <span className="text-xs text-gray-400 line-through font-semibold">
+              ${Number(product.regularPrice).toLocaleString('es-MX')} MXN
+            </span>
             {product.savings && (
-              <span className="text-[10px] font-black text-[#D82B6E] bg-[#FFF0F5] px-1.5 py-0.2 rounded">
+              <span className="text-[10px] font-black text-[#D82B6E] bg-[#FFF0F5] px-1.5 py-0.2 rounded shrink-0">
                 Ahorras ${product.savings}
               </span>
             )}
           </div>
         )}
-        <div className="flex items-baseline gap-1">
-          <span className="text-xs text-gray-500 font-medium">{prefix}</span>
-          <span className="text-base sm:text-lg font-extrabold text-[#1F2421] font-heading">{amount}</span>
-          {unit && <span className="text-xs text-gray-400 font-normal">{unit}</span>}
+        <div className="flex items-baseline gap-1 truncate">
+          {prefix && <span className="text-xs text-gray-500 font-medium shrink-0">{prefix}</span>}
+          <span className="text-base sm:text-lg font-extrabold text-[#1F2421] font-heading">{formattedAmount}</span>
+          {cleanUnit && <span className="text-xs text-gray-500 font-normal truncate">{cleanUnit}</span>}
         </div>
       </div>
     );
@@ -102,16 +114,6 @@ export default function ProductCard({
 
   const primaryTech = product.techniques?.[0] || '3d';
   const techBadge = techniqueLabels[primaryTech] || { label: primaryTech, color: 'bg-gray-100 text-gray-800' };
-  const colorOptions = getProductColorOptions(product);
-
-  const isPackageOrTiered = 
-    Boolean(product.isBundle) || 
-    Boolean(product.priceTiers && product.priceTiers.length > 1) || 
-    Boolean(product.code?.startsWith('PROMO-')) || 
-    Boolean(product.worlds?.includes('paquetes-servicios')) ||
-    Boolean(product.worlds?.includes('personalizados')) ||
-    Boolean(product.customizationTiers && product.customizationTiers.length > 1) ||
-    Boolean(product.priceType === 'starting_at');
 
   // Photo display: Resting shows real warm context lifestyle photo; hover shows pure white background angle of the same item
   const basePhoto = product.primaryImage || product.gallery?.[0] || product.whiteBgImage;
@@ -153,71 +155,36 @@ export default function ProductCard({
           }}
         />
 
-        {/* Marca de Agua Sutil de Taller para Protección de Imagen con Logotipo Oficial */}
-        <div className="absolute bottom-1.5 right-1.5 z-10 flex items-center gap-1 px-1.5 py-[2px] rounded-full bg-black/15 backdrop-blur-2xs text-[7px] font-medium text-white/60 pointer-events-none select-none tracking-tight border border-white/5 shadow-2xs">
-          <img
-            src="/brand/artesano_isotipo_transparente.png"
-            alt=""
-            className="w-2 h-2 object-contain shrink-0 opacity-75"
-          />
-          <span>Artesano Digital</span>
-        </div>
-
         {/* Top Badges */}
-        <div className="absolute top-1.5 left-1.5 right-1.5 sm:top-2.5 sm:left-2.5 sm:right-2.5 flex items-center justify-between pointer-events-none">
-          {/* Product Code Badge (Oculto al cliente por requerimiento, preservado para control interno) */}
-          <span className="hidden" data-sku={product.sku || product.code} title={product.sku ? `SKU: ${product.sku}` : `Código: ${product.code}`}>
-            {product.sku || product.code}
-          </span>
+        <div className="absolute top-1.5 left-1.5 right-1.5 sm:top-2.5 sm:left-2.5 sm:right-2.5 flex items-center justify-between pointer-events-none z-10">
+          {/* Left: Flash Deal or Combo Badge */}
+          <div>
+            {isFlashDeal ? (
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 sm:px-2 rounded-md bg-amber-500 text-stone-950 text-[8.5px] sm:text-[9.5px] font-black shadow-xs">
+                <Flame className="w-2.5 h-2.5 fill-current shrink-0" />
+                <span>FLASH 2H</span>
+              </span>
+            ) : product.isBundle ? (
+              <span className="px-1.5 py-0.5 sm:px-2 rounded-md text-[8.5px] sm:text-[9.5px] font-black shadow-xs bg-[#D82B6E] text-white">
+                COMBO
+              </span>
+            ) : null}
+          </div>
 
-          {/* Technique, Promo or Flash Deal Badge */}
-          {isFlashDeal ? (
-            <div className="ml-auto relative px-1.5 py-0.5 sm:px-2 rounded-lg border border-amber-300/40 backdrop-blur-md badge-flame-effect text-white flex flex-col gap-0.5 max-w-[96px] sm:max-w-[108px] overflow-hidden select-none shadow-xs">
-              <div className="relative z-10 flex items-center justify-between gap-1 text-[8.5px] sm:text-[9px] font-black leading-tight">
-                <span className="flex items-center gap-0.5 text-amber-100 truncate">
-                  {productTime.isBlitz ? (
-                    <Clock className="w-2.5 h-2.5 text-amber-300 animate-spin-slow shrink-0" />
-                  ) : (
-                    <Flame className="w-2.5 h-2.5 fill-amber-300 text-amber-200 icon-flame-flicker shrink-0" />
-                  )}
-                  <span className="tracking-tight truncate">{productTime.durationLabel || 'FLASH'}</span>
-                </span>
-                {productTime?.timeFormatted?.fullText && (
-                  <span className="font-mono bg-black/40 px-1 py-0.2 rounded text-[7.5px] sm:text-[8.5px] text-white tracking-tight border border-white/10 shrink-0">
-                    {productTime.isBlitz ? `${productTime.timeFormatted.minutes}:${productTime.timeFormatted.seconds}` : productTime.timeFormatted.fullText}
-                  </span>
-                )}
-              </div>
-              {/* Barrita discreta de cuánto tiempo queda */}
-              <div className="relative z-10 w-full bg-black/40 rounded-full h-0.5 overflow-hidden border border-white/10" title="Tiempo restante de oferta">
-                <div
-                  className="bg-gradient-to-r from-amber-300 to-amber-500 h-full rounded-full transition-all duration-1000"
-                  style={{
-                    width: `${productTime.blitzPercentRemaining ?? productTime.percentRemaining ?? 100}%`
-                  }}
-                />
-              </div>
-            </div>
-          ) : product.isBundle ? (
-            <span className="ml-auto px-1.5 py-0.5 sm:px-2 rounded-md text-[9px] sm:text-[10px] font-black border backdrop-blur-md shadow-xs bg-[#D82B6E] text-white border-[#D82B6E]">
-              COMBO
-            </span>
-          ) : (
-            <span className={`ml-auto px-1.5 py-0.5 sm:px-2 rounded-md text-[9px] sm:text-[10px] font-bold border backdrop-blur-md shadow-xs ${techBadge.color}`}>
-              {techBadge.label}
-            </span>
-          )}
+          {/* Right: Technique Badge (3D, Láser, Sublimación, Vinil, NFC) */}
+          <span className={`px-1.5 py-0.5 sm:px-2 rounded-md text-[8.5px] sm:text-[9.5px] font-bold border backdrop-blur-md shadow-xs ${techBadge.color}`}>
+            {techBadge.label}
+          </span>
         </div>
 
         {/* Bottom Badges */}
-        <div className="absolute bottom-1.5 left-1.5 right-1.5 sm:bottom-3 sm:left-3 sm:right-3 flex items-center justify-between pointer-events-none">
-          {/* Availability */}
+        <div className="absolute bottom-1.5 left-1.5 right-1.5 sm:bottom-2.5 sm:left-2.5 sm:right-2.5 flex items-center justify-between pointer-events-none z-10">
+          {/* Availability: Stock / Pedido */}
           <div>
             {product.availability === 'in_stock' ? (
               <span className="inline-flex items-center gap-1 px-1.5 py-0.5 sm:px-2 rounded-full bg-white/95 backdrop-blur-md text-[9px] sm:text-[10px] font-semibold text-emerald-700 shadow-xs">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                <span className="hidden xs:inline">En existencia</span>
-                <span className="xs:hidden">Stock</span>
+                <span>Stock</span>
               </span>
             ) : product.availability === 'made_to_order' ? (
               <span className="inline-flex items-center gap-1 px-1.5 py-0.5 sm:px-2 rounded-full bg-white/95 backdrop-blur-md text-[9px] sm:text-[10px] font-semibold text-amber-700 shadow-xs">
@@ -231,11 +198,15 @@ export default function ProductCard({
             )}
           </div>
 
-          {/* Multi-photo indicator pill */}
-          <span className="hidden xs:inline-flex items-center gap-1 px-1.5 py-0.5 sm:px-2 rounded-full bg-black/60 backdrop-blur-md text-[9px] sm:text-[10px] font-semibold text-white shadow-xs">
-            <Layers className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-            <span>{product.gallery?.length || 4} fotos</span>
-          </span>
+          {/* Marca de Agua Sutil de Taller */}
+          <div className="flex items-center gap-1 px-1.5 py-[2px] rounded-full bg-black/20 backdrop-blur-2xs text-[7px] font-medium text-white/80 select-none tracking-tight border border-white/5 shadow-2xs">
+            <img
+              src="/brand/artesano_isotipo_transparente.png"
+              alt=""
+              className="w-2 h-2 object-contain shrink-0 opacity-80"
+            />
+            <span>Artesano Digital</span>
+          </div>
         </div>
 
         {/* Quick View Overlay on Desktop */}
@@ -248,64 +219,18 @@ export default function ProductCard({
       </div>
 
       {/* Content & Actions */}
-      <div className="p-2.5 sm:p-5 flex-1 flex flex-col justify-between space-y-1.5 sm:space-y-3">
+      <div className="p-2.5 sm:p-4 flex-1 flex flex-col justify-between space-y-1.5 sm:space-y-2.5">
         <div className="space-y-1">
           <h3
             onClick={handleOpenDetailModal}
-            className="font-semibold text-stone-900 text-xs sm:text-[15px] line-clamp-2 hover:text-[#2D4F3E] cursor-pointer transition-colors leading-tight sm:leading-snug tracking-normal"
+            className="font-semibold text-stone-900 text-xs sm:text-[14px] line-clamp-2 hover:text-[#2D4F3E] cursor-pointer transition-colors leading-tight sm:leading-snug tracking-normal"
           >
             {product.name}
           </h3>
-          <p className="hidden sm:block text-xs text-gray-500 line-clamp-2 leading-relaxed">
-            {product.shortDescription}
-          </p>
-          <div className="flex items-center gap-1 text-[10px] text-[#2D4F3E] font-bold select-none">
+          <div className="flex items-center gap-1 text-[10.5px] font-bold select-none pt-0.5">
             <span className="text-[#9E472A]">Personalizable</span>
-            <span className="text-gray-400 font-medium hidden sm:inline">· Si lo piensas, se hace</span>
           </div>
         </div>
-
-        {/* Circulitos de color disponibles */}
-        {colorOptions.length > 0 && (
-          <div 
-            onClick={handleOpenDetailModal}
-            className="flex items-center gap-1.5 pt-0.5 cursor-pointer select-none group/colors"
-            title={`${colorOptions.length} colores disponibles: ${colorOptions.join(', ')}`}
-          >
-            <div className="flex items-center gap-1">
-              {colorOptions.slice(0, 5).map((colorName, idx) => {
-                const swatch = getFilamentColor(colorName);
-                return (
-                  <span
-                    key={idx}
-                    className="group/swatch relative inline-flex items-center justify-center"
-                  >
-                    <span
-                      className="w-2.5 h-2.5 sm:w-4 sm:h-4 rounded-full border border-black/20 shadow-2xs inline-block shrink-0 transition-transform duration-150 group-hover/swatch:scale-125 group-hover/swatch:z-10"
-                      style={{
-                        background: swatch?.css || '#D1D5DB',
-                        borderColor: swatch?.border || '#9CA3AF',
-                        boxShadow: swatch?.glow ? '0 0 6px rgba(110, 231, 183, 0.9)' : undefined
-                      }}
-                    />
-                    {/* Tooltip flotante con nombre del color */}
-                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover/swatch:block z-30 px-2 py-0.5 text-[10px] font-bold text-white bg-black/85 rounded-md whitespace-nowrap shadow-md pointer-events-none">
-                      {colorName}
-                    </span>
-                  </span>
-                );
-              })}
-            </div>
-            {colorOptions.length > 5 && (
-              <span className="text-[9px] sm:text-[9.5px] font-bold text-gray-500 bg-gray-100 px-1.5 py-0.2 rounded-full">
-                +{colorOptions.length - 5}
-              </span>
-            )}
-            <span className="text-[9.5px] sm:text-[10.5px] text-gray-400 font-medium group-hover/colors:text-[#2D4F3E] transition-colors ml-0.5">
-              {colorOptions.length} {colorOptions.length === 1 ? 'color' : 'colores'}
-            </span>
-          </div>
-        )}
 
         {/* Oferta Flash Rotativa de 2 Horas */}
         {isFlashDeal && (
@@ -318,45 +243,20 @@ export default function ProductCard({
 
         {/* Price & Circular '+' Action */}
         <div className="pt-2 border-t border-[#E8E4DA]/60 space-y-1">
-          <div className="flex items-center justify-between">
-            <div>
+          <div className="flex items-center justify-between gap-1.5 min-h-[32px]">
+            <div className="min-w-0 flex-1 overflow-hidden">
               {formatPrice()}
             </div>
 
-            {isPackageOrTiered ? (
-              <button
-                type="button"
-                onClick={handleOpenDetailModal}
-                className="h-7 sm:h-9 px-2.5 sm:px-3 rounded-full bg-[#EBF5EE] border border-[#2D4F3E]/30 text-[#2D4F3E] hover:bg-[#2D4F3E] hover:text-white shadow-2xs hover:shadow-md flex items-center gap-1 transition-all duration-200 active:scale-95 cursor-pointer shrink-0 font-bold text-[11px] sm:text-xs"
-                title="Ver opciones y configurar"
-                aria-label="Ver opciones y configurar"
-              >
-                <span>Opciones</span>
-                <ArrowUpRight className="w-3.5 h-3.5 stroke-[2.5]" />
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (onAddToCart) {
-                    onAddToCart({
-                      product,
-                      quantity: 1,
-                      selectedVariants: {},
-                      customText: ''
-                    });
-                  } else {
-                    handleOpenDetailModal(e);
-                  }
-                }}
-                className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#EBF5EE] border border-[#2D4F3E]/30 text-[#2D4F3E] hover:bg-[#2D4F3E] hover:text-white shadow-2xs hover:shadow-md flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 cursor-pointer group/btn shrink-0"
-                title="Agregar a cotización"
-                aria-label="Agregar a cotización"
-              >
-                <Plus className="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5 stroke-[2.8] text-[#2D4F3E] group-hover/btn:text-white transition-all duration-200 group-hover/btn:rotate-90" />
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={handleOpenDetailModal}
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#EBF5EE] border border-[#2D4F3E]/30 text-[#2D4F3E] hover:bg-[#2D4F3E] hover:text-white shadow-2xs hover:shadow-md flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 cursor-pointer group/btn shrink-0"
+              title="Ver detalles & personalizar"
+              aria-label="Ver detalles"
+            >
+              <Plus className="w-4 h-4 stroke-[2.8] text-[#2D4F3E] group-hover/btn:text-white transition-all duration-200 group-hover/btn:rotate-90" />
+            </button>
           </div>
 
           {/* Sello de Taller & Envío Seguro estilo Mercado Libre */}
