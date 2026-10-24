@@ -1670,8 +1670,8 @@ if (cloudDb.enabled) {
     // Sincronizar catálogo oficial con Postgres al arrancar
     db.syncCatalogWithCodebase();
   });
-} else {
-  // Sincronizar catálogo local
+} else if (process.env.NODE_ENV !== 'test') {
+  // Sincronizar catálogo local (salvo en pruebas unitarias)
   db.syncCatalogWithCodebase();
 }
 
