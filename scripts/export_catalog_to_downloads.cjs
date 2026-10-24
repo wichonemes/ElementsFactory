@@ -92,7 +92,31 @@ function getProductTargetFolder(p) {
     return path.join(categoryMap.industra, `${code}_${sanitizeFolderName(p.name)}`);
   }
 
-  // 4. Personalizados
+  // 4. Personalizados (Carpetas exactas organizadas)
+  if (code === 'CUST-FUNKO-PETS') {
+    return path.join(categoryMap.personalizados, '01_Funko_Mascotas');
+  }
+  if (code === 'CUST-FUNKO-PAREJAS') {
+    return path.join(categoryMap.personalizados, '02_Funko_Parejas');
+  }
+  if (code === 'CUST-FUNKO-PROF') {
+    return path.join(categoryMap.personalizados, '03_Funko_Profesiones');
+  }
+  if (code === 'CUST-FUNKO-AMIGOS') {
+    return path.join(categoryMap.personalizados, '04_Funko_Amigos');
+  }
+  if (code === 'CUST-FUNKO-FAMILIA') {
+    return path.join(categoryMap.personalizados, '05_Funko_Familia');
+  }
+  if (code === 'CUST-DIBUJO') {
+    return path.join(categoryMap.personalizados, '06_De_Dibujo_Infantil_a_Figura_3D');
+  }
+  if (code === 'CUST-FUNKO-ABUELITOS') {
+    return path.join(categoryMap.personalizados, 'abuelitos');
+  }
+  if (code === 'CUST-FUNKO') {
+    return path.join(categoryMap.personalizados, 'CUST-FUNKO_Figuras_Estilo_Funko_Personalizadas_(De_Foto_a_Figura_3D)');
+  }
   if (code.startsWith('CUST-') || worlds.includes('personalizados')) {
     return path.join(categoryMap.personalizados, `${code}_${sanitizeFolderName(p.name)}`);
   }
@@ -381,6 +405,34 @@ for (const p of db.products) {
   // Guardar archivo con UTF-8 BOM para perfecta legibilidad en Windows Notepad
   fs.writeFileSync(path.join(prodFolder, 'DETALLES_Y_TIEMPOS.txt'), '\uFEFF' + noteLines.join('\r\n'), 'utf8');
 
+  // Si es CUST-DIBUJO, sincronizar también la carpeta en 'juguetes' para tener ficha técnica y 4 vistas completas
+  if (p.code === 'CUST-DIBUJO') {
+    const juguetesDibujoFolder = path.join(categoryMap.juguetes, 'CUST-DIBUJO_De_Dibujo_a_Figura_3D_Real_(El_Arte_de_tus_Pequenos_en_Volum');
+    if (!fs.existsSync(juguetesDibujoFolder)) {
+      fs.mkdirSync(juguetesDibujoFolder, { recursive: true });
+    }
+    fs.writeFileSync(path.join(juguetesDibujoFolder, 'DETALLES_Y_TIEMPOS.txt'), '\uFEFF' + noteLines.join('\r\n'), 'utf8');
+
+    uniqueImages.forEach((imgUrl, idx) => {
+      const cleanUrl = imgUrl.startsWith('/') ? imgUrl.slice(1) : imgUrl;
+      const srcDisk = path.join(baseDir, 'public', cleanUrl);
+      if (fs.existsSync(srcDisk)) {
+        const ext = path.extname(srcDisk) || '.webp';
+        const baseName = path.basename(srcDisk, ext);
+        let destName;
+        if (idx === 0) destName = `01_contexto_${baseName}${ext}`;
+        else if (idx === 1) destName = `02_base_blanca_${baseName}${ext}`;
+        else if (idx === 2) destName = `03_detalle_${baseName}${ext}`;
+        else if (idx === 3) destName = `04_escala_${baseName}${ext}`;
+        else destName = `0${idx + 1}_${baseName}${ext}`;
+
+        try {
+          fs.copyFileSync(srcDisk, path.join(juguetesDibujoFolder, destName));
+        } catch (e) {}
+      }
+    });
+  }
+
   // Agregar al catálogo maestro
   masterCatalogLines.push(`[${p.code}] ${p.name}`);
   masterCatalogLines.push(`   Área: ${(p.worlds || []).join(', ')} | Técnica: ${(p.techniques || []).join(', ')}`);
@@ -392,94 +444,7 @@ for (const p of db.products) {
 }
 
 // -----------------------------------------------------------------------------
-// Agregar desglose para los 6 Productos Personalizados en carpeta 'personalizados'
-// -----------------------------------------------------------------------------
-const customProductsMeta = [
-  {
-    folder: '01_Funko_Mascotas',
-    name: 'Figura Funko Custom — Mascotas',
-    tag: 'Tu perrito, gatito o animal de compañía en figura 3D',
-    price: '$650 MXN',
-    cost: '$180 MXN (Filamento, impresión, caja ventana, pintura y ensamble)',
-    lead: '2 a 3 días hábiles',
-    desc: 'Figura 3D personalizada modelada a partir de fotos de tu mascota. Incluye caja protectora de colección con ventana transparente de acetato.'
-  },
-  {
-    folder: '02_Funko_Parejas',
-    name: 'Figura Funko Custom — Parejas',
-    tag: 'Tú y tu pareja con ropa icónica, pose especial y detalles',
-    price: '$1,190 MXN (Dúo)',
-    cost: '$320 MXN (2 figuras completas + caja doble de exhibición)',
-    lead: '3 a 4 días hábiles',
-    desc: 'Set de 2 figuras Funko Pop personalizadas para aniversarios, bodas o regalos de San Valentín. Diseñado a partir de fotos de ambos.'
-  },
-  {
-    folder: '03_Funko_Profesiones',
-    name: 'Figura Funko Custom — Profesiones',
-    tag: 'Médicos, ingenieros, chefs, licenciados con sus herramientas',
-    price: '$690 MXN',
-    cost: '$190 MXN (Figura + accesorios de profesión + caja personalizada)',
-    lead: '2 a 3 días hábiles',
-    desc: 'Figura con indumentaria profesional y accesorios de trabajo (estetoscopio, plano, espátula, laptop, etc.). Excelente para graduaciones.'
-  },
-  {
-    folder: '04_Funko_Amigos',
-    name: 'Figura Funko Custom — Amigos & Squad',
-    tag: 'Para el grupo de mejores amigos o roomies inseparables',
-    price: 'Desde $620 MXN c/u (Descuento en pack de 3 o más)',
-    cost: '$170 MXN por figura en lote',
-    lead: '3 a 5 días hábiles',
-    desc: 'Figuras personalizadas con atuendos coordinados o recuerdos de viaje para grupos de amigos.'
-  },
-  {
-    folder: '05_Funko_Familia',
-    name: 'Figura Funko Custom — Familia Completa',
-    tag: 'Papá, mamá, hijos y mascotas juntos en su vitrina familiar',
-    price: 'Desde $1,450 MXN (Pack Familiar de 3 a 5 integrantes)',
-    cost: '$420 MXN lote completo con repisa base de exhibición',
-    lead: '4 a 6 días hábiles',
-    desc: 'Retablo tridimensional familiar con caja panorámica grabada con apellido o dedicatoria.'
-  },
-  {
-    folder: '06_De_Dibujo_Infantil_a_Figura_3D',
-    name: 'De Dibujo Infantil a Figura 3D Real',
-    tag: 'El trazo o garabato de tu niño convertido en escultura física coleccionable',
-    price: '$480 MXN (Figura 10-12 cm con peana de madera grabada)',
-    cost: '$135 MXN (Modelado CAD orgánico, filamento PLA multicromático y peana láser)',
-    lead: '2 a 3 días hábiles',
-    desc: 'Subes la foto del dibujo hecho en papel por tu hijo/a y en el taller lo modelamos en relieve 3D respetando fielmente sus proporciones, colores y ternura original.'
-  }
-];
-
-for (const c of customProductsMeta) {
-  const targetDir = path.join(categoryMap.personalizados, c.folder);
-  if (!fs.existsSync(targetDir)) {
-    fs.mkdirSync(targetDir, { recursive: true });
-  }
-
-  const cNote = [
-    '======================================================================',
-    'ARTESANO DIGITAL — PRODUCTO PERSONALIZADO BAJO DEMANDA',
-    '======================================================================',
-    `PRODUCTO: ${c.name}`,
-    `CONCEPTO: ${c.tag}`,
-    `PRECIO AL PÚBLICO: ${c.price}`,
-    `COSTO DE PRODUCCIÓN: ${c.cost}`,
-    `PLAZO DE ENTREGA: ${c.lead}`,
-    '----------------------------------------------------------------------',
-    'DESCRIPCIÓN Y DETALLES:',
-    c.desc,
-    '----------------------------------------------------------------------',
-    'REPOSITORIO / MODELADO: Modelado digital propio en taller a partir de foto enviada por WhatsApp.',
-    'TECNOLOGÍA: Modelado CAD + Impresión 3D FDM alta resolución + Pintado y caja ventana.',
-    '======================================================================\r\n'
-  ].join('\r\n');
-
-  fs.writeFileSync(path.join(targetDir, 'DETALLES_Y_TIEMPOS.txt'), '\uFEFF' + cNote, 'utf8');
-}
-
-// -----------------------------------------------------------------------------
-// Agregar desglose para los 5 Servicios Digitales en carpeta 'servicios'
+// Servicios Digitales en carpeta 'servicios'
 // -----------------------------------------------------------------------------
 const servicesMeta = [
   {
@@ -563,7 +528,7 @@ const readmeText = [
   '4. \\paquetes       -> Combos coordinados, kits promocionales, Starter Packs de negocio y eventos.',
   '5. \\juguetes       -> Zorrito articulado (con tus fotos originales + oficiales) y Leopardo bobble head.',
   '6. \\industra       -> Toberas automotrices técnicas, galgas de tornillería.',
-  '7. \\personalizados -> 6 categorías separadas (Mascotas, Parejas, Profesiones, Amigos, Familia, Dibujo a 3D).',
+  '7. \\personalizados -> 7 categorías separadas (Mascotas, Parejas, Profesiones, Amigos, Familia, Abuelitos, Dibujo a 3D) con sus 4 vistas oficiales.',
   '8. \\servicios      -> Branding, Desarrollo Web, Campañas, Modelado 3D y Patch Bar.',
   '',
   'QUÉ ENCONTRARÁS DENTRO DE CADA PRODUCTO:',
