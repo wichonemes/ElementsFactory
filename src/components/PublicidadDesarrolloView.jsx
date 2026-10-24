@@ -8,11 +8,9 @@ import {
   MessageCircle,
   ExternalLink,
   ChevronDown,
-  CheckCircle2,
   ArrowRight,
   DollarSign,
   Eye,
-  Check,
   Sparkles
 } from 'lucide-react';
 
@@ -417,19 +415,17 @@ ${quoteNotes.trim() ? `\n💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}
                           {srv.summary}
                         </p>
 
-                        {/* Entregables incluidos en el paquete */}
-                        <div className="bg-[#FAF9F5] p-3.5 sm:p-4 rounded-xl border border-stone-200/80 space-y-2">
-                          <div className="text-[10px] font-black uppercase tracking-wider text-stone-800 flex items-center gap-1.5">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                            <span>Lo que incluye cada paquete:</span>
+                        {/* Entregables incluidos en el paquete (Bloque en color negro para diferenciar que son servicios) */}
+                        <div className="bg-[#121519] p-3.5 sm:p-4 rounded-2xl border border-stone-800 space-y-2.5 shadow-inner">
+                          <div className="text-[10px] font-black uppercase tracking-wider text-[#e8b84f] flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#e8b84f]" />
+                            <span>Servicios y entregables incluidos:</span>
                           </div>
 
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 pt-0.5">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-0.5">
                             {srv.deliverables.map((item, idx) => (
-                              <div key={idx} className="flex items-start gap-2 text-xs text-stone-700 font-normal">
-                                <span className={`w-4 h-4 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${srv.checkColor}`}>
-                                  <Check className="w-2.5 h-2.5" />
-                                </span>
+                              <div key={idx} className="flex items-start gap-2 text-xs text-stone-200 font-normal">
+                                <span className="w-1.5 h-1.5 rounded-full bg-stone-400 mt-1.5 shrink-0" />
                                 <span className="leading-snug">{item}</span>
                               </div>
                             ))}
