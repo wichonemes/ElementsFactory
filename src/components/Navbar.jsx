@@ -25,6 +25,7 @@ export default function Navbar({
     { id: 'eventos', label: 'Eventos' },
     { id: 'juguetes', label: 'Juguetes' },
     { id: 'industria', label: 'Industria' },
+    { id: 'personalizados', label: 'Personalizados', isSpecial: true, isCustom: true },
     { id: 'paquetes-servicios', label: 'Paquetes', isSpecial: true },
     { id: 'publicidad-desarrollo', label: 'Publicidad & Web', isSpecial: true, isHighlight: true }
   ];
@@ -134,6 +135,7 @@ export default function Navbar({
               const isActive = activeWorld === w.id;
               if (w.isSpecial) {
                 const isHighlight = w.id === 'publicidad-desarrollo';
+                const isCustom = w.id === 'personalizados';
                 return (
                   <button
                     key={w.id}
@@ -142,9 +144,13 @@ export default function Navbar({
                       isActive
                         ? isHighlight
                           ? 'bg-[#121519] text-[#e8b84f] ring-1 ring-[#e8b84f]/60 shadow-sm'
+                          : isCustom
+                          ? 'bg-[#121519] text-[#38bdf8] ring-1 ring-[#38bdf8]/60 shadow-sm'
                           : 'bg-[#9E472A] text-white shadow-sm'
                         : isHighlight
                         ? 'text-[#121519] hover:bg-[#FAF7F0] font-bold border border-[#e8b84f]/40'
+                        : isCustom
+                        ? 'text-[#0284c7] hover:bg-[#FAF7F0] font-bold border border-[#38bdf8]/40'
                         : 'text-[#9E472A] hover:bg-[#FAF7F0] font-bold'
                     }`}
                   >

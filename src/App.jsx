@@ -16,6 +16,7 @@ import FloatingSideNav from './components/FloatingSideNav';
 import TemuUrgencyModule from './components/TemuUrgencyModule';
 import PackagesAndServicesView from './components/PackagesAndServicesView';
 import PublicidadDesarrolloView from './components/PublicidadDesarrolloView';
+import CustomProductsSection from './components/CustomProductsSection';
 import BlitzClockWidget from './components/BlitzClockWidget';
 import CatalogBottomNav from './components/CatalogBottomNav';
 import WorkshopArcadeModal from './components/WorkshopArcadeModal';
@@ -798,7 +799,7 @@ export default function App() {
       )}
 
       {/* Area Cover Banner (when a specific area is selected) */}
-      {activeWorld !== 'all' && activeWorld !== 'paquetes-servicios' && activeWorld !== 'publicidad-desarrollo' && currentWorldObj && (
+      {activeWorld !== 'all' && activeWorld !== 'paquetes-servicios' && activeWorld !== 'publicidad-desarrollo' && activeWorld !== 'personalizados' && currentWorldObj && (
         <div className="relative bg-[#1F2421] text-white overflow-hidden py-10 sm:py-14 border-b border-black/20">
           <div className="absolute inset-0 opacity-20">
             <img src={currentWorldObj.image} alt="" className="w-full h-full object-cover" />
@@ -860,6 +861,14 @@ export default function App() {
           searchQuery={searchQuery}
           onClearSearch={() => setSearchQuery('')}
         />
+      ) : activeWorld === 'personalizados' ? (
+        <CustomProductsSection
+          settings={settings}
+          onGoHome={handleGoHome}
+          onSelectProduct={(prod) => setSelectedProduct(prod)}
+          onAddToCart={handleAddToCart}
+          onOpenCalculator={handleOpenCalculator}
+        />
       ) : (
         /* Main Catalog Section */
         <main id="catalogo-section" className="flex-1">
@@ -918,6 +927,42 @@ export default function App() {
             )}
           </nav>
         </div>
+
+        {/* Banner Destacado Móvil: Productos Personalizados */}
+        {activeWorld === 'all' && !searchQuery && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-2">
+            <div
+              onClick={() => handleSelectWorld('personalizados')}
+              className="rounded-2xl bg-gradient-to-r from-[#17251E] via-[#203a2c] to-[#121519] text-white p-3 sm:p-4 border border-emerald-500/30 shadow-md cursor-pointer flex items-center justify-between gap-3 active:scale-98 transition-transform"
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden shrink-0 border border-white/20 bg-black/40">
+                  <img
+                    src="/uploads/personalizados-figuras-funko.jpg"
+                    alt="Personalizados"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-[10px] font-black uppercase tracking-wider text-amber-300">
+                    Nuevo en Taller
+                  </div>
+                  <div className="font-heading font-black text-xs sm:text-sm text-white truncate">
+                    Productos Personalizados
+                  </div>
+                  <div className="text-[11px] text-stone-300 truncate">
+                    Figuras estilo Funko y De Dibujo a Escultura 3D
+                  </div>
+                </div>
+              </div>
+
+              <div className="shrink-0 px-3 py-1.5 rounded-xl bg-[#D4A359] text-[#121519] font-black text-xs flex items-center gap-1 shadow-xs">
+                <span>Ver</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Dynamic Filters Bar with Paquetes & Promociones Switcher */}
         <FiltersBar

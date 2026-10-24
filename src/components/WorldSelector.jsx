@@ -114,6 +114,41 @@ export default function WorldSelector({ worlds, activeWorld, onSelectWorld, cate
         })}
       </div>
 
+      {/* Banner Especial: Productos Personalizados (Figuras Funko & Dibujos a 3D) */}
+      <div
+        onClick={() => onSelectWorld('personalizados')}
+        className="mt-8 sm:mt-10 rounded-3xl bg-gradient-to-r from-[#17251E] via-[#223d2e] to-[#121519] text-white p-6 sm:p-8 border border-emerald-500/30 shadow-xl hover:shadow-2xl transition-all cursor-pointer group flex flex-col md:flex-row items-center justify-between gap-6"
+      >
+        <div className="flex items-center gap-5">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white/10 border border-white/20 p-1 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform overflow-hidden shadow-inner">
+            <img
+              src="/uploads/personalizados-figuras-funko.jpg"
+              alt="Figuras Personalizadas"
+              className="w-full h-full object-cover rounded-xl"
+            />
+          </div>
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-black uppercase tracking-widest text-amber-300 bg-amber-400/15 px-2.5 py-0.5 rounded-full border border-amber-300/30">
+                Nuevo · Creaciones Únicas
+              </span>
+              <span className="text-xs text-stone-300 font-medium">De tu foto o dibujo a Figura 3D</span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-black font-heading text-white tracking-tight">
+              Productos Personalizados
+            </h3>
+            <p className="text-xs text-stone-200 max-w-2xl font-normal leading-relaxed">
+              Figuras estilo Funko Pop personalizadas con caja coleccionable POP! Custom, y esculturas 3D reales a partir de los dibujos de tus hijos.
+            </p>
+          </div>
+        </div>
+
+        <div className="shrink-0 flex items-center gap-2 px-5 py-3 rounded-2xl bg-[#D4A359] text-[#121519] font-black text-xs group-hover:bg-[#e0b26b] transition-colors shadow-md">
+          <span>Ver Personalizados</span>
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        </div>
+      </div>
+
       {/* Banner Especial: Publicidad & Desarrollo Digital */}
       <div
         onClick={() => onSelectWorld('publicidad-desarrollo')}
