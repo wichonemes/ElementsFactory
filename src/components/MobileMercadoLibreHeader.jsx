@@ -19,16 +19,15 @@ export default function MobileMercadoLibreHeader({
   settings
 }) {
   const areas = [
-    { id: 'all', label: 'Todo' },
-    { id: 'flash', label: 'En Oferta' },
-    { id: 'personalizados', label: 'Personalizados' },
+    { id: 'all', label: 'Principal' },
     { id: 'hogar', label: 'Hogar' },
-    { id: 'negocios', label: 'Negocios' },
-    { id: 'eventos', label: 'Eventos' },
+    { id: 'negocios', label: 'Negocio' },
     { id: 'juguetes', label: 'Juguetes' },
-    { id: 'industria', label: 'Industria' },
+    { id: 'personalizados', label: 'Personalizados' },
+    { id: 'eventos', label: 'Eventos' },
     { id: 'paquetes-servicios', label: 'Paquetes' },
-    { id: 'publicidad-desarrollo', label: 'Publicidad & Web' }
+    { id: 'industria', label: 'Industria' },
+    { id: 'publicidad-desarrollo', label: 'Servicios' }
   ];
 
   return (

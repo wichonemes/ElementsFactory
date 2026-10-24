@@ -30,15 +30,23 @@ export default function Footer({ onSelectWorld, onOpenAdmin, settings }) {
           {/* Áreas Col */}
           <div className="space-y-3">
             <h4 className="font-bold text-white uppercase tracking-wider text-[11px] font-heading">
-              Nuestras 3 Áreas
+              Áreas del Catálogo
             </h4>
             <ul className="space-y-2">
+              <li>
+                <button
+                  onClick={() => onSelectWorld('all')}
+                  className="hover:text-emerald-400 transition-colors text-left"
+                >
+                  Principal (Todo)
+                </button>
+              </li>
               <li>
                 <button
                   onClick={() => onSelectWorld('hogar')}
                   className="hover:text-emerald-400 transition-colors text-left"
                 >
-                  Hogar & Decoración
+                  Hogar &amp; Decoración
                 </button>
               </li>
               <li>
@@ -46,7 +54,23 @@ export default function Footer({ onSelectWorld, onOpenAdmin, settings }) {
                   onClick={() => onSelectWorld('negocios')}
                   className="hover:text-emerald-400 transition-colors text-left"
                 >
-                  Negocios & Marca
+                  Negocios &amp; Marca
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => onSelectWorld('juguetes')}
+                  className="hover:text-emerald-400 transition-colors text-left"
+                >
+                  Juguetes Articulados
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => onSelectWorld('personalizados')}
+                  className="hover:text-sky-300 transition-colors text-left text-sky-400 font-bold"
+                >
+                  Personalizados (Funko &amp; 3D)
                 </button>
               </li>
               <li>
@@ -62,7 +86,15 @@ export default function Footer({ onSelectWorld, onOpenAdmin, settings }) {
                   onClick={() => onSelectWorld('paquetes-servicios')}
                   className="hover:text-emerald-400 transition-colors text-left flex items-center gap-1 text-[#E5C378] font-bold"
                 >
-                  <span>Paquetes &amp; Servicios</span>
+                  <span>Paquetes &amp; Combos</span>
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => onSelectWorld('industria')}
+                  className="hover:text-emerald-400 transition-colors text-left"
+                >
+                  Industria &amp; Prototipos
                 </button>
               </li>
               <li>
@@ -70,15 +102,7 @@ export default function Footer({ onSelectWorld, onOpenAdmin, settings }) {
                   onClick={() => onSelectWorld('publicidad-desarrollo')}
                   className="hover:text-amber-300 transition-colors text-left flex items-center gap-1 text-[#e8b84f] font-bold"
                 >
-                  <span>Publicidad &amp; Desarrollo Digital</span>
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onSelectWorld('all')}
-                  className="hover:text-emerald-400 transition-colors text-left"
-                >
-                  Ver Todo el Catálogo
+                  <span>Servicios Digitales</span>
                 </button>
               </li>
             </ul>

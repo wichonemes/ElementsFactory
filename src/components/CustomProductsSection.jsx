@@ -16,7 +16,11 @@ import {
   X,
   MessageCircle,
   Eye,
-  Hammer
+  Hammer,
+  Home,
+  ChevronRight,
+  ShieldAlert,
+  Info
 } from 'lucide-react';
 
 export default function CustomProductsSection({
@@ -27,8 +31,9 @@ export default function CustomProductsSection({
   onOpenCalculator
 }) {
   const [activeFilter, setActiveFilter] = useState('all');
-  const [expandedId, setExpandedId] = useState(null);
+  const [selectedProductForModal, setSelectedProductForModal] = useState(null);
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState({}); // { [prodId]: 0..3 }
+  const [modalPhotoIndex, setModalPhotoIndex] = useState(0);
   const [lightboxImage, setLightboxImage] = useState(null); // { url, title }
 
   const whatsappPhone = (settings?.whatsappNumber || '5214440000000').replace(/[^0-9]/g, '');
@@ -36,14 +41,17 @@ export default function CustomProductsSection({
   const customProducts = [
     {
       id: 'mascotas',
+      dbId: 'figuras-funko-mascotas',
       category: 'mascotas',
       icon: Dog,
-      badge: 'POP! Custom · Peludos & Compañeros',
+      badge: 'POP! Custom',
       badgeColor: 'bg-amber-100 text-amber-900 border-amber-300',
-      title: 'Figura Funko Custom — Mascotas',
+      title: 'Funko Custom Mascotas',
+      fullTitle: 'Figura Funko Custom — Mascotas (Perros, Gatos y Compañeros)',
       tagline: 'Tu perrito, gatito o animal de compañía en volumen 3D',
       priceEstimate: 'Desde $650 MXN',
-      leadTime: '3 a 5 días hábiles',
+      priceNumber: 650,
+      leadTime: '3 a 5 días',
       images: [
         '/uploads/catalog-v2-cust-pets-1.webp',
         '/uploads/catalog-v2-cust-pets-2.webp',
@@ -51,7 +59,7 @@ export default function CustomProductsSection({
         '/uploads/catalog-v2-cust-pets-4.webp'
       ],
       photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Caja y empaque'],
-      shortDesc: 'Inmortalizamos a tu mejor amigo de cuatro patas con sus manchas, pelaje, collar con placa y sus rasgos únicos, acompañado de su caja POP! Custom con ventana transparente y su nombre.',
+      shortDesc: 'Inmortalizamos a tu mejor amigo con sus manchas, pelaje, collar y rasgos únicos, en su caja POP! Custom con ventana transparente y su nombre.',
       materialsText: '75 g Filamento PLA+ biodegradable / Resina UV técnica · Caja POP! Custom en cartón sulfatado con ventana de acetato · Acabados a mano con sellador mate UV.',
       costsText: 'Costo directo estimado: $194.50 MXN (Filamento $22.50 + Caja ventana $28.00 + Pintura y sellador $18.00 + Luz y máquina $36.00 + Modelado $90.00). Margen ~70%.',
       timesText: '4.5 horas de máquina FDM · 45 min de esculpido digital de fotos y detallado.',
@@ -71,14 +79,17 @@ export default function CustomProductsSection({
     },
     {
       id: 'parejas',
+      dbId: 'figuras-funko-parejas',
       category: 'parejas',
       icon: Heart,
-      badge: 'POP! Custom · Amor & Aniversarios',
+      badge: 'Set Dúo POP!',
       badgeColor: 'bg-rose-100 text-rose-900 border-rose-300',
-      title: 'Figura Funko Custom — Parejas',
-      tagline: 'El regalo más romántico, original y memorable para dos',
-      priceEstimate: 'Desde $1,250 MXN (Set Dúo)',
-      leadTime: '4 a 6 días hábiles',
+      title: 'Funko Custom Parejas',
+      fullTitle: 'Figura Funko Custom — Parejas (Set Dúo Novios o Esposos)',
+      tagline: 'El regalo más romántico y memorable para dos',
+      priceEstimate: 'Desde $1,250 MXN',
+      priceNumber: 1250,
+      leadTime: '4 a 6 días',
       images: [
         '/uploads/catalog-v2-cust-parejas-1.webp',
         '/uploads/catalog-v2-cust-parejas-2.webp',
@@ -86,7 +97,7 @@ export default function CustomProductsSection({
         '/uploads/catalog-v2-cust-parejas-4.webp'
       ],
       photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Caja doble'],
-      shortDesc: 'Set de figuras personalizadas para novios, esposos o aniversarios. Reproducimos sus outfits favoritos, peinados, poses cómplices y caja conmemorativa doble o individual.',
+      shortDesc: 'Set de figuras personalizadas para novios, esposos o aniversarios. Reproducimos sus outfits favoritos, peinados, poses cómplices y caja conmemorativa doble.',
       materialsText: '150 g Filamento PLA+ grado ingeniería · Caja conmemorativa doble POP! con ventana de acetato · Acabados finos de textiles, accesorios y sellador mate.',
       costsText: 'Costo directo estimado: $347.00 MXN (Filamento $45.00 + Caja doble $42.00 + Pintura y acabados $32.00 + Luz y máquina $68.00 + Modelado dúo $160.00). Margen ~72%.',
       timesText: '8.5 horas de máquina FDM · 80 min de modelado digital y post-proceso artesanal.',
@@ -106,14 +117,17 @@ export default function CustomProductsSection({
     },
     {
       id: 'profesiones',
+      dbId: 'figuras-funko-profesiones',
       category: 'profesiones',
       icon: GraduationCap,
-      badge: 'POP! Custom · Éxito & Vocación',
+      badge: 'Profesiones',
       badgeColor: 'bg-emerald-100 text-emerald-900 border-emerald-300',
-      title: 'Figura Funko Custom — Profesiones & Graduaciones',
+      title: 'Funko Profesiones & Graduaciones',
+      fullTitle: 'Figura Funko Custom — Profesiones & Graduaciones',
       tagline: 'Celebra su vocación profesional, graduación o ascenso',
       priceEstimate: 'Desde $680 MXN',
-      leadTime: '3 a 5 días hábiles',
+      priceNumber: 680,
+      leadTime: '3 a 5 días',
       images: [
         '/uploads/catalog-v2-cust-prof-1.webp',
         '/uploads/catalog-v2-cust-prof-2.webp',
@@ -141,84 +155,93 @@ export default function CustomProductsSection({
     },
     {
       id: 'amigos',
+      dbId: 'figuras-funko-amigos',
       category: 'amigos',
       icon: Users,
-      badge: 'POP! Custom · Amistad & Aventuras',
+      badge: 'Amigos POP!',
       badgeColor: 'bg-blue-100 text-blue-900 border-blue-300',
-      title: 'Figura Funko Custom — Amigos & Cumpleaños',
+      title: 'Funko Amigos & Cumpleaños',
+      fullTitle: 'Figura Funko Custom — Amigos & Cumpleaños',
       tagline: 'Para ese amigo o amiga que siempre está ahí',
       priceEstimate: 'Desde $650 MXN',
-      leadTime: '3 a 5 días hábiles',
+      priceNumber: 650,
+      leadTime: '3 a 5 días',
       images: [
         '/uploads/catalog-v2-cust-amigos-1.webp',
         '/uploads/catalog-v2-cust-amigos-2.webp',
         '/uploads/catalog-v2-cust-amigos-3.webp',
         '/uploads/catalog-v2-cust-amigos-4.webp'
       ],
-      photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Caja y empaque'],
-      shortDesc: 'Inmortaliza anécdotas, vestimentas icónicas, gustos musicales o pasatiempos de tu mejor amigo(a). Un regalo entrañable que nadie más podrá darle.',
-      materialsText: '75 g Filamento PLA+ biodegradable · Caja POP! Custom con apodos y dedicatoria · Accesorios de pasatiempos y sellador mate.',
-      costsText: 'Costo directo estimado: $194.50 MXN (Filamento $22.50 + Caja ventana $28.00 + Acabados $18.00 + Máquina $36.00 + Modelado $90.00). Margen ~70%.',
-      timesText: '4.5 horas de máquina FDM · 45 min diseño y detallado artesanal.',
+      photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Caja conmemorativa'],
+      shortDesc: 'Recrea a tu mejor amigo con sus prendas favoritas, tatuajes, tenis o accesorios característicos (guitarra, videojuegos, libro, taza de café).',
+      materialsText: '80 g Filamento PLA+ · Accesorios personalizados detallados · Caja POP! con dedicatoria o apodo especial.',
+      costsText: 'Costo directo estimado: $198.00 MXN (Filamento $24.00 + Caja ventana $28.00 + Pintura $18.00 + Máquina $38.00 + Modelado $90.00). Margen ~70%.',
+      timesText: '4.5 horas de máquina FDM · 45 min de modelado digital y post-proceso.',
       steps: [
-        '1. Envíanos fotos de tu amigo(a) y platícanos sus hobbies o accesorios favoritos.',
-        '2. Creamos la pose y vestimenta digital característica.',
-        '3. Imprimimos con filamento de alta resistencia.',
-        '4. Recibes la pieza con su caja personalizada lista para regalar.'
+        '1. Envíanos fotos de tu amigo(a) y los elementos que lo definen.',
+        '2. Modelamos la figura con sus rasgos, estilo y pose favorita.',
+        '3. Imprimimos en 3D con colores vivos y duraderos.',
+        '4. Añadimos su apodo y fecha especial a la caja POP! Custom.'
       ],
       includes: [
-        'Figura 3D estilo Funko con accesorios de pasatiempos (10 a 11 cm)',
-        'Caja POP! Custom con apodos, frases o dedicatoria',
-        'Diseño simpático y coleccionable',
-        'Envío cuidadoso a todo México'
+        'Figura 3D personalizada con accesorios de identidad (10 cm)',
+        'Caja POP! Custom con apodo, número de edición y dedicatoria',
+        'Acabado sellado contra polvo y decoloración',
+        'Empaque de regalo listo para entregar'
       ],
-      whatsappText: `Hola Artesano Digital,\nMe interesa cotizar una *Figura Estilo Funko Personalizada para mi Amigo(a)*:\n• Motivo / Ocasión: (Cumpleaños / Agradecimiento / Recuerdo)\n• Cuento con fotos de sus outfits y detalles característicos.\n¿Podrían darme informes de cotización?`
+      whatsappText: `Hola Artesano Digital,\nMe interesa cotizar una *Figura Estilo Funko para un Amigo / Cumpleaños*:\n• Nombre o apodo del amigo:\n• Detalles o accesorios que me gustaría incluir:\n¿Podrían darme informes sobre tiempos y costo?`
     },
     {
       id: 'familia',
+      dbId: 'figuras-funko-familia',
       category: 'familia',
       icon: Smile,
-      badge: 'POP! Custom · Familia & Hogar',
+      badge: 'Pack Familiar',
       badgeColor: 'bg-purple-100 text-purple-900 border-purple-300',
-      title: 'Figura Funko Custom — Pack Familiar',
-      tagline: 'Papá, Mamá e Hijos en caja panorámica de colección',
-      priceEstimate: 'Desde $1,550 MXN (Pack 3 Figuras)',
-      leadTime: '5 a 7 días hábiles',
+      title: 'Funko Pack Familiar',
+      fullTitle: 'Figura Funko Custom — Pack Familiar (Papá, Mamá e Hijos)',
+      tagline: 'El retrato familiar más tierno y divertido en 3D',
+      priceEstimate: 'Desde $1,850 MXN (3 piezas)',
+      priceNumber: 1850,
+      leadTime: '5 a 8 días',
       images: [
         '/uploads/catalog-v2-cust-familia-1.webp',
         '/uploads/catalog-v2-cust-familia-2.webp',
         '/uploads/catalog-v2-cust-familia-3.webp',
         '/uploads/catalog-v2-cust-familia-4.webp'
       ],
-      photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Caja panorámica'],
-      shortDesc: 'El retrato de familia más innovador y tierno. Diseñamos a la familia completa a partir de fotos reales, reflejando alturas proporcionales, peinados y atuendos.',
-      materialsText: '210 g Filamento PLA+ alta tenacidad · Caja panorámica coleccionable Family Edition (28x16x9 cm) · Acabados a mano con sellado UV.',
-      costsText: 'Costo directo estimado: $479.00 MXN (Filamento $63.00 + Caja panorámica $55.00 + Pinturas $45.00 + Máquina $96.00 + Modelado familiar $220.00). Margen ~69%.',
-      timesText: '12 horas de máquina FDM · 110 min de modelado digital y ensamble.',
+      photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Caja set familiar'],
+      shortDesc: 'Recrea a toda la familia en una composición armoniosa: papás, hijos y bebés con sus alturas proporcionales, en caja exhibidora panorámica con apellido familiar.',
+      materialsText: '240 g Filamento PLA+ · Base panorámica escalonada · Caja triple o cuádruple con ventana acrílica amplia.',
+      costsText: 'Costo directo estimado: $520.00 MXN (Filamento $72.00 + Caja panorámica $65.00 + Pintura $45.00 + Máquina $118.00 + Modelado familiar $220.00). Margen ~72%.',
+      timesText: '14 horas de máquina FDM · 120 min de diseño y ensamble de conjunto.',
       steps: [
-        '1. Envíanos fotos de cada integrante de la familia.',
-        '2. Modelamos a escala proporcional sus peinados, vestimenta y rasgos.',
-        '3. Imprimimos el pack completo en manufactura aditiva de alta definición.',
-        '4. Empacamos en caja panorámica especial con el apellido familiar.'
+        '1. Envíanos una foto familiar reciente o fotos individuales de cada integrante.',
+        '2. Modelamos a cada miembro respetando sus alturas y rasgos característicos.',
+        '3. Producimos en 3D cuidando la armonía de la paleta de colores.',
+        '4. Ensamblamos en caja panorámica con el apellido familiar grabado.'
       ],
       includes: [
-        'Pack de 3 figuras 3D personalizadas (alturas de 7 a 11 cm)',
-        'Caja panorámica POP! Custom Family Edition con apellido',
-        'Acabado resistente para exhibición familiar en sala',
-        'Asesoría personalizada en cada detalle'
+        'Set de 3 o más figuras 3D a escala proporcional',
+        'Base panorámica escalonada para lucir a todos los miembros',
+        'Caja de colección familiar con apellido y dedicatoria',
+        'Empaque de protección reforzado para traslado seguro'
       ],
-      whatsappText: `Hola Artesano Digital,\nMe interesa cotizar un *Pack Familiar Estilo Funko en 3D*:\n• Integrantes de la familia (ej. Papá, Mamá y 1 Niño):\n• Cuento con fotos de referencia para diseñar el set completo.\n¿Podrían darme informes sobre opciones y tiempos de entrega?`
+      whatsappText: `Hola Artesano Digital,\nMe interesa cotizar un *Pack Familiar Estilo Funko 3D*:\n• Número de integrantes (adultos, niños, bebés, mascotas):\n• Apellido familiar para la caja:\n¿Podrían darme informes y opciones de paquetes familiares?`
     },
     {
       id: 'abuelitos',
+      dbId: 'figuras-funko-abuelitos',
       category: 'abuelitos',
       icon: Heart,
-      badge: 'POP! Custom · Tributo & Amor de Abuelos',
-      badgeColor: 'bg-amber-100 text-stone-900 border-amber-300',
-      title: 'Figura Funko Custom — Abuelitos',
-      tagline: 'El detalle más conmovedor y tierno para los abuelos',
-      priceEstimate: 'Desde $1,250 MXN (Set Dúo) / $680 MXN (Individual)',
-      leadTime: '4 a 6 días hábiles',
+      badge: 'Homenaje Especial',
+      badgeColor: 'bg-warm-100 text-stone-900 border-stone-300',
+      title: 'Funko Homenaje a los Abuelitos',
+      fullTitle: 'Figura Funko Custom — Abuelitos (Homenaje a los Abuelos)',
+      tagline: 'Un tributo inolvidable lleno de amor y gratitud',
+      priceEstimate: 'Desde $680 MXN (o $1,290 Dúo)',
+      priceNumber: 680,
+      leadTime: '3 a 5 días',
       images: [
         '/uploads/catalog-v2-cust-abuelitos-1.webp',
         '/uploads/catalog-v2-cust-abuelitos-2.webp',
@@ -226,35 +249,38 @@ export default function CustomProductsSection({
         '/uploads/catalog-v2-cust-abuelitos-4.webp'
       ],
       photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Caja conmemorativa'],
-      shortDesc: 'Los abuelos son el pilar del hogar. Recreamos con todo cariño sus lentes, peinados canosos, suéteres tejidos y su caja conmemorativa "Los Mejores Abuelos".',
-      materialsText: '150 g Filamento PLA+ · Lentes en resina técnica · Textura de cabello cano y prendas tradicionales · Caja conmemorativa especial con dedicatoria.',
-      costsText: 'Costo directo estimado: $360.00 MXN (Filamento $45.00 + Caja conmemorativa $42.00 + Resina/Lentes/Pintura $35.00 + Máquina $68.00 + Modelado $170.00). Margen ~71%.',
-      timesText: '8.5 horas de máquina FDM · 85 min de modelado artesanal y pintura de facciones.',
+      shortDesc: 'Captura la ternura, el peinado, los anteojos y la calidez de los abuelos. El regalo más conmovedor para el Día de los Abuelos, bodas de oro o cumpleaños.',
+      materialsText: '80 g Filamento PLA+ · Accesorios en resina (anteojos, tejido, bastón) · Caja POP! conmemorativa con mensaje de amor de los nietos.',
+      costsText: 'Costo directo estimado: $210.00 MXN (Filamento $24.00 + Caja $28.00 + Resina anteojos $20.00 + Máquina $38.00 + Modelado $100.00). Margen ~69%.',
+      timesText: '4.5 horas de máquina FDM · 55 min de modelado con detalles de ternura.',
       steps: [
-        '1. Envíanos fotos de tus abuelitos y dinos qué prendas o detalles los caracterizan.',
-        '2. Modelamos con especial ternura sus lentes, peinado canoso y ropa favorita.',
-        '3. Imprimimos y detallamos a mano con pintura fina y sellador mate.',
-        '4. Entregamos en su caja con dedicatoria emotiva para un recuerdo inolvidable.'
+        '1. Envíanos fotos de tus abuelitos (individual o en pareja).',
+        '2. Modelamos sus rasgos tiernos, anteojos, suéter o prendas queridas.',
+        '3. Imprimimos en 3D con máxima fidelidad y suavidad.',
+        '4. Diseñamos la caja POP! con dedicatoria de toda la familia.'
       ],
       includes: [
-        'Set de 2 figuras de abuelitos (o figura individual)',
-        'Caja conmemorativa con ventana y dedicatoria personalizada',
-        'Detalles minuciosos: lentes, texturas y peinados fieles',
-        'Empaque de protección para envío seguro'
+        'Figura 3D personalizada con accesorios de ternura (10 cm)',
+        'Caja POP! Custom conmemorativa con dedicatoria especial',
+        'Acabado mate de protección UV para exhibir toda la vida',
+        'Empaque de regalo con moño y tarjeta dedicatoria'
       ],
-      whatsappText: `Hola Artesano Digital,\nMe interesa cotizar una *Figura Estilo Funko Custom para mis Abuelitos*:\n• Formato: (Set Dúo Abuelos / Abuelito / Abuelita)\n• Cuento con fotos de referencia.\n¿Podrían darme informes sobre tiempos de elaboración y costo?`
+      whatsappText: `Hola Artesano Digital,\nMe interesa cotizar una *Figura Estilo Funko en Homenaje a mis Abuelitos*:\n• Es para: (Abuelito / Abuelita / Ambos en dúo)\n• Cuento con fotos para el modelado.\n¿Podrían apoyarme con tiempos y detalles de empaque con dedicatoria?`
     },
     {
-      id: 'dibujo-nino',
+      id: 'dibujo',
+      dbId: 'de-dibujo-a-figura-3d',
       category: 'dibujo',
       icon: Palette,
-      badge: 'Creatividad Infantil · De Boceto a 3D',
+      badge: 'Boceto a 3D',
       badgeColor: 'bg-sky-100 text-sky-900 border-sky-300',
       isSpecialDrawing: true,
-      title: 'Crea tu Personaje 3D desde un Dibujo Infantil',
+      title: 'De Dibujo Infantil a Escultura 3D',
+      fullTitle: 'De Dibujo Infantil a Figura 3D Real (El Arte de tus Pequeños)',
       tagline: '¡El dibujo o boceto de tu pequeño, ahora en volumen real!',
       priceEstimate: 'Desde $580 MXN',
-      leadTime: '3 a 5 días hábiles',
+      priceNumber: 580,
+      leadTime: '3 a 5 días',
       images: [
         '/uploads/catalog-v2-cust-dibujo-1.webp',
         '/uploads/catalog-v2-cust-dibujo-2.webp',
@@ -262,7 +288,7 @@ export default function CustomProductsSection({
         '/uploads/catalog-v2-cust-dibujo-4.webp'
       ],
       photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Peana y escala'],
-      shortDesc: '¿Tienes un dibujo de tu pequeño? Nosotros lo convertimos en una escultura 3D física única. Dragones, monstruos, superhéroes, mascotas o personajes fantásticos fieles a sus trazos.',
+      shortDesc: '¿Tienes un dibujo de tu pequeño? Lo convertimos en una escultura 3D física única. Dragones, monstruos, superhéroes o personajes fieles a sus trazos.',
       materialsText: '95 g Filamento PLA biodegradable no tóxico o resina técnica · Base pedestal grabada con nombre del niño y fecha · Caja de regalo con viruta kraft.',
       costsText: 'Costo directo estimado: $236.50 MXN (Filamento $28.50 + Base grabada $18.00 + Caja kraft $22.00 + Máquina $48.00 + Esculpido 3D $120.00). Margen ~59%.',
       timesText: '6.0 horas de máquina FDM · 60 min de vectorización y escultura digital a partir del dibujo.',
@@ -291,51 +317,62 @@ export default function CustomProductsSection({
     window.open(url, '_blank');
   };
 
-  const toggleExpand = (id) => {
-    setExpandedId(prev => (prev === id ? null : id));
+  const setPhotoIndex = (prodId, idx, e) => {
+    if (e) e.stopPropagation();
+    setSelectedPhotoIndex(prev => ({ ...prev, [prodId]: idx }));
   };
 
-  const setPhotoIndex = (prodId, idx, e) => {
-    e.stopPropagation();
-    setSelectedPhotoIndex(prev => ({ ...prev, [prodId]: idx }));
+  const openProductDetail = (prod) => {
+    setSelectedProductForModal(prod);
+    setModalPhotoIndex(selectedPhotoIndex[prod.id] || 0);
   };
 
   return (
     <div className="bg-[#FAF9F5] text-stone-900 min-h-screen">
       
-      {/* 1. HERO INSTITUCIONAL */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-[#101215] via-[#171a1f] to-[#1F2421] text-white pt-8 pb-10 sm:pt-12 sm:pb-14 px-4 sm:px-6 lg:px-8 border-b border-stone-800">
-        
-        {/* Glow de fondo */}
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-10 w-80 h-80 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="max-w-6xl mx-auto relative z-10 text-center space-y-4">
-          
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs font-bold text-[#e8b84f]">
-            <Sparkles className="w-3.5 h-3.5 text-[#e8b84f]" />
-            <span>Taller de Creaciones Únicas</span>
-          </div>
-
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black font-heading tracking-tight leading-[1.08] text-white">
-            Productos <span className="text-[#e8b84f]">Personalizados</span>
-          </h1>
-
-          <p className="text-xs sm:text-base text-stone-300 font-normal leading-relaxed max-w-2xl mx-auto">
-            Convertimos tus fotografías más queridas y los bocetos de tus pequeños en figuras tridimensionales reales, coleccionables y listas para presumir o regalar.
-          </p>
-
-          <div className="inline-flex items-center gap-2 pt-1 text-[11px] font-bold text-amber-300/90 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-400/20">
-            <span>7 Categorías Exclusivas de Taller con Galería 4 Vistas</span>
-          </div>
-
+      {/* 1. BANNER ESTANDARIZADO DE ÁREA (Idéntico a Hogar, Negocios y Eventos: Compacto y con texto a la izquierda) */}
+      <div className="relative bg-[#1F2421] text-white overflow-hidden py-8 sm:py-12 border-b border-black/20">
+        <div className="absolute inset-0 opacity-20">
+          <img
+            src="/uploads/personalizados-figuras-funko.jpg"
+            alt="Personalizados Artesano Digital"
+            className="w-full h-full object-cover"
+          />
         </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1F2421] via-[#1F2421]/90 to-transparent"></div>
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-2 text-left">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/10 text-[11px] font-bold text-emerald-400 border border-emerald-400/20">
+            <Sparkles className="w-3 h-3 text-emerald-400" />
+            <span>Colección Oficial de Taller</span>
+          </div>
+          <h1 className="text-2xl sm:text-4xl font-extrabold font-heading text-white tracking-tight">
+            Personalizados
+          </h1>
+          <p className="text-xs sm:text-sm text-gray-300 max-w-2xl leading-relaxed">
+            Convertimos tus fotografías más queridas y los dibujos de tus pequeños en figuras tridimensionales reales y coleccionables en filamento ecológico.
+          </p>
+        </div>
+      </div>
 
-      </section>
+      {/* Breadcrumbs Navigation Estandarizada */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
+        <nav className="flex items-center gap-1.5 text-xs text-gray-500 font-medium overflow-x-auto scrollbar-none">
+          <button
+            onClick={onGoHome}
+            className="hover:text-[#1F2421] flex items-center gap-1 shrink-0 cursor-pointer"
+          >
+            <Home className="w-3.5 h-3.5" />
+            <span>Inicio</span>
+          </button>
+          <ChevronRight className="w-3 h-3 text-gray-400 shrink-0" />
+          <span className="text-[#1F2421] font-bold truncate">Personalizados</span>
+        </nav>
+      </div>
 
       {/* 2. BARRA DE PESTAÑAS / FILTROS (Móvil Primero - Desplazable) */}
-      <div className="sticky top-20 z-30 bg-[#FBF9F5]/95 backdrop-blur-md border-b border-stone-200 shadow-xs">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-2 py-2">
+      <div className="sticky top-20 z-30 bg-[#FBF9F5]/95 backdrop-blur-md border-b border-stone-200 shadow-2xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-2 py-2">
           
           {/* Categorías Deslizables */}
           <nav className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-1">
@@ -355,7 +392,7 @@ export default function CustomProductsSection({
                   key={tab.id}
                   type="button"
                   onClick={() => setActiveFilter(tab.id)}
-                  className={`shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
                     isSelected
                       ? 'bg-[#17251E] text-white shadow-xs'
                       : 'bg-stone-100 text-stone-600 hover:bg-stone-200 hover:text-stone-900'
@@ -367,43 +404,18 @@ export default function CustomProductsSection({
             })}
           </nav>
 
-          {onGoHome && (
-            <button
-              type="button"
-              onClick={onGoHome}
-              className="text-xs text-stone-500 hover:text-stone-900 font-medium shrink-0 ml-2 cursor-pointer hidden sm:block"
-            >
-              ← Volver a Tienda
-            </button>
-          )}
+          <span className="text-xs font-mono font-bold text-stone-500 bg-stone-100 px-2.5 py-1 rounded-full shrink-0 hidden xs:inline-block">
+            {filteredProducts.length} {filteredProducts.length === 1 ? 'modelo' : 'modelos'}
+          </span>
 
         </div>
       </div>
 
-      {/* 3. CATÁLOGO DE PRODUCTOS PERSONALIZADOS SEPARADOS */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-8">
+      {/* 3. GRID ESTANDARIZADO: 2 COLUMNAS EN CELULAR (grid-cols-2), IGUAL QUE HOGAR, NEGOCIOS Y EVENTOS */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-8">
 
-        {/* Encabezado de Sección */}
-        <div className="flex items-center justify-between border-b border-stone-200 pb-3">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-black font-heading text-stone-900">
-              {activeFilter === 'all' ? 'Modelos y Servicios Personalizados' : `Categoría: ${activeFilter.toUpperCase()}`}
-            </h2>
-            <p className="text-xs text-stone-500 mt-0.5">
-              Cada proyecto se elabora desde cero con fotos o bocetos de referencia. Toca las vistas para explorar cada ángulo.
-            </p>
-          </div>
-
-          <span className="text-xs font-mono font-bold text-stone-500 bg-stone-100 px-2.5 py-1 rounded-lg">
-            {filteredProducts.length} {filteredProducts.length === 1 ? 'modelo' : 'modelos'}
-          </span>
-        </div>
-
-        {/* Grid de Productos Individuales */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
           {filteredProducts.map((prod) => {
-            const IconComponent = prod.icon;
-            const isExpanded = expandedId === prod.id;
             const isDrawing = prod.category === 'dibujo';
             const currentImgIndex = selectedPhotoIndex[prod.id] || 0;
             const currentImage = prod.images[currentImgIndex] || prod.images[0];
@@ -411,312 +423,267 @@ export default function CustomProductsSection({
             return (
               <div
                 key={prod.id}
-                className={`rounded-3xl bg-white border overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between ${
+                onClick={() => openProductDetail(prod)}
+                className={`group rounded-2xl sm:rounded-3xl bg-white border overflow-hidden shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between cursor-pointer ${
                   isDrawing
-                    ? 'border-sky-400 ring-2 ring-sky-300/40'
-                    : 'border-stone-200 hover:border-amber-400'
+                    ? 'border-sky-300 hover:border-sky-500 ring-1 ring-sky-300/30'
+                    : 'border-stone-200 hover:border-[#2D4F3E]/40'
                 }`}
               >
-                {/* Parte Superior: Imagen de Muestra + Galería de 4 Vistas */}
-                <div>
-                  <div
-                    className="relative aspect-[4/3] bg-[#101215] overflow-hidden group select-none"
-                    onContextMenu={(e) => e.preventDefault()}
-                  >
+                {/* Imagen del Producto con Vistas y Marca de Agua */}
+                <div className="relative aspect-square bg-[#101215] overflow-hidden select-none">
+                  <img
+                    src={currentImage}
+                    alt={prod.title}
+                    draggable={false}
+                    className="w-full h-full object-cover group-hover:scale-104 transition-transform duration-500 pointer-events-none select-none"
+                    onError={(e) => {
+                      e.currentTarget.src = '/brand/og_artesano_preview.jpg';
+                    }}
+                  />
+
+                  {/* Marca de Agua Sutil Oficial */}
+                  <div className="absolute top-2 right-2 z-10 flex items-center gap-1 px-1.5 py-[2px] rounded-full bg-black/20 backdrop-blur-2xs text-[7px] font-medium text-white/70 pointer-events-none select-none tracking-tight border border-white/5 shadow-2xs">
                     <img
-                      src={currentImage}
-                      alt={prod.title}
-                      draggable={false}
-                      onDragStart={(e) => e.preventDefault()}
-                      onContextMenu={(e) => e.preventDefault()}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 cursor-pointer pointer-events-none select-none"
-                      onClick={() => setLightboxImage({ url: currentImage, title: prod.title })}
-                      onError={(e) => {
-                        e.currentTarget.src = '/brand/og_artesano_preview.jpg';
-                      }}
+                      src="/brand/artesano_isotipo_transparente.png"
+                      alt=""
+                      className="w-2 h-2 object-contain shrink-0 opacity-80"
                     />
+                    <span className="hidden xs:inline">Artesano Digital</span>
+                  </div>
 
-                    {/* Botón de Zoom / Lightbox */}
-                    <button
-                      type="button"
-                      onClick={() => setLightboxImage({ url: currentImage, title: prod.title })}
-                      className="absolute top-3 right-3 bg-black/60 hover:bg-black/80 text-white p-2 rounded-xl backdrop-blur-md transition-all shadow-md cursor-pointer"
-                      title="Ampliar foto en alta resolución"
-                    >
-                      <ZoomIn className="w-4 h-4" />
-                    </button>
+                  {/* Badge de Categoría Compacto */}
+                  <div className="absolute top-2 left-2 pointer-events-none z-10">
+                    <span className={`px-2 py-0.5 rounded-md text-[8.5px] sm:text-[9.5px] font-black uppercase tracking-wider backdrop-blur-md shadow-2xs ${prod.badgeColor}`}>
+                      {prod.badge}
+                    </span>
+                  </div>
 
-                    {/* Marca de Agua Sutil con Logo Oficial */}
-                    <div className="absolute top-3.5 right-11 z-10 flex items-center gap-1 px-1.5 py-[2px] rounded-full bg-black/20 backdrop-blur-2xs text-[7px] font-medium text-white/60 pointer-events-none select-none tracking-tight border border-white/5 shadow-2xs">
-                      <img
-                        src="/brand/artesano_isotipo_transparente.png"
-                        alt=""
-                        className="w-2 h-2 object-contain shrink-0 opacity-75"
-                      />
-                      <span>Artesano Digital</span>
-                    </div>
+                  {/* Selector de 4 Vistas Mini Táctil en la Base de la Foto */}
+                  <div
+                    onClick={(e) => e.stopPropagation()}
+                    className="absolute bottom-1.5 left-1.5 right-1.5 flex items-center justify-center gap-1 bg-black/60 backdrop-blur-md py-1 px-1.5 rounded-lg z-10"
+                  >
+                    {prod.images.map((_, idx) => {
+                      const isCurrent = currentImgIndex === idx;
+                      return (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={(e) => setPhotoIndex(prod.id, idx, e)}
+                          className={`flex-1 py-0.5 rounded text-[8.5px] sm:text-[9.5px] font-mono font-bold transition-all cursor-pointer ${
+                            isCurrent
+                              ? 'bg-white text-stone-900 shadow-xs'
+                              : 'text-stone-300 hover:text-white hover:bg-white/20'
+                          }`}
+                          title={`Ver vista ${idx + 1}`}
+                        >
+                          V{idx + 1}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
 
-                    {/* Badge de Categoría */}
-                    <div className="absolute top-3 left-3 pointer-events-none">
-                      <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider backdrop-blur-md shadow-xs ${prod.badgeColor}`}>
-                        {prod.badge}
+                {/* Contenido / Información de la Tarjeta */}
+                <div className="p-2.5 sm:p-4 flex-1 flex flex-col justify-between space-y-2">
+                  <div className="space-y-1">
+                    <h3 className="font-heading font-black text-xs sm:text-sm text-stone-900 leading-snug line-clamp-1 group-hover:text-[#2D4F3E] transition-colors">
+                      {prod.title}
+                    </h3>
+                    <p className="text-[10px] sm:text-xs text-amber-700 font-semibold line-clamp-1">
+                      {prod.tagline}
+                    </p>
+                  </div>
+
+                  <div className="pt-2 border-t border-stone-100 flex items-center justify-between gap-1">
+                    <div>
+                      <span className="text-[8.5px] sm:text-[9px] uppercase font-bold text-stone-400 block leading-tight">
+                        Inversión
+                      </span>
+                      <span className="font-black font-mono text-xs sm:text-sm text-[#17251E]">
+                        {prod.priceEstimate}
                       </span>
                     </div>
 
-                    {/* Selector de 4 Vistas Flotante en la Base de la Imagen */}
-                    <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-center gap-1.5 bg-black/65 backdrop-blur-md py-1.5 px-2 rounded-xl">
-                      {prod.images.map((img, idx) => {
-                        const isCurrent = currentImgIndex === idx;
-                        const label = prod.photoLabels[idx] || `Vista ${idx + 1}`;
-                        return (
-                          <button
-                            key={idx}
-                            type="button"
-                            onClick={(e) => setPhotoIndex(prod.id, idx, e)}
-                            className={`px-2 py-1 rounded-lg text-[10px] font-bold transition-all cursor-pointer truncate ${
-                              isCurrent
-                                ? 'bg-white text-stone-900 shadow-sm scale-102'
-                                : 'text-stone-300 hover:text-white hover:bg-white/20'
-                            }`}
-                          >
-                            {idx + 1}. {label}
-                          </button>
-                        );
-                      })}
-                    </div>
+                    <span className="text-[9px] sm:text-[10px] text-stone-500 font-medium flex items-center gap-1 shrink-0">
+                      <Clock className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-stone-400 inline" />
+                      <span>{prod.leadTime}</span>
+                    </span>
                   </div>
 
-                  {/* Cuerpo de la Tarjeta */}
-                  <div className="p-4 sm:p-5 space-y-3">
-                    
-                    <div className="flex items-start gap-2">
-                      <div className="p-2 rounded-xl bg-stone-100 text-[#17251E] shrink-0 mt-0.5">
-                        <IconComponent className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <h3 className="font-heading font-black text-base sm:text-lg text-stone-900 leading-snug">
-                          {prod.title}
-                        </h3>
-                        <p className="text-xs text-amber-700 font-bold mt-0.5">
-                          {prod.tagline}
-                        </p>
-                      </div>
-                    </div>
-
-                    <p className="text-xs text-stone-600 leading-relaxed font-normal">
-                      {prod.shortDesc}
-                    </p>
-
-                    {/* Precios y Plazos */}
-                    <div className="flex items-center justify-between text-[11px] p-2.5 rounded-xl bg-[#FAF9F5] border border-stone-200">
-                      <div>
-                        <span className="text-stone-400 block text-[9.5px] uppercase font-bold">Inversión</span>
-                        <span className="font-black font-mono text-[#17251E] text-xs sm:text-sm">{prod.priceEstimate}</span>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-stone-400 block text-[9.5px] uppercase font-bold">Producción</span>
-                        <span className="font-bold text-stone-700 text-xs flex items-center gap-1 justify-end">
-                          <Clock className="w-3 h-3 text-stone-400 inline" />
-                          <span>{prod.leadTime}</span>
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Desplegable de Costes, Materiales y Pasos */}
-                    <div className="border border-stone-200 rounded-xl overflow-hidden">
-                      <button
-                        type="button"
-                        onClick={() => toggleExpand(prod.id)}
-                        className="w-full px-3 py-2 text-xs font-bold text-stone-700 bg-stone-50 hover:bg-stone-100 flex items-center justify-between cursor-pointer transition-colors"
-                      >
-                        <span className="flex items-center gap-1.5">
-                          <Layers className="w-3.5 h-3.5 text-stone-500" />
-                          <span>{isExpanded ? 'Ocultar materiales y costos' : 'Ver materiales, costos y proceso'}</span>
-                        </span>
-                        {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-                      </button>
-
-                      {isExpanded && (
-                        <div className="p-3 bg-white space-y-3 text-xs border-t border-stone-200 animate-fadeIn">
-                          
-                          {/* Ficha de Materiales y Tiempos */}
-                          <div className="p-2.5 rounded-lg bg-stone-50 border border-stone-200 space-y-1.5 text-[11px]">
-                            <div className="flex items-start gap-1.5">
-                              <Hammer className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
-                              <div>
-                                <span className="font-bold text-stone-900 block">Materiales Requeridos:</span>
-                                <span className="text-stone-600">{prod.materialsText}</span>
-                              </div>
-                            </div>
-                            <div className="flex items-start gap-1.5 pt-1 border-t border-stone-200/60">
-                              <Clock className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                              <div>
-                                <span className="font-bold text-stone-900 block">Tiempos de Taller:</span>
-                                <span className="text-stone-600">{prod.timesText}</span>
-                              </div>
-                            </div>
-                            <div className="flex items-start gap-1.5 pt-1 border-t border-stone-200/60">
-                              <Sparkles className="w-3.5 h-3.5 text-blue-600 shrink-0 mt-0.5" />
-                              <div>
-                                <span className="font-bold text-stone-900 block">Costes y Margen:</span>
-                                <span className="text-stone-600">{prod.costsText}</span>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div>
-                            <span className="font-bold text-stone-900 block mb-1">Paso a paso de taller:</span>
-                            <ul className="space-y-1 text-stone-600 text-[11px]">
-                              {prod.steps.map((st, i) => (
-                                <li key={i} className="flex items-start gap-1.5">
-                                  <span className="w-3.5 h-3.5 rounded-full bg-stone-200 text-stone-800 font-bold text-[9px] flex items-center justify-center shrink-0 mt-0.5">
-                                    {i + 1}
-                                  </span>
-                                  <span>{st}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-
-                          <div className="pt-2 border-t border-stone-100">
-                            <span className="font-bold text-stone-900 block mb-1">Tu pedido incluye:</span>
-                            <ul className="space-y-1 text-stone-600 text-[11px]">
-                              {prod.includes.map((inc, i) => (
-                                <li key={i} className="flex items-center gap-1.5">
-                                  <CheckCircle2 className="w-3 h-3 text-emerald-600 shrink-0" />
-                                  <span>{inc}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
+                  {/* Botones de Acción */}
+                  <div className="pt-1 grid grid-cols-2 gap-1.5">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openProductDetail(prod);
+                      }}
+                      className="py-1.5 px-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 text-[10px] sm:text-xs font-bold transition-all text-center cursor-pointer"
+                    >
+                      Detalles
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSendWhatsApp(prod);
+                      }}
+                      className="py-1.5 px-2 rounded-xl bg-[#2D4F3E] hover:bg-[#1F2421] text-white text-[10px] sm:text-xs font-bold transition-all text-center cursor-pointer flex items-center justify-center gap-1"
+                    >
+                      <MessageCircle className="w-3 h-3 text-emerald-400 shrink-0" />
+                      <span>Cotizar</span>
+                    </button>
                   </div>
-                </div>
 
-                {/* Parte Inferior: Botón de WhatsApp Directo */}
-                <div className="p-4 sm:p-5 pt-0">
-                  <button
-                    type="button"
-                    onClick={() => handleSendWhatsApp(prod)}
-                    className="w-full py-3 px-4 rounded-xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-xs sm:text-sm transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer active:scale-98"
-                  >
-                    <MessageCircle className="w-4 h-4 fill-white" />
-                    <span>Cotizar este modelo por WhatsApp</span>
-                  </button>
                 </div>
-
               </div>
             );
           })}
         </div>
 
-        {/* 4. BANNER INFORMATIVO DE GARANTÍA DE TALLER */}
-        <div className="rounded-3xl bg-gradient-to-r from-[#17251E] to-[#223d2e] text-white p-6 sm:p-8 border border-white/10 shadow-lg space-y-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="space-y-2 text-center md:text-left">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#e8b84f] bg-white/10 px-3 py-1 rounded-full">
-                Garantía de Satisfacción Artesano Digital
-              </span>
-              <h3 className="text-xl sm:text-2xl font-black font-heading text-white">
-                Muestra Digital Previa a la Impresión 3D
-              </h3>
-              <p className="text-xs sm:text-sm text-stone-300 max-w-xl leading-relaxed">
-                Antes de mandar tu pieza a la impresora, te enviamos el render 3D por WhatsApp para confirmar rasgos, detalles, peinados y colores. ¡Cero sorpresas!
-              </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0">
-              <button
-                type="button"
-                onClick={() => setLightboxImage({ url: '/uploads/catalog-v2-cust-pets-1.webp', title: 'Mascotas POP! Custom' })}
-                className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold border border-white/20 transition-colors cursor-pointer flex items-center gap-1.5"
-              >
-                <Eye className="w-3.5 h-3.5" />
-                <span>Ver Galería Mascotas</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setLightboxImage({ url: '/uploads/catalog-v2-cust-dibujo-1.webp', title: 'De Dibujo Infantil a 3D' })}
-                className="px-4 py-2.5 rounded-xl bg-[#e8b84f] hover:bg-[#d8a83f] text-[#121519] text-xs font-black transition-colors cursor-pointer flex items-center gap-1.5 shadow-md"
-              >
-                <Eye className="w-3.5 h-3.5" />
-                <span>Ver Dibujo a 3D</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
       </main>
 
-      {/* 5. MODAL LIGHTBOX EN ALTA RESOLUCIÓN */}
-      {lightboxImage && (
+      {/* 4. MODAL DETALLADO DE PRODUCTO PERSONALIZADO (Costos, Materiales, Tiempos y 4 Vistas en HD) */}
+      {selectedProductForModal && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-sm animate-fadeIn"
-          onClick={() => setLightboxImage(null)}
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto"
+          onClick={() => setSelectedProductForModal(null)}
         >
           <div
-            className="relative bg-[#101215] rounded-3xl overflow-hidden max-w-4xl w-full border border-white/20 shadow-2xl animate-scaleUp"
+            className="bg-white rounded-3xl max-w-3xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-stone-200 text-stone-900 animate-in fade-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Header del Lightbox */}
-            <div className="p-3 sm:p-4 bg-black/60 border-b border-white/10 flex items-center justify-between text-white">
-              <span className="font-heading font-black text-xs sm:text-sm text-white">
-                {lightboxImage.title || 'Vista en Alta Resolución'}
-              </span>
+            {/* Cabecera del Modal */}
+            <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-md px-5 py-4 border-b border-stone-200 flex items-center justify-between">
+              <div>
+                <span className={`px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider ${selectedProductForModal.badgeColor}`}>
+                  {selectedProductForModal.badge}
+                </span>
+                <h3 className="text-base sm:text-lg font-black font-heading text-stone-900 mt-0.5">
+                  {selectedProductForModal.fullTitle}
+                </h3>
+              </div>
               <button
                 type="button"
-                onClick={() => setLightboxImage(null)}
-                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
+                onClick={() => setSelectedProductForModal(null)}
+                className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center text-stone-500 hover:text-stone-900 transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Imagen en gran formato con protección y marca de agua */}
-            <div
-              className="relative p-2 sm:p-4 flex items-center justify-center bg-black/95 max-h-[75vh] overflow-auto select-none"
-              onContextMenu={(e) => e.preventDefault()}
-            >
-              <img
-                src={lightboxImage.url}
-                alt={lightboxImage.title}
-                draggable={false}
-                onDragStart={(e) => e.preventDefault()}
-                onContextMenu={(e) => e.preventDefault()}
-                className="w-full h-auto max-h-[70vh] object-contain rounded-xl pointer-events-none select-none"
-              />
-              <div className="absolute bottom-3 right-3 z-10 flex items-center gap-1 px-2 py-[2.5px] rounded-full bg-black/25 backdrop-blur-2xs text-[8px] font-medium text-white/70 pointer-events-none select-none tracking-tight border border-white/5 shadow-2xs">
-                <img
-                  src="/brand/artesano_isotipo_transparente.png"
-                  alt=""
-                  className="w-2.5 h-2.5 object-contain shrink-0 opacity-80"
-                />
-                <span>Artesano Digital</span>
+            <div className="p-5 sm:p-6 space-y-6">
+              
+              {/* Galería Principal de 4 Vistas */}
+              <div className="space-y-3">
+                <div className="relative aspect-[4/3] rounded-2xl bg-[#101215] overflow-hidden select-none">
+                  <img
+                    src={selectedProductForModal.images[modalPhotoIndex] || selectedProductForModal.images[0]}
+                    alt={selectedProductForModal.title}
+                    className="w-full h-full object-cover select-none pointer-events-none"
+                  />
+                  <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 rounded-full bg-black/30 backdrop-blur-2xs text-[9px] font-medium text-white/80 border border-white/10">
+                    <img src="/brand/artesano_isotipo_transparente.png" alt="" className="w-3 h-3 object-contain" />
+                    <span>Artesano Digital</span>
+                  </div>
+                </div>
+
+                {/* Selector de 4 Vistas */}
+                <div className="grid grid-cols-4 gap-2">
+                  {selectedProductForModal.images.map((img, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => setModalPhotoIndex(idx)}
+                      className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${
+                        modalPhotoIndex === idx
+                          ? 'border-[#2D4F3E] ring-2 ring-[#2D4F3E]/40'
+                          : 'border-stone-200 opacity-70 hover:opacity-100'
+                      }`}
+                    >
+                      <img src={img} alt="" className="w-full h-full object-cover" />
+                      <span className="absolute bottom-1 left-1 right-1 bg-black/70 text-white text-[8.5px] font-bold text-center py-0.5 rounded backdrop-blur-2xs truncate px-0.5">
+                        {selectedProductForModal.photoLabels[idx] || `Vista ${idx + 1}`}
+                      </span>
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
 
-            {/* Footer con Acción */}
-            <div className="p-3 sm:p-4 bg-[#17251E] border-t border-white/10 flex items-center justify-between gap-3">
-              <span className="text-[11px] text-stone-300 hidden sm:inline">
-                Fotografía oficial de catálogo Artesano Digital · Envía tus fotos por WhatsApp
-              </span>
-              <button
-                type="button"
-                onClick={() => {
-                  const target = customProducts[0];
-                  handleSendWhatsApp(target);
-                }}
-                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer ml-auto"
-              >
-                <MessageCircle className="w-4 h-4 fill-white" />
-                <span>Cotizar por WhatsApp</span>
-              </button>
-            </div>
+              {/* Descripción y Especificaciones */}
+              <div className="space-y-4">
+                <p className="text-xs sm:text-sm text-stone-600 leading-relaxed font-normal">
+                  {selectedProductForModal.shortDesc}
+                </p>
 
+                {/* Desglose de Costos de Taller y Materiales Estimados */}
+                <div className="p-4 rounded-2xl bg-[#FAF9F5] border border-stone-200 space-y-2">
+                  <div className="flex items-center gap-2 text-xs font-bold text-[#17251E]">
+                    <Hammer className="w-3.5 h-3.5 text-[#2D4F3E]" />
+                    <span>Materiales y Costes de Manufactura Estimados</span>
+                  </div>
+                  <p className="text-[11px] text-stone-600 leading-relaxed">
+                    <strong className="text-stone-800">Materiales:</strong> {selectedProductForModal.materialsText}
+                  </p>
+                  <p className="text-[11px] text-stone-600 leading-relaxed">
+                    <strong className="text-stone-800">Coste de producción:</strong> {selectedProductForModal.costsText}
+                  </p>
+                  <p className="text-[11px] text-stone-600 leading-relaxed">
+                    <strong className="text-stone-800">Tiempos de taller:</strong> {selectedProductForModal.timesText}
+                  </p>
+                </div>
+
+                {/* Pasos de Personalización */}
+                <div className="space-y-2">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-stone-400">
+                    ¿Cómo solicitar tu modelo personalizado?
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {selectedProductForModal.steps.map((st, i) => (
+                      <div key={i} className="p-2.5 rounded-xl bg-stone-50 border border-stone-200 text-xs text-stone-700">
+                        {st}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Qué incluye */}
+                <div className="space-y-2">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-stone-400">
+                    El paquete incluye:
+                  </h4>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-stone-700">
+                    {selectedProductForModal.includes.map((inc, i) => (
+                      <li key={i} className="flex items-center gap-1.5">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        <span>{inc}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+              </div>
+
+              {/* Botón de Cotización por WhatsApp */}
+              <div className="pt-4 border-t border-stone-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div>
+                  <span className="text-stone-400 block text-[10px] uppercase font-bold">Precio de Cotización Base</span>
+                  <span className="text-lg font-black font-mono text-[#17251E]">{selectedProductForModal.priceEstimate}</span>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => handleSendWhatsApp(selectedProductForModal)}
+                  className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-[#2D4F3E] hover:bg-[#17251E] text-white text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer"
+                >
+                  <MessageCircle className="w-4 h-4 text-emerald-400" />
+                  <span>Enviar fotos y cotizar por WhatsApp</span>
+                </button>
+              </div>
+
+            </div>
           </div>
         </div>
       )}

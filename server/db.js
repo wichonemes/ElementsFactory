@@ -25,25 +25,46 @@ const initialWorlds = [
     description: 'Soluciones comerciales por giro: señalética inteligente, soportes QR/NFC, organizadores para estaciones de trabajo y detalles de identidad para tus clientes.'
   },
   {
+    id: 'juguetes',
+    name: 'Juguetes',
+    tagline: 'Creatividad, movimiento y diversión táctil con tecnología print-in-place',
+    image: '/uploads/catalog-v2-j1-context-oficial.webp',
+    description: 'Juguetes articulados, figuras con movimiento dinámico, rompecabezas mecánicos y accesorios infantiles seguros, impresos en una sola pieza sin partes desprendibles peligrosas.'
+  },
+  {
+    id: 'personalizados',
+    name: 'Personalizados',
+    tagline: 'Tus momentos, fotos y dibujos convertidos en figuras 3D únicas',
+    image: '/uploads/personalizados-figuras-funko.jpg',
+    description: 'Figuras estilo Funko Pop personalizadas a partir de tus fotos con caja POP! Custom y esculturas 3D reales a partir de los dibujos de tus pequeños.'
+  },
+  {
     id: 'eventos',
-    name: 'Eventos Especiales',
+    name: 'Eventos',
     tagline: 'Recuerdos y detalles que celebran los momentos más importantes',
     image: '/uploads/img_014.jpg',
     description: 'Elementos personalizados para bodas, bautizos, XV años, graduaciones y fechas conmemorativas. Diseñados para sorprender y ser conservados.'
   },
   {
-    id: 'juguetes',
-    name: 'Juguetes & Creatividad Infantil',
-    tagline: 'Creatividad, movimiento y diversión táctil con tecnología print-in-place',
-    image: '/uploads/img_009.jpg',
-    description: 'Juguetes articulados, figuras con movimiento dinámico, rompecabezas mecánicos y accesorios infantiles seguros, impresos en una sola pieza sin partes desprendibles peligrosas.'
+    id: 'paquetes-servicios',
+    name: 'Paquetes',
+    tagline: 'Kits coordinados para marcas, eventos y celebraciones con precio especial de taller',
+    image: '/uploads/kit_home_office_gamer_contexto.jpg',
+    description: 'Combos completos listos para regalar o implementar en tu negocio: kits de papelería nupcial, paquetes de bienvenida, letreros inteligentes y servicio Patch Bar en vivo.'
   },
   {
     id: 'industria',
-    name: 'Industria & Prototipado 3D',
+    name: 'Industria',
     tagline: 'Refacciones funcionales bajo demanda, utillaje y prototipado rápido en polímeros de ingeniería',
     image: '/uploads/img_010.jpg',
     description: 'Soluciones técnicas para empresas, talleres mecánicos y manufactura: refacciones automotrices bajo demanda, calibradores de taller, plantillas de ensamble y muestras de validación dimensional.'
+  },
+  {
+    id: 'publicidad-desarrollo',
+    name: 'Servicios',
+    tagline: 'Diseño gráfico, desarrollo web y gran formato por Wicho Nemes',
+    image: '/uploads/brand_artesano_digital_og.jpg',
+    description: 'Soluciones digitales integrales: tiendas online, páginas web interactivas, campañas publicitarias de tráfico, rotulación vehicular, lonas de gran formato y modelado 3D.'
   }
 ];
 

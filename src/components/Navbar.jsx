@@ -19,15 +19,16 @@ export default function Navbar({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showSearchInput, setShowSearchInput] = useState(false);
 
-  const worlds = [
+    const worlds = [
+    { id: 'all', label: 'Principal' },
     { id: 'hogar', label: 'Hogar' },
-    { id: 'negocios', label: 'Negocios' },
-    { id: 'eventos', label: 'Eventos' },
+    { id: 'negocios', label: 'Negocio' },
     { id: 'juguetes', label: 'Juguetes' },
-    { id: 'industria', label: 'Industria' },
     { id: 'personalizados', label: 'Personalizados', isSpecial: true, isCustom: true },
+    { id: 'eventos', label: 'Eventos' },
     { id: 'paquetes-servicios', label: 'Paquetes', isSpecial: true },
-    { id: 'publicidad-desarrollo', label: 'Publicidad & Web', isSpecial: true, isHighlight: true }
+    { id: 'industria', label: 'Industria' },
+    { id: 'publicidad-desarrollo', label: 'Servicios', isSpecial: true, isHighlight: true }
   ];
 
   return (
