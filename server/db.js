@@ -56,7 +56,7 @@ const initialWorlds = [
     id: 'industria',
     name: 'Industria',
     tagline: 'Refacciones funcionales bajo demanda, utillaje y prototipado rápido en polímeros de ingeniería',
-    image: '/uploads/img_010.jpg',
+    image: '/uploads/industria_portada_oficial_ingenieria.webp',
     description: 'Soluciones técnicas para empresas, talleres mecánicos y manufactura: refacciones automotrices bajo demanda, calibradores de taller, plantillas de ensamble y muestras de validación dimensional.'
   },
   {
