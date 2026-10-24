@@ -447,11 +447,11 @@ export default function CustomProductsSection({
                     </button>
 
                     {/* Marca de Agua Sutil con Logo Oficial */}
-                    <div className="absolute top-3.5 right-12 z-10 flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-stone-900/60 backdrop-blur-xs text-[8.5px] font-medium text-white/80 pointer-events-none select-none tracking-wide border border-white/10 shadow-xs">
+                    <div className="absolute top-3.5 right-11 z-10 flex items-center gap-1 px-1.5 py-[2px] rounded-full bg-black/20 backdrop-blur-2xs text-[7px] font-medium text-white/60 pointer-events-none select-none tracking-tight border border-white/5 shadow-2xs">
                       <img
                         src="/brand/artesano_isotipo_transparente.png"
                         alt=""
-                        className="w-2.5 h-2.5 object-contain shrink-0"
+                        className="w-2 h-2 object-contain shrink-0 opacity-75"
                       />
                       <span>Artesano Digital</span>
                     </div>
@@ -689,11 +689,11 @@ export default function CustomProductsSection({
                 onContextMenu={(e) => e.preventDefault()}
                 className="w-full h-auto max-h-[70vh] object-contain rounded-xl pointer-events-none select-none"
               />
-              <div className="absolute bottom-4 right-4 z-10 flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-stone-900/60 backdrop-blur-xs text-[9px] font-medium text-white/90 pointer-events-none select-none tracking-wide border border-white/10 shadow-xs">
+              <div className="absolute bottom-3 right-3 z-10 flex items-center gap-1 px-2 py-[2.5px] rounded-full bg-black/25 backdrop-blur-2xs text-[8px] font-medium text-white/70 pointer-events-none select-none tracking-tight border border-white/5 shadow-2xs">
                 <img
                   src="/brand/artesano_isotipo_transparente.png"
                   alt=""
-                  className="w-3 h-3 object-contain shrink-0"
+                  className="w-2.5 h-2.5 object-contain shrink-0 opacity-80"
                 />
                 <span>Artesano Digital</span>
               </div>
