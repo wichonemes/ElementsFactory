@@ -466,6 +466,7 @@ export default function App() {
     setSearchQuery(''); // Limpia la búsqueda para que el catálogo o paquetes abran inmediatamente
     setActiveWorld(worldId);
     setSelectedCategory('all');
+    setSelectedTechnique('all');
     setViewMode('catalog');
     setCatalogSeed(Date.now());
     // Posicionar limpiamente arriba de la pantalla para evitar saltos erráticos hacia abajo
@@ -479,6 +480,7 @@ export default function App() {
     setPackagesInitialArea(area);
     setActiveWorld('paquetes-servicios');
     setSelectedCategory('all');
+    setSelectedTechnique('all');
     setViewMode('catalog');
     setCatalogSeed(Date.now());
     window.scrollTo({ top: 0, behavior: 'smooth' });

@@ -41,7 +41,11 @@ for (const method of ['get', 'post', 'put', 'delete', 'patch']) {
     return register(route, ...handlers);
   };
 }
-app.get('/healthz', (_req, res) => res.json({ ok: true, version: '2026-10-16-v2-combos' }));
+app.get('/healthz', (_req, res) => {
+  const prods = db.getProducts({ status: 'published' });
+  const worlds = db.getWorlds();
+  res.json({ ok: true, version: '2026-10-24-v4-full-catalog', productsCount: prods.length, worldsCount: worlds.length });
+});
 app.get('/api/deploy-version', (_req, res) => {
   const assetsDir = path.join(distDir, 'assets');
   res.json({
@@ -1649,12 +1653,26 @@ if (fs.existsSync(distIndex)) {
   });
 }
 
+app.post('/api/admin/sync-catalog', requireAdmin, (req, res) => {
+  try {
+    const result = db.syncCatalogWithCodebase();
+    res.json({ ok: true, ...result });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 if (cloudDb.enabled) {
   await cloudDb.transaction(() => {
     if (cloudDb.read().users.some(user => bcrypt.compareSync('Artesano2026!', user.passwordHash))) {
       throw new Error('Cambia la contraseña predeterminada del administrador antes de publicar.');
     }
+    // Sincronizar catálogo oficial con Postgres al arrancar
+    db.syncCatalogWithCodebase();
   });
+} else {
+  // Sincronizar catálogo local
+  db.syncCatalogWithCodebase();
 }
 
 const server = app.listen(PORT, '0.0.0.0', () => {

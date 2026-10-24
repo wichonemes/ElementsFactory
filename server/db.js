@@ -13827,6 +13827,70 @@ class Database {
     fs.renameSync(tmpPath, DB_PATH);
   }
 
+  syncCatalogWithCodebase() {
+    const data = this.read();
+    let changed = false;
+
+    // 1. Sincronizar Worlds
+    if (!Array.isArray(data.worlds)) data.worlds = [];
+    for (const w of initialWorlds) {
+      const wIdx = data.worlds.findIndex(item => item.id === w.id);
+      if (wIdx === -1) {
+        data.worlds.push(w);
+        changed = true;
+      } else {
+        if (
+          data.worlds[wIdx].image !== w.image ||
+          data.worlds[wIdx].name !== w.name ||
+          data.worlds[wIdx].tagline !== w.tagline ||
+          data.worlds[wIdx].description !== w.description
+        ) {
+          data.worlds[wIdx] = { ...data.worlds[wIdx], ...w };
+          changed = true;
+        }
+      }
+    }
+
+    // 2. Sincronizar Categories
+    if (!Array.isArray(data.categories)) data.categories = [];
+    for (const c of initialCategories) {
+      const cIdx = data.categories.findIndex(item => item.id === c.id);
+      if (cIdx === -1) {
+        data.categories.push(c);
+        changed = true;
+      }
+    }
+
+    // 3. Sincronizar Products
+    if (!Array.isArray(data.products)) data.products = [];
+    for (const p of initialProducts) {
+      const pIdx = data.products.findIndex(item => item.id === p.id);
+      if (pIdx === -1) {
+        data.products.push(p);
+        changed = true;
+      } else {
+        const cur = data.products[pIdx];
+        const pWorlds = JSON.stringify(p.worlds || []);
+        const curWorlds = JSON.stringify(cur.worlds || []);
+        if (
+          pWorlds !== curWorlds ||
+          (p.worlds && p.worlds.includes('personalizados') && cur.price !== p.price) ||
+          (cur.image !== p.image && p.image && p.image.startsWith('/uploads/'))
+        ) {
+          data.products[pIdx] = { ...cur, ...p };
+          changed = true;
+        }
+      }
+    }
+
+    if (changed) {
+      this.save(data);
+      console.log(`[CATALOG SYNC] Catálogo sincronizado con éxito. Total productos: ${data.products.length}, Mundos: ${data.worlds.length}, Categorías: ${data.categories.length}`);
+    }
+
+    return { changed, totalProducts: data.products.length, totalWorlds: data.worlds.length, totalCategories: data.categories.length };
+  }
+
   // --- Helpers ---
   getProducts(filters = {}) {
     const db = this.read();

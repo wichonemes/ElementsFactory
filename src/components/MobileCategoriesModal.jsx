@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Home, Briefcase, CalendarHeart, Gift, Wrench, Search, Sparkles, Printer, Flame, Palette, Scissors, Radio } from 'lucide-react';
+import { ArrowLeft, Home, Briefcase, CalendarHeart, Gift, Wrench, Search, Sparkles, Printer, Flame, Palette, Scissors, Radio, Gamepad2, Cog } from 'lucide-react';
 
 export default function MobileCategoriesModal({
   isOpen,
@@ -18,8 +18,11 @@ export default function MobileCategoriesModal({
   const masterAreas = [
     { id: 'hogar', name: 'Hogar y\nDecoración', icon: Home },
     { id: 'negocios', name: 'Negocios y\nMarcas', icon: Briefcase },
+    { id: 'juguetes', name: 'Juguetes\nArticulados', icon: Gamepad2 },
+    { id: 'personalizados', name: 'Productos\nPersonalizados', icon: Sparkles },
     { id: 'eventos', name: 'Eventos y\nRecuerdos', icon: CalendarHeart },
     { id: 'paquetes', name: 'Paquetes y\nServicios', icon: Gift },
+    { id: 'industria', name: 'Industria &\nTaller', icon: Cog },
     { id: 'tecnicas', name: 'Técnicas de\nTaller', icon: Wrench }
   ];
 
@@ -39,6 +42,22 @@ export default function MobileCategoriesModal({
       { id: 'negocios-senales', name: 'Letreros con Nombre', image: '/uploads/pack_barberia_boutique_contexto.jpg', catId: 'negocios-senales' },
       { id: 'negocios-restaurantes', name: 'Menús y Números', image: '/uploads/pack_barberia_boutique_contexto.jpg', catId: 'negocios-restaurantes' },
       { id: 'negocios-corporativo', name: 'Identificadores 3D', image: '/uploads/pack_barberia_boutique_contexto.jpg', catId: 'negocios-corporativo' }
+    ],
+    juguetes: [
+      { id: 'juguetes-articulados', name: 'Jaguar Articulado', image: '/uploads/catalog-v2-j1-context-oficial.webp', catId: 'juguetes-articulados' },
+      { id: 'juguetes-fidget', name: 'Zorrito Flexible', image: '/uploads/catalog-v2-j2-context-oficial.webp', catId: 'juguetes-fidget' }
+    ],
+    personalizados: [
+      { id: 'personalizados-individual', name: 'Retrato Individual', image: '/uploads/personalizados-figuras-funko.jpg', catId: 'personalizados-individual' },
+      { id: 'personalizados-dibujo', name: 'De Dibujo a 3D', image: '/uploads/personalizados-dibujo-figura-3d.jpg', catId: 'personalizados-dibujo' },
+      { id: 'personalizados-mascotas', name: 'Mascotas Custom', image: '/uploads/funko-mascotas-perro-gato.jpg', catId: 'personalizados-mascotas' },
+      { id: 'personalizados-parejas', name: 'Parejas & Boda', image: '/uploads/funko-pareja-novios-boda.jpg', catId: 'personalizados-parejas' },
+      { id: 'personalizados-profesiones', name: 'Profesiones', image: '/uploads/funko-profesion-graduacion.jpg', catId: 'personalizados-profesiones' },
+      { id: 'personalizados-amigos', name: 'Set Dúo Amigos', image: '/uploads/funko-amigos-cumpleanos.jpg', catId: 'personalizados-amigos' }
+    ],
+    industria: [
+      { id: 'industria-automotriz', name: 'Toberas & Ductos', image: '/uploads/industria_portada_oficial_ingenieria.webp', catId: 'industria-automotriz' },
+      { id: 'industria-calibracion', name: 'Galgas de Medición', image: '/uploads/industria_portada_oficial_ingenieria.webp', catId: 'industria-calibracion' }
     ],
     eventos: [
       { id: 'eventos-bodas', name: 'Letreros Bienvenida', image: '/uploads/bienvenida_ceremonia_boda.jpg', catId: 'eventos-bodas' },
