@@ -936,22 +936,31 @@ export default function App() {
               className="rounded-2xl bg-gradient-to-r from-[#17251E] via-[#203a2c] to-[#121519] text-white p-3 sm:p-4 border border-emerald-500/30 shadow-md cursor-pointer flex items-center justify-between gap-3 active:scale-98 transition-transform"
             >
               <div className="flex items-center gap-3 min-w-0">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden shrink-0 border border-white/20 bg-black/40">
-                  <img
-                    src="/uploads/personalizados-figuras-funko.jpg"
-                    alt="Personalizados"
-                    className="w-full h-full object-cover"
-                  />
+                <div className="flex -space-x-3 shrink-0">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden border-2 border-white/20 bg-black/40 shadow-xs">
+                    <img
+                      src="/uploads/personalizados-figuras-funko.jpg"
+                      alt="Funko Custom"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden border-2 border-sky-400/50 bg-black/40 shadow-xs">
+                    <img
+                      src="/uploads/personalizados-dibujo-figura-3d.jpg"
+                      alt="De Dibujo a 3D"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 </div>
                 <div className="min-w-0">
                   <div className="text-[10px] font-black uppercase tracking-wider text-amber-300">
-                    Nuevo en Taller
+                    Nuevo · 6 Categorías
                   </div>
                   <div className="font-heading font-black text-xs sm:text-sm text-white truncate">
                     Productos Personalizados
                   </div>
                   <div className="text-[11px] text-stone-300 truncate">
-                    Figuras estilo Funko y De Dibujo a Escultura 3D
+                    Mascotas, Parejas, Profesiones, Familia y De Dibujo a 3D
                   </div>
                 </div>
               </div>

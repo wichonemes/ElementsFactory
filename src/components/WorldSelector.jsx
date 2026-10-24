@@ -119,26 +119,35 @@ export default function WorldSelector({ worlds, activeWorld, onSelectWorld, cate
         onClick={() => onSelectWorld('personalizados')}
         className="mt-8 sm:mt-10 rounded-3xl bg-gradient-to-r from-[#17251E] via-[#223d2e] to-[#121519] text-white p-6 sm:p-8 border border-emerald-500/30 shadow-xl hover:shadow-2xl transition-all cursor-pointer group flex flex-col md:flex-row items-center justify-between gap-6"
       >
-        <div className="flex items-center gap-5">
-          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white/10 border border-white/20 p-1 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform overflow-hidden shadow-inner">
-            <img
-              src="/uploads/personalizados-figuras-funko.jpg"
-              alt="Figuras Personalizadas"
-              className="w-full h-full object-cover rounded-xl"
-            />
+        <div className="flex items-center gap-4 sm:gap-5">
+          <div className="flex -space-x-4 shrink-0">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white/10 border-2 border-white/30 p-0.5 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform overflow-hidden shadow-md">
+              <img
+                src="/uploads/personalizados-figuras-funko.jpg"
+                alt="Figuras Funko Personalizadas"
+                className="w-full h-full object-cover rounded-xl"
+              />
+            </div>
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white/10 border-2 border-sky-400/60 p-0.5 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform overflow-hidden shadow-md">
+              <img
+                src="/uploads/personalizados-dibujo-figura-3d.jpg"
+                alt="De Dibujo a Figura 3D"
+                className="w-full h-full object-cover rounded-xl"
+              />
+            </div>
           </div>
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <span className="text-[10px] font-black uppercase tracking-widest text-amber-300 bg-amber-400/15 px-2.5 py-0.5 rounded-full border border-amber-300/30">
-                Nuevo · Creaciones Únicas
+                Nuevo · 6 Categorías
               </span>
-              <span className="text-xs text-stone-300 font-medium">De tu foto o dibujo a Figura 3D</span>
+              <span className="text-xs text-stone-300 font-medium">De tu foto o boceto a Figura 3D</span>
             </div>
             <h3 className="text-xl sm:text-2xl font-black font-heading text-white tracking-tight">
               Productos Personalizados
             </h3>
             <p className="text-xs text-stone-200 max-w-2xl font-normal leading-relaxed">
-              Figuras estilo Funko Pop personalizadas con caja coleccionable POP! Custom, y esculturas 3D reales a partir de los dibujos de tus hijos.
+              Figuras estilo Funko Pop (Mascotas, Parejas, Profesiones, Amigos, Familia) con caja de colección, y esculturas 3D creadas a partir del dibujo o boceto de tus pequeños.
             </p>
           </div>
         </div>
