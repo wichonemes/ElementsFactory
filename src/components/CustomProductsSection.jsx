@@ -28,11 +28,11 @@ export default function CustomProductsSection({
   const whatsappPhone = (settings?.whatsappNumber || '5214440000000').replace(/[^0-9]/g, '');
 
   const handleSendFunkoWhatsApp = (style = 'General') => {
-    const text = `¡Hola Artesano Digital! 👋
+    const text = `Hola Artesano Digital,
 Me interesa cotizar una *Figura Estilo Funko Personalizada*:
 
-🎨 *Modelo / Ocasión:* ${style}
-📸 Cuento con fotos de referencia para diseñar la figura y su caja POP! Custom.
+• *Modelo / Ocasión:* ${style}
+• Cuento con fotos de referencia para diseñar la figura y su caja POP! Custom.
 ¿Podrían darme informes sobre tiempos de entrega y costo?`;
 
     const url = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(text)}`;
@@ -40,10 +40,10 @@ Me interesa cotizar una *Figura Estilo Funko Personalizada*:
   };
 
   const handleSendDrawingWhatsApp = () => {
-    const text = `¡Hola Artesano Digital! 🎨
+    const text = `Hola Artesano Digital,
 Tengo un *Dibujo* y me encantaría convertirlo en una *Figura 3D Física*.
 
-✏️ Tengo la foto del dibujo lista para enviárselas.
+• Tengo la foto del dibujo lista para enviárselas.
 ¿Podrían apoyarme con la cotización de digitalización e impresión 3D?`;
 
     const url = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(text)}`;
@@ -252,9 +252,9 @@ Tengo un *Dibujo* y me encantaría convertirlo en una *Figura 3D Física*.
                   </button>
 
                   <div className="flex items-center justify-center gap-3 text-[10px] text-stone-500 font-medium">
-                    <span>✨ Incluye caja personalizada</span>
+                    <span className="flex items-center gap-1"><Package className="w-3 h-3 text-[#2D4F3E]" /> Incluye caja personalizada</span>
                     <span>•</span>
-                    <span>📦 Envíos a todo México</span>
+                    <span className="flex items-center gap-1"><ShieldCheck className="w-3 h-3 text-[#2D4F3E]" /> Envíos a todo México</span>
                   </div>
                 </div>
 
@@ -363,9 +363,9 @@ Tengo un *Dibujo* y me encantaría convertirlo en una *Figura 3D Física*.
                   </button>
 
                   <div className="flex items-center justify-center gap-3 text-[10px] text-stone-500 font-medium">
-                    <span>🎨 Muestra previa digital</span>
+                    <span className="flex items-center gap-1"><Palette className="w-3 h-3 text-[#2D4F3E]" /> Muestra previa digital</span>
                     <span>•</span>
-                    <span>🚀 Entrega en todo México</span>
+                    <span className="flex items-center gap-1"><ShieldCheck className="w-3 h-3 text-[#2D4F3E]" /> Entrega en todo México</span>
                   </div>
                 </div>
 

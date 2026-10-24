@@ -187,7 +187,7 @@ export default function ProductCard({
             </div>
           ) : product.isBundle ? (
             <span className="ml-auto px-1.5 py-0.5 sm:px-2 rounded-md text-[9px] sm:text-[10px] font-black border backdrop-blur-md shadow-xs bg-[#D82B6E] text-white border-[#D82B6E]">
-              ★ COMBO
+              COMBO
             </span>
           ) : (
             <span className={`ml-auto px-1.5 py-0.5 sm:px-2 rounded-md text-[9px] sm:text-[10px] font-bold border backdrop-blur-md shadow-xs ${techBadge.color}`}>
@@ -264,7 +264,7 @@ export default function ProductCard({
             {product.shortDescription}
           </p>
           <div className="flex items-center gap-1 text-[10px] text-[#2D4F3E] font-bold select-none">
-            <span className="text-[#9E472A]">✨ Personalizable</span>
+            <span className="text-[#9E472A]">Personalizable</span>
             <span className="text-gray-400 font-medium hidden sm:inline">· Si lo piensas, se hace</span>
           </div>
         </div>

@@ -6,7 +6,7 @@ import {
   X, Trophy, Volume2, VolumeX, Flame, Zap, Award, Gift,
   Sparkles, Check, Copy, ArrowRight, Play, RotateCcw, Clock,
   ChevronRight, Heart, Shield, HelpCircle, Gamepad2, Star,
-  Lock, Unlock, Coins, RotateCw, Smartphone, Maximize2, Minimize2
+  Lock, Unlock, Coins, RotateCw, Smartphone, Maximize2, Minimize2, ShoppingBag
 } from 'lucide-react';
 
 // Web Audio API Retro Sound Synthesizer (0 external files)
@@ -2726,7 +2726,7 @@ export default function WorkshopArcadeModal({
                 <div className="sm:hidden pt-1">
                   <details className="group rounded-2xl bg-black/40 border border-white/10 overflow-hidden">
                     <summary className="px-4 py-2 text-xs font-bold text-amber-300 flex items-center justify-between cursor-pointer hover:bg-white/5 select-none">
-                      <span>📖 Ver catálogo detallado de juegos ({currentAvailableGames.length})</span>
+                      <span>Ver catálogo de juegos ({currentAvailableGames.length})</span>
                       <span className="text-gray-400 group-open:rotate-180 transition-transform">▼</span>
                     </summary>
                     <div className="p-2 grid grid-cols-1 gap-1.5 border-t border-white/10 bg-black/20">
@@ -2764,7 +2764,7 @@ export default function WorkshopArcadeModal({
                             <span className={`text-[10px] px-2 py-0.5 rounded-md font-bold font-mono ${
                               active ? 'bg-amber-400/20 text-amber-300 border border-amber-400/30' : 'bg-red-500/20 text-rose-300'
                             }`}>
-                              {active ? '1 Moneda' : '🚫 Inactivo'}
+                              {active ? '1 Moneda' : 'Inactivo'}
                             </span>
                           </button>
                         );
@@ -2824,7 +2824,7 @@ export default function WorkshopArcadeModal({
                       <div className="flex items-start justify-between gap-3">
                         <div>
                           <div className="text-xs font-mono font-bold text-amber-400 flex items-center gap-1.5">
-                            <span>🪙 Requisito: {tier.coinsRequired} Monedas</span>
+                            <span>Requisito: {tier.coinsRequired} Monedas</span>
                             {isUnlocked && (
                               <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40">
                                 Desbloqueado
@@ -2927,7 +2927,7 @@ export default function WorkshopArcadeModal({
             onClick={onClose}
             className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-red-600 to-rose-700 hover:brightness-110 text-white font-black text-xs flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all border border-red-400/30 cursor-pointer"
           >
-            <span>🏪</span>
+            <ShoppingBag className="w-4 h-4 text-white shrink-0" />
             <span>Salir y volver a la Tienda</span>
           </button>
         </div>

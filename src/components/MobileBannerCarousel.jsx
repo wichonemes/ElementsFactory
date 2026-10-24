@@ -131,7 +131,7 @@ export default function MobileBannerCarousel({
           className="w-full flex items-center justify-between px-3 py-2 text-xs font-bold text-gray-700 hover:bg-gray-50 active:bg-gray-100 transition-colors"
         >
           <span className="flex items-center gap-1.5 text-[#2D4F3E]">
-            <span>✨</span>
+            <Sparkles className="w-3.5 h-3.5 text-[#D4A359] shrink-0" />
             <span>Si lo piensas, se hace · Taller de Manufactura SLP</span>
           </span>
           <span className="flex items-center gap-1 text-[11px] text-gray-400 font-semibold">

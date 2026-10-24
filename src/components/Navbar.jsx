@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShoppingBag, Search, Menu, X, Shield, Phone, Sparkles, Lock } from 'lucide-react';
+import { ShoppingBag, Search, Menu, X, Shield, Phone, Sparkles, Lock, Gamepad2, Gift, FileText, MapPin, Truck, AlertCircle, Pause } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 import { formatServiceDate } from '../utils/serviceStatus';
 
@@ -45,20 +45,20 @@ export default function Navbar({
             }`}></span>
             <span className="truncate">
               {settings?.serviceStatus?.isPaused ? (
-                <span className="text-amber-300 font-bold">
-                  ⏸️ Taller en receso técnico hasta el {formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'próximo aviso'} · Cotizaciones abiertas
+                <span className="text-amber-300 font-bold flex items-center gap-1">
+                  <Pause className="w-3 h-3 text-amber-300 shrink-0 inline" /> Taller en receso técnico hasta el {formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'próximo aviso'} · Cotizaciones abiertas
                 </span>
               ) : settings?.serviceStatus?.localService && settings?.serviceStatus?.nationalService === false ? (
-                <span className="text-amber-200">
-                  📍 Entregas locales y taller activos en SLP · Envíos nacionales en pausa
+                <span className="text-amber-200 flex items-center gap-1">
+                  <MapPin className="w-3 h-3 text-amber-300 shrink-0 inline" /> Entregas locales y taller activos en SLP · Envíos nacionales en pausa
                 </span>
               ) : settings?.serviceStatus?.localService === false && settings?.serviceStatus?.nationalService ? (
-                <span className="text-amber-200">
-                  📦 Envíos nacionales activos a toda la República · Entregas locales en pausa
+                <span className="text-amber-200 flex items-center gap-1">
+                  <Truck className="w-3 h-3 text-amber-300 shrink-0 inline" /> Envíos nacionales activos a toda la República · Entregas locales en pausa
                 </span>
               ) : settings?.serviceStatus?.localService === false && settings?.serviceStatus?.nationalService === false ? (
-                <span className="text-rose-300 font-bold">
-                  ⛔ Envíos y entregas temporalmente en pausa · Consultas activas
+                <span className="text-rose-300 font-bold flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3 text-rose-300 shrink-0 inline" /> Envíos y entregas temporalmente en pausa · Consultas activas
                 </span>
               ) : (
                 'Taller mexicano de fabricación & personalización · Impresión 3D · Láser · Sublimación · Vinil Textil'
@@ -76,7 +76,7 @@ export default function Navbar({
                 className="hover:text-amber-300 flex items-center gap-1 transition-colors text-amber-200/90 font-medium text-[11px] cursor-pointer"
                 title={settings?.mobileCatalogConfig?.title || 'Catálogos Oficiales de Temporada en PDF'}
               >
-                <span>📱</span> {settings?.mobileCatalogConfig?.buttonText || 'Catálogo Móvil PDF'}
+                <FileText className="w-3 h-3 text-amber-300" /> {settings?.mobileCatalogConfig?.buttonText || 'Catálogo Móvil PDF'}
               </button>
             )}
             {settings?.whatsappNumber && (
@@ -92,10 +92,10 @@ export default function Navbar({
             {onOpenArcade && (
               <button
                 onClick={() => onOpenArcade('play')}
-                className="hover:text-amber-300 flex items-center gap-1 transition-colors text-amber-300 font-bold cursor-pointer"
+                className="hover:text-amber-300 flex items-center gap-1.5 transition-colors text-amber-300 font-bold cursor-pointer"
                 title="Arcade del Taller y Canje de Cupones"
               >
-                <span>🕹️</span> Arcade &amp; Cupones
+                <Gamepad2 className="w-3.5 h-3.5 text-amber-300" /> Arcade &amp; Cupones
               </button>
             )}
             <button
@@ -189,9 +189,10 @@ export default function Navbar({
               {searchQuery && (
                 <button
                   onClick={() => onSearchChange('')}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-0.5 cursor-pointer"
+                  aria-label="Limpiar búsqueda"
                 >
-                  ✕
+                  <X className="w-3.5 h-3.5" />
                 </button>
               )}
             </div>
@@ -248,9 +249,10 @@ export default function Navbar({
               {searchQuery && (
                 <button
                   onClick={() => onSearchChange('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-sm"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-0.5 cursor-pointer"
+                  aria-label="Limpiar búsqueda"
                 >
-                  ✕
+                  <X className="w-3.5 h-3.5" />
                 </button>
               )}
             </div>
@@ -299,7 +301,7 @@ export default function Navbar({
                   }}
                   className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-900 font-bold text-xs shadow-2xs cursor-pointer"
                 >
-                  <span>🕹️</span> Arcade del Taller
+                  <Gamepad2 className="w-4 h-4 text-amber-800" /> Arcade del Taller
                 </button>
                 <button
                   onClick={() => {
@@ -308,7 +310,7 @@ export default function Navbar({
                   }}
                   className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-300 text-rose-900 font-bold text-xs shadow-2xs cursor-pointer"
                 >
-                  <span>🎁</span> Canje de Cupones
+                  <Gift className="w-4 h-4 text-rose-800" /> Canje de Cupones
                 </button>
               </div>
             )}
@@ -324,7 +326,7 @@ export default function Navbar({
                 className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-[#2D4F3E]/20 bg-[#FAF9F5] text-[#2D4F3E] text-xs font-bold shadow-2xs cursor-pointer"
                 title={settings?.mobileCatalogConfig?.title || 'Catálogos Oficiales de Temporada (PDF 9:16)'}
               >
-                <span>📱</span>
+                <FileText className="w-4 h-4 text-[#2D4F3E]" />
                 <span>{settings?.mobileCatalogConfig?.buttonText ? `${settings.mobileCatalogConfig.buttonText}` : 'Catálogos Oficiales de Temporada (PDF 9:16)'}</span>
               </button>
             )}

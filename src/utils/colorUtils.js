@@ -74,7 +74,7 @@ const COLOR_MAP = [
   { keys: ['lavanda', 'morado', 'violeta', 'púrpura', 'lila'], name: 'Lavanda / Violeta', css: '#A78BFA', border: '#7C3AED' },
 
   // 11. Especiales / Multicolor / Otro a convenir
-  { keys: ['otro color', 'a convenir', 'personalizad', 'abierto'], name: '🎨 Otro a convenir', css: 'conic-gradient(from 180deg at 50% 50%, #EF4444, #F59E0B, #10B981, #3B82F6, #8B5CF6, #EC4899, #EF4444)', border: '#8B5CF6', isMulti: true },
+  { keys: ['otro color', 'a convenir', 'personalizad', 'abierto'], name: 'Otro a convenir', css: 'conic-gradient(from 180deg at 50% 50%, #EF4444, #F59E0B, #10B981, #3B82F6, #8B5CF6, #EC4899, #EF4444)', border: '#8B5CF6', isMulti: true },
   { keys: ['tornasol', 'arcoíris', 'holográfico'], name: 'Tornasol Arcoíris', css: 'linear-gradient(135deg, #EC4899, #8B5CF6, #3B82F6, #10B981)', border: '#8B5CF6', isMulti: true }
 ];
 
@@ -93,7 +93,7 @@ export function getFilamentColor(rawInput = '') {
   // 1. Detección de opción abierta o arcoíris
   if (lower.includes('otro color') || lower.includes('a convenir') || lower.includes('personalizad')) {
     return {
-      name: '🎨 Otro a convenir',
+      name: 'Otro a convenir',
       css: 'conic-gradient(from 180deg at 50% 50%, #EF4444, #F59E0B, #10B981, #3B82F6, #8B5CF6, #EC4899, #EF4444)',
       border: '#8B5CF6',
       isMulti: true
@@ -200,7 +200,7 @@ export const DARK_COLOR_PRESETS = [
 export const WORKSHOP_COLOR_PALETTES = [
   {
     id: 'oscuros',
-    label: '🌙 Oscuros & Medianoche',
+    label: 'Oscuros & Medianoche',
     shortLabel: 'Oscuros (11)',
     colors: [
       'Negro Ónix Mate',
@@ -218,7 +218,7 @@ export const WORKSHOP_COLOR_PALETTES = [
   },
   {
     id: 'barnices_madera',
-    label: '🪵 Tintes & Barnices para Madera (Láser y Carpintería)',
+    label: 'Tintes & Barnices para Madera (Láser y Carpintería)',
     shortLabel: 'Barnices y Tintes (6)',
     colors: [
       'Barniz Natural Transparente',
@@ -231,7 +231,7 @@ export const WORKSHOP_COLOR_PALETTES = [
   },
   {
     id: 'maderas_metales',
-    label: '✨ Maderas Nobles & Sedas Metálicas',
+    label: 'Maderas Nobles & Sedas Metálicas',
     shortLabel: 'Maderas & Sedas (6)',
     colors: [
       'Madera Roble Natural',
@@ -244,7 +244,7 @@ export const WORKSHOP_COLOR_PALETTES = [
   },
   {
     id: 'botanicos_tierra',
-    label: '🌿 Botánicos & Tierra',
+    label: 'Botánicos & Tierra',
     shortLabel: 'Botánicos & Tierra (8)',
     colors: [
       'Verde Olivo',
@@ -259,7 +259,7 @@ export const WORKSHOP_COLOR_PALETTES = [
   },
   {
     id: 'claros_pasteles',
-    label: '☀️ Claros & Pasteles',
+    label: 'Claros & Pasteles',
     shortLabel: 'Claros & Pasteles (8)',
     colors: [
       'Verde Salvia',

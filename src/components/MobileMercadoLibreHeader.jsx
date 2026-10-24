@@ -20,7 +20,7 @@ export default function MobileMercadoLibreHeader({
 }) {
   const areas = [
     { id: 'all', label: 'Todo' },
-    { id: 'flash', label: '⚡ En Oferta' },
+    { id: 'flash', label: 'En Oferta' },
     { id: 'personalizados', label: 'Personalizados' },
     { id: 'hogar', label: 'Hogar' },
     { id: 'negocios', label: 'Negocios' },

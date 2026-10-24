@@ -51,8 +51,8 @@ export function getCouponCategory(coupon) {
 export function getCouponCategoryLabel(coupon) {
   const cat = getCouponCategory(coupon);
   return cat === 'arcade'
-    ? '🎮 Ganado con Monedas de Juego (Arcade)'
-    : '🏷️ Código Especial de Tienda';
+    ? 'Ganado con Monedas de Juego (Arcade)'
+    : 'Código Especial de Tienda';
 }
 
 /**

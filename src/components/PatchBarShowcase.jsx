@@ -12,19 +12,19 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
   const tabs = [
     {
       id: 'completo',
-      label: '🪵 Estación en madera',
+      label: 'Estación en madera',
       image: '/uploads/patch_bar_servicio_en_vivo.jpg',
       caption: 'Mobiliario de madera artesanal con repisas para gorras, charolas de parches y prensa térmica industrial.'
     },
     {
       id: 'parches',
-      label: '🔍 Muestrario de parches',
+      label: 'Muestrario de parches',
       image: '/uploads/angle_patch_bar.jpg',
       caption: 'Parches y stickers textiles de alta durabilidad: iniciales, frases de celebración y monogramas personalizados.'
     },
     {
       id: 'infografia',
-      label: '📐 Medidas y capacidad',
+      label: 'Medidas y capacidad',
       image: '/uploads/info_patch_bar.jpg',
       caption: 'Estación de 160 x 80 cm, apta para salones y jardines, con capacidad de 50 a 300+ invitados.'
     }
@@ -67,8 +67,8 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
               Tus invitados escogen entre gorras estilo <strong>trucker</strong> (varios colores neutros con malla fresca) o <strong>tote bags</strong> de manta 100% algodón crudo.
             </p>
             <div className="flex flex-wrap gap-1.5 text-[11px] font-semibold text-[#2D4F3E]">
-              <span className="px-2 py-0.5 rounded-md bg-[#F4F0E8]">🧢 Gorras trucker</span>
-              <span className="px-2 py-0.5 rounded-md bg-[#F4F0E8]">👜 Tote bags manta</span>
+              <span className="px-2 py-0.5 rounded-md bg-[#F4F0E8]">Gorras trucker</span>
+              <span className="px-2 py-0.5 rounded-md bg-[#F4F0E8]">Tote bags manta</span>
             </div>
           </div>
 
@@ -84,8 +84,8 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
               Charolas con diseños exclusivos del evento: <strong>iniciales de los novios o festejado</strong>, frases icónicas de fiesta, flores botánicas y stickers textiles.
             </p>
             <div className="flex flex-wrap gap-1.5 text-[11px] font-semibold text-[#D82B6E]">
-              <span className="px-2 py-0.5 rounded-md bg-[#FFF0F5]">✨ Parches temáticos</span>
-              <span className="px-2 py-0.5 rounded-md bg-[#FFF0F5]">🏷️ Monogramas D&A</span>
+              <span className="px-2 py-0.5 rounded-md bg-[#FFF0F5]">Parches temáticos</span>
+              <span className="px-2 py-0.5 rounded-md bg-[#FFF0F5]">Monogramas D&A</span>
             </div>
           </div>
 
@@ -101,8 +101,8 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
               Nuestro operador calificado aplica cada parche con <strong>prensa térmica de alta presión</strong> en menos de 45 segundos. Listo para usarse durante la fiesta.
             </p>
             <div className="flex flex-wrap gap-1.5 text-[11px] font-semibold text-gray-700">
-              <span className="px-2 py-0.5 rounded-md bg-gray-100">⏱️ &lt; 45 segundos</span>
-              <span className="px-2 py-0.5 rounded-md bg-gray-100">🔥 Fijación lavable</span>
+              <span className="px-2 py-0.5 rounded-md bg-gray-100">&lt; 45 segundos</span>
+              <span className="px-2 py-0.5 rounded-md bg-gray-100">Fijación lavable</span>
             </div>
           </div>
 
@@ -141,7 +141,7 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
 
             {/* Caption */}
             <p className="text-xs text-gray-300 mt-3 z-10 leading-relaxed">
-              💡 {currentTabObj.caption}
+              {currentTabObj.caption}
             </p>
           </div>
 

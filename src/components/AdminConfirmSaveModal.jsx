@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertCircle, Check, X, ShieldAlert, Sparkles, Layers, ArrowRight } from 'lucide-react';
+import { AlertCircle, Check, X, ShieldAlert, Sparkles, Layers, ArrowRight, ClipboardList } from 'lucide-react';
 
 /**
  * Modal de Confirmación con Desglose de Cambios para el Panel Administrador
@@ -31,7 +31,7 @@ export default function AdminConfirmSaveModal({
         <div className="p-5 sm:p-6 bg-[#FAF9F5] border-b border-[#E8E4DA] flex items-start justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-amber-500/15 text-amber-700 flex items-center justify-center font-bold text-lg border border-amber-500/30">
-              📋
+              <ClipboardList className="w-5 h-5 text-amber-800" />
             </div>
             <div>
               <div className="flex items-center gap-2">

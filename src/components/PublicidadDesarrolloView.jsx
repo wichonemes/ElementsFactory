@@ -11,7 +11,8 @@ import {
   ArrowRight,
   DollarSign,
   Eye,
-  Sparkles
+  Sparkles,
+  MapPin
 } from 'lucide-react';
 
 export default function PublicidadDesarrolloView({
@@ -182,13 +183,13 @@ export default function PublicidadDesarrolloView({
       completo: 'Edición VIP Todo Incluido'
     };
 
-    const text = `Hola Wicho / Artesano Digital! 🚀
+    const text = `Hola Wicho / Artesano Digital,
 Me interesa una cotización de *Publicidad & Desarrollo Digital*:
 
-📌 *1. Especialidad:* ${serviceNameMap[quoteService] || quoteService}
-📦 *2. Alcance:* ${scopeMap[quoteScope] || quoteScope}
-💰 *Estimado orientativo:* $${quoteEstimate.base.toLocaleString('es-MX')} MXN
-${quoteNotes.trim() ? `\n💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}
+• *1. Especialidad:* ${serviceNameMap[quoteService] || quoteService}
+• *2. Alcance:* ${scopeMap[quoteScope] || quoteScope}
+• *Estimado orientativo:* $${quoteEstimate.base.toLocaleString('es-MX')} MXN
+${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
 ¿Podemos platicar sobre este proyecto?`;
 
     const url = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(text)}`;
@@ -272,8 +273,9 @@ ${quoteNotes.trim() ? `\n💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}
                     <p className="italic text-stone-200 text-[11px] line-clamp-2">
                       "Ideas claras. Diseño con intención. Cada pieza visual debe resolver un propósito comercial real."
                     </p>
-                    <div className="text-[10px] text-stone-400">
-                      📍 San Luis Potosí, SLP · Envíos nacionales.
+                    <div className="text-[10px] text-stone-400 flex items-center gap-1">
+                      <MapPin className="w-3 h-3 text-[#D4A359] shrink-0" />
+                      <span>San Luis Potosí, SLP · Envíos nacionales.</span>
                     </div>
                   </div>
                 </div>

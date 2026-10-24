@@ -27,7 +27,7 @@ import MobileCategoriesModal from './components/MobileCategoriesModal';
 import MobileSidebarDrawer from './components/MobileSidebarDrawer';
 import CatalogSelectorModal from './components/CatalogSelectorModal';
 import { useFlashDeal } from './hooks/useFlashDeal';
-import { Home, Briefcase, CalendarHeart, Sparkles, ChevronRight, ShoppingBag, Layers, MessageCircle, Gift, RotateCw, Calendar, AlertTriangle, MapPin, Truck } from 'lucide-react';
+import { Home, Briefcase, CalendarHeart, Sparkles, ChevronRight, ShoppingBag, Layers, MessageCircle, Gift, RotateCw, Calendar, AlertTriangle, MapPin, Truck, Gamepad2 } from 'lucide-react';
 import { formatServiceDate } from './utils/serviceStatus';
 import { playCoinSound, playSoftAreaSwitchSound, playMarioPowerDownSound } from './utils/soundEffects';
 
@@ -548,12 +548,12 @@ export default function App() {
     }
 
     if (activePub) {
-      msg += `\n🏷️ *Ref. Publicación:* [${activePub}]\n`;
+      msg += `\n*Ref. Publicación:* [${activePub}]\n`;
     }
 
     if (settings?.serviceStatus?.isPaused) {
       const resumeStr = formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'próximo aviso';
-      msg += `\n⏸️ *Nota:* Taller reanuda actividades el ${resumeStr}.\n`;
+      msg += `\n*Nota de taller:* Taller reanuda actividades el ${resumeStr}.\n`;
     }
 
     msg += `\n_¿Podrían indicarme tiempos de entrega y costo con envío?_`;
@@ -748,11 +748,11 @@ export default function App() {
               </span>
               <span className="text-[11.5px]">
                 {settings.serviceStatus.localService && settings.serviceStatus.nationalService === false ? (
-                  <span>📍 <strong>Aviso de Cobertura:</strong> Servicio activo únicamente para entregas locales y recolección en taller. Los envíos nacionales se encuentran temporalmente en pausa.</span>
+                  <span><strong>Aviso de Cobertura:</strong> Servicio activo únicamente para entregas locales y recolección en taller. Los envíos nacionales se encuentran temporalmente en pausa.</span>
                 ) : settings.serviceStatus.localService === false && settings.serviceStatus.nationalService ? (
-                  <span>📦 <strong>Aviso de Cobertura:</strong> Envíos nacionales activos a toda la República. Las entregas locales en taller están temporalmente pausadas.</span>
+                  <span><strong>Aviso de Cobertura:</strong> Envíos nacionales activos a toda la República. Las entregas locales en taller están temporalmente pausadas.</span>
                 ) : (
-                  <span>⏸️ <strong>Aviso de Taller:</strong> Los servicios de entrega se encuentran en pausa temporal. Puedes dejar tu cotización en espera.</span>
+                  <span><strong>Aviso de Taller:</strong> Los servicios de entrega se encuentran en pausa temporal. Puedes dejar tu cotización en espera.</span>
                 )}
               </span>
             </div>
@@ -831,7 +831,7 @@ export default function App() {
                       : 'bg-[#D82B6E] text-white hover:bg-[#c0235e]'
                   }`}
                 >
-                  <span>{viewMode === 'promotions' ? '← Ver catálogo regular' : `🎁 Ver paquetes y promociones de ${currentWorldObj.name}`}</span>
+                  <span>{viewMode === 'promotions' ? '← Ver catálogo regular' : `Ver paquetes y promociones de ${currentWorldObj.name}`}</span>
                   <span className="px-2 py-0.5 rounded-full bg-black/20 text-white text-[11px] font-black">
                     {areaPromotions.length}
                   </span>
@@ -903,7 +903,7 @@ export default function App() {
               <>
                 <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />
                 <span className="font-bold text-[#D82B6E] shrink-0">
-                  🎁 Paquetes y Promociones
+                  Paquetes y Promociones
                 </span>
               </>
             )}
@@ -1154,7 +1154,7 @@ export default function App() {
             className="flex items-center gap-2 px-3 py-2 rounded-full bg-[#17251E]/95 hover:bg-[#17251E] text-white text-xs font-bold border border-[#D4A359]/50 shadow-2xl backdrop-blur-md transition-all hover:scale-105 active:scale-95 group cursor-pointer"
             title="Arcade del Taller: Juega y gana cupones de descuento"
           >
-            <span className="text-base group-hover:rotate-12 transition-transform">🕹️</span>
+            <Gamepad2 className="w-4 h-4 text-[#F5D061] group-hover:rotate-12 transition-transform shrink-0" />
             <span className="font-heading text-[#F5D061] hidden xs:inline">Arcade del Taller</span>
             <span className="text-[10px] bg-red-600 text-white px-1.5 py-0.2 rounded-full font-mono font-bold shadow-xs">
               Cupones

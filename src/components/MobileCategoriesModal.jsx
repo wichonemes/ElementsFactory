@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Home, Briefcase, CalendarHeart, Gift, Wrench, Search, Sparkles } from 'lucide-react';
+import { ArrowLeft, Home, Briefcase, CalendarHeart, Gift, Wrench, Search, Sparkles, Printer, Flame, Palette, Scissors, Radio } from 'lucide-react';
 
 export default function MobileCategoriesModal({
   isOpen,
@@ -54,11 +54,11 @@ export default function MobileCategoriesModal({
       { id: 'pack-boda', name: 'Paquete Boda Total', image: '/uploads/bienvenida_ceremonia_boda.jpg', isBundle: true, worldId: 'eventos' }
     ],
     tecnicas: [
-      { id: 'tech-3d', name: 'Impresión 3D (PLA/TPU)', icon: '🖨️', techniqueId: '3d' },
-      { id: 'tech-laser', name: 'Corte y Grabado Láser', icon: '🔥', techniqueId: 'laser' },
-      { id: 'tech-sublimation', name: 'Sublimación Térmica', icon: '🎨', techniqueId: 'sublimation' },
-      { id: 'tech-vinyl', name: 'Vinil y DTF Textil', icon: '✂️', techniqueId: 'vinyl' },
-      { id: 'tech-nfc', name: 'Enlaces Smart NFC', icon: '📡', techniqueId: 'nfc' }
+      { id: 'tech-3d', name: 'Impresión 3D (PLA/TPU)', icon: Printer, techniqueId: '3d' },
+      { id: 'tech-laser', name: 'Corte y Grabado Láser', icon: Flame, techniqueId: 'laser' },
+      { id: 'tech-sublimation', name: 'Sublimación Térmica', icon: Palette, techniqueId: 'sublimation' },
+      { id: 'tech-vinyl', name: 'Vinil y DTF Textil', icon: Scissors, techniqueId: 'vinyl' },
+      { id: 'tech-nfc', name: 'Enlaces Smart NFC', icon: Radio, techniqueId: 'nfc' }
     ]
   };
 
@@ -166,8 +166,10 @@ export default function MobileCategoriesModal({
                       alt={item.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                     />
+                  ) : item.icon && typeof item.icon !== 'string' ? (
+                    <item.icon className="w-6 h-6 text-[#2D4F3E]" />
                   ) : (
-                    <span className="text-2xl">{item.icon || '✦'}</span>
+                    <Sparkles className="w-5 h-5 text-[#2D4F3E]" />
                   )}
                 </div>
                 <span className="text-[10px] text-gray-700 font-medium leading-tight line-clamp-2 w-full">

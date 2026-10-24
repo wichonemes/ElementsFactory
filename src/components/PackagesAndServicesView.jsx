@@ -5,7 +5,7 @@ import {
   Layers, Package, Flame, Clock, Star, ShieldCheck, Plus,
   ChevronDown, ChevronUp, Check, Award, Crown,
   QrCode, Store, Building2, TrendingUp, BarChart2, Zap,
-  CheckCheck, Coffee, Scissors, Smartphone, BadgePercent, Tag
+  CheckCheck, Coffee, Scissors, Smartphone, BadgePercent, Tag, DollarSign, MapPin
 } from 'lucide-react';
 import PatchBarShowcase from './PatchBarShowcase';
 import SeasonalAtmosphere from './SeasonalAtmosphere';
@@ -53,9 +53,9 @@ export const getBundleTiers = (promo) => {
         id: 'pro',
         tierType: 'recommended',
         name: 'Nivel Artesano Pro',
-        badge: '★ Más Conveniente',
+        badge: 'Más Conveniente',
         tag: 'Recomendado del Taller',
-        tierBadge: '★ Más Conveniente',
+        tierBadge: 'Más Conveniente',
         accentColor: 'emerald',
         valueCallout: '¡Te conviene más! (+2 piezas extra por solo +$129 MXN)',
         isPopular: true,
@@ -135,9 +135,9 @@ export const getBundleTiers = (promo) => {
         id: 'pro',
         tierType: 'recommended',
         name: 'Nivel Artesano Pro',
-        badge: '★ Más Conveniente',
+        badge: 'Más Conveniente',
         tag: 'Recomendado Pro',
-        tierBadge: '★ Más Conveniente',
+        tierBadge: 'Más Conveniente',
         accentColor: 'emerald',
         valueCallout: '¡Te conviene más! (+3 organizadores adicionales por solo +$150 MXN)',
         isPopular: true,
@@ -218,9 +218,9 @@ export const getBundleTiers = (promo) => {
         id: 'pro',
         tierType: 'recommended',
         name: 'Nivel Artesano Pro',
-        badge: '★ Más Conveniente',
+        badge: 'Más Conveniente',
         tag: 'Favorito de Mascotas',
-        tierBadge: '★ Más Conveniente',
+        tierBadge: 'Más Conveniente',
         accentColor: 'emerald',
         valueCallout: '¡Te conviene más! (+Portabolsas de paseo y marco 3D por solo +$80 MXN)',
         isPopular: true,
@@ -302,9 +302,9 @@ export const getBundleTiers = (promo) => {
         id: 'pro',
         tierType: 'recommended',
         name: 'Nivel Artesano Pro',
-        badge: '★ Más Conveniente',
+        badge: 'Más Conveniente',
         tag: 'Recomendado Comercial',
-        tierBadge: '★ Más Conveniente',
+        tierBadge: 'Más Conveniente',
         accentColor: 'emerald',
         valueCallout: '¡Te conviene más! (+4 números de mesa, +2 servilleteros y +1 QR por solo +$540 MXN)',
         isPopular: true,
@@ -389,9 +389,9 @@ export const getBundleTiers = (promo) => {
         id: 'pro',
         tierType: 'recommended',
         name: 'Nivel Artesano Pro',
-        badge: '★ Más Conveniente',
+        badge: 'Más Conveniente',
         tag: 'Identidad Completa',
-        tierBadge: '★ Más Conveniente',
+        tierBadge: 'Más Conveniente',
         accentColor: 'emerald',
         valueCallout: '¡Te conviene más! (+4 posavasos con logo y +2 tazas full color por solo +$220 MXN)',
         isPopular: true,
@@ -476,9 +476,9 @@ export const getBundleTiers = (promo) => {
         id: 'pro',
         tierType: 'recommended',
         name: 'Nivel Artesano Pro',
-        badge: '★ Más Conveniente',
+        badge: 'Más Conveniente',
         tag: 'Recomendado Comercial',
-        tierBadge: '★ Más Conveniente',
+        tierBadge: 'Más Conveniente',
         accentColor: 'emerald',
         valueCallout: '¡Te conviene más! (+13 llaveros promocionales extra por solo +$250 MXN)',
         isPopular: true,
@@ -560,9 +560,9 @@ export const getBundleTiers = (promo) => {
         id: 'pro',
         tierType: 'recommended',
         name: 'Nivel Artesano Pro',
-        badge: '★ Más Conveniente',
+        badge: 'Más Conveniente',
         tag: 'El Favorito de Novios',
-        tierBadge: '★ Más Conveniente',
+        tierBadge: 'Más Conveniente',
         accentColor: 'emerald',
         valueCallout: '¡Te conviene más! (+Recepción de ceremonia, 25 conos de pétalos y centro presidencial por solo +$700 MXN)',
         isPopular: true,
@@ -649,9 +649,9 @@ export const getBundleTiers = (promo) => {
         id: 'pro',
         tierType: 'recommended',
         name: 'Nivel Artesano Pro',
-        badge: '★ Más Conveniente',
+        badge: 'Más Conveniente',
         tag: 'Combo Fiesta Favorito',
-        tierBadge: '★ Más Conveniente',
+        tierBadge: 'Más Conveniente',
         accentColor: 'emerald',
         valueCallout: '¡Te conviene más! (+1 hora extra, +20 prendas y +20 kits anticruda por solo +$2,000 MXN)',
         isPopular: true,
@@ -737,9 +737,9 @@ export const getBundleTiers = (promo) => {
         id: 'pro',
         tierType: 'recommended',
         name: 'Nivel Artesano Pro',
-        badge: '★ Más Conveniente',
+        badge: 'Más Conveniente',
         tag: 'El Set Más Pedido',
-        tierBadge: '★ Más Conveniente',
+        tierBadge: 'Más Conveniente',
         accentColor: 'emerald',
         valueCallout: '¡Te conviene más! (+15 llaveros con nombre y letrero ampliado por solo +$500 MXN)',
         isPopular: true,
@@ -823,9 +823,9 @@ export const getBundleTiers = (promo) => {
         id: 'pro',
         tierType: 'recommended',
         name: 'Nivel Artesano Pro',
-        badge: '★ Más Conveniente',
+        badge: 'Más Conveniente',
         tag: 'Estación Estándar Bodas',
-        tierBadge: '★ Más Conveniente',
+        tierBadge: 'Más Conveniente',
         accentColor: 'emerald',
         valueCallout: '¡Te conviene más! (+1 hora extra, percheros rústicos y 50+ diseños por solo +$1,700 MXN)',
         isPopular: true,
@@ -904,9 +904,9 @@ export const getBundleTiers = (promo) => {
       id: 'pro',
       tierType: 'recommended',
       name: 'Nivel Artesano Pro',
-      badge: '★ Más Conveniente',
+      badge: 'Más Conveniente',
       tag: 'Recomendado del Taller',
-      tierBadge: '★ Más Conveniente',
+      tierBadge: 'Más Conveniente',
       accentColor: 'emerald',
       valueCallout: '¡Te conviene más! (+Todas las piezas completas y acabados coordinados)',
       isPopular: true,
@@ -1106,8 +1106,8 @@ export default function PackagesAndServicesView({
     msg += `• Inversión regular del paquete: *$${basePrice} MXN* (Ahorro regular de $${savings} MXN)\n`;
 
     if (hasCoupon) {
-      msg += `• 🎁 *Cupón de Evento:* [${activeMonthlyEvent.couponCode}] (${activeMonthlyEvent.discountText || `${eventDiscountPct}% OFF`})\n`;
-      msg += `• 🔥 *Precio Especial con Cupón:* *$${discountedPrice} MXN* (Ahorro extra de $${basePrice - discountedPrice} MXN)\n`;
+      msg += `• *Cupón de Evento:* [${activeMonthlyEvent.couponCode}] (${activeMonthlyEvent.discountText || `${eventDiscountPct}% OFF`})\n`;
+      msg += `• *Precio Especial con Cupón:* *$${discountedPrice} MXN* (Ahorro extra de $${basePrice - discountedPrice} MXN)\n`;
     }
 
     if (items && items.length > 0) {
@@ -1115,7 +1115,7 @@ export default function PackagesAndServicesView({
     }
     if (settings?.serviceStatus?.isPaused) {
       const resumeStr = formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'próximo aviso';
-      msg += `\n⏸️ *Nota:* Taller reanuda servicio el ${resumeStr}.\n`;
+      msg += `\n*Nota de taller:* Taller reanuda servicio el ${resumeStr}.\n`;
     }
     msg += `\n_¿Tienen disponibilidad de taller para producción y tiempos de entrega?_`;
 
@@ -1148,7 +1148,7 @@ export default function PackagesAndServicesView({
       return {
         area: 'especial',
         label: 'Especial del Mes',
-        icon: '👑',
+        icon: Crown,
         cardBorder: 'border-amber-400 ring-2 ring-amber-400/50 shadow-md',
         cardHover: 'hover:border-amber-500 hover:shadow-amber-400/20 hover:shadow-xl',
         bgBadge: 'bg-amber-100 text-amber-950 border-amber-300',
@@ -1171,7 +1171,7 @@ export default function PackagesAndServicesView({
       return {
         area: 'negocios',
         label: 'Empresarial & Negocios',
-        icon: '💼',
+        icon: Briefcase,
         cardBorder: 'border-amber-200 hover:border-amber-400',
         cardHover: 'hover:border-amber-400 hover:shadow-amber-900/10 hover:shadow-lg',
         bgBadge: 'bg-amber-50 text-amber-900 border-amber-200',
@@ -1188,7 +1188,7 @@ export default function PackagesAndServicesView({
       return {
         area: 'eventos',
         label: 'Eventos & Fiestas',
-        icon: '🎉',
+        icon: CalendarHeart,
         cardBorder: 'border-rose-200 hover:border-rose-400',
         cardHover: 'hover:border-rose-400 hover:shadow-rose-900/10 hover:shadow-lg',
         bgBadge: 'bg-rose-50 text-rose-800 border-rose-200',
@@ -1205,7 +1205,7 @@ export default function PackagesAndServicesView({
     return {
       area: 'hogar',
       label: 'Hogar & Espacios',
-      icon: '🏡',
+      icon: Home,
       cardBorder: 'border-emerald-200 hover:border-emerald-400',
       cardHover: 'hover:border-emerald-400 hover:shadow-emerald-900/10 hover:shadow-lg',
       bgBadge: 'bg-emerald-50 text-emerald-800 border-emerald-200',
@@ -1263,7 +1263,7 @@ export default function PackagesAndServicesView({
           <div className="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-stone-950 px-3.5 py-1 text-[11px] font-black uppercase tracking-wider flex items-center justify-between shadow-2xs">
             <div className="flex items-center gap-1.5">
               <Crown className="w-3.5 h-3.5 fill-stone-950 text-stone-950" />
-              <span>👑 Paquete Estrella del Mes</span>
+              <span>Paquete Estrella del Mes</span>
             </div>
             <span className="text-[10px] bg-stone-950 text-amber-300 px-2 py-0.2 rounded-full font-bold">
               Beneficio Exclusivo
@@ -1318,8 +1318,9 @@ export default function PackagesAndServicesView({
                     <span>Especial del Mes</span>
                   </span>
                 ) : (
-                  <span className="px-2 py-0.5 rounded-full text-[9.5px] font-bold border border-dashed border-[#D4A359]/60 bg-[#FAF7F0] text-[#7A4B1D]">
-                    {theme.icon} {theme.label}
+                  <span className="px-2 py-0.5 rounded-full text-[9.5px] font-bold border border-dashed border-[#D4A359]/60 bg-[#FAF7F0] text-[#7A4B1D] flex items-center gap-1">
+                    {theme.icon && typeof theme.icon !== 'string' && <theme.icon className="w-3 h-3 text-[#D4A359]" />}
+                    <span>{theme.label}</span>
                   </span>
                 )}
               </div>
@@ -1419,11 +1420,11 @@ export default function PackagesAndServicesView({
             </span>
             <span className="px-2 py-0.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-300 font-black flex items-center gap-1">
               <span className="w-3 h-3 rounded-full bg-emerald-600 text-white text-[8px] flex items-center justify-center">+</span>
-              <span>Pro (★ Más Conveniente)</span>
+              <span>Pro (Más Conveniente)</span>
             </span>
             <span className="px-2 py-0.5 rounded-lg bg-amber-50 text-amber-900 border border-amber-300 font-black flex items-center gap-1">
               <span className="w-3 h-3 rounded-full bg-amber-600 text-white text-[8px] flex items-center justify-center">+</span>
-              <span>VIP (⭐ Todo Incluido)</span>
+              <span>VIP (Todo Incluido)</span>
             </span>
           </div>
 
@@ -1497,7 +1498,7 @@ export default function PackagesAndServicesView({
                     }`}
                   >
                     <span className="text-[9px] uppercase tracking-wider block font-black opacity-90 truncate">
-                      {isPro ? '★ Conveniente' : isMaestra ? '⭐ VIP' : 'Kit Base'}
+                      {isPro ? 'Conveniente' : isMaestra ? 'VIP' : 'Kit Base'}
                     </span>
                     <span className="text-[10px] block leading-tight truncate">{tier.name.replace('Nivel ', '')}</span>
                     <span className={`text-[10.5px] font-black block mt-0.5 font-mono ${isSelected ? 'text-white' : 'text-[#2D4F3E]'}`}>
@@ -1720,7 +1721,7 @@ export default function PackagesAndServicesView({
           <div className="flex flex-wrap items-center gap-2.5">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/20 backdrop-blur-md border border-amber-400/40 text-xs font-bold text-amber-300 shadow-sm">
               <Gift className="w-4 h-4 text-amber-400" />
-              <span>{campaignConfig?.bannerBadge || '✨ Especial de Temporada de Taller'}</span>
+              <span>{campaignConfig?.bannerBadge || 'Especial de Temporada de Taller'}</span>
             </div>
             {activeSeason && (
               <span className="text-xs px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-gray-200 font-medium">
@@ -1815,8 +1816,8 @@ export default function PackagesAndServicesView({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             <div className="flex items-center gap-3 p-3 rounded-2xl bg-white border border-[#E8E4DA] shadow-2xs">
-              <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center shrink-0 font-black text-sm border border-emerald-200">
-                💰
+              <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center shrink-0 border border-emerald-200">
+                <DollarSign className="w-4 h-4 text-emerald-700" />
               </div>
               <div>
                 <h4 className="text-xs font-black text-[#1F2421]">Ahorro de hasta 25%</h4>
@@ -1825,8 +1826,8 @@ export default function PackagesAndServicesView({
             </div>
 
             <div className="flex items-center gap-3 p-3 rounded-2xl bg-white border border-[#E8E4DA] shadow-2xs">
-              <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm border border-amber-200">
-                📦
+              <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-800 flex items-center justify-center shrink-0 border border-amber-200">
+                <Package className="w-4 h-4 text-amber-700" />
               </div>
               <div>
                 <h4 className="text-xs font-black text-[#1F2421]">Kits Coordinados</h4>
@@ -1835,8 +1836,8 @@ export default function PackagesAndServicesView({
             </div>
 
             <div className="flex items-center gap-3 p-3 rounded-2xl bg-white border border-[#E8E4DA] shadow-2xs">
-              <div className="w-9 h-9 rounded-xl bg-rose-50 text-rose-800 flex items-center justify-center shrink-0 font-black text-sm border border-rose-200">
-                ⭐
+              <div className="w-9 h-9 rounded-xl bg-rose-50 text-rose-800 flex items-center justify-center shrink-0 border border-rose-200">
+                <Layers className="w-4 h-4 text-rose-700" />
               </div>
               <div>
                 <h4 className="text-xs font-black text-[#1F2421]">3 Opciones de Nivel</h4>
@@ -1845,8 +1846,8 @@ export default function PackagesAndServicesView({
             </div>
 
             <div className="flex items-center gap-3 p-3 rounded-2xl bg-white border border-[#E8E4DA] shadow-2xs">
-              <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-800 flex items-center justify-center shrink-0 font-black text-sm border border-blue-200">
-                ✨
+              <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-800 flex items-center justify-center shrink-0 border border-blue-200">
+                <Sparkles className="w-4 h-4 text-blue-700" />
               </div>
               <div>
                 <h4 className="text-xs font-black text-[#1F2421]">Grabado Láser Listo</h4>
@@ -1897,7 +1898,7 @@ export default function PackagesAndServicesView({
                 </div>
                 <div className="flex items-center gap-3 shrink-0">
                   <span className="px-4 py-2 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold text-amber-300">
-                    👑 Selección Recomendada
+                    Selección Recomendada
                   </span>
                 </div>
               </div>
@@ -1933,7 +1934,7 @@ export default function PackagesAndServicesView({
               <div className="flex-1 space-y-3">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#D82B6E] text-white text-xs font-black uppercase tracking-wider shadow-sm">
                   <Flame className="w-3.5 h-3.5" />
-                  <span>★ Servicio Estrella para Bodas y Fiestas</span>
+                  <span>Servicio Estrella para Bodas y Fiestas</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-extrabold font-heading text-white leading-tight">
                   Servicio Patch Bar en Vivo (Gorras &amp; Totes)
@@ -1948,8 +1949,8 @@ export default function PackagesAndServicesView({
                   <span className="text-[11px] bg-white/10 px-2.5 py-1 rounded-full text-emerald-300 border border-emerald-400/20 font-bold">
                     ✓ Incluye mobiliario, prensa y operador
                   </span>
-                  <span className="text-[11px] bg-white/10 px-2.5 py-1 rounded-full text-amber-300 border border-amber-400/20 font-bold">
-                    📍 San Luis Potosí y alrededores
+                  <span className="text-[11px] bg-white/10 px-2.5 py-1 rounded-full text-amber-300 border border-amber-400/20 font-bold flex items-center gap-1">
+                    <MapPin className="w-3 h-3 text-amber-400" /> San Luis Potosí y alrededores
                   </span>
                 </div>
 

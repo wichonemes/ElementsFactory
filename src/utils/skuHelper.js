@@ -5,22 +5,22 @@
  */
 
 export const SKU_AREAS = {
-  HOG: { code: 'HOG', label: 'Hogar & Decoración', icon: '🏠', worldId: 'hogar', desc: 'Lámparas, macetas, cuadros, vaciabolsillos y recuerdos' },
-  NEG: { code: 'NEG', label: 'Negocios & Marca', icon: '💼', worldId: 'negocios', desc: 'Señalética, soportes QR/NFC, placas y branding' },
-  EVE: { code: 'EVE', label: 'Eventos Especiales', icon: '🎉', worldId: 'eventos', desc: 'Bodas, XV años, centros de mesa y recuerdos' },
-  PAQ: { code: 'PAQ', label: 'Paquetes & Combos', icon: '🎁', worldId: 'paquetes', desc: 'Sets multitécnica, combos y kits promocionales' },
-  TLL: { code: 'TLL', label: 'Taller General', icon: '🛠️', worldId: 'taller', desc: 'Producción interna y piezas especiales bajo pedido' }
+  HOG: { code: 'HOG', label: 'Hogar & Decoración', worldId: 'hogar', desc: 'Lámparas, macetas, cuadros, vaciabolsillos y recuerdos' },
+  NEG: { code: 'NEG', label: 'Negocios & Marca', worldId: 'negocios', desc: 'Señalética, soportes QR/NFC, placas y branding' },
+  EVE: { code: 'EVE', label: 'Eventos Especiales', worldId: 'eventos', desc: 'Bodas, XV años, centros de mesa y recuerdos' },
+  PAQ: { code: 'PAQ', label: 'Paquetes & Combos', worldId: 'paquetes', desc: 'Sets multitécnica, combos y kits promocionales' },
+  TLL: { code: 'TLL', label: 'Taller General', worldId: 'taller', desc: 'Producción interna y piezas especiales bajo pedido' }
 };
 
 export const SKU_TECHNIQUES = {
-  '3D': { code: '3D', label: 'Impresión 3D (FDM / Filamento)', icon: '🧊', short: 'Impresión 3D', machine: 'Granja 3D FDM' },
-  'LAS': { code: 'LAS', label: 'Corte / Grabado Láser CO2', icon: '⚡', short: 'Corte Láser', machine: 'Láser CO2 / Diodo' },
-  'HYB': { code: 'HYB', label: 'Híbrido (Láser + Impresión 3D)', icon: '🔄', short: 'Híbrido Láser + 3D', machine: 'Láser + Impresión 3D' },
-  'SUB': { code: 'SUB', label: 'Sublimación Térmica', icon: '☕', short: 'Sublimación', machine: 'Prensa de Tazas / Plancha Térmica' },
-  'VIN': { code: 'VIN', label: 'Vinil Adhesivo / Textil', icon: '✂️', short: 'Vinil', machine: 'Plotter de Corte' },
-  'DTF': { code: 'DTF', label: 'Impresión DTF Textil HD', icon: '👕', short: 'DTF Textil', machine: 'Impresora DTF + Horno' },
-  'NFC': { code: 'NFC', label: 'Tecnología NFC Programada', icon: '📶', short: 'Chip NFC', machine: 'Estación de Codificación NFC' },
-  'CNC': { code: 'CNC', label: 'Router CNC / Tallado', icon: '🪵', short: 'Router CNC', machine: 'Router CNC de Madera' }
+  '3D': { code: '3D', label: 'Impresión 3D (FDM / Filamento)', short: 'Impresión 3D', machine: 'Granja 3D FDM' },
+  'LAS': { code: 'LAS', label: 'Corte / Grabado Láser CO2', short: 'Corte Láser', machine: 'Láser CO2 / Diodo' },
+  'HYB': { code: 'HYB', label: 'Híbrido (Láser + Impresión 3D)', short: 'Híbrido Láser + 3D', machine: 'Láser + Impresión 3D' },
+  'SUB': { code: 'SUB', label: 'Sublimación Térmica', short: 'Sublimación', machine: 'Prensa de Tazas / Plancha Térmica' },
+  'VIN': { code: 'VIN', label: 'Vinil Adhesivo / Textil', short: 'Vinil', machine: 'Plotter de Corte' },
+  'DTF': { code: 'DTF', label: 'Impresión DTF Textil HD', short: 'DTF Textil', machine: 'Impresora DTF + Horno' },
+  'NFC': { code: 'NFC', label: 'Tecnología NFC Programada', short: 'Chip NFC', machine: 'Estación de Codificación NFC' },
+  'CNC': { code: 'CNC', label: 'Router CNC / Tallado', short: 'Router CNC', machine: 'Router CNC de Madera' }
 };
 
 export const SKU_MATERIALS = {
@@ -82,8 +82,8 @@ export function parseSku(skuString = '') {
     const finKey = parts[3];
     const seq = parts.slice(4).join('-') || '';
 
-    const area = SKU_AREAS[areaKey] || { code: areaKey, label: `Área: ${areaKey}`, icon: '🏷️' };
-    const tech = SKU_TECHNIQUES[techKey] || { code: techKey, label: `Técnica: ${techKey}`, icon: '⚙️', machine: 'Taller' };
+    const area = SKU_AREAS[areaKey] || { code: areaKey, label: `Área: ${areaKey}` };
+    const tech = SKU_TECHNIQUES[techKey] || { code: techKey, label: `Técnica: ${techKey}`, machine: 'Taller' };
     const mat = SKU_MATERIALS[matKey] || { code: matKey, label: `Material: ${matKey}`, family: 'General' };
     const fin = SKU_FINISHES[finKey] || { code: finKey, label: `Acabado: ${finKey}`, desc: 'Estándar' };
 
@@ -97,10 +97,10 @@ export function parseSku(skuString = '') {
       fin,
       sequence: seq,
       explanation: {
-        destino: `${area.icon} ${area.label}`,
-        maquinaria: `${tech.icon} ${tech.label} (${tech.machine || 'Equipo de taller'})`,
-        materiaPrima: `🪵 ${mat.label} - ${mat.family || ''}`,
-        acabadoTaller: `✨ ${fin.label} - ${fin.desc || ''}`,
+        destino: area.label,
+        maquinaria: `${tech.label} (${tech.machine || 'Equipo de taller'})`,
+        materiaPrima: `${mat.label} - ${mat.family || ''}`,
+        acabadoTaller: `${fin.label} - ${fin.desc || ''}`,
         lote: `#${seq}`
       }
     };
@@ -114,11 +114,11 @@ export function parseSku(skuString = '') {
     legacyCode: skuString,
     explanation: {
       destino: 'Código de taller abreviado',
-      maquinaria: skuString.startsWith('L') ? '⚡ Corte / Grabado Láser' :
-                  skuString.startsWith('T') ? '🧊 Impresión 3D' :
-                  skuString.startsWith('S') ? '☕ Sublimación' :
-                  skuString.startsWith('VN') ? '✂️ Vinil Textil' :
-                  skuString.startsWith('EV') ? '🎉 Eventos Especiales' : '🛠️ Taller Multitécnica',
+      maquinaria: skuString.startsWith('L') ? 'Corte / Grabado Láser' :
+                  skuString.startsWith('T') ? 'Impresión 3D' :
+                  skuString.startsWith('S') ? 'Sublimación' :
+                  skuString.startsWith('VN') ? 'Vinil Textil' :
+                  skuString.startsWith('EV') ? 'Eventos Especiales' : 'Taller Multitécnica',
       materiaPrima: 'Ver especificaciones del producto',
       acabadoTaller: 'Ver detalles de manufactura',
       lote: skuString

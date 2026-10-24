@@ -3,7 +3,7 @@ import {
   X, Check, ShoppingBag, MessageCircle, Share2, Clock, Ruler,
   ShieldCheck, Sparkles, ChevronLeft, ChevronRight, Maximize2,
   Package, Eye, Layers, Calculator, Calendar, AlertTriangle, Truck, MapPin,
-  Gamepad2, Gift, Trophy, Star, ArrowRight, FileText, ZoomIn, Crown
+  Gamepad2, Gift, Trophy, Star, ArrowRight, FileText, ZoomIn, Crown, Ticket, Repeat, Coins, Zap
 } from 'lucide-react';
 import TemuUrgencyModule from './TemuUrgencyModule';
 import WorkshopArcadeModal from './WorkshopArcadeModal';
@@ -123,8 +123,8 @@ export default function ProductDetailModal({
 
   const activeImage = gallery[activeIdx] || product.primaryImage;
   const currentMeta = galleryMeta[activeIdx] || {
-    label: `📸 ${activeIdx + 1}. Fotografía adicional`,
-    shortLabel: `📸 Foto ${activeIdx + 1}`,
+    label: `${activeIdx + 1}. Fotografía adicional`,
+    shortLabel: `Foto ${activeIdx + 1}`,
     type: 'detail'
   };
 
@@ -244,7 +244,7 @@ export default function ProductDetailModal({
         customText,
         activeTier ? `Nivel seleccionado: ${activeTier.name}` : null,
         isFlashDeal ? `Precio especial ${productTime?.durationLabel || 'Oferta Flash'}: $${effectivePrice} MXN` : null,
-        couponToUse ? `🎟️ Cupón de Descuento Arcade aplicado: [${couponToUse}]` : null
+        couponToUse ? `Cupón de Descuento Arcade aplicado: [${couponToUse}]` : null
       ].filter(Boolean).join(' | ')
     });
   };
@@ -482,7 +482,8 @@ export default function ProductDetailModal({
                     </span>
                   </div>
                   <p className="text-[10.5px] sm:text-[11.5px] text-[#2D4F3E] font-bold italic tracking-tight mt-0.5 flex items-center gap-1">
-                    <span>✨ Si lo piensas, se hace</span>
+                    <Sparkles className="w-3 h-3 text-[#D4A359] inline" />
+                    <span>Si lo piensas, se hace</span>
                     <span className="text-gray-400 font-normal not-italic text-[10px] hidden sm:inline">· Taller de Fabricación Artesano</span>
                   </p>
                 </div>
@@ -498,7 +499,8 @@ export default function ProductDetailModal({
                   <div className="text-[10px] uppercase font-bold text-gray-500 tracking-wider flex items-center gap-2">
                     {isFlashDeal ? (
                       <span className="px-2.5 py-0.5 rounded-full bg-[#9E472A] text-white text-[10px] font-black flex items-center gap-1 animate-pulse">
-                        ⚡ PRECIO {productTime?.durationLabel || 'FLASH'}
+                        <Zap className="w-3 h-3 text-white inline" />
+                        <span>PRECIO {productTime?.durationLabel || 'FLASH'}</span>
                       </span>
                     ) : (
                       <span>{product.priceType === 'quote' ? 'Modalidad' : product.priceType === 'starting_at' ? 'Precio base desde' : 'Precio del paquete'}</span>
@@ -591,7 +593,7 @@ export default function ProductDetailModal({
                                 ? 'bg-amber-700 text-white shadow-2xs'
                                 : 'bg-stone-200 text-stone-700'
                             }`}>
-                              {isPro ? '★ Más Conveniente' : isMaestra ? '⭐ Todo Incluido' : 'Kit Base'}
+                              {isPro ? 'Más Conveniente' : isMaestra ? 'Todo Incluido' : 'Kit Base'}
                             </span>
 
                             {priceDiff > 0 && (
@@ -878,7 +880,7 @@ export default function ProductDetailModal({
                       <div className="pt-2 border-t border-gray-200/80 space-y-2">
                         <div className="flex items-center justify-between text-[11px] text-gray-700 font-semibold">
                           <span className="flex items-center gap-1.5 text-[#1F2421]">
-                            <span>🎨 Tonos oscuros de taller y acabados especiales:</span>
+                            <span>Tonos oscuros de taller y acabados especiales:</span>
                             <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-900 font-black">
                               {ALL_WORKSHOP_COLORS.length} colores
                             </span>
@@ -906,7 +908,7 @@ export default function ProductDetailModal({
                                   : 'text-gray-500 hover:text-gray-800'
                               }`}
                             >
-                              🌟 Todos ({ALL_WORKSHOP_COLORS.length})
+                              Todos ({ALL_WORKSHOP_COLORS.length})
                             </button>
                             {WORKSHOP_COLOR_PALETTES.map(group => (
                               <button
@@ -991,7 +993,7 @@ export default function ProductDetailModal({
               ) : (
                 <div className="p-3.5 rounded-xl bg-[#FAF7F0] border border-[#E8E4DA] flex items-start gap-3 text-xs text-gray-600 select-none shadow-2xs">
                   <span className="w-5 h-5 rounded-full bg-amber-100 text-[#9E472A] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
-                    ⚡
+                    <Zap className="w-3 h-3 text-[#9E472A]" />
                   </span>
                   <div>
                     <span className="font-bold text-[#1F2421] block">
@@ -1053,16 +1055,16 @@ export default function ProductDetailModal({
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5 text-xs font-black text-[#9E472A]">
                     <span className="w-2 h-2 rounded-full bg-[#9E472A] animate-ping"></span>
-                    <span>⚡ LOTE CON PRECIO PREFERENCIAL</span>
+                    <span>LOTE CON PRECIO PREFERENCIAL</span>
                   </div>
                   <span className="text-[11px] font-bold text-[#8C3B1E] bg-[#EFE6D5] px-2 py-0.5 rounded-full">
-                    🔥 Solo quedan {((product.id.charCodeAt(0) * 3) % 4) + 2} disponibles
+                    Solo quedan {((product.id.charCodeAt(0) * 3) % 4) + 2} disponibles
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between text-[11px] text-gray-600">
                   <span>88% de la capacidad de producción asignada</span>
-                  <span className="font-bold text-[#1F2421]">👁️ 4 personas viendo ahora</span>
+                  <span className="font-bold text-[#1F2421]">4 personas viendo ahora</span>
                 </div>
 
                 <div className="w-full bg-[#EFE6D5] rounded-full h-1.5 overflow-hidden">
@@ -1078,7 +1080,7 @@ export default function ProductDetailModal({
                 <div className="p-3 rounded-xl bg-amber-50 border border-amber-300 text-amber-950 text-xs space-y-1 shadow-2xs">
                   <div className="font-bold flex items-center gap-1.5 text-amber-900">
                     <Calendar className="w-4 h-4 text-amber-700 shrink-0" />
-                    <span>⏸️ Taller en receso hasta el {formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'próximo aviso'}</span>
+                    <span>Taller en receso hasta el {formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'próximo aviso'}</span>
                   </div>
                   <p className="text-[11px] text-amber-800 leading-relaxed">
                     {settings.serviceStatus.pausedCustomMessage || 'Reanudamos servicio en esa fecha. Puedes cotizar tu pieza hoy mismo y quedará agendada con prioridad.'}
@@ -1091,10 +1093,10 @@ export default function ProductDetailModal({
                   <AlertTriangle className="w-3.5 h-3.5 text-amber-700 shrink-0" />
                   <span>
                     {settings.serviceStatus.localService && !settings.serviceStatus.nationalService
-                      ? '📍 Servicio activo solo para entregas locales y taller en SLP. Envíos nacionales en pausa.'
+                      ? 'Servicio activo solo para entregas locales y taller en SLP. Envíos nacionales en pausa.'
                       : !settings.serviceStatus.localService && settings.serviceStatus.nationalService
-                      ? '📦 Envíos nacionales activos a toda la República. Entregas locales temporalmente no disponibles.'
-                      : '⏸️ Entregas en pausa temporalmente.'}
+                      ? 'Envíos nacionales activos a toda la República. Entregas locales temporalmente no disponibles.'
+                      : 'Entregas en pausa temporalmente.'}
                   </span>
                 </div>
               )}
@@ -1133,7 +1135,7 @@ export default function ProductDetailModal({
                 <div className="p-3 rounded-2xl bg-[#FAF9F5] border border-[#E8E4DA] space-y-2 text-xs">
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
-                      <span className="text-base">🕹️</span>
+                      <Gamepad2 className="w-4 h-4 text-amber-700 shrink-0" />
                       <div>
                         <span className="font-bold text-[#1F2421] block leading-none">
                           Mini-Juegos de Taller
@@ -1145,14 +1147,16 @@ export default function ProductDetailModal({
                     </div>
 
                     <div className="flex items-center gap-1.5 shrink-0">
-                      <span className="px-2 py-0.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10.5px] font-mono font-bold" title="Fichas de juego disponibles">
-                        🎮 {arcadeCredits}/5
+                      <span className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10.5px] font-mono font-bold" title="Fichas de juego disponibles">
+                        <Gamepad2 className="w-3 h-3 text-emerald-700" />
+                        <span>{arcadeCredits}/5</span>
                         {arcadeCredits < 5 && (
                           <span className="font-normal ml-0.5 text-[9.5px]">({refillTimeFormatted})</span>
                         )}
                       </span>
-                      <span className="px-2 py-0.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-[10.5px] font-mono font-bold" title="Monedas ganadas">
-                        🪙 {arcadeCoins}
+                      <span className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-[10.5px] font-mono font-bold" title="Puntos ganados">
+                        <Coins className="w-3 h-3 text-amber-700" />
+                        <span>{arcadeCoins}</span>
                       </span>
                     </div>
                   </div>
@@ -1160,7 +1164,10 @@ export default function ProductDetailModal({
                   {/* Cupón activo si ya lo canjeó */}
                   {activeCoupon && (
                     <div className="px-2.5 py-1 rounded-xl bg-emerald-100/70 border border-emerald-300 text-[10.5px] text-emerald-900 font-bold flex items-center justify-between">
-                      <span>🎟️ Cupón aplicado: <strong>{activeCoupon}</strong></span>
+                      <span className="flex items-center gap-1">
+                        <Gift className="w-3.5 h-3.5 text-emerald-700" />
+                        <span>Cupón aplicado: <strong>{activeCoupon}</strong></span>
+                      </span>
                       <span className="text-[10px] text-emerald-700 font-normal">Se enviará en tu pedido</span>
                     </div>
                   )}
@@ -1171,10 +1178,10 @@ export default function ProductDetailModal({
                       <button
                         type="button"
                         onClick={() => exchangeCoinsForCredits(2, 1)}
-                        className="py-1.5 px-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 text-[11px] font-bold transition-all cursor-pointer border border-amber-300 shrink-0"
-                        title="Canjear 2 monedas por 1 ficha al instante"
+                        className="py-1.5 px-2.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 text-[11px] font-bold transition-all cursor-pointer border border-amber-300 shrink-0 flex items-center gap-1"
+                        title="Canjear 2 puntos por 1 ficha al instante"
                       >
-                        🔄 2🪙 por 1🎮
+                        <Repeat className="w-3 h-3 text-amber-800" /> Canjear 2 pts por 1 ficha
                       </button>
                     )}
 

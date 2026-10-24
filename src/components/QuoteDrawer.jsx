@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
   X, Trash2, MessageCircle, Copy, Check, ShoppingBag, ArrowRight,
-  Info, Calendar, MapPin, User, Truck, AlertTriangle, Zap, Tag, Sparkles, RotateCcw
+  Info, Calendar, MapPin, User, Truck, AlertTriangle, Zap, Tag, Sparkles, RotateCcw,
+  Paintbrush, FileText, Gift, Ticket, Coins
 } from 'lucide-react';
 import { formatServiceDate } from '../utils/serviceStatus';
 import { findCoupon, calculateCouponDiscount, getCouponCategory, getCouponCategoryLabel, isCouponExpired } from '../utils/couponsHelper';
@@ -92,7 +93,7 @@ export default function QuoteDrawer({
     const newCoin = {
       id: Date.now() + Math.random(),
       x: Math.max(20, Math.min(rect.width - 20, clickX)),
-      text: '+🪙'
+      text: '+1'
     };
     setFloatingCoins(prev => [...prev, newCoin]);
     setTimeout(() => {
@@ -193,19 +194,19 @@ export default function QuoteDrawer({
     const baseUrl = typeof window !== 'undefined' && window.location.origin ? window.location.origin : 'https://artesanodigital.mx';
 
     let msg = isDirect
-      ? `*⚡ PEDIDO DIRECTO INMEDIATO — ARTESANO DIGITAL*\n`
+      ? `*PEDIDO DIRECTO INMEDIATO — ARTESANO DIGITAL*\n`
       : `*SOLICITUD DE COTIZACIÓN — ARTESANO DIGITAL*\n`;
 
     msg += `--------------------------------------\n`;
 
     if (customerName.trim()) {
-      msg += `👤 *Cliente:* ${customerName.trim()}\n`;
+      msg += `• *Cliente:* ${customerName.trim()}\n`;
     }
     if (cityZip.trim()) {
-      msg += `📍 *Ciudad / C.P. para entrega:* ${cityZip.trim()}\n`;
+      msg += `• *Ciudad / C.P. para entrega:* ${cityZip.trim()}\n`;
     }
     if (campaignRef.trim()) {
-      msg += `🏷️ *Referencia:* ${campaignRef.trim()}\n`;
+      msg += `• *Referencia:* ${campaignRef.trim()}\n`;
     }
 
     msg += `--------------------------------------\n`;
@@ -239,7 +240,7 @@ export default function QuoteDrawer({
       }
 
       // Enlace directo a la pieza en tienda
-      msg += `   🔗 *Ver pieza:* ${prodUrl}\n`;
+      msg += `   • *Ver pieza:* ${prodUrl}\n`;
 
       // Enlace al modelo 3D en MakerWorld si es pieza 3D
       const is3D = p.techniques?.some(t => t === '3d' || t === 'impresion_3d' || t === '3d_printing') ||
@@ -247,37 +248,37 @@ export default function QuoteDrawer({
                    (p.categories && p.categories.some(c => c.includes('3d') || c.includes('gamer') || c.includes('escritorio')));
       if (is3D) {
         const makerUrl = p.makerWorldUrl || `https://makerworld.com/en/search/models?keyword=${encodeURIComponent(p.name.replace(/[^a-zA-Z0-9 ]/g, ''))}`;
-        msg += `   🖨️ *Modelo 3D MakerWorld:* ${makerUrl}\n`;
+        msg += `   • *Modelo 3D MakerWorld:* ${makerUrl}\n`;
       }
 
       msg += `\n`;
     });
 
     msg += `--------------------------------------\n`;
-    msg += `💰 *Subtotal de productos:* $${subtotal} MXN\n`;
+    msg += `*Subtotal de productos:* $${subtotal} MXN\n`;
 
     if (appliedCouponCode && discountAmount > 0) {
-      const categoryLabel = activeCouponObj ? getCouponCategoryLabel(activeCouponObj) : '🏷️ Código Especial de Tienda';
+      const categoryLabel = activeCouponObj ? getCouponCategoryLabel(activeCouponObj) : 'Código Especial de Tienda';
       const benefitLabel = activeCouponObj?.label || activeCouponObj?.name || 'Descuento especial';
-      msg += `🎟️ *CUPÓN APLICADO:* ${appliedCouponCode}\n`;
+      msg += `*CUPÓN APLICADO:* ${appliedCouponCode}\n`;
       msg += `   • *Tipo:* ${categoryLabel}\n`;
       msg += `   • *Beneficio:* ${benefitLabel}\n`;
       msg += `   • *Ahorro otorgado:* -$${discountAmount} MXN\n`;
-      msg += `✨ *TOTAL FINAL CON CUPÓN:* $${finalTotal} MXN\n`;
+      msg += `*TOTAL FINAL CON CUPÓN:* $${finalTotal} MXN\n`;
     } else {
-      msg += `✨ *Total a pagar:* $${subtotal} MXN\n`;
+      msg += `*Total a pagar:* $${subtotal} MXN\n`;
     }
 
     if (hasPendingQuotes) {
-      msg += `⚠️ *(Piezas sin precio fijo se confirmarán en este chat)*\n`;
+      msg += `*(Piezas sin precio fijo se confirmarán en este chat)*\n`;
     }
 
     if (deliveryNotes.trim()) {
-      msg += `\n📝 *Notas:* ${deliveryNotes.trim()}\n`;
+      msg += `\n*Notas de entrega:* ${deliveryNotes.trim()}\n`;
     }
 
     if (isDirect) {
-      msg += `\n_⚡ Modalidad: Compra directa rápida. Solicito cuenta para transferencia/pago y fecha de entrega._`;
+      msg += `\n_Modalidad: Compra directa rápida. Solicito cuenta para transferencia/pago y fecha de entrega._`;
     } else {
       msg += `\n_Solicito cotización detallada con tiempos de elaboración._`;
     }
@@ -398,7 +399,7 @@ export default function QuoteDrawer({
                 }`}
               >
                 <Zap className="w-3.5 h-3.5 text-amber-500" />
-                <span>⚡ Compra Directa (Rápido)</span>
+                <span>Compra Directa (Rápido)</span>
               </button>
 
               <button
@@ -410,7 +411,8 @@ export default function QuoteDrawer({
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
-                <span>🎨 Cotizar con Grabado</span>
+                <Paintbrush className="w-3.5 h-3.5 text-[#2D4F3E]" />
+                <span>Cotizar con Grabado</span>
               </button>
             </div>
           </div>
@@ -445,7 +447,8 @@ export default function QuoteDrawer({
                     className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#FAF9F5] text-[#2D4F3E] border border-[#2D4F3E]/20 text-xs font-bold hover:bg-[#2D4F3E]/10 cursor-pointer transition-all"
                     title={settings?.mobileCatalogConfig?.title || 'Descargar catálogo 9:16 para celular con enlaces MakerWorld'}
                   >
-                    <span>{settings?.mobileCatalogConfig?.buttonText || '📱 Catálogo PDF Móvil'}</span>
+                    <FileText className="w-3.5 h-3.5 text-[#2D4F3E]" />
+                    <span>{settings?.mobileCatalogConfig?.buttonText || 'Catálogo PDF Móvil'}</span>
                   </a>
                 )}
               </div>
@@ -457,7 +460,7 @@ export default function QuoteDrawer({
                 <div className="p-3 rounded-xl bg-amber-50 border border-amber-300 text-amber-950 text-xs space-y-1">
                   <div className="font-bold flex items-center gap-1.5 text-amber-900">
                     <Calendar className="w-4 h-4 text-amber-700 shrink-0" />
-                    <span>⏸️ Taller en receso hasta el {formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'próximo aviso'}</span>
+                    <span>Taller en receso hasta el {formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'próximo aviso'}</span>
                   </div>
                   <p className="text-[11px] text-amber-800 leading-relaxed">
                     Puedes confirmar tu pedido hoy y quedará programado con prioridad de entrega al reanudar.
@@ -617,7 +620,7 @@ export default function QuoteDrawer({
                     className="w-full flex items-center justify-between p-2.5 rounded-xl bg-gradient-to-r from-amber-50 via-rose-50 to-amber-50 border border-amber-300/80 hover:border-amber-400 text-xs text-amber-900 font-bold transition-all cursor-pointer shadow-2xs group"
                   >
                     <span className="flex items-center gap-1.5">
-                      <span className="text-base group-hover:rotate-12 transition-transform">🎁</span>
+                      <Gift className="w-4 h-4 text-amber-700 group-hover:rotate-12 transition-transform" />
                       <span>¿Quieres cupones? Canjea monedas en Arcade</span>
                     </span>
                     <span className="text-[11px] text-amber-700 underline font-semibold">
@@ -633,10 +636,10 @@ export default function QuoteDrawer({
                     {isJustApplied && (
                       <div className="p-2 rounded-xl bg-gradient-to-r from-emerald-600 to-[#2D4F3E] text-white text-[11px] font-bold flex items-center justify-between shadow-md animate-bounce">
                         <span className="flex items-center gap-1.5">
-                          <span>🎉</span>
+                          <Check className="w-3.5 h-3.5 text-white" />
                           <span>¡Cupón agregado al carrito de compras con éxito!</span>
                         </span>
-                        <span className="text-xs">✨</span>
+                        <Sparkles className="w-3.5 h-3.5 text-white" />
                       </div>
                     )}
 
@@ -658,14 +661,14 @@ export default function QuoteDrawer({
                           style={{ left: `${coin.x}px`, top: '8px' }}
                           className="absolute pointer-events-none animate-mario-coin z-30 font-black text-amber-500 text-sm drop-shadow-md select-none flex items-center gap-0.5"
                         >
-                          <span>🪙</span>
+                          <Coins className="w-3.5 h-3.5 text-amber-600" />
                           <span className="text-xs text-amber-600 font-black">+¡Ting!</span>
                         </div>
                       ))}
 
                       <div className="flex items-center gap-2.5 min-w-0 relative z-10">
-                        <div className="w-9 h-9 rounded-xl bg-emerald-100 border border-emerald-300 flex items-center justify-center text-lg shrink-0 group-hover:scale-110 transition-transform shadow-xs">
-                          🎟️
+                        <div className="w-9 h-9 rounded-xl bg-emerald-100 border border-emerald-300 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform shadow-xs">
+                          <Ticket className="w-4 h-4 text-emerald-800" />
                         </div>
                         <div className="min-w-0">
                           <div className="flex items-center gap-1.5 flex-wrap">
@@ -681,18 +684,18 @@ export default function QuoteDrawer({
                                 ? 'bg-purple-100 text-purple-900 border-purple-300'
                                 : 'bg-blue-100 text-blue-900 border-blue-300'
                             }`}>
-                              {activeCouponObj && getCouponCategory(activeCouponObj) === 'arcade' ? '🎮 Monedas Arcade' : '🏷️ Cupón de Tienda'}
+                              {activeCouponObj && getCouponCategory(activeCouponObj) === 'arcade' ? 'Descuento Arcade' : 'Cupón de Tienda'}
                             </span>
                             <span className="text-[10px] font-bold text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-200">
-                              🪙 ¡Tócame!
+                              Interactivo
                             </span>
                           </div>
                           <p className="text-[11px] text-emerald-900 font-medium truncate mt-0.5">
                             {activeCouponObj?.label || activeCouponObj?.name || 'Descuento aplicado'} · Ahorro: <strong className="text-emerald-700">-${discountAmount} MXN</strong>
                           </p>
                           {activeCouponObj?.expiresAt && (
-                            <p className="text-[10px] text-gray-500 font-medium mt-0.5">
-                              📅 Válido hasta: {new Date(activeCouponObj.expiresAt).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' })}
+                            <p className="text-[10px] text-gray-500 font-medium mt-0.5 flex items-center gap-1">
+                              <Calendar className="w-3 h-3 text-gray-400 inline" /> Válido hasta: {new Date(activeCouponObj.expiresAt).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' })}
                             </p>
                           )}
                         </div>
@@ -715,7 +718,7 @@ export default function QuoteDrawer({
                     {couponCalculation && !couponCalculation.isValid && (
                       <div className="mt-2 p-2 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-[11px] font-semibold flex items-center gap-1.5">
                         <AlertTriangle className="w-3.5 h-3.5 text-amber-700 shrink-0" />
-                        <span>⚠️ {couponCalculation.reason || 'Cupón en pausa: no alcanza el mínimo de compra'}</span>
+                        <span>{couponCalculation.reason || 'Cupón en pausa: no alcanza el mínimo de compra'}</span>
                       </div>
                     )}
                   </div>
@@ -751,14 +754,14 @@ export default function QuoteDrawer({
                     </div>
 
                     {couponError && (
-                      <p className="text-[11px] text-red-600 font-medium">
-                        ⚠️ {couponError}
+                      <p className="text-[11px] text-red-600 font-medium flex items-center gap-1">
+                        <AlertTriangle className="w-3 h-3 text-red-500 shrink-0" /> {couponError}
                       </p>
                     )}
 
                     {couponSuccessMsg && (
-                      <p className="text-[11px] text-emerald-700 font-bold">
-                        ✓ {couponSuccessMsg}
+                      <p className="text-[11px] text-emerald-700 font-bold flex items-center gap-1">
+                        <Check className="w-3 h-3 text-emerald-600 shrink-0" /> {couponSuccessMsg}
                       </p>
                     )}
                   </form>
@@ -860,8 +863,8 @@ export default function QuoteDrawer({
                 {checkoutMode === 'direct' ? <Zap className="w-5 h-5 fill-white" /> : <MessageCircle className="w-5 h-5" />}
                 <span>
                   {checkoutMode === 'direct'
-                    ? `⚡ Hacer Pedido Directo ($${finalTotal} MXN)`
-                    : '💬 Enviar Cotización por WhatsApp'}
+                    ? `Hacer Pedido Directo ($${finalTotal} MXN)`
+                    : 'Enviar Cotización por WhatsApp'}
                 </span>
               </button>
 
@@ -881,7 +884,7 @@ export default function QuoteDrawer({
                   className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-full bg-amber-50 text-amber-900 border border-amber-200 text-xs font-bold hover:bg-amber-100 active:scale-98 transition-all cursor-pointer text-center"
                   title={settings?.mobileCatalogConfig?.title || 'Descargar catálogo vertical 9:16 para celular con enlaces MakerWorld'}
                 >
-                  <span>📱</span>
+                  <FileText className="w-3.5 h-3.5 text-amber-900 shrink-0" />
                   <span>{settings?.mobileCatalogConfig?.buttonText ? `Descargar ${settings.mobileCatalogConfig.buttonText}` : 'Descargar Catálogo PDF Móvil (9:16)'}</span>
                 </a>
               )}

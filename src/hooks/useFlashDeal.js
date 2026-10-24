@@ -143,9 +143,9 @@ export function useFlashDeal(products = [], settings = null) {
       const durationMinutes = Math.round(durationSec / 60);
       let durationLabel;
       if (isOriginalBlitz) {
-        durationLabel = '⚡ FLASH 15M';
+        durationLabel = 'FLASH 15M';
       } else if (isUrgentLessThan15m) {
-        durationLabel = '⚡ ÚLTIMOS 15M';
+        durationLabel = 'ÚLTIMOS 15M';
       } else {
         durationLabel = durationMinutes < 60 ? `FLASH ${durationMinutes}M` : `FLASH ${durationHours}H`;
       }
@@ -290,9 +290,9 @@ export function useFlashDeal(products = [], settings = null) {
         const durationMinutes = Math.round(cycleDuration / 60);
         let durationLabel;
         if (isOriginalBlitz) {
-          durationLabel = '⚡ FLASH 15M';
+          durationLabel = 'FLASH 15M';
         } else if (isUrgentLessThan15m) {
-          durationLabel = '⚡ ÚLTIMOS 15M';
+          durationLabel = 'ÚLTIMOS 15M';
         } else {
           durationLabel = durationMinutes < 60 ? `FLASH ${durationMinutes}M` : `FLASH ${durationHours}H`;
         }
