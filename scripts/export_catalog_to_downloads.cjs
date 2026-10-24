@@ -108,8 +108,11 @@ function getProductTargetFolder(p) {
   if (code === 'CUST-FUNKO-FAMILIA') {
     return path.join(categoryMap.personalizados, '05_Funko_Familia');
   }
-  if (code === 'CUST-DIBUJO') {
+  if (code === 'CUST-DIBUJO' || code === 'CUST-DIBUJO-NINO') {
     return path.join(categoryMap.personalizados, '06_De_Dibujo_Infantil_a_Figura_3D');
+  }
+  if (code === 'CUST-DIBUJO-NINA') {
+    return path.join(categoryMap.personalizados, '06_De_Dibujo_Infantil_a_Figura_3D', 'fijura niña');
   }
   if (code === 'CUST-FUNKO-ABUELITOS') {
     return path.join(categoryMap.personalizados, 'abuelitos');
@@ -406,7 +409,7 @@ for (const p of db.products) {
   fs.writeFileSync(path.join(prodFolder, 'DETALLES_Y_TIEMPOS.txt'), '\uFEFF' + noteLines.join('\r\n'), 'utf8');
 
   // Si es CUST-DIBUJO, sincronizar también la carpeta en 'juguetes' para tener ficha técnica y 4 vistas completas
-  if (p.code === 'CUST-DIBUJO') {
+  if (p.code === 'CUST-DIBUJO' || p.code === 'CUST-DIBUJO-NINO') {
     const juguetesDibujoFolder = path.join(categoryMap.juguetes, 'CUST-DIBUJO_De_Dibujo_a_Figura_3D_Real_(El_Arte_de_tus_Pequenos_en_Volum');
     if (!fs.existsSync(juguetesDibujoFolder)) {
       fs.mkdirSync(juguetesDibujoFolder, { recursive: true });
