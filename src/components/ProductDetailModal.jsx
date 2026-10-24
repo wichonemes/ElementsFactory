@@ -332,9 +332,13 @@ export default function ProductDetailModal({
                   onClick={() => setIsZoomed(!isZoomed)}
                 />
 
-                {/* Marca de Agua Sutil de Taller para Protección de Imagen */}
-                <div className="absolute bottom-3 right-3 z-10 flex items-center gap-1 px-2 py-0.5 rounded-lg bg-stone-900/40 backdrop-blur-xs text-[9px] font-medium text-white/85 pointer-events-none select-none tracking-wide border border-white/10 shadow-xs">
-                  <span className="text-[#D4A359]">✦</span>
+                {/* Marca de Agua Sutil de Taller para Protección de Imagen con Logotipo Oficial */}
+                <div className="absolute bottom-3 right-3 z-10 flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-stone-900/40 backdrop-blur-xs text-[9px] font-medium text-white/85 pointer-events-none select-none tracking-wide border border-white/10 shadow-xs">
+                  <img
+                    src="/brand/artesano_isotipo_transparente.png"
+                    alt=""
+                    className="w-3 h-3 object-contain shrink-0"
+                  />
                   <span>Artesano Digital</span>
                 </div>
 

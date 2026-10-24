@@ -419,11 +419,17 @@ export default function CustomProductsSection({
               >
                 {/* Parte Superior: Imagen de Muestra + Galería de 4 Vistas */}
                 <div>
-                  <div className="relative aspect-[4/3] bg-[#101215] overflow-hidden group">
+                  <div
+                    className="relative aspect-[4/3] bg-[#101215] overflow-hidden group select-none"
+                    onContextMenu={(e) => e.preventDefault()}
+                  >
                     <img
                       src={currentImage}
                       alt={prod.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 cursor-pointer"
+                      draggable={false}
+                      onDragStart={(e) => e.preventDefault()}
+                      onContextMenu={(e) => e.preventDefault()}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 cursor-pointer pointer-events-none select-none"
                       onClick={() => setLightboxImage({ url: currentImage, title: prod.title })}
                       onError={(e) => {
                         e.currentTarget.src = '/brand/og_artesano_preview.jpg';
@@ -439,6 +445,16 @@ export default function CustomProductsSection({
                     >
                       <ZoomIn className="w-4 h-4" />
                     </button>
+
+                    {/* Marca de Agua Sutil con Logo Oficial */}
+                    <div className="absolute top-3.5 right-12 z-10 flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-stone-900/60 backdrop-blur-xs text-[8.5px] font-medium text-white/80 pointer-events-none select-none tracking-wide border border-white/10 shadow-xs">
+                      <img
+                        src="/brand/artesano_isotipo_transparente.png"
+                        alt=""
+                        className="w-2.5 h-2.5 object-contain shrink-0"
+                      />
+                      <span>Artesano Digital</span>
+                    </div>
 
                     {/* Badge de Categoría */}
                     <div className="absolute top-3 left-3 pointer-events-none">
@@ -660,13 +676,27 @@ export default function CustomProductsSection({
               </button>
             </div>
 
-            {/* Imagen en gran formato */}
-            <div className="p-2 sm:p-4 flex items-center justify-center bg-black/95 max-h-[75vh] overflow-auto">
+            {/* Imagen en gran formato con protección y marca de agua */}
+            <div
+              className="relative p-2 sm:p-4 flex items-center justify-center bg-black/95 max-h-[75vh] overflow-auto select-none"
+              onContextMenu={(e) => e.preventDefault()}
+            >
               <img
                 src={lightboxImage.url}
                 alt={lightboxImage.title}
-                className="w-full h-auto max-h-[70vh] object-contain rounded-xl"
+                draggable={false}
+                onDragStart={(e) => e.preventDefault()}
+                onContextMenu={(e) => e.preventDefault()}
+                className="w-full h-auto max-h-[70vh] object-contain rounded-xl pointer-events-none select-none"
               />
+              <div className="absolute bottom-4 right-4 z-10 flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-stone-900/60 backdrop-blur-xs text-[9px] font-medium text-white/90 pointer-events-none select-none tracking-wide border border-white/10 shadow-xs">
+                <img
+                  src="/brand/artesano_isotipo_transparente.png"
+                  alt=""
+                  className="w-3 h-3 object-contain shrink-0"
+                />
+                <span>Artesano Digital</span>
+              </div>
             </div>
 
             {/* Footer con Acción */}

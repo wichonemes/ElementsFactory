@@ -1257,13 +1257,17 @@ export default function PackagesAndServicesView({
         {/* FOTO GRANDE DEL PRODUCTO — PROTAGONISTA INDISCUTIBLE */}
         <div
           onClick={() => onSelectProduct(promo)}
-          className="relative w-full aspect-[4/3] bg-[#FAF8F5] overflow-hidden cursor-pointer group/thumb"
+          onContextMenu={(e) => e.preventDefault()}
+          className="relative w-full aspect-[4/3] bg-[#FAF8F5] overflow-hidden cursor-pointer group/thumb select-none"
           title="Clic para ver fotos en alta resolución del paquete"
         >
           <img
             src={promo.primaryImage || promo.gallery?.[0] || promo.whiteBgImage}
             alt={promo.name}
-            className="w-full h-full object-cover group-hover/thumb:scale-104 transition-transform duration-500"
+            draggable={false}
+            onDragStart={(e) => e.preventDefault()}
+            onContextMenu={(e) => e.preventDefault()}
+            className="w-full h-full object-cover group-hover/thumb:scale-104 transition-transform duration-500 pointer-events-none select-none"
           />
           <div className="absolute inset-0 bg-black/0 group-hover/thumb:bg-black/15 transition-colors flex items-center justify-center">
             <Layers className="w-6 h-6 text-white opacity-0 group-hover/thumb:opacity-100 transition-opacity drop-shadow-md" />
@@ -1282,6 +1286,16 @@ export default function PackagesAndServicesView({
             <span className="px-2.5 py-1 rounded-full text-[10.5px] font-black bg-[#2D4F3E] text-white shadow-xs">
               Ahorro ${totalSavings} (-{totalDiscountPercent}%)
             </span>
+          </div>
+
+          {/* Marca de Agua Sutil de Taller para Protección de Imagen con Logotipo Oficial */}
+          <div className="absolute bottom-3 right-3 z-10 flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-stone-900/40 backdrop-blur-xs text-[8.5px] font-medium text-white/80 pointer-events-none select-none tracking-wide border border-white/10 shadow-xs">
+            <img
+              src="/brand/artesano_isotipo_transparente.png"
+              alt=""
+              className="w-2.5 h-2.5 object-contain shrink-0"
+            />
+            <span>Artesano Digital</span>
           </div>
 
           {/* Estrella si es el Destacado del Mes */}
