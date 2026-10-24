@@ -27,7 +27,7 @@ export default function MobileMercadoLibreHeader({
     { id: 'juguetes', label: 'Juguetes' },
     { id: 'industria', label: 'Industria' },
     { id: 'paquetes-servicios', label: 'Paquetes' },
-    { id: 'publicidad-desarrollo', label: '🎨 Publicidad & Web' }
+    { id: 'publicidad-desarrollo', label: 'Publicidad & Web' }
   ];
 
   return (

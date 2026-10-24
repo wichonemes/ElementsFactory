@@ -358,26 +358,24 @@ ${quoteNotes.trim() ? `💡 *Mi idea:* ${quoteNotes.trim()}\n` : ''}¿Podemos pl
             <button
               type="button"
               onClick={() => setActiveTab('servicios')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'servicios'
                   ? 'bg-[#17251E] text-white shadow-sm'
                   : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
               }`}
             >
-              <Briefcase className="w-3.5 h-3.5" />
               <span>Servicios &amp; Especialidades</span>
             </button>
 
             <button
               type="button"
               onClick={() => handleOpenCotizador(quoteService)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'cotizador'
                   ? 'bg-[#D4A359] text-[#17251E] shadow-sm'
                   : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
               }`}
             >
-              <Sliders className="w-3.5 h-3.5" />
               <span>Cotizador Inmediato</span>
             </button>
           </div>

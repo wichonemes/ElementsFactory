@@ -1659,11 +1659,11 @@ export default function PackagesAndServicesView({
         {/* Chips de Categorías Rápidas Deslizables en Móvil */}
         <div className="flex items-center gap-2 mt-3 overflow-x-auto scrollbar-none pb-1 select-none">
           {[
-            { id: 'all', label: '✨ Todos los Paquetes', count: allBundles.length },
-            { id: 'servicios', label: '🧵 Patch Bar en Vivo', count: 1, highlight: true },
-            { id: 'hogar', label: '🏠 Hogar', count: hogarBundles.length },
-            { id: 'negocios', label: '💼 Negocios', count: negociosBundles.length },
-            { id: 'eventos', label: '🎉 Eventos', count: eventosBundles.length }
+            { id: 'all', label: 'Todos los Paquetes', count: allBundles.length },
+            { id: 'servicios', label: 'Patch Bar en Vivo', count: 1, highlight: true },
+            { id: 'hogar', label: 'Hogar', count: hogarBundles.length },
+            { id: 'negocios', label: 'Negocios', count: negociosBundles.length },
+            { id: 'eventos', label: 'Eventos', count: eventosBundles.length }
           ].map(tab => {
             const isSelected = activeAreaFilter === tab.id;
             return (

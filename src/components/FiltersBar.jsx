@@ -91,7 +91,7 @@ export default function FiltersBar({
                   }`}
                   title="Ver paquetes y promociones con descuento"
                 >
-                  <span>🎁 Paquetes y Promociones</span>
+                  <span>Paquetes y Promociones</span>
                   {promosCount > 0 && (
                     <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${viewMode === 'promotions' ? 'bg-white text-[#D82B6E]' : 'bg-[#D82B6E] text-white'}`}>
                       {promosCount}

@@ -148,7 +148,6 @@ export default function Navbar({
                         : 'text-[#9E472A] hover:bg-[#FAF7F0] font-bold'
                     }`}
                   >
-                    {isHighlight && <Sparkles className="w-3.5 h-3.5 text-[#e8b84f]" />}
                     <span>{w.label}</span>
                   </button>
                 );

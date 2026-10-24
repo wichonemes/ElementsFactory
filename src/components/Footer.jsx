@@ -62,7 +62,6 @@ export default function Footer({ onSelectWorld, onOpenAdmin, settings }) {
                   onClick={() => onSelectWorld('paquetes-servicios')}
                   className="hover:text-emerald-400 transition-colors text-left flex items-center gap-1 text-[#E5C378] font-bold"
                 >
-                  <span>🎁</span>
                   <span>Paquetes &amp; Servicios</span>
                 </button>
               </li>
@@ -71,7 +70,6 @@ export default function Footer({ onSelectWorld, onOpenAdmin, settings }) {
                   onClick={() => onSelectWorld('publicidad-desarrollo')}
                   className="hover:text-amber-300 transition-colors text-left flex items-center gap-1 text-[#e8b84f] font-bold"
                 >
-                  <span>🎨</span>
                   <span>Publicidad &amp; Desarrollo Digital</span>
                 </button>
               </li>
