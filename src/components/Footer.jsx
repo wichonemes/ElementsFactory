@@ -68,6 +68,15 @@ export default function Footer({ onSelectWorld, onOpenAdmin, settings }) {
               </li>
               <li>
                 <button
+                  onClick={() => onSelectWorld('publicidad-desarrollo')}
+                  className="hover:text-amber-300 transition-colors text-left flex items-center gap-1 text-[#e8b84f] font-bold"
+                >
+                  <span>🎨</span>
+                  <span>Publicidad &amp; Desarrollo Digital</span>
+                </button>
+              </li>
+              <li>
+                <button
                   onClick={() => onSelectWorld('all')}
                   className="hover:text-emerald-400 transition-colors text-left"
                 >

@@ -22,8 +22,11 @@ export default function Navbar({
   const worlds = [
     { id: 'hogar', label: 'Hogar' },
     { id: 'negocios', label: 'Negocios' },
-    { id: 'eventos', label: 'Eventos Especiales' },
-    { id: 'paquetes-servicios', label: 'Paquetes y Servicios', isSpecial: true }
+    { id: 'eventos', label: 'Eventos' },
+    { id: 'juguetes', label: 'Juguetes' },
+    { id: 'industria', label: 'Industria' },
+    { id: 'paquetes-servicios', label: 'Paquetes', isSpecial: true },
+    { id: 'publicidad-desarrollo', label: 'Publicidad & Web', isSpecial: true, isHighlight: true }
   ];
 
   return (
@@ -130,16 +133,22 @@ export default function Navbar({
             {worlds.map(w => {
               const isActive = activeWorld === w.id;
               if (w.isSpecial) {
+                const isHighlight = w.id === 'publicidad-desarrollo';
                 return (
                   <button
                     key={w.id}
                     onClick={() => onSelectWorld(w.id)}
-                    className={`px-4 py-2 text-sm font-bold rounded-full transition-all duration-200 flex items-center gap-1.5 cursor-pointer ${
+                    className={`px-3 xl:px-4 py-2 text-xs xl:text-sm font-bold rounded-full transition-all duration-200 flex items-center gap-1.5 cursor-pointer ${
                       isActive
-                        ? 'bg-[#9E472A] text-white shadow-sm'
+                        ? isHighlight
+                          ? 'bg-[#121519] text-[#e8b84f] ring-1 ring-[#e8b84f]/60 shadow-sm'
+                          : 'bg-[#9E472A] text-white shadow-sm'
+                        : isHighlight
+                        ? 'text-[#121519] hover:bg-[#FAF7F0] font-bold border border-[#e8b84f]/40'
                         : 'text-[#9E472A] hover:bg-[#FAF7F0] font-bold'
                     }`}
                   >
+                    {isHighlight && <Sparkles className="w-3.5 h-3.5 text-[#e8b84f]" />}
                     <span>{w.label}</span>
                   </button>
                 );

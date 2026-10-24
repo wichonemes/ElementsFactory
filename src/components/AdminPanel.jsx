@@ -3547,6 +3547,8 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       hogar: getStats('hogar'),
       negocios: getStats('negocios'),
       eventos: getStats('eventos'),
+      juguetes: getStats('juguetes'),
+      industria: getStats('industria'),
       paquetes: getStats('paquetes')
     };
   }, [products]);
@@ -4558,13 +4560,15 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </span>
                     </div>
 
-                    {/* 5 Pestañas de Área con Indicadores de Stock */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
+                    {/* Pestañas de Área con Indicadores de Stock */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2">
                       {[
                         { id: 'all', label: 'Todas las Áreas', icon: '🌐', stats: stockAreaStats.all },
                         { id: 'hogar', label: 'Hogar & Decoración', icon: '🏠', stats: stockAreaStats.hogar },
                         { id: 'negocios', label: 'Negocios & Marca', icon: '💼', stats: stockAreaStats.negocios },
                         { id: 'eventos', label: 'Eventos Especiales', icon: '🎉', stats: stockAreaStats.eventos },
+                        { id: 'juguetes', label: 'Juguetes & Niños', icon: '🧸', stats: stockAreaStats.juguetes },
+                        { id: 'industria', label: 'Industria & Prototipado', icon: '⚙️', stats: stockAreaStats.industria },
                         { id: 'paquetes', label: 'Paquetes & Servicios', icon: '🎁', stats: stockAreaStats.paquetes }
                       ].map(area => {
                         const isSelected = filterWorld === area.id;
@@ -5842,6 +5846,8 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             { id: 'hogar', label: 'Hogar', icon: '🏠' },
                             { id: 'negocios', label: 'Negocios', icon: '💼' },
                             { id: 'eventos', label: 'Eventos', icon: '🎉' },
+                            { id: 'juguetes', label: 'Juguetes', icon: '🧸' },
+                            { id: 'industria', label: 'Industria', icon: '⚙️' },
                             { id: 'paquetes', label: 'Paquetes & Servicios', icon: '🎁' }
                           ].map(area => (
                             <button
@@ -6221,7 +6227,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           { id: 'all', label: 'Todas las áreas', icon: '🌐' },
                           { id: 'hogar', label: 'Hogar', icon: '🏠' },
                           { id: 'negocios', label: 'Negocios', icon: '💼' },
-                          { id: 'eventos', label: 'Eventos', icon: '🎉' }
+                          { id: 'eventos', label: 'Eventos', icon: '🎉' },
+                          { id: 'juguetes', label: 'Juguetes', icon: '🧸' },
+                          { id: 'industria', label: 'Industria', icon: '⚙️' }
                         ].map(area => (
                           <button
                             key={area.id}
@@ -6286,7 +6294,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                     <span className={`px-1.5 py-0.2 rounded text-[10px] font-semibold ${
                                       cat.worldId === 'hogar' ? 'bg-amber-100 text-amber-800' :
                                       cat.worldId === 'negocios' ? 'bg-blue-100 text-blue-800' :
-                                      'bg-purple-100 text-purple-800'
+                                      cat.worldId === 'eventos' ? 'bg-purple-100 text-purple-800' :
+                                      cat.worldId === 'juguetes' ? 'bg-pink-100 text-pink-800' :
+                                      cat.worldId === 'industria' ? 'bg-slate-200 text-slate-800' :
+                                      'bg-gray-100 text-gray-800'
                                     }`}>
                                       {cat.worldId}
                                     </span>
@@ -7392,15 +7403,17 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           <span>Áreas del Catálogo donde se exhibirá *</span>
                         </label>
                         <span className="text-[10.5px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.2 rounded-full">
-                          {(editorForm.worlds?.length || 0)} de 4 áreas activadas
+                          {(editorForm.worlds?.length || 0)} de 6 áreas activadas
                         </span>
                       </div>
 
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
                         {[
                           { id: 'hogar', label: 'Hogar', icon: '🏠' },
                           { id: 'negocios', label: 'Negocios', icon: '💼' },
                           { id: 'eventos', label: 'Eventos', icon: '🎉' },
+                          { id: 'juguetes', label: 'Juguetes', icon: '🧸' },
+                          { id: 'industria', label: 'Industria', icon: '⚙️' },
                           { id: 'paquetes', label: 'Paquetes', icon: '🎁' }
                         ].map(w => {
                           const isChecked = editorForm.worlds?.includes(w.id);

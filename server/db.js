@@ -30,6 +30,20 @@ const initialWorlds = [
     tagline: 'Recuerdos y detalles que celebran los momentos más importantes',
     image: '/uploads/img_014.jpg',
     description: 'Elementos personalizados para bodas, bautizos, XV años, graduaciones y fechas conmemorativas. Diseñados para sorprender y ser conservados.'
+  },
+  {
+    id: 'juguetes',
+    name: 'Juguetes & Creatividad Infantil',
+    tagline: 'Creatividad, movimiento y diversión táctil con tecnología print-in-place',
+    image: '/uploads/img_009.jpg',
+    description: 'Juguetes articulados, figuras con movimiento dinámico, rompecabezas mecánicos y accesorios infantiles seguros, impresos en una sola pieza sin partes desprendibles peligrosas.'
+  },
+  {
+    id: 'industria',
+    name: 'Industria & Prototipado 3D',
+    tagline: 'Refacciones funcionales bajo demanda, utillaje y prototipado rápido en polímeros de ingeniería',
+    image: '/uploads/img_010.jpg',
+    description: 'Soluciones técnicas para empresas, talleres mecánicos y manufactura: refacciones automotrices bajo demanda, calibradores de taller, plantillas de ensamble y muestras de validación dimensional.'
   }
 ];
 
@@ -69,11 +83,593 @@ const initialCategories = [
   { id: 'eventos-graduaciones', worldId: 'eventos', name: 'Graduaciones', order: 7 },
   { id: 'eventos-temporada', worldId: 'eventos', name: 'Celebraciones de temporada', order: 8 },
   { id: 'eventos-empresariales', worldId: 'eventos', name: 'Eventos empresariales', order: 9 },
-  { id: 'eventos-otras', worldId: 'eventos', name: 'Otras celebraciones', order: 10 }
+  { id: 'eventos-otras', worldId: 'eventos', name: 'Otras celebraciones', order: 10 },
+
+  // JUGUETES & CREATIVIDAD INFANTIL
+  { id: 'juguetes-movimiento', worldId: 'juguetes', name: 'Juguetes con movimiento mecánico y acción', order: 1 },
+  { id: 'juguetes-articulados', worldId: 'juguetes', name: 'Juguetes articulados print-in-place', order: 2 },
+  { id: 'juguetes-fidget', worldId: 'juguetes', name: 'Fidget toys y rompecabezas de destreza', order: 3 },
+  { id: 'juguetes-vehiculos', worldId: 'juguetes', name: 'Autos y vehículos miniatura', order: 4 },
+
+  // INDUSTRIA & PROTOTIPADO 3D
+  { id: 'industria-automotriz', worldId: 'industria', name: 'Refacciones y componentes automotrices', order: 1 },
+  { id: 'industria-calibracion', worldId: 'industria', name: 'Herramientas de taller y galgas de medición', order: 2 },
+  { id: 'industria-utillaje', worldId: 'industria', name: 'Utillaje, guías y plantillas de ensamble', order: 3 },
+  { id: 'industria-gabinetes', worldId: 'industria', name: 'Carcasas técnicas y prototipos de ingeniería', order: 4 }
 ];
 
 // Initial Confirmed Products from approved catalog
 const initialProducts = [
+  {
+    "id": "leopardo-bobble-head-j1",
+    "code": "J1",
+    "name": "Leopardo Bobble Head con Movimiento Print-in-Place",
+    "priceType": "starting_at",
+    "price": 149,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "juguetes"
+    ],
+    "categories": [
+      "juguetes-movimiento",
+      "juguetes-articulados"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-j1-context-oficial.webp",
+    "gallery": [
+      "/uploads/catalog-v2-j1-context-oficial.webp",
+      "/uploads/catalog-v2-j1-base-oficial.webp",
+      "/uploads/catalog-v2-j1-detail-oficial.webp",
+      "/uploads/catalog-v2-j1-scale-oficial.webp"
+    ],
+    "shortDescription": "Figura lúdica articulada de leopardo con cabeza oscilante sobre péndulo mecánico interno, impresa en una sola pieza sin partes desprendibles.",
+    "fullDescription": "Juguete dinámico y coleccionable diseñado para cautivar tanto a niños como a amantes de los animales. Su estructura interna articulada print-in-place permite que la cabeza oscile de forma fluida y divertida con el más mínimo toque o vibración, sin requerir baterías, resortes metálicos ni pegamento. Fabricado en filamento PLA ecológico no tóxico con esquinas redondeadas para máxima seguridad infantil.",
+    "specifications": {
+      "dimensions": "9.5 cm de largo x 6.2 cm de ancho x 7.8 cm de alto",
+      "material": "PLA Premium biodegradable no tóxico (apto para niños)",
+      "finish": "Mate satinado suave al tacto con rosetas características en relieve",
+      "includes": "Figura de leopardo con mecanismo pendular integrado listo para jugar",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Limpieza con paño seco o ligeramente húmedo. No sumergir en agua hirviendo ni exponer a fuego directo."
+    },
+    "variants": [
+      {
+        "name": "Color",
+        "options": [
+          "Amarillo Miel Silvestre",
+          "Blanco Leopardo de las Nieves",
+          "Rosa Pastel",
+          "Verde Jade"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Grabado de nombre en la base (bajo pedido)",
+      "Escala personalizada (mini / estándar)"
+    ],
+    "availability": "in_stock",
+    "privateNotes": "Tiempo de impresión 2h 30m. Licencia comercial CC BY-ND autorizada por 3D_Design_Lab en MakerWorld #2906625.",
+    "createdAt": "2026-10-24T12:00:00.000Z",
+    "whiteBgImage": "/uploads/catalog-v2-j1-base-oficial.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-j1-detail-oficial.webp",
+    "measureImage": "/uploads/catalog-v2-j1-scale-oficial.webp",
+    "dimensionsImage": "/uploads/catalog-v2-j1-scale-oficial.webp",
+    "stockQuantity": 12,
+    "costPrice": 42.5,
+    "costBreakdown": {
+      "plaGrams": 67,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 0,
+      "machineHours": 2.5,
+      "otherEquipCost": 0,
+      "manualWorkMin": 5,
+      "prepCost": 0,
+      "packagingCost": 4,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-24T12:00:00.000Z",
+    "sku": "JUG-3D-PLA-MAT-001",
+    "skuBreakdown": {
+      "standardSku": "JUG-3D-PLA-MAT-001",
+      "legacyCode": "J1",
+      "area": "JUG",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "MAT",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "🧸 Juguetes & Niños",
+        "maquinaria": "🧊 Impresión 3D (FDM / Filamento) (Granja 3D FDM)",
+        "materiaPrima": "🪵 Filamento PLA ecológico no tóxico",
+        "acabadoTaller": "✨ Barniz / Textura Mate tersa",
+        "lote": "#001"
+      }
+    },
+    "repository": {
+      "platform": "makerworld",
+      "makerworldUrl": "https://makerworld.com/es/models/2906625-bobble-animal-leopard#profileId-3250148",
+      "makerworldModelId": "2906625",
+      "author": "3D_Design_Lab",
+      "license": "CC BY-ND (Commercial Use Allowed)",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\J1_Leopardo_Bobble\\leopard_bobble.3mf",
+      "cloudUrl": "",
+      "slicerNotes": "Capa 0.20mm, 2 paredes, 15% infill giroide, sin soportes.",
+      "additionalLinks": []
+    },
+    "manufacturingTimes": {
+      "machineHours": 2,
+      "machineMinutes": 30,
+      "postProcessingMinutes": 5,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 150,
+    "postProcessingTimeMinutes": 5
+  },
+  {
+    "id": "zorro-articulado-flexible-j2",
+    "code": "J2",
+    "name": "Zorrito Articulado Flexible Multifunción (Llavero / Imán)",
+    "priceType": "starting_at",
+    "price": 89,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "juguetes"
+    ],
+    "categories": [
+      "juguetes-articulados",
+      "juguetes-fidget"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-j2-context-oficial.webp",
+    "gallery": [
+      "/uploads/catalog-v2-j2-context-oficial.webp",
+      "/uploads/catalog-v2-j2-base-oficial.webp",
+      "/uploads/catalog-v2-j2-detail-oficial.webp",
+      "/uploads/catalog-v2-j2-scale-oficial.webp"
+    ],
+    "shortDescription": "Mascota de bolsillo articulada en eslabones continuos con ranura para imán de neodimio y ojillo reforzado para llavero.",
+    "fullDescription": "El accesorio infantil y juvenil más popular de manufactura aditiva. Su columna segmentada mediante rótulas integradas de una sola pieza ofrece un movimiento fluido ultra relajante (fidget toy). Diseñado con doble funcionalidad: úsalo como llavero para mochila escolar o coloca su imán en el refrigerador, pizarrón magnético o gaveta metálica.",
+    "specifications": {
+      "dimensions": "10.2 cm de largo x 4.5 cm de ancho x 2.2 cm de grosor",
+      "material": "PLA de alta tenacidad no tóxico",
+      "finish": "Bicolor satinado con detalles definidos en cola y hocico",
+      "includes": "Zorrito flexible + argolla metálica reforzada de llavero + imán de neodimio N52 instalado",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Apto para uso diario en mochilas. Evitar tirones mecánicos extremos."
+    },
+    "variants": [
+      {
+        "name": "Color",
+        "options": [
+          "Naranja Zorro Tradicional",
+          "Blanco Ártico Glaciar",
+          "Rojo Rubí",
+          "Gris Lobo Grafito"
+        ]
+      },
+      {
+        "name": "Montura",
+        "options": [
+          "Con argolla de llavero",
+          "Con imán de neodimio",
+          "Ambos (Llavero + Imán)"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Color personalizado a convenir"
+    ],
+    "availability": "in_stock",
+    "privateNotes": "Tiempo de impresión 45 min. MakerWorld #552097.",
+    "createdAt": "2026-10-24T12:00:00.000Z",
+    "whiteBgImage": "/uploads/catalog-v2-j2-base-oficial.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-j2-detail-oficial.webp",
+    "measureImage": "/uploads/catalog-v2-j2-scale-oficial.webp",
+    "dimensionsImage": "/uploads/catalog-v2-j2-scale-oficial.webp",
+    "stockQuantity": 20,
+    "costPrice": 24.8,
+    "costBreakdown": {
+      "plaGrams": 28,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 4.5,
+      "machineHours": 0.8,
+      "otherEquipCost": 0,
+      "manualWorkMin": 3,
+      "prepCost": 0,
+      "packagingCost": 3,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-24T12:00:00.000Z",
+    "sku": "JUG-3D-PLA-MAT-002",
+    "skuBreakdown": {
+      "standardSku": "JUG-3D-PLA-MAT-002",
+      "legacyCode": "J2",
+      "area": "JUG",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "MAT",
+      "sequence": "002",
+      "instructionsForStaff": {
+        "destino": "🧸 Juguetes & Niños",
+        "maquinaria": "🧊 Impresión 3D (FDM / Filamento) (Granja 3D FDM)",
+        "materiaPrima": "🪵 Filamento PLA no tóxico",
+        "acabadoTaller": "✨ Acabado Mate",
+        "lote": "#002"
+      }
+    },
+    "repository": {
+      "platform": "makerworld",
+      "makerworldUrl": "https://makerworld.com/es/models/552097-cute-flexi-pets-fox-keychain-magnet#profileId-470570",
+      "makerworldModelId": "552097",
+      "author": "Valeria Momo & Mattia3D",
+      "license": "Standard Digital File License",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\J2_Zorro_Flexi\\fox_flexi.3mf",
+      "cloudUrl": "",
+      "slicerNotes": "Capa 0.16 mm, 3 paredes, 15% infill.",
+      "additionalLinks": []
+    },
+    "manufacturingTimes": {
+      "machineHours": 0,
+      "machineMinutes": 48,
+      "postProcessingMinutes": 3,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 48,
+    "postProcessingTimeMinutes": 3
+  },
+  {
+    "id": "tobera-ventilacion-automotriz-ind1",
+    "code": "IND1",
+    "name": "Tobera Técnica de Ventilación y Flujo Automotriz",
+    "priceType": "starting_at",
+    "price": 349,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "industria"
+    ],
+    "categories": [
+      "industria-automotriz",
+      "industria-gabinetes"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-ind1-context-oficial.webp",
+    "gallery": [
+      "/uploads/catalog-v2-ind1-context-oficial.webp",
+      "/uploads/catalog-v2-ind1-base-oficial.webp",
+      "/uploads/catalog-v2-ind1-detail-oficial.webp",
+      "/uploads/catalog-v2-ind1-scale-oficial.webp"
+    ],
+    "shortDescription": "Ducto técnico de muestra para direccionamiento de aire forzado o enfriamiento, con brida de montaje calibrada para refaccionamiento bajo demanda.",
+    "fullDescription": "Componente técnico de muestra diseñado para talleres mecánicos, preparadores automotrices e industria de manufactura. Demuestra la viabilidad de reproducir piezas de geometrías internas aerodinámicas complejas descontinuadas o a medida sin invertir en costosos moldes de inyección. Impreso en polímero técnico resistente a vibración, hidrocarburos moderados y temperaturas de vano motor.",
+    "specifications": {
+      "dimensions": "14.5 cm de largo x 9.2 cm de boca x 8.0 cm de altura",
+      "material": "PETG Técnico / ABS de alta resistencia térmica (hasta 85°C)",
+      "finish": "Negro grafito industrial mate con líneas de capa técnicas FDM de alta cohesión",
+      "includes": "Ducto técnico con barreno avellanado para tornillería M5/M6",
+      "minQuantity": 1,
+      "estimatedLeadTime": "2 a 3 días hábiles",
+      "careNotes": "Apto para pruebas mecánicas de flujo, compartimento de motor y prototipado funcional."
+    },
+    "variants": [
+      {
+        "name": "Material",
+        "options": [
+          "PETG Técnico Negro",
+          "ABS / ASA Alta Temperatura",
+          "Nylon con Fibra de Carbono (PA-CF)"
+        ]
+      },
+      {
+        "name": "Diámetro de Acople",
+        "options": [
+          "Diámetro 2.5 pulgadas (63 mm)",
+          "Diámetro 3.0 pulgadas (76 mm)",
+          "A medida según plano"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Fabricación bajo plano técnico STEP / STL"
+    ],
+    "availability": "in_stock",
+    "privateNotes": "Pieza de muestra de refacción automotriz técnica.",
+    "createdAt": "2026-10-24T12:00:00.000Z",
+    "whiteBgImage": "/uploads/catalog-v2-ind1-base-oficial.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-ind1-detail-oficial.webp",
+    "measureImage": "/uploads/catalog-v2-ind1-scale-oficial.webp",
+    "dimensionsImage": "/uploads/catalog-v2-ind1-scale-oficial.webp",
+    "stockQuantity": 8,
+    "costPrice": 118.5,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 65,
+      "machineHours": 5.5,
+      "otherEquipCost": 0,
+      "manualWorkMin": 15,
+      "prepCost": 0,
+      "packagingCost": 10,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-24T12:00:00.000Z",
+    "sku": "IND-3D-PET-IND-001",
+    "skuBreakdown": {
+      "standardSku": "IND-3D-PET-IND-001",
+      "legacyCode": "IND1",
+      "area": "IND",
+      "technique": "3D",
+      "material": "PET",
+      "finish": "IND",
+      "sequence": "001",
+      "instructionsForStaff": {
+        "destino": "⚙️ Industria & Prototipado 3D",
+        "maquinaria": "Granja 3D FDM",
+        "materiaPrima": "PETG / ASA Técnico",
+        "acabadoTaller": "Grado Industrial",
+        "lote": "#001"
+      }
+    },
+    "repository": {
+      "platform": "interno",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Ingeniería Artesano Digital",
+      "license": "Uso Técnico Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\IND1_Ducto_Automotriz\\ducto_tecnico.3mf",
+      "cloudUrl": "",
+      "slicerNotes": "Paredes sólidas de 4 perímetros, 30% infill triangular.",
+      "additionalLinks": []
+    },
+    "manufacturingTimes": {
+      "machineHours": 5,
+      "machineMinutes": 30,
+      "postProcessingMinutes": 15,
+      "leadTimeDays": "2 a 3 días hábiles"
+    },
+    "manufacturingTimeMinutes": 330,
+    "postProcessingTimeMinutes": 15
+  },
+  {
+    "id": "galga-calibradora-roscas-ind2",
+    "code": "IND2",
+    "name": "Galga Calibradora de Tornillería y Roscas M3 a M12",
+    "priceType": "starting_at",
+    "price": 189,
+    "priceUnit": "pieza",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "industria"
+    ],
+    "categories": [
+      "industria-calibracion",
+      "industria-utillaje"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-ind2-context-oficial.webp",
+    "gallery": [
+      "/uploads/catalog-v2-ind2-context-oficial.webp",
+      "/uploads/catalog-v2-ind2-base-oficial.webp",
+      "/uploads/catalog-v2-ind2-detail-oficial.webp",
+      "/uploads/catalog-v2-ind2-scale-oficial.webp"
+    ],
+    "shortDescription": "Herramienta técnica de mesa y mostrador para verificación inmediata de diámetro métrico, longitud y paso de roscas estándar.",
+    "fullDescription": "Herramienta indispensable de taller mecánico, área de mantenimiento industrial y mostrador de refaccionaria. Cuenta con orificios calibrados de prueba rápida de M3 a M12 con indicadores en alto relieve contrastado, regla milimétrica lateral y ranura para verificación de longitud de pernos sin necesidad de calibrador vernier.",
+    "specifications": {
+      "dimensions": "20.0 cm de largo x 8.5 cm de ancho x 0.8 cm de espesor",
+      "material": "PETG de alta rigidez dimensional y resistencia a aceites",
+      "finish": "Bicolor alto contraste negro industrial con tipografía técnica blanca en relieve",
+      "includes": "Galga con orificio superior para colgar en panel de herramientas de taller",
+      "minQuantity": 1,
+      "estimatedLeadTime": "1 a 2 días hábiles",
+      "careNotes": "Resistente a grasa, solventes ligeros y aceites de motor. No deformar mecánicamente."
+    },
+    "variants": [
+      {
+        "name": "Formato",
+        "options": [
+          "Métrico Estándar (M3 a M12)",
+          "Combinado Métrico + Fraccional Pulgadas"
+        ]
+      }
+    ],
+    "customizationOptions": [
+      "Logotipo del taller en bajorrelieve"
+    ],
+    "availability": "in_stock",
+    "privateNotes": "Herramienta técnica para taller y refaccionarias.",
+    "createdAt": "2026-10-24T12:00:00.000Z",
+    "whiteBgImage": "/uploads/catalog-v2-ind2-base-oficial.webp",
+    "galleryMeta": [
+      {
+        "label": "1. Producto en ambiente real (referencia)",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Producto completo sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_angle"
+      },
+      {
+        "label": "3. Acercamiento de la foto sobre fondo blanco",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Medidas y referencia de tamaño",
+        "shortLabel": "Medidas y escala",
+        "type": "measures"
+      }
+    ],
+    "detailImage": "/uploads/catalog-v2-ind2-detail-oficial.webp",
+    "measureImage": "/uploads/catalog-v2-ind2-scale-oficial.webp",
+    "dimensionsImage": "/uploads/catalog-v2-ind2-scale-oficial.webp",
+    "stockQuantity": 15,
+    "costPrice": 58.2,
+    "costBreakdown": {
+      "plaGrams": 0,
+      "tpuGrams": 0,
+      "otherMaterialsCost": 32,
+      "machineHours": 2.8,
+      "otherEquipCost": 0,
+      "manualWorkMin": 10,
+      "prepCost": 0,
+      "packagingCost": 6,
+      "additionalFailuresCost": 0,
+      "fixedOverheadCost": 0,
+      "shippingCost": 0,
+      "costStatus": "Estimado"
+    },
+    "flashDealConfig": {
+      "enabled": false,
+      "startedAt": null,
+      "expiresAt": null
+    },
+    "updatedAt": "2026-10-24T12:00:00.000Z",
+    "sku": "IND-3D-PET-IND-002",
+    "skuBreakdown": {
+      "standardSku": "IND-3D-PET-IND-002",
+      "legacyCode": "IND2",
+      "area": "IND",
+      "technique": "3D",
+      "material": "PET",
+      "finish": "IND",
+      "sequence": "002",
+      "instructionsForStaff": {
+        "destino": "⚙️ Industria & Prototipado 3D",
+        "maquinaria": "Granja 3D FDM",
+        "materiaPrima": "PETG Alta Resistencia",
+        "acabadoTaller": "Bicolor contraste",
+        "lote": "#002"
+      }
+    },
+    "repository": {
+      "platform": "interno",
+      "makerworldUrl": "",
+      "makerworldModelId": "",
+      "author": "Ingeniería Artesano Digital",
+      "license": "Uso Técnico Autorizado",
+      "localPath": "C:\\Users\\OEM\\Modelos3D\\IND2_Galga_Roscas\\galga_roscas.3mf",
+      "cloudUrl": "",
+      "slicerNotes": "Capa 0.20 mm, cambio de color en capa 25 para tipografía contrastada.",
+      "additionalLinks": []
+    },
+    "manufacturingTimes": {
+      "machineHours": 2,
+      "machineMinutes": 48,
+      "postProcessingMinutes": 10,
+      "leadTimeDays": "1 a 2 días hábiles"
+    },
+    "manufacturingTimeMinutes": 168,
+    "postProcessingTimeMinutes": 10
+  },
   {
     "id": "colgador-llaves-l14",
     "code": "L14",

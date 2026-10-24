@@ -508,6 +508,33 @@ export default function WorkshopArcadeModal({
   const [liveArcadeConfig, setLiveArcadeConfig] = useState(arcadeConfig);
 
   useEffect(() => {
+    if (!isOpen) return;
+
+    // 1. Bloquear scroll del fondo en móviles y escritorio
+    const origOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    // 2. Soporte para el botón Atrás del celular (Android / Swipe iOS)
+    window.history.pushState({ modal: 'arcade' }, '');
+    const handlePopState = () => {
+      onClose?.();
+    };
+    window.addEventListener('popstate', handlePopState);
+
+    // 3. Tecla Escape para salir
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose?.();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = origOverflow;
+      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
+  useEffect(() => {
     if (isOpen) {
       fetch('/api/arcade/config')
         .then(res => res.json())
@@ -2085,7 +2112,10 @@ export default function WorkshopArcadeModal({
   }, [isOpen, selectedGameId, gameState, score, coinsEarned, currentLevel, activeTheme]);
 
   return (
-    <div className={`fixed inset-0 z-50 flex items-center justify-center ${isLandscapeMode ? 'p-0' : 'p-1.5 sm:p-4'} bg-black/85 backdrop-blur-md animate-fadeIn`}>
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center ${isLandscapeMode ? 'p-0' : 'p-1.5 sm:p-4'} bg-black/85 backdrop-blur-md animate-fadeIn`}
+      onClick={onClose}
+    >
       <div
         className={`relative w-full ${isLandscapeMode ? 'h-full max-h-screen max-w-full rounded-none' : 'max-w-4xl max-h-[96vh] rounded-3xl'} bg-gradient-to-br ${currentTheme.cabinetBg} text-white border-2 ${currentTheme.cabinetBorder} shadow-2xl overflow-hidden flex flex-col transition-all duration-300`}
         onClick={e => e.stopPropagation()}
@@ -2102,111 +2132,79 @@ export default function WorkshopArcadeModal({
         ))}
 
         {/* Cabecera Retro Arcade Temática con Énfasis de Época */}
-        <div className={`flex items-center justify-between px-5 py-3.5 border-b border-white/10 bg-gradient-to-r ${currentTheme.marqueeBg} shrink-0`}>
-          <div className="flex items-center gap-3">
-            <span className="text-2xl animate-bounce">{currentTheme.icon || '🕹️'}</span>
-            <div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <h3 className={`font-extrabold text-base sm:text-lg font-heading tracking-wide ${currentTheme.accentText}`}>
-                  Arcade del Taller Artesano
+        <div className={`flex items-center justify-between px-3 sm:px-5 py-2.5 sm:py-3.5 border-b border-white/10 bg-gradient-to-r ${currentTheme.marqueeBg} shrink-0 gap-2`}>
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <span className="text-xl sm:text-2xl animate-bounce shrink-0">{currentTheme.icon || '🕹️'}</span>
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                <h3 className={`font-extrabold text-sm sm:text-lg font-heading tracking-wide truncate ${currentTheme.accentText}`}>
+                  Arcade del Taller
                 </h3>
-                <span className="text-[10px] bg-red-600/90 text-white px-2 py-0.5 rounded-full font-mono uppercase tracking-wider font-bold animate-pulse shadow-xs">
+                <span className="text-[9px] sm:text-[10px] bg-red-600/90 text-white px-1.5 sm:px-2 py-0.2 rounded-full font-mono uppercase tracking-wider font-bold animate-pulse shadow-xs shrink-0">
                   10 JUEGOS
                 </span>
-                <span className="hidden sm:inline-flex text-[10px] bg-white/15 text-white/95 border border-white/20 px-2 py-0.5 rounded-full font-mono font-bold tracking-wide shadow-xs items-center gap-1">
-                  <span>{currentTheme.marqueeTag}</span>
-                </span>
               </div>
-              <p className="text-[11px] text-gray-300 hidden sm:block">
+              <p className="text-[11px] text-gray-300 hidden sm:block truncate">
                 {currentTheme.subtitle || 'Rotación de juegos, dificultad dinámica y cupones de descuento canjeables'}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-2.5">
-            {/* Monedas de Juego (para jugar partidas) */}
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/50 border border-emerald-400/50 text-emerald-300 font-mono text-xs font-bold shadow-inner" title="Monedas disponibles para jugar (Costo: 1 por partida)">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+            {/* Monedas de Juego */}
+            <div className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl bg-black/50 border border-emerald-400/50 text-emerald-300 font-mono text-[11px] sm:text-xs font-bold shadow-inner" title="Monedas disponibles para jugar (Costo: 1 por partida)">
               <span>🎮</span>
-              <span>{credits}/{maxCredits} Monedas</span>
-              {credits < maxCredits && (
-                <span className="text-[10px] text-amber-300 font-normal ml-1" title="Próxima moneda gratis en 15 min">
-                  (+1 en {refillTimeFormatted})
-                </span>
-              )}
+              <span>{credits}/{maxCredits}</span>
             </div>
 
             {/* Monedero de Premios Ganados (para cupones) */}
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/40 border border-amber-400/40 text-amber-300 font-mono text-xs font-bold shadow-inner" title="Monedas ganadas para canjear cupones">
+            <div className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl bg-black/40 border border-amber-400/40 text-amber-300 font-mono text-[11px] sm:text-xs font-bold shadow-inner" title="Monedas ganadas para canjear cupones">
               <span>🪙</span>
               <span>{userCoins}</span>
-              <span className="text-[10px] text-gray-300 font-sans hidden sm:inline">ganadas</span>
             </div>
 
-            {/* Contador de Vigencia de Sesión de Monedas (1 Hora) */}
+            {/* Contador de Vigencia de Sesión de Monedas (1 Hora) - Oculto en móvil pequeño para evitar overflow */}
             <div
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-black/40 border border-white/10 text-gray-300 font-mono text-xs font-bold shadow-inner"
+              className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-black/40 border border-white/10 text-gray-300 font-mono text-xs font-bold shadow-inner"
               title="Las monedas se restablecen tras 1 hora en la página; ¡canjéalas antes de que concluya tu sesión!"
             >
               <Clock className="w-3.5 h-3.5 text-amber-400" />
-              <span className="hidden sm:inline text-[10px] text-gray-400 font-sans">Sesión:</span>
               <span className="text-amber-300">{sessionTimeFormatted}</span>
             </div>
-
-            {/* Botón Canjear Monedas Ganadas por Monedas de Juego al instante */}
-            {userCoins >= 2 && (
-              <button
-                type="button"
-                onClick={() => {
-                  const res = exchangeCoinsForCredits(2, 1);
-                  if (res.success) {
-                    soundSynth.play('coin');
-                    playMario1UpSound();
-                  }
-                }}
-                className="hidden sm:flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/60 text-amber-200 text-xs font-bold transition-all cursor-pointer shadow-xs"
-                title="Canjear 2 monedas ganadas por 1 moneda de juego al instante"
-              >
-                <span>🔄 2🪙 por +1🎮</span>
-              </button>
-            )}
 
             {/* Toggle de Voltear Pantalla / Modo Horizontal Fullscreen */}
             <button
               type="button"
               onClick={toggleOrientationMode}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer shadow-xs active:scale-95 ${
+              className={`p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer shadow-xs active:scale-95 ${
                 isLandscapeMode
                   ? 'bg-amber-400 text-[#17251E] border-amber-300 ring-2 ring-amber-300/50'
                   : 'bg-white/10 hover:bg-white/20 text-gray-200 border-white/20'
               }`}
-              title={isLandscapeMode ? "Volver a modo normal" : "Voltear pantalla / modo horizontal para jugar mejor en celular"}
+              title={isLandscapeMode ? "Volver a modo normal" : "Modo horizontal"}
             >
               <RotateCw className={`w-3.5 h-3.5 ${isLandscapeMode ? 'text-[#17251E] rotate-90' : 'text-amber-400'}`} />
-              <span className="text-[11px] hidden sm:inline">
-                {isLandscapeMode ? 'Pantalla Normal' : 'Modo Horizontal'}
-              </span>
-              <span className="text-[11px] sm:hidden">
-                {isLandscapeMode ? 'Normal' : 'Girar'}
-              </span>
             </button>
 
-            {/* Audio Toggle */}
+            {/* Audio Toggle (Solo pantallas no diminutas) */}
             <button
               type="button"
               onClick={handleToggleMute}
-              className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all cursor-pointer"
+              className="hidden xs:flex p-1.5 sm:p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all cursor-pointer"
               title={isMuted ? 'Activar sonido retro' : 'Silenciar sonido'}
             >
-              {isMuted ? <VolumeX className="w-4 h-4 text-gray-400" /> : <Volume2 className="w-4 h-4 text-amber-400" />}
+              {isMuted ? <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400" /> : <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />}
             </button>
 
-            {/* Close */}
+            {/* BOTÓN SALIR DESTACADO Y GARANTIZADO */}
             <button
               type="button"
               onClick={onClose}
-              className="p-2 rounded-xl bg-white/10 hover:bg-red-500/80 text-white transition-all cursor-pointer"
+              className="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-black text-xs transition-all shadow-md active:scale-95 cursor-pointer border border-red-400/50 shrink-0"
+              title="Salir y volver a la tienda"
             >
               <X className="w-4 h-4" />
+              <span className="hidden xs:inline">Salir</span>
             </button>
           </div>
         </div>
@@ -2906,6 +2904,18 @@ export default function WorkshopArcadeModal({
               </div>
             </div>
           )}
+        </div>
+
+        {/* Barra Inferior Fija para Móviles con Salida Garantizada a la Tienda */}
+        <div className="sm:hidden px-4 py-2.5 bg-black/80 border-t border-white/10 flex items-center justify-between gap-3 shrink-0">
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-red-600 to-rose-700 hover:brightness-110 text-white font-black text-xs flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all border border-red-400/30 cursor-pointer"
+          >
+            <span>🏪</span>
+            <span>Salir y volver a la Tienda</span>
+          </button>
         </div>
       </div>
     </div>

@@ -24,7 +24,10 @@ export default function MobileMercadoLibreHeader({
     { id: 'hogar', label: 'Hogar' },
     { id: 'negocios', label: 'Negocios' },
     { id: 'eventos', label: 'Eventos' },
-    { id: 'paquetes-servicios', label: 'Paquetes' }
+    { id: 'juguetes', label: 'Juguetes' },
+    { id: 'industria', label: 'Industria' },
+    { id: 'paquetes-servicios', label: 'Paquetes' },
+    { id: 'publicidad-desarrollo', label: '🎨 Publicidad & Web' }
   ];
 
   return (

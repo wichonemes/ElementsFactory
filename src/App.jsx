@@ -15,6 +15,7 @@ import QuoteCalculatorModal from './components/QuoteCalculatorModal';
 import FloatingSideNav from './components/FloatingSideNav';
 import TemuUrgencyModule from './components/TemuUrgencyModule';
 import PackagesAndServicesView from './components/PackagesAndServicesView';
+import PublicidadDesarrolloView from './components/PublicidadDesarrolloView';
 import BlitzClockWidget from './components/BlitzClockWidget';
 import CatalogBottomNav from './components/CatalogBottomNav';
 import WorkshopArcadeModal from './components/WorkshopArcadeModal';
@@ -797,7 +798,7 @@ export default function App() {
       )}
 
       {/* Area Cover Banner (when a specific area is selected) */}
-      {activeWorld !== 'all' && activeWorld !== 'paquetes-servicios' && currentWorldObj && (
+      {activeWorld !== 'all' && activeWorld !== 'paquetes-servicios' && activeWorld !== 'publicidad-desarrollo' && currentWorldObj && (
         <div className="relative bg-[#1F2421] text-white overflow-hidden py-10 sm:py-14 border-b border-black/20">
           <div className="absolute inset-0 opacity-20">
             <img src={currentWorldObj.image} alt="" className="w-full h-full object-cover" />
@@ -840,8 +841,15 @@ export default function App() {
         </div>
       )}
 
-      {/* Vista Dedicada de Paquetes y Servicios por Áreas */}
-      {activeWorld === 'paquetes-servicios' ? (
+      {/* Vista Dedicada de Publicidad & Desarrollo Digital */}
+      {activeWorld === 'publicidad-desarrollo' ? (
+        <PublicidadDesarrolloView
+          settings={settings}
+          onGoHome={handleGoHome}
+          onOpenCalculator={handleOpenCalculator}
+          onSelectWorld={handleSelectWorld}
+        />
+      ) : activeWorld === 'paquetes-servicios' ? (
         <PackagesAndServicesView
           products={products}
           onSelectProduct={(prod) => setSelectedProduct(prod)}

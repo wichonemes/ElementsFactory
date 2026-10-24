@@ -79,6 +79,25 @@ app.use('/downloads', express.static(downloadsDir));
 
 // Serve built frontend if exists
 const distDir = path.join(__dirname, '..', 'dist');
+const publicDir = path.join(__dirname, '..', 'public');
+
+// Static routes for integrated portfolio
+const wichoPublicDir = path.join(publicDir, 'maquetado-inicio-wicho-v2');
+const wichoDistDir = path.join(distDir, 'maquetado-inicio-wicho-v2');
+if (fs.existsSync(wichoDistDir)) {
+  app.use('/maquetado-inicio-wicho-v2', express.static(wichoDistDir));
+} else if (fs.existsSync(wichoPublicDir)) {
+  app.use('/maquetado-inicio-wicho-v2', express.static(wichoPublicDir));
+}
+
+const portfolioPublicDir = path.join(publicDir, 'portfolio');
+const portfolioDistDir = path.join(distDir, 'portfolio');
+if (fs.existsSync(portfolioDistDir)) {
+  app.use('/portfolio', express.static(portfolioDistDir));
+} else if (fs.existsSync(portfolioPublicDir)) {
+  app.use('/portfolio', express.static(portfolioPublicDir));
+}
+
 if (fs.existsSync(distDir)) {
   app.use(express.static(distDir, { index: false }));
 }
