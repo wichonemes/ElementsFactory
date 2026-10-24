@@ -32,17 +32,17 @@ export default function PublicidadDesarrolloView({
   const cotizadorRef = useRef(null);
   const whatsappPhone = (settings?.whatsappNumber || '5214440000000').replace(/[^0-9]/g, '');
 
-  // Catálogo de Servicios con Estructura de Color
+  // Catálogo de Servicios con Estructura de Color Profesional en Modo Oscuro
   const servicesList = [
     {
       id: 'branding',
       icon: Palette,
       tag: 'Identidad Visual',
-      badgeColor: 'bg-amber-100 text-amber-900 border-amber-300',
-      activeBorder: 'border-amber-400 ring-2 ring-amber-400/25',
+      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+      activeBorder: 'border-amber-400/80 ring-2 ring-amber-400/25',
       accentBar: 'bg-amber-400',
-      iconBg: 'bg-amber-500/15 text-amber-600',
-      checkColor: 'text-amber-600 bg-amber-50',
+      iconBg: 'bg-amber-500/20 text-amber-300 border border-amber-500/30',
+      checkColor: 'text-amber-400 bg-amber-500/20',
       title: 'Diseño Gráfico & Branding Corporativo',
       summary: 'Construcción de marcas memorables con voz propia, manual de identidad y aplicaciones comerciales completas.',
       deliverables: [
@@ -58,11 +58,11 @@ export default function PublicidadDesarrolloView({
       id: 'publicidad',
       icon: Printer,
       tag: 'Gran Formato & Rotulación',
-      badgeColor: 'bg-rose-100 text-rose-900 border-rose-300',
-      activeBorder: 'border-rose-400 ring-2 ring-rose-400/25',
+      badgeColor: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
+      activeBorder: 'border-rose-400/80 ring-2 ring-rose-400/25',
       accentBar: 'bg-rose-400',
-      iconBg: 'bg-rose-500/15 text-rose-600',
-      checkColor: 'text-rose-600 bg-rose-50',
+      iconBg: 'bg-rose-500/20 text-rose-300 border border-rose-500/30',
+      checkColor: 'text-rose-400 bg-rose-500/20',
       title: 'Publicidad Comercial, Lonas & Vinil',
       summary: 'Impacto visual físico para tu local o negocio: lonas de alta resistencia, rotulación en vinil y señalética arquitectónica.',
       deliverables: [
@@ -78,11 +78,11 @@ export default function PublicidadDesarrolloView({
       id: 'web',
       icon: Globe,
       tag: 'E-Commerce & Digital',
-      badgeColor: 'bg-emerald-100 text-emerald-900 border-emerald-300',
-      activeBorder: 'border-emerald-400 ring-2 ring-emerald-400/25',
+      badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+      activeBorder: 'border-emerald-400/80 ring-2 ring-emerald-400/25',
       accentBar: 'bg-emerald-400',
-      iconBg: 'bg-emerald-500/15 text-emerald-600',
-      checkColor: 'text-emerald-600 bg-emerald-50',
+      iconBg: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30',
+      checkColor: 'text-emerald-400 bg-emerald-500/20',
       title: 'Desarrollo Web & Tiendas Online',
       summary: 'Plataformas interactivas rápidas, responsivas y optimizadas para convertir visitantes en clientes reales.',
       deliverables: [
@@ -98,11 +98,11 @@ export default function PublicidadDesarrolloView({
       id: 'modelado',
       icon: Box,
       tag: 'Prototipado & 3D',
-      badgeColor: 'bg-sky-100 text-sky-900 border-sky-300',
-      activeBorder: 'border-sky-400 ring-2 ring-sky-400/25',
+      badgeColor: 'bg-sky-500/20 text-sky-300 border-sky-500/40',
+      activeBorder: 'border-sky-400/80 ring-2 ring-sky-400/25',
       accentBar: 'bg-sky-400',
-      iconBg: 'bg-sky-500/15 text-sky-600',
-      checkColor: 'text-sky-600 bg-sky-50',
+      iconBg: 'bg-sky-500/20 text-sky-300 border border-sky-500/30',
+      checkColor: 'text-sky-400 bg-sky-500/20',
       title: 'Modelado 3D & Renderizado Técnico',
       summary: 'De la idea al render fotorrealista y a la manufactura física mediante impresión 3D aditiva FDM.',
       deliverables: [
@@ -118,11 +118,11 @@ export default function PublicidadDesarrolloView({
       id: 'audiovisual',
       icon: Film,
       tag: 'Contenido & Editorial',
-      badgeColor: 'bg-purple-100 text-purple-900 border-purple-300',
-      activeBorder: 'border-purple-400 ring-2 ring-purple-400/25',
+      badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
+      activeBorder: 'border-purple-400/80 ring-2 ring-purple-400/25',
       accentBar: 'bg-purple-400',
-      iconBg: 'bg-purple-500/15 text-purple-600',
-      checkColor: 'text-purple-600 bg-purple-50',
+      iconBg: 'bg-purple-500/20 text-purple-300 border border-purple-500/30',
+      checkColor: 'text-purple-400 bg-purple-500/20',
       title: 'Producción Audiovisual & Editorial',
       summary: 'Animación en movimiento, fotografía comercial de producto y maquetación editorial de catálogos y folletos.',
       deliverables: [
@@ -197,10 +197,10 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
   };
 
   return (
-    <div className="bg-[#FAF9F5] text-stone-900 min-h-screen">
+    <div className="bg-[#0B0D11] text-stone-100 min-h-screen selection:bg-[#e8b84f] selection:text-[#0B0D11]">
       
       {/* 1. HERO INSTITUCIONAL */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-[#101215] via-[#171a1f] to-[#1F2421] text-white pt-6 pb-10 sm:pt-10 sm:pb-14 px-4 sm:px-6 lg:px-8 border-b border-stone-800">
+      <section className="relative overflow-hidden bg-gradient-to-b from-[#080A0D] via-[#101319] to-[#0D1015] text-white pt-6 pb-10 sm:pt-10 sm:pb-14 px-4 sm:px-6 lg:px-8 border-b border-stone-800/80">
         
         <div className="max-w-7xl mx-auto relative z-10">
           
@@ -222,7 +222,7 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
                 <button
                   type="button"
                   onClick={() => handleOpenCotizador('branding')}
-                  className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-[#e8b84f] to-[#d4a359] hover:from-[#d4a359] hover:to-[#c29235] text-[#121519] font-black text-xs sm:text-sm transition-all shadow-lg active:scale-98 cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-[#e8b84f] to-[#d4a359] hover:from-[#d4a359] hover:to-[#c29235] text-[#0B0D11] font-black text-xs sm:text-sm transition-all shadow-lg active:scale-98 cursor-pointer flex items-center justify-center gap-2"
                 >
                   <span>Cotizar Proyecto (2 Pasos)</span>
                   <ArrowRight className="w-4 h-4" />
@@ -232,12 +232,12 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
 
             {/* Columna Derecha: Tarjeta de Wicho Nemes */}
             <div className="lg:col-span-5">
-              <div className="relative rounded-3xl bg-gradient-to-br from-[#1d2228] to-[#14171b] border border-stone-700/60 p-4 sm:p-5 shadow-2xl">
+              <div className="relative rounded-3xl bg-gradient-to-br from-[#151921] to-[#0F1218] border border-stone-700/60 p-4 sm:p-5 shadow-2xl">
                 
                 {/* Header de la tarjeta */}
                 <div className="flex items-center justify-between pb-2.5 border-b border-white/10">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-9 h-9 rounded-xl border border-[#e8b84f]/40 bg-[#101215] flex items-center justify-center p-1.5 shadow-inner">
+                    <div className="w-9 h-9 rounded-xl border border-[#e8b84f]/40 bg-[#0B0D11] flex items-center justify-center p-1.5 shadow-inner">
                       <img
                         src="/maquetado-inicio-wicho-v2/assets/marca-wicho.png"
                         alt="Wicho Nemes Logo"
@@ -258,7 +258,7 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
 
                 {/* Retrato y Presentación */}
                 <div className="py-3 flex items-center gap-3">
-                  <div className="w-16 h-20 sm:w-20 sm:h-24 shrink-0 rounded-2xl bg-gradient-to-b from-[#252b33] to-[#121519] border border-white/15 overflow-hidden shadow-lg">
+                  <div className="w-16 h-20 sm:w-20 sm:h-24 shrink-0 rounded-2xl bg-gradient-to-b from-[#202631] to-[#0E1116] border border-white/15 overflow-hidden shadow-lg">
                     <img
                       src="/maquetado-inicio-wicho-v2/assets/perfil-sin-fondo.png"
                       alt="Wicho Nemes"
@@ -274,7 +274,7 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
                       "Ideas claras. Diseño con intención. Cada pieza visual debe resolver un propósito comercial real."
                     </p>
                     <div className="text-[10px] text-stone-400 flex items-center gap-1">
-                      <MapPin className="w-3 h-3 text-[#D4A359] shrink-0" />
+                      <MapPin className="w-3 h-3 text-[#e8b84f] shrink-0" />
                       <span>San Luis Potosí, SLP · Envíos nacionales.</span>
                     </div>
                   </div>
@@ -287,7 +287,7 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
                     href="/maquetado-inicio-wicho-v2/"
                     target="_blank"
                     rel="noreferrer"
-                    className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#e8b84f] to-[#d4a359] hover:from-[#f0c765] hover:to-[#e8b84f] text-[#121519] font-black text-xs transition-all flex items-center gap-1.5 shadow-md active:scale-95 cursor-pointer"
+                    className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#e8b84f] to-[#d4a359] hover:from-[#f0c765] hover:to-[#e8b84f] text-[#0B0D11] font-black text-xs transition-all flex items-center gap-1.5 shadow-md active:scale-95 cursor-pointer"
                     title="Abrir portafolio de Wicho Nemes"
                   >
                     <Eye className="w-3.5 h-3.5" />
@@ -305,18 +305,18 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
 
       </section>
 
-      {/* 2. BARRA DE NAVEGACIÓN LIMPIA Y COMPACTA */}
-      <div className="sticky top-20 z-30 bg-[#FBF9F5]/95 backdrop-blur-md border-b border-stone-200 shadow-xs">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-2 py-2">
+      {/* 2. BARRA DE NAVEGACIÓN LIMPIA Y COMPACTA (TEMA OSCURO) */}
+      <div className="sticky top-20 z-30 bg-[#0B0D11]/95 backdrop-blur-md border-b border-stone-800/80 shadow-lg">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-2 py-2.5">
           
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => setActiveTab('servicios')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
                 activeTab === 'servicios'
-                  ? 'bg-[#17251E] text-white shadow-sm'
-                  : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                  ? 'bg-[#e8b84f] text-[#0B0D11] shadow-md'
+                  : 'bg-[#151921] text-stone-300 hover:text-white hover:bg-[#1E232E] border border-stone-800'
               }`}
             >
               <span>Servicios &amp; Paquetes</span>
@@ -325,10 +325,10 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
             <button
               type="button"
               onClick={() => handleOpenCotizador(quoteService)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
                 activeTab === 'cotizador'
-                  ? 'bg-[#D4A359] text-[#17251E] shadow-sm'
-                  : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                  ? 'bg-[#e8b84f] text-[#0B0D11] shadow-md'
+                  : 'bg-[#151921] text-stone-300 hover:text-white hover:bg-[#1E232E] border border-stone-800'
               }`}
             >
               <span>Cotizador Rápido</span>
@@ -339,7 +339,7 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
             <button
               type="button"
               onClick={onGoHome}
-              className="text-xs text-stone-500 hover:text-stone-900 font-medium shrink-0 ml-auto cursor-pointer"
+              className="text-xs text-stone-400 hover:text-[#e8b84f] font-bold shrink-0 ml-auto cursor-pointer transition-colors"
             >
               ← Tienda
             </button>
@@ -348,10 +348,10 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
         </div>
       </div>
 
-      {/* 3. CONTENIDO PRINCIPAL */}
+      {/* 3. CONTENIDO PRINCIPAL EN COLOR NEGRO */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-8">
 
-        {/* ================= SECCIÓN 1: SERVICIOS DIRECTOS (SIN BARRITA REPETIDA) ================= */}
+        {/* ================= SECCIÓN 1: SERVICIOS DIRECTOS (TOTALMENTE EN NEGRO) ================= */}
         {activeTab === 'servicios' && (
           <div className="space-y-4 animate-fadeIn">
 
@@ -366,8 +366,8 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
                     key={srv.id}
                     className={`rounded-2xl border transition-all overflow-hidden ${
                       isExpanded
-                        ? `bg-white ${srv.activeBorder} shadow-lg`
-                        : 'bg-white/90 border-stone-200 hover:border-stone-300 shadow-xs'
+                        ? `bg-[#12161D] ${srv.activeBorder} shadow-2xl ring-1 ring-white/10`
+                        : 'bg-[#0F1218] border-stone-800 hover:border-stone-700 shadow-md'
                     }`}
                   >
                     {/* Barra Superior con Acento de Color si está desplegado */}
@@ -377,7 +377,7 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
                     <button
                       type="button"
                       onClick={() => setExpandedService(isExpanded ? '' : srv.id)}
-                      className="w-full p-4 flex items-center justify-between gap-3 text-left cursor-pointer transition-colors hover:bg-stone-50/60"
+                      className="w-full p-4 flex items-center justify-between gap-3 text-left cursor-pointer transition-colors hover:bg-white/5"
                     >
                       <div className="flex items-center gap-3 min-w-0">
                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-transform ${srv.iconBg} ${
@@ -391,18 +391,18 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
                               {srv.tag}
                             </span>
                           </div>
-                          <h3 className="font-heading font-black text-sm text-stone-900 mt-0.5 truncate">
+                          <h3 className="font-heading font-black text-sm text-white mt-0.5 truncate">
                             {srv.title}
                           </h3>
                         </div>
                       </div>
 
                       <div className="shrink-0 flex items-center gap-1.5">
-                        <span className="text-xs font-bold text-stone-500 hidden sm:inline">
+                        <span className="text-xs font-bold text-stone-400 hidden sm:inline">
                           {isExpanded ? 'Ocultar' : 'Ver lo que incluye'}
                         </span>
                         <div className={`w-7 h-7 rounded-full flex items-center justify-center border transition-transform ${
-                          isExpanded ? 'bg-[#17251E] text-white rotate-180 border-[#17251E]' : 'bg-stone-100 text-stone-600 border-stone-200'
+                          isExpanded ? 'bg-[#e8b84f] text-[#0B0D11] rotate-180 border-[#e8b84f]' : 'bg-[#181D26] text-stone-300 border-stone-700'
                         }`}>
                           <ChevronDown className="w-3.5 h-3.5" />
                         </div>
@@ -411,14 +411,14 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
 
                     {/* Contenido Desplegable Completo del Paquete */}
                     {isExpanded && (
-                      <div className="px-4 pb-5 pt-1 border-t border-stone-100 space-y-3.5 animate-fadeIn">
+                      <div className="px-4 pb-5 pt-1 border-t border-stone-800/80 space-y-3.5 animate-fadeIn">
                         
-                        <p className="text-xs text-stone-700 leading-relaxed font-normal">
+                        <p className="text-xs text-stone-300 leading-relaxed font-normal">
                           {srv.summary}
                         </p>
 
                         {/* Entregables incluidos en el paquete (Bloque en color negro para diferenciar que son servicios) */}
-                        <div className="bg-[#121519] p-3.5 sm:p-4 rounded-2xl border border-stone-800 space-y-2.5 shadow-inner">
+                        <div className="bg-[#080A0E] p-3.5 sm:p-4 rounded-2xl border border-stone-800 space-y-2.5 shadow-inner">
                           <div className="text-[10px] font-black uppercase tracking-wider text-[#e8b84f] flex items-center gap-2">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#e8b84f]" />
                             <span>Servicios y entregables incluidos:</span>
@@ -427,7 +427,7 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-0.5">
                             {srv.deliverables.map((item, idx) => (
                               <div key={idx} className="flex items-start gap-2 text-xs text-stone-200 font-normal">
-                                <span className="w-1.5 h-1.5 rounded-full bg-stone-400 mt-1.5 shrink-0" />
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#e8b84f] mt-1.5 shrink-0" />
                                 <span className="leading-snug">{item}</span>
                               </div>
                             ))}
@@ -436,17 +436,17 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
 
                         {/* Botón Directo para Cotizar este Servicio */}
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
-                          <div className="text-[11px] text-stone-600 italic">
-                            <strong>Ideal para:</strong> {srv.idealFor}
+                          <div className="text-[11px] text-stone-400 italic">
+                            <strong className="text-stone-200">Ideal para:</strong> {srv.idealFor}
                           </div>
 
                           <button
                             type="button"
                             onClick={() => handleOpenCotizador(srv.id === 'audiovisual' ? 'branding' : srv.id)}
-                            className="w-full sm:w-auto px-4 py-2 rounded-xl bg-[#17251E] hover:bg-[#2D4F3E] text-white font-black text-xs transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 shrink-0"
+                            className="w-full sm:w-auto px-4 py-2 rounded-xl bg-gradient-to-r from-[#e8b84f] to-[#d4a359] hover:from-[#d4a359] hover:to-[#c29235] text-[#0B0D11] font-black text-xs transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 shrink-0"
                           >
                             <span>Cotizar este servicio</span>
-                            <ArrowRight className="w-3.5 h-3.5 text-[#e8b84f]" />
+                            <ArrowRight className="w-3.5 h-3.5 text-[#0B0D11]" />
                           </button>
                         </div>
 
@@ -458,15 +458,15 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
             </div>
 
             {/* Banner Compacto de Cotización */}
-            <div className="rounded-2xl bg-gradient-to-r from-[#17251E] via-[#243B2F] to-[#1F2421] text-white p-4 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="rounded-2xl bg-gradient-to-r from-[#141820] via-[#1A212B] to-[#11141A] text-white p-4 shadow-xl border border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-3">
               <div className="space-y-0.5 text-center sm:text-left">
-                <div className="text-xs font-bold text-[#D4A359]">¿Tienes un proyecto especial con medidas específicas?</div>
-                <div className="text-xs text-stone-200">Cotiza en 2 pasos con cálculo de costo al instante.</div>
+                <div className="text-xs font-bold text-[#e8b84f]">¿Tienes un proyecto especial con medidas específicas?</div>
+                <div className="text-xs text-stone-300">Cotiza en 2 pasos con cálculo de costo al instante.</div>
               </div>
               <button
                 type="button"
                 onClick={() => handleOpenCotizador('branding')}
-                className="w-full sm:w-auto shrink-0 px-4 py-2 rounded-xl bg-[#D4A359] hover:bg-[#c39247] text-[#17251E] font-black text-xs transition-all shadow-md cursor-pointer"
+                className="w-full sm:w-auto shrink-0 px-4 py-2 rounded-xl bg-[#e8b84f] hover:bg-[#d4a359] text-[#0B0D11] font-black text-xs transition-all shadow-md cursor-pointer"
               >
                 Abrir Cotizador
               </button>
@@ -475,18 +475,18 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
           </div>
         )}
 
-        {/* ================= SECCIÓN 2: COTIZADOR INTERACTIVO EN 2 PASOS ================= */}
+        {/* ================= SECCIÓN 2: COTIZADOR INTERACTIVO EN 2 PASOS (TOTALMENTE EN NEGRO) ================= */}
         {activeTab === 'cotizador' && (
           <div ref={cotizadorRef} className="space-y-5 animate-fadeIn">
             
             {/* TARJETA DESTACADA DEL COSTO ORIENTATIVO */}
-            <div className="sticky top-32 z-20 p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-[#17251E] to-[#2D4F3E] text-white shadow-xl border border-[#D4A359]/30 flex items-center justify-between gap-3">
+            <div className="sticky top-32 z-20 p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-[#141820] to-[#1C2532] text-white shadow-2xl border border-[#e8b84f]/40 flex items-center justify-between gap-3">
               <div className="space-y-0.5">
-                <div className="text-[10px] font-bold uppercase tracking-wider text-[#D4A359] flex items-center gap-1">
+                <div className="text-[10px] font-bold uppercase tracking-wider text-[#e8b84f] flex items-center gap-1">
                   <DollarSign className="w-3 h-3" />
                   <span>Inversión Estimada:</span>
                 </div>
-                <div className="text-2xl sm:text-3xl font-black font-heading text-white tracking-tight">
+                <div className="text-2xl sm:text-3xl font-black font-heading text-[#e8b84f] tracking-tight">
                   ${quoteEstimate.base.toLocaleString('es-MX')} <span className="text-xs font-normal text-stone-300">MXN</span>
                 </div>
                 <div className="text-[10px] text-stone-300 truncate max-w-[220px] sm:max-w-md">
@@ -504,17 +504,17 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
               </button>
             </div>
 
-            {/* CONTENEDOR DE LOS 2 PASOS */}
-            <div className="bg-white rounded-3xl border border-stone-200 p-4 sm:p-6 shadow-sm space-y-5">
+            {/* CONTENEDOR DE LOS 2 PASOS EN NEGRO */}
+            <div className="bg-[#10131A] rounded-3xl border border-stone-800 p-4 sm:p-6 shadow-2xl space-y-5 text-white">
               
               {/* PASO 1: ESPECIALIDAD O SERVICIO */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-black uppercase tracking-wider text-stone-800 flex items-center gap-1.5">
-                    <span className="w-5 h-5 rounded-full bg-[#17251E] text-white text-[11px] flex items-center justify-center font-bold">1</span>
+                  <label className="text-xs font-black uppercase tracking-wider text-stone-200 flex items-center gap-1.5">
+                    <span className="w-5 h-5 rounded-full bg-[#e8b84f] text-[#0B0D11] text-[11px] flex items-center justify-center font-black">1</span>
                     <span>Especialidad o Servicio:</span>
                   </label>
-                  <span className="text-[11px] text-stone-500 font-medium">Toca una opción</span>
+                  <span className="text-[11px] text-stone-400 font-medium">Toca una opción</span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -533,17 +533,19 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
                         onClick={() => setQuoteService(s.id)}
                         className={`p-3 rounded-2xl text-left border transition-all cursor-pointer flex items-center justify-between gap-2 ${
                           isSelected
-                            ? 'border-[#2D4F3E] bg-[#2D4F3E]/8 ring-2 ring-[#2D4F3E]/20 shadow-xs'
-                            : 'border-stone-200 hover:border-stone-300 bg-white'
+                            ? 'border-[#e8b84f] bg-[#e8b84f]/15 ring-2 ring-[#e8b84f]/30 shadow-md'
+                            : 'border-stone-800 hover:border-stone-700 bg-[#161B23]'
                         }`}
                       >
                         <div className="min-w-0">
-                          <div className="font-black text-xs text-stone-900 truncate">
+                          <div className="font-black text-xs text-white truncate">
                             {s.title}
                           </div>
-                          <div className="text-[11px] text-stone-500 truncate">{s.desc}</div>
+                          <div className="text-[11px] text-stone-400 truncate">{s.desc}</div>
                         </div>
-                        <span className="shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-700">
+                        <span className={`shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                          isSelected ? 'bg-[#e8b84f] text-[#0B0D11]' : 'bg-[#202633] text-stone-300'
+                        }`}>
                           {s.price}
                         </span>
                       </button>
@@ -555,11 +557,11 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
               {/* PASO 2: ALCANCE DE PROYECTO */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-black uppercase tracking-wider text-stone-800 flex items-center gap-1.5">
-                    <span className="w-5 h-5 rounded-full bg-[#17251E] text-white text-[11px] flex items-center justify-center font-bold">2</span>
+                  <label className="text-xs font-black uppercase tracking-wider text-stone-200 flex items-center gap-1.5">
+                    <span className="w-5 h-5 rounded-full bg-[#e8b84f] text-[#0B0D11] text-[11px] flex items-center justify-center font-black">2</span>
                     <span>Alcance del Proyecto:</span>
                   </label>
-                  <span className="text-[11px] text-stone-500 font-medium">Nivel de profundidad</span>
+                  <span className="text-[11px] text-stone-400 font-medium">Nivel de profundidad</span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -576,12 +578,12 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
                         onClick={() => setQuoteScope(lvl.id)}
                         className={`p-3 rounded-2xl text-left border transition-all cursor-pointer ${
                           isSelected
-                            ? 'border-[#D4A359] bg-[#D4A359]/12 ring-2 ring-[#D4A359]/30 shadow-xs'
-                            : 'border-stone-200 hover:border-stone-300 bg-white'
+                            ? 'border-[#e8b84f] bg-[#e8b84f]/15 ring-2 ring-[#e8b84f]/30 shadow-md'
+                            : 'border-stone-800 hover:border-stone-700 bg-[#161B23]'
                         }`}
                       >
-                        <div className="font-black text-xs text-stone-900">{lvl.title}</div>
-                        <div className="text-[11px] text-stone-500 mt-0.5 leading-tight">{lvl.desc}</div>
+                        <div className="font-black text-xs text-white">{lvl.title}</div>
+                        <div className="text-[11px] text-stone-400 mt-0.5 leading-tight">{lvl.desc}</div>
                       </button>
                     );
                   })}
@@ -589,7 +591,7 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
               </div>
 
               {/* ACCIÓN PRINCIPAL: BOTÓN DE COTIZAR POR WHATSAPP */}
-              <div className="pt-3 border-t border-stone-200 space-y-4">
+              <div className="pt-3 border-t border-stone-800/80 space-y-4">
                 
                 <button
                   type="button"
@@ -601,9 +603,9 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
                 </button>
 
                 {/* CUÉNTANOS TU IDEA: UBICADO ABAJO DEL BOTÓN DE COTIZAR */}
-                <div className="p-3.5 rounded-2xl bg-[#FAF9F5] border border-stone-200/80 space-y-1.5">
-                  <label className="text-xs font-bold text-stone-800 flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-[#D4A359]" />
+                <div className="p-3.5 rounded-2xl bg-[#080A0E] border border-stone-800 space-y-1.5">
+                  <label className="text-xs font-bold text-stone-200 flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-[#e8b84f]" />
                     <span>Cuéntanos tu idea (opcional):</span>
                   </label>
                   <textarea
@@ -611,9 +613,9 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
                     value={quoteNotes}
                     onChange={(e) => setQuoteNotes(e.target.value)}
                     placeholder="Escribe brevemente tu idea si deseas añadir medidas o detalles (ej. Lona de 3x2m para inauguración y diseño de logo)..."
-                    className="w-full p-2.5 rounded-xl border border-stone-300 text-xs text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#2D4F3E] bg-white"
+                    className="w-full p-2.5 rounded-xl border border-stone-700 text-xs text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-[#e8b84f] bg-[#141820]"
                   />
-                  <p className="text-[10px] text-stone-500">
+                  <p className="text-[10px] text-stone-400">
                     Si escribes detalles aquí, se incluirán automáticamente en tu mensaje de WhatsApp al pulsar el botón de arriba.
                   </p>
                 </div>
