@@ -5,11 +5,15 @@
  */
 
 export const SKU_AREAS = {
-  HOG: { code: 'HOG', label: 'Hogar & Decoración', worldId: 'hogar', desc: 'Lámparas, macetas, cuadros, vaciabolsillos y recuerdos' },
-  NEG: { code: 'NEG', label: 'Negocios & Marca', worldId: 'negocios', desc: 'Señalética, soportes QR/NFC, placas y branding' },
-  EVE: { code: 'EVE', label: 'Eventos Especiales', worldId: 'eventos', desc: 'Bodas, XV años, centros de mesa y recuerdos' },
-  PAQ: { code: 'PAQ', label: 'Paquetes & Combos', worldId: 'paquetes', desc: 'Sets multitécnica, combos y kits promocionales' },
-  TLL: { code: 'TLL', label: 'Taller General', worldId: 'taller', desc: 'Producción interna y piezas especiales bajo pedido' }
+  HOG: { code: 'HOG', label: 'Hogar', short: 'Hogar', icon: '🏠', worldId: 'hogar', desc: 'Lámparas, macetas, cuadros, vaciabolsillos y recuerdos' },
+  NEG: { code: 'NEG', label: 'Negocios', short: 'Negocios', icon: '💼', worldId: 'negocios', desc: 'Señalética, soportes QR/NFC, placas y branding' },
+  JUG: { code: 'JUG', label: 'Juguetes', short: 'Juguetes', icon: '🧸', worldId: 'juguetes', desc: 'Juguetes, figuras y piezas para niños' },
+  PER: { code: 'PER', label: 'Personalizados', short: 'Personalizados', icon: '✨', worldId: 'personalizados', desc: 'Modelos personalizados únicos' },
+  EVE: { code: 'EVE', label: 'Eventos', short: 'Eventos', icon: '🎉', worldId: 'eventos', desc: 'Bodas, XV años, centros de mesa y recuerdos' },
+  PAQ: { code: 'PAQ', label: 'Paquetes', short: 'Paquetes', icon: '🎁', worldId: 'paquetes', desc: 'Sets multitécnica, combos y kits promocionales' },
+  IND: { code: 'IND', label: 'Industria', short: 'Industria', icon: '⚙️', worldId: 'industria', desc: 'Industria técnica, piezas y prototipos' },
+  PUB: { code: 'PUB', label: 'Publicidad', short: 'Publicidad', icon: '🎨', worldId: 'publicidad-desarrollo', desc: 'Diseño publicitario y producción' },
+  TLL: { code: 'TLL', label: 'Taller', short: 'Taller', icon: '🛠️', worldId: 'taller', desc: 'Producción interna y piezas especiales bajo pedido' }
 };
 
 export const SKU_TECHNIQUES = {

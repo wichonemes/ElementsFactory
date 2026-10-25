@@ -613,6 +613,13 @@ export default function WorkshopArcadeModal({
   const [timeLeft, setTimeLeft] = useState(effectiveConfig?.timeLimitSeconds || 300);
 
   useEffect(() => {
+    if (noCreditsWarning) {
+      const timer = setTimeout(() => setNoCreditsWarning(false), 3500);
+      return () => clearTimeout(timer);
+    }
+  }, [noCreditsWarning]);
+
+  useEffect(() => {
     if (gameState === 'ready' && effectiveConfig?.timeLimitSeconds) {
       setTimeLeft(effectiveConfig.timeLimitSeconds);
     }
@@ -2252,42 +2259,44 @@ export default function WorkshopArcadeModal({
           </div>
         </div>
 
-        {/* Pestañas de Navegación */}
-        <div className="flex items-center justify-between border-b border-[#D4A359]/20 bg-black/30 px-5 shrink-0">
-          <div className="flex items-center">
+        {/* Pestañas de Navegación Responsivas */}
+        <div className="flex items-center justify-between border-b border-[#D4A359]/20 bg-black/30 px-3 sm:px-5 shrink-0">
+          <div className="flex items-center gap-1 sm:gap-2">
             <button
               type="button"
               onClick={() => setActiveTab('play')}
-              className={`py-2.5 px-4 text-xs font-bold border-b-2 transition-all flex items-center gap-2 cursor-pointer ${
+              className={`py-2.5 px-3 sm:px-4 text-xs font-bold border-b-2 transition-all flex items-center gap-1.5 cursor-pointer ${
                 activeTab === 'play'
                   ? 'border-[#D4A359] text-[#F5D061]'
                   : 'border-transparent text-gray-400 hover:text-white'
               }`}
             >
               <Play className="w-3.5 h-3.5" />
-              <span>Consola de Juegos</span>
+              <span className="sm:hidden">Juegos</span>
+              <span className="hidden sm:inline">Consola de Juegos</span>
             </button>
 
             <button
               type="button"
               onClick={() => setActiveTab('rewards')}
-              className={`py-2.5 px-4 text-xs font-bold border-b-2 transition-all flex items-center gap-2 cursor-pointer ${
+              className={`py-2.5 px-3 sm:px-4 text-xs font-bold border-b-2 transition-all flex items-center gap-1.5 cursor-pointer ${
                 activeTab === 'rewards'
                   ? 'border-[#D4A359] text-[#F5D061]'
                   : 'border-transparent text-gray-400 hover:text-white'
               }`}
             >
               <Gift className="w-3.5 h-3.5" />
-              <span>Caja de Canje &amp; Cupones</span>
+              <span className="sm:hidden">Cupones</span>
+              <span className="hidden sm:inline">Caja de Canje &amp; Cupones</span>
               {userCoins >= 30 && (
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
               )}
             </button>
           </div>
 
-          {/* Selector de modo de juegos: Reto del Día vs Ver los 10 */}
+          {/* Selector de modo de juegos: Reto del Día vs Ver los 10 (Oculto en móvil pequeño para evitar amontonamiento) */}
           {activeTab === 'play' && gameState !== 'playing' && (
-            <div className="flex items-center gap-1 text-[11px] bg-black/40 p-1 rounded-xl border border-white/10">
+            <div className="hidden sm:flex items-center gap-1 text-[11px] bg-black/40 p-1 rounded-xl border border-white/10">
               <button
                 type="button"
                 onClick={() => setGamesViewMode('active')}
@@ -2330,8 +2339,8 @@ export default function WorkshopArcadeModal({
             <div className="space-y-2 sm:space-y-3">
               {/* Selector Deslizable Compacto para Celular (Oculto durante partida para no empujar la pantalla) */}
               {gameState !== 'playing' && (
-                <div className="flex sm:hidden items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
-                  <span className="text-[10px] font-bold text-gray-400 shrink-0 font-mono px-1">🕹️ Juegos:</span>
+                <div className="flex sm:hidden items-center gap-1.5 overflow-x-auto no-scrollbar py-1 px-0.5">
+                  <span className="text-[10px] font-bold text-amber-300 shrink-0 font-mono px-1">🕹️ Juegos:</span>
                   {currentAvailableGames.map(g => {
                     const isSel = selectedGameId === g.id;
                     const active = isGameActive(g.id);
@@ -2350,17 +2359,17 @@ export default function WorkshopArcadeModal({
                           setGameState('ready');
                           soundSynth.play('stack');
                         }}
-                        className={`px-2.5 py-1.5 rounded-xl text-xs font-bold shrink-0 flex items-center gap-1.5 border transition-all cursor-pointer ${
+                        className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 flex items-center gap-1.5 border transition-all cursor-pointer ${
                           !active
                             ? 'opacity-40 cursor-not-allowed bg-red-950/20 border-red-500/30 text-rose-300'
                             : isSel
-                              ? 'bg-[#2D4F3E] border-[#D4A359] text-[#F5D061] ring-2 ring-[#D4A359]/60 shadow-sm'
-                              : 'bg-black/40 border-white/15 text-gray-200 hover:bg-white/10'
+                              ? 'bg-gradient-to-r from-amber-400 to-[#F5D061] border-amber-300 text-[#17251E] font-black shadow-md scale-[1.02]'
+                              : 'bg-black/50 border-white/15 text-gray-200 hover:bg-white/10'
                         }`}
                         title={!active ? 'Juego inactivo' : g.title}
                       >
                         <span className="text-sm">{g.icon}</span>
-                        <span className="text-[11px] font-semibold whitespace-nowrap">{g.title.split(' ')[0]}</span>
+                        <span className="text-[11px] whitespace-nowrap">{g.title.split(' ')[0]}</span>
                       </button>
                     );
                   })}
@@ -2377,7 +2386,7 @@ export default function WorkshopArcadeModal({
 
                   <div className="flex items-center gap-1 overflow-x-auto no-scrollbar w-full sm:w-auto">
                     {[
-                      { id: 'easy', label: '⭐ Fácil (Móvil)', hint: 'Velocidad suave & 4 vidas' },
+                      { id: 'easy', label: '⭐ Fácil', hint: 'Velocidad suave & 4 vidas' },
                       { id: 'normal', label: '⚡ Normal', hint: 'Velocidad estándar & 3 vidas' },
                       { id: 'pro', label: '🔥 Pro (x2)', hint: 'Mayor velocidad & doble moneda' },
                       { id: 'auto_coins', label: '🪙 Adaptable', hint: 'Se adapta automáticamente a tu saldo de monedas' }
@@ -2470,65 +2479,56 @@ export default function WorkshopArcadeModal({
                 })}
               </div>
 
-              {/* HUD Superior de la Partida */}
-              <div className="flex items-center justify-between px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-2xl bg-black/40 border border-[#D4A359]/30 text-xs font-mono flex-wrap gap-1.5 sm:gap-2">
-                {/* Vidas Dinámicas */}
-                <div className="flex items-center gap-1">
-                  <span className="text-gray-400 text-[10px] sm:text-[11px]">Vidas:</span>
-                  <div className="flex gap-0.5 text-xs sm:text-sm">
-                    {Array.from({ length: Math.max(diffSettings.initialLives, lives) }, (_, i) => i + 1).map(heartIdx => (
-                      <span key={heartIdx} className={heartIdx <= lives ? 'opacity-100' : 'opacity-25 grayscale'}>
-                        ❤️
-                      </span>
-                    ))}
-                    {hasShield && (
-                      <span className="text-xs sm:text-sm animate-pulse" title="🛡️ Escudo Asistido Activo (absorbe 1 fallo)">
-                        🛡️
-                      </span>
-                    )}
+              {/* HUD Superior de la Partida (Solo visible durante la partida para mantener la pantalla limpia en celular) */}
+              {gameState === 'playing' && (
+                <div className="flex items-center justify-between px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-2xl bg-black/60 border border-[#D4A359]/40 text-xs font-mono shadow-md animate-fadeIn">
+                  {/* Vidas Dinámicas */}
+                  <div className="flex items-center gap-1">
+                    <span className="text-gray-400 text-[10px] sm:text-[11px]">Vidas:</span>
+                    <div className="flex gap-0.5 text-xs sm:text-sm">
+                      {Array.from({ length: Math.max(diffSettings.initialLives, lives) }, (_, i) => i + 1).map(heartIdx => (
+                        <span key={heartIdx} className={heartIdx <= lives ? 'opacity-100' : 'opacity-25 grayscale'}>
+                          ❤️
+                        </span>
+                      ))}
+                      {hasShield && (
+                        <span className="text-xs sm:text-sm animate-pulse" title="🛡️ Escudo Asistido Activo (absorbe 1 fallo)">
+                          🛡️
+                        </span>
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                {/* Nivel y Dificultad Dinámica */}
-                <div className="flex items-center gap-1 text-amber-300">
-                  <Flame className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
-                  <span className="font-bold text-[10px] sm:text-xs">
-                    Nv {currentLevel} · +{coinsEarned}🪙
-                  </span>
-                </div>
+                  {/* Nivel y Dificultad Dinámica */}
+                  <div className="flex items-center gap-1 text-amber-300">
+                    <Flame className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+                    <span className="font-bold text-[10px] sm:text-xs">
+                      Nv {currentLevel} · +{coinsEarned}🪙
+                    </span>
+                  </div>
 
-                {/* Reloj regresivo */}
-                <div className="flex items-center gap-1">
-                  <Clock className="w-3 h-3 text-emerald-400" />
-                  <span className={`font-bold text-xs ${timeLeft < 30 ? 'text-red-400 animate-ping' : 'text-emerald-300'}`}>
-                    {formatTime(timeLeft)}
-                  </span>
-                </div>
+                  {/* Reloj regresivo */}
+                  <div className="flex items-center gap-1">
+                    <Clock className="w-3 h-3 text-emerald-400" />
+                    <span className={`font-bold text-xs ${timeLeft < 30 ? 'text-red-400 animate-ping' : 'text-emerald-300'}`}>
+                      {formatTime(timeLeft)}
+                    </span>
+                  </div>
 
-                {/* Puntos y Botón de Pausa / Giro */}
-                <div className="flex items-center gap-1.5">
-                  <span className="text-gray-300 text-[11px] sm:text-xs">Pts: <strong className="text-white">{score}</strong></span>
-                  {gameState === 'playing' && (
+                  {/* Puntos y Botón de Pausa */}
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-gray-300 text-[11px] sm:text-xs">Pts: <strong className="text-white">{score}</strong></span>
                     <button
                       type="button"
                       onClick={() => setGameState('ready')}
-                      className="px-2 py-0.5 rounded-lg bg-red-600/80 hover:bg-red-700 text-white text-[10px] font-bold cursor-pointer transition-all active:scale-95"
+                      className="px-2.5 py-1 rounded-lg bg-red-600/90 hover:bg-red-700 text-white text-[10px] font-black cursor-pointer transition-all active:scale-95 shadow-sm"
                       title="Detener o cambiar juego"
                     >
                       Pausar
                     </button>
-                  )}
-                  <button
-                    type="button"
-                    onClick={toggleOrientationMode}
-                    className="p-1 rounded-lg bg-white/10 hover:bg-white/20 text-amber-300 border border-white/20 text-[10px] sm:text-[11px] flex items-center gap-1 cursor-pointer transition-colors active:scale-95"
-                    title={isLandscapeMode ? "Modo normal" : "Modo horizontal / pantalla completa"}
-                  >
-                    <RotateCw className={`w-3 h-3 ${isLandscapeMode ? 'rotate-90 text-amber-200' : ''}`} />
-                    <span className="hidden sm:inline">{isLandscapeMode ? 'Normal' : 'Girar'}</span>
-                  </button>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* PANTALLA CANVAS DEL JUEGO CON BORDE TEMÁTICO (Optimizado táctil touch-none) */}
               <div
@@ -2547,16 +2547,16 @@ export default function WorkshopArcadeModal({
                 {/* OVERLAY INTERACTIVO: PANTALLA DE INICIO CON BOTÓN FÍSICO Y COSTO DE MONEDAS */}
                 {gameState === 'ready' && (
                   <div
-                    className="absolute inset-0 bg-black/70 backdrop-blur-xs flex flex-col items-center justify-center p-4 text-center z-10 animate-fadeIn"
+                    className="absolute inset-0 bg-black/75 backdrop-blur-xs flex flex-col items-center justify-center p-3 sm:p-4 text-center z-10 animate-fadeIn"
                     onClick={e => e.stopPropagation()}
                   >
-                    <div className="text-4xl sm:text-5xl mb-2 animate-bounce">
+                    <div className="text-3xl sm:text-5xl mb-1 sm:mb-2 animate-bounce">
                       {GAMES.find(g => g.id === selectedGameId)?.icon || '🕹️'}
                     </div>
-                    <h4 className={`text-xl sm:text-2xl font-black font-heading ${currentTheme.accentText} drop-shadow-md`}>
+                    <h4 className={`text-lg sm:text-2xl font-black font-heading ${currentTheme.accentText} drop-shadow-md`}>
                       {GAMES.find(g => g.id === selectedGameId)?.title}
                     </h4>
-                    <p className="text-xs text-gray-200 max-w-md mt-1 mb-4 leading-relaxed font-sans">
+                    <p className="text-[11px] sm:text-xs text-gray-200 max-w-md mt-0.5 sm:mt-1 mb-3 sm:mb-4 leading-relaxed font-sans">
                       {GAMES.find(g => g.id === selectedGameId)?.instructions}
                     </p>
 
@@ -2568,40 +2568,66 @@ export default function WorkshopArcadeModal({
                           startGame();
                         }}
                         title="Jugar (Costo: 1 Moneda)"
-                        className="px-7 py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 via-[#F5D061] to-amber-500 hover:brightness-110 active:scale-95 text-[#17251E] font-black text-sm sm:text-base transition-all shadow-2xl flex items-center gap-2.5 cursor-pointer border-2 border-white/80 animate-pulse"
+                        className="px-6 sm:px-7 py-3 sm:py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 via-[#F5D061] to-amber-500 hover:brightness-110 active:scale-95 text-[#17251E] font-black text-sm sm:text-base transition-all shadow-2xl flex items-center gap-2.5 cursor-pointer border-2 border-white/80 animate-pulse"
                       >
                         <span className="text-xl">🎮</span>
                         <span>JUGAR AHORA · Costo: 1 Moneda</span>
                       </button>
                     ) : (
-                      <div className="flex flex-col items-center gap-2.5 max-w-sm">
-                        <div className="px-4 py-2.5 rounded-2xl bg-red-950/90 border border-red-500/60 text-red-200 text-xs font-semibold leading-snug">
-                          ⚠️ Te has quedado sin monedas de juego (0/{maxCredits}).
-                          <br />
-                          <span className="text-[11px] text-gray-300">
-                            Recarga pasiva de 1 moneda gratis en <strong>{refillTimeFormatted}</strong>
-                          </span>
+                      <div className={`flex flex-col items-center gap-2.5 max-w-sm px-4 py-3 sm:py-3.5 rounded-2xl sm:rounded-3xl bg-black/85 border-2 ${noCreditsWarning ? 'border-amber-400 ring-4 ring-amber-400/40 animate-pulse' : 'border-amber-500/60'} shadow-2xl text-center animate-fadeIn`}>
+                        <div className="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-xl shadow-inner">
+                          ⏳
                         </div>
-                        {userCoins >= 2 && (
+                        <div>
+                          <h4 className="text-sm sm:text-base font-black text-amber-300 font-heading">
+                            ¡Te has quedado sin monedas!
+                          </h4>
+                          <p className="text-xs text-gray-200 mt-0.5 font-medium">
+                            Recarga navegando en la página y vuelve en:
+                          </p>
+                        </div>
+                        
+                        <div className="px-4 py-1.5 rounded-2xl bg-gradient-to-r from-amber-500/30 via-amber-400/20 to-amber-500/30 border border-amber-300/60 flex items-center gap-2 text-white font-mono text-sm sm:text-base font-black shadow-inner">
+                          <Clock className="w-4 h-4 text-amber-300 animate-spin" style={{ animationDuration: '4s' }} />
+                          <span className="tracking-wider text-amber-200">{refillTimeFormatted}</span>
+                        </div>
+
+                        <p className="text-[10px] sm:text-[11px] text-gray-400 max-w-xs leading-tight">
+                          💡 Mientras exploras la tienda, tus monedas se recargan automáticamente con el tiempo.
+                        </p>
+
+                        <div className="flex items-center gap-2 flex-wrap justify-center pt-0.5">
+                          {userCoins >= 2 && (
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                const res = exchangeCoinsForCredits(2, 1);
+                                if (res.success) {
+                                  soundSynth.play('coin');
+                                  playMario1UpSound();
+                                }
+                              }}
+                              className="px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 active:scale-95 text-[#17251E] font-black text-xs transition-all shadow-md cursor-pointer flex items-center gap-1.5 border border-amber-300"
+                            >
+                              <span>🔄 Canjear 2🪙 por 1🎮</span>
+                            </button>
+                          )}
                           <button
                             type="button"
                             onClick={(e) => {
                               e.stopPropagation();
-                              const res = exchangeCoinsForCredits(2, 1);
-                              if (res.success) {
-                                soundSynth.play('coin');
-                                playMario1UpSound();
-                              }
+                              onClose();
                             }}
-                            className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-[#17251E] font-black text-xs transition-all shadow-md cursor-pointer flex items-center gap-1.5"
+                            className="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-gray-200 hover:text-white font-bold text-xs transition-all border border-white/20 cursor-pointer flex items-center gap-1.5"
                           >
-                            <span>🔄 Canjear 2🪙 ganadas por 1🎮 crédito</span>
+                            <span>🛍️ Ver Catálogo de Tienda</span>
                           </button>
-                        )}
+                        </div>
                       </div>
                     )}
 
-                    <div className="mt-4 flex items-center gap-3 text-[11px] text-gray-300 font-mono bg-black/60 px-3.5 py-1.5 rounded-full border border-white/10">
+                    <div className="mt-3 sm:mt-4 flex items-center gap-3 text-[10px] sm:text-[11px] text-gray-300 font-mono bg-black/60 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-white/10">
                       <span>Tienes: <strong className="text-amber-300">{credits}/{maxCredits} Monedas</strong></span>
                       <span>·</span>
                       <span>1 Moneda cada 50 pts</span>
@@ -2612,43 +2638,95 @@ export default function WorkshopArcadeModal({
                 {/* OVERLAY INTERACTIVO: GAME OVER & RESULTADOS */}
                 {(gameState === 'gameover' || gameState === 'victory') && (
                   <div
-                    className="absolute inset-0 bg-black/80 backdrop-blur-xs flex flex-col items-center justify-center p-4 text-center z-10 animate-fadeIn"
+                    className="absolute inset-0 bg-black/85 backdrop-blur-xs flex flex-col items-center justify-center p-3 sm:p-4 text-center z-10 animate-fadeIn"
                     onClick={e => e.stopPropagation()}
                   >
-                    <div className="text-4xl mb-1">{gameState === 'victory' ? '🏆' : '💥'}</div>
-                    <h4 className={`text-xl sm:text-2xl font-black font-heading ${gameState === 'victory' ? 'text-amber-300' : 'text-rose-400'}`}>
+                    <div className="text-3xl sm:text-4xl mb-1">{gameState === 'victory' ? '🏆' : '💥'}</div>
+                    <h4 className={`text-lg sm:text-2xl font-black font-heading ${gameState === 'victory' ? 'text-amber-300' : 'text-rose-400'}`}>
                       {gameState === 'victory' ? '¡VICTORIA EN EL TALLER!' : '¡PARTIDA TERMINADA!'}
                     </h4>
-                    <div className="my-2 text-xs text-gray-200 space-y-1">
+                    <div className="my-1.5 sm:my-2 text-xs text-gray-200 space-y-0.5 sm:space-y-1">
                       <p>Puntuación lograda: <strong className="text-white text-sm">{score} pts</strong></p>
                       <p>Monedas ganadas para cupones: <strong className="text-amber-300 text-sm">+{coinsEarned} 🪙</strong></p>
                     </div>
 
-                    <div className="flex items-center gap-2.5 mt-3 flex-wrap justify-center">
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          startGame();
-                        }}
-                        className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-[#F5D061] hover:brightness-110 active:scale-95 text-[#17251E] font-black text-xs sm:text-sm transition-all shadow-lg flex items-center gap-2 cursor-pointer border border-amber-300/50"
-                      >
-                        <RotateCcw className="w-4 h-4" />
-                        <span>JUGAR OTRA VEZ · 1 Moneda ({credits} disp.)</span>
-                      </button>
+                    {credits > 0 ? (
+                      <div className="flex items-center gap-2 sm:gap-2.5 mt-2.5 sm:mt-3 flex-wrap justify-center">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            startGame();
+                          }}
+                          className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-[#F5D061] hover:brightness-110 active:scale-95 text-[#17251E] font-black text-xs sm:text-sm transition-all shadow-lg flex items-center gap-2 cursor-pointer border border-amber-300/50"
+                        >
+                          <RotateCcw className="w-4 h-4" />
+                          <span>JUGAR OTRA VEZ · 1 Moneda ({credits} disp.)</span>
+                        </button>
 
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setActiveTab('rewards');
-                        }}
-                        className="px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white font-bold text-xs transition-all border border-white/25 cursor-pointer flex items-center gap-1.5"
-                      >
-                        <Gift className="w-4 h-4 text-amber-300" />
-                        <span>Ir a Canjear Cupones</span>
-                      </button>
-                    </div>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActiveTab('rewards');
+                          }}
+                          className="px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white font-bold text-xs transition-all border border-white/25 cursor-pointer flex items-center gap-1.5"
+                        >
+                          <Gift className="w-4 h-4 text-amber-300" />
+                          <span>Ir a Canjear Cupones</span>
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="mt-2.5 flex flex-col items-center gap-2 p-3 rounded-2xl bg-black/75 border border-amber-500/50 max-w-sm">
+                        <div className="text-amber-300 text-xs font-bold flex items-center gap-1.5">
+                          <span>⏳</span>
+                          <span>Te has quedado sin monedas. Recarga navegando en la página y vuelve en:</span>
+                        </div>
+                        <div className="px-3.5 py-1 rounded-xl bg-amber-500/20 border border-amber-400/50 text-amber-200 font-mono text-sm font-black flex items-center gap-1.5">
+                          <Clock className="w-3.5 h-3.5 animate-spin" style={{ animationDuration: '4s' }} />
+                          <span>{refillTimeFormatted}</span>
+                        </div>
+                        <div className="flex items-center gap-2 mt-1 flex-wrap justify-center">
+                          {userCoins >= 2 && (
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                const res = exchangeCoinsForCredits(2, 1);
+                                if (res.success) {
+                                  soundSynth.play('coin');
+                                  playMario1UpSound();
+                                }
+                              }}
+                              className="px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-[#17251E] font-black text-[11px] transition-all cursor-pointer flex items-center gap-1"
+                            >
+                              <span>🔄 Canjear 2🪙 por 1🎮</span>
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setActiveTab('rewards');
+                            }}
+                            className="px-3 py-1.5 rounded-lg bg-[#2D4F3E] text-white font-bold text-[11px] hover:brightness-110 transition-all cursor-pointer flex items-center gap-1 border border-emerald-400/40"
+                          >
+                            <Gift className="w-3 h-3 text-amber-300" />
+                            <span>Canjear Cupones</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onClose();
+                            }}
+                            className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-gray-200 text-[11px] font-bold transition-all cursor-pointer"
+                          >
+                            <span>🛍️ Tienda</span>
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -2750,16 +2828,33 @@ export default function WorkshopArcadeModal({
                   </div>
 
                   <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
-                    <button
-                      type="button"
-                      onClick={startGame}
-                      disabled={!isGameActive(selectedGameId)}
-                      className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#D4A359] via-amber-400 to-[#F5D061] hover:brightness-110 active:scale-95 text-[#17251E] font-black text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg border border-amber-300/40"
-                      title={`Inicia partida descontando 1 moneda. Tienes ${credits}/${maxCredits} monedas`}
-                    >
-                      <span className="text-sm">🎮</span>
-                      <span>JUGAR AHORA · Costo: 1 Moneda de Juego (Tienes {credits}/{maxCredits})</span>
-                    </button>
+                    {credits > 0 ? (
+                      <button
+                        type="button"
+                        onClick={startGame}
+                        disabled={!isGameActive(selectedGameId)}
+                        className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#D4A359] via-amber-400 to-[#F5D061] hover:brightness-110 active:scale-95 text-[#17251E] font-black text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg border border-amber-300/40"
+                        title={`Inicia partida descontando 1 moneda. Tienes ${credits}/${maxCredits} monedas`}
+                      >
+                        <span className="text-sm">🎮</span>
+                        <span>JUGAR AHORA · Costo: 1 Moneda ({credits}/{maxCredits})</span>
+                      </button>
+                    ) : (
+                      <div className="w-full sm:w-auto px-4 py-2 rounded-xl bg-amber-500/15 border border-amber-400/40 text-amber-200 text-xs font-bold flex items-center justify-between sm:justify-center gap-3">
+                        <div className="flex items-center gap-1.5">
+                          <span>⏳</span>
+                          <span className="text-[11px] sm:text-xs">Sin monedas: Recarga en</span>
+                          <span className="font-mono text-amber-300 font-black">{refillTimeFormatted}</span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={onClose}
+                          className="px-2.5 py-1 rounded-lg bg-amber-400 text-[#17251E] text-[10px] font-black hover:bg-amber-300 transition-all cursor-pointer shadow-sm active:scale-95"
+                        >
+                          Ir a la tienda
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}

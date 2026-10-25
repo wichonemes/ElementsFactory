@@ -4707,18 +4707,18 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </span>
                     </div>
 
-                    {/* Selector de Áreas: Pills limpios con scroll horizontal táctil (estilo WorldSelector / FiltersBar) */}
-                    <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none no-scrollbar">
+                    {/* Selector de Áreas: Pills limpios y espaciados sin amontonar */}
+                    <div className="flex items-center gap-2 overflow-x-auto pb-1.5 pt-0.5 scrollbar-thin scrollbar-thumb-stone-300 no-scrollbar">
                       {[
                         { id: 'all', label: 'Todas las Áreas', icon: '🌐', stats: stockAreaStats.all },
-                        { id: 'hogar', label: 'Hogar & Deco', icon: '🏠', stats: stockAreaStats.hogar },
-                        { id: 'negocios', label: 'Negocios & Marcas', icon: '💼', stats: stockAreaStats.negocios },
-                        { id: 'juguetes', label: 'Juguetes & Niños', icon: '🧸', stats: stockAreaStats.juguetes },
+                        { id: 'hogar', label: 'Hogar', icon: '🏠', stats: stockAreaStats.hogar },
+                        { id: 'negocios', label: 'Negocios', icon: '💼', stats: stockAreaStats.negocios },
+                        { id: 'juguetes', label: 'Juguetes', icon: '🧸', stats: stockAreaStats.juguetes },
                         { id: 'personalizados', label: 'Personalizados', icon: '✨', stats: stockAreaStats.personalizados },
-                        { id: 'eventos', label: 'Eventos Especiales', icon: '🎉', stats: stockAreaStats.eventos },
-                        { id: 'paquetes', label: 'Paquetes & Kits', icon: '🎁', stats: stockAreaStats.paquetes },
-                        { id: 'industria', label: 'Industria Técnica', icon: '⚙️', stats: stockAreaStats.industria },
-                        { id: 'publicidad-desarrollo', label: 'Diseño & Publicidad', icon: '🎨', stats: stockAreaStats['publicidad-desarrollo'] }
+                        { id: 'eventos', label: 'Eventos', icon: '🎉', stats: stockAreaStats.eventos },
+                        { id: 'paquetes', label: 'Paquetes', icon: '🎁', stats: stockAreaStats.paquetes },
+                        { id: 'industria', label: 'Industria', icon: '⚙️', stats: stockAreaStats.industria },
+                        { id: 'publicidad-desarrollo', label: 'Publicidad', icon: '🎨', stats: stockAreaStats['publicidad-desarrollo'] }
                       ].map(area => {
                         const isSelected = filterWorld === area.id;
                         const stats = area.stats || { total: 0, inStock: 0, madeToOrder: 0 };
@@ -4727,16 +4727,16 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             key={area.id}
                             type="button"
                             onClick={() => setFilterWorld(area.id)}
-                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all cursor-pointer shrink-0 ${
+                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer shrink-0 border ${
                               isSelected
-                                ? 'bg-[#2D4F3E] text-white shadow-xs'
-                                : 'bg-[#F4F0E8] text-gray-700 hover:bg-[#EBE5D9]'
+                                ? 'bg-[#2D4F3E] text-white border-[#2D4F3E] shadow-sm'
+                                : 'bg-[#FAF9F5] text-gray-700 border-[#E8E4DA] hover:bg-[#F4F0E8] hover:border-gray-300'
                             }`}
                           >
                             <span>{area.icon}</span>
                             <span>{area.label}</span>
-                            <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
-                              isSelected ? 'bg-white/20 text-white' : 'bg-white text-gray-700 border border-gray-200'
+                            <span className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-black ${
+                              isSelected ? 'bg-white/20 text-white' : 'bg-white text-gray-700 border border-gray-200 shadow-2xs'
                             }`}>
                               {stats.total}
                             </span>
@@ -5232,8 +5232,11 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 </span>
                               )}
                               {p.skuBreakdown && (
-                                <span className="text-[9.5px] text-gray-400 truncate max-w-[120px]">
-                                  {p.skuBreakdown.area} • {p.skuBreakdown.technique}
+                                <span className="text-[10px] text-gray-500 font-sans tracking-tight bg-stone-100 px-1.5 py-0.5 rounded border border-stone-200 inline-flex items-center gap-1 shrink-0" title={`Área: ${p.skuBreakdown.area} | Técnica: ${p.skuBreakdown.technique}`}>
+                                  <span>{SKU_AREAS[p.skuBreakdown.area]?.icon || '📦'}</span>
+                                  <span className="font-semibold">{SKU_AREAS[p.skuBreakdown.area]?.label || p.skuBreakdown.area}</span>
+                                  <span className="text-gray-300">•</span>
+                                  <span>{SKU_TECHNIQUES[p.skuBreakdown.technique]?.short || p.skuBreakdown.technique}</span>
                                 </span>
                               )}
                             </div>
@@ -5436,8 +5439,11 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                       )}
                                     </span>
                                     {p.skuBreakdown && (
-                                      <span className="text-[8.5px] text-gray-500 font-sans tracking-tight truncate max-w-[140px]">
-                                        {p.skuBreakdown.area} • {p.skuBreakdown.technique} • {p.skuBreakdown.material}
+                                      <span className="text-[9px] text-gray-500 font-sans tracking-tight bg-stone-50 px-1.5 py-0.5 rounded border border-stone-200/80 inline-flex items-center gap-1 w-fit mt-0.5" title={`Área: ${p.skuBreakdown.area} | Técnica: ${p.skuBreakdown.technique} | Material: ${p.skuBreakdown.material}`}>
+                                        <span>{SKU_AREAS[p.skuBreakdown.area]?.icon || '📦'}</span>
+                                        <span className="font-semibold">{SKU_AREAS[p.skuBreakdown.area]?.label || p.skuBreakdown.area}</span>
+                                        <span className="text-gray-300">•</span>
+                                        <span>{SKU_TECHNIQUES[p.skuBreakdown.technique]?.short || p.skuBreakdown.technique}</span>
                                       </span>
                                     )}
                                   </div>
@@ -10704,7 +10710,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-bold text-[11px]"
                               >
                                 {Object.values(SKU_AREAS).map(a => (
-                                  <option key={a.code} value={a.code}>{a.icon} {a.code}</option>
+                                  <option key={a.code} value={a.code}>{a.icon} {a.label} ({a.code})</option>
                                 ))}
                               </select>
                             </div>
@@ -10727,7 +10733,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-bold text-[11px]"
                               >
                                 {Object.values(SKU_TECHNIQUES).map(t => (
-                                  <option key={t.code} value={t.code}>{t.icon} {t.code}</option>
+                                  <option key={t.code} value={t.code}>{t.short || t.label} ({t.code})</option>
                                 ))}
                               </select>
                             </div>
@@ -10750,7 +10756,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-bold text-[11px]"
                               >
                                 {Object.values(SKU_MATERIALS).map(m => (
-                                  <option key={m.code} value={m.code}>🪵 {m.code}</option>
+                                  <option key={m.code} value={m.code}>{m.label} ({m.code})</option>
                                 ))}
                               </select>
                             </div>
@@ -10773,7 +10779,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-bold text-[11px]"
                               >
                                 {Object.values(SKU_FINISHES).map(f => (
-                                  <option key={f.code} value={f.code}>✨ {f.code}</option>
+                                  <option key={f.code} value={f.code}>{f.label} ({f.code})</option>
                                 ))}
                               </select>
                             </div>
