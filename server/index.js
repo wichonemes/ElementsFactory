@@ -144,6 +144,106 @@ async function initCatalogFilesStorage() {
 }
 initCatalogFilesStorage().catch(() => {});
 
+// Sincronización automática de proveedores reales, costos de taller y productos clave en PostgreSQL
+async function syncCloudDbState() {
+  if (!cloudDb?.pool) return;
+  try {
+    await cloudDb.transaction(async () => {
+      const state = cloudDb.read();
+      let changed = false;
+
+      // 1. Sincronizar directorio de proveedores de materiales en México
+      const seedSuppliers = db.getSuppliers();
+      if (!Array.isArray(state.suppliers) || state.suppliers.length < seedSuppliers.length) {
+        state.suppliers = state.suppliers || [];
+        seedSuppliers.forEach(ss => {
+          const idx = state.suppliers.findIndex(s => s.id === ss.id);
+          if (idx === -1) {
+            state.suppliers.push(ss);
+            changed = true;
+          } else {
+            state.suppliers[idx] = { ...state.suppliers[idx], ...ss };
+            changed = true;
+          }
+        });
+      }
+
+      // 2. Sincronizar materias primas diferenciadas y costos reales
+      if (Array.isArray(state.rawMaterials)) {
+        const localMats = (db.getRawMaterials ? db.getRawMaterials() : null) || [];
+        localMats.forEach(lm => {
+          if (!state.rawMaterials.some(m => m.id === lm.id)) {
+            state.rawMaterials.push(lm);
+            changed = true;
+          }
+        });
+        state.rawMaterials.forEach(m => {
+          if (m.materialType === 'PLA' && m.costPerUnit < 500) {
+            m.costPerUnit = 500;
+            changed = true;
+          }
+        });
+      }
+
+      // 3. Sincronizar Lámpara de mesa moderna T38 y Fidget Clicker T42
+      if (Array.isArray(state.products)) {
+        const t38 = state.products.find(p => p.id === 'lampara-mesa-t38');
+        if (t38 && (t38.price !== 449 || t38.costPrice !== 245)) {
+          t38.price = 449;
+          t38.costPrice = 245;
+          if (t38.costBreakdown) {
+            t38.costBreakdown.otherMaterialsCost = 85;
+            t38.costBreakdown.packagingCost = 15;
+            t38.costBreakdown.costStatus = 'Verificado Taller';
+          }
+          t38.specifications = {
+            ...t38.specifications,
+            material: 'Polímero biodegradable PLA Plus ($500/kg) y pantalla difusora translúcida',
+            includes: 'Kit de luz LED USB 5V de bajo consumo con interruptor basculante integrado, cable de 1.5m, estructura continua 3D en C y difusor cónico'
+          };
+          t38.variants = [
+            {
+              name: 'Configuración y Luz',
+              options: [
+                'Lámpara completa (Estructura 3D + Kit de luz LED cálida e interruptor) - $449',
+                'Solo estructura 3D (para armar con tu propia luz/socket) - $289'
+              ]
+            },
+            {
+              name: 'Color de estructura',
+              options: [
+                'Arena / Nogal claro',
+                'Grafito carbón',
+                'Blanco tiza',
+                'Verde Olivo Taller',
+                '🎨 Otro color a convenir'
+              ]
+            }
+          ];
+          changed = true;
+        }
+
+        if (!state.products.some(p => p.id === 'clicker-mecanico-fidget-t42')) {
+          const allProds = db.getProducts ? db.getProducts() : [];
+          const localProd = allProds.find(p => p.id === 'clicker-mecanico-fidget-t42');
+          if (localProd) {
+            state.products.push(localProd);
+            changed = true;
+          }
+        }
+      }
+
+      if (changed) {
+        cloudDb.save(state);
+        console.log('[SYNC] artisan_private.state sincronizado en PostgreSQL con proveedores, costos y productos actualizados.');
+      }
+    });
+  } catch (err) {
+    console.warn('[SYNC] Nota sobre sincronización de estado en la nube:', err.message);
+  }
+}
+syncCloudDbState().catch(() => {});
+
 // Handler inteligente y robusto para servir y descargar archivos de /downloads/
 app.get('/downloads/:filename', async (req, res, next) => {
   const reqFilename = req.params.filename;
