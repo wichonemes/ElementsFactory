@@ -33,7 +33,7 @@ export default function FiltersBar({
   const hasActiveFilters = activeWorld !== 'all' || selectedCategory !== 'all' || selectedTechnique !== 'all';
 
   return (
-    <div className="bg-white/95 backdrop-blur-md border-y border-[#E8E4DA] sticky top-0 z-30 shadow-sm transition-all">
+    <div className="bg-white/95 backdrop-blur-md border-y border-[#E8E4DA] sticky top-[92px] md:top-[108px] z-30 shadow-sm transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 space-y-3">
         
         {/* Row 1: Technique Filter Chips & Mode Switcher */}
