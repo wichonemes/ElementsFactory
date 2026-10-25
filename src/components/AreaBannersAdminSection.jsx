@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Image as ImageIcon, Upload, Check, AlertTriangle, RefreshCw,
   Eye, Sparkles, Home, Briefcase, CalendarHeart, ExternalLink,
-  Layers, ArrowRight, Save
+  Layers, ArrowRight, Save, Gift, Wrench, Palette, Gamepad2
 } from 'lucide-react';
 
 const SUGGESTED_AREA_IMAGES = {
@@ -18,11 +18,35 @@ const SUGGESTED_AREA_IMAGES = {
     { label: 'Soportes de Mostrador & QR', url: '/uploads/t16_soporte_qr_mostrador_olivo.png' },
     { label: 'Soporte Inteligente NFC Contacto', url: '/uploads/t33_smart_nfc_prisma_olivo.png' }
   ],
+  juguetes: [
+    { label: 'Jaguar Articulado Print-in-Place', url: '/uploads/catalog-v2-j1-context-oficial.webp' },
+    { label: 'Zorrito Articulado Flexible', url: '/uploads/catalog-v2-j2-context-oficial.webp' }
+  ],
+  personalizados: [
+    { label: 'De Dibujo a 3D (Dinosaurio)', url: '/uploads/catalog-v2-cust-dibujo-dino-1.webp' },
+    { label: 'De Dibujo a 3D (Ajolote)', url: '/uploads/catalog-v2-cust-dibujo-ajolote-1.webp' },
+    { label: 'De Dibujo a 3D (Cohete)', url: '/uploads/catalog-v2-cust-dibujo-cohete-1.webp' },
+    { label: 'Figura Personalizada Funko', url: '/uploads/catalog-v2-cust-dibujo-1.webp' }
+  ],
   eventos: [
     { label: 'Bodas & Ceremonias Rústicas', url: '/uploads/bienvenida_ceremonia_boda.jpg' },
     { label: 'Letrero de Arco Nupcial', url: '/uploads/l2_letrero_bienvenida_arco_boda.png' },
     { label: 'Recuerdos & Fiestas Todo Incluido', url: '/uploads/bundle_promo_ev_1.jpg' },
     { label: 'Números de Mesa 3D de Alta Presencia', url: '/uploads/t25_numero_mesa_07_volumen.png' }
+  ],
+  'paquetes-servicios': [
+    { label: 'Combo Hogar Inteligente', url: '/uploads/bundle_promo_hogar_1.jpg' },
+    { label: 'Combo Marca & Branding', url: '/uploads/bundle_promo_biz_1.jpg' },
+    { label: 'Kit de Recuerdos para Boda', url: '/uploads/bundle_promo_ev_1.jpg' }
+  ],
+  industria: [
+    { label: 'Tobera Automotriz Taller', url: '/uploads/catalog-v2-ind1-context-oficial.webp' },
+    { label: 'Galga Calibradora de Taller', url: '/uploads/catalog-v2-ind2-context-oficial.webp' },
+    { label: 'Prototipado en Polímeros Técnicos', url: '/uploads/catalog-v2-ind1-detail-oficial.webp' }
+  ],
+  'publicidad-desarrollo': [
+    { label: 'Branding y Publicidad', url: '/uploads/bundle_promo_biz_1.jpg' },
+    { label: 'Diseño Gráfico & Digital', url: '/uploads/t39_smart_deck_streamer_workspace.png' }
   ]
 };
 
@@ -41,12 +65,47 @@ const AREA_METADATA = {
     badgeText: 'Colección Oficial Negocios',
     gradient: 'from-[#251A10] via-[#352516] to-[#19130D]'
   },
+  juguetes: {
+    label: 'Juguetes & Niños',
+    icon: Gamepad2,
+    color: 'pink',
+    badgeText: 'Colección Oficial Juguetes',
+    gradient: 'from-[#2D1225] via-[#3D1A33] to-[#1F0C19]'
+  },
+  personalizados: {
+    label: 'Personalizados & Figuras',
+    icon: Sparkles,
+    color: 'purple',
+    badgeText: 'Colección Oficial Personalizados',
+    gradient: 'from-[#22102E] via-[#311842] to-[#160B1E]'
+  },
   eventos: {
     label: 'Eventos Especiales',
     icon: CalendarHeart,
     color: 'rose',
     badgeText: 'Colección Oficial Eventos',
     gradient: 'from-[#2D0F1B] via-[#3B1524] to-[#1A0B12]'
+  },
+  'paquetes-servicios': {
+    label: 'Paquetes & Servicios',
+    icon: Gift,
+    color: 'teal',
+    badgeText: 'Colección Oficial Paquetes',
+    gradient: 'from-[#0F2826] via-[#173B38] to-[#0A1C1A]'
+  },
+  industria: {
+    label: 'Industria Técnica',
+    icon: Wrench,
+    color: 'slate',
+    badgeText: 'Colección Oficial Industria',
+    gradient: 'from-[#1A202C] via-[#2D3748] to-[#171923]'
+  },
+  'publicidad-desarrollo': {
+    label: 'Diseño & Publicidad',
+    icon: Palette,
+    color: 'indigo',
+    badgeText: 'Colección Oficial Diseño & Publicidad',
+    gradient: 'from-[#181B34] via-[#242A52] to-[#101224]'
   }
 };
 
@@ -237,12 +296,17 @@ export default function AreaBannersAdminSection({
         </button>
       </div>
 
-      {/* Selector de Áreas en 3 Pestañas */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      {/* Selector de Áreas del Catálogo (8 Áreas) */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
         {[
-          { id: 'hogar', label: 'Hogar & Decoración', icon: Home, desc: 'Lámparas, percheros y macetas' },
+          { id: 'hogar', label: 'Hogar & Deco', icon: Home, desc: 'Lámparas, percheros y macetas' },
           { id: 'negocios', label: 'Negocios & Marcas', icon: Briefcase, desc: 'Smart Decks, QR y branding' },
-          { id: 'eventos', label: 'Eventos Especiales', icon: CalendarHeart, desc: 'Bodas, fiestas y recuerdos' }
+          { id: 'juguetes', label: 'Juguetes & Niños', icon: Gamepad2, desc: 'Articulados y dinámicos' },
+          { id: 'personalizados', label: 'Personalizados', icon: Sparkles, desc: 'Dibujos 3D y creaciones' },
+          { id: 'eventos', label: 'Eventos Especiales', icon: CalendarHeart, desc: 'Bodas, fiestas y recuerdos' },
+          { id: 'paquetes-servicios', label: 'Paquetes & Kits', icon: Gift, desc: 'Combos promocionales' },
+          { id: 'industria', label: 'Industria Técnica', icon: Wrench, desc: 'Piezas mecánicas y utillaje' },
+          { id: 'publicidad-desarrollo', label: 'Diseño & Publicidad', icon: Palette, desc: 'Branding y diseño web' }
         ].map(area => {
           const isSelected = activeAreaId === area.id;
           const Icon = area.icon;
@@ -251,20 +315,20 @@ export default function AreaBannersAdminSection({
               key={area.id}
               type="button"
               onClick={() => handleSelectArea(area.id)}
-              className={`p-4 rounded-2xl border text-left transition-all cursor-pointer flex items-start gap-3 shadow-2xs ${
+              className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex items-start gap-2.5 shadow-2xs ${
                 isSelected
                   ? 'bg-[#17251E] text-white border-[#D4A359] ring-2 ring-[#D4A359]/40 scale-101 shadow-md'
                   : 'bg-white hover:bg-gray-50 text-gray-800 border-[#E8E4DA]'
               }`}
             >
-              <div className={`p-2.5 rounded-xl shrink-0 ${
+              <div className={`p-2 rounded-xl shrink-0 ${
                 isSelected ? 'bg-[#D4A359] text-stone-950 font-black' : 'bg-gray-100 text-gray-700'
               }`}>
-                <Icon className="w-5 h-5" />
+                <Icon className="w-4 h-4" />
               </div>
               <div className="min-w-0">
-                <div className="font-extrabold text-sm truncate">{area.label}</div>
-                <div className={`text-[11px] truncate mt-0.5 ${isSelected ? 'text-gray-300' : 'text-gray-500'}`}>
+                <div className="font-extrabold text-xs sm:text-sm truncate">{area.label}</div>
+                <div className={`text-[10px] sm:text-[10.5px] truncate mt-0.5 ${isSelected ? 'text-gray-300' : 'text-gray-500'}`}>
                   {area.desc}
                 </div>
               </div>

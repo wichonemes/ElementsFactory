@@ -1103,6 +1103,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   const [filterStock, setFilterStock] = useState('all'); // 'all' | 'in_stock' | 'made_to_order'
   const [filterTechnique, setFilterTechnique] = useState('all');
   const [productViewMode, setProductViewMode] = useState('grid'); // 'grid' (estilo paquetes) | 'table'
+  const [productSort, setProductSort] = useState('newest'); // 'newest' | 'oldest' | 'sku_asc' | 'sku_desc' | 'name_asc' | 'price_desc' | 'price_asc'
 
   // Cost & Margins (Workshop Parameters & Calculations)
   const [workshopParams, setWorkshopParams] = useState({
@@ -3519,14 +3520,16 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     }
   };
 
-  // Real-time stock counts grouped by Area (Hogar, Negocios, Eventos, Paquetes, Todas)
+  // Real-time stock counts grouped by Area (All 8 areas + Todas)
   const stockAreaStats = useMemo(() => {
     const getStats = (wKey) => {
       const list = wKey === 'all'
         ? products
         : wKey === 'paquetes'
           ? products.filter(p => p.isBundle || p.category === 'paquetes' || p.category === 'servicios' || p.code?.startsWith('PROMO') || p.code?.includes('PATCH') || p.worlds?.includes('paquetes') || p.worlds?.includes('paquetes-servicios'))
-          : products.filter(p => p.worlds && p.worlds.includes(wKey));
+          : (wKey === 'publicidad-desarrollo' || wKey === 'publicidad')
+            ? products.filter(p => p.worlds && (p.worlds.includes('publicidad-desarrollo') || p.worlds.includes('publicidad')))
+            : products.filter(p => p.worlds && p.worlds.includes(wKey));
 
       const inStock = list.filter(p => p.availability === 'in_stock');
       const madeToOrder = list.filter(p => p.availability === 'made_to_order' || !p.availability);
@@ -3546,10 +3549,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       all: getStats('all'),
       hogar: getStats('hogar'),
       negocios: getStats('negocios'),
-      eventos: getStats('eventos'),
       juguetes: getStats('juguetes'),
+      personalizados: getStats('personalizados'),
+      eventos: getStats('eventos'),
+      paquetes: getStats('paquetes'),
       industria: getStats('industria'),
-      paquetes: getStats('paquetes')
+      'publicidad-desarrollo': getStats('publicidad-desarrollo')
     };
   }, [products]);
 
@@ -3704,29 +3709,72 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     return counts;
   }, [products]);
 
-  // Filtered Products for Table
-  const filteredProducts = products.filter(p => {
-    if (filterWorld === 'paquetes') {
-      const isBundleOrService = p.isBundle || p.category === 'paquetes' || p.category === 'servicios' || p.code?.startsWith('PROMO') || p.code?.includes('PATCH') || p.worlds?.includes('paquetes') || p.worlds?.includes('paquetes-servicios');
-      if (!isBundleOrService) return false;
-    } else if (filterWorld !== 'all' && (!p.worlds || !p.worlds.includes(filterWorld))) {
-      return false;
-    }
-    if (filterTechnique !== 'all' && !checkProductMatchesTechnique(p, filterTechnique)) {
-      return false;
-    }
-    if (filterStatus !== 'all' && p.status !== filterStatus) return false;
-    if (filterStock === 'in_stock' && p.availability !== 'in_stock') return false;
-    if (filterStock === 'made_to_order' && p.availability === 'in_stock') return false;
-    if (productSearch.trim()) {
-      const q = productSearch.toLowerCase();
-      const matchName = p.name?.toLowerCase().includes(q);
-      const matchCode = p.code?.toLowerCase().includes(q);
-      const matchSku = p.sku?.toLowerCase().includes(q);
-      return matchName || matchCode || matchSku;
-    }
-    return true;
-  });
+  // Filtered & Sorted Products for Table and Grid
+  const filteredProducts = useMemo(() => {
+    const list = products.filter(p => {
+      if (filterWorld === 'paquetes') {
+        const isBundleOrService = p.isBundle || p.category === 'paquetes' || p.category === 'servicios' || p.code?.startsWith('PROMO') || p.code?.includes('PATCH') || p.worlds?.includes('paquetes') || p.worlds?.includes('paquetes-servicios');
+        if (!isBundleOrService) return false;
+      } else if (filterWorld === 'publicidad-desarrollo' || filterWorld === 'publicidad') {
+        const isPub = p.worlds && (p.worlds.includes('publicidad-desarrollo') || p.worlds.includes('publicidad'));
+        if (!isPub) return false;
+      } else if (filterWorld !== 'all' && (!p.worlds || !p.worlds.includes(filterWorld))) {
+        return false;
+      }
+      if (filterTechnique !== 'all' && !checkProductMatchesTechnique(p, filterTechnique)) {
+        return false;
+      }
+      if (filterStatus !== 'all' && p.status !== filterStatus) return false;
+      if (filterStock === 'in_stock' && p.availability !== 'in_stock') return false;
+      if (filterStock === 'made_to_order' && p.availability === 'in_stock') return false;
+      if (productSearch.trim()) {
+        const q = productSearch.toLowerCase();
+        const matchName = p.name?.toLowerCase().includes(q);
+        const matchCode = p.code?.toLowerCase().includes(q);
+        const matchSku = p.sku?.toLowerCase().includes(q);
+        return matchName || matchCode || matchSku;
+      }
+      return true;
+    });
+
+    const getProductTime = (p) => {
+      if (p.createdAt) {
+        const t = new Date(p.createdAt).getTime();
+        if (!isNaN(t) && t > 0) return t;
+      }
+      if (p.updatedAt) {
+        const t = new Date(p.updatedAt).getTime();
+        if (!isNaN(t) && t > 0) return t;
+      }
+      const idx = products.indexOf(p);
+      return idx >= 0 ? (new Date('2026-10-14T00:00:00Z').getTime() + idx * 60000) : 0;
+    };
+
+    return list.sort((a, b) => {
+      if (productSort === 'newest') {
+        return getProductTime(b) - getProductTime(a);
+      }
+      if (productSort === 'oldest') {
+        return getProductTime(a) - getProductTime(b);
+      }
+      if (productSort === 'sku_asc') {
+        return (a.sku || a.code || '').localeCompare(b.sku || b.code || '');
+      }
+      if (productSort === 'sku_desc') {
+        return (b.sku || b.code || '').localeCompare(a.sku || a.code || '');
+      }
+      if (productSort === 'name_asc') {
+        return (a.name || '').localeCompare(b.name || '');
+      }
+      if (productSort === 'price_desc') {
+        return (Number(b.price) || 0) - (Number(a.price) || 0);
+      }
+      if (productSort === 'price_asc') {
+        return (Number(a.price) || 0) - (Number(b.price) || 0);
+      }
+      return getProductTime(b) - getProductTime(a);
+    });
+  }, [products, filterWorld, filterTechnique, filterStatus, filterStock, productSearch, productSort]);
 
   // Filtered Margins Rows for Margins Tab
   const filteredMarginsRows = useMemo(() => {
@@ -3735,6 +3783,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       if (marginsWorld === 'paquetes') {
         const isBundleOrService = p.isBundle || p.category === 'paquetes' || p.category === 'servicios' || p.code?.startsWith('PROMO') || p.code?.includes('PATCH') || p.worlds?.includes('paquetes') || p.worlds?.includes('paquetes-servicios');
         if (!isBundleOrService) return false;
+      } else if (marginsWorld === 'publicidad-desarrollo' || marginsWorld === 'publicidad') {
+        const isPub = p.worlds && (p.worlds.includes('publicidad-desarrollo') || p.worlds.includes('publicidad'));
+        if (!isPub) return false;
       } else if (marginsWorld !== 'all' && (!p.worlds || !p.worlds.includes(marginsWorld))) {
         return false;
       }
@@ -4560,24 +4611,27 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </span>
                     </div>
 
-                    {/* Pestañas de Área con Indicadores de Stock */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2">
+                    {/* Pestañas de Área con Indicadores de Stock (8 Áreas + Todas) */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 xl:grid-cols-9 gap-2">
                       {[
                         { id: 'all', label: 'Todas las Áreas', icon: '🌐', stats: stockAreaStats.all },
-                        { id: 'hogar', label: 'Hogar & Decoración', icon: '🏠', stats: stockAreaStats.hogar },
-                        { id: 'negocios', label: 'Negocios & Marca', icon: '💼', stats: stockAreaStats.negocios },
-                        { id: 'eventos', label: 'Eventos Especiales', icon: '🎉', stats: stockAreaStats.eventos },
+                        { id: 'hogar', label: 'Hogar & Deco', icon: '🏠', stats: stockAreaStats.hogar },
+                        { id: 'negocios', label: 'Negocios & Marcas', icon: '💼', stats: stockAreaStats.negocios },
                         { id: 'juguetes', label: 'Juguetes & Niños', icon: '🧸', stats: stockAreaStats.juguetes },
-                        { id: 'industria', label: 'Industria & Prototipado', icon: '⚙️', stats: stockAreaStats.industria },
-                        { id: 'paquetes', label: 'Paquetes & Servicios', icon: '🎁', stats: stockAreaStats.paquetes }
+                        { id: 'personalizados', label: 'Personalizados', icon: '✨', stats: stockAreaStats.personalizados },
+                        { id: 'eventos', label: 'Eventos Especiales', icon: '🎉', stats: stockAreaStats.eventos },
+                        { id: 'paquetes', label: 'Paquetes & Kits', icon: '🎁', stats: stockAreaStats.paquetes },
+                        { id: 'industria', label: 'Industria Técnica', icon: '⚙️', stats: stockAreaStats.industria },
+                        { id: 'publicidad-desarrollo', label: 'Diseño & Publicidad', icon: '🎨', stats: stockAreaStats['publicidad-desarrollo'] }
                       ].map(area => {
                         const isSelected = filterWorld === area.id;
+                        const stats = area.stats || { total: 0, inStock: 0, madeToOrder: 0 };
                         return (
                           <button
                             key={area.id}
                             type="button"
                             onClick={() => setFilterWorld(area.id)}
-                            className={`p-3 rounded-xl border text-left transition-all flex flex-col justify-between gap-2 cursor-pointer ${
+                            className={`p-2.5 sm:p-3 rounded-xl border text-left transition-all flex flex-col justify-between gap-2 cursor-pointer ${
                               isSelected
                                 ? 'bg-[#2D4F3E] text-white border-[#2D4F3E] shadow-sm'
                                 : 'bg-gray-50/80 hover:bg-gray-100 text-gray-700 border-gray-200'
@@ -4591,19 +4645,19 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-full ${
                                 isSelected ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-700'
                               }`}>
-                                {area.stats.total}
+                                {stats.total}
                               </span>
                             </div>
 
-                            <div className="flex items-center justify-between text-[10.5px] pt-1 border-t border-white/10 border-gray-200">
+                            <div className="flex items-center justify-between text-[10px] sm:text-[10.5px] pt-1 border-t border-white/10 border-gray-200">
                               <span className={`flex items-center gap-1 font-semibold ${
                                 isSelected ? 'text-emerald-200' : 'text-emerald-700'
                               }`}>
                                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                                <span>{area.stats.inStock} en stock</span>
+                                <span>{stats.inStock} stock</span>
                               </span>
                               <span className={isSelected ? 'text-gray-200' : 'text-gray-500'}>
-                                {area.stats.madeToOrder} s/pedido
+                                {stats.madeToOrder} s/p
                               </span>
                             </div>
                           </button>
@@ -4718,6 +4772,22 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         <option value="archived">Archivados</option>
                       </select>
 
+                      {/* Criterio de ordenamiento: Último artículo subido al más viejo */}
+                      <select
+                        value={productSort}
+                        onChange={e => setProductSort(e.target.value)}
+                        className="px-3 py-1.5 text-xs rounded-xl border border-emerald-300 bg-emerald-50/50 font-bold text-[#2D4F3E] cursor-pointer"
+                        title="Ordenar lista de productos y SKUs (Por defecto: del último artículo subido al más viejo)"
+                      >
+                        <option value="newest">🕒 Últimos subidos (más recientes primero)</option>
+                        <option value="oldest">📅 Primeros subidos (más antiguos)</option>
+                        <option value="sku_asc">🔤 SKU / Código (A → Z)</option>
+                        <option value="sku_desc">🔤 SKU / Código (Z → A)</option>
+                        <option value="name_asc">🏷️ Nombre (A → Z)</option>
+                        <option value="price_desc">💰 Mayor precio</option>
+                        <option value="price_asc">🪙 Menor precio</option>
+                      </select>
+
                       {/* Selector de modo de vista: Tarjetas (estilo paquetes) vs Tabla */}
                       <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-xl border border-gray-200">
                         <button
@@ -4808,8 +4878,13 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               />
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-1.5 flex-wrap">
-                                  <span className="font-mono font-bold text-[10.5px] text-gray-700 bg-gray-100 px-2 py-0.5 rounded border border-gray-200">
-                                    {p.sku || p.code}
+                                  <span className="font-mono font-bold text-[10.5px] text-gray-800 bg-gray-100 px-2 py-0.5 rounded border border-gray-300 inline-flex items-center gap-1.5 shadow-2xs">
+                                    <span>{p.sku || p.code}</span>
+                                    {p.createdAt && new Date(p.createdAt).getTime() >= new Date('2026-10-24T00:00:00Z').getTime() && (
+                                      <span className="bg-emerald-600 text-white text-[8px] font-black px-1 py-0.2 rounded leading-none uppercase">
+                                        Nuevo
+                                      </span>
+                                    )}
                                   </span>
                                   {p.worlds?.map(w => (
                                     <span
@@ -5023,8 +5098,13 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           />
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center justify-between gap-1">
-                              <span className="font-mono font-bold text-gray-800 bg-gray-100 px-1.5 py-0.5 rounded text-[10.5px] border border-gray-200">
-                                {p.sku || p.code}
+                              <span className="font-mono font-bold text-gray-800 bg-gray-100 px-1.5 py-0.5 rounded text-[10.5px] border border-gray-300 inline-flex items-center gap-1">
+                                <span>{p.sku || p.code}</span>
+                                {p.createdAt && new Date(p.createdAt).getTime() >= new Date('2026-10-24T00:00:00Z').getTime() && (
+                                  <span className="bg-emerald-600 text-white text-[7.5px] font-black px-1 py-0.2 rounded leading-none uppercase">
+                                    Nuevo
+                                  </span>
+                                )}
                               </span>
                               <span className={`px-2 py-0.5 rounded-full text-[9.5px] font-bold ${
                                 p.status === 'published' ? 'bg-emerald-100 text-emerald-800' :
@@ -5243,8 +5323,13 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                     className="w-7 h-7 rounded-md object-cover bg-gray-100 border border-gray-200 shrink-0 shadow-2xs"
                                   />
                                   <div className="flex flex-col gap-0 min-w-0">
-                                    <span className="font-mono font-bold text-gray-800 bg-gray-100 px-1 py-0 rounded text-[10px] border border-gray-200 w-fit">
-                                      {p.sku || p.code}
+                                    <span className="font-mono font-bold text-gray-800 bg-gray-100 px-1 py-0 rounded text-[10px] border border-gray-300 w-fit inline-flex items-center gap-1">
+                                      <span>{p.sku || p.code}</span>
+                                      {p.createdAt && new Date(p.createdAt).getTime() >= new Date('2026-10-24T00:00:00Z').getTime() && (
+                                        <span className="bg-emerald-600 text-white text-[7px] font-black px-1 rounded leading-none uppercase">
+                                          Nuevo
+                                        </span>
+                                      )}
                                     </span>
                                     {p.skuBreakdown && (
                                       <span className="text-[8.5px] text-gray-500 font-sans tracking-tight truncate max-w-[140px]">
@@ -5845,10 +5930,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             { id: 'all', label: 'Todas', icon: '🌐' },
                             { id: 'hogar', label: 'Hogar', icon: '🏠' },
                             { id: 'negocios', label: 'Negocios', icon: '💼' },
-                            { id: 'eventos', label: 'Eventos', icon: '🎉' },
                             { id: 'juguetes', label: 'Juguetes', icon: '🧸' },
+                            { id: 'personalizados', label: 'Personalizados', icon: '✨' },
+                            { id: 'eventos', label: 'Eventos', icon: '🎉' },
+                            { id: 'paquetes', label: 'Paquetes', icon: '🎁' },
                             { id: 'industria', label: 'Industria', icon: '⚙️' },
-                            { id: 'paquetes', label: 'Paquetes & Servicios', icon: '🎁' }
+                            { id: 'publicidad-desarrollo', label: 'Diseño & Pub.', icon: '🎨' }
                           ].map(area => (
                             <button
                               key={area.id}
@@ -6227,9 +6314,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           { id: 'all', label: 'Todas las áreas', icon: '🌐' },
                           { id: 'hogar', label: 'Hogar', icon: '🏠' },
                           { id: 'negocios', label: 'Negocios', icon: '💼' },
-                          { id: 'eventos', label: 'Eventos', icon: '🎉' },
                           { id: 'juguetes', label: 'Juguetes', icon: '🧸' },
-                          { id: 'industria', label: 'Industria', icon: '⚙️' }
+                          { id: 'personalizados', label: 'Personalizados', icon: '✨' },
+                          { id: 'eventos', label: 'Eventos', icon: '🎉' },
+                          { id: 'paquetes', label: 'Paquetes', icon: '🎁' },
+                          { id: 'industria', label: 'Industria', icon: '⚙️' },
+                          { id: 'publicidad-desarrollo', label: 'Diseño & Publicidad', icon: '🎨' }
                         ].map(area => (
                           <button
                             key={area.id}
@@ -6296,7 +6386,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                       cat.worldId === 'negocios' ? 'bg-blue-100 text-blue-800' :
                                       cat.worldId === 'eventos' ? 'bg-purple-100 text-purple-800' :
                                       cat.worldId === 'juguetes' ? 'bg-pink-100 text-pink-800' :
+                                      cat.worldId === 'personalizados' ? 'bg-fuchsia-100 text-fuchsia-800' :
                                       cat.worldId === 'industria' ? 'bg-slate-200 text-slate-800' :
+                                      cat.worldId === 'paquetes' || cat.worldId === 'paquetes-servicios' ? 'bg-emerald-100 text-emerald-800' :
+                                      cat.worldId === 'publicidad-desarrollo' ? 'bg-indigo-100 text-indigo-800' :
                                       'bg-gray-100 text-gray-800'
                                     }`}>
                                       {cat.worldId}
@@ -7403,18 +7496,20 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           <span>Áreas del Catálogo donde se exhibirá *</span>
                         </label>
                         <span className="text-[10.5px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.2 rounded-full">
-                          {(editorForm.worlds?.length || 0)} de 6 áreas activadas
+                          {(editorForm.worlds?.length || 0)} de 8 áreas activadas
                         </span>
                       </div>
 
-                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                         {[
                           { id: 'hogar', label: 'Hogar', icon: '🏠' },
                           { id: 'negocios', label: 'Negocios', icon: '💼' },
-                          { id: 'eventos', label: 'Eventos', icon: '🎉' },
                           { id: 'juguetes', label: 'Juguetes', icon: '🧸' },
+                          { id: 'personalizados', label: 'Personalizados', icon: '✨' },
+                          { id: 'eventos', label: 'Eventos', icon: '🎉' },
+                          { id: 'paquetes', label: 'Paquetes', icon: '🎁' },
                           { id: 'industria', label: 'Industria', icon: '⚙️' },
-                          { id: 'paquetes', label: 'Paquetes', icon: '🎁' }
+                          { id: 'publicidad-desarrollo', label: 'Diseño & Pub.', icon: '🎨' }
                         ].map(w => {
                           const isChecked = editorForm.worlds?.includes(w.id);
                           return (

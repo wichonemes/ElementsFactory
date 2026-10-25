@@ -9738,6 +9738,8 @@ const initialProducts = [
   {
     "id": "de-dibujo-a-figura-3d",
     "code": "CUST-DIBUJO-DRAGON",
+    "createdAt": "2026-10-24T19:29:00.000Z",
+    "updatedAt": "2026-10-24T19:29:00.000Z",
     "name": "De Dibujo a Figura 3D Real (Edición Dragón Mágico)",
     "priceType": "fixed",
     "price": 680,
@@ -9832,6 +9834,8 @@ const initialProducts = [
   {
     "id": "de-dibujo-a-figura-3d-ajolote",
     "code": "CUST-DIBUJO-AJOLOTE",
+    "createdAt": "2026-10-24T19:30:00.000Z",
+    "updatedAt": "2026-10-24T19:30:00.000Z",
     "name": "De Dibujo a Figura 3D Real (Edición Ajolote)",
     "priceType": "fixed",
     "price": 680,
@@ -9926,6 +9930,8 @@ const initialProducts = [
   {
     "id": "de-dibujo-a-figura-3d-dinosaurio",
     "code": "CUST-DIBUJO-DINO",
+    "createdAt": "2026-10-24T19:31:00.000Z",
+    "updatedAt": "2026-10-24T19:31:00.000Z",
     "name": "De Dibujo a Figura 3D Real (Edición Dinosaurio / T-Rex)",
     "priceType": "fixed",
     "price": 680,
@@ -10020,6 +10026,8 @@ const initialProducts = [
   {
     "id": "de-dibujo-a-figura-3d-cohete",
     "code": "CUST-DIBUJO-COHETE",
+    "createdAt": "2026-10-24T19:32:00.000Z",
+    "updatedAt": "2026-10-24T19:32:00.000Z",
     "name": "De Dibujo a Figura 3D Real (Edición Cohete Espacial)",
     "priceType": "fixed",
     "price": 680,
@@ -10114,6 +10122,8 @@ const initialProducts = [
   {
     "id": "de-dibujo-a-figura-3d-coche",
     "code": "CUST-DIBUJO-COCHE",
+    "createdAt": "2026-10-24T19:33:00.000Z",
+    "updatedAt": "2026-10-24T19:33:00.000Z",
     "name": "De Dibujo a Figura 3D Real (Edición Coche de Carreras)",
     "priceType": "fixed",
     "price": 680,
@@ -10208,6 +10218,8 @@ const initialProducts = [
   {
     "id": "de-dibujo-a-figura-3d-monstruo",
     "code": "CUST-DIBUJO-MONSTRUO",
+    "createdAt": "2026-10-24T19:34:00.000Z",
+    "updatedAt": "2026-10-24T19:34:00.000Z",
     "name": "De Dibujo a Figura 3D Real (Edición Monstruo Divertido)",
     "priceType": "fixed",
     "price": 680,
@@ -10302,6 +10314,8 @@ const initialProducts = [
   {
     "id": "de-dibujo-a-figura-3d-castillo",
     "code": "CUST-DIBUJO-CASTILLO",
+    "createdAt": "2026-10-24T19:35:00.000Z",
+    "updatedAt": "2026-10-24T19:35:00.000Z",
     "name": "De Dibujo a Figura 3D Real (Edición Castillo Medieval)",
     "priceType": "fixed",
     "price": 680,
@@ -10396,6 +10410,8 @@ const initialProducts = [
   {
     "id": "figuras-funko-mascotas",
     "code": "CUST-FUNKO-PETS",
+    "createdAt": "2026-10-24T15:00:00.000Z",
+    "updatedAt": "2026-10-24T15:00:00.000Z",
     "name": "Figura Estilo Funko Custom — Mascotas (Perros, Gatos y Compañeros)",
     "priceType": "fixed",
     "price": 650,
@@ -10519,6 +10535,8 @@ const initialProducts = [
   {
     "id": "figuras-funko-parejas",
     "code": "CUST-FUNKO-PAREJAS",
+    "createdAt": "2026-10-24T15:01:00.000Z",
+    "updatedAt": "2026-10-24T15:01:00.000Z",
     "name": "Figura Estilo Funko Custom — Parejas (Set Dúo Novios, Esposos o Aniversario)",
     "priceType": "fixed",
     "price": 1290,
@@ -10641,6 +10659,8 @@ const initialProducts = [
   {
     "id": "figuras-funko-profesiones",
     "code": "CUST-FUNKO-PROF",
+    "createdAt": "2026-10-24T15:02:00.000Z",
+    "updatedAt": "2026-10-24T15:02:00.000Z",
     "name": "Figura Estilo Funko Custom — Profesiones & Graduaciones",
     "priceType": "fixed",
     "price": 750,
@@ -10766,6 +10786,8 @@ const initialProducts = [
   {
     "id": "figuras-funko-amigos",
     "code": "CUST-FUNKO-AMIGOS",
+    "createdAt": "2026-10-24T15:03:00.000Z",
+    "updatedAt": "2026-10-24T15:03:00.000Z",
     "name": "Figura Estilo Funko Custom — Set Dúo Amigos & Cumpleaños (2 Figuras)",
     "priceType": "fixed",
     "price": 1250,
@@ -10881,6 +10903,8 @@ const initialProducts = [
   {
     "id": "figuras-funko-familia",
     "code": "CUST-FUNKO-FAMILIA",
+    "createdAt": "2026-10-24T15:04:00.000Z",
+    "updatedAt": "2026-10-24T15:04:00.000Z",
     "name": "Figura Estilo Funko Custom — Pack Familiar (3 Figuras: Papá, Mamá e Hijos)",
     "priceType": "fixed",
     "price": 1790,
@@ -10996,6 +11020,8 @@ const initialProducts = [
   {
     "id": "figuras-funko-abuelitos",
     "code": "CUST-FUNKO-ABUELITOS",
+    "createdAt": "2026-10-24T15:05:00.000Z",
+    "updatedAt": "2026-10-24T15:05:00.000Z",
     "name": "Figura Estilo Funko Custom — Abuelitos (Set Dúo Homenaje a los Abuelos)",
     "priceType": "fixed",
     "price": 1290,
