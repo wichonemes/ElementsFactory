@@ -62,6 +62,27 @@ export default function App() {
     setCatalogSeed(Math.floor(Math.random() * 1000000) + Date.now());
   }, [activeWorld, selectedCategory, selectedTechnique]);
 
+  // Asegurar que al cambiar de área, categoría o vista el usuario SIEMPRE vea el inicio superior de la página
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      try {
+        window.history.scrollRestoration = 'manual';
+      } catch (e) {}
+    }
+    // Salto instantáneo hacia la cima (top: 0) sin demoras de animación
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    const frameId = requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    });
+    const timer = setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }, 35);
+    return () => {
+      cancelAnimationFrame(frameId);
+      clearTimeout(timer);
+    };
+  }, [activeWorld, selectedCategory, selectedTechnique, viewMode]);
+
   // Cart / Quote State (Persisted in localStorage)
   const [cartItems, setCartItems] = useState(() => {
     try {
@@ -460,7 +481,7 @@ export default function App() {
     setSearchQuery('');
     setViewMode('catalog');
     setCatalogSeed(Date.now());
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   };
 
   // World / Area selector handler
@@ -473,7 +494,7 @@ export default function App() {
     setViewMode('catalog');
     setCatalogSeed(Date.now());
     // Posicionar limpiamente arriba de la pantalla para evitar saltos erráticos hacia abajo
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   };
 
   // Jump directly to packages of a specific area
@@ -486,7 +507,7 @@ export default function App() {
     setSelectedTechnique('all');
     setViewMode('catalog');
     setCatalogSeed(Date.now());
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   };
 
   // Cart operations

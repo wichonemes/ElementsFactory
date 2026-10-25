@@ -1158,6 +1158,11 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   // Product Editor Modal State
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+  // Confirm Delete Product Modal & Session Mutation Review
+  const [confirmDeleteProduct, setConfirmDeleteProduct] = useState(null);
+  const [sessionChanges, setSessionChanges] = useState({ deleted: [], edited: [], added: [] });
+  const [showExitReviewModal, setShowExitReviewModal] = useState(false);
+
   const [editorForm, setEditorForm] = useState(null);
   const [editorActiveTab, setEditorActiveTab] = useState('general'); // 'general' | 'taller' | 'packaging' | 'pricing'
   const [editorNewItemSupplyType, setEditorNewItemSupplyType] = useState('direct'); // 'direct' | 'indirect'
@@ -3064,19 +3069,50 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     }
   };
 
-  const handleDeleteProduct = async (id) => {
-    if (!window.confirm('¿Seguro que deseas eliminar este producto del catálogo?')) return;
+  const handleDeleteProduct = (productOrId) => {
+    const prod = typeof productOrId === 'object' && productOrId !== null
+      ? productOrId
+      : (products.find(p => p.id === productOrId) || { id: productOrId, name: 'Producto #' + productOrId });
+    setConfirmDeleteProduct(prod);
+  };
+
+  const handleConfirmDeleteExecution = async () => {
+    if (!confirmDeleteProduct) return;
+    const target = confirmDeleteProduct;
     try {
-      const res = await fetch(`/api/admin/products/${id}`, {
+      const res = await fetch(`/api/admin/products/${target.id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.ok) {
+        setSessionChanges(prev => ({
+          ...prev,
+          deleted: [...prev.deleted.filter(x => x.id !== target.id), {
+            id: target.id,
+            name: target.name || 'Producto',
+            sku: target.sku || target.code || '',
+            time: new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })
+          }]
+        }));
+        setConfirmDeleteProduct(null);
         await loadAllData();
         if (onRefreshCatalog) onRefreshCatalog();
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        alert(errData.error || 'No se pudo eliminar el producto del catálogo.');
       }
     } catch (err) {
-      console.error(err);
+      console.error('Error deleting product:', err);
+      alert('Error de conexión al eliminar el producto.');
+    }
+  };
+
+  const handleRequestCloseAdmin = () => {
+    const hasChanges = (sessionChanges.deleted.length > 0) || (sessionChanges.edited.length > 0) || (sessionChanges.added.length > 0);
+    if (hasChanges) {
+      setShowExitReviewModal(true);
+    } else {
+      onClose();
     }
   };
 
@@ -4074,7 +4110,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               </button>
             )}
             <button
-              onClick={onClose}
+              onClick={handleRequestCloseAdmin}
               className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-bold transition-all cursor-pointer shadow-xs active:scale-95"
               aria-label="Salir a la Tienda"
               title="Salir a la Tienda"
@@ -12379,6 +12415,160 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         onConfirm={adminConfirmModal.onConfirm}
         onCancel={() => setAdminConfirmModal(prev => ({ ...prev, isOpen: false }))}
       />
+
+{/* Modal de Confirmación para Eliminar Producto (Sin bloqueos de window.confirm) */}
+      {confirmDeleteProduct && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
+          <div className="w-full max-w-md bg-white rounded-3xl border border-rose-200 shadow-2xl p-6 space-y-5 text-gray-900">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
+                <Trash2 className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-base font-black text-rose-950 font-heading">¿Eliminar producto del catálogo?</h3>
+                <p className="text-xs text-rose-600 font-medium">Esta acción quitará el producto de la tienda y del catálogo activo.</p>
+              </div>
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-stone-50 border border-stone-200 flex items-center gap-3">
+              <img
+                src={confirmDeleteProduct.primaryImage || '/placeholder.png'}
+                alt={confirmDeleteProduct.name}
+                className="w-14 h-14 object-cover rounded-xl border border-stone-200 shrink-0 bg-white"
+                onError={(e) => { e.target.src = '/placeholder.png'; }}
+              />
+              <div className="min-w-0 flex-1 text-xs">
+                <h4 className="font-bold text-stone-900 truncate">{confirmDeleteProduct.name}</h4>
+                <p className="text-stone-500 font-mono text-[11px]">SKU: {confirmDeleteProduct.sku || confirmDeleteProduct.code || 'N/A'}</p>
+                <p className="text-emerald-700 font-extrabold mt-0.5">${confirmDeleteProduct.price} MXN</p>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-2.5 pt-2">
+              <button
+                type="button"
+                onClick={() => setConfirmDeleteProduct(null)}
+                className="px-4 py-2.5 rounded-xl border border-stone-300 text-xs font-bold text-stone-700 hover:bg-stone-50 cursor-pointer transition-all"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmDeleteExecution}
+                className="px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-black shadow-md active:scale-95 cursor-pointer transition-all flex items-center gap-1.5"
+              >
+                <Trash2 className="w-4 h-4" />
+                <span>Sí, Eliminar Producto</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal al Salir de Admin: Resumen de Cambios Realizados y Pregunta de Guardar */}
+      {showExitReviewModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
+          <div className="w-full max-w-lg bg-white rounded-3xl border border-[#E8E4DA] shadow-2xl p-6 space-y-5 text-gray-900 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center gap-3 pb-3 border-b border-stone-100">
+              <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
+                <Check className="w-6 h-6 text-amber-700" />
+              </div>
+              <div>
+                <h3 className="text-base font-black text-stone-900 font-heading">¿Deseas guardar los cambios realizados?</h3>
+                <p className="text-xs text-stone-500">Se registraron modificaciones durante esta sesión en el panel:</p>
+              </div>
+            </div>
+
+            <div className="space-y-3 text-xs">
+              {sessionChanges.deleted.length > 0 && (
+                <div className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 space-y-2">
+                  <h4 className="font-bold text-rose-900 flex items-center gap-1.5">
+                    <Trash2 className="w-3.5 h-3.5 text-rose-600" />
+                    <span>Productos eliminados ({sessionChanges.deleted.length}):</span>
+                  </h4>
+                  <ul className="space-y-1 pl-4 list-disc text-rose-800">
+                    {sessionChanges.deleted.map((item, idx) => (
+                      <li key={idx} className="font-medium">
+                        <span className="font-bold">{item.name}</span> {item.sku && <span className="font-mono text-[10.5px]">({item.sku})</span>} <span className="text-stone-400 text-[10px]">· {item.time}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {sessionChanges.edited.length > 0 && (
+                <div className="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 space-y-2">
+                  <h4 className="font-bold text-amber-900 flex items-center gap-1.5">
+                    <CheckCircle className="w-3.5 h-3.5 text-amber-600" />
+                    <span>Productos editados ({sessionChanges.edited.length}):</span>
+                  </h4>
+                  <ul className="space-y-1 pl-4 list-disc text-amber-800">
+                    {sessionChanges.edited.map((item, idx) => (
+                      <li key={idx} className="font-medium">
+                        <span className="font-bold">{item.name}</span> {item.sku && <span className="font-mono text-[10.5px]">({item.sku})</span>} <span className="text-stone-400 text-[10px]">· {item.time}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {sessionChanges.added.length > 0 && (
+                <div className="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-2">
+                  <h4 className="font-bold text-emerald-900 flex items-center gap-1.5">
+                    <Plus className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>Nuevos productos creados ({sessionChanges.added.length}):</span>
+                  </h4>
+                  <ul className="space-y-1 pl-4 list-disc text-emerald-800">
+                    {sessionChanges.added.map((item, idx) => (
+                      <li key={idx} className="font-medium">
+                        <span className="font-bold">{item.name}</span> {item.sku && <span className="font-mono text-[10.5px]">({item.sku})</span>} <span className="text-stone-400 text-[10px]">· {item.time}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-2.5 pt-3 border-t border-stone-100">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowExitReviewModal(false);
+                  setSessionChanges({ deleted: [], edited: [], added: [] });
+                  loadAllData();
+                  onClose();
+                }}
+                className="w-full sm:w-auto text-center text-xs font-bold text-rose-600 hover:text-rose-800 hover:underline py-1.5 cursor-pointer"
+              >
+                Descartar cambios y salir
+              </button>
+
+              <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                <button
+                  type="button"
+                  onClick={() => setShowExitReviewModal(false)}
+                  className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl border border-stone-300 text-xs font-bold text-stone-700 hover:bg-stone-50 cursor-pointer transition-all"
+                >
+                  Seguir Editando
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowExitReviewModal(false);
+                    setSessionChanges({ deleted: [], edited: [], added: [] });
+                    if (onRefreshCatalog) onRefreshCatalog();
+                    onClose();
+                  }}
+                  className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-xs font-black shadow-md active:scale-95 cursor-pointer transition-all flex items-center justify-center gap-1.5"
+                >
+                  <Check className="w-4 h-4" />
+                  <span>Guardar y Salir a Tienda</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Estudio Fotográfico de Catálogo (4 Fotos con Sharp / IA) */}
       <ProductPhotoStudioModal

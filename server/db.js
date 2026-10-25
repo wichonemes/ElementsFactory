@@ -1214,7 +1214,7 @@ const initialProducts = [
     "code": "T38",
     "name": "Lámpara de mesa moderna",
     "priceType": "fixed",
-    "price": 267,
+    "price": 449,
     "priceUnit": "pieza",
     "status": "published",
     "featured": true,
@@ -1289,11 +1289,11 @@ const initialProducts = [
     "detailImage": "/uploads/t38_vista3_detalle.webp",
     "measureImage": "/uploads/t38_vista4_medidas.webp",
     "stockQuantity": 10,
-    "costPrice": 160,
+    "costPrice": 245,
     "costBreakdown": {
       "plaGrams": 140,
       "tpuGrams": 0,
-      "otherMaterialsCost": 45,
+      "otherMaterialsCost": 85,
       "machineHours": 7.5,
       "otherEquipCost": 0,
       "manualWorkMin": 20,
@@ -12099,6 +12099,7 @@ const createInitialDb = () => {
       events: []
     },
     rawMaterials: initialRawMaterials,
+    suppliers: initialSuppliers,
     publications: [],
     orders: [],
     pubTracking: [],
@@ -12289,6 +12290,190 @@ const initialCoupons = [
   }
 ];
 
+// Initial Suppliers Directory (Proveedores de Materiales Reales en México)
+const initialSuppliers = [
+  {
+    id: 'sup-3d-market',
+    name: '3D Market México',
+    category: '3d',
+    contactName: 'Atención a Talleres y Mayoreo',
+    phone: '33 1895 2400',
+    whatsapp: '523318952400',
+    email: 'contacto@3dmarket.mx',
+    website: 'https://3dmarket.mx',
+    address: 'Av. Niños Héroes 2280, Col. Arcos Vallarta, Guadalajara, Jal. / Sucursales CDMX y Mty',
+    leadTimeDays: '24 a 48 hrs hábiles',
+    minOrder: 'Envío gratis a partir de $1,299 MXN',
+    notes: 'Distribuidor oficial Bambu Lab, Polymaker, Creality, Anycubic y eSun en México. Filamento PLA Polymaker ($480-$550 MXN/kg), PLA Bambu ($520 MXN/kg), PETG y repuestos originales de extrusores.',
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: 'sup-mercadolibre-componentes',
+    name: 'Mercado Libre México (Componentes 3D & Mecanismos)',
+    category: 'assembly',
+    contactName: 'Tiendas Oficiales Mercado Envíos Full',
+    phone: '800 105 5000',
+    whatsapp: '525584321100',
+    email: 'ayuda@mercadolibre.com.mx',
+    website: 'https://www.mercadolibre.com.mx',
+    address: 'Centros de Distribución Full (CDMX, Guadalajara, Monterrey, Tepotzotlán)',
+    leadTimeDays: '24 a 48 hrs (Full) / 7 a 12 días (Internacional)',
+    minOrder: 'Envío gratis en compras desde $299 MXN con Meli+',
+    notes: 'Insumos de mecanismos para piezas 3D: Kits de luz LED USB 5V con interruptor para lámparas ($85 MXN con flete/impuestos), switches mecánicos clicker de 3 pines Outemu/Gateron ($6.00 MXN c/u / $60 MXN set 10) para fidgets (MLM2097835304), baleros cerámicos e imanes de neodimio.',
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: 'sup-triplay-market',
+    name: 'Triplay Market & Maderas Finas México',
+    category: 'laser',
+    contactName: 'Ing. Rodrigo Salinas / Mostrador Maderas',
+    phone: '55 5368 4500',
+    whatsapp: '525553684500',
+    email: 'cotizaciones@triplaymarket.com',
+    website: 'https://triplaymarket.com',
+    address: 'Calzada Vallejo #1120, Gustavo A. Madero, CDMX / Envíos consolidados a toda la República',
+    leadTimeDays: '2 a 4 días hábiles',
+    minOrder: 'Medio tablero o cortes a medida para corte láser',
+    notes: 'Tableros de Triplay de Abedul Ruso (Birch) 3mm y 6mm grado láser libre de huecos internos y parches. Tablones cepillados de madera fina sólida de Nogal Americano ($185-$220 MXN), Tzalam, Parota y Encino.',
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: 'sup-maderas-san-luis',
+    name: 'Maderas y Molduras San Luis',
+    category: 'laser',
+    contactName: 'Lic. Fernando Loredo',
+    phone: '444 824 1500',
+    whatsapp: '524448241500',
+    email: 'ventas@maderassanluis.com.mx',
+    website: 'https://maderassanluis.com.mx',
+    address: 'Eje 120 #310, Zona Industrial, San Luis Potosí, S.L.P.',
+    leadTimeDays: 'Mismo día en retiro de taller / 24 hrs en flete local',
+    minOrder: '$500 MXN para entrega en taller sin costo',
+    notes: 'Proveedor local clave: Madera sólida de pino estufado nacional de 1a calidad ($55-$65 MXN tabla), MDF calibrado 3mm para maquetas y cortes limpios ($35 MXN), listones de madera dura cepillados a 4 caras.',
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: 'sup-sayer-lack',
+    name: 'Sayer Lack México',
+    category: 'laser',
+    contactName: 'Asesoría Técnica en Barnices y Tintes',
+    phone: '55 5804 1100',
+    whatsapp: '525558041100',
+    email: 'atencionclientes@sayerlack.com.mx',
+    website: 'https://sayerlack.com.mx',
+    address: 'Red Nacional de Tiendas de Fábrica (San Luis Potosí, CDMX, Guadalajara, Puebla)',
+    leadTimeDays: 'Inmediata en mostrador / 24 hrs envío',
+    minOrder: 'Sin mínimo',
+    notes: 'Tintes para madera base aceite y alcohol serie HI-0100 (Nogal Americano, Caoba, Roble, Nogal Clásico). Barniz PolyLack de poliuretano base agua ecológico hidrófugo sin olor químico para piezas de interior y juguetes.',
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: 'sup-comex-polyform',
+    name: 'Comex México (Polyform Maderas)',
+    category: 'laser',
+    contactName: 'Atención Profesional y Carpintería',
+    phone: '800 712 6639',
+    whatsapp: '525545552200',
+    email: 'contacto@comex.com.mx',
+    website: 'https://www.comex.com.mx',
+    address: 'Sucursales en toda la República Mexicana',
+    leadTimeDays: 'Mismo día (mostrador)',
+    minOrder: 'Sin mínimo',
+    notes: 'Barnices Polyform transparente brillante, mate y satinado ($140-$260 MXN/litro). Tintes para madera Maderol base solvente, sellador concentrado 48% sólidos y ceras protectoras naturales.',
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: 'sup-atp-mexico',
+    name: 'Avance y TecnoLogía en Plásticos (ATP México)',
+    category: 'laser',
+    contactName: 'Dpto. de Ventas Láser y Rotulación',
+    phone: '614 432 6100',
+    whatsapp: '526144326100',
+    email: 'ventas@avanceytec.com.mx',
+    website: 'https://avanceytec.com.mx',
+    address: '32 sucursales en México (CDMX, Guadalajara, Monterrey, SLP, Querétaro, León)',
+    leadTimeDays: '24 a 48 hrs hábiles',
+    minOrder: '$800 MXN para envío / Sin mínimo en mostrador',
+    notes: 'Láminas de Acrílico Cast (colado) 3mm transparente, blanco lechoso difusor, negro espejo y dorado reflectivo para corte láser. Vinil textil termotransferible y vinil adhesivo Oracal 651 calandrado.',
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: 'sup-colormake',
+    name: 'Color Make México',
+    category: 'vinyl',
+    contactName: 'Ventas Mayoreo Sublimación & Textil',
+    phone: '55 5390 9988',
+    whatsapp: '525553909988',
+    email: 'ventas@colormake.com',
+    website: 'https://colormake.com',
+    address: 'Vía Gustavo Baz #281, Tlalnepantla, Estado de México / Envíos a todo México',
+    leadTimeDays: '2 a 3 días hábiles',
+    minOrder: 'Caja máster de 36 tazas ($28-$32 MXN c/u) o pedido de consumibles',
+    notes: 'Tazas de cerámica 11oz blanco puro AAA con recubrimiento Orca, termos de acero inoxidable para sublimar, gorras de poliéster y algodón lisas, tintas de alta densidad para transferencia por calor.',
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: 'sup-cartoempaques',
+    name: 'CartoEmpaques de México (Cajas Microcorrugadas)',
+    category: 'packaging',
+    contactName: 'Ing. Gabriela Morán / Empaque E-commerce',
+    phone: '33 3619 8899',
+    whatsapp: '523336198899',
+    email: 'ventas@cartoempaques.com.mx',
+    website: 'https://cartoempaques.com.mx',
+    address: 'Área Metropolitana de Guadalajara / Envíos nacionales por consolidado',
+    leadTimeDays: '2 a 4 días hábiles',
+    minOrder: 'Paquetes de 25 o 50 cajas autoensamble',
+    notes: 'Cajas de cartón microcorrugado flauta E kraft automontables para e-commerce (Chica 20x15x8cm a $12-$14 MXN, Mediana a $16-$19 MXN). Rollos de poliburbuja de 50 metros, viruta kraft y cinta selladora reforzada.',
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: 'sup-herrajes-llaveros',
+    name: 'El Rey del Tornillo & Herrajes Metálicos',
+    category: 'assembly',
+    contactName: 'Ventas de Mostrador e Importación',
+    phone: '55 5522 7890',
+    whatsapp: '525555227890',
+    email: 'herrajes@elreydeltornillo.com.mx',
+    website: 'https://elreydeltornillo.com.mx',
+    address: 'Calle Corregidora #88, Centro Histórico, CDMX / Envíos por Paquetexpress',
+    leadTimeDays: '24 a 72 hrs hábiles',
+    minOrder: '$500 MXN (Bolsas de 100 o millar de piezas)',
+    notes: 'Argollas sin fin de 25mm con cadena niquelada de 4 eslabones ($0.85 MXN c/u al mayoreo), borlas decorativas de 12cm con casquillo metálico, imanes de neodimio N35/N52 para cajas de madera y tornillería allen M3 para soportes 3D.',
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: 'sup-skydropx-fletes',
+    name: 'Skydropx & Envíoclick (Agregador de Envíos y Fletes)',
+    category: 'packaging',
+    contactName: 'Mesa de Ayuda Logística & Convenios',
+    phone: '55 8526 2110',
+    whatsapp: '525585262110',
+    email: 'hola@skydropx.com',
+    website: 'https://www.skydropx.com',
+    address: 'Plataforma nacional con recolección a domicilio en el taller (SLP y todo México)',
+    leadTimeDays: 'Guías digitales instantáneas (1 a 3 días entrega)',
+    minOrder: 'Recargas de saldo desde $300 MXN',
+    notes: 'Convenios con descuento hasta 60% en guías prepago de FedEx, Estafeta, RedPack, Paquetexpress y DHL. Tarifas desde $115 MXN para sobres y $139 MXN para paquetes de hasta 2 kg con recolección incluida.',
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: 'sup-printlab',
+    name: 'PrintLab México 3D',
+    category: '3d',
+    contactName: 'Ing. Carlos Mendoza',
+    phone: '444 820 1199',
+    whatsapp: '524448201199',
+    email: 'ventas@printlab3d.mx',
+    website: 'https://printlab3d.mx',
+    address: 'Av. Salvador Nava 1420, San Luis Potosí, S.L.P.',
+    leadTimeDays: '1 a 2 días hábiles',
+    minOrder: '$500 MXN',
+    notes: 'Distribuidor oficial de filamentos Polymaker, eSun, Creality y Bambu Lab en San Luis Potosí. Filamento PLA verde olivo, terracota, negro mate y madera woodfill.',
+    updatedAt: new Date().toISOString()
+  }
+];
+
 // Helper para desglosar el contenido de un empaque o bobina en cantidad numérica y unidad base
 export function parseMaterialPackage(mat) {
   if (mat && mat.packageQuantity !== undefined && mat.packageQuantity !== null && mat.packageMeasurement) {
@@ -12384,6 +12569,91 @@ export function calculateMaterialStockDeduction(material, requiredQuantity, requ
 }
 
 const initialRawMaterials = [
+  {
+    "id": "mat-madera-nogal-fina",
+    "name": "Madera Sólida Nogal Americano Calidad Selecta (30x40 cm x 1/2 pulgada)",
+    "category": "laser",
+    "materialType": "Madera Nogal",
+    "color": "Nogal Americano",
+    "finish": "Natural / Madera Noble",
+    "unit": "tabla (30x40 cm)",
+    "packageQuantity": 1200,
+    "packageMeasurement": "cm²",
+    "currentStock": 8,
+    "minStockAlert": 3,
+    "costPerUnit": 185,
+    "supplierId": "sup-triplay-market",
+    "supplier": "Triplay Market & Maderas Finas México",
+    "notes": "Madera noble maciza de nogal oscuro con veta profunda premium. No es lo mismo que pino o MDF; se utiliza para bases presidenciales, alhajeros de lujo y cuadros de reconocimiento."
+  },
+  {
+    "id": "mat-madera-pino-selecto",
+    "name": "Madera Sólida Pino Selecto Estufado Primera (30x40 cm x 1/2 pulgada)",
+    "category": "laser",
+    "materialType": "Madera Pino",
+    "color": "Pino Natural",
+    "finish": "Natural / Estufado",
+    "unit": "tabla (30x40 cm)",
+    "packageQuantity": 1200,
+    "packageMeasurement": "cm²",
+    "currentStock": 15,
+    "minStockAlert": 5,
+    "costPerUnit": 65,
+    "supplierId": "sup-maderas-san-luis",
+    "supplier": "Maderas y Molduras San Luis",
+    "notes": "Pino nacional estufado seco al horno sin humedad ni curvatura. Excelente relación costo/acabado para bases de letreros, llaveros y juguetes didácticos."
+  },
+  {
+    "id": "mat-mdf-calibrado-3mm",
+    "name": "Tablero MDF Calibrado Grado Láser 3mm (60x40 cm)",
+    "category": "laser",
+    "materialType": "MDF Calibrado",
+    "color": "MDF Ocre",
+    "finish": "Liso / Sin Astillas",
+    "unit": "placa (60x40 cm)",
+    "packageQuantity": 2400,
+    "packageMeasurement": "cm²",
+    "currentStock": 25,
+    "minStockAlert": 10,
+    "costPerUnit": 35,
+    "supplierId": "sup-maderas-san-luis",
+    "supplier": "Maderas y Molduras San Luis",
+    "notes": "MDF de densidad media uniforme sin resinas tóxicas excesivas. Ideal para maquetas de arquitectura, cajas organizadoras y plantillas de taller."
+  },
+  {
+    "id": "mat-kit-luz-led-3d",
+    "name": "Kit Iluminación LED USB 5V Cálida con Interruptor para Lámparas 3D",
+    "category": "assembly",
+    "materialType": "Electrónica & Iluminación",
+    "color": "Blanco Cálido 3000K",
+    "finish": "Módulo Ensamblado",
+    "unit": "kit (luz + cable 1.5m + switch)",
+    "packageQuantity": 1,
+    "packageMeasurement": "pza",
+    "currentStock": 12,
+    "minStockAlert": 5,
+    "costPerUnit": 85,
+    "supplierId": "sup-mercadolibre-componentes",
+    "supplier": "Mercado Libre México (Componentes 3D & Electrónica)",
+    "notes": "Módulo LED COB difuso de 5V seguro (no calienta el plástico PLA). Incluye cable trenzado USB con interruptor basculante integrado. Costo puesto en México considerando flete e impuestos de importación."
+  },
+  {
+    "id": "mat-switches-clicker-mecanico",
+    "name": "Interruptores Mecánicos de Teclado Clicker 3 Pines (Outemu Blue)",
+    "category": "assembly",
+    "materialType": "Mecanismos & Switches",
+    "color": "Azul Clicky / Transparente",
+    "finish": "Táctil Sonoro",
+    "unit": "pack (10 piezas)",
+    "packageQuantity": 10,
+    "packageMeasurement": "pza",
+    "currentStock": 8,
+    "minStockAlert": 3,
+    "costPerUnit": 60,
+    "supplierId": "sup-mercadolibre-componentes",
+    "supplier": "Mercado Libre México (Componentes 3D & Electrónica)",
+    "notes": "Switches mecánicos de 3 pines (Mercado Libre MLM2097835304) para juguetes antiestrés clicker, tecladitos macropad e interactivos 3D. Costo unitario real puesto en taller ~$6.00 MXN c/u con flete e IVA prorrateado."
+  },
   {
     "id": "mat-pla-olivo",
     "name": "Filamento PLA Verde Olivo Mate (1.75mm)",
@@ -15010,7 +15280,21 @@ class Database {
       if (!data.publications) data.publications = [];
       if (!data.orders) data.orders = [];
       if (!data.pubTracking) data.pubTracking = [];
-      if (!data.suppliers) data.suppliers = [];
+      if (!data.suppliers || data.suppliers.length === 0) {
+        data.suppliers = [...initialSuppliers];
+        this.save(data);
+      } else {
+        let addedNewSup = false;
+        initialSuppliers.forEach(seedSup => {
+          if (!data.suppliers.some(s => s.id === seedSup.id)) {
+            data.suppliers.push({ ...seedSup });
+            addedNewSup = true;
+          }
+        });
+        if (addedNewSup) {
+          this.save(data);
+        }
+      }
       if (!data.productionLogs) data.productionLogs = [];
       if (!data.coupons || data.coupons.length === 0) {
         data.coupons = [...initialCoupons];

@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import {
   X, Check, ShoppingBag, MessageCircle, Share2, Clock, Ruler,
-  ShieldCheck, Sparkles, ChevronLeft, ChevronRight, Maximize2,
+  ShieldCheck, Sparkles, ChevronLeft, ChevronRight, ChevronDown, Maximize2,
   Package, Eye, Layers, Calculator, Calendar, AlertTriangle, Truck, MapPin,
   Gamepad2, Gift, Trophy, Star, ArrowRight, FileText, ZoomIn, Crown, Ticket, Repeat, Coins, Zap
 } from 'lucide-react';
@@ -61,6 +61,12 @@ export default function ProductDetailModal({
     return init;
   });
   const [customText, setCustomText] = useState('');
+  const [showMoreColorsTab, setShowMoreColorsTab] = useState(false);
+  const [selectedPaletteTab, setSelectedPaletteTab] = useState(() => {
+    if (product.techniques?.includes('laser') || (product.specifications?.material || '').toLowerCase().includes('madera')) return 'wood';
+    if (product.techniques?.includes('vinyl') || product.techniques?.includes('sublimation')) return 'textile';
+    return 'pla';
+  });
   const [showPersonalizationInput, setShowPersonalizationInput] = useState(false);
   const [isPaletteExpanded, setIsPaletteExpanded] = useState(false);
   const [activePaletteGroup, setActivePaletteGroup] = useState('todos');

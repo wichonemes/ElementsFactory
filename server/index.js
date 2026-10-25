@@ -1632,20 +1632,55 @@ app.get('/api/catalog-pdf/list', (_req, res) => {
 // Endpoint para descargar o visualizar directamente un catálogo por ID
 app.get('/api/catalog-pdf/download/:id', async (req, res) => {
   try {
-    const config = db.getMobileCatalogConfig();
-    const catalogs = config.catalogs || [];
+    const isAttachment = req.query.download === '1' || req.query.download === 'true';
+    const dispositionType = isAttachment ? 'attachment' : 'inline';
+
+    // 1. Probar primero si el ID o nombre está directamente en artisan_private.catalog_files
+    if (cloudDb?.pool) {
+      try {
+        const q = await cloudDb.pool.query(
+          'SELECT filename, content_type, data FROM artisan_private.catalog_files WHERE id = $1 LIMIT 1',
+          [req.params.id]
+        );
+        if (q.rows.length > 0) {
+          const fileRow = q.rows[0];
+          res.setHeader('Content-Type', fileRow.content_type || 'application/pdf');
+          res.setHeader('Content-Disposition', `${dispositionType}; filename="${encodeURIComponent(fileRow.filename)}"`);
+          return res.send(fileRow.data);
+        }
+      } catch (err) {
+        console.warn('[STORAGE] Nota sobre búsqueda directa de catálogo en PostgreSQL:', err.message);
+      }
+    }
+
+    // 2. Obtener la configuración de catálogos mediante transacción segura si cloudDb está activo
+    let config;
+    if (cloudDb?.enabled) {
+      await cloudDb.transaction(async () => {
+        config = db.getMobileCatalogConfig();
+      });
+    } else {
+      config = db.getMobileCatalogConfig();
+    }
+
+    const catalogs = config?.catalogs || [];
     const item = catalogs.find(c => c.id === req.params.id) || 
       (req.params.id === 'primary' ? (catalogs.find(c => c.isPrimary) || catalogs[0]) : null);
 
     if (!item) {
+      // Fallback al catálogo predeterminado si no se encuentra el ítem
+      const defaultCatalog = path.join(downloadsDir, 'catalogo_movil_artesano_digital.pdf');
+      if (fs.existsSync(defaultCatalog)) {
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `${dispositionType}; filename="Catalogo_Artesano_Digital.pdf"`);
+        return res.sendFile(defaultCatalog);
+      }
       return res.status(404).json({ error: 'Catálogo no encontrado' });
     }
 
     const fileName = item.fileName || `${item.name || 'catalogo'}.pdf`;
-    const isAttachment = req.query.download === '1' || req.query.download === 'true';
-    const dispositionType = isAttachment ? 'attachment' : 'inline';
 
-    // 1. Probar ruta de archivo local
+    // 3. Probar ruta de archivo local en public/downloads o dist/downloads
     if (item.fileUrl && item.fileUrl.startsWith('/downloads/')) {
       const diskFilename = item.fileUrl.replace('/downloads/', '');
       const candidatePaths = [
@@ -1665,7 +1700,7 @@ app.get('/api/catalog-pdf/download/:id', async (req, res) => {
       }
     }
 
-    // 2. Probar base de datos PostgreSQL
+    // 4. Probar en base de datos PostgreSQL por ID o nombre de archivo
     if (cloudDb?.pool) {
       try {
         const q = await cloudDb.pool.query(
@@ -1683,12 +1718,12 @@ app.get('/api/catalog-pdf/download/:id', async (req, res) => {
       }
     }
 
-    // 3. Si tiene URL externa http/https
+    // 5. Si tiene URL externa http/https
     if (item.fileUrl && item.fileUrl.startsWith('http')) {
       return res.redirect(item.fileUrl);
     }
 
-    // 4. Fallback al catálogo predeterminado
+    // 6. Fallback final al catálogo oficial
     const defaultCatalog = path.join(downloadsDir, 'catalogo_movil_artesano_digital.pdf');
     if (fs.existsSync(defaultCatalog)) {
       res.setHeader('Content-Type', 'application/pdf');

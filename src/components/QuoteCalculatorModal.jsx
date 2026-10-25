@@ -22,14 +22,14 @@ export default function QuoteCalculatorModal({
 
   // 1. Materiales de Fabricación (8 opciones cuadradas exactas para cuadrícula 4x2 perfecta)
   const materialsList = [
-    { id: 'madera_natural', label: 'Madera y MDF', delta: 0, icon: TreePine },
-    { id: 'impresion_3d', label: 'Impresión 3D (PLA)', delta: 0, icon: Printer3d },
-    { id: 'papel_cartulina', label: 'Papel y Cartulina', delta: 0, icon: FileText },
-    { id: 'vinil_material', label: 'Vinil Adhesivo / Textil', delta: 15, icon: Scissors },
-    { id: 'acrilico', label: 'Acrílico', delta: 35, icon: Sparkles },
-    { id: 'manta_algodon', label: 'Manta y Textiles', delta: 25, icon: Shirt },
-    { id: 'cuero_curpiel', label: 'Cuero y Curpiel', delta: 30, icon: Tag },
-    { id: 'otros_materiales', label: 'Otros', delta: 0, icon: PlusCircle, isCustom: true }
+    { id: 'mdf_calibrado', label: 'MDF Calibrado 3mm', delta: 0, icon: TreePine },
+    { id: 'madera_pino', label: 'Madera Pino Selecto', delta: 15, icon: TreePine },
+    { id: 'madera_nogal', label: 'Madera Nogal Fina (Noble)', delta: 45, icon: TreePine },
+    { id: 'impresion_3d', label: 'Impresión 3D (PLA / PETG)', delta: 0, icon: Printer3d },
+    { id: 'mecanismos_3d', label: 'Mecanismos 3D (Luz/Switch)', delta: 35, icon: Radio },
+    { id: 'acrilico', label: 'Acrílico Cast 3mm', delta: 30, icon: Sparkles },
+    { id: 'textil_tela', label: 'Textil & Gorras', delta: 20, icon: Shirt },
+    { id: 'otros_materiales', label: 'Otros (a convenir)', delta: 0, icon: PlusCircle, isCustom: true }
   ];
 
   // 2. Técnicas de Impresión & Fabricación (láser diodo Sculpfun S9, Silhouette Cameo/Portrait, impresión 3D Bambu/FlashForge, DTF, hoja láser)
@@ -44,12 +44,14 @@ export default function QuoteCalculatorModal({
 
   // 3. Acabados Artesanales & Funcionales
   const finishesList = [
-    { id: 'laca_base', label: 'Laca Base', cost: 20, icon: SprayCan },
-    { id: 'pintado_mano', label: 'Pintado a Mano', cost: 45, icon: Palette },
-    { id: 'resina_epoxica', label: 'Resina Epóxica', cost: 55, icon: Sparkles },
-    { id: 'lijado_biselado', label: 'Biselado Fino', cost: 15, icon: Box },
-    { id: 'nfc_encoding', label: 'Enlace NFC', cost: 45, icon: Radio },
-    { id: 'logotipo_letras', label: 'Logotipo o Letras', cost: 35, icon: Type }
+    { id: 'tinte_nogal', label: 'Tinte Nogal / Caoba', cost: 25, icon: SprayCan },
+    { id: 'barniz_hidrofugo', label: 'Barniz Hidrófugo Mate', cost: 20, icon: Sparkles },
+    { id: 'cera_abeja', label: 'Cera de Abeja Natural', cost: 15, icon: Box },
+    { id: 'mecanismo_luz_switch', label: 'Kit Luz LED o Switch', cost: 45, icon: Radio },
+    { id: 'pintado_mano', label: 'Pintado a Mano Detallado', cost: 45, icon: Palette },
+    { id: 'resina_epoxica', label: 'Resina Epóxica Cristal', cost: 55, icon: Sparkles },
+    { id: 'nfc_encoding', label: 'Enlace NFC Inteligente', cost: 45, icon: Radio },
+    { id: 'logotipo_letras', label: 'Logotipo o Letras Grabadas', cost: 35, icon: Type }
   ];
 
   // 4. Medidas y Tamaños Predefinidos (Ancho x Largo x Alto)
