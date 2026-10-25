@@ -90,13 +90,28 @@ const distDir = path.join(__dirname, '..', 'dist');
 const publicDir = path.join(__dirname, '..', 'public');
 
 // Static routes for integrated portfolio
-const wichoPublicDir = path.join(publicDir, 'maquetado-inicio-wicho-v2');
-const wichoDistDir = path.join(distDir, 'maquetado-inicio-wicho-v2');
-if (fs.existsSync(wichoDistDir)) {
-  app.use('/maquetado-inicio-wicho-v2', express.static(wichoDistDir));
-} else if (fs.existsSync(wichoPublicDir)) {
-  app.use('/maquetado-inicio-wicho-v2', express.static(wichoPublicDir));
-}
+const portfolioAreas = [
+  'maquetado-inicio-wicho-v2',
+  'identidad-corporativa',
+  'audiovisual',
+  'animacion',
+  'ilustracion',
+  'modelado-3d',
+  'interfaces',
+  'impresos',
+  'editorial',
+  'fotografia'
+];
+
+portfolioAreas.forEach(area => {
+  const areaDistDir = path.join(distDir, area);
+  const areaPublicDir = path.join(publicDir, area);
+  if (fs.existsSync(areaDistDir)) {
+    app.use(`/${area}`, express.static(areaDistDir));
+  } else if (fs.existsSync(areaPublicDir)) {
+    app.use(`/${area}`, express.static(areaPublicDir));
+  }
+});
 
 const portfolioPublicDir = path.join(publicDir, 'portfolio');
 const portfolioDistDir = path.join(distDir, 'portfolio');

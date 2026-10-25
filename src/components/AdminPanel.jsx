@@ -1088,6 +1088,19 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   // Navigation Tab State
   const [activeTab, setActiveTab] = useState('products'); // 'stats' | 'products' | 'categories' | 'settings'
   const [rawMaterialsSubTab, setRawMaterialsSubTab] = useState('inventory');
+  const [mobileNavGroup, setMobileNavGroup] = useState('catalog'); // 'catalog' | 'workshop' | 'sales' | 'business'
+
+  useEffect(() => {
+    if (['products', 'packages', 'categories', 'area-banners'].includes(activeTab)) {
+      setMobileNavGroup('catalog');
+    } else if (['raw-materials', 'margins'].includes(activeTab)) {
+      setMobileNavGroup('workshop');
+    } else if (['flash-deals', 'campaigns', 'coupons', 'sales', 'catalog-mobile'].includes(activeTab)) {
+      setMobileNavGroup('sales');
+    } else if (['stats', 'settings', 'arcade'].includes(activeTab)) {
+      setMobileNavGroup('business');
+    }
+  }, [activeTab]);
 
   // Data State
   const [products, setProducts] = useState([]);
@@ -2402,6 +2415,35 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       }
     } catch (err) {
       console.error('Error toggling stock:', err);
+      await loadAllData();
+    }
+  };
+
+  // Quick 1-click toggle for Published / Draft status from cards or table
+  const handleToggleStatus = async (prod, e) => {
+    if (e) e.stopPropagation();
+    const nextStatus = prod.status === 'published' ? 'draft' : 'published';
+    setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, status: nextStatus } : p));
+
+    try {
+      const res = await fetch(`/api/admin/products/${prod.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          ...prod,
+          status: nextStatus
+        })
+      });
+      if (!res.ok) {
+        await loadAllData();
+      } else {
+        if (onRefreshCatalog) onRefreshCatalog();
+      }
+    } catch (err) {
+      console.error('Error toggling status:', err);
       await loadAllData();
     }
   };
@@ -4117,54 +4159,70 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
           /* Logged In Dashboard & Tabs */
           <div className="flex-1 flex flex-col md:flex-row overflow-hidden min-w-0 min-h-0">
             
-            {/* Navegación Móvil Táctil Dedicada: selector superior con chips deslizables */}
-            {/* Navegación Móvil Táctil Dedicada: selector superior con chips deslizables */}
+            {/* Navegación Móvil Táctil Dedicada: selector superior segmentado con sub-chips (Estilo FiltersBar) */}
             <div className="md:hidden bg-white border-b border-[#E8E4DA] p-2.5 shrink-0 shadow-2xs space-y-2">
-              <div className="flex items-center justify-between px-1">
-                <span className="text-[10px] font-black uppercase tracking-wider text-gray-500">
-                  Sección activa del panel:
-                </span>
-                <span className="text-xs font-black text-[#2D4F3E] bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                  {activeTab === 'products' ? '📦 Catálogo • Productos' :
-                   activeTab === 'packages' ? '🎁 Catálogo • Paquetes & Kits' :
-                   activeTab === 'categories' ? '📁 Catálogo • Categorías' :
-                   activeTab === 'area-banners' ? '🖼️ Catálogo • Banners Áreas' :
-                   activeTab === 'raw-materials' ? (rawMaterialsSubTab === 'suppliers' ? '🏢 Taller • Proveedores & Fletes' : '🧱 Taller • Stock Insumos') :
-                   activeTab === 'margins' ? '📈 Taller • Costos & Márgenes' :
-                   activeTab === 'flash-deals' ? '⚡ Ventas • Ofertas Flash' :
-                   activeTab === 'campaigns' ? '✨ Ventas • Temporadas' :
-                   activeTab === 'coupons' ? '🎟️ Ventas • Cupones' :
-                   activeTab === 'sales' ? '📢 Ventas • Pedidos & ROI' :
-                   activeTab === 'catalog-mobile' ? '📱 Ventas • Catálogos PDF' :
-                   activeTab === 'stats' ? '📊 Negocio • Métricas' :
-                   activeTab === 'settings' ? '⚙️ Negocio • Datos & Cobertura' :
-                   activeTab === 'arcade' ? '🎮 Negocio • Arcade Fidelización' : 'Panel'}
-                </span>
+              {/* Selector de Pilares Principales: 4 Secciones Limpias */}
+              <div className="grid grid-cols-4 gap-1 p-1 bg-[#F4F0E8] rounded-xl border border-[#E8E4DA]">
+                {[
+                  { id: 'catalog', label: 'Catálogo', icon: '📦' },
+                  { id: 'workshop', label: 'Taller', icon: '🧱' },
+                  { id: 'sales', label: 'Ventas', icon: '⚡' },
+                  { id: 'business', label: 'Negocio', icon: '⚙️' }
+                ].map(group => {
+                  const isCurrent = mobileNavGroup === group.id;
+                  return (
+                    <button
+                      key={group.id}
+                      type="button"
+                      onClick={() => {
+                        setMobileNavGroup(group.id);
+                        if (group.id === 'catalog' && !['products', 'packages', 'categories', 'area-banners'].includes(activeTab)) {
+                          setActiveTab('products');
+                        } else if (group.id === 'workshop' && !['raw-materials', 'margins'].includes(activeTab)) {
+                          setActiveTab('raw-materials');
+                        } else if (group.id === 'sales' && !['flash-deals', 'campaigns', 'coupons', 'sales', 'catalog-mobile'].includes(activeTab)) {
+                          setActiveTab('flash-deals');
+                        } else if (group.id === 'business' && !['stats', 'settings', 'arcade'].includes(activeTab)) {
+                          setActiveTab('stats');
+                        }
+                      }}
+                      className={`py-1.5 px-1 rounded-lg text-xs font-bold transition-all text-center flex items-center justify-center gap-1 cursor-pointer ${
+                        isCurrent
+                          ? 'bg-[#2D4F3E] text-white shadow-xs'
+                          : 'text-gray-600 hover:text-gray-900'
+                      }`}
+                    >
+                      <span className="text-xs">{group.icon}</span>
+                      <span className="truncate">{group.label}</span>
+                    </button>
+                  );
+                })}
               </div>
 
-              {/* Chips táctiles con scroll suave horizontal agrupados lógicamente */}
-              <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none no-scrollbar">
-                {[
-                  // 1. CATÁLOGO & PRODUCTOS
-                  { id: 'products', label: 'Productos', icon: '📦', count: products.length },
-                  { id: 'packages', label: 'Paquetes', icon: '🎁', count: products.filter(p => p.isBundle).length },
-                  { id: 'categories', label: 'Categorías', icon: '📁', count: categories.length },
-                  { id: 'area-banners', label: 'Banners', icon: '🖼️', count: 3 },
-                  // 2. TALLER & MANUFACTURA
-                  { id: 'raw-materials-inventory', label: 'Stock Insumos', icon: '🧱' },
-                  { id: 'raw-materials-suppliers', label: 'Proveedores & Fletes', icon: '🏢' },
-                  { id: 'margins', label: 'Costos & Márgenes', icon: '📈', count: `${marginsStats.avgMargin}%` },
-                  // 3. VENTAS & PROMOCIONES
-                  { id: 'flash-deals', label: 'Ofertas Flash', icon: '⚡', count: activeFlashList.length },
-                  { id: 'campaigns', label: 'Temporadas', icon: '✨' },
-                  { id: 'coupons', label: 'Cupones', icon: '🎟️' },
-                  { id: 'sales', label: 'Ventas & ROI', icon: '📢' },
-                  { id: 'catalog-mobile', label: 'Catálogos PDF', icon: '📱' },
-                  // 4. NEGOCIO & CONTROL
-                  { id: 'stats', label: 'Métricas', icon: '📊' },
-                  { id: 'settings', label: 'Ajustes & Taller', icon: '⚙️' },
-                  { id: 'arcade', label: 'Arcade', icon: '🎮' },
-                ].map(item => {
+              {/* Sub-chips táctiles para la sección activa (limpio, scroll suave horizontal) */}
+              <div className="flex gap-1.5 overflow-x-auto pb-0.5 scrollbar-none no-scrollbar">
+                {(
+                  mobileNavGroup === 'catalog' ? [
+                    { id: 'products', label: 'Productos & SKUs', icon: '📦', count: products.length },
+                    { id: 'packages', label: 'Paquetes & Kits', icon: '🎁', count: products.filter(p => p.isBundle).length },
+                    { id: 'categories', label: 'Categorías', icon: '📁', count: categories.length },
+                    { id: 'area-banners', label: 'Banners de Áreas', icon: '🖼️', count: 3 }
+                  ] : mobileNavGroup === 'workshop' ? [
+                    { id: 'raw-materials-inventory', label: 'Stock Insumos', icon: '🧱' },
+                    { id: 'raw-materials-suppliers', label: 'Proveedores & Fletes', icon: '🏢' },
+                    { id: 'margins', label: 'Costos & Márgenes', icon: '📈', count: `${marginsStats.avgMargin}%` }
+                  ] : mobileNavGroup === 'sales' ? [
+                    { id: 'flash-deals', label: 'Ofertas Flash', icon: '⚡', count: activeFlashList.length },
+                    { id: 'campaigns', label: 'Temporadas', icon: '✨' },
+                    { id: 'coupons', label: 'Cupones', icon: '🎟️' },
+                    { id: 'sales', label: 'Ventas & ROI', icon: '📢' },
+                    { id: 'catalog-mobile', label: 'Catálogos PDF', icon: '📱' }
+                  ] : [
+                    { id: 'stats', label: 'Métricas', icon: '📊' },
+                    { id: 'settings', label: 'Ajustes & Taller', icon: '⚙️' },
+                    { id: 'arcade', label: 'Arcade', icon: '🎮' }
+                  ]
+                ).map(item => {
                   const isCurrent = (item.id === 'raw-materials-inventory' && activeTab === 'raw-materials' && rawMaterialsSubTab === 'inventory')
                     || (item.id === 'raw-materials-suppliers' && activeTab === 'raw-materials' && rawMaterialsSubTab === 'suppliers')
                     || (activeTab === item.id);
@@ -4183,17 +4241,17 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           setActiveTab(item.id);
                         }
                       }}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 flex items-center gap-1.5 transition-all cursor-pointer ${
+                      className={`px-3 py-1.5 rounded-full text-xs font-bold shrink-0 flex items-center gap-1.5 transition-all cursor-pointer ${
                         isCurrent
                           ? 'bg-[#2D4F3E] text-white shadow-xs'
-                          : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                          : 'bg-[#F4F0E8] text-gray-700 hover:bg-[#EBE5D9]'
                       }`}
                     >
                       <span>{item.icon}</span>
                       <span>{item.label}</span>
                       {item.count !== undefined && (
                         <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
-                          isCurrent ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-700'
+                          isCurrent ? 'bg-white/20 text-white' : 'bg-white text-gray-700 border border-gray-200'
                         }`}>
                           {item.count}
                         </span>
@@ -4204,300 +4262,322 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               </div>
             </div>
 
-            {/* Sidebar Navigation para Escritorio */}
-            <aside className="hidden md:flex md:w-64 bg-white border-r border-[#E8E4DA] p-2.5 sm:p-3 flex-col justify-between shrink-0 overflow-y-auto scrollbar-thin">
-              <nav className="flex md:flex-col gap-2.5 sm:gap-3 w-full min-w-max md:min-w-0">
-
-                {/* GRUPO 1: CATÁLOGO & PRODUCTOS */}
-                <div className="space-y-1">
-                  <div className="px-3 text-[10px] font-black uppercase tracking-wider text-gray-400">
-                    Catálogo &amp; Productos
+            {/* Sidebar Navigation para Escritorio: Diseño Moderno y Limpio estilo Studio */}
+            <aside className="hidden md:flex md:w-64 bg-white border-r border-[#E8E4DA] p-3 flex-col justify-between shrink-0 overflow-y-auto scrollbar-thin">
+              <div className="space-y-4">
+                {/* Cabecera del Taller */}
+                <div className="p-3 rounded-2xl bg-[#F7F5EE] border border-[#E8E4DA] flex items-center justify-between shadow-2xs">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-xl bg-[#2D4F3E] text-white flex items-center justify-center font-black text-xs shadow-xs">
+                      AD
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold text-[#1F2421]">Artesano Digital</div>
+                      <div className="text-[10px] text-gray-500 font-medium">Panel de Taller</div>
+                    </div>
                   </div>
-
-                  <button
-                    onClick={() => setActiveTab('products')}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-                      activeTab === 'products' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Package className="w-4 h-4" />
-                      <span>Productos &amp; SKUs</span>
-                    </div>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                      activeTab === 'products' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-600'
-                    }`}>
-                      {products.length}
-                    </span>
-                  </button>
-
-                  <button
-                    onClick={() => setActiveTab('packages')}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-                      activeTab === 'packages' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Boxes className="w-4 h-4 text-[#D4A359]" />
-                      <span>Paquetes &amp; Combos</span>
-                    </div>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                      activeTab === 'packages' ? 'bg-white/20 text-white' : 'bg-purple-50 text-purple-700'
-                    }`}>
-                      {products.filter(p => p.isBundle).length} kits
-                    </span>
-                  </button>
-
-                  <button
-                    onClick={() => setActiveTab('categories')}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-                      activeTab === 'categories' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <FolderTree className="w-4 h-4" />
-                      <span>Categorías</span>
-                    </div>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                      activeTab === 'categories' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-600'
-                    }`}>
-                      {categories.length}
-                    </span>
-                  </button>
-
-                  <button
-                    onClick={() => setActiveTab('area-banners')}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-                      activeTab === 'area-banners' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <ImageIcon className="w-4 h-4 text-emerald-600" />
-                      <span>Banners de Áreas</span>
-                    </div>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                      activeTab === 'area-banners' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
-                    }`}>
-                      3 Áreas
-                    </span>
-                  </button>
+                  <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                    En Línea
+                  </span>
                 </div>
 
-                {/* GRUPO 2: TALLER & MANUFACTURA */}
-                <div className="space-y-1 pt-1 border-t border-gray-100">
-                  <div className="px-3 pt-2 text-[10px] font-black uppercase tracking-wider text-gray-400">
-                    Taller &amp; Manufactura
+                <nav className="flex flex-col gap-3 w-full">
+                  {/* GRUPO 1: CATÁLOGO & PRODUCTOS */}
+                  <div className="space-y-1">
+                    <div className="px-3 text-[10px] font-black uppercase tracking-wider text-gray-400">
+                      Catálogo &amp; Productos
+                    </div>
+
+                    <button
+                      onClick={() => setActiveTab('products')}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
+                        activeTab === 'products' ? 'bg-[#2D4F3E] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#2D4F3E] font-medium'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Package className="w-4 h-4" />
+                        <span>Productos &amp; SKUs</span>
+                      </div>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                        activeTab === 'products' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-600'
+                      }`}>
+                        {products.length}
+                      </span>
+                    </button>
+
+                    <button
+                      onClick={() => setActiveTab('packages')}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
+                        activeTab === 'packages' ? 'bg-[#2D4F3E] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#2D4F3E] font-medium'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Boxes className="w-4 h-4 text-[#D4A359]" />
+                        <span>Paquetes &amp; Combos</span>
+                      </div>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                        activeTab === 'packages' ? 'bg-white/20 text-white' : 'bg-purple-50 text-purple-700'
+                      }`}>
+                        {products.filter(p => p.isBundle).length} kits
+                      </span>
+                    </button>
+
+                    <button
+                      onClick={() => setActiveTab('categories')}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
+                        activeTab === 'categories' ? 'bg-[#2D4F3E] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#2D4F3E] font-medium'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <FolderTree className="w-4 h-4" />
+                        <span>Categorías</span>
+                      </div>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                        activeTab === 'categories' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-600'
+                      }`}>
+                        {categories.length}
+                      </span>
+                    </button>
+
+                    <button
+                      onClick={() => setActiveTab('area-banners')}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
+                        activeTab === 'area-banners' ? 'bg-[#2D4F3E] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#2D4F3E] font-medium'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <ImageIcon className="w-4 h-4 text-emerald-600" />
+                        <span>Banners de Áreas</span>
+                      </div>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                        activeTab === 'area-banners' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
+                      }`}>
+                        3 Áreas
+                      </span>
+                    </button>
                   </div>
 
-                  <button
-                    onClick={() => {
-                      setRawMaterialsSubTab('inventory');
-                      setActiveTab('raw-materials');
-                    }}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-                      activeTab === 'raw-materials' && rawMaterialsSubTab === 'inventory' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Layers className="w-4 h-4" />
-                      <span>Stock &amp; Recetas BOM</span>
+                  {/* GRUPO 2: TALLER & MANUFACTURA */}
+                  <div className="space-y-1 pt-1 border-t border-gray-100">
+                    <div className="px-3 pt-2 text-[10px] font-black uppercase tracking-wider text-gray-400">
+                      Taller &amp; Manufactura
                     </div>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                      activeTab === 'raw-materials' && rawMaterialsSubTab === 'inventory' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
-                    }`}>
-                      Insumos
-                    </span>
-                  </button>
 
-                  <button
-                    onClick={() => {
-                      setRawMaterialsSubTab('suppliers');
-                      setActiveTab('raw-materials');
-                    }}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-                      activeTab === 'raw-materials' && rawMaterialsSubTab === 'suppliers' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Building2 className="w-4 h-4" />
-                      <span>Proveedores &amp; Fletes</span>
-                    </div>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                      activeTab === 'raw-materials' && rawMaterialsSubTab === 'suppliers' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
-                    }`}>
-                      PDFs &amp; Tarifas
-                    </span>
-                  </button>
+                    <button
+                      onClick={() => {
+                        setRawMaterialsSubTab('inventory');
+                        setActiveTab('raw-materials');
+                      }}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
+                        activeTab === 'raw-materials' && rawMaterialsSubTab === 'inventory' ? 'bg-[#2D4F3E] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#2D4F3E] font-medium'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Layers className="w-4 h-4" />
+                        <span>Stock &amp; Recetas BOM</span>
+                      </div>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                        activeTab === 'raw-materials' && rawMaterialsSubTab === 'inventory' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
+                      }`}>
+                        Insumos
+                      </span>
+                    </button>
 
-                  <button
-                    onClick={() => setActiveTab('margins')}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-                      activeTab === 'margins' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <TrendingUp className="w-4 h-4" />
-                      <span>Costos &amp; Márgenes</span>
-                    </div>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                      activeTab === 'margins' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
-                    }`}>
-                      {marginsStats.avgMargin}%
-                    </span>
-                  </button>
-                </div>
+                    <button
+                      onClick={() => {
+                        setRawMaterialsSubTab('suppliers');
+                        setActiveTab('raw-materials');
+                      }}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
+                        activeTab === 'raw-materials' && rawMaterialsSubTab === 'suppliers' ? 'bg-[#2D4F3E] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#2D4F3E] font-medium'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Building2 className="w-4 h-4" />
+                        <span>Proveedores &amp; Fletes</span>
+                      </div>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                        activeTab === 'raw-materials' && rawMaterialsSubTab === 'suppliers' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
+                      }`}>
+                        Tarifas
+                      </span>
+                    </button>
 
-                {/* GRUPO 3: VENTAS & PROMOCIONES */}
-                <div className="space-y-1 pt-1 border-t border-gray-100">
-                  <div className="px-3 pt-2 text-[10px] font-black uppercase tracking-wider text-gray-400">
-                    Ventas &amp; Promociones
+                    <button
+                      onClick={() => setActiveTab('margins')}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
+                        activeTab === 'margins' ? 'bg-[#2D4F3E] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#2D4F3E] font-medium'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <TrendingUp className="w-4 h-4" />
+                        <span>Costos &amp; Márgenes</span>
+                      </div>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                        activeTab === 'margins' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
+                      }`}>
+                        {marginsStats.avgMargin}%
+                      </span>
+                    </button>
                   </div>
 
-                  <button
-                    onClick={() => setActiveTab('flash-deals')}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-                      activeTab === 'flash-deals' ? 'bg-[#9E472A] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Flame className={`w-4 h-4 ${activeTab === 'flash-deals' ? 'text-white fill-white' : 'text-[#9E472A] fill-[#9E472A]'}`} />
-                      <span>Ofertas Flash &amp; Cupos</span>
+                  {/* GRUPO 3: VENTAS & PROMOCIONES */}
+                  <div className="space-y-1 pt-1 border-t border-gray-100">
+                    <div className="px-3 pt-2 text-[10px] font-black uppercase tracking-wider text-gray-400">
+                      Ventas &amp; Promociones
                     </div>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                      activeTab === 'flash-deals' ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-800'
-                    }`}>
-                      {activeFlashList.length} activas
-                    </span>
-                  </button>
 
-                  <button
-                    onClick={() => setActiveTab('campaigns')}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-                      activeTab === 'campaigns' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-amber-400" />
-                      <span>Temporadas &amp; Eventos</span>
-                    </div>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                      activeTab === 'campaigns' ? 'bg-white/20 text-white' : 'bg-rose-50 text-rose-700'
-                    }`}>
-                      Especial
-                    </span>
-                  </button>
+                    <button
+                      onClick={() => setActiveTab('flash-deals')}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
+                        activeTab === 'flash-deals' ? 'bg-[#9E472A] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#9E472A] font-medium'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Flame className={`w-4 h-4 ${activeTab === 'flash-deals' ? 'text-white fill-white' : 'text-[#9E472A] fill-[#9E472A]'}`} />
+                        <span>Ofertas Flash &amp; Cupos</span>
+                      </div>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                        activeTab === 'flash-deals' ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-800'
+                      }`}>
+                        {activeFlashList.length} activas
+                      </span>
+                    </button>
 
-                  <button
-                    onClick={() => setActiveTab('coupons')}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-                      activeTab === 'coupons' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Tag className="w-4 h-4" />
-                      <span>Cupones de Descuento</span>
-                    </div>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                      activeTab === 'coupons' ? 'bg-white/20 text-white' : 'bg-amber-50 text-amber-800 border border-amber-200'
-                    }`}>
-                      🎟️ Tienda &amp; Arcade
-                    </span>
-                  </button>
+                    <button
+                      onClick={() => setActiveTab('campaigns')}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
+                        activeTab === 'campaigns' ? 'bg-[#2D4F3E] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#2D4F3E] font-medium'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Sparkles className="w-4 h-4 text-amber-400" />
+                        <span>Temporadas &amp; Eventos</span>
+                      </div>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                        activeTab === 'campaigns' ? 'bg-white/20 text-white' : 'bg-rose-50 text-rose-700'
+                      }`}>
+                        Especial
+                      </span>
+                    </button>
 
-                  <button
-                    onClick={() => setActiveTab('sales')}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-                      activeTab === 'sales' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Megaphone className="w-4 h-4" />
-                      <span>Ventas &amp; ROI Publicitario</span>
-                    </div>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                      activeTab === 'sales' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
-                    }`}>
-                      ROI
-                    </span>
-                  </button>
+                    <button
+                      onClick={() => setActiveTab('coupons')}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
+                        activeTab === 'coupons' ? 'bg-[#2D4F3E] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#2D4F3E] font-medium'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Tag className="w-4 h-4" />
+                        <span>Cupones de Descuento</span>
+                      </div>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                        activeTab === 'coupons' ? 'bg-white/20 text-white' : 'bg-amber-50 text-amber-800 border border-amber-200'
+                      }`}>
+                        🎟️ Cupones
+                      </span>
+                    </button>
 
-                  <button
-                    onClick={() => setActiveTab('catalog-mobile')}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-                      activeTab === 'catalog-mobile' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Smartphone className="w-4 h-4" />
-                      <span>Catálogos Móviles PDF</span>
-                    </div>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                      activeTab === 'catalog-mobile'
-                        ? 'bg-white/20 text-white'
-                        : (businessSettings?.mobileCatalogConfig?.enabled !== false ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200')
-                    }`}>
-                      {businessSettings?.mobileCatalogConfig?.enabled !== false ? 'Activo' : 'Oculto'}
-                    </span>
-                  </button>
-                </div>
+                    <button
+                      onClick={() => setActiveTab('sales')}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
+                        activeTab === 'sales' ? 'bg-[#2D4F3E] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#2D4F3E] font-medium'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Megaphone className="w-4 h-4" />
+                        <span>Ventas &amp; ROI</span>
+                      </div>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                        activeTab === 'sales' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
+                      }`}>
+                        ROI
+                      </span>
+                    </button>
 
-                {/* GRUPO 4: NEGOCIO & CONTROL */}
-                <div className="space-y-1 pt-1 border-t border-gray-100">
-                  <div className="px-3 pt-2 text-[10px] font-black uppercase tracking-wider text-gray-400">
-                    Negocio &amp; Control
+                    <button
+                      onClick={() => setActiveTab('catalog-mobile')}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
+                        activeTab === 'catalog-mobile' ? 'bg-[#2D4F3E] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#2D4F3E] font-medium'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Smartphone className="w-4 h-4" />
+                        <span>Catálogos Móviles PDF</span>
+                      </div>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                        activeTab === 'catalog-mobile'
+                          ? 'bg-white/20 text-white'
+                          : (businessSettings?.mobileCatalogConfig?.enabled !== false ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200')
+                      }`}>
+                        {businessSettings?.mobileCatalogConfig?.enabled !== false ? 'Activo' : 'Oculto'}
+                      </span>
+                    </button>
                   </div>
 
-                  <button
-                    onClick={() => setActiveTab('stats')}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-                      activeTab === 'stats' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <BarChart3 className="w-4 h-4" />
-                      <span>Métricas &amp; Tráfico</span>
+                  {/* GRUPO 4: NEGOCIO & CONTROL */}
+                  <div className="space-y-1 pt-1 border-t border-gray-100">
+                    <div className="px-3 pt-2 text-[10px] font-black uppercase tracking-wider text-gray-400">
+                      Negocio &amp; Control
                     </div>
-                  </button>
 
-                  <button
-                    onClick={() => setActiveTab('settings')}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-                      activeTab === 'settings' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Settings className="w-4 h-4" />
-                      <span>Datos del Taller &amp; Cobertura</span>
-                    </div>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold border ${
-                      activeTab === 'settings' ? 'bg-white/20 text-white border-white/20' : serviceSummary.color
-                    }`}>
-                      {serviceSummary.badge}
-                    </span>
-                  </button>
+                    <button
+                      onClick={() => setActiveTab('stats')}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
+                        activeTab === 'stats' ? 'bg-[#2D4F3E] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#2D4F3E] font-medium'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <BarChart3 className="w-4 h-4" />
+                        <span>Métricas &amp; Tráfico</span>
+                      </div>
+                    </button>
 
-                  <button
-                    onClick={() => setActiveTab('arcade')}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-                      activeTab === 'arcade' ? 'bg-[#2D4F3E] text-white shadow-xs' : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Gamepad2 className="w-4 h-4 text-amber-500" />
-                      <span>Arcade de Fidelización</span>
-                    </div>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                      activeTab === 'arcade' ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-800'
-                    }`}>
-                      10 Juegos
-                    </span>
-                  </button>
+                    <button
+                      onClick={() => setActiveTab('settings')}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
+                        activeTab === 'settings' ? 'bg-[#2D4F3E] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#2D4F3E] font-medium'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Settings className="w-4 h-4" />
+                        <span>Datos del Taller</span>
+                      </div>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold border ${
+                        activeTab === 'settings' ? 'bg-white/20 text-white border-white/20' : serviceSummary.color
+                      }`}>
+                        {serviceSummary.badge}
+                      </span>
+                    </button>
+
+                    <button
+                      onClick={() => setActiveTab('arcade')}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
+                        activeTab === 'arcade' ? 'bg-[#2D4F3E] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#2D4F3E] font-medium'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Gamepad2 className="w-4 h-4 text-amber-500" />
+                        <span>Arcade Fidelización</span>
+                      </div>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                        activeTab === 'arcade' ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-800'
+                      }`}>
+                        10 Juegos
+                      </span>
+                    </button>
+                  </div>
+                </nav>
+              </div>
+
+              <div className="p-3 rounded-2xl bg-[#F7F5EE] border border-[#E8E4DA] text-[11px] text-gray-600 mt-4">
+                <div className="flex items-center gap-1.5 font-bold text-[#2D4F3E]">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>Sincronización activa</span>
                 </div>
-
-              </nav>
-
-              <div className="hidden md:block p-3 rounded-xl bg-gray-50 border border-gray-100 text-[11px] text-gray-500">
-                Confirma cada cambio antes de cerrar el panel.
+                <p className="text-[10px] text-gray-500 mt-0.5 leading-snug">
+                  Los cambios se guardan y reflejan inmediatamente en la tienda.
+                </p>
               </div>
             </aside>
 
@@ -4610,22 +4690,25 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               {/* TAB 1: PRODUCTOS CON DIVISIÓN POR ÁREAS Y SWITCH DE STOCK */}
               {activeTab === 'products' && (
                 <div className="space-y-4">
-                  {/* ÁREAS INTERACTIVAS: DIVISIÓN VISUAL RÁPIDA */}
-                  <div className="bg-white p-3 sm:p-4 rounded-2xl border border-[#E8E4DA] shadow-2xs space-y-3">
+                  {/* BARRA DE ÁREAS Y AUDITORÍA: DISEÑO LIMPIO ESTILO CATÁLOGO */}
+                  <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-[#E8E4DA] shadow-xs space-y-3">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
                       <div className="flex items-center gap-2">
                         <Boxes className="w-4 h-4 text-[#2D4F3E]" />
                         <h4 className="text-xs font-bold uppercase tracking-wider text-gray-700 font-heading">
-                          División de Catálogo por Áreas
+                          Áreas del Catálogo
                         </h4>
+                        <span className="text-[10px] font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+                          8 áreas oficiales
+                        </span>
                       </div>
-                      <span className="text-[11px] text-gray-500">
-                        Selecciona un área para auditar productos y stock de forma ágil
+                      <span className="text-[11px] text-gray-500 font-medium">
+                        {filterWorld === 'all' ? `Mostrando ${products.length} productos en total` : `${stockAreaStats[filterWorld]?.total || 0} piezas en esta área`}
                       </span>
                     </div>
 
-                    {/* Pestañas de Área con Indicadores de Stock (8 Áreas + Todas) */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 xl:grid-cols-9 gap-2">
+                    {/* Selector de Áreas: Pills limpios con scroll horizontal táctil (estilo WorldSelector / FiltersBar) */}
+                    <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none no-scrollbar">
                       {[
                         { id: 'all', label: 'Todas las Áreas', icon: '🌐', stats: stockAreaStats.all },
                         { id: 'hogar', label: 'Hogar & Deco', icon: '🏠', stats: stockAreaStats.hogar },
@@ -4644,92 +4727,64 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             key={area.id}
                             type="button"
                             onClick={() => setFilterWorld(area.id)}
-                            className={`p-2.5 sm:p-3 rounded-xl border text-left transition-all flex flex-col justify-between gap-2 cursor-pointer ${
+                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all cursor-pointer shrink-0 ${
                               isSelected
-                                ? 'bg-[#2D4F3E] text-white border-[#2D4F3E] shadow-sm'
-                                : 'bg-gray-50/80 hover:bg-gray-100 text-gray-700 border-gray-200'
+                                ? 'bg-[#2D4F3E] text-white shadow-xs'
+                                : 'bg-[#F4F0E8] text-gray-700 hover:bg-[#EBE5D9]'
                             }`}
                           >
-                            <div className="flex items-center justify-between w-full">
-                              <span className="text-xs font-bold flex items-center gap-1.5">
-                                <span className="text-sm">{area.icon}</span>
-                                <span className="truncate">{area.label}</span>
-                              </span>
-                              <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-full ${
-                                isSelected ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-700'
-                              }`}>
-                                {stats.total}
-                              </span>
-                            </div>
-
-                            <div className="flex items-center justify-between text-[10px] sm:text-[10.5px] pt-1 border-t border-white/10 border-gray-200">
-                              <span className={`flex items-center gap-1 font-semibold ${
-                                isSelected ? 'text-emerald-200' : 'text-emerald-700'
-                              }`}>
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                                <span>{stats.inStock} stock</span>
-                              </span>
-                              <span className={isSelected ? 'text-gray-200' : 'text-gray-500'}>
-                                {stats.madeToOrder} s/p
-                              </span>
-                            </div>
+                            <span>{area.icon}</span>
+                            <span>{area.label}</span>
+                            <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
+                              isSelected ? 'bg-white/20 text-white' : 'bg-white text-gray-700 border border-gray-200'
+                            }`}>
+                              {stats.total}
+                            </span>
                           </button>
                         );
                       })}
                     </div>
-                  </div>
 
-                  {/* RESUMEN RÁPIDO DE STOCK DEL ÁREA SELECCIONADA */}
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    <div className="p-3.5 rounded-2xl bg-white border border-[#E8E4DA] shadow-2xs">
-                      <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 flex items-center gap-1">
-                        <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                        <span>En Existencia Inmediata</span>
+                    {/* Resumen Compacto de Stock en una Tira Horizontal Limpia */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-gray-100">
+                      <div className="flex items-center gap-2 p-2 rounded-xl bg-emerald-50/70 border border-emerald-200/60">
+                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span>
+                        <div className="min-w-0">
+                          <div className="text-[10px] font-bold uppercase text-emerald-800 leading-tight">En Existencia</div>
+                          <div className="text-xs font-black text-emerald-950 font-mono">
+                            {stockAreaStats[filterWorld]?.inStock || 0} modelos
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-xl font-black text-[#1F2421] mt-1">
-                        {stockAreaStats[filterWorld]?.inStock || 0}
-                      </div>
-                      <div className="text-[10.5px] text-gray-500 mt-0.5">
-                        Modelos listos para entrega
-                      </div>
-                    </div>
 
-                    <div className="p-3.5 rounded-2xl bg-white border border-[#E8E4DA] shadow-2xs">
-                      <div className="text-[10px] font-bold uppercase tracking-wider text-blue-700 flex items-center gap-1">
-                        <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-                        <span>Bajo Pedido (Taller)</span>
+                      <div className="flex items-center gap-2 p-2 rounded-xl bg-blue-50/70 border border-blue-200/60">
+                        <span className="w-2.5 h-2.5 rounded-full bg-blue-500 shrink-0"></span>
+                        <div className="min-w-0">
+                          <div className="text-[10px] font-bold uppercase text-blue-800 leading-tight">Bajo Pedido</div>
+                          <div className="text-xs font-black text-blue-950 font-mono">
+                            {stockAreaStats[filterWorld]?.madeToOrder || 0} modelos
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-xl font-black text-[#1F2421] mt-1">
-                        {stockAreaStats[filterWorld]?.madeToOrder || 0}
-                      </div>
-                      <div className="text-[10.5px] text-gray-500 mt-0.5">
-                        Fabricación sobre orden
-                      </div>
-                    </div>
 
-                    <div className="p-3.5 rounded-2xl bg-white border border-[#E8E4DA] shadow-2xs">
-                      <div className="text-[10px] font-bold uppercase tracking-wider text-rose-700 flex items-center gap-1">
-                        <span className="w-2 h-2 rounded-full bg-rose-500"></span>
-                        <span>Agotados / Pausados</span>
+                      <div className="flex items-center gap-2 p-2 rounded-xl bg-gray-50 border border-gray-200">
+                        <span className="w-2.5 h-2.5 rounded-full bg-gray-400 shrink-0"></span>
+                        <div className="min-w-0">
+                          <div className="text-[10px] font-bold uppercase text-gray-600 leading-tight">Agotados / Pausados</div>
+                          <div className="text-xs font-black text-gray-800 font-mono">
+                            {stockAreaStats[filterWorld]?.outOfStock || 0} modelos
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-xl font-black text-[#1F2421] mt-1">
-                        {stockAreaStats[filterWorld]?.outOfStock || 0}
-                      </div>
-                      <div className="text-[10.5px] text-gray-500 mt-0.5">
-                        Sin existencia por ahora
-                      </div>
-                    </div>
 
-                    <div className="p-3.5 rounded-2xl bg-white border border-[#E8E4DA] shadow-2xs">
-                      <div className="text-[10px] font-bold uppercase tracking-wider text-[#2D4F3E] flex items-center gap-1">
-                        <Package className="w-3 h-3 text-[#2D4F3E]" />
-                        <span>Piezas Físicas en Stock</span>
-                      </div>
-                      <div className="text-xl font-black text-[#2D4F3E] mt-1">
-                        {stockAreaStats[filterWorld]?.totalUnits || 0} pzs
-                      </div>
-                      <div className="text-[10.5px] text-gray-500 mt-0.5">
-                        Total de unidades en bodega
+                      <div className="flex items-center gap-2 p-2 rounded-xl bg-[#F4F0E8] border border-[#E8E4DA]">
+                        <Package className="w-3.5 h-3.5 text-[#2D4F3E] shrink-0" />
+                        <div className="min-w-0">
+                          <div className="text-[10px] font-bold uppercase text-[#2D4F3E] leading-tight">Bodega Taller</div>
+                          <div className="text-xs font-black text-[#1F2421] font-mono">
+                            {stockAreaStats[filterWorld]?.totalUnits || 0} pzs físicas
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -4907,12 +4962,20 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                       {w}
                                     </span>
                                   ))}
-                                  <span className={`px-2 py-0.5 rounded-full text-[9.5px] font-bold ${
-                                    p.status === 'published' ? 'bg-emerald-100 text-emerald-800' :
-                                    p.status === 'draft' ? 'bg-amber-100 text-amber-800' : 'bg-gray-100 text-gray-600'
-                                  }`}>
-                                    {p.status === 'published' ? 'Publicado' : p.status === 'draft' ? 'Borrador' : 'Archivado'}
-                                  </span>
+                                  <button
+                                    type="button"
+                                    onClick={(e) => handleToggleStatus(p, e)}
+                                    className={`px-2 py-0.5 rounded-full text-[9.5px] font-bold border transition-colors cursor-pointer ${
+                                      p.status === 'published'
+                                        ? 'bg-emerald-50 text-emerald-800 border-emerald-300 hover:bg-emerald-100'
+                                        : p.status === 'draft'
+                                        ? 'bg-amber-50 text-amber-800 border-amber-300 hover:bg-amber-100'
+                                        : 'bg-gray-100 text-gray-600 border-gray-200'
+                                    }`}
+                                    title="Clic para alternar entre Publicado y Borrador"
+                                  >
+                                    {p.status === 'published' ? '● Publicado' : p.status === 'draft' ? '○ Borrador' : 'Archivado'}
+                                  </button>
                                 </div>
 
                                 <h4 className="font-bold text-xs sm:text-sm text-[#1F2421] truncate mt-1" title={p.name}>
@@ -4985,15 +5048,15 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 </div>
                               </div>
 
-                              {/* Switch de Stock */}
-                              <div className="flex items-center gap-2 bg-white px-2.5 py-1.5 rounded-xl border border-gray-200 shadow-2xs">
+                              {/* Switch de Stock & Ajuste Rápido */}
+                              <div className="flex items-center gap-1.5 bg-white px-2.5 py-1.5 rounded-xl border border-gray-200 shadow-2xs">
                                 <button
                                   type="button"
                                   onClick={(e) => handleToggleStock(p, e)}
                                   className={`relative inline-flex h-4 w-7 shrink-0 cursor-pointer rounded-full border border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
                                     p.availability === 'in_stock' ? 'bg-emerald-600' : 'bg-gray-300'
                                   }`}
-                                  title={p.availability === 'in_stock' ? 'En existencia. Clic para desactivar' : 'Sin stock inmediato. Clic para activar'}
+                                  title={p.availability === 'in_stock' ? 'En existencia. Clic para cambiar a Bajo Pedido' : 'Bajo pedido. Clic para activar Stock'}
                                 >
                                   <span
                                     className={`pointer-events-none inline-block h-3 w-3 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
@@ -5004,8 +5067,28 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 <span className={`text-[10px] font-bold ${
                                   p.availability === 'in_stock' ? 'text-emerald-700' : 'text-gray-500'
                                 }`}>
-                                  {p.availability === 'in_stock' ? `${p.stockQuantity || 0} en stock` : 'Bajo pedido'}
+                                  {p.availability === 'in_stock' ? `${p.stockQuantity || 0} pzs` : 'Bajo pedido'}
                                 </span>
+                                {p.availability === 'in_stock' && (
+                                  <div className="flex items-center gap-0.5 ml-1 border-l border-gray-200 pl-1">
+                                    <button
+                                      type="button"
+                                      onClick={(e) => handleAdjustStockQuantity(p, -1, e)}
+                                      className="w-4 h-4 rounded bg-gray-100 hover:bg-gray-200 text-gray-700 flex items-center justify-center text-[10px] font-bold cursor-pointer"
+                                      title="Restar 1 unidad"
+                                    >
+                                      -
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={(e) => handleAdjustStockQuantity(p, 1, e)}
+                                      className="w-4 h-4 rounded bg-gray-100 hover:bg-gray-200 text-gray-700 flex items-center justify-center text-[10px] font-bold cursor-pointer"
+                                      title="Sumar 1 unidad"
+                                    >
+                                      +
+                                    </button>
+                                  </div>
+                                )}
                               </div>
                             </div>
 
@@ -5119,12 +5202,20 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   </span>
                                 )}
                               </span>
-                              <span className={`px-2 py-0.5 rounded-full text-[9.5px] font-bold ${
-                                p.status === 'published' ? 'bg-emerald-100 text-emerald-800' :
-                                p.status === 'draft' ? 'bg-amber-100 text-amber-800' : 'bg-gray-100 text-gray-600'
-                              }`}>
-                                {p.status === 'published' ? 'Publicado' : p.status === 'draft' ? 'Borrador' : 'Archivado'}
-                              </span>
+                              <button
+                                type="button"
+                                onClick={(e) => handleToggleStatus(p, e)}
+                                className={`px-2 py-0.5 rounded-full text-[9.5px] font-bold border transition-colors cursor-pointer ${
+                                  p.status === 'published'
+                                    ? 'bg-emerald-50 text-emerald-800 border-emerald-300 hover:bg-emerald-100'
+                                    : p.status === 'draft'
+                                    ? 'bg-amber-50 text-amber-800 border-amber-300 hover:bg-amber-100'
+                                    : 'bg-gray-100 text-gray-600 border-gray-200'
+                                }`}
+                                title="Clic para alternar entre Publicado y Borrador"
+                              >
+                                {p.status === 'published' ? '● Publicado' : p.status === 'draft' ? '○ Borrador' : 'Archivado'}
+                              </button>
                             </div>
 
                             <h4 className="font-bold text-sm text-[#1F2421] group-hover:text-[#2D4F3E] truncate mt-1 transition-colors">
@@ -5570,12 +5661,20 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               </td>
 
                               <td className="py-1 px-1.5">
-                                <span className={`px-1.5 py-0.2 rounded-full text-[9px] font-bold ${
-                                  p.status === 'published' ? 'bg-emerald-100 text-emerald-800' :
-                                  p.status === 'draft' ? 'bg-amber-100 text-amber-800' : 'bg-gray-100 text-gray-600'
-                                }`}>
-                                  {p.status === 'published' ? 'Publicado' : p.status === 'draft' ? 'Borrador' : 'Archivado'}
-                                </span>
+                                <button
+                                  type="button"
+                                  onClick={(e) => handleToggleStatus(p, e)}
+                                  className={`px-1.5 py-0.2 rounded-full text-[9px] font-bold border transition-colors cursor-pointer ${
+                                    p.status === 'published'
+                                      ? 'bg-emerald-50 text-emerald-800 border-emerald-300 hover:bg-emerald-100'
+                                      : p.status === 'draft'
+                                      ? 'bg-amber-50 text-amber-800 border-amber-300 hover:bg-amber-100'
+                                      : 'bg-gray-100 text-gray-600 border-gray-200'
+                                  }`}
+                                  title="Clic para alternar entre Publicado y Borrador"
+                                >
+                                  {p.status === 'published' ? '● Publicado' : p.status === 'draft' ? '○ Borrador' : 'Archivado'}
+                                </button>
                               </td>
 
                               <td className="py-1 px-2 text-right">
