@@ -27,7 +27,7 @@ export default function MobileMercadoLibreHeader({
     { id: 'eventos', label: 'Eventos' },
     { id: 'paquetes-servicios', label: 'Paquetes' },
     { id: 'industria', label: 'Industria' },
-    { id: 'publicidad-desarrollo', label: 'Servicios' }
+    { id: 'publicidad-desarrollo', label: 'Diseño y Publicidad' }
   ];
 
   return (

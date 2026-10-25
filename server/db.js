@@ -61,7 +61,7 @@ const initialWorlds = [
   },
   {
     id: 'publicidad-desarrollo',
-    name: 'Servicios',
+    name: 'Diseño y Publicidad',
     tagline: 'Diseño gráfico, desarrollo web y gran formato por Wicho Nemes',
     image: '/uploads/brand_artesano_digital_og.jpg',
     description: 'Soluciones digitales integrales: tiendas online, páginas web interactivas, campañas publicitarias de tráfico, rotulación vehicular, lonas de gran formato y modelado 3D.'

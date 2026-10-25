@@ -235,7 +235,7 @@ export default function MobileSidebarDrawer({
                 </div>
                 <div>
                   <div className="text-xs font-bold text-gray-900 flex items-center gap-1.5">
-                    <span>Publicidad &amp; Desarrollo</span>
+                    <span>Diseño y Publicidad</span>
                     <span className="text-[9px] bg-[#17251E] text-[#D4A359] px-1.5 py-0.2 rounded-full font-bold">Wicho</span>
                   </div>
                   <div className="text-[10px] text-gray-500">Branding, Lonas, Web y Portafolio</div>

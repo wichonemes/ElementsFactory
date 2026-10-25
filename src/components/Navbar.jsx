@@ -28,7 +28,7 @@ export default function Navbar({
     { id: 'eventos', label: 'Eventos' },
     { id: 'paquetes-servicios', label: 'Paquetes', isSpecial: true },
     { id: 'industria', label: 'Industria' },
-    { id: 'publicidad-desarrollo', label: 'Servicios', isSpecial: true, isHighlight: true }
+    { id: 'publicidad-desarrollo', label: 'Diseño y Publicidad', isSpecial: true, isHighlight: true }
   ];
 
   return (
