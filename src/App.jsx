@@ -90,8 +90,13 @@ export default function App() {
     if (catalogs.length > 1) {
       setIsCatalogSelectorOpen(true);
     } else {
-      const targetUrl = catalogs[0]?.fileUrl || catalogConfig.fileUrl || '/downloads/catalogo_movil_artesano_digital.pdf';
-      const targetName = catalogs[0]?.fileName || catalogConfig.fileName || 'Catalogo_Movil_Artesano_Digital.pdf';
+      const primaryCat = catalogs[0];
+      const targetUrl = primaryCat?.id 
+        ? `/api/catalog-pdf/download/${primaryCat.id}?download=1`
+        : (primaryCat?.fileUrl 
+            ? `${primaryCat.fileUrl}${primaryCat.fileUrl.includes('?') ? '&' : '?'}download=1` 
+            : '/downloads/catalogo_movil_artesano_digital.pdf?download=1');
+      const targetName = primaryCat?.fileName || catalogConfig.fileName || 'Catalogo_Movil_Artesano_Digital.pdf';
       const link = document.createElement('a');
       link.href = targetUrl;
       link.download = targetName;

@@ -751,7 +751,7 @@ export default function MobileCatalogAdminSection({
                   <div className="pt-2 border-t border-stone-200/80 flex items-center justify-between gap-2">
                     <div className="flex items-center gap-1.5">
                       <a
-                        href={cat.fileUrl || '/downloads/catalogo_movil_artesano_digital.pdf'}
+                        href={cat.id ? `/api/catalog-pdf/download/${cat.id}` : (cat.fileUrl || '/downloads/catalogo_movil_artesano_digital.pdf')}
                         target="_blank"
                         rel="noreferrer"
                         className="p-1.5 rounded-lg bg-white hover:bg-stone-100 text-stone-700 border border-stone-300 text-xs font-semibold flex items-center gap-1 transition-all"

@@ -88,6 +88,142 @@ const downloadsDir = path.join(__dirname, '..', 'public', 'downloads');
 if (!fs.existsSync(downloadsDir)) {
   fs.mkdirSync(downloadsDir, { recursive: true });
 }
+
+// Inicialización de respaldo binario persistente en PostgreSQL para catálogos PDF
+async function initCatalogFilesStorage() {
+  if (!cloudDb?.pool) return;
+  try {
+    await cloudDb.pool.query(`
+      CREATE TABLE IF NOT EXISTS artisan_private.catalog_files (
+        id text PRIMARY KEY,
+        filename text NOT NULL,
+        content_type text NOT NULL,
+        data bytea NOT NULL,
+        size_bytes integer NOT NULL,
+        updated_at timestamptz DEFAULT now()
+      );
+    `);
+
+    // Sembrar catalogo 25 octubre.pdf si existe en disco y aún no está en la base de datos
+    const candidateFiles = [
+      'catalogo_25_octubre_1792951400202.pdf',
+      'catalogo_25_octubre.pdf',
+      'catalogo 25 octubre.pdf'
+    ];
+    let sourceBuffer = null;
+    let foundFilename = '';
+    for (const cf of candidateFiles) {
+      const p = path.join(downloadsDir, cf);
+      if (fs.existsSync(p)) {
+        sourceBuffer = fs.readFileSync(p);
+        foundFilename = cf;
+        break;
+      }
+    }
+
+    if (sourceBuffer) {
+      const aliases = [
+        'cat-1792951400908-2mgu5',
+        'catalogo_25_octubre_1792951400202.pdf',
+        'catalogo_25_octubre.pdf',
+        'catalogo 25 octubre.pdf'
+      ];
+      for (const alias of aliases) {
+        await cloudDb.pool.query(`
+          INSERT INTO artisan_private.catalog_files (id, filename, content_type, data, size_bytes, updated_at)
+          VALUES ($1, $2, 'application/pdf', $3, $4, now())
+          ON CONFLICT (id) DO NOTHING;
+        `, [alias, 'catalogo 25 octubre.pdf', sourceBuffer, sourceBuffer.length]);
+      }
+      console.log('[STORAGE] Catálogo PDF de octubre respaldado con éxito en PostgreSQL.');
+    }
+  } catch (err) {
+    console.warn('[STORAGE] Nota sobre inicialización de catalog_files:', err.message);
+  }
+}
+initCatalogFilesStorage().catch(() => {});
+
+// Handler inteligente y robusto para servir y descargar archivos de /downloads/
+app.get('/downloads/:filename', async (req, res, next) => {
+  const reqFilename = req.params.filename;
+  if (!reqFilename) return next();
+
+  const isAttachment = req.query.download === '1' || req.query.download === 'true';
+  const dispositionType = isAttachment ? 'attachment' : 'inline';
+
+  // 1. Probar ruta exacta en public/downloads o dist/downloads
+  const candidatePaths = [
+    path.join(downloadsDir, reqFilename),
+    path.join(downloadsDir, decodeURIComponent(reqFilename)),
+    path.join(__dirname, '..', 'dist', 'downloads', reqFilename),
+    path.join(__dirname, '..', 'dist', 'downloads', decodeURIComponent(reqFilename))
+  ];
+
+  for (const p of candidatePaths) {
+    if (fs.existsSync(p) && fs.statSync(p).isFile()) {
+      const isPdf = p.toLowerCase().endsWith('.pdf');
+      res.setHeader('Content-Type', isPdf ? 'application/pdf' : 'application/octet-stream');
+      res.setHeader('Content-Disposition', `${dispositionType}; filename="${encodeURIComponent(path.basename(p))}"`);
+      return res.sendFile(p);
+    }
+  }
+
+  // 2. Probar coincidencia inteligente por nombre base (omitiendo timestamps y guiones bajos)
+  const cleanBase = reqFilename
+    .replace(/\.pdf$/i, '')
+    .replace(/_\d{10,}$/, '')
+    .replace(/[_-]/g, ' ')
+    .toLowerCase()
+    .trim();
+
+  const checkDirs = [downloadsDir, path.join(__dirname, '..', 'dist', 'downloads')];
+  for (const dir of checkDirs) {
+    if (fs.existsSync(dir)) {
+      const files = fs.readdirSync(dir);
+      const matched = files.find(f => {
+        const fClean = f.replace(/\.pdf$/i, '').replace(/_\d{10,}$/, '').replace(/[_-]/g, ' ').toLowerCase().trim();
+        return fClean === cleanBase || (cleanBase.length > 5 && fClean.includes(cleanBase));
+      });
+      if (matched) {
+        const fullPath = path.join(dir, matched);
+        if (fs.existsSync(fullPath) && fs.statSync(fullPath).isFile()) {
+          res.setHeader('Content-Type', 'application/pdf');
+          res.setHeader('Content-Disposition', `${dispositionType}; filename="${encodeURIComponent(matched)}"`);
+          return res.sendFile(fullPath);
+        }
+      }
+    }
+  }
+
+  // 3. Probar si el archivo está en la base de datos PostgreSQL
+  if (cloudDb?.pool) {
+    try {
+      const q = await cloudDb.pool.query(
+        'SELECT filename, content_type, data FROM artisan_private.catalog_files WHERE id = $1 OR filename = $1 OR filename = $2 LIMIT 1',
+        [reqFilename, decodeURIComponent(reqFilename)]
+      );
+      if (q.rows.length > 0) {
+        const fileRow = q.rows[0];
+        res.setHeader('Content-Type', fileRow.content_type || 'application/pdf');
+        res.setHeader('Content-Disposition', `${dispositionType}; filename="${encodeURIComponent(fileRow.filename)}"`);
+        return res.send(fileRow.data);
+      }
+    } catch (dbErr) {
+      console.warn('[DOWNLOADS] Error consultando catalog_files en PostgreSQL:', dbErr.message);
+    }
+  }
+
+  // 4. Si es un PDF no encontrado, enviar el catálogo móvil oficial predeterminado
+  const defaultCatalog = path.join(downloadsDir, 'catalogo_movil_artesano_digital.pdf');
+  if (fs.existsSync(defaultCatalog) && reqFilename.toLowerCase().endsWith('.pdf')) {
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `${dispositionType}; filename="Catalogo_Artesano_Digital.pdf"`);
+    return res.sendFile(defaultCatalog);
+  }
+
+  next();
+});
+
 app.use('/downloads', express.static(downloadsDir));
 
 // Serve built frontend if exists
@@ -1492,6 +1628,79 @@ app.get('/api/catalog-pdf/list', (_req, res) => {
   }
 });
 
+// Endpoint para descargar o visualizar directamente un catálogo por ID
+app.get('/api/catalog-pdf/download/:id', async (req, res) => {
+  try {
+    const config = db.getMobileCatalogConfig();
+    const catalogs = config.catalogs || [];
+    const item = catalogs.find(c => c.id === req.params.id) || 
+      (req.params.id === 'primary' ? (catalogs.find(c => c.isPrimary) || catalogs[0]) : null);
+
+    if (!item) {
+      return res.status(404).json({ error: 'Catálogo no encontrado' });
+    }
+
+    const fileName = item.fileName || `${item.name || 'catalogo'}.pdf`;
+    const isAttachment = req.query.download === '1' || req.query.download === 'true';
+    const dispositionType = isAttachment ? 'attachment' : 'inline';
+
+    // 1. Probar ruta de archivo local
+    if (item.fileUrl && item.fileUrl.startsWith('/downloads/')) {
+      const diskFilename = item.fileUrl.replace('/downloads/', '');
+      const candidatePaths = [
+        path.join(downloadsDir, diskFilename),
+        path.join(downloadsDir, decodeURIComponent(diskFilename)),
+        path.join(__dirname, '..', 'dist', 'downloads', diskFilename),
+        path.join(__dirname, '..', 'dist', 'downloads', decodeURIComponent(diskFilename)),
+        path.join(downloadsDir, fileName),
+        path.join(downloadsDir, decodeURIComponent(fileName))
+      ];
+      for (const p of candidatePaths) {
+        if (fs.existsSync(p) && fs.statSync(p).isFile()) {
+          res.setHeader('Content-Type', 'application/pdf');
+          res.setHeader('Content-Disposition', `${dispositionType}; filename="${encodeURIComponent(fileName)}"`);
+          return res.sendFile(p);
+        }
+      }
+    }
+
+    // 2. Probar base de datos PostgreSQL
+    if (cloudDb?.pool) {
+      try {
+        const q = await cloudDb.pool.query(
+          'SELECT filename, content_type, data FROM artisan_private.catalog_files WHERE id = $1 OR filename = $2 LIMIT 1',
+          [item.id, item.fileName || fileName]
+        );
+        if (q.rows.length > 0) {
+          const fileRow = q.rows[0];
+          res.setHeader('Content-Type', fileRow.content_type || 'application/pdf');
+          res.setHeader('Content-Disposition', `${dispositionType}; filename="${encodeURIComponent(fileRow.filename || fileName)}"`);
+          return res.send(fileRow.data);
+        }
+      } catch (err) {
+        console.warn('[STORAGE] Error recuperando PDF de PostgreSQL:', err.message);
+      }
+    }
+
+    // 3. Si tiene URL externa http/https
+    if (item.fileUrl && item.fileUrl.startsWith('http')) {
+      return res.redirect(item.fileUrl);
+    }
+
+    // 4. Fallback al catálogo predeterminado
+    const defaultCatalog = path.join(downloadsDir, 'catalogo_movil_artesano_digital.pdf');
+    if (fs.existsSync(defaultCatalog)) {
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `${dispositionType}; filename="${encodeURIComponent(fileName)}"`);
+      return res.sendFile(defaultCatalog);
+    }
+
+    res.status(404).json({ error: 'Archivo PDF no disponible' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.put('/api/admin/catalog-pdf/config', requireAdmin, (req, res) => {
   try {
     const updated = db.updateMobileCatalogConfig(req.body || {});
@@ -1508,6 +1717,7 @@ app.post('/api/admin/catalog-pdf/upload', requireAdmin, catalogUpload.single('fi
     }
     let fileUrl = '';
     let fileName = req.file.originalname || 'catalogo.pdf';
+    let fallbackFilename = '';
     const fileSizeFormatted = req.file.size > 1024 * 1024
       ? `${(req.file.size / (1024 * 1024)).toFixed(2)} MB`
       : `${Math.round(req.file.size / 1024)} KB`;
@@ -1521,7 +1731,7 @@ app.post('/api/admin/catalog-pdf/upload', requireAdmin, catalogUpload.single('fi
         console.warn('Almacenamiento en la nube no disponible para PDF, usando almacenamiento local:', storeErr.message);
         const ext = path.extname(req.file.originalname).toLowerCase() || '.pdf';
         const cleanBase = path.basename(req.file.originalname, ext).replace(/[^a-zA-Z0-9_-]/g, '_');
-        const fallbackFilename = `${cleanBase}_${Date.now()}${ext}`;
+        fallbackFilename = `${cleanBase}_${Date.now()}${ext}`;
         if (!fs.existsSync(downloadsDir)) fs.mkdirSync(downloadsDir, { recursive: true });
         const targetPath = path.join(downloadsDir, fallbackFilename);
         fs.writeFileSync(targetPath, req.file.buffer);
@@ -1540,6 +1750,34 @@ app.post('/api/admin/catalog-pdf/upload', requireAdmin, catalogUpload.single('fi
     }
 
     const { catalogId, name, season, badge, description, isPrimary, enabled } = req.body || {};
+    const assignedId = catalogId || (`cat-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`);
+
+    // Respaldar archivo PDF binario en la base de datos PostgreSQL
+    if (cloudDb?.pool && req.file?.buffer) {
+      try {
+        const fileBuffer = req.file.buffer;
+        const mimeType = req.file.mimetype || 'application/pdf';
+        const keysToStore = [assignedId, fileName];
+        if (typeof fallbackFilename !== 'undefined' && fallbackFilename) {
+          keysToStore.push(fallbackFilename);
+        }
+        for (const k of keysToStore) {
+          await cloudDb.pool.query(`
+            INSERT INTO artisan_private.catalog_files (id, filename, content_type, data, size_bytes, updated_at)
+            VALUES ($1, $2, $3, $4, $5, now())
+            ON CONFLICT (id) DO UPDATE SET
+              filename = EXCLUDED.filename,
+              content_type = EXCLUDED.content_type,
+              data = EXCLUDED.data,
+              size_bytes = EXCLUDED.size_bytes,
+              updated_at = now()
+          `, [k, fileName, mimeType, fileBuffer, fileBuffer.length]);
+        }
+        console.log(`[STORAGE] Archivo PDF "${fileName}" respaldado en PostgreSQL bajo ID: ${assignedId}`);
+      } catch (dbErr) {
+        console.warn('[STORAGE] Advertencia guardando PDF en PostgreSQL:', dbErr.message);
+      }
+    }
 
     const applyItem = () => {
       if (catalogId) {
@@ -1557,6 +1795,7 @@ app.post('/api/admin/catalog-pdf/upload', requireAdmin, catalogUpload.single('fi
         });
       } else {
         db.addMobileCatalogItem({
+          id: assignedId,
           name: name || fileName.replace(/\.[^/.]+$/, '').replace(/[_|-]/g, ' '),
           season: season || 'Temporada Actual',
           badge: badge || 'Nuevo',

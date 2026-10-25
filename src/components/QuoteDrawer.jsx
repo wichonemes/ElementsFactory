@@ -442,7 +442,7 @@ export default function QuoteDrawer({
                 </button>
                 {settings?.mobileCatalogConfig?.enabled !== false && settings?.mobileCatalogConfig?.showInDrawer !== false && (
                   <a
-                    href={settings?.mobileCatalogConfig?.fileUrl || '/downloads/catalogo_movil_artesano_digital.pdf'}
+                    href={`/api/catalog-pdf/download/primary?download=1`}
                     download={settings?.mobileCatalogConfig?.fileName || 'Catalogo_Movil_Artesano_Digital.pdf'}
                     className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#FAF9F5] text-[#2D4F3E] border border-[#2D4F3E]/20 text-xs font-bold hover:bg-[#2D4F3E]/10 cursor-pointer transition-all"
                     title={settings?.mobileCatalogConfig?.title || 'Descargar catálogo 9:16 para celular con enlaces MakerWorld'}
@@ -879,7 +879,7 @@ export default function QuoteDrawer({
 
               {settings?.mobileCatalogConfig?.enabled !== false && settings?.mobileCatalogConfig?.showInDrawer !== false && (
                 <a
-                  href={settings?.mobileCatalogConfig?.fileUrl || '/downloads/catalogo_movil_artesano_digital.pdf'}
+                  href={`/api/catalog-pdf/download/primary?download=1`}
                   download={settings?.mobileCatalogConfig?.fileName || 'Catalogo_Movil_Artesano_Digital.pdf'}
                   className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-full bg-amber-50 text-amber-900 border border-amber-200 text-xs font-bold hover:bg-amber-100 active:scale-98 transition-all cursor-pointer text-center"
                   title={settings?.mobileCatalogConfig?.title || 'Descargar catálogo vertical 9:16 para celular con enlaces MakerWorld'}
