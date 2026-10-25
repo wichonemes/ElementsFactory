@@ -1,15 +1,26 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import {
   X, Check, ShoppingBag, MessageCircle, Share2, Clock, Ruler,
-  ShieldCheck, Sparkles, ChevronLeft, ChevronRight, ChevronDown, Maximize2,
+  ShieldCheck, Sparkles, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Maximize2,
   Package, Eye, Layers, Calculator, Calendar, AlertTriangle, Truck, MapPin,
-  Gamepad2, Gift, Trophy, Star, ArrowRight, FileText, ZoomIn, Crown, Ticket, Repeat, Coins, Zap
+  Gamepad2, Gift, Trophy, Star, ArrowRight, FileText, ZoomIn, Crown, Ticket, Repeat, Coins, Zap,
+  Palette, TreePine, Printer3d, Shirt, Scissors, Info
 } from 'lucide-react';
 import TemuUrgencyModule from './TemuUrgencyModule';
 import WorkshopArcadeModal from './WorkshopArcadeModal';
 import { useArcadeSession } from '../hooks/useArcadeSession';
 import { formatServiceDate } from '../utils/serviceStatus';
-import { getFilamentColor, isDarkColor, DARK_COLOR_PRESETS, WORKSHOP_COLOR_PALETTES, ALL_WORKSHOP_COLORS } from '../utils/colorUtils';
+import {
+  getFilamentColor,
+  isDarkColor,
+  DARK_COLOR_PRESETS,
+  WORKSHOP_COLOR_PALETTES,
+  WORKSHOP_PALETTES_BY_CATEGORY,
+  ALL_WORKSHOP_COLORS,
+  detectProductMaterialCategory,
+  checkIfColorVariant,
+  getDefaultOptionsForCategory
+} from '../utils/colorUtils';
 import { playCoinSound, playMarioPowerDownSound } from '../utils/soundEffects';
 import { getBundleTiers } from './PackagesAndServicesView';
 
@@ -50,30 +61,63 @@ export default function ProductDetailModal({
   const galleryMeta = product.galleryMeta || defaultMeta;
 
   const [activeIdx, setActiveIdx] = useState(0);
+
+  const primaryMaterialCat = useMemo(() => detectProductMaterialCategory(product), [product]);
+  const existingColorVariant = useMemo(() => {
+    return (product?.variants || []).find(v => checkIfColorVariant(v));
+  }, [product?.variants]);
+
   const [selectedVariants, setSelectedVariants] = useState(() => {
     const init = {};
-    (product.variants || []).forEach(v => {
+    (product?.variants || []).forEach(v => {
       const filtered = isFlashDeal
         ? v.options.filter(opt => !opt.toLowerCase().includes('personalizad'))
         : v.options;
       init[v.name] = (filtered.length > 0 ? filtered[0] : v.options[0]);
     });
+    const hasCol = (product?.variants || []).some(v => checkIfColorVariant(v));
+    if (!hasCol) {
+      const defOpts = getDefaultOptionsForCategory(detectProductMaterialCategory(product));
+      init['Color / Acabado'] = defOpts[0];
+    }
     return init;
   });
+
   const [customText, setCustomText] = useState('');
   const [showMoreColorsTab, setShowMoreColorsTab] = useState(false);
-  const [selectedPaletteTab, setSelectedPaletteTab] = useState(() => {
-    if (product.techniques?.includes('laser') || (product.specifications?.material || '').toLowerCase().includes('madera')) return 'wood';
-    if (product.techniques?.includes('vinyl') || product.techniques?.includes('sublimation')) return 'textile';
-    return 'pla';
-  });
+  const [selectedPaletteTab, setSelectedPaletteTab] = useState(() => detectProductMaterialCategory(product));
+  const [activePlaSubGroup, setActivePlaSubGroup] = useState('todos');
   const [showPersonalizationInput, setShowPersonalizationInput] = useState(false);
-  const [isPaletteExpanded, setIsPaletteExpanded] = useState(false);
-  const [activePaletteGroup, setActivePaletteGroup] = useState('todos');
-  const [quantity, setQuantity] = useState(product.specifications?.minQuantity || 1);
+  const [quantity, setQuantity] = useState(product?.specifications?.minQuantity || 1);
   const [copiedLink, setCopiedLink] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
   const modalScrollRef = useRef(null);
+
+  // Sincronizar variantes y pestañas al cambiar de producto
+  useEffect(() => {
+    if (!product) return;
+    const cat = detectProductMaterialCategory(product);
+    setSelectedPaletteTab(cat);
+    setShowMoreColorsTab(false);
+    setActivePlaSubGroup('todos');
+    
+    setSelectedVariants(prev => {
+      const init = {};
+      (product.variants || []).forEach(v => {
+        const filtered = isFlashDeal
+          ? v.options.filter(opt => !opt.toLowerCase().includes('personalizad'))
+          : v.options;
+        init[v.name] = (filtered.length > 0 ? filtered[0] : v.options[0]);
+      });
+      const hasCol = (product.variants || []).some(v => checkIfColorVariant(v));
+      if (!hasCol) {
+        const defOpts = getDefaultOptionsForCategory(cat);
+        init['Color / Acabado'] = defOpts[0];
+      }
+      return init;
+    });
+    setQuantity(product.specifications?.minQuantity || 1);
+  }, [product?.id]);
 
   // Protección anti-salida accidental en móviles:
   // Al deslizar el dedo en el celular hacia atrás, solo se cierra el modal sin salirse de la tienda
@@ -254,6 +298,32 @@ export default function ProductDetailModal({
       ].filter(Boolean).join(' | ')
     });
   };
+
+  const colorVariantToRender = useMemo(() => {
+    if (existingColorVariant) return existingColorVariant;
+    return {
+      name: 'Color / Acabado',
+      options: getDefaultOptionsForCategory(primaryMaterialCat)
+    };
+  }, [existingColorVariant, primaryMaterialCat]);
+
+  const otherVariants = useMemo(() => {
+    return (product?.variants || []).filter(v => v !== existingColorVariant);
+  }, [product?.variants, existingColorVariant]);
+
+  const currentColorValue = useMemo(() => {
+    return selectedVariants[colorVariantToRender.name] || colorVariantToRender.options[0];
+  }, [selectedVariants, colorVariantToRender]);
+
+  const activeColorOptions = useMemo(() => {
+    const baseOptions = isFlashDeal
+      ? colorVariantToRender.options.filter(opt => !opt.toLowerCase().includes('personalizad'))
+      : colorVariantToRender.options;
+    if (currentColorValue && !baseOptions.includes(currentColorValue)) {
+      return [currentColorValue, ...baseOptions];
+    }
+    return baseOptions;
+  }, [colorVariantToRender, isFlashDeal, currentColorValue]);
 
   return (
     <div
@@ -736,80 +806,45 @@ export default function ProductDetailModal({
                 </div>
               ) : null}
 
-              {/* Variants Selector */}
-              {product.variants && product.variants.length > 0 && (
-                <div className="space-y-3.5 pt-1">
-                  {product.variants.map(variant => {
-                    const isColorVariant = /color|acento|tono/i.test(variant.name);
-                    const availableOptions = isFlashDeal 
-                      ? variant.options.filter(opt => !opt.toLowerCase().includes('personalizad'))
-                      : variant.options;
-                    const finalOptions = availableOptions.length > 0 ? availableOptions : variant.options;
+              {/* Selector Homologado de Variantes y Colores de Taller */}
+              {(() => {
+                const colorVar = colorVariantToRender;
+                const currentColor = currentColorValue;
+                const currentCatData = WORKSHOP_PALETTES_BY_CATEGORY[selectedPaletteTab] || WORKSHOP_PALETTES_BY_CATEGORY.pla;
+                const filteredPaletteColors = (currentCatData.colors || []).filter(c => {
+                  if (selectedPaletteTab === 'pla' && activePlaSubGroup !== 'todos') {
+                    return c.group === activePlaSubGroup;
+                  }
+                  return true;
+                });
+                const totalWorkshopColorsCount = ALL_WORKSHOP_COLORS.length;
 
-                    return (
-                      <div key={variant.name} className="space-y-1.5">
-                        <div className="flex items-center justify-between">
-                          <label className="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
-                            <span>{variant.name}:</span>
-                            {isColorVariant && selectedVariants[variant.name] && (
-                              <span className="text-[#2D4F3E] font-black normal-case text-xs bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-md">
-                                {selectedVariants[variant.name]}
-                              </span>
-                            )}
-                          </label>
-                          {isColorVariant && (
+                return (
+                  <div className="space-y-3.5 pt-1">
+                    {/* Otras variantes que no son de color (como Medida, Drenaje, Formato, etc.) */}
+                    {otherVariants.map(variant => {
+                      const availableOptions = isFlashDeal 
+                        ? variant.options.filter(opt => !opt.toLowerCase().includes('personalizad'))
+                        : variant.options;
+                      const finalOptions = availableOptions.length > 0 ? availableOptions : variant.options;
+                      const isSelectedOpt = selectedVariants[variant.name];
+
+                      return (
+                        <div key={variant.name} className="space-y-1.5">
+                          <div className="flex items-center justify-between">
+                            <label className="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
+                              <span>{variant.name}:</span>
+                              {isSelectedOpt && (
+                                <span className="text-[#2D4F3E] font-black normal-case text-xs bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-md">
+                                  {isSelectedOpt}
+                                </span>
+                              )}
+                            </label>
                             <span className="text-[10.5px] text-gray-400 font-medium">
                               {finalOptions.length} {finalOptions.length === 1 ? 'opción' : 'opciones'}
                             </span>
-                          )}
-                        </div>
-
-                        {/* Circulitos de color para variantes de color */}
-                        {isColorVariant ? (
-                          <div className="flex flex-wrap items-center gap-2 pt-1">
-                            {finalOptions.map(opt => {
-                              const isSelected = selectedVariants[variant.name] === opt;
-                              const swatch = getFilamentColor(opt);
-                              return (
-                                <button
-                                  key={opt}
-                                  type="button"
-                                  onClick={() => handleVariantChange(variant.name, opt)}
-                                  className={`group/c relative p-0.5 rounded-full transition-all cursor-pointer flex items-center justify-center ${
-                                    isSelected
-                                      ? 'ring-2 ring-[#2D4F3E] ring-offset-2 scale-110 shadow-xs'
-                                      : 'hover:scale-110 hover:ring-2 hover:ring-gray-300'
-                                  }`}
-                                  title={opt}
-                                >
-                                  <span
-                                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-black/20 shadow-2xs flex items-center justify-center transition-transform"
-                                    style={{
-                                      background: swatch?.css || '#D1D5DB',
-                                      borderColor: swatch?.border || '#9CA3AF',
-                                      boxShadow: swatch?.glow ? '0 0 8px rgba(110, 231, 183, 0.9)' : undefined
-                                    }}
-                                  >
-                                    {isSelected && (
-                                      <span className={`text-[11px] font-black ${
-                                        isDarkColor(swatch)
-                                          ? 'text-white drop-shadow-sm'
-                                          : 'text-gray-900'
-                                      }`}>
-                                        ✓
-                                      </span>
-                                    )}
-                                  </span>
-                                  {/* Tooltip con nombre de color */}
-                                  <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover/c:block z-30 px-2 py-0.5 text-[10px] font-bold text-white bg-black/90 rounded-md whitespace-nowrap shadow-md pointer-events-none">
-                                    {opt}
-                                  </span>
-                                </button>
-                              );
-                            })}
                           </div>
-                        ) : (
-                          /* Botones tipo pill para otras variantes (medida, drenaje, etc.) */
+
                           <div className="flex flex-wrap gap-2">
                             {finalOptions.map(opt => {
                               const isSelected = selectedVariants[variant.name] === opt;
@@ -829,21 +864,271 @@ export default function ProductDetailModal({
                               );
                             })}
                           </div>
-                        )}
-                      </div>
-                    );
-                  })}
+                        </div>
+                      );
+                    })}
 
-                  {product.techniques?.includes('3d') && (
-                    <div className="flex items-center gap-2 p-2.5 rounded-xl bg-[#2D4F3E]/5 border border-[#2D4F3E]/15 text-[11.5px] text-[#2D4F3E]">
-                      <Sparkles className="w-4 h-4 text-[#2D4F3E] shrink-0" />
-                      <span>
-                        <strong>Gama abierta de filamentos 3D:</strong> Contamos con amplia variedad de colores (mate, seda, madera o translúcido). Si requieres un tono personalizado, elígelo en la lista o indícalo en tu pedido.
-                      </span>
+                    {/* SECCIÓN HOMOLOGADA DE COLOR & ACABADO (Siempre visible para TODOS los productos) */}
+                    <div className="space-y-2 p-3 sm:p-3.5 rounded-2xl bg-[#FAF9F5] border border-[#E8DFC8]/90 shadow-2xs">
+                      <div className="flex items-center justify-between flex-wrap gap-2">
+                        <label className="text-xs font-bold text-[#1F2421] uppercase tracking-wider flex items-center gap-1.5">
+                          <span>{colorVar.name}:</span>
+                          {currentColor && (
+                            <span className="text-[#2D4F3E] font-black normal-case text-xs bg-white border border-[#2D4F3E]/20 px-2 py-0.5 rounded-md flex items-center gap-1.5 shadow-2xs">
+                              <span
+                                className="w-2.5 h-2.5 rounded-full border border-black/30 shrink-0"
+                                style={{ background: getFilamentColor(currentColor)?.css || '#2D4F3E' }}
+                              />
+                              <span className="truncate max-w-[170px] sm:max-w-xs">{currentColor}</span>
+                            </span>
+                          )}
+                        </label>
+
+                        {/* Botón "+ Más colores y acabados" */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            playCoinSound();
+                            setShowMoreColorsTab(prev => !prev);
+                          }}
+                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border shadow-2xs ${
+                            showMoreColorsTab
+                              ? 'bg-[#2D4F3E] text-white border-[#2D4F3E]'
+                              : 'bg-white hover:bg-emerald-50/50 text-[#2D4F3E] border-[#2D4F3E]/30'
+                          }`}
+                        >
+                          <Palette className="w-3.5 h-3.5" />
+                          <span>{showMoreColorsTab ? '▲ Ocultar paletas' : '🎨 + Más colores'}</span>
+                          <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
+                            showMoreColorsTab ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-800'
+                          }`}>
+                            {totalWorkshopColorsCount} tonos
+                          </span>
+                        </button>
+                      </div>
+
+                      {/* Swatches circulares rápidos */}
+                      <div className="flex flex-wrap items-center gap-2 pt-0.5">
+                        {activeColorOptions.map(opt => {
+                          const isSelected = currentColor === opt;
+                          const swatch = getFilamentColor(opt);
+                          return (
+                            <button
+                              key={opt}
+                              type="button"
+                              onClick={() => {
+                                playCoinSound();
+                                handleVariantChange(colorVar.name, opt);
+                              }}
+                              className={`group/c relative p-0.5 rounded-full transition-all cursor-pointer flex items-center justify-center ${
+                                isSelected
+                                  ? 'ring-2 ring-[#2D4F3E] ring-offset-2 scale-110 shadow-xs'
+                                  : 'hover:scale-110 hover:ring-2 hover:ring-gray-300'
+                              }`}
+                              title={opt}
+                            >
+                              <span
+                                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-black/20 shadow-2xs flex items-center justify-center transition-transform"
+                                style={{
+                                  background: swatch?.css || '#D1D5DB',
+                                  borderColor: swatch?.border || '#9CA3AF',
+                                  boxShadow: swatch?.glow ? '0 0 8px rgba(110, 231, 183, 0.9)' : undefined
+                                }}
+                              >
+                                {isSelected && (
+                                  <span className={`text-[11px] font-black ${
+                                    isDarkColor(swatch) ? 'text-white drop-shadow-sm' : 'text-gray-900'
+                                  }`}>
+                                    ✓
+                                  </span>
+                                )}
+                              </span>
+                              {/* Tooltip con nombre de color */}
+                              <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover/c:block z-30 px-2 py-0.5 text-[10px] font-bold text-white bg-black/90 rounded-md whitespace-nowrap shadow-md pointer-events-none">
+                                {opt}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      {/* DESPLIEGUE DEL CATÁLOGO COMPLETO DE COLORES & ACABADOS POR MATERIAL */}
+                      {showMoreColorsTab && (
+                        <div className="mt-3 p-3 sm:p-4 rounded-2xl bg-white border-2 border-[#2D4F3E]/40 space-y-3 shadow-md animate-fade-in">
+                          {/* Header de la pestaña */}
+                          <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+                            <div className="flex items-center gap-2">
+                              <div className="w-7 h-7 rounded-lg bg-[#2D4F3E] text-white flex items-center justify-center shadow-2xs">
+                                <Palette className="w-4 h-4" />
+                              </div>
+                              <div>
+                                <h4 className="text-xs font-black text-[#1F2421]">
+                                  Catálogo de Colores &amp; Acabados de Taller
+                                </h4>
+                                <p className="text-[10px] text-gray-500">
+                                  Elige el tono o acabado exacto para la fabricación de tu pieza
+                                </p>
+                              </div>
+                            </div>
+
+                            <button
+                              type="button"
+                              onClick={() => setShowMoreColorsTab(false)}
+                              className="text-[10.5px] font-bold text-gray-500 hover:text-gray-800 px-2 py-1 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+                            >
+                              ▲ Cerrar catálogo
+                            </button>
+                          </div>
+
+                          {/* Pestañas de Materiales */}
+                          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                            {Object.values(WORKSHOP_PALETTES_BY_CATEGORY).map(cat => {
+                              const isTabActive = selectedPaletteTab === cat.id;
+                              const isRecommended = primaryMaterialCat === cat.id;
+                              return (
+                                <button
+                                  key={cat.id}
+                                  type="button"
+                                  onClick={() => {
+                                    playCoinSound();
+                                    setSelectedPaletteTab(cat.id);
+                                  }}
+                                  className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer shrink-0 ${
+                                    isTabActive
+                                      ? 'bg-[#2D4F3E] text-white shadow-xs ring-1 ring-[#2D4F3E]'
+                                      : 'bg-stone-50 hover:bg-stone-100 text-gray-700 border border-[#E8E4DA]'
+                                  }`}
+                                >
+                                  <span>{cat.label}</span>
+                                  {isRecommended && (
+                                    <span className={`text-[8.5px] px-1 py-0.2 rounded font-black uppercase ${
+                                      isTabActive ? 'bg-amber-400 text-stone-900' : 'bg-emerald-100 text-emerald-800'
+                                    }`}>
+                                      Recomendado
+                                    </span>
+                                  )}
+                                </button>
+                              );
+                            })}
+                          </div>
+
+                          {/* Avisos Técnicos Contextuales */}
+                          {currentCatData.isSublimationNotice && (
+                            <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs flex items-start gap-2">
+                              <Sparkles className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                              <p className="leading-snug text-[11px]">
+                                <strong>Sublimación fotográfica full color:</strong> Sobre base blanca brillante estampamos fotografías familiares, logotipos corporativos y dedicatorias a todo color con resolución HD y fijación permanente sin límite de tintas ni costos extra.
+                              </p>
+                            </div>
+                          )}
+
+                          {currentCatData.isAcrylicNotice && (
+                            <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs flex items-start gap-2">
+                              <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                              <p className="leading-snug text-[11px]">
+                                <strong>Nota técnica de láser diodo:</strong> El diodo (455 nm) corta directamente acrílicos oscuros y espejo. Los acrílicos transparentes y blancos se maquilan con fresadora CNC o láser CO2.
+                              </p>
+                            </div>
+                          )}
+
+                          {/* Subgrupos de PLA si está en la pestaña 3D */}
+                          {selectedPaletteTab === 'pla' && currentCatData.subGroups && (
+                            <div className="flex flex-wrap gap-1 p-1 rounded-xl bg-gray-100 border border-gray-200">
+                              {currentCatData.subGroups.map(sg => (
+                                <button
+                                  key={sg.id}
+                                  type="button"
+                                  onClick={() => setActivePlaSubGroup(sg.id)}
+                                  className={`px-2 py-0.5 rounded-lg text-[10px] font-bold transition-all cursor-pointer ${
+                                    activePlaSubGroup === sg.id
+                                      ? 'bg-white text-gray-900 shadow-2xs font-black'
+                                      : 'text-gray-500 hover:text-gray-800'
+                                  }`}
+                                >
+                                  {sg.label}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+
+                          {/* Cuadrícula de colores de la pestaña activa */}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-56 overflow-y-auto pr-1">
+                            {filteredPaletteColors.map(colorItem => {
+                              const swatch = getFilamentColor(colorItem.name);
+                              const isSelected = currentColor === colorItem.name;
+                              return (
+                                <button
+                                  key={colorItem.name}
+                                  type="button"
+                                  onClick={() => {
+                                    playCoinSound();
+                                    handleVariantChange(colorVar.name, colorItem.name);
+                                  }}
+                                  className={`p-2 rounded-xl border text-left transition-all flex items-center justify-between gap-2.5 cursor-pointer ${
+                                    isSelected
+                                      ? 'bg-emerald-50/80 border-[#2D4F3E] ring-2 ring-[#2D4F3E]/30 shadow-xs'
+                                      : 'bg-white hover:bg-stone-50 border-[#E8DFC8]'
+                                  }`}
+                                >
+                                  <div className="flex items-center gap-2 min-w-0">
+                                    <span
+                                      className="w-6 h-6 rounded-full border border-black/20 shrink-0 shadow-2xs flex items-center justify-center"
+                                      style={{
+                                        background: swatch?.css || '#D1D5DB',
+                                        borderColor: swatch?.border || '#9CA3AF'
+                                      }}
+                                    >
+                                      {isSelected && (
+                                        <span className={`text-[9px] font-black ${
+                                          isDarkColor(swatch) ? 'text-white' : 'text-gray-900'
+                                        }`}>
+                                          ✓
+                                        </span>
+                                      )}
+                                    </span>
+
+                                    <div className="min-w-0">
+                                      <span className="text-xs font-bold text-[#1F2421] block truncate leading-tight">
+                                        {colorItem.name}
+                                      </span>
+                                      <span className="text-[9.5px] text-gray-500 block truncate">
+                                        {colorItem.desc}
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full shrink-0 ${
+                                    isSelected
+                                      ? 'bg-[#2D4F3E] text-white'
+                                      : 'bg-stone-100 text-stone-600'
+                                  }`}>
+                                    {isSelected ? '✓ Activo' : colorItem.tag}
+                                  </span>
+                                </button>
+                              );
+                            })}
+                          </div>
+
+                          {/* Pie de la pestaña */}
+                          <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
+                            <span className="text-[10.5px] text-gray-600 flex items-center gap-1.5">
+                              <span>Acabado elegido:</span>
+                              <strong className="text-[#2D4F3E]">{currentColor || 'Sin seleccionar'}</strong>
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => setShowMoreColorsTab(false)}
+                              className="px-3 py-1 rounded-lg bg-[#2D4F3E] text-white font-bold text-xs shadow-2xs hover:bg-[#20392C] transition-colors cursor-pointer"
+                            >
+                              ✓ Listo, usar este acabado
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              )}
+                  </div>
+                );
+              })()}
 
               {/* Personalización Opcional Secundaria (Plegable para agilizar la compra) */}
               {!isFlashDeal ? (
@@ -864,7 +1149,7 @@ export default function ProductDetailModal({
                     <div className="space-y-2 p-3.5 rounded-2xl bg-[#FAF9F5] border border-[#E8E4DA] animate-in fade-in">
                       <div className="flex items-center justify-between">
                         <label className="text-[11px] font-bold text-gray-700 flex items-center gap-1">
-                          <span>Detalles de personalización (opcional):</span>
+                          <span>Detalles de grabado, dedicatoria o logo (opcional):</span>
                         </label>
                         <button
                           type="button"
@@ -879,124 +1164,15 @@ export default function ProductDetailModal({
                       </div>
                       <textarea
                         rows={2}
-                        placeholder="Ej: Grabar nombre 'Familia Pérez', fecha 24-Octubre o tono especial..."
+                        placeholder="Ej: Grabar nombre 'Familia Pérez', fecha 24-Octubre o especificación especial..."
                         value={customText}
                         onChange={e => setCustomText(e.target.value)}
                         className="w-full px-3 py-2 text-xs rounded-xl border border-[#E8E4DA] focus:border-[#2D4F3E] focus:outline-none bg-white"
                         autoFocus
                       />
-
-                      {/* Selector de Paletas de Taller (Más de 30 variedades con pestañita para contraer/mostrar más) */}
-                      <div className="pt-2 border-t border-gray-200/80 space-y-2">
-                        <div className="flex items-center justify-between text-[11px] text-gray-700 font-semibold">
-                          <span className="flex items-center gap-1.5 text-[#1F2421]">
-                            <span>Tonos oscuros de taller y acabados especiales:</span>
-                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-900 font-black">
-                              {ALL_WORKSHOP_COLORS.length} colores
-                            </span>
-                          </span>
-                          
-                          {/* Pestañita para contraer o mostrar más colores */}
-                          <button
-                            type="button"
-                            onClick={() => setIsPaletteExpanded(prev => !prev)}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10.5px] font-bold text-[#2D4F3E] bg-[#E8EFEA] hover:bg-[#D5E3DA] transition-colors cursor-pointer border border-[#2D4F3E]/20"
-                          >
-                            <span>{isPaletteExpanded ? '▲ Contraer' : '▼ Mostrar más colores'}</span>
-                          </button>
-                        </div>
-
-                        {/* Barra de pestañitas por categoría si está expandido */}
-                        {isPaletteExpanded && (
-                          <div className="flex flex-wrap gap-1 p-1 rounded-xl bg-gray-100 border border-gray-200">
-                            <button
-                              type="button"
-                              onClick={() => setActivePaletteGroup('todos')}
-                              className={`px-2 py-0.5 rounded-lg text-[10px] font-bold transition-all cursor-pointer ${
-                                activePaletteGroup === 'todos'
-                                  ? 'bg-white text-gray-900 shadow-2xs font-black'
-                                  : 'text-gray-500 hover:text-gray-800'
-                              }`}
-                            >
-                              Todos ({ALL_WORKSHOP_COLORS.length})
-                            </button>
-                            {WORKSHOP_COLOR_PALETTES.map(group => (
-                              <button
-                                key={group.id}
-                                type="button"
-                                onClick={() => setActivePaletteGroup(group.id)}
-                                className={`px-2 py-0.5 rounded-lg text-[10px] font-bold transition-all cursor-pointer ${
-                                  activePaletteGroup === group.id
-                                    ? 'bg-white text-gray-900 shadow-2xs font-black'
-                                    : 'text-gray-500 hover:text-gray-800'
-                                }`}
-                              >
-                                {group.label}
-                              </button>
-                            ))}
-                          </div>
-                        )}
-
-                        {/* Cuadrícula de colores: Si está contraído muestra los primeros 8 esenciales, si está expandido muestra el grupo activo */}
-                        {(() => {
-                          const displayColors = isPaletteExpanded
-                            ? (activePaletteGroup === 'todos'
-                                ? ALL_WORKSHOP_COLORS
-                                : (WORKSHOP_COLOR_PALETTES.find(g => g.id === activePaletteGroup)?.colors || ALL_WORKSHOP_COLORS))
-                            : ALL_WORKSHOP_COLORS.slice(0, 8);
-
-                          return (
-                            <div className="space-y-1.5">
-                              <div className="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto pr-1">
-                                {displayColors.map(colorName => {
-                                  const swatch = getFilamentColor(colorName);
-                                  const isIncluded = customText.includes(colorName);
-                                  const isDark = isDarkColor(swatch);
-                                  return (
-                                    <button
-                                      key={colorName}
-                                      type="button"
-                                      onClick={() => {
-                                        if (isIncluded) {
-                                          setCustomText(customText.replace(new RegExp(`(,\\s*)?Color preferido: ${colorName}`, 'g'), '').trim());
-                                        } else {
-                                          const prefix = customText.trim() ? `${customText.trim()} | ` : '';
-                                          setCustomText(`${prefix}Color preferido: ${colorName}`);
-                                        }
-                                      }}
-                                      className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-lg text-[10px] font-bold transition-all border cursor-pointer ${
-                                        isIncluded
-                                          ? 'bg-[#1F2421] text-amber-200 border-[#D4A359] shadow-xs ring-1 ring-[#D4A359]/50'
-                                          : 'bg-white text-gray-700 border-gray-200 hover:border-gray-400 hover:bg-gray-50'
-                                      }`}
-                                      title={`Aplicar acabado ${colorName}`}
-                                    >
-                                      <span
-                                        className="w-2.5 h-2.5 rounded-full border border-black/30 shrink-0 shadow-2xs"
-                                        style={{ background: swatch?.css || '#1F2421' }}
-                                      />
-                                      <span>{colorName}</span>
-                                    </button>
-                                  );
-                                })}
-                              </div>
-
-                              {!isPaletteExpanded && (
-                                <div className="flex items-center justify-between text-[10px] text-gray-500 pt-0.5">
-                                  <span>Mostrando 8 esenciales de taller</span>
-                                  <button
-                                    type="button"
-                                    onClick={() => setIsPaletteExpanded(true)}
-                                    className="text-[#2D4F3E] font-bold hover:underline cursor-pointer"
-                                  >
-                                    Ver los {ALL_WORKSHOP_COLORS.length - 8} colores restantes →
-                                  </button>
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })()}
-                      </div>
+                      <p className="text-[10.5px] text-gray-500">
+                        * Tu acabado y color seleccionado se incluirán automáticamente en tu pedido.
+                      </p>
                     </div>
                   )}
                 </div>
