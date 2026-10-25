@@ -575,6 +575,15 @@ export default function WorkshopArcadeModal({
   const currentThemeKey = effectiveConfig?.activeTheme || activeTheme || 'clasico';
   const currentTheme = ARCADE_THEMES[currentThemeKey] || ARCADE_THEMES.clasico;
 
+  // Discount tiers con códigos aleatorios rotativos que cambian cada día
+  const dailyTiers = useMemo(() => getDailyArcadeCoupons(), []);
+  const discountTiers = effectiveConfig?.discountTiers || dailyTiers;
+  const tier1Target = discountTiers?.[0]?.coinsRequired || 50;
+  const tier2Target = discountTiers?.[1]?.coinsRequired || 100;
+  const tier3Target = discountTiers?.[2]?.coinsRequired || 250;
+  const tier4Target = discountTiers?.[3]?.coinsRequired || 580;
+  const targetMaxCoins = tier4Target;
+
   const [selectedGameId, setSelectedGameId] = useState(() => {
     if (initialGame && isGameActive(initialGame)) return initialGame;
     const firstActive = activeGameIds.find(id => isGameActive(id));
@@ -590,11 +599,24 @@ export default function WorkshopArcadeModal({
 
   const [gameState, setGameState] = useState('ready'); // 'ready' | 'playing' | 'gameover' | 'victory'
   const [score, setScore] = useState(0);
-  const [coinsEarned, setCoinsEarned] = useState(0);
+  const [coinsEarned, _setCoinsEarned] = useState(0);
+  const setCoinsEarned = useCallback((valOrFn) => {
+    _setCoinsEarned(prev => {
+      const res = typeof valOrFn === 'function' ? valOrFn(prev) : valOrFn;
+      return Math.min(targetMaxCoins, Math.max(0, res));
+    });
+  }, [targetMaxCoins]);
+
   const [noCreditsWarning, setNoCreditsWarning] = useState(false);
   const [copiedCoupon, setCopiedCoupon] = useState('');
   const [isMuted, setIsMuted] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(effectiveConfig?.timeLimitSeconds || 180);
+  const [timeLeft, setTimeLeft] = useState(effectiveConfig?.timeLimitSeconds || 300);
+
+  useEffect(() => {
+    if (gameState === 'ready' && effectiveConfig?.timeLimitSeconds) {
+      setTimeLeft(effectiveConfig.timeLimitSeconds);
+    }
+  }, [effectiveConfig?.timeLimitSeconds, gameState]);
   const [lives, setLives] = useState(3);
   const [currentLevel, setCurrentLevel] = useState(1);
   const [rewardConfetti, setRewardConfetti] = useState([]);
@@ -661,7 +683,7 @@ export default function WorkshopArcadeModal({
     }
   };
 
-  // Conversión equilibrada de puntos a monedas: 1 moneda cada 50 puntos acumulados
+  // Conversión equilibrada de puntos a monedas (acelerador por habilidad y juego)
   const lastCoinMilestoneRef = useRef(0);
   useEffect(() => {
     if (gameState === 'ready') {
@@ -671,10 +693,11 @@ export default function WorkshopArcadeModal({
       if (milestone > lastCoinMilestoneRef.current) {
         const diff = milestone - lastCoinMilestoneRef.current;
         lastCoinMilestoneRef.current = milestone;
-        setCoinsEarned(c => c + diff);
+        const step = Math.max(1, Math.round(targetMaxCoins / 200));
+        setCoinsEarned(c => c + (diff * step));
       }
     }
-  }, [score, gameState]);
+  }, [score, gameState, targetMaxCoins]);
 
   // Hook unificado de créditos y sesión continua en pantalla
   const {
@@ -772,10 +795,6 @@ export default function WorkshopArcadeModal({
 
   const canvasRef = useRef(null);
   const internalStateRef = useRef({});
-
-  // Discount tiers con códigos aleatorios rotativos que cambian cada día
-  const dailyTiers = useMemo(() => getDailyArcadeCoupons(), []);
-  const discountTiers = effectiveConfig?.discountTiers || dailyTiers;
 
   // Registro de cupones desbloqueados/ganados en la sesión para no exponer códigos antes de ganar
   const [unlockedCoupons, setUnlockedCoupons] = useState(() => {
@@ -883,9 +902,10 @@ export default function WorkshopArcadeModal({
     soundSynth.muted = next;
   };
 
-  // Timer countdown durante la partida
+  // Timer countdown durante la partida y distribución de monedas
   useEffect(() => {
     let timer = null;
+    const totalDuration = effectiveConfig?.timeLimitSeconds || 300;
     if (gameState === 'playing') {
       timer = setInterval(() => {
         setTimeLeft(prev => {
@@ -894,31 +914,53 @@ export default function WorkshopArcadeModal({
             handleVictory();
             return 0;
           }
-          const elapsed = (arcadeConfig?.timeLimitSeconds || 180) - prev;
-          const lvl = Math.min(4, Math.floor(elapsed / 45) + 1);
+          const elapsed = totalDuration - prev;
+          const quarter = Math.max(1, totalDuration / 4);
+          const lvl = Math.min(4, Math.floor(elapsed / quarter) + 1);
           setCurrentLevel(lvl);
+
+          // Distribución progresiva de monedas en los 4 cuartos hasta el tope de Nivel 4
+          const elapsedRatio = Math.min(1, Math.max(0, elapsed / totalDuration));
+          let expectedCoins = 0;
+          if (elapsedRatio <= 0.25) {
+            expectedCoins = (elapsedRatio / 0.25) * tier1Target;
+          } else if (elapsedRatio <= 0.50) {
+            expectedCoins = tier1Target + ((elapsedRatio - 0.25) / 0.25) * (tier2Target - tier1Target);
+          } else if (elapsedRatio <= 0.75) {
+            expectedCoins = tier2Target + ((elapsedRatio - 0.50) / 0.25) * (tier3Target - tier2Target);
+          } else {
+            expectedCoins = tier3Target + ((elapsedRatio - 0.75) / 0.25) * (tier4Target - tier3Target);
+          }
+
+          // Un 85% de la curva se adquiere por supervivencia continua en el tiempo,
+          // y las jugadas/puntos la aceleran al 100% de la curva
+          const survivalPaced = Math.floor(expectedCoins * 0.85);
+          setCoinsEarned(curr => Math.min(targetMaxCoins, Math.max(curr, survivalPaced)));
+
           return prev - 1;
         });
       }, 1000);
     }
     return () => clearInterval(timer);
-  }, [gameState]);
+  }, [gameState, effectiveConfig?.timeLimitSeconds, tier1Target, tier2Target, tier3Target, tier4Target, targetMaxCoins]);
 
   const handleGameOver = () => {
     setGameState('gameover');
     soundSynth.play('gameover');
-    if (coinsEarned > 0) {
-      addCoins(coinsEarned);
+    const finalEarned = Math.min(targetMaxCoins, coinsEarned);
+    if (finalEarned > 0) {
+      addCoins(finalEarned);
     }
   };
 
   const handleVictory = () => {
     setGameState('victory');
     soundSynth.play('win');
-    // Calibrado: previamente bonus = 100 y setCoinsEarned(c => c + 25)
-    const bonus = 3; // Recompensa equilibrada de 3 monedas por completar los 3 minutos
-    addCoins(coinsEarned + bonus);
-    setCoinsEarned(c => c + bonus);
+    // Al completar con éxito toda la duración de la partida, se otorga la cantidad máxima del nivel 4
+    const finalVictoryCoins = targetMaxCoins;
+    const diff = Math.max(0, finalVictoryCoins - coinsEarned);
+    addCoins(diff);
+    setCoinsEarned(finalVictoryCoins);
   };
 
   // Iniciar partida gastando 1 ficha
@@ -945,7 +987,8 @@ export default function WorkshopArcadeModal({
     setLives(activeDiff.initialLives);
     setHasShield(activeDiff.mode === 'easy');
     setCurrentLevel(1);
-    setTimeLeft(arcadeConfig?.timeLimitSeconds || 180);
+    const totalDuration = effectiveConfig?.timeLimitSeconds || 300;
+    setTimeLeft(totalDuration);
     setGameState('playing');
     soundSynth.play('stack');
     initGameLogic(selectedGameId);
@@ -2837,6 +2880,11 @@ export default function WorkshopArcadeModal({
                           <p className="text-xs text-gray-400 leading-snug mt-0.5">
                             {tier.description}
                           </p>
+                          {tier.minPurchase > 0 && (
+                            <div className="inline-flex items-center gap-1 text-[10.5px] font-semibold text-amber-200/90 bg-amber-400/10 px-2 py-0.5 rounded-lg border border-amber-400/20 mt-1">
+                              <span>🛒 Compra mínima: ${tier.minPurchase} MXN</span>
+                            </div>
+                          )}
                         </div>
 
                         {/* Código Secreto: Oculto con candado hasta ganar/canjear */}

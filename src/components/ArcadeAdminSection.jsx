@@ -32,7 +32,7 @@ export default function ArcadeAdminSection({ token }) {
     selectionMode: 'daily_random',
     activeGameIds: ['dino', 'stacker'],
     activeTheme: 'clasico',
-    timeLimitSeconds: 180,
+    timeLimitSeconds: 300,
     showInProductModal: true,
     showFloatingEasterEgg: true,
     coinsEarnRateMinutes: 15, // 1 moneda cada 15 min en tienda
@@ -42,10 +42,10 @@ export default function ArcadeAdminSection({ token }) {
     lastResetTimestamp: 0,
     seasonPresets: [],
     discountTiers: [
-      { id: 'tier-5', coinsRequired: 30, code: 'TALLER5', label: '5% de Descuento', description: 'Válido en cualquier compra o paquete', discountPercent: 5, discountAmount: 0, minPurchase: 0 },
-      { id: 'tier-10', coinsRequired: 60, code: 'TALLER10', label: '10% de Descuento', description: 'Válido en productos o paquetes coordinados', discountPercent: 10, discountAmount: 0, minPurchase: 200 },
-      { id: 'tier-50', coinsRequired: 100, code: 'MAESTRO50', label: '$50 MXN de Descuento', description: 'Ahorro directo en efectivo en tu pedido (Mínimo $200)', discountPercent: 0, discountAmount: 50, minPurchase: 200 },
-      { id: 'tier-vip', coinsRequired: 150, code: 'VIPARTESANO', label: '15% de Descuento + Detalle', description: 'Descuento VIP + sorpresa de taller', discountPercent: 15, discountAmount: 0, minPurchase: 300 }
+      { id: 'tier-5', coinsRequired: 50, code: 'TALLER5', label: '5% de Descuento', description: 'Válido en cualquier compra o paquete (Mínimo $100 MXN)', discountPercent: 5, discountAmount: 0, minPurchase: 100 },
+      { id: 'tier-10', coinsRequired: 100, code: 'TALLER10', label: '10% de Descuento', description: 'Válido en productos o paquetes coordinados (Mínimo $250 MXN)', discountPercent: 10, discountAmount: 0, minPurchase: 250 },
+      { id: 'tier-15', coinsRequired: 250, code: 'TALLER15', label: '15% de Descuento', description: 'Descuento del 15% en tu pedido (Mínimo $350 MXN)', discountPercent: 15, discountAmount: 0, minPurchase: 350 },
+      { id: 'tier-20', coinsRequired: 580, code: 'TALLER20', label: '20% de Descuento VIP', description: 'Descuento VIP máximo del taller (Mínimo $500 MXN)', discountPercent: 20, discountAmount: 0, minPurchase: 500 }
     ]
   });
 
@@ -488,16 +488,20 @@ export default function ArcadeAdminSection({ token }) {
               Tiempo por Partida:
             </label>
             <select
-              value={arcadeConfig.timeLimitSeconds || 180}
+              value={arcadeConfig.timeLimitSeconds || 300}
               onChange={(e) => setArcadeConfig(prev => ({ ...prev, timeLimitSeconds: Number(e.target.value) }))}
               className="w-full text-xs font-semibold p-1.5 rounded-xl border border-gray-300 bg-white"
             >
-              <option value={180}>⏱️ 3 Min (Estándar)</option>
-              <option value={120}>⏱️ 2 Min (Rápida)</option>
               <option value={60}>⏱️ 1 Min (Blitz)</option>
+              <option value={120}>⏱️ 2 Min (Rápida)</option>
+              <option value={180}>⏱️ 3 Min (Clásica)</option>
+              <option value={300}>⏱️ 5 Min (Estándar 5m)</option>
+              <option value={420}>⏱️ 7 Min (Intermedia 7m)</option>
+              <option value={600}>⏱️ 10 Min (Extendida 10m)</option>
+              <option value={900}>⏱️ 15 Min (Maratón 15m)</option>
             </select>
             <p className="text-[10px] text-gray-400">
-              Tiempo para acumular puntos por partida.
+              Tiempo para acumular puntos por partida y alcanzar las metas de monedas.
             </p>
           </div>
         </div>
@@ -851,10 +855,10 @@ export default function ArcadeAdminSection({ token }) {
               setArcadeConfig(prev => ({
                 ...prev,
                 discountTiers: [
-                  { id: 'tier-5', coinsRequired: 30, code: 'TALLER5', label: '5% de Descuento', description: 'Válido en cualquier compra o paquete', discountPercent: 5, discountAmount: 0 },
-                  { id: 'tier-10', coinsRequired: 60, code: 'TALLER10', label: '10% de Descuento', description: 'Válido en productos o paquetes coordinados', discountPercent: 10, discountAmount: 0 },
-                  { id: 'tier-50', coinsRequired: 100, code: 'MAESTRO50', label: '$50 MXN de Descuento', description: 'Ahorro directo en efectivo en tu pedido', discountPercent: 0, discountAmount: 50 },
-                  { id: 'tier-vip', coinsRequired: 150, code: 'VIPARTESANO', label: '15% de Descuento + Detalle', description: 'Descuento VIP + sorpresa de taller', discountPercent: 15, discountAmount: 0 }
+                  { id: 'tier-5', coinsRequired: 50, code: 'TALLER5', label: '5% de Descuento', description: 'Válido en cualquier compra o paquete (Mínimo $100 MXN)', discountPercent: 5, discountAmount: 0, minPurchase: 100 },
+                  { id: 'tier-10', coinsRequired: 100, code: 'TALLER10', label: '10% de Descuento', description: 'Válido en productos o paquetes coordinados (Mínimo $250 MXN)', discountPercent: 10, discountAmount: 0, minPurchase: 250 },
+                  { id: 'tier-15', coinsRequired: 250, code: 'TALLER15', label: '15% de Descuento', description: 'Descuento del 15% en tu pedido (Mínimo $350 MXN)', discountPercent: 15, discountAmount: 0, minPurchase: 350 },
+                  { id: 'tier-20', coinsRequired: 580, code: 'TALLER20', label: '20% de Descuento VIP', description: 'Descuento VIP máximo del taller (Mínimo $500 MXN)', discountPercent: 20, discountAmount: 0, minPurchase: 500 }
                 ]
               }));
             }}

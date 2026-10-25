@@ -2,10 +2,12 @@
 
 export const DEFAULT_COUPONS = [
   // Cupones de Arcade (Ganados con Monedas de Juego)
-  { code: 'TALLER5', category: 'arcade', type: 'percent', value: 5, label: '5% de Descuento Arcade', minPurchase: 0 },
-  { code: 'TALLER10', category: 'arcade', type: 'percent', value: 10, label: '10% de Descuento Arcade', minPurchase: 0 },
+  { code: 'TALLER5', category: 'arcade', type: 'percent', value: 5, label: '5% de Descuento Arcade', minPurchase: 100 },
+  { code: 'TALLER10', category: 'arcade', type: 'percent', value: 10, label: '10% de Descuento Arcade', minPurchase: 250 },
+  { code: 'TALLER15', category: 'arcade', type: 'percent', value: 15, label: '15% de Descuento Arcade', minPurchase: 350 },
+  { code: 'TALLER20', category: 'arcade', type: 'percent', value: 20, label: '20% de Descuento VIP Arcade', minPurchase: 500 },
   { code: 'MAESTRO50', category: 'arcade', type: 'fixed', value: 50, label: '$50 MXN de Descuento Taller', minPurchase: 200 },
-  { code: 'VIPARTESANO', category: 'arcade', type: 'percent', value: 15, label: '15% de Descuento VIP + Sorpresa', minPurchase: 0 },
+  { code: 'VIPARTESANO', category: 'arcade', type: 'percent', value: 15, label: '15% de Descuento VIP + Sorpresa', minPurchase: 300 },
 
   // Cupones Promocionales & Clientes (Códigos Especiales y de Tienda)
   { code: 'BIENVENIDO', category: 'store', type: 'percent', value: 10, label: '10% de Bienvenida al Taller', minPurchase: 0 },
@@ -111,50 +113,50 @@ export function getDailyArcadeCoupons(date = new Date()) {
     {
       id: 'tier-5',
       category: 'arcade',
-      coinsRequired: 30,
+      coinsRequired: 50,
       code: `ARCADE5-${suffix}`,
       type: 'percent',
       value: 5,
       discountPercent: 5,
       label: '5% de Descuento Arcade Diario',
-      description: 'Válido hoy en cualquier compra o paquete',
-      minPurchase: 0
+      description: 'Válido hoy en cualquier compra o paquete (Mínimo $100 MXN)',
+      minPurchase: 100
     },
     {
       id: 'tier-10',
       category: 'arcade',
-      coinsRequired: 60,
+      coinsRequired: 100,
       code: `ARCADE10-${suffix}`,
       type: 'percent',
       value: 10,
       discountPercent: 10,
       label: '10% de Descuento Arcade Diario',
-      description: 'Válido hoy en productos o paquetes coordinados',
-      minPurchase: 0
+      description: 'Válido hoy en productos o paquetes coordinados (Mínimo $250 MXN)',
+      minPurchase: 250
     },
     {
-      id: 'tier-50',
+      id: 'tier-15',
       category: 'arcade',
-      coinsRequired: 100,
-      code: `TALLER50-${suffix}`,
-      type: 'fixed',
-      value: 50,
-      discountAmount: 50,
-      label: '$50 MXN de Descuento Taller Diario',
-      description: 'Ahorro directo en efectivo en tu pedido de hoy',
-      minPurchase: 200
-    },
-    {
-      id: 'tier-vip',
-      category: 'arcade',
-      coinsRequired: 150,
-      code: `VIP15-${suffix}`,
+      coinsRequired: 250,
+      code: `ARCADE15-${suffix}`,
       type: 'percent',
       value: 15,
       discountPercent: 15,
-      label: '15% de Descuento VIP + Sorpresa',
-      description: 'Descuento VIP del día + detalle de taller sorpresa',
-      minPurchase: 0
+      label: '15% de Descuento Arcade Diario',
+      description: 'Descuento del 15% en tu pedido de hoy (Mínimo $350 MXN)',
+      minPurchase: 350
+    },
+    {
+      id: 'tier-20',
+      category: 'arcade',
+      coinsRequired: 580,
+      code: `VIP20-${suffix}`,
+      type: 'percent',
+      value: 20,
+      discountPercent: 20,
+      label: '20% de Descuento VIP Diario',
+      description: 'Descuento VIP máximo de hoy (Mínimo $500 MXN)',
+      minPurchase: 500
     }
   ];
 }
