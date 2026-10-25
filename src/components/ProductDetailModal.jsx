@@ -654,11 +654,16 @@ export default function ProductDetailModal({
                     )}
                   </div>
 
-                  {/* Indicador de Sobrecosto por Material Especial */}
+                  {/* Indicador de Sobrecosto o Ajuste por Variante / Acabado Especial */}
                   {variantsExtraCost > 0 && (
                     <div className="flex items-center gap-1.5 mt-1 text-[10.5px] font-bold text-emerald-800 bg-emerald-100/80 border border-emerald-300 px-2 py-0.5 rounded-lg inline-flex">
                       <Sparkles className="w-3 h-3 text-emerald-700 shrink-0" />
-                      <span>Incluye +${variantsExtraCost} MXN por material o filamento especial</span>
+                      <span>Incluye +${variantsExtraCost} MXN por tamaño, accesorio o acabado especial</span>
+                    </div>
+                  )}
+                  {variantsExtraCost < 0 && (
+                    <div className="flex items-center gap-1.5 mt-1 text-[10.5px] font-bold text-stone-700 bg-stone-100 border border-stone-300 px-2 py-0.5 rounded-lg inline-flex">
+                      <span>Ajuste de -${Math.abs(variantsExtraCost)} MXN por opción seleccionada</span>
                     </div>
                   )}
 
@@ -920,8 +925,8 @@ export default function ProductDetailModal({
                           <div className="flex flex-wrap gap-2">
                             {finalOptions.map(opt => {
                               const isSelected = selectedVariants[variant.name] === opt;
-                              const optDelta = parseVariantOptionDeltaPrice(opt);
-                              const alreadyShowsPrice = /\(\s*\+\s*\$?\s*\d+/i.test(opt);
+                              const optDelta = parseVariantOptionDeltaPrice(opt, product?.price || basePrice);
+                              const alreadyShowsPrice = /\(\s*[\+\-]?\s*\$?\s*\d+/i.test(opt) || /-\s*\$\s*\d+/i.test(opt);
 
                               return (
                                 <button
@@ -935,13 +940,15 @@ export default function ProductDetailModal({
                                   }`}
                                 >
                                   <span>{opt}</span>
-                                  {optDelta > 0 && !alreadyShowsPrice && (
+                                  {optDelta !== 0 && !alreadyShowsPrice && (
                                     <span className={`text-[9.5px] font-black px-1.5 py-0.2 rounded ${
                                       isSelected
                                         ? 'bg-white/20 text-white'
-                                        : 'bg-amber-100 text-amber-900 border border-amber-200'
+                                        : optDelta > 0
+                                          ? 'bg-amber-100 text-amber-900 border border-amber-200'
+                                          : 'bg-emerald-100 text-emerald-900 border border-emerald-200'
                                     }`}>
-                                      +${optDelta} MXN
+                                      {optDelta > 0 ? `+` : `-`}${Math.abs(optDelta)} MXN
                                     </span>
                                   )}
                                 </button>

@@ -314,15 +314,80 @@ export function getColorMaterialDeltaPrice(colorOrFinishName = '') {
 }
 
 /**
+ * Reglas semánticas de sobrecostos por tamaño, accesorios y piezas adicionales
+ * Se aplican automáticamente cuando la opción no trae un precio numérico escrito en su texto.
+ */
+export const SEMANTIC_OPTION_DELTAS = [
+  // 1. Tamaños y formatos
+  { pattern: /escultura\s*grande|figura\s*grande|tamaño\s*grande|15\s*cm/i, delta: 180, label: 'Formato Grande 15 cm' },
+  { pattern: /entrada\s*al\s*salón|50\s*x\s*35|letrero\s*grande/i, delta: 220, label: 'Formato Grande Salón' },
+  { pattern: /talla\s*xg|xg\s*\(extra\s*grande\)|extra\s*grande/i, delta: 35, label: 'Talla XG' },
+
+  // 2. Accesorios, bases y monturas
+  { pattern: /con\s*base\s*grabada|base\s*grabada/i, delta: 120, label: 'Base Grabada Láser' },
+  { pattern: /kit\s*completo\s*\(con\s*termo/i, delta: 280, label: 'Kit Completo Deportivo' },
+  { pattern: /ambos\s*\(llavero\s*\+\s*imán\)/i, delta: 15, label: 'Montura Doble (Argolla + Imán)' },
+  { pattern: /parche\s*estilo\s*patch\s*bar/i, delta: 35, label: 'Parche Patch Bar' },
+  { pattern: /vinil\s*textil\s*glitter/i, delta: 25, label: 'Vinil Glitter' },
+  { pattern: /vinil\s*textil\s*bicolor/i, delta: 20, label: 'Vinil Bicolor' },
+  { pattern: /taza\s*mágica/i, delta: 35, label: 'Taza Mágica Termosensible' },
+  { pattern: /placa\s*recubierta\s*metal/i, delta: 10, label: 'Placa Metálica' },
+  { pattern: /inteligente\s*3d\s*con\s*nfc/i, delta: 281, label: 'Chip Inteligente NFC' },
+  { pattern: /caja\s*doble\s*conmemorativa/i, delta: 40, label: 'Caja Doble Conmemorativa' },
+
+  // 3. Cantidad de Personajes / Figuras
+  { pattern: /mascota\s*adicional/i, delta: 250, label: 'Mascota Adicional' },
+  { pattern: /trío\s*de\s*amigos/i, delta: 550, label: 'Tercera Figura' },
+  { pattern: /individual\s*\(1\s*amigo\)/i, delta: -560, label: 'Figura Individual' },
+  { pattern: /familia\s*de\s*4\s*figuras/i, delta: 450, label: 'Cuarta Figura' },
+  { pattern: /familia\s*\+\s*mascota/i, delta: 350, label: 'Mascota Familiar' },
+  { pattern: /50\s*conos/i, delta: 250, label: '50 Conos' },
+  { pattern: /100\s*conos/i, delta: 500, label: '100 Conos' },
+
+  // 4. Materiales Industriales
+  { pattern: /nylon\s*con\s*fibra\s*de\s*carbono|pa-cf/i, delta: 180, label: 'Nylon Fibra de Carbono' },
+  { pattern: /abs\s*\/\s*asa/i, delta: 60, label: 'ABS / ASA Alta Temperatura' }
+];
+
+/**
  * Parsea el sobrecosto de cualquier opción de variante de producto
  */
-export function parseVariantOptionDeltaPrice(optionString = '') {
+export function parseVariantOptionDeltaPrice(optionString = '', productBasePrice = null) {
   if (!optionString) return 0;
-  const match = optionString.match(/\(\s*\+\s*\$?\s*(\d+(?:\.\d+)?)\s*(?:mxn)?\s*\)/i);
-  if (match) {
-    return parseFloat(match[1]);
+  const str = String(optionString).trim();
+
+  // 1. Detección de incremento explícito: (+ $X) o (+ $X MXN) o +$X
+  const plusMatch = str.match(/\(\s*\+\s*\$?\s*(\d+(?:\.\d+)?)\s*(?:mxn)?\s*\)/i) ||
+                    str.match(/\+\s*\$?\s*(\d+(?:\.\d+)?)\s*(?:mxn)?\b/i);
+  if (plusMatch) {
+    return parseFloat(plusMatch[1]);
   }
-  return getColorMaterialDeltaPrice(optionString);
+
+  // 2. Detección de decremento explícito: (- $X) o (- $X MXN)
+  const minusMatch = str.match(/\(\s*-\s*\$?\s*(\d+(?:\.\d+)?)\s*(?:mxn)?\s*\)/i);
+  if (minusMatch) {
+    return -parseFloat(minusMatch[1]);
+  }
+
+  // 3. Detección de precio absoluto en la opción: ($X MXN) o ($X) o - $X
+  // Si conocemos el productBasePrice, el delta es targetPrice - productBasePrice
+  const absMatch = str.match(/\(\s*\$?\s*(\d+(?:\.\d+)?)\s*(?:mxn)?\s*\)/i) ||
+                   str.match(/-\s*\$\s*(\d+(?:\.\d+)?)\b/i);
+  if (absMatch && productBasePrice && productBasePrice > 0) {
+    const targetPrice = parseFloat(absMatch[1]);
+    const diff = targetPrice - productBasePrice;
+    if (diff !== 0) return diff;
+  }
+
+  // 4. Reglas semánticas por palabras clave de tamaños y accesorios
+  for (const item of SEMANTIC_OPTION_DELTAS) {
+    if (item.pattern.test(str)) {
+      return item.delta;
+    }
+  }
+
+  // 5. Búsqueda en consumibles de colores / acabados
+  return getColorMaterialDeltaPrice(str);
 }
 
 /**
@@ -331,10 +396,11 @@ export function parseVariantOptionDeltaPrice(optionString = '') {
 export function calculateSelectedVariantsExtraCost(selectedVariants = {}, product = null) {
   let totalDelta = 0;
   if (!selectedVariants) return 0;
+  const basePrice = product?.price || 0;
 
   Object.entries(selectedVariants).forEach(([key, val]) => {
     if (typeof val === 'string') {
-      const delta = parseVariantOptionDeltaPrice(val);
+      const delta = parseVariantOptionDeltaPrice(val, basePrice);
       totalDelta += delta;
     }
   });

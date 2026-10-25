@@ -543,7 +543,7 @@ const initialProducts = [
         "options": [
           "Con argolla de llavero",
           "Con imán de neodimio",
-          "Ambos (Llavero + Imán)"
+          "Ambos (Llavero + Imán) (+ $15 MXN)"
         ]
       }
     ],
@@ -680,8 +680,8 @@ const initialProducts = [
         "name": "Material",
         "options": [
           "PETG Técnico Negro",
-          "ABS / ASA Alta Temperatura",
-          "Nylon con Fibra de Carbono (PA-CF)"
+          "ABS / ASA Alta Temperatura (+ $60 MXN)",
+          "Nylon con Fibra de Carbono (PA-CF) (+ $180 MXN)"
         ]
       },
       {
@@ -4524,7 +4524,7 @@ const initialProducts = [
         "name": "Tamaño",
         "options": [
           "Mesa de dulces / firmas (30 x 20 cm)",
-          "Entrada al salón (50 x 35 cm)"
+          "Entrada al salón (50 x 35 cm) (+ $220 MXN)"
         ]
       }
     ],
@@ -5100,7 +5100,7 @@ const initialProducts = [
         "name": "Configuración",
         "options": [
           "Kit Esencial (Placa + Llaveros + Medalla)",
-          "Kit Completo (con Termo y Playera V1)"
+          "Kit Completo (con Termo y Playera V1) (+ $280 MXN)"
         ]
       }
     ],
@@ -7849,8 +7849,8 @@ const initialProducts = [
         "name": "Tipo de Estampado",
         "options": [
           "Vinil Textil Mate",
-          "Vinil Textil Glitter",
-          "Parche Estilo Patch Bar"
+          "Vinil Textil Glitter (+ $25 MXN)",
+          "Parche Estilo Patch Bar (+ $35 MXN)"
         ]
       }
     ],
@@ -8001,7 +8001,7 @@ const initialProducts = [
           "CH (Chica)",
           "M (Mediana)",
           "G (Grande)",
-          "XG (Extra Grande)"
+          "XG (Extra Grande) (+ $35 MXN)"
         ]
       },
       {
@@ -9808,8 +9808,8 @@ const initialProducts = [
         "name": "Tamaño",
         "options": [
           "Escultura Mediana (10-12 cm)",
-          "Escultura Grande (15 cm)",
-          "Con Base Grabada en Madera/PLA"
+          "Escultura Grande (15 cm) (+ $180 MXN)",
+          "Con Base Grabada en Madera/PLA (+ $120 MXN)"
         ]
       }
     ],
@@ -9904,8 +9904,8 @@ const initialProducts = [
         "name": "Tamaño",
         "options": [
           "Escultura Mediana (10-12 cm)",
-          "Escultura Grande (15 cm)",
-          "Con Base Grabada en Madera/PLA"
+          "Escultura Grande (15 cm) (+ $180 MXN)",
+          "Con Base Grabada en Madera/PLA (+ $120 MXN)"
         ]
       }
     ],
@@ -10000,8 +10000,8 @@ const initialProducts = [
         "name": "Tamaño",
         "options": [
           "Escultura Mediana (10-12 cm)",
-          "Escultura Grande (15 cm)",
-          "Con Base Grabada en Madera/PLA"
+          "Escultura Grande (15 cm) (+ $180 MXN)",
+          "Con Base Grabada en Madera/PLA (+ $120 MXN)"
         ]
       }
     ],
@@ -10096,8 +10096,8 @@ const initialProducts = [
         "name": "Tamaño",
         "options": [
           "Escultura Mediana (10-12 cm)",
-          "Escultura Grande (15 cm)",
-          "Con Base Grabada en Madera/PLA"
+          "Escultura Grande (15 cm) (+ $180 MXN)",
+          "Con Base Grabada en Madera/PLA (+ $120 MXN)"
         ]
       }
     ],
@@ -10192,8 +10192,8 @@ const initialProducts = [
         "name": "Tamaño",
         "options": [
           "Escultura Mediana (10-12 cm)",
-          "Escultura Grande (15 cm)",
-          "Con Base Grabada en Madera/PLA"
+          "Escultura Grande (15 cm) (+ $180 MXN)",
+          "Con Base Grabada en Madera/PLA (+ $120 MXN)"
         ]
       }
     ],
@@ -10288,8 +10288,8 @@ const initialProducts = [
         "name": "Tamaño",
         "options": [
           "Escultura Mediana (10-12 cm)",
-          "Escultura Grande (15 cm)",
-          "Con Base Grabada en Madera/PLA"
+          "Escultura Grande (15 cm) (+ $180 MXN)",
+          "Con Base Grabada en Madera/PLA (+ $120 MXN)"
         ]
       }
     ],
@@ -10384,8 +10384,8 @@ const initialProducts = [
         "name": "Tamaño",
         "options": [
           "Escultura Mediana (10-12 cm)",
-          "Escultura Grande (15 cm)",
-          "Con Base Grabada en Madera/PLA"
+          "Escultura Grande (15 cm) (+ $180 MXN)",
+          "Con Base Grabada en Madera/PLA (+ $120 MXN)"
         ]
       }
     ],
@@ -10853,9 +10853,9 @@ const initialProducts = [
       {
         "name": "Cantidad de Figuras",
         "options": [
-          "Individual (1 Amigo)",
+          "Individual (1 Amigo) (- $560 MXN)",
           "Dúo de Mejores Amigos",
-          "Trío de Amigos"
+          "Trío de Amigos (+ $550 MXN)"
         ]
       }
     ],
@@ -11088,8 +11088,8 @@ const initialProducts = [
         "name": "Presentación",
         "options": [
           "Set Dúo (Abuelo y Abuela)",
-          "Abuelito Individual ($680 MXN)",
-          "Abuelita Individual ($680 MXN)"
+          "Abuelito Individual (- $570 MXN)",
+          "Abuelita Individual (- $570 MXN)"
         ]
       }
     ],
