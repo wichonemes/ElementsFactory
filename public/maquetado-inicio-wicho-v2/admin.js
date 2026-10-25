@@ -1,10 +1,44 @@
 (() => {
-  const KEY = 'wicho-home-admin-v2';
+  const STORE = 'wicho-inicio-editor-v3';
+  const LEGACY_KEY = 'wicho-home-admin-v2';
   const TOKEN_KEY = 'artesano_admin_token';
-  const slots = {
-    'hero-cover': 'Portada superior',
+
+  const defaultCopy = {
+    kicker: 'Diseñador gráfico · Digital',
+    heroTitle: 'Ideas claras.<br><span>Diseño con intención.</span>',
+    heroText: 'Exploro identidad, imagen y experiencias digitales para convertir ideas en piezas visuales cuidadas y funcionales.',
+    areasKicker: 'Explora el portafolio',
+    areasTitle: 'Un mundo para cada disciplina.',
+    areasNoteTitle: 'Cada disciplina tiene su propio lenguaje.',
+    areasNoteText: 'Explora cómo cambian las ideas cuando pasan de una marca a una imagen, una experiencia o un objeto.',
+    projectsKicker: 'Selección de proyectos',
+    projectsTitle: 'Trabajo que cuenta historias.',
+    aboutKicker: 'Diseño en evolución',
+    aboutText: 'Un portafolio para explorar mis proyectos, mostrar cómo pienso cada disciplina y seguir construyendo experiencias visuales cada vez más claras y funcionales.'
+  };
+
+  const defaultAreas = [
+    { id: 'identidad', slot: 'area-identidad', title: 'Identidad corporativa', desc: 'Marcas con voz y sistema visual.' },
+    { id: 'audiovisual', slot: 'area-audiovisual', title: 'Audiovisual', desc: 'Tiempo, luz y entorno.' },
+    { id: 'animacion', slot: 'area-animacion', title: 'Animación', desc: 'Movimiento y expresión.' },
+    { id: 'ilustracion', slot: 'area-ilustracion', title: 'Ilustración', desc: 'Forma, color e imaginación.' },
+    { id: 'modelado', slot: 'area-modelado', title: 'Modelado 3D', desc: 'Forma, material y luz.' },
+    { id: 'interfaces', slot: 'area-ux', title: 'Diseño de interfaces', desc: 'Del wireframe al código.' },
+    { id: 'impresos', slot: 'area-impresos', title: 'Medios impresos', desc: 'Ideas llevadas a objetos.' },
+    { id: 'editorial', slot: 'area-editorial', title: 'Diseño editorial', desc: 'Historias con ritmo y lectura.' }
+  ];
+
+  const defaultProjects = [
+    { id: 'artesano', slot: 'project-artesano', tag: 'Identidad · Comunicación', title: 'Artesano Digital' },
+    { id: 'civil', slot: 'project-civil', tag: 'Marca · Indumentaria', title: 'Civil Armory' },
+    { id: 'popol', slot: 'project-popol', tag: 'Editorial · Ilustración', title: 'Popol Vuh' },
+    { id: 'cafe', slot: 'project-cafe', tag: 'Identidad · Producto', title: 'Café San Luis' }
+  ];
+
+  const slotsMap = {
+    'hero-cover': 'Portada superior (Banner)',
     'profile-photo': 'Foto de perfil',
-    'logo-site': 'Logo junto a Wicho Nemes',
+    'logo-site': 'Logo de marca personal',
     'area-identidad': 'Identidad corporativa',
     'area-audiovisual': 'Audiovisual',
     'area-animacion': 'Animación',
@@ -13,399 +47,416 @@
     'area-ux': 'Diseño de interfaces',
     'area-impresos': 'Medios impresos',
     'area-editorial': 'Diseño editorial',
-    'project-artesano': 'Imagen o logo · Artesano Digital',
-    'project-civil': 'Imagen o logo · Civil Armory',
-    'project-popol': 'Imagen o logo · Popol Vuh',
-    'project-cafe': 'Imagen o logo · Café San Luis'
+    'project-artesano': 'Artesano Digital',
+    'project-civil': 'Civil Armory',
+    'project-popol': 'Popol Vuh',
+    'project-cafe': 'Café San Luis'
   };
 
-  const groups = {
-    'Portada e identidad': ['hero-cover', 'profile-photo', 'logo-site'],
-    'Portadas de cada área': [
-      'area-identidad', 'area-audiovisual', 'area-animacion', 'area-ilustracion',
-      'area-modelado', 'area-ux', 'area-impresos', 'area-editorial'
-    ],
-    'Imágenes de proyectos destacados': [
-      'project-artesano', 'project-civil', 'project-popol', 'project-cafe'
-    ]
-  };
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-  const panel = document.getElementById('adminPanel');
-  const backdrop = document.getElementById('adminBackdrop');
-  const toggle = document.getElementById('adminToggle');
-  const status = document.getElementById('adminStatus');
-  const login = document.getElementById('adminLogin');
-  const loginForm = document.getElementById('adminLoginForm');
-  const loginUser = document.getElementById('adminUser');
-  const loginPass = document.getElementById('adminPass');
-  const loginError = document.getElementById('adminLoginError');
-  const loginClose = document.getElementById('adminLoginClose');
-  const loginSubmit = document.getElementById('adminLoginSubmit');
-  const logout = document.getElementById('adminLogout');
-  const saveServerBtn = document.getElementById('saveServerConfig');
+  let state = readState();
+  const panel = $('#adminPanel');
+  const backdrop = $('#adminBackdrop');
+  const toggle = $('#adminToggle');
+  const status = $('#adminStatus');
+  const saveServerBtn = $('#saveServerConfig');
 
-  let saved = {};
-  try {
-    saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {};
-  } catch {
-    saved = {};
+  function readState() {
+    try {
+      const s = JSON.parse(localStorage.getItem(STORE) || 'null');
+      if (s && s.copy && Array.isArray(s.areas)) return s;
+    } catch (e) {
+      console.warn('No se pudo leer el estado del editor:', e);
+    }
+
+    // Si no hay estado nuevo, importar imágenes legacy si existen
+    let legacyImages = {};
+    try {
+      legacyImages = JSON.parse(localStorage.getItem(LEGACY_KEY) || '{}') || {};
+    } catch {}
+
+    return {
+      copy: JSON.parse(JSON.stringify(defaultCopy)),
+      areas: JSON.parse(JSON.stringify(defaultAreas)),
+      projects: JSON.parse(JSON.stringify(defaultProjects)),
+      images: legacyImages
+    };
   }
 
-  function say(text) {
-    if (status) status.textContent = text;
+  function save(msg = 'Cambios guardados automáticamente en este navegador.') {
+    try {
+      localStorage.setItem(STORE, JSON.stringify(state));
+      // Mantener compatibilidad con slots legacy
+      if (state.images && typeof state.images === 'object') {
+        localStorage.setItem(LEGACY_KEY, JSON.stringify(state.images));
+      }
+      if (status) status.textContent = msg;
+    } catch (e) {
+      if (status) status.textContent = 'Espacio de almacenamiento local lleno. Prueba con fotos más livianas.';
+    }
   }
 
-  function apply(slot, src) {
-    document.querySelectorAll(`[data-image-slot="${slot}"]`).forEach(img => {
+  function applyCopy() {
+    const c = state.copy;
+    const heroKicker = $('#inicio .kicker');
+    if (heroKicker) heroKicker.textContent = c.kicker;
+    const heroH1 = $('#inicio h1');
+    if (heroH1) heroH1.innerHTML = c.heroTitle;
+    const heroP = $('#inicio p');
+    if (heroP) heroP.textContent = c.heroText;
+
+    const areasKicker = $('#areas .section-head .kicker');
+    if (areasKicker) areasKicker.textContent = c.areasKicker;
+    const areasTitle = $('#areas .section-head h2');
+    if (areasTitle) areasTitle.textContent = c.areasTitle;
+
+    const noteStrong = $('.area-note p strong');
+    if (noteStrong) noteStrong.textContent = c.areasNoteTitle;
+    const noteSpan = $('.area-note p span');
+    if (noteSpan) noteSpan.textContent = c.areasNoteText;
+
+    const projKicker = $('#proyectos .section-head .kicker');
+    if (projKicker) projKicker.textContent = c.projectsKicker;
+    const projTitle = $('#proyectos .section-head h2');
+    if (projTitle) projTitle.textContent = c.projectsTitle;
+
+    const aboutKicker = $('.about-strip .kicker');
+    if (aboutKicker) aboutKicker.textContent = c.aboutKicker;
+    const aboutP = $('.about-strip p');
+    if (aboutP) aboutP.textContent = c.aboutText;
+
+    // Actualizar inputs del panel
+    $$('[data-copy]').forEach(input => {
+      const k = input.dataset.copy;
+      if (k && c[k] !== undefined && document.activeElement !== input) {
+        input.value = c[k];
+      }
+    });
+  }
+
+  function applyAreas() {
+    state.areas.forEach((area, i) => {
+      const card = $(`#areas .area[data-area="${area.id}"]`) || $$('#areas .area')[i];
+      if (!card) return;
+      const h3 = card.querySelector('.area-info h3');
+      if (h3) h3.textContent = area.title;
+      const p = card.querySelector('.area-info p');
+      if (p) p.textContent = area.desc;
+    });
+  }
+
+  function applyProjects() {
+    state.projects.forEach((proj, i) => {
+      const card = $(`#proyectos .project[data-project="${proj.id}"]`) || $$('#proyectos .project')[i];
+      if (!card) return;
+      const span = card.querySelector('.project-body span');
+      if (span) span.textContent = proj.tag;
+      const h3 = card.querySelector('.project-body h3');
+      if (h3) h3.textContent = proj.title;
+    });
+  }
+
+  function applyImage(slot, src) {
+    if (!slot || !src) return;
+    $$(`[data-image-slot="${slot}"]`).forEach(img => {
       img.src = src;
       img.hidden = false;
     });
     if (slot === 'logo-site') {
-      const fb = document.querySelector('.logo-fallback');
+      const fb = $('.logo-fallback');
       if (fb) fb.hidden = true;
-    }
-    if (slot === 'area-animacion' || slot === 'area-modelado') {
-      const placeholder = document.querySelector(`[data-placeholder="${slot}"]`);
-      if (placeholder) placeholder.hidden = true;
     }
   }
 
-  function applyAll() {
-    Object.entries(saved).forEach(([slot, src]) => {
-      if (slots[slot] && typeof src === 'string') apply(slot, src);
+  function applyImages() {
+    Object.entries(state.images || {}).forEach(([slot, src]) => {
+      if (src && typeof src === 'string') applyImage(slot, src);
     });
   }
 
-  // Cargar estado inicial local
-  applyAll();
+  function applyAll() {
+    applyCopy();
+    applyAreas();
+    applyProjects();
+    applyImages();
+  }
 
-  // Sincronizar con el servidor en segundo plano
-  async function syncWithServer() {
+  function renderAdminFields() {
+    // Campos de Áreas
+    const areasContainer = $('#adminAreasFields');
+    if (areasContainer) {
+      areasContainer.innerHTML = state.areas.map((area, idx) => `
+        <div class="admin-card-row">
+          <h4>${esc(area.title)}</h4>
+          <label>Nombre de la disciplina
+            <input data-area-idx="${idx}" data-field="title" value="${esc(area.title)}">
+          </label>
+          <label>Frase breve
+            <input data-area-idx="${idx}" data-field="desc" value="${esc(area.desc)}">
+          </label>
+          <label class="upload-field" style="margin-top:4px;">Cambiar portada de ${esc(area.title)}
+            <input type="file" data-image="${esc(area.slot)}" accept="image/*">
+          </label>
+        </div>
+      `).join('');
+    }
+
+    // Campos de Proyectos
+    const projectsContainer = $('#adminProjectsFields');
+    if (projectsContainer) {
+      projectsContainer.innerHTML = state.projects.map((proj, idx) => `
+        <div class="admin-card-row">
+          <h4>${esc(proj.title)}</h4>
+          <label>Título del proyecto
+            <input data-proj-idx="${idx}" data-field="title" value="${esc(proj.title)}">
+          </label>
+          <label>Categoría / Subtítulo
+            <input data-proj-idx="${idx}" data-field="tag" value="${esc(proj.tag)}">
+          </label>
+          <label class="upload-field" style="margin-top:4px;">Cambiar imagen de ${esc(proj.title)}
+            <input type="file" data-image="${esc(proj.slot)}" accept="image/*">
+          </label>
+        </div>
+      `).join('');
+    }
+  }
+
+  function openAdmin(open) {
+    if (!panel) return;
+    panel.classList.toggle('open', open);
+    panel.setAttribute('aria-hidden', String(!open));
+    if (toggle) toggle.setAttribute('aria-expanded', String(open));
+    if (backdrop) backdrop.hidden = !open;
+    document.body.classList.toggle('admin-open', open);
+    if (open) {
+      renderAdminFields();
+      const firstInput = panel.querySelector('input');
+      if (firstInput) firstInput.focus();
+    } else {
+      if (toggle) toggle.focus();
+    }
+  }
+
+  async function processImageFile(file) {
+    const bitmap = await createImageBitmap(file);
+    const max = 1400;
+    const scale = Math.min(1, max / Math.max(bitmap.width, bitmap.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(bitmap.width * scale);
+    canvas.height = Math.round(bitmap.height * scale);
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    bitmap.close?.();
+    return canvas.toDataURL('image/webp', 0.85);
+  }
+
+  // Sincronizar en segundo plano con el servidor si está disponible
+  async function syncServerInitial() {
     try {
       const res = await fetch('/api/portfolio/config');
       if (res.ok) {
         const data = await res.json();
-        if (data && data.slots && typeof data.slots === 'object' && Object.keys(data.slots).length > 0) {
-          saved = { ...saved, ...data.slots };
-          try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch {}
-          applyAll();
+        if (data?.slots && typeof data.slots === 'object' && Object.keys(data.slots).length > 0) {
+          state.images = { ...(state.images || {}), ...data.slots };
+          save('Imágenes sincronizadas con el servidor.');
+          applyImages();
         }
-      }
-    } catch (e) {
-      console.warn('Sincronización inicial con servidor:', e);
-    }
-  }
-  syncWithServer();
-
-  function getToken() {
-    try {
-      return localStorage.getItem(TOKEN_KEY) || sessionStorage.getItem(TOKEN_KEY) || '';
-    } catch {
-      return '';
-    }
-  }
-
-  function setToken(token) {
-    try {
-      if (token) {
-        localStorage.setItem(TOKEN_KEY, token);
-      } else {
-        localStorage.removeItem(TOKEN_KEY);
       }
     } catch {}
   }
 
-  async function checkAuth() {
-    const token = getToken();
-    if (!token) return false;
-    try {
-      const res = await fetch('/api/auth/me', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      return res.ok;
-    } catch {
-      return true; // En caso de desconexión momentánea, no expulsar
-    }
-  }
-
-  async function open() {
-    const authed = await checkAuth();
-    if (!authed) {
-      openLogin();
-      return;
-    }
-    panel.classList.add('open');
-    panel.setAttribute('aria-hidden', 'false');
-    backdrop.hidden = false;
-    toggle.setAttribute('aria-expanded', 'true');
-  }
-
-  function close() {
-    panel.classList.remove('open');
-    panel.setAttribute('aria-hidden', 'true');
-    backdrop.hidden = true;
-    toggle.setAttribute('aria-expanded', 'false');
-  }
-
-  function openLogin() {
-    login.hidden = false;
-    login.setAttribute('aria-hidden', 'false');
-    loginError.hidden = true;
-    loginError.textContent = 'Usuario o contraseña incorrectos.';
-    loginForm.reset();
-    loginSubmit.disabled = false;
-    loginSubmit.textContent = 'Entrar';
-    document.body.classList.add('login-open');
-    setTimeout(() => loginUser.focus(), 40);
-  }
-
-  function closeLogin(restoreFocus = true) {
-    login.hidden = true;
-    login.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('login-open');
-    if (restoreFocus) toggle.focus({ preventScroll: true });
-  }
-
-  async function submitLogin(event) {
-    event.preventDefault();
-    const username = loginUser.value.trim();
-    const password = loginPass.value;
-    loginError.hidden = true;
-    loginSubmit.disabled = true;
-    loginSubmit.textContent = 'Verificando…';
-
-    try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
-      const data = await res.json();
-      if (res.ok && data.token) {
-        setToken(data.token);
-        closeLogin(false);
-        open();
-        say('Sesión iniciada con éxito. Ya puedes guardar en el servidor.');
-        return;
-      } else {
-        loginError.textContent = data.error || 'Credenciales incorrectas.';
-        loginError.hidden = false;
-        loginPass.value = '';
-        loginPass.focus();
-      }
-    } catch (err) {
-      loginError.textContent = 'No se pudo conectar con el servidor. Abre http://localhost:5000.';
-      loginError.hidden = false;
-    } finally {
-      loginSubmit.disabled = false;
-      loginSubmit.textContent = 'Entrar';
-    }
-  }
-
-  async function saveToServer(explicit = false) {
-    const token = getToken();
-    if (!token) {
-      say('⚠️ Inicia sesión con la contraseña única para guardar en el servidor.');
-      openLogin();
-      return false;
-    }
-
+  async function saveToServer() {
     if (saveServerBtn) {
       saveServerBtn.disabled = true;
       saveServerBtn.textContent = '⏳ Guardando en el servidor…';
     }
-    say('Enviando cambios al servidor…');
+    if (status) status.textContent = 'Enviando cambios al servidor…';
 
     try {
+      const token = localStorage.getItem(TOKEN_KEY) || sessionStorage.getItem(TOKEN_KEY) || '';
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
       const res = await fetch('/api/portfolio/config', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ slots: saved, replace: true })
+        headers,
+        body: JSON.stringify({ slots: state.images || {}, config: state, replace: true })
       });
 
       if (res.ok) {
         const dateStr = new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        say(`✅ ¡Cambios guardados permanentemente en el servidor! (${dateStr})`);
+        save(`✅ ¡Guardado con éxito en el servidor a las ${dateStr}!`);
         if (saveServerBtn) {
-          saveServerBtn.textContent = '✅ ¡Guardado con éxito!';
+          saveServerBtn.textContent = '✅ ¡Guardado en el servidor!';
           setTimeout(() => {
             saveServerBtn.disabled = false;
-            saveServerBtn.textContent = '💾 Guardar Cambios en el Servidor';
-          }, 2500);
+            saveServerBtn.textContent = '💾 Guardar cambios en el servidor';
+          }, 2400);
         }
-        return true;
-      } else if (res.status === 401 || res.status === 403) {
-        setToken('');
-        say('⚠️ Tu sesión expiró. Inicia sesión de nuevo.');
-        openLogin();
-        if (saveServerBtn) {
-          saveServerBtn.disabled = false;
-          saveServerBtn.textContent = '💾 Guardar Cambios en el Servidor';
-        }
-        return false;
       } else {
-        const errData = await res.json().catch(() => ({}));
-        say(`⚠️ Error al guardar: ${errData.error || 'Respuesta inesperada'}`);
+        save('⚠️ Guardado localmente en este navegador. Para la nube, inicia sesión en la plataforma.');
         if (saveServerBtn) {
           saveServerBtn.disabled = false;
-          saveServerBtn.textContent = '💾 Guardar Cambios en el Servidor';
+          saveServerBtn.textContent = '💾 Guardar cambios en el servidor';
         }
-        return false;
       }
-    } catch (err) {
-      say('⚠️ Error de red al comunicarse con el servidor.');
+    } catch (e) {
+      save('⚠️ Guardado localmente en este navegador (modo sin conexión).');
       if (saveServerBtn) {
         saveServerBtn.disabled = false;
-        saveServerBtn.textContent = '💾 Guardar Cambios en el Servidor';
+        saveServerBtn.textContent = '💾 Guardar cambios en el servidor';
       }
-      return false;
     }
   }
 
-  // Event Listeners
-  toggle.addEventListener('click', async () => {
-    const authed = await checkAuth();
-    if (!authed) {
-      openLogin();
-      return;
+  // Configurar Eventos
+  if (toggle) {
+    toggle.onclick = e => {
+      e.preventDefault();
+      openAdmin(!panel.classList.contains('open'));
+    };
+  }
+
+  const closeBtn = $('#adminClose');
+  if (closeBtn) closeBtn.onclick = () => openAdmin(false);
+  if (backdrop) backdrop.onclick = () => openAdmin(false);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && panel && panel.classList.contains('open')) {
+      openAdmin(false);
     }
-    if (panel.classList.contains('open')) close();
-    else open();
   });
 
-  loginForm.addEventListener('submit', submitLogin);
-  loginClose.addEventListener('click', () => closeLogin());
-  login.addEventListener('click', event => { if (event.target === login) closeLogin(); });
+  // Escuchar edición de textos principales
+  document.querySelectorAll('[data-copy]').forEach(el => {
+    el.addEventListener('input', () => {
+      const key = el.dataset.copy;
+      if (!key) return;
+      state.copy[key] = el.value;
+      applyCopy();
+      save();
+    });
+  });
 
-  document.getElementById('adminClose').addEventListener('click', close);
-  backdrop.addEventListener('click', close);
+  // Delegar edición de áreas
+  const areasContainer = $('#adminAreasFields');
+  if (areasContainer) {
+    areasContainer.addEventListener('input', e => {
+      const idx = Number(e.target.dataset.areaIdx);
+      const field = e.target.dataset.field;
+      if (isNaN(idx) || !field || !state.areas[idx]) return;
+      state.areas[idx][field] = e.target.value;
+      applyAreas();
+      save();
+    });
+  }
 
-  if (logout) {
-    logout.addEventListener('click', () => {
-      setToken('');
-      close();
-      say('Sesión cerrada.');
+  // Delegar edición de proyectos
+  const projectsContainer = $('#adminProjectsFields');
+  if (projectsContainer) {
+    projectsContainer.addEventListener('input', e => {
+      const idx = Number(e.target.dataset.projIdx);
+      const field = e.target.dataset.field;
+      if (isNaN(idx) || !field || !state.projects[idx]) return;
+      state.projects[idx][field] = e.target.value;
+      applyProjects();
+      save();
+    });
+  }
+
+  // Subida de imágenes (en todo el panel)
+  if (panel) {
+    panel.addEventListener('change', async e => {
+      if (!e.target.matches('[data-image]') || !e.target.files?.[0]) return;
+      const slot = e.target.dataset.image;
+      const file = e.target.files[0];
+      const slotName = slotsMap[slot] || slot;
+      try {
+        if (status) status.textContent = `Procesando imagen para ${slotName}…`;
+        const dataUrl = await processImageFile(file);
+        if (!state.images) state.images = {};
+        state.images[slot] = dataUrl;
+        applyImage(slot, dataUrl);
+        save(`✔️ ${slotName} actualizada correctamente.`);
+      } catch (err) {
+        if (status) status.textContent = 'No se pudo procesar la imagen. Usa formato JPG, PNG o WebP.';
+      }
     });
   }
 
   if (saveServerBtn) {
-    saveServerBtn.addEventListener('click', () => saveToServer(true));
+    saveServerBtn.onclick = () => saveToServer();
   }
 
-  document.addEventListener('keydown', event => {
-    if (event.key !== 'Escape') return;
-    if (!login.hidden) { closeLogin(); return; }
-    if (!backdrop.hidden) close();
-  });
-
-  // Campos de subida de imágenes
-  const fields = document.getElementById('adminFields');
-  if (fields) {
-    for (const [group, names] of Object.entries(groups)) {
-      const section = document.createElement('section');
-      section.className = 'admin-group';
-      section.innerHTML = `<h3>${group}</h3>`;
-      for (const slot of names) {
-        const row = document.createElement('label');
-        row.className = 'upload-row';
-        const name = document.createElement('span');
-        name.textContent = slots[slot];
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*';
-        input.setAttribute('aria-label', `Elegir ${slots[slot]}`);
-
-        input.addEventListener('change', async () => {
-          const file = input.files?.[0];
-          if (!file) return;
-          try {
-            say(`Procesando ${slots[slot]}…`);
-            const bitmap = await createImageBitmap(file);
-            const max = 1350;
-            const scale = Math.min(1, max / Math.max(bitmap.width, bitmap.height));
-            const canvas = document.createElement('canvas');
-            canvas.width = Math.round(bitmap.width * scale);
-            canvas.height = Math.round(bitmap.height * scale);
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-            bitmap.close?.();
-            const data = canvas.toDataURL('image/webp', 0.82);
-
-            saved[slot] = data;
-            try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch {}
-            apply(slot, data);
-            say(`✔️ ${slots[slot]} actualizada. Presiona "Guardar Cambios en el Servidor" para sincronizar.`);
-          } catch {
-            say('No se pudo procesar la imagen. Prueba con un archivo JPG o PNG estándar.');
-          }
-        });
-
-        row.append(name, input);
-        section.append(row);
-      }
-      fields.append(section);
-    }
-  }
-
-  const exportBtn = document.getElementById('exportConfig');
+  // Exportar respaldo
+  const exportBtn = $('#exportConfig');
   if (exportBtn) {
-    exportBtn.addEventListener('click', () => {
-      const blob = new Blob([JSON.stringify(saved)], { type: 'application/json' });
+    exportBtn.onclick = () => {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'seleccion-imagenes-wicho.json';
+      a.download = 'respaldo-inicio-wicho.json';
       a.click();
       URL.revokeObjectURL(a.href);
-      say('Selección descargada en un archivo JSON.');
-    });
+      if (status) status.textContent = 'Respaldo descargado con éxito.';
+    };
   }
 
-  const importInput = document.getElementById('importConfig');
+  // Importar respaldo
+  const importInput = $('#importConfig');
   if (importInput) {
-    importInput.addEventListener('change', async e => {
+    importInput.onchange = async e => {
       const file = e.target.files?.[0];
       if (!file) return;
       try {
-        const data = JSON.parse(await file.text());
-        if (!data || typeof data !== 'object' || Array.isArray(data)) throw Error();
-        saved = {};
-        for (const [k, v] of Object.entries(data)) {
-          if (slots[k] && typeof v === 'string' && (v.startsWith('data:image/') || v.startsWith('/'))) {
-            saved[k] = v;
-          }
+        const text = await file.text();
+        const imported = JSON.parse(text);
+        if (imported?.copy && Array.isArray(imported?.areas)) {
+          state = imported;
+        } else if (imported && typeof imported === 'object') {
+          // Si es formato legacy de solo imágenes
+          state.images = { ...(state.images || {}), ...imported };
         }
-        localStorage.setItem(KEY, JSON.stringify(saved));
+        save('Respaldo importado correctamente.');
         applyAll();
-        say('Selección importada. Presiona "Guardar Cambios en el Servidor" si deseas aplicarla a todos los dispositivos.');
+        renderAdminFields();
       } catch {
-        say('Ese archivo no contiene una selección válida.');
+        if (status) status.textContent = 'El archivo no contiene un respaldo válido.';
       }
-    });
+      e.target.value = '';
+    };
   }
 
-  const resetBtn = document.getElementById('resetConfig');
+  // Restablecer originales
+  const resetBtn = $('#resetConfig');
   if (resetBtn) {
-    resetBtn.addEventListener('click', async () => {
-      if (!confirm('¿Deseas restablecer todas las imágenes a sus valores iniciales?')) return;
-      saved = {};
-      try { localStorage.removeItem(KEY); } catch {}
-      const token = getToken();
-      if (token) {
-        try {
-          await fetch('/api/portfolio/config', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ slots: {}, replace: true })
-          });
-        } catch {}
-      }
+    resetBtn.onclick = () => {
+      if (!confirm('¿Restablecer los textos e imágenes originales de la página de inicio?')) return;
+      localStorage.removeItem(STORE);
+      localStorage.removeItem(LEGACY_KEY);
+      state = {
+        copy: JSON.parse(JSON.stringify(defaultCopy)),
+        areas: JSON.parse(JSON.stringify(defaultAreas)),
+        projects: JSON.parse(JSON.stringify(defaultProjects)),
+        images: {}
+      };
+      save('Contenido original restablecido.');
       location.reload();
-    });
+    };
   }
+
+  // Inicializar
+  applyAll();
+  renderAdminFields();
+  syncServerInitial();
+
+  window.__wichoInicio = {
+    get state() { return state; },
+    save,
+    applyAll,
+    openAdmin
+  };
 })();
