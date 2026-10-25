@@ -37,10 +37,15 @@ if (production && (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_RO
 app.disable('x-powered-by');
 if (process.env.RENDER) app.set('trust proxy', 1);
 // Wrap only the final API handler: authentication and multipart parsing run first.
+// Upload endpoints are excluded so long file network transfers don't hold database row locks.
 for (const method of ['get', 'post', 'put', 'delete', 'patch']) {
   const register = app[method].bind(app);
   app[method] = (route, ...handlers) => {
-    if (typeof route === 'string' && route.startsWith('/api/') && handlers.length) {
+    const isFileUpload = typeof route === 'string' && (
+      route === '/api/upload' || 
+      route === '/api/admin/catalog-pdf/upload'
+    );
+    if (typeof route === 'string' && route.startsWith('/api/') && !isFileUpload && handlers.length) {
       handlers[handlers.length - 1] = durableHandler(cloudDb, handlers.at(-1));
     }
     return register(route, ...handlers);
@@ -1509,7 +1514,7 @@ app.post('/api/admin/catalog-pdf/upload', requireAdmin, catalogUpload.single('fi
 
     if (cloudDb.enabled) {
       try {
-        const stored = await storeFile(req.file.buffer, req.file.originalname, req.file.mimetype);
+        const stored = await storeFile(req.file.buffer, req.file.originalname, req.file.mimetype || 'application/pdf');
         fileUrl = stored.url;
         fileName = stored.filename || req.file.originalname;
       } catch (storeErr) {
@@ -1517,8 +1522,15 @@ app.post('/api/admin/catalog-pdf/upload', requireAdmin, catalogUpload.single('fi
         const ext = path.extname(req.file.originalname).toLowerCase() || '.pdf';
         const cleanBase = path.basename(req.file.originalname, ext).replace(/[^a-zA-Z0-9_-]/g, '_');
         const fallbackFilename = `${cleanBase}_${Date.now()}${ext}`;
+        if (!fs.existsSync(downloadsDir)) fs.mkdirSync(downloadsDir, { recursive: true });
         const targetPath = path.join(downloadsDir, fallbackFilename);
         fs.writeFileSync(targetPath, req.file.buffer);
+        // También respaldar en dist/downloads si existe la carpeta de compilación
+        if (fs.existsSync(distDir)) {
+          const distDownloads = path.join(distDir, 'downloads');
+          if (!fs.existsSync(distDownloads)) fs.mkdirSync(distDownloads, { recursive: true });
+          fs.writeFileSync(path.join(distDownloads, fallbackFilename), req.file.buffer);
+        }
         fileUrl = `/downloads/${fallbackFilename}`;
         fileName = req.file.originalname || fallbackFilename;
       }
@@ -1529,35 +1541,44 @@ app.post('/api/admin/catalog-pdf/upload', requireAdmin, catalogUpload.single('fi
 
     const { catalogId, name, season, badge, description, isPrimary, enabled } = req.body || {};
 
+    const applyItem = () => {
+      if (catalogId) {
+        db.updateMobileCatalogItem(catalogId, {
+          fileName,
+          fileUrl,
+          fileSize: fileSizeFormatted,
+          fileType: req.file.mimetype || 'application/pdf',
+          ...(name ? { name } : {}),
+          ...(season ? { season } : {}),
+          ...(badge ? { badge } : {}),
+          ...(description ? { description } : {}),
+          ...(isPrimary !== undefined ? { isPrimary: isPrimary === 'true' || isPrimary === true } : {}),
+          ...(enabled !== undefined ? { enabled: enabled === 'true' || enabled === true } : {})
+        });
+      } else {
+        db.addMobileCatalogItem({
+          name: name || fileName.replace(/\.[^/.]+$/, '').replace(/[_|-]/g, ' '),
+          season: season || 'Temporada Actual',
+          badge: badge || 'Nuevo',
+          description: description || 'Catálogo oficial descargable.',
+          fileName,
+          fileUrl,
+          fileSize: fileSizeFormatted,
+          fileType: req.file.mimetype || 'application/pdf',
+          enabled: enabled !== undefined ? (enabled === 'true' || enabled === true) : true,
+          isPrimary: isPrimary === 'true' || isPrimary === true
+        });
+      }
+      return db.getMobileCatalogConfig();
+    };
+
     let updatedConfig;
-    if (catalogId) {
-      db.updateMobileCatalogItem(catalogId, {
-        fileName,
-        fileUrl,
-        fileSize: fileSizeFormatted,
-        fileType: req.file.mimetype,
-        ...(name ? { name } : {}),
-        ...(season ? { season } : {}),
-        ...(badge ? { badge } : {}),
-        ...(description ? { description } : {}),
-        ...(isPrimary !== undefined ? { isPrimary: isPrimary === 'true' || isPrimary === true } : {}),
-        ...(enabled !== undefined ? { enabled: enabled === 'true' || enabled === true } : {})
+    if (cloudDb.enabled) {
+      await cloudDb.transaction(async () => {
+        updatedConfig = applyItem();
       });
-      updatedConfig = db.getMobileCatalogConfig();
     } else {
-      db.addMobileCatalogItem({
-        name: name || fileName.replace(/\.[^/.]+$/, '').replace(/[_|-]/g, ' '),
-        season: season || 'Temporada Actual',
-        badge: badge || 'Nuevo',
-        description: description || 'Catálogo oficial descargable.',
-        fileName,
-        fileUrl,
-        fileSize: fileSizeFormatted,
-        fileType: req.file.mimetype,
-        enabled: enabled !== undefined ? (enabled === 'true' || enabled === true) : true,
-        isPrimary: isPrimary === 'true' || isPrimary === true
-      });
-      updatedConfig = db.getMobileCatalogConfig();
+      updatedConfig = applyItem();
     }
 
     res.json({ success: true, mobileCatalogConfig: updatedConfig });

@@ -80,6 +80,21 @@ export default function MobileCatalogAdminSection({
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
   const [feedback, setFeedback] = useState({ text: '', type: '' });
+  const uploadXhrRef = useRef(null);
+
+  // Cancelar subida y cerrar modal de manera segura sin dejar la UI congelada
+  const handleCancelModal = () => {
+    if (uploadXhrRef.current) {
+      try {
+        uploadXhrRef.current.abort();
+      } catch (e) {}
+      uploadXhrRef.current = null;
+    }
+    setIsUploading(false);
+    setUploadProgress(0);
+    setCatalogModalOpen(false);
+    setModalFile(null);
+  };
 
   // Guardar configuración localmente para garantizar que nunca se pierdan cambios ni bloquee al usuario
   const persistConfigLocally = (newConfig) => {
@@ -235,100 +250,80 @@ export default function MobileCatalogAdminSection({
     }
 
     setIsUploading(true);
-    setUploadProgress(20);
+    setUploadProgress(5);
 
     try {
       if (modalFile) {
-        let serverSynced = false;
-        // Intento 1: Servidor remoto o local
-        try {
-          const formData = new FormData();
-          formData.append('file', modalFile);
-          formData.append('name', cleanName);
-          formData.append('season', (modalForm.season || '').trim());
-          formData.append('badge', (modalForm.badge || '').trim());
-          formData.append('description', (modalForm.description || '').trim());
-          formData.append('isPrimary', modalForm.isPrimary ? 'true' : 'false');
-          formData.append('enabled', modalForm.enabled ? 'true' : 'false');
+        // Subida mediante XMLHttpRequest para progreso real (0%-100%), timeout y manejo de errores
+        const formData = new FormData();
+        formData.append('file', modalFile);
+        formData.append('name', cleanName);
+        formData.append('season', (modalForm.season || '').trim());
+        formData.append('badge', (modalForm.badge || '').trim());
+        formData.append('description', (modalForm.description || '').trim());
+        formData.append('isPrimary', modalForm.isPrimary ? 'true' : 'false');
+        formData.append('enabled', modalForm.enabled ? 'true' : 'false');
 
-          if (editingCatalog?.id) {
-            formData.append('catalogId', editingCatalog.id);
-          }
-
-          setUploadProgress(50);
-          const res = await fetch('/api/admin/catalog-pdf/upload', {
-            method: 'POST',
-            headers: {
-              ...(authToken ? { Authorization: `Bearer ${authToken}` } : {})
-            },
-            body: formData
-          });
-
-          setUploadProgress(90);
-          if (res.ok) {
-            const data = await res.json();
-            if (data.mobileCatalogConfig) {
-              persistConfigLocally(data.mobileCatalogConfig);
-              serverSynced = true;
-            }
-          }
-        } catch (serverErr) {
-          console.warn('Subida directa al servidor falló, aplicando guardado local resiliente:', serverErr);
+        if (editingCatalog?.id) {
+          formData.append('catalogId', editingCatalog.id);
         }
 
-        // Si el servidor no respondió o falló, aplicar fallback local instantáneo
-        if (!serverSynced) {
-          const localUrl = URL.createObjectURL(modalFile);
-          const fileSizeFormatted = modalFile.size > 1024 * 1024
-            ? `${(modalFile.size / (1024 * 1024)).toFixed(2)} MB`
-            : `${Math.round(modalFile.size / 1024)} KB`;
-
-          const currentList = config.catalogs || [];
-          let updatedList;
-          if (editingCatalog?.id) {
-            updatedList = currentList.map(c => c.id === editingCatalog.id ? {
-              ...c,
-              name: cleanName,
-              season: (modalForm.season || '').trim(),
-              badge: (modalForm.badge || '').trim(),
-              description: (modalForm.description || '').trim(),
-              fileName: modalFile.name,
-              fileUrl: localUrl,
-              fileSize: fileSizeFormatted,
-              fileType: modalFile.type || 'application/pdf',
-              isPrimary: Boolean(modalForm.isPrimary),
-              enabled: modalForm.enabled !== false,
-              updatedAt: new Date().toISOString()
-            } : c);
-          } else {
-            const newItem = {
-              id: `cat-${Date.now()}`,
-              name: cleanName,
-              season: (modalForm.season || '').trim() || 'Temporada Actual',
-              badge: (modalForm.badge || '').trim() || 'Nuevo',
-              description: (modalForm.description || '').trim(),
-              fileName: modalFile.name,
-              fileUrl: localUrl,
-              fileSize: fileSizeFormatted,
-              fileType: modalFile.type || 'application/pdf',
-              isPrimary: Boolean(modalForm.isPrimary),
-              enabled: modalForm.enabled !== false,
-              uploadedAt: new Date().toISOString()
-            };
-            updatedList = [newItem, ...currentList];
+        const uploadResult = await new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          uploadXhrRef.current = xhr;
+          xhr.open('POST', '/api/admin/catalog-pdf/upload');
+          if (authToken) {
+            xhr.setRequestHeader('Authorization', `Bearer ${authToken}`);
           }
+          xhr.timeout = 60000; // 60 segundos de espera para archivos grandes
 
-          if (modalForm.isPrimary) {
-            const primaryId = editingCatalog?.id || updatedList[0]?.id;
-            updatedList = updatedList.map(c => ({ ...c, isPrimary: c.id === primaryId }));
-          }
-
-          const updatedConfig = {
-            ...config,
-            catalogs: updatedList,
-            updatedAt: new Date().toISOString()
+          xhr.upload.onprogress = (event) => {
+            if (event.lengthComputable && event.total > 0) {
+              const pct = Math.round((event.loaded / event.total) * 100);
+              setUploadProgress(Math.min(pct, 95));
+            }
           };
-          persistConfigLocally(updatedConfig);
+
+          xhr.onload = () => {
+            uploadXhrRef.current = null;
+            if (xhr.status >= 200 && xhr.status < 300) {
+              try {
+                const data = JSON.parse(xhr.responseText);
+                setUploadProgress(100);
+                resolve({ ok: true, data });
+              } catch (parseErr) {
+                resolve({ ok: true, data: null });
+              }
+            } else {
+              let errorMsg = `Error del servidor (${xhr.status})`;
+              try {
+                const errData = JSON.parse(xhr.responseText);
+                if (errData?.error) errorMsg = errData.error;
+              } catch {}
+              reject(new Error(errorMsg));
+            }
+          };
+
+          xhr.onerror = () => {
+            uploadXhrRef.current = null;
+            reject(new Error('Error de conexión al enviar el archivo PDF. Revisa tu internet o intenta de nuevo.'));
+          };
+
+          xhr.ontimeout = () => {
+            uploadXhrRef.current = null;
+            reject(new Error('La subida tardó demasiado (más de 60s). Comprueba tu conexión o usa un PDF más liviano.'));
+          };
+
+          xhr.onabort = () => {
+            uploadXhrRef.current = null;
+            reject(new Error('Subida cancelada'));
+          };
+
+          xhr.send(formData);
+        });
+
+        if (uploadResult?.data?.mobileCatalogConfig) {
+          persistConfigLocally(uploadResult.data.mobileCatalogConfig);
         }
 
         showFeedback(
@@ -338,6 +333,7 @@ export default function MobileCatalogAdminSection({
           'success'
         );
         setCatalogModalOpen(false);
+        setModalFile(null);
         if (onRefreshCatalog) onRefreshCatalog();
 
       } else if (editingCatalog) {
@@ -925,8 +921,9 @@ export default function MobileCatalogAdminSection({
                 <span>{editingCatalog ? `Editar Catálogo: ${editingCatalog.name}` : 'Subir Nuevo Catálogo PDF'}</span>
               </h3>
               <button
-                onClick={() => setCatalogModalOpen(false)}
+                onClick={handleCancelModal}
                 className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 flex items-center justify-center cursor-pointer transition-colors"
+                title="Cerrar ventana"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1066,11 +1063,35 @@ export default function MobileCatalogAdminSection({
                 </label>
               </div>
 
+              {/* Barra de progreso visual activa */}
+              {isUploading && (
+                <div className="p-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs space-y-2 animate-in fade-in">
+                  <div className="flex justify-between items-center text-[#2D4F3E] font-bold">
+                    <span className="flex items-center gap-1.5">
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                      {uploadProgress < 100
+                        ? `Subiendo archivo PDF (${uploadProgress}%)...`
+                        : 'Guardando y registrando en el catálogo...'}
+                    </span>
+                    <span>{uploadProgress}%</span>
+                  </div>
+                  <div className="w-full bg-emerald-200/60 rounded-full h-2 overflow-hidden">
+                    <div 
+                      className="bg-[#2D4F3E] h-2 rounded-full transition-all duration-150" 
+                      style={{ width: `${Math.max(uploadProgress, 4)}%` }}
+                    />
+                  </div>
+                  <p className="text-[10px] text-gray-500">
+                    No cierres esta ventana mientras se completa la transferencia.
+                  </p>
+                </div>
+              )}
+
               {/* Botones de acción del Modal */}
               <div className="pt-4 border-t border-stone-200 flex items-center justify-end gap-2">
                 <button
                   type="button"
-                  onClick={() => setCatalogModalOpen(false)}
+                  onClick={handleCancelModal}
                   className="px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold cursor-pointer"
                 >
                   Cancelar
@@ -1081,7 +1102,11 @@ export default function MobileCatalogAdminSection({
                   className="flex items-center gap-1.5 px-5 py-2 rounded-xl bg-[#2D4F3E] hover:bg-[#233f32] text-white font-bold cursor-pointer shadow-sm disabled:opacity-50"
                 >
                   {isUploading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
-                  <span>{isUploading ? 'Guardando...' : editingCatalog ? 'Guardar Cambios' : 'Subir Catálogo'}</span>
+                  <span>
+                    {isUploading 
+                      ? (uploadProgress < 100 ? `Subiendo ${uploadProgress}%...` : 'Guardando...') 
+                      : editingCatalog ? 'Guardar Cambios' : 'Subir Catálogo'}
+                  </span>
                 </button>
               </div>
             </form>

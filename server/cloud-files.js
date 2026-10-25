@@ -30,12 +30,17 @@ export async function storeFile(buffer, originalFilename = 'catalogo.pdf', conte
       apikey: key,
       Authorization: `Bearer ${key}`,
       'Content-Type': contentType,
+      'Content-Length': String(buffer.length),
       'x-upsert': 'true'
     },
     body: buffer,
-    signal: AbortSignal.timeout(35000)
+    signal: AbortSignal.timeout(12000)
   });
-  if (!response.ok) throw new Error('No fue posible guardar el archivo en Supabase.');
+  if (!response.ok) {
+    const errorText = await response.text().catch(() => '');
+    console.warn(`[STORAGE] Supabase Storage respondió con error ${response.status}: ${errorText}`);
+    throw new Error(`No fue posible guardar el archivo en Supabase (${response.status}).`);
+  }
   return {
     url: `${url.replace(/\/$/, '')}/storage/v1/object/public/${encodeURIComponent(bucket)}/${filename}`,
     filename,
