@@ -1254,6 +1254,14 @@ export default function QuoteCalculatorModal({
             </div>
           </div>
 
+          {/* LEYENDA DE PRECIOS ESTIMADOS */}
+          <div className="px-3.5 py-2 rounded-xl bg-[#FFFBF0] border border-[#E5D7B7] flex items-center justify-center gap-2 text-center text-[11px] text-[#7A5B28] leading-snug">
+            <AlertTriangle className="w-4 h-4 text-[#C28E38] shrink-0" />
+            <span>
+              * Son precios estimados, no reflejan un costo real; puede haber diferencias de precios y variables según las especificaciones finales.
+            </span>
+          </div>
+
           {/* BOTONES DE ACCIÓN */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
             <button
