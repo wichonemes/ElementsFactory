@@ -123,7 +123,7 @@ export default function CatalogSelectorModal({
                 {/* Acciones de descarga */}
                 <div className="flex sm:flex-col gap-2 shrink-0">
                   <a
-                    href={cat.id ? `/api/catalog-pdf/download/${cat.id}?download=1` : `${cat.fileUrl || '/downloads/catalogo_movil_artesano_digital.pdf'}${cat.fileUrl?.includes('?') ? '&' : '?'}download=1`}
+                    href={cat.fileUrl ? `${cat.fileUrl}${cat.fileUrl.includes('?') ? '&' : '?'}download=1` : (cat.id ? `/api/catalog-pdf/download/${cat.id}?download=1` : '/downloads/catalogo_movil_artesano_digital.pdf?download=1')}
                     download={cat.fileName || `${cat.name}.pdf`}
                     className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#2D4F3E] hover:bg-[#233f32] active:scale-95 text-white text-xs font-bold transition-all shadow-2xs hover:shadow-xs cursor-pointer text-center"
                     title={`Descargar ${cat.name}`}
@@ -133,7 +133,7 @@ export default function CatalogSelectorModal({
                   </a>
 
                   <a
-                    href={cat.id ? `/api/catalog-pdf/download/${cat.id}` : (cat.fileUrl || '/downloads/catalogo_movil_artesano_digital.pdf')}
+                    href={cat.fileUrl || (cat.id ? `/api/catalog-pdf/download/${cat.id}` : '/downloads/catalogo_movil_artesano_digital.pdf')}
                     target="_blank"
                     rel="noreferrer"
                     className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-stone-100 active:scale-95 text-stone-700 text-xs font-semibold border border-stone-300 transition-all cursor-pointer text-center"

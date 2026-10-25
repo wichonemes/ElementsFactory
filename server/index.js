@@ -41,11 +41,12 @@ if (process.env.RENDER) app.set('trust proxy', 1);
 for (const method of ['get', 'post', 'put', 'delete', 'patch']) {
   const register = app[method].bind(app);
   app[method] = (route, ...handlers) => {
-    const isFileUpload = typeof route === 'string' && (
+    const isFileOperation = typeof route === 'string' && (
       route === '/api/upload' || 
-      route === '/api/admin/catalog-pdf/upload'
+      route === '/api/admin/catalog-pdf/upload' ||
+      route.startsWith('/api/catalog-pdf/download')
     );
-    if (typeof route === 'string' && route.startsWith('/api/') && !isFileUpload && handlers.length) {
+    if (typeof route === 'string' && route.startsWith('/api/') && !isFileOperation && handlers.length) {
       handlers[handlers.length - 1] = durableHandler(cloudDb, handlers.at(-1));
     }
     return register(route, ...handlers);
