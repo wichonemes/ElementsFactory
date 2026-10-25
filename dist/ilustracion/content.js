@@ -14,9 +14,9 @@ window.ilustracionContent = {
     { id: 'retratos', name: 'Retratos y encargos', intro: 'Retratos por encargo: la serie de Paulina y la Familia Ramírez.', ids: ['il-34', 'il-35', 'il-36', 'il-37', 'il-38', 'il-39', 'il-40', 'il-41', 'il-42', 'il-43'] }
   ],
   stories: [
-    { id: 'ilus-wicho', title: 'Ilustración Wicho', caption: 'El recorrido ilustrado de Wicho en un solo video.', youtubeId: 'OkrAP9ZrFB4', shape: 'feature' },
+    { id: 'ilus-wicho', title: 'Ilustración Wicho', caption: 'El recorrido ilustrado de Wicho en un solo video.', youtubeId: 'OkrAP9ZrFB4', shape: 'feature', blocks: 2 },
     { id: 'il-01', title: 'Juego de pelota', caption: 'La escena mayor del Popol Vuh a color.', src: 'assets/il-01.jpg', shape: 'retrato' },
-    { id: 'popol-vuh', title: 'Popol Vhu by Wicho Nemes', caption: 'El corto ilustrado del Popol Vuh.', youtubeId: 'g3Xhsom8XKk', shape: 'feature' },
+    { id: 'popol-vuh', title: 'Popol Vhu by Wicho Nemes', caption: 'El corto ilustrado del Popol Vuh.', youtubeId: 'g3Xhsom8XKk', shape: 'feature', blocks: 2 },
     { id: 'il-02', title: 'Caligrafía Popol Vuh', caption: 'El nombre del proyecto escrito a mano.', src: 'assets/il-02.jpg', shape: 'panoramica' },
     { id: 'il-03', title: 'Estudio en púrpura', caption: 'Los peloteros en un estudio de color.', src: 'assets/il-03.jpg', shape: 'retrato' },
     { id: 'il-04', title: 'Bosque a lápiz', caption: '', src: 'assets/il-04.jpg', shape: 'panoramica' },
@@ -41,7 +41,7 @@ window.ilustracionContent = {
     { id: 'il-23', title: 'Ilustración 23', caption: '', src: 'assets/il-23.jpg', shape: 'panoramica' },
     { id: 'il-24', title: 'Ilustración 24', caption: '', src: 'assets/il-24.jpg', shape: 'retrato' },
     { id: 'il-25', title: 'Ilustración 25', caption: '', src: 'assets/il-25.jpg', shape: 'cuadrada' },
-    { id: 'falso-profeta', title: 'El Falso profeta ilustración', caption: 'El personaje de la saga, ilustrado en movimiento.', youtubeId: 'HH-9lFigDY8', shape: 'feature' },
+    { id: 'falso-profeta', title: 'El Falso profeta ilustración', caption: 'El personaje de la saga, ilustrado en movimiento.', youtubeId: 'HH-9lFigDY8', shape: 'feature', blocks: 4 },
     { id: 'il-26', title: 'INNO · 01', caption: '', src: 'assets/il-26.jpg', shape: 'panoramica' },
     { id: 'il-27', title: 'INNO · 02', caption: '', src: 'assets/il-27.jpg', shape: 'retrato' },
     { id: 'il-28', title: 'INNO · 03', caption: '', src: 'assets/il-28.jpg', shape: 'retrato' },

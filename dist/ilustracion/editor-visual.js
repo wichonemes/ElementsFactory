@@ -235,8 +235,18 @@
           if (img) img.alt = item.caption ? item.title + ': ' + item.caption : item.title;
         }), 'text');
         if (media && img) {
-          addPin(media, 'edit', 'Cambiar imagen', () => pickImage(item, false, img));
-          if (!isVideo) addPin(media, 'shape', 'Cambiar forma de la imagen', () => openShape(item, img), 'bl');
+          addPin(media, 'edit', isVideo ? 'Cambiar portada' : 'Cambiar imagen', () => pickImage(item, false, img));
+          if (!isVideo) {
+            addPin(media, 'shape', 'Cambiar forma de la imagen', () => openShape(item, img), 'bl');
+          } else {
+            addPin(media, 'shape', 'Cambiar tamaño (2 o 4 bloques)', () => {
+              const cur = Number(item.blocks) === 4 ? 4 : (Number(item.blocks) === 2 ? 2 : (item.shape === 'feature' ? 4 : 2));
+              const next = cur === 4 ? 2 : 4;
+              item.blocks = next;
+              w.save(`Video configurado a ${next} bloques.`);
+              w.render();
+            }, 'bl');
+          }
           addPin(media, 'del', 'Quitar pieza', () => removeItem(item), 'tl');
         } else {
           addPin(card, 'del', 'Quitar pieza', () => removeItem(item), 'tl');
