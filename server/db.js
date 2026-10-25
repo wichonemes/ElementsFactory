@@ -15386,12 +15386,16 @@ class Database {
         const cur = data.products[pIdx];
         const pWorlds = JSON.stringify(p.worlds || []);
         const curWorlds = JSON.stringify(cur.worlds || []);
+        const missingCreatedAt = !cur.createdAt && p.createdAt;
+        const missingUpdatedAt = !cur.updatedAt && p.updatedAt;
         if (
+          missingCreatedAt ||
+          missingUpdatedAt ||
           pWorlds !== curWorlds ||
           (p.worlds && p.worlds.includes('personalizados') && cur.price !== p.price) ||
           (cur.image !== p.image && p.image && p.image.startsWith('/uploads/'))
         ) {
-          data.products[pIdx] = { ...cur, ...p };
+          data.products[pIdx] = { ...cur, ...p, createdAt: cur.createdAt || p.createdAt, updatedAt: cur.updatedAt || p.updatedAt };
           changed = true;
         }
       }

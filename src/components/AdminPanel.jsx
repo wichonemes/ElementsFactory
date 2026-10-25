@@ -3746,6 +3746,19 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         const t = new Date(p.updatedAt).getTime();
         if (!isNaN(t) && t > 0) return t;
       }
+      // Detección automática por prefijo de adición de catálogo
+      if (p.code && p.code.startsWith('CUST-DIBUJO')) {
+        return new Date('2026-10-24T19:35:00Z').getTime();
+      }
+      if (p.code && p.code.startsWith('IND')) {
+        return new Date('2026-10-24T12:00:00Z').getTime();
+      }
+      if (p.code && p.code.startsWith('J')) {
+        return new Date('2026-10-24T12:00:00Z').getTime();
+      }
+      if (p.code && p.code.startsWith('CUST-FUNKO-')) {
+        return new Date('2026-10-24T15:00:00Z').getTime();
+      }
       const idx = products.indexOf(p);
       return idx >= 0 ? (new Date('2026-10-14T00:00:00Z').getTime() + idx * 60000) : 0;
     };
@@ -4880,7 +4893,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 <div className="flex items-center gap-1.5 flex-wrap">
                                   <span className="font-mono font-bold text-[10.5px] text-gray-800 bg-gray-100 px-2 py-0.5 rounded border border-gray-300 inline-flex items-center gap-1.5 shadow-2xs">
                                     <span>{p.sku || p.code}</span>
-                                    {p.createdAt && new Date(p.createdAt).getTime() >= new Date('2026-10-24T00:00:00Z').getTime() && (
+                                    {Boolean((p.createdAt && new Date(p.createdAt).getTime() >= new Date('2026-10-24T00:00:00Z').getTime()) || (p.code && (p.code.startsWith('CUST-DIBUJO') || p.code.startsWith('IND') || p.code.startsWith('J') || (p.code.startsWith('CUST-FUNKO-') && p.code !== 'CUST-FUNKO')))) && (
                                       <span className="bg-emerald-600 text-white text-[8px] font-black px-1 py-0.2 rounded leading-none uppercase">
                                         Nuevo
                                       </span>
@@ -5100,7 +5113,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             <div className="flex items-center justify-between gap-1">
                               <span className="font-mono font-bold text-gray-800 bg-gray-100 px-1.5 py-0.5 rounded text-[10.5px] border border-gray-300 inline-flex items-center gap-1">
                                 <span>{p.sku || p.code}</span>
-                                {p.createdAt && new Date(p.createdAt).getTime() >= new Date('2026-10-24T00:00:00Z').getTime() && (
+                                {Boolean((p.createdAt && new Date(p.createdAt).getTime() >= new Date('2026-10-24T00:00:00Z').getTime()) || (p.code && (p.code.startsWith('CUST-DIBUJO') || p.code.startsWith('IND') || p.code.startsWith('J') || (p.code.startsWith('CUST-FUNKO-') && p.code !== 'CUST-FUNKO')))) && (
                                   <span className="bg-emerald-600 text-white text-[7.5px] font-black px-1 py-0.2 rounded leading-none uppercase">
                                     Nuevo
                                   </span>
@@ -5325,7 +5338,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   <div className="flex flex-col gap-0 min-w-0">
                                     <span className="font-mono font-bold text-gray-800 bg-gray-100 px-1 py-0 rounded text-[10px] border border-gray-300 w-fit inline-flex items-center gap-1">
                                       <span>{p.sku || p.code}</span>
-                                      {p.createdAt && new Date(p.createdAt).getTime() >= new Date('2026-10-24T00:00:00Z').getTime() && (
+                                      {Boolean((p.createdAt && new Date(p.createdAt).getTime() >= new Date('2026-10-24T00:00:00Z').getTime()) || (p.code && (p.code.startsWith('CUST-DIBUJO') || p.code.startsWith('IND') || p.code.startsWith('J') || (p.code.startsWith('CUST-FUNKO-') && p.code !== 'CUST-FUNKO')))) && (
                                         <span className="bg-emerald-600 text-white text-[7px] font-black px-1 rounded leading-none uppercase">
                                           Nuevo
                                         </span>
