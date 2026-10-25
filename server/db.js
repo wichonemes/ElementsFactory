@@ -9737,123 +9737,8 @@ const initialProducts = [
   },
   {
     "id": "de-dibujo-a-figura-3d",
-    "code": "CUST-DIBUJO-NINO",
-    "name": "De Dibujo a Figura 3D Real (Edición Niño)",
-    "priceType": "fixed",
-    "price": 680,
-    "priceUnit": "figura",
-    "status": "published",
-    "featured": true,
-    "worlds": [
-      "personalizados",
-      "hogar"
-    ],
-    "categories": [
-      "personalizados-dibujo",
-      "hogar-infantil"
-    ],
-    "techniques": [
-      "3d"
-    ],
-    "primaryImage": "/uploads/catalog-v2-cust-dibujo-1.webp",
-    "gallery": [
-      "/uploads/catalog-v2-cust-dibujo-1.webp",
-      "/uploads/catalog-v2-cust-dibujo-2.webp",
-      "/uploads/catalog-v2-cust-dibujo-3.webp",
-      "/uploads/catalog-v2-cust-dibujo-4.webp"
-    ],
-    "shortDescription": "¿Tienes un dibujo de tu pequeño? Nosotros lo convertimos en una escultura 3D real a todo volumen respetando cada trazo.",
-    "fullDescription": "¡El dibujo de tu pequeño, ahora en volumen! Convertimos los dibujos hechos a mano de tus hijos en esculturas 3D reales. Nuestro equipo digitaliza cada trazo, respeta la esencia y colores del dibujo, y lo imprime en tecnología aditiva 3D de alta precisión. Incluye base peana grabada con el nombre del niño y la fecha.",
-    "specifications": {
-      "dimensions": "Escala entre 10 y 15 cm de alto según proporción del dibujo",
-      "material": "Filamento PLA biodegradable no tóxico de alta resistencia o resina técnica",
-      "finish": "Modelado orgánico tridimensional fiel a los trazos originales del dibujo",
-      "includes": "Figura 3D terminada + Base pedestal con nombre y año grabado + Caja de presentación",
-      "minQuantity": 1,
-      "estimatedLeadTime": "3 a 5 días hábiles",
-      "careNotes": "Limpiar con paño seco. No exponer a fuego directo ni solventes abrasivos."
-    },
-    "variants": [
-      {
-        "name": "Tamaño",
-        "options": [
-          "Escultura Mediana (10-12 cm)",
-          "Escultura Grande (15 cm)",
-          "Con Base Grabada en Madera/PLA"
-        ]
-      }
-    ],
-    "whiteBgImage": "/uploads/catalog-v2-cust-dibujo-2.webp",
-    "detailImage": "/uploads/catalog-v2-cust-dibujo-3.webp",
-    "measureImage": "/uploads/catalog-v2-cust-dibujo-4.webp",
-    "dimensionsImage": "/uploads/catalog-v2-cust-dibujo-4.webp",
-    "galleryMeta": [
-      {
-        "label": "1. Comparativa dibujo infantil y figura 3D física",
-        "shortLabel": "En contexto",
-        "type": "lifestyle"
-      },
-      {
-        "label": "2. Figura terminada sobre fondo blanco",
-        "shortLabel": "Fondo blanco",
-        "type": "white_angle"
-      },
-      {
-        "label": "3. Acercamiento a trazos y texturas 3D",
-        "shortLabel": "Detalle",
-        "type": "detail"
-      },
-      {
-        "label": "4. Escala y peana grabada con nombre del pequeño",
-        "shortLabel": "Medidas y peana",
-        "type": "measures"
-      }
-    ],
-    "costPrice": 236.5,
-    "costBreakdown": {
-      "plaGrams": 95,
-      "tpuGrams": 0,
-      "otherMaterialsCost": 40,
-      "machineHours": 6,
-      "otherEquipCost": 0,
-      "manualWorkMin": 60,
-      "prepCost": 0,
-      "packagingCost": 22,
-      "additionalFailuresCost": 0,
-      "fixedOverheadCost": 10,
-      "shippingCost": 0,
-      "costStatus": "Calculado de Taller"
-    },
-    "manufacturingTimes": {
-      "machineHours": 6,
-      "machineMinutes": 0,
-      "postProcessingMinutes": 30,
-      "leadTimeDays": "3 a 5 días hábiles"
-    },
-    "sku": "CUST-3D-DRAW-001",
-    "skuBreakdown": {
-      "standardSku": "CUST-3D-DRAW-001",
-      "legacyCode": "CUST-DIBUJO-NINO",
-      "area": "CUST",
-      "technique": "3D",
-      "material": "PLA",
-      "finish": "MAT"
-    },
-    "repository": {
-      "platform": "taller",
-      "makerworldUrl": "https://makerworld.com/es",
-      "author": "Taller Propio Artesano Digital (Modelado 3D Exclusivo de Boceto)",
-      "license": "Diseño Exclusivo / Propietario Artesano Digital",
-      "slicerNotes": "Capa 0.16 mm, 3 paredes, 15% infill giroide."
-    },
-    "category": "personalizados-dibujo",
-    "regularPrice": 790,
-    "savings": 110
-  },
-  {
-    "id": "de-dibujo-a-figura-3d-nina",
-    "code": "CUST-DIBUJO-NINA",
-    "name": "De Dibujo a Figura 3D Real (Edición Niña)",
+    "code": "CUST-DIBUJO-DRAGON",
+    "name": "De Dibujo a Figura 3D Real (Edición Dragón Mágico)",
     "priceType": "fixed",
     "price": 680,
     "regularPrice": 790,
@@ -9872,16 +9757,16 @@ const initialProducts = [
     "techniques": [
       "3d"
     ],
-    "primaryImage": "/uploads/catalog-v2-cust-dibujo-nina-1.webp",
-    "whiteBgImage": "/uploads/catalog-v2-cust-dibujo-nina-2.webp",
-    "detailImage": "/uploads/catalog-v2-cust-dibujo-nina-3.webp",
-    "measureImage": "/uploads/catalog-v2-cust-dibujo-nina-4.webp",
-    "dimensionsImage": "/uploads/catalog-v2-cust-dibujo-nina-4.webp",
+    "primaryImage": "/uploads/catalog-v2-cust-dibujo-1.webp",
+    "whiteBgImage": "/uploads/catalog-v2-cust-dibujo-2.webp",
+    "detailImage": "/uploads/catalog-v2-cust-dibujo-3.webp",
+    "measureImage": "/uploads/catalog-v2-cust-dibujo-4.webp",
+    "dimensionsImage": "/uploads/catalog-v2-cust-dibujo-4.webp",
     "gallery": [
-      "/uploads/catalog-v2-cust-dibujo-nina-1.webp",
-      "/uploads/catalog-v2-cust-dibujo-nina-2.webp",
-      "/uploads/catalog-v2-cust-dibujo-nina-3.webp",
-      "/uploads/catalog-v2-cust-dibujo-nina-4.webp"
+      "/uploads/catalog-v2-cust-dibujo-1.webp",
+      "/uploads/catalog-v2-cust-dibujo-2.webp",
+      "/uploads/catalog-v2-cust-dibujo-3.webp",
+      "/uploads/catalog-v2-cust-dibujo-4.webp"
     ],
     "galleryMeta": [
       {
@@ -9890,27 +9775,27 @@ const initialProducts = [
         "type": "lifestyle"
       },
       {
-        "label": "2. Figura terminada sobre fondo blanco",
+        "label": "2. Figura 3D terminada sobre fondo blanco",
         "shortLabel": "Fondo blanco",
-        "type": "white_angle"
+        "type": "white_bg"
       },
       {
-        "label": "3. Acercamiento a trazos y texturas 3D",
+        "label": "3. Acercamiento y detalle fino de modelado y textura",
         "shortLabel": "Detalle",
         "type": "detail"
       },
       {
-        "label": "4. Escala y peana grabada con nombre de la pequeña",
-        "shortLabel": "Medidas y peana",
-        "type": "measures"
+        "label": "4. Cotas de escala y medidas con referencia real",
+        "shortLabel": "Medidas",
+        "type": "measure"
       }
     ],
-    "shortDescription": "¿Tienes un dibujo de tu pequeña? Nosotros lo convertimos en una escultura 3D real a todo volumen respetando cada trazo.",
-    "fullDescription": "¡El dibujo de tu pequeña, ahora en volumen! Convertimos los dibujos hechos a mano de tus hijas en esculturas 3D reales. Nuestro equipo digitaliza cada trazo, respeta la esencia y colores del dibujo, y lo imprime en tecnología aditiva 3D de alta precisión. Incluye base peana grabada con el nombre de la niña y la fecha.",
+    "shortDescription": "¿Tienes un dibujo de tu pequeño? Nosotros lo convertimos en una escultura 3D real a todo volumen respetando cada trazo.",
+    "fullDescription": "¡El dibujo de tu pequeño, ahora en volumen! Convertimos los dibujos hechos a mano de tus hijos en esculturas 3D reales. Nuestro equipo digitaliza cada trazo, respeta la esencia y colores del dibujo, y lo imprime en tecnología aditiva 3D de alta precisión. Incluye base peana grabada con el nombre del niño y la fecha.",
     "specifications": {
       "dimensions": "Escala entre 10 y 15 cm de alto según proporción del dibujo",
       "material": "Filamento PLA biodegradable no tóxico de alta resistencia o resina técnica",
-      "finish": "Modelado orgánico tridimensional fiel a los trazos originales del dibujo",
+      "finish": "Modelado orgánico tridimensional fiel a los trazos originales del dibujo infantil",
       "includes": "Figura 3D terminada + Base pedestal con nombre y año grabado + Caja de presentación",
       "minQuantity": 1,
       "estimatedLeadTime": "3 a 5 días hábiles",
@@ -9926,31 +9811,574 @@ const initialProducts = [
         ]
       }
     ],
-    "costPrice": 236.5,
-    "costBreakdown": {
-      "plaGrams": 95,
-      "tpuGrams": 0,
-      "otherMaterialsCost": 40,
-      "machineHours": 6,
-      "otherEquipCost": 0,
-      "manualWorkMin": 60,
-      "prepCost": 0,
-      "packagingCost": 22,
-      "additionalFailuresCost": 0,
-      "fixedOverheadCost": 10,
-      "shippingCost": 0,
-      "costStatus": "Calculado de Taller"
-    },
-    "manufacturingTimes": {
-      "machineHours": 6,
-      "machineMinutes": 0,
-      "postProcessingMinutes": 30,
-      "leadTimeDays": "3 a 5 días hábiles"
-    },
-    "sku": "CUST-3D-DRAW-002",
+    "sku": "CUST-3D-DRAW-001",
     "skuBreakdown": {
-      "standardSku": "CUST-3D-DRAW-002",
-      "legacyCode": "CUST-DIBUJO-NINA",
+      "standardSku": "CUST-3D-DRAW-001",
+      "legacyCode": "CUST-DIBUJO-DRAGON",
+      "area": "CUST",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "MAT"
+    },
+    "repository": {
+      "platform": "taller",
+      "makerworldUrl": "https://makerworld.com/es",
+      "author": "Taller Propio Artesano Digital (Modelado 3D Exclusivo de Boceto)",
+      "license": "Diseño Exclusivo / Propietario Artesano Digital",
+      "slicerNotes": "Capa 0.16 mm, 3 paredes, 15% infill giroide."
+    },
+    "category": "personalizados-dibujo"
+  },
+  {
+    "id": "de-dibujo-a-figura-3d-ajolote",
+    "code": "CUST-DIBUJO-AJOLOTE",
+    "name": "De Dibujo a Figura 3D Real (Edición Ajolote)",
+    "priceType": "fixed",
+    "price": 680,
+    "regularPrice": 790,
+    "savings": 110,
+    "priceUnit": "figura",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "personalizados",
+      "hogar"
+    ],
+    "categories": [
+      "personalizados-dibujo",
+      "hogar-infantil"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-cust-dibujo-ajolote-1.webp",
+    "whiteBgImage": "/uploads/catalog-v2-cust-dibujo-ajolote-2.webp",
+    "detailImage": "/uploads/catalog-v2-cust-dibujo-ajolote-3.webp",
+    "measureImage": "/uploads/catalog-v2-cust-dibujo-ajolote-4.webp",
+    "dimensionsImage": "/uploads/catalog-v2-cust-dibujo-ajolote-4.webp",
+    "gallery": [
+      "/uploads/catalog-v2-cust-dibujo-ajolote-1.webp",
+      "/uploads/catalog-v2-cust-dibujo-ajolote-2.webp",
+      "/uploads/catalog-v2-cust-dibujo-ajolote-3.webp",
+      "/uploads/catalog-v2-cust-dibujo-ajolote-4.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Comparativa dibujo infantil y figura 3D física",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Figura 3D terminada sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_bg"
+      },
+      {
+        "label": "3. Acercamiento y detalle fino de modelado y textura",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Cotas de escala y medidas con referencia real",
+        "shortLabel": "Medidas",
+        "type": "measure"
+      }
+    ],
+    "shortDescription": "¿Tienes un dibujo de un tierno ajolote hecho por tu pequeña? Lo convertimos en una figura 3D real respetando sus branquias, carita y colores originales.",
+    "fullDescription": "¡El dibujo del ajolote de tu pequeña, ahora en volumen! Convertimos sus trazos en una figura tridimensional adorable con peana personalizada.",
+    "specifications": {
+      "dimensions": "Escala entre 10 y 15 cm de alto según proporción del dibujo",
+      "material": "Filamento PLA biodegradable no tóxico de alta resistencia o resina técnica",
+      "finish": "Modelado orgánico tridimensional fiel a los trazos originales del dibujo infantil",
+      "includes": "Figura 3D terminada + Base pedestal con nombre y año grabado + Caja de presentación",
+      "minQuantity": 1,
+      "estimatedLeadTime": "3 a 5 días hábiles",
+      "careNotes": "Limpiar con paño seco. No exponer a fuego directo ni solventes abrasivos."
+    },
+    "variants": [
+      {
+        "name": "Tamaño",
+        "options": [
+          "Escultura Mediana (10-12 cm)",
+          "Escultura Grande (15 cm)",
+          "Con Base Grabada en Madera/PLA"
+        ]
+      }
+    ],
+    "sku": "CUST-3D-DRAW-AJOLOTE",
+    "skuBreakdown": {
+      "standardSku": "CUST-3D-DRAW-AJOLOTE",
+      "legacyCode": "CUST-DIBUJO-AJOLOTE",
+      "area": "CUST",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "MAT"
+    },
+    "repository": {
+      "platform": "taller",
+      "makerworldUrl": "https://makerworld.com/es",
+      "author": "Taller Propio Artesano Digital (Modelado 3D Exclusivo de Boceto)",
+      "license": "Diseño Exclusivo / Propietario Artesano Digital",
+      "slicerNotes": "Capa 0.16 mm, 3 paredes, 15% infill giroide."
+    },
+    "category": "personalizados-dibujo"
+  },
+  {
+    "id": "de-dibujo-a-figura-3d-dinosaurio",
+    "code": "CUST-DIBUJO-DINO",
+    "name": "De Dibujo a Figura 3D Real (Edición Dinosaurio / T-Rex)",
+    "priceType": "fixed",
+    "price": 680,
+    "regularPrice": 790,
+    "savings": 110,
+    "priceUnit": "figura",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "personalizados",
+      "hogar"
+    ],
+    "categories": [
+      "personalizados-dibujo",
+      "hogar-infantil"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-cust-dibujo-dino-1.webp",
+    "whiteBgImage": "/uploads/catalog-v2-cust-dibujo-dino-2.webp",
+    "detailImage": "/uploads/catalog-v2-cust-dibujo-dino-3.webp",
+    "measureImage": "/uploads/catalog-v2-cust-dibujo-dino-4.webp",
+    "dimensionsImage": "/uploads/catalog-v2-cust-dibujo-dino-4.webp",
+    "gallery": [
+      "/uploads/catalog-v2-cust-dibujo-dino-1.webp",
+      "/uploads/catalog-v2-cust-dibujo-dino-2.webp",
+      "/uploads/catalog-v2-cust-dibujo-dino-3.webp",
+      "/uploads/catalog-v2-cust-dibujo-dino-4.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Comparativa dibujo infantil y figura 3D física",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Figura 3D terminada sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_bg"
+      },
+      {
+        "label": "3. Acercamiento y detalle fino de modelado y textura",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Cotas de escala y medidas con referencia real",
+        "shortLabel": "Medidas",
+        "type": "measure"
+      }
+    ],
+    "shortDescription": "¿Tienes un dibujo de un dinosaurio o T-Rex hecho por tu pequeño? Lo convertimos en una escultura 3D real respetando cada diente, púa y trazo.",
+    "fullDescription": "¡El dibujo de dinosaurio de tu hijo hecho realidad! Digitalizamos el T-Rex infantil y lo modelamos en relieve 3D a todo detalle con base grabada.",
+    "specifications": {
+      "dimensions": "Escala entre 10 y 15 cm de alto según proporción del dibujo",
+      "material": "Filamento PLA biodegradable no tóxico de alta resistencia o resina técnica",
+      "finish": "Modelado orgánico tridimensional fiel a los trazos originales del dibujo infantil",
+      "includes": "Figura 3D terminada + Base pedestal con nombre y año grabado + Caja de presentación",
+      "minQuantity": 1,
+      "estimatedLeadTime": "3 a 5 días hábiles",
+      "careNotes": "Limpiar con paño seco. No exponer a fuego directo ni solventes abrasivos."
+    },
+    "variants": [
+      {
+        "name": "Tamaño",
+        "options": [
+          "Escultura Mediana (10-12 cm)",
+          "Escultura Grande (15 cm)",
+          "Con Base Grabada en Madera/PLA"
+        ]
+      }
+    ],
+    "sku": "CUST-3D-DRAW-DINO",
+    "skuBreakdown": {
+      "standardSku": "CUST-3D-DRAW-DINO",
+      "legacyCode": "CUST-DIBUJO-DINO",
+      "area": "CUST",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "MAT"
+    },
+    "repository": {
+      "platform": "taller",
+      "makerworldUrl": "https://makerworld.com/es",
+      "author": "Taller Propio Artesano Digital (Modelado 3D Exclusivo de Boceto)",
+      "license": "Diseño Exclusivo / Propietario Artesano Digital",
+      "slicerNotes": "Capa 0.16 mm, 3 paredes, 15% infill giroide."
+    },
+    "category": "personalizados-dibujo"
+  },
+  {
+    "id": "de-dibujo-a-figura-3d-cohete",
+    "code": "CUST-DIBUJO-COHETE",
+    "name": "De Dibujo a Figura 3D Real (Edición Cohete Espacial)",
+    "priceType": "fixed",
+    "price": 680,
+    "regularPrice": 790,
+    "savings": 110,
+    "priceUnit": "figura",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "personalizados",
+      "hogar"
+    ],
+    "categories": [
+      "personalizados-dibujo",
+      "hogar-infantil"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-cust-dibujo-cohete-1.webp",
+    "whiteBgImage": "/uploads/catalog-v2-cust-dibujo-cohete-2.webp",
+    "detailImage": "/uploads/catalog-v2-cust-dibujo-cohete-3.webp",
+    "measureImage": "/uploads/catalog-v2-cust-dibujo-cohete-4.webp",
+    "dimensionsImage": "/uploads/catalog-v2-cust-dibujo-cohete-4.webp",
+    "gallery": [
+      "/uploads/catalog-v2-cust-dibujo-cohete-1.webp",
+      "/uploads/catalog-v2-cust-dibujo-cohete-2.webp",
+      "/uploads/catalog-v2-cust-dibujo-cohete-3.webp",
+      "/uploads/catalog-v2-cust-dibujo-cohete-4.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Comparativa dibujo infantil y figura 3D física",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Figura 3D terminada sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_bg"
+      },
+      {
+        "label": "3. Acercamiento y detalle fino de modelado y textura",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Cotas de escala y medidas con referencia real",
+        "shortLabel": "Medidas",
+        "type": "measure"
+      }
+    ],
+    "shortDescription": "¿Tu pequeño dibujó un cohete espacial hacia la luna? Lo transformamos en una escultura 3D real con flamas y propulsores a todo volumen.",
+    "fullDescription": "¡Despegue tridimensional! Convertimos el dibujo del cohete espacial infantil en una pieza 3D vibrante con llamarada de soporte.",
+    "specifications": {
+      "dimensions": "Escala entre 10 y 15 cm de alto según proporción del dibujo",
+      "material": "Filamento PLA biodegradable no tóxico de alta resistencia o resina técnica",
+      "finish": "Modelado orgánico tridimensional fiel a los trazos originales del dibujo infantil",
+      "includes": "Figura 3D terminada + Base pedestal con nombre y año grabado + Caja de presentación",
+      "minQuantity": 1,
+      "estimatedLeadTime": "3 a 5 días hábiles",
+      "careNotes": "Limpiar con paño seco. No exponer a fuego directo ni solventes abrasivos."
+    },
+    "variants": [
+      {
+        "name": "Tamaño",
+        "options": [
+          "Escultura Mediana (10-12 cm)",
+          "Escultura Grande (15 cm)",
+          "Con Base Grabada en Madera/PLA"
+        ]
+      }
+    ],
+    "sku": "CUST-3D-DRAW-COHETE",
+    "skuBreakdown": {
+      "standardSku": "CUST-3D-DRAW-COHETE",
+      "legacyCode": "CUST-DIBUJO-COHETE",
+      "area": "CUST",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "MAT"
+    },
+    "repository": {
+      "platform": "taller",
+      "makerworldUrl": "https://makerworld.com/es",
+      "author": "Taller Propio Artesano Digital (Modelado 3D Exclusivo de Boceto)",
+      "license": "Diseño Exclusivo / Propietario Artesano Digital",
+      "slicerNotes": "Capa 0.16 mm, 3 paredes, 15% infill giroide."
+    },
+    "category": "personalizados-dibujo"
+  },
+  {
+    "id": "de-dibujo-a-figura-3d-coche",
+    "code": "CUST-DIBUJO-COCHE",
+    "name": "De Dibujo a Figura 3D Real (Edición Coche de Carreras)",
+    "priceType": "fixed",
+    "price": 680,
+    "regularPrice": 790,
+    "savings": 110,
+    "priceUnit": "figura",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "personalizados",
+      "hogar"
+    ],
+    "categories": [
+      "personalizados-dibujo",
+      "hogar-infantil"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-cust-dibujo-coche-1.webp",
+    "whiteBgImage": "/uploads/catalog-v2-cust-dibujo-coche-2.webp",
+    "detailImage": "/uploads/catalog-v2-cust-dibujo-coche-3.webp",
+    "measureImage": "/uploads/catalog-v2-cust-dibujo-coche-4.webp",
+    "dimensionsImage": "/uploads/catalog-v2-cust-dibujo-coche-4.webp",
+    "gallery": [
+      "/uploads/catalog-v2-cust-dibujo-coche-1.webp",
+      "/uploads/catalog-v2-cust-dibujo-coche-2.webp",
+      "/uploads/catalog-v2-cust-dibujo-coche-3.webp",
+      "/uploads/catalog-v2-cust-dibujo-coche-4.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Comparativa dibujo infantil y figura 3D física",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Figura 3D terminada sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_bg"
+      },
+      {
+        "label": "3. Acercamiento y detalle fino de modelado y textura",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Cotas de escala y medidas con referencia real",
+        "shortLabel": "Medidas",
+        "type": "measure"
+      }
+    ],
+    "shortDescription": "¿Tu hijo dibujó un coche de carreras con escape y alerón? Lo convertimos en un auto 3D real con su número y detalles auténticos.",
+    "fullDescription": "¡A toda velocidad! Llevamos el coche de carreras dibujado por tu pequeño a un modelo 3D con alerón, ruedas anchas y humo de propulsión.",
+    "specifications": {
+      "dimensions": "Escala entre 10 y 15 cm de alto según proporción del dibujo",
+      "material": "Filamento PLA biodegradable no tóxico de alta resistencia o resina técnica",
+      "finish": "Modelado orgánico tridimensional fiel a los trazos originales del dibujo infantil",
+      "includes": "Figura 3D terminada + Base pedestal con nombre y año grabado + Caja de presentación",
+      "minQuantity": 1,
+      "estimatedLeadTime": "3 a 5 días hábiles",
+      "careNotes": "Limpiar con paño seco. No exponer a fuego directo ni solventes abrasivos."
+    },
+    "variants": [
+      {
+        "name": "Tamaño",
+        "options": [
+          "Escultura Mediana (10-12 cm)",
+          "Escultura Grande (15 cm)",
+          "Con Base Grabada en Madera/PLA"
+        ]
+      }
+    ],
+    "sku": "CUST-3D-DRAW-COCHE",
+    "skuBreakdown": {
+      "standardSku": "CUST-3D-DRAW-COCHE",
+      "legacyCode": "CUST-DIBUJO-COCHE",
+      "area": "CUST",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "MAT"
+    },
+    "repository": {
+      "platform": "taller",
+      "makerworldUrl": "https://makerworld.com/es",
+      "author": "Taller Propio Artesano Digital (Modelado 3D Exclusivo de Boceto)",
+      "license": "Diseño Exclusivo / Propietario Artesano Digital",
+      "slicerNotes": "Capa 0.16 mm, 3 paredes, 15% infill giroide."
+    },
+    "category": "personalizados-dibujo"
+  },
+  {
+    "id": "de-dibujo-a-figura-3d-monstruo",
+    "code": "CUST-DIBUJO-MONSTRUO",
+    "name": "De Dibujo a Figura 3D Real (Edición Monstruo Divertido)",
+    "priceType": "fixed",
+    "price": 680,
+    "regularPrice": 790,
+    "savings": 110,
+    "priceUnit": "figura",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "personalizados",
+      "hogar"
+    ],
+    "categories": [
+      "personalizados-dibujo",
+      "hogar-infantil"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-cust-dibujo-monstruo-1.webp",
+    "whiteBgImage": "/uploads/catalog-v2-cust-dibujo-monstruo-2.webp",
+    "detailImage": "/uploads/catalog-v2-cust-dibujo-monstruo-3.webp",
+    "measureImage": "/uploads/catalog-v2-cust-dibujo-monstruo-4.webp",
+    "dimensionsImage": "/uploads/catalog-v2-cust-dibujo-monstruo-4.webp",
+    "gallery": [
+      "/uploads/catalog-v2-cust-dibujo-monstruo-1.webp",
+      "/uploads/catalog-v2-cust-dibujo-monstruo-2.webp",
+      "/uploads/catalog-v2-cust-dibujo-monstruo-3.webp",
+      "/uploads/catalog-v2-cust-dibujo-monstruo-4.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Comparativa dibujo infantil y figura 3D física",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Figura 3D terminada sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_bg"
+      },
+      {
+        "label": "3. Acercamiento y detalle fino de modelado y textura",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Cotas de escala y medidas con referencia real",
+        "shortLabel": "Medidas",
+        "type": "measure"
+      }
+    ],
+    "shortDescription": "¿Un monstruo divertido de muchos ojos y picos creado por tu niño? Lo convertimos en una figura 3D simpática y colorida que cobrará vida en su repisa.",
+    "fullDescription": "¡Monstruos con personalidad! Esculpimos en 3D el monstruo que dibujó tu niño con sus múltiples ojos, picos y sonrisa simpática.",
+    "specifications": {
+      "dimensions": "Escala entre 10 y 15 cm de alto según proporción del dibujo",
+      "material": "Filamento PLA biodegradable no tóxico de alta resistencia o resina técnica",
+      "finish": "Modelado orgánico tridimensional fiel a los trazos originales del dibujo infantil",
+      "includes": "Figura 3D terminada + Base pedestal con nombre y año grabado + Caja de presentación",
+      "minQuantity": 1,
+      "estimatedLeadTime": "3 a 5 días hábiles",
+      "careNotes": "Limpiar con paño seco. No exponer a fuego directo ni solventes abrasivos."
+    },
+    "variants": [
+      {
+        "name": "Tamaño",
+        "options": [
+          "Escultura Mediana (10-12 cm)",
+          "Escultura Grande (15 cm)",
+          "Con Base Grabada en Madera/PLA"
+        ]
+      }
+    ],
+    "sku": "CUST-3D-DRAW-MONSTRUO",
+    "skuBreakdown": {
+      "standardSku": "CUST-3D-DRAW-MONSTRUO",
+      "legacyCode": "CUST-DIBUJO-MONSTRUO",
+      "area": "CUST",
+      "technique": "3D",
+      "material": "PLA",
+      "finish": "MAT"
+    },
+    "repository": {
+      "platform": "taller",
+      "makerworldUrl": "https://makerworld.com/es",
+      "author": "Taller Propio Artesano Digital (Modelado 3D Exclusivo de Boceto)",
+      "license": "Diseño Exclusivo / Propietario Artesano Digital",
+      "slicerNotes": "Capa 0.16 mm, 3 paredes, 15% infill giroide."
+    },
+    "category": "personalizados-dibujo"
+  },
+  {
+    "id": "de-dibujo-a-figura-3d-castillo",
+    "code": "CUST-DIBUJO-CASTILLO",
+    "name": "De Dibujo a Figura 3D Real (Edición Castillo Medieval)",
+    "priceType": "fixed",
+    "price": 680,
+    "regularPrice": 790,
+    "savings": 110,
+    "priceUnit": "figura",
+    "status": "published",
+    "featured": true,
+    "worlds": [
+      "personalizados",
+      "hogar"
+    ],
+    "categories": [
+      "personalizados-dibujo",
+      "hogar-infantil"
+    ],
+    "techniques": [
+      "3d"
+    ],
+    "primaryImage": "/uploads/catalog-v2-cust-dibujo-castillo-1.webp",
+    "whiteBgImage": "/uploads/catalog-v2-cust-dibujo-castillo-2.webp",
+    "detailImage": "/uploads/catalog-v2-cust-dibujo-castillo-3.webp",
+    "measureImage": "/uploads/catalog-v2-cust-dibujo-castillo-4.webp",
+    "dimensionsImage": "/uploads/catalog-v2-cust-dibujo-castillo-4.webp",
+    "gallery": [
+      "/uploads/catalog-v2-cust-dibujo-castillo-1.webp",
+      "/uploads/catalog-v2-cust-dibujo-castillo-2.webp",
+      "/uploads/catalog-v2-cust-dibujo-castillo-3.webp",
+      "/uploads/catalog-v2-cust-dibujo-castillo-4.webp"
+    ],
+    "galleryMeta": [
+      {
+        "label": "1. Comparativa dibujo infantil y figura 3D física",
+        "shortLabel": "En contexto",
+        "type": "lifestyle"
+      },
+      {
+        "label": "2. Figura 3D terminada sobre fondo blanco",
+        "shortLabel": "Fondo blanco",
+        "type": "white_bg"
+      },
+      {
+        "label": "3. Acercamiento y detalle fino de modelado y textura",
+        "shortLabel": "Detalle",
+        "type": "detail"
+      },
+      {
+        "label": "4. Cotas de escala y medidas con referencia real",
+        "shortLabel": "Medidas",
+        "type": "measure"
+      }
+    ],
+    "shortDescription": "¿Un castillo de torres, banderas y murallas dibujado por tus hijos? Lo modelamos en 3D respetando cada torre y puerta medieval.",
+    "fullDescription": "¡Reino de fantasía en 3D! Modelamos el castillo dibujado a mano por tus hijos con murallas almenadas, torres con tejados y bandera de cumbre.",
+    "specifications": {
+      "dimensions": "Escala entre 10 y 15 cm de alto según proporción del dibujo",
+      "material": "Filamento PLA biodegradable no tóxico de alta resistencia o resina técnica",
+      "finish": "Modelado orgánico tridimensional fiel a los trazos originales del dibujo infantil",
+      "includes": "Figura 3D terminada + Base pedestal con nombre y año grabado + Caja de presentación",
+      "minQuantity": 1,
+      "estimatedLeadTime": "3 a 5 días hábiles",
+      "careNotes": "Limpiar con paño seco. No exponer a fuego directo ni solventes abrasivos."
+    },
+    "variants": [
+      {
+        "name": "Tamaño",
+        "options": [
+          "Escultura Mediana (10-12 cm)",
+          "Escultura Grande (15 cm)",
+          "Con Base Grabada en Madera/PLA"
+        ]
+      }
+    ],
+    "sku": "CUST-3D-DRAW-CASTILLO",
+    "skuBreakdown": {
+      "standardSku": "CUST-3D-DRAW-CASTILLO",
+      "legacyCode": "CUST-DIBUJO-CASTILLO",
       "area": "CUST",
       "technique": "3D",
       "material": "PLA",

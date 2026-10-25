@@ -108,11 +108,26 @@ function getProductTargetFolder(p) {
   if (code === 'CUST-FUNKO-FAMILIA') {
     return path.join(categoryMap.personalizados, '05_Funko_Familia');
   }
-  if (code === 'CUST-DIBUJO' || code === 'CUST-DIBUJO-NINO') {
-    return path.join(categoryMap.personalizados, '06_De_Dibujo_Infantil_a_Figura_3D');
+  if (code === 'CUST-DIBUJO-DINO') {
+    return path.join(categoryMap.personalizados, '06_De_Dibujo_Infantil_a_Figura_3D', 'dinosaurio');
   }
-  if (code === 'CUST-DIBUJO-NINA') {
-    return path.join(categoryMap.personalizados, '06_De_Dibujo_Infantil_a_Figura_3D', 'fijura niña');
+  if (code === 'CUST-DIBUJO-COHETE') {
+    return path.join(categoryMap.personalizados, '06_De_Dibujo_Infantil_a_Figura_3D', 'cohete');
+  }
+  if (code === 'CUST-DIBUJO-COCHE') {
+    return path.join(categoryMap.personalizados, '06_De_Dibujo_Infantil_a_Figura_3D', 'coche');
+  }
+  if (code === 'CUST-DIBUJO-MONSTRUO') {
+    return path.join(categoryMap.personalizados, '06_De_Dibujo_Infantil_a_Figura_3D', 'moustro');
+  }
+  if (code === 'CUST-DIBUJO-CASTILLO') {
+    return path.join(categoryMap.personalizados, '06_De_Dibujo_Infantil_a_Figura_3D', 'castillo');
+  }
+  if (code === 'CUST-DIBUJO-AJOLOTE' || code === 'CUST-DIBUJO-NINA') {
+    return path.join(categoryMap.personalizados, '06_De_Dibujo_Infantil_a_Figura_3D', 'ajolote');
+  }
+  if (code === 'CUST-DIBUJO-DRAGON' || code === 'CUST-DIBUJO' || code === 'CUST-DIBUJO-NINO') {
+    return path.join(categoryMap.personalizados, '06_De_Dibujo_Infantil_a_Figura_3D', 'dragon');
   }
   if (code === 'CUST-FUNKO-ABUELITOS') {
     return path.join(categoryMap.personalizados, 'abuelitos');
