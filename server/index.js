@@ -47,15 +47,13 @@ for (const method of ['get', 'post', 'put', 'delete', 'patch']) {
   };
 }
 app.get('/healthz', (_req, res) => {
-  const prods = db.getProducts({ status: 'published' });
-  const worlds = db.getWorlds();
-  res.json({ ok: true, version: '2026-10-24-v4-full-catalog', productsCount: prods.length, worldsCount: worlds.length });
+  res.status(200).json({ ok: true, version: '2026-10-24-v5-live' });
 });
 app.get('/api/deploy-version', (_req, res) => {
   const assetsDir = path.join(distDir, 'assets');
   res.json({
     ok: true,
-    version: '2026-10-16-v2-combos',
+    version: '2026-10-24-v5-live',
     deployTimestamp: new Date().toISOString(),
     nodeVersion: process.version,
     distExists: fs.existsSync(distDir),

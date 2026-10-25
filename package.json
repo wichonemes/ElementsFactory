@@ -13,7 +13,6 @@
     "export:catalog": "node scripts/export_catalog_to_downloads.cjs",
     "test:hosting": "node --test tests/hosting.test.mjs"
   },
-  "packageManager": "pnpm@10.5.2",
   "keywords": [],
   "author": "",
   "license": "ISC",
