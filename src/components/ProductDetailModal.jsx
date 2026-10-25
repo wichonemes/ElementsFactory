@@ -22,7 +22,11 @@ import {
   getDefaultOptionsForCategory,
   isCustomPhotoOrDrawingProduct,
   getAvailableMaterialTabsForProduct,
-  productNeedsColorVariant
+  productNeedsColorVariant,
+  calculateSelectedVariantsExtraCost,
+  getColorMaterialDeltaPrice,
+  parseVariantOptionDeltaPrice,
+  getMaterialExtraBadge
 } from '../utils/colorUtils';
 import { playCoinSound, playMarioPowerDownSound } from '../utils/soundEffects';
 import { getBundleTiers } from './PackagesAndServicesView';
@@ -258,13 +262,23 @@ export default function ProductDetailModal({
     return bundleTiers.find(t => t.id === selectedTierId) || bundleTiers[0];
   }, [bundleTiers, selectedTierId]);
 
-  const basePrice = activeTier ? activeTier.price : product.price;
-  const regularPrice = activeTier ? (activeTier.regularPrice || Math.round(activeTier.price * 1.25)) : product.regularPrice;
-  const savings = activeTier ? (activeTier.savings || (regularPrice - basePrice)) : product.savings;
+  // Sobrecosto acumulado por variantes, filamentos o acabados especiales (PLA vs TPU, Nogal vs MDF, etc.)
+  const variantsExtraCost = useMemo(() => {
+    return calculateSelectedVariantsExtraCost(selectedVariants, product);
+  }, [selectedVariants, product]);
 
-  const effectivePrice = (isFlashDeal && basePrice)
+  const basePrice = activeTier ? activeTier.price : (product.price || 0);
+  const regularPrice = activeTier ? (activeTier.regularPrice || Math.round(activeTier.price * 1.25)) : (product.regularPrice || Math.round((product.price || 0) * 1.25));
+
+  // Precio base con descuento flash si aplica
+  const effectiveBasePrice = (isFlashDeal && basePrice)
     ? Math.round(basePrice * (1 - currentDiscount / 100))
     : basePrice;
+
+  // Precio final sumando la diferencia de consumibles seleccionados
+  const effectivePrice = effectiveBasePrice + variantsExtraCost;
+  const effectiveRegularPrice = regularPrice + variantsExtraCost;
+  const savings = activeTier ? (activeTier.savings || (regularPrice - basePrice)) : (product.savings || (regularPrice - basePrice));
 
   const handleAdd = () => {
     playCoinSound();
@@ -274,8 +288,9 @@ export default function ProductDetailModal({
       product: {
         ...product,
         price: effectivePrice,
-        regularPrice: regularPrice,
+        regularPrice: effectiveRegularPrice,
         savings: savings,
+        extraVariantsCost: variantsExtraCost,
         flashDealApplied: isFlashDeal
       },
       quantity,
@@ -283,6 +298,7 @@ export default function ProductDetailModal({
       customText: [
         customText,
         activeTier ? `Nivel: ${activeTier.name}` : null,
+        variantsExtraCost > 0 ? `Material/Filamento especial: +$${variantsExtraCost} MXN` : null,
         isFlashDeal ? `Aprovechó ${productTime?.durationLabel || 'Oferta Flash'} (-${currentDiscount}%)` : null,
         couponToUse ? `Cupón Arcade: ${couponToUse}` : null
       ].filter(Boolean).join(' | ')
@@ -297,14 +313,16 @@ export default function ProductDetailModal({
       product: {
         ...product,
         price: effectivePrice,
-        regularPrice: regularPrice,
-        savings: savings
+        regularPrice: effectiveRegularPrice,
+        savings: savings,
+        extraVariantsCost: variantsExtraCost
       },
       quantity,
       selectedVariants: { ...selectedVariants, ...selectedLevelVariant },
       customText: [
         customText,
         activeTier ? `Nivel seleccionado: ${activeTier.name}` : null,
+        variantsExtraCost > 0 ? `Material/Acabado especial: +$${variantsExtraCost} MXN incluido en precio` : null,
         isFlashDeal ? `Precio especial ${productTime?.durationLabel || 'Oferta Flash'}: $${effectivePrice} MXN` : null,
         couponToUse ? `Cupón de Descuento Arcade aplicado: [${couponToUse}]` : null
       ].filter(Boolean).join(' | ')
@@ -622,7 +640,7 @@ export default function ProductDetailModal({
 
                   {(isFlashDeal || product.regularPrice) && (
                     <div className="text-xs text-gray-400 line-through font-semibold mt-0.5">
-                      Precio regular: ${isFlashDeal ? product.price : product.regularPrice} MXN
+                      Precio regular: ${isFlashDeal ? (product.price + variantsExtraCost) : effectiveRegularPrice} MXN
                     </div>
                   )}
 
@@ -635,6 +653,21 @@ export default function ProductDetailModal({
                       </>
                     )}
                   </div>
+
+                  {/* Indicador de Sobrecosto por Material Especial */}
+                  {variantsExtraCost > 0 && (
+                    <div className="flex items-center gap-1.5 mt-1 text-[10.5px] font-bold text-emerald-800 bg-emerald-100/80 border border-emerald-300 px-2 py-0.5 rounded-lg inline-flex">
+                      <Sparkles className="w-3 h-3 text-emerald-700 shrink-0" />
+                      <span>Incluye +${variantsExtraCost} MXN por material o filamento especial</span>
+                    </div>
+                  )}
+
+                  {/* Subtotal por cantidad si es mayor a 1 */}
+                  {quantity > 1 && effectivePrice > 0 && (
+                    <div className="text-[11px] font-semibold text-stone-600 mt-1">
+                      Subtotal ({quantity} piezas): <strong className="text-stone-900">${(effectivePrice * quantity).toLocaleString('es-MX')} MXN</strong>
+                    </div>
+                  )}
                 </div>
 
                 <div className="text-right">
@@ -887,18 +920,30 @@ export default function ProductDetailModal({
                           <div className="flex flex-wrap gap-2">
                             {finalOptions.map(opt => {
                               const isSelected = selectedVariants[variant.name] === opt;
+                              const optDelta = parseVariantOptionDeltaPrice(opt);
+                              const alreadyShowsPrice = /\(\s*\+\s*\$?\s*\d+/i.test(opt);
+
                               return (
                                 <button
                                   key={opt}
                                   type="button"
                                   onClick={() => handleVariantChange(variant.name, opt)}
-                                  className={`px-3.5 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer ${
+                                  className={`px-3.5 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer flex items-center gap-1.5 ${
                                     isSelected
                                       ? 'bg-[#2D4F3E] text-white border-[#2D4F3E] shadow-xs'
                                       : 'bg-white text-gray-700 border-[#E8E4DA] hover:bg-gray-50'
                                   }`}
                                 >
-                                  {opt}
+                                  <span>{opt}</span>
+                                  {optDelta > 0 && !alreadyShowsPrice && (
+                                    <span className={`text-[9.5px] font-black px-1.5 py-0.2 rounded ${
+                                      isSelected
+                                        ? 'bg-white/20 text-white'
+                                        : 'bg-amber-100 text-amber-900 border border-amber-200'
+                                    }`}>
+                                      +${optDelta} MXN
+                                    </span>
+                                  )}
                                 </button>
                               );
                             })}
@@ -952,6 +997,7 @@ export default function ProductDetailModal({
                           {activeColorOptions.map(opt => {
                             const isSelected = currentColor === opt;
                             const swatch = getFilamentColor(opt);
+                            const optDelta = getColorMaterialDeltaPrice(opt);
                             return (
                               <button
                                 key={opt}
@@ -965,10 +1011,10 @@ export default function ProductDetailModal({
                                     ? 'ring-2 ring-[#2D4F3E] ring-offset-2 scale-110 shadow-xs'
                                     : 'hover:scale-110 hover:ring-2 hover:ring-gray-300'
                                 }`}
-                                title={opt}
+                                title={optDelta > 0 ? `${opt} (+ $${optDelta} MXN)` : opt}
                               >
                                 <span
-                                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-black/20 shadow-2xs flex items-center justify-center transition-transform"
+                                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-black/20 shadow-2xs flex items-center justify-center transition-transform relative"
                                   style={{
                                     background: swatch?.css || '#D1D5DB',
                                     borderColor: swatch?.border || '#9CA3AF',
@@ -982,10 +1028,15 @@ export default function ProductDetailModal({
                                       ✓
                                     </span>
                                   )}
+                                  {optDelta > 0 && !isSelected && (
+                                    <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-amber-400 text-stone-900 text-[8px] font-black rounded-full flex items-center justify-center shadow-xs border border-white">
+                                      +
+                                    </span>
+                                  )}
                                 </span>
-                                {/* Tooltip con nombre de color */}
+                                {/* Tooltip con nombre de color y sobrecosto */}
                                 <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover/c:block z-30 px-2 py-0.5 text-[10px] font-bold text-white bg-black/90 rounded-md whitespace-nowrap shadow-md pointer-events-none">
-                                  {opt}
+                                  {opt} {optDelta > 0 && <span className="text-amber-300 font-extrabold">(+${optDelta} MXN)</span>}
                                 </span>
                               </button>
                             );
@@ -1131,23 +1182,35 @@ export default function ProductDetailModal({
                                     </div>
                                   </div>
 
-                                  <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full shrink-0 ${
-                                    isSelected
-                                      ? 'bg-[#2D4F3E] text-white'
-                                      : 'bg-stone-100 text-stone-600'
-                                  }`}>
-                                    {isSelected ? '✓ Activo' : colorItem.tag}
-                                  </span>
+                                  <div className="flex items-center gap-1.5 shrink-0">
+                                    {(colorItem.extraPrice > 0 || getColorMaterialDeltaPrice(colorItem.name) > 0) && (
+                                      <span className="text-[9.5px] font-black px-1.5 py-0.5 rounded-md bg-amber-100 text-amber-900 border border-amber-300 shadow-2xs">
+                                        +${colorItem.extraPrice || getColorMaterialDeltaPrice(colorItem.name)} MXN
+                                      </span>
+                                    )}
+                                    <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full shrink-0 ${
+                                      isSelected
+                                        ? 'bg-[#2D4F3E] text-white'
+                                        : 'bg-stone-100 text-stone-600'
+                                    }`}>
+                                      {isSelected ? '✓ Activo' : colorItem.tag}
+                                    </span>
+                                  </div>
                                 </button>
                               );
                             })}
                           </div>
 
-                          {/* Pie de la pestaña */}
-                          <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
-                            <span className="text-[10.5px] text-gray-600 flex items-center gap-1.5">
+                          {/* Pie de la pestaña con desglose de sobreprecio */}
+                          <div className="pt-2 border-t border-gray-100 flex items-center justify-between flex-wrap gap-2">
+                            <span className="text-[10.5px] text-gray-600 flex items-center gap-1.5 flex-wrap">
                               <span>Acabado elegido:</span>
                               <strong className="text-[#2D4F3E]">{currentColor || 'Sin seleccionar'}</strong>
+                              {getColorMaterialDeltaPrice(currentColor) > 0 && (
+                                <span className="text-[10px] font-black text-amber-900 bg-amber-100 px-2 py-0.5 rounded-md border border-amber-300">
+                                  (+ ${getColorMaterialDeltaPrice(currentColor)} MXN)
+                                </span>
+                              )}
                             </span>
                             <button
                               type="button"

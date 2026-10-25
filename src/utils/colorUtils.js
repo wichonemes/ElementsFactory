@@ -60,6 +60,8 @@ const COLOR_MAP = [
   { keys: ['plata metálico', 'plateado cromo', 'plateado', 'plata', 'níquel', 'cromo', 'aluminio'], name: 'Plata Metálico', css: 'linear-gradient(135deg, #F1F5F9, #94A3B8)', border: '#64748B' },
 
   // 7. Texturas y Efectos Especiales
+  { keys: ['tpu flexible', 'tpu', 'goma flexible', 'elastómero', 'elastomero'], name: 'TPU Flexible / Goma', css: 'radial-gradient(circle, #38BDF8 30%, #0284C7 80%)', border: '#0369A1' },
+  { keys: ['petg exterior', 'petg resistente', 'petg'], name: 'PETG Exterior Resistente', css: 'linear-gradient(135deg, #10B981, #047857)', border: '#065F46' },
   { keys: ['mármol granulado', 'mármol', 'marmol'], name: 'Mármol Granulado', css: 'radial-gradient(circle, #F3F4F6 30%, #9CA3AF 31%, #F3F4F6 70%)', border: '#9CA3AF' },
   { keys: ['glow neón', 'glow neon', 'glow', 'fotoluminiscente', 'brilla en la oscuridad'], name: 'Glow Neón', css: '#6EE7B7', border: '#34D399', glow: true },
   { keys: ['glitter diamantado', 'glitter'], name: 'Glitter Diamantado', css: 'linear-gradient(135deg, #FDE68A, #F59E0B, #FEF08A)', border: '#D97706' },
@@ -245,8 +247,117 @@ export const DARK_COLOR_PRESETS = [
 ];
 
 /**
+ * Mapeo centralizado de sobrecostos reales de consumibles por acabado / filamento / material especial
+ * Se calcula respecto al material base más económico del taller (PLA estándar, MDF 3mm, manta cruda, etc.)
+ */
+export const MATERIAL_FINISH_EXTRA_COSTS = [
+  // 1. Filamentos 3D Especiales (PLA estándar mate = $0)
+  { keys: ['seda oro champagne', 'seda bronce', 'plata metálico', 'oro rosado', 'seda', 'metalizado'], extra: 25, label: 'Seda Metálica' },
+  { keys: ['madera woodfill', 'woodfill'], extra: 30, label: 'Madera Woodfill Real' },
+  { keys: ['mármol granulado', 'marmol granulado', 'mármol', 'marmol'], extra: 20, label: 'Mármol Arquitectónico' },
+  { keys: ['glow neón', 'glow neon', 'fotoluminiscente', 'brilla en la oscuridad'], extra: 35, label: 'Glow Neón Nocturno' },
+  { keys: ['tpu flexible', 'tpu', 'goma flexible', 'elastómero', 'elastomero'], extra: 35, label: 'TPU Flexible / Goma' },
+  { keys: ['petg exterior', 'petg resistente', 'petg'], extra: 20, label: 'PETG Exterior' },
+  { keys: ['tornasol arcoíris', 'tornasol arcoiris'], extra: 25, label: 'Tornasol Arcoíris' },
+  { keys: ['translúcido cristal', 'translucido cristal'], extra: 15, label: 'Translúcido Cristal' },
+
+  // 2. Tintes & Maderas Nobles (MDF y Barniz Natural = $0)
+  { keys: ['nogal americano', 'tinte nogal'], extra: 30, label: 'Tinte Nogal Americano' },
+  { keys: ['wengué', 'wengue', 'ébano', 'ebano'], extra: 30, label: 'Tinte Wengué Ébano' },
+  { keys: ['verde bosque rústico', 'verde bosque rustico', 'azul colonial vintage', 'azul colonial'], extra: 25, label: 'Tinte Rústico Artesanal' },
+  { keys: ['caoba clásico', 'caoba clasico', 'roble claro nórdico', 'roble claro nordico'], extra: 15, label: 'Tinte al Aceite' },
+  { keys: ['barniz brillante polylack', 'polylack'], extra: 20, label: 'Triple Capa PolyLack' },
+
+  // 3. Telas y Confección (Manta algodón básica = $0)
+  { keys: ['mezclilla azul', 'mezclilla'], extra: 35, label: 'Mezclilla Pesada Calibre Alto' },
+  { keys: ['rosa palo empolvado'], extra: 20, label: 'Tinte Rosa Empolvado' },
+  { keys: ['gris jaspe', 'beige arena', 'verde militar'], extra: 15, label: 'Hilado Estructurado' },
+
+  // 4. Viniles Especiales (Oracal 651 estándar = $0)
+  { keys: ['puff 3d', 'vinil puff'], extra: 35, label: 'Vinil Puff 3D Relieve' },
+  { keys: ['oro foil', 'foil'], extra: 30, label: 'Vinil Foil Termo-Espejo' },
+  { keys: ['holográfico tornasol', 'holografico tornasol', 'neón flúor', 'neon fluor'], extra: 30, label: 'Vinil Tornasol / Neón' },
+  { keys: ['vinil textil', 'siser'], extra: 20, label: 'Vinil Textil Siser' },
+  { keys: ['dorado metálico', 'plateado cromo'], extra: 20, label: 'Vinil Metálico Cromo' },
+
+  // 5. Acrílicos Especiales (Acrílico Negro Ónix 3mm = $0)
+  { keys: ['espejo oro', 'espejo plata'], extra: 45, label: 'Acrílico Espejo Láser' },
+  { keys: ['cristal transparente', 'blanco difusor'], extra: 35, label: 'Acrílico Maquila CNC/CO2' },
+  { keys: ['acrílico rojo', 'acrílico azul', 'acrílico verde', 'acrílico amarillo', 'acrilico rojo', 'acrilico azul', 'acrilico verde', 'acrilico amarillo'], extra: 25, label: 'Acrílico Cast Translúcido' },
+
+  // 6. Sublimación Especial
+  { keys: ['plata satinado', 'oro satinado'], extra: 25, label: 'Base Metálica Satinada' },
+  { keys: ['taza con interior', 'taza borde'], extra: 15, label: 'Taza Bicolor' }
+];
+
+/**
+ * Obtiene el sobreprecio extra de un color, acabado o filamento según su consumible
+ */
+export function getColorMaterialDeltaPrice(colorOrFinishName = '') {
+  if (!colorOrFinishName) return 0;
+  const lower = colorOrFinishName.toLowerCase().trim();
+
+  // Si el propio texto de la opción ya incluye un precio explícito como "(+ $25 MXN)"
+  const explicitMatch = lower.match(/\(\s*\+\s*\$?\s*(\d+(?:\.\d+)?)\s*(?:mxn)?\s*\)/i);
+  if (explicitMatch) {
+    return parseFloat(explicitMatch[1]);
+  }
+
+  // Buscar en la tabla de costos extra de consumibles
+  for (const item of MATERIAL_FINISH_EXTRA_COSTS) {
+    if (item.keys.some(k => lower.includes(k))) {
+      return item.extra;
+    }
+  }
+
+  return 0;
+}
+
+/**
+ * Parsea el sobrecosto de cualquier opción de variante de producto
+ */
+export function parseVariantOptionDeltaPrice(optionString = '') {
+  if (!optionString) return 0;
+  const match = optionString.match(/\(\s*\+\s*\$?\s*(\d+(?:\.\d+)?)\s*(?:mxn)?\s*\)/i);
+  if (match) {
+    return parseFloat(match[1]);
+  }
+  return getColorMaterialDeltaPrice(optionString);
+}
+
+/**
+ * Suma el costo adicional de todas las variantes seleccionadas por el cliente
+ */
+export function calculateSelectedVariantsExtraCost(selectedVariants = {}, product = null) {
+  let totalDelta = 0;
+  if (!selectedVariants) return 0;
+
+  Object.entries(selectedVariants).forEach(([key, val]) => {
+    if (typeof val === 'string') {
+      const delta = parseVariantOptionDeltaPrice(val);
+      totalDelta += delta;
+    }
+  });
+
+  return Math.round(totalDelta);
+}
+
+/**
+ * Retorna etiqueta visual para mostrar en la interfaz si la opción tiene sobrecosto
+ */
+export function getMaterialExtraBadge(colorOrFinishName = '') {
+  const extraPrice = getColorMaterialDeltaPrice(colorOrFinishName);
+  if (extraPrice <= 0) return null;
+  return {
+    extraPrice,
+    badgeText: `+ $${extraPrice} MXN`,
+    shortBadge: `+$${extraPrice}`
+  };
+}
+
+/**
  * PALETAS DE TALLER CLASIFICADAS POR MATERIAL Y TÉCNICA
- * Homologadas para desplegar en las pestañas contextuales del producto
+ * Homologadas para desplegar en las pestañas contextuales del producto con sus deltas de precio
  */
 export const WORKSHOP_PALETTES_BY_CATEGORY = {
   wood: {
@@ -257,64 +368,69 @@ export const WORKSHOP_PALETTES_BY_CATEGORY = {
     badge: 'Madera & Tableros',
     note: 'Acabados aplicados a mano en taller con ceras orgánicas, tintes al aceite y selladores hidrófugos de alta durabilidad.',
     colors: [
-      { name: 'Barniz Natural Transparente', desc: 'Sella y protege respetando el tono y veta natural', tag: 'Natural' },
-      { name: 'Barniz Mate Hidrófugo', desc: 'Acabado sedoso antirreflejos repelente a humedad', tag: 'Mate' },
-      { name: 'Barniz Brillante PolyLack', desc: 'Brillo cristal tipo automotriz de alta resistencia', tag: 'Brillante' },
-      { name: 'Tinte Nogal Americano', desc: 'Tono obscuro elegante que resalta la veta profunda', tag: 'Madera noble' },
-      { name: 'Tinte Caoba Clásico', desc: 'Rojizo tradicional cálido con gran personalidad', tag: 'Rojizo' },
-      { name: 'Tinte Roble Claro Nórdico', desc: 'Estilo escandinavo suave, luminoso y moderno', tag: 'Nórdico' },
-      { name: 'Tinte Wengué / Ébano Oscuro', desc: 'Casi negro carbón con vetas café profundas', tag: 'Oscuro' },
-      { name: 'Tinte Verde Bosque Rústico', desc: 'Tono botánico artesanal envejecido al aceite', tag: 'Vintage' },
-      { name: 'Tinte Azul Colonial Vintage', desc: 'Azul añejo rústico estilo hacienda mexicana', tag: 'Vintage' },
-      { name: 'Cera de Abeja Natural', desc: 'Protección 100% orgánica suave y perfumada', tag: 'Ecológico' }
+      { name: 'Barniz Natural Transparente', desc: 'Sella y protege respetando el tono y veta natural', tag: 'Natural', extraPrice: 0 },
+      { name: 'Barniz Mate Hidrófugo', desc: 'Acabado sedoso antirreflejos repelente a humedad', tag: 'Mate', extraPrice: 0 },
+      { name: 'Barniz Brillante PolyLack', desc: 'Brillo cristal tipo automotriz triple capa (+ $20 MXN)', tag: 'Brillante', extraPrice: 20 },
+      { name: 'Tinte Nogal Americano', desc: 'Tono noble obscuro con veta profunda (+ $30 MXN)', tag: 'Madera noble', extraPrice: 30 },
+      { name: 'Tinte Caoba Clásico', desc: 'Rojizo tradicional cálido al aceite (+ $15 MXN)', tag: 'Rojizo', extraPrice: 15 },
+      { name: 'Tinte Roble Claro Nórdico', desc: 'Estilo escandinavo suave y luminoso (+ $15 MXN)', tag: 'Nórdico', extraPrice: 15 },
+      { name: 'Tinte Wengué / Ébano Oscuro', desc: 'Casi negro carbón con vetas café profundas (+ $30 MXN)', tag: 'Oscuro', extraPrice: 30 },
+      { name: 'Tinte Verde Bosque Rústico', desc: 'Tono botánico artesanal envejecido al aceite (+ $25 MXN)', tag: 'Vintage', extraPrice: 25 },
+      { name: 'Tinte Azul Colonial Vintage', desc: 'Azul añejo rústico estilo hacienda mexicana (+ $25 MXN)', tag: 'Vintage', extraPrice: 25 },
+      { name: 'Cera de Abeja Natural', desc: 'Protección 100% orgánica suave y perfumada', tag: 'Ecológico', extraPrice: 0 }
     ]
   },
   pla: {
     id: 'pla',
     label: 'Filamentos 3D',
-    title: 'Filamentos PLA & PETG de Alta Resolución',
+    title: 'Filamentos PLA, PETG & TPU de Alta Resolución',
     techniqueName: 'Impresión 3D FDM',
-    badge: 'PLA & PETG',
-    note: 'Filamentos biodegradables calibrados en taller con boquillas de alta precisión (0.12 a 0.20 mm).',
+    badge: 'Filamentos 3D',
+    note: 'Filamentos calibrados en taller con boquillas de alta precisión (0.12 a 0.20 mm). Los filamentos especiales calculan automáticamente su diferencia de costo.',
     subGroups: [
       { id: 'todos', label: 'Todos' },
-      { id: 'mate', label: 'Mate & Oscuros' },
+      { id: 'mate', label: 'Mate & Estándar' },
       { id: 'sedas', label: 'Sedas & Metales' },
-      { id: 'especiales', label: 'Especiales' },
+      { id: 'especiales', label: 'Especiales & TPU' },
       { id: 'claros', label: 'Claros & Pasteles' }
     ],
     colors: [
-      // Mate & Oscuros
-      { name: 'Negro Ónix Mate', group: 'mate', desc: 'Acabado mate profundo sin brillos plásticos', tag: 'Mate' },
-      { name: 'Blanco Marfil', group: 'mate', desc: 'Blanco suave cálido de alta cobertura', tag: 'Mate' },
-      { name: 'Verde Bosque Profundo', group: 'mate', desc: 'Verde sobrio del taller Artesano Digital', tag: 'Taller' },
-      { name: 'Verde Olivo Táctico', group: 'mate', desc: 'Tono militar orgánico mate muy popular', tag: 'Mate' },
-      { name: 'Terracota', group: 'mate', desc: 'Arcilla cálida mexicana cocida al sol', tag: 'Cálido' },
-      { name: 'Mostaza Colonial', group: 'mate', desc: 'Amarillo ocre colonial cálido', tag: 'Cálido' },
-      { name: 'Azul Marino Medianoche', group: 'mate', desc: 'Azul muy oscuro elegante y corporativo', tag: 'Oscuro' },
-      { name: 'Gris Plomo Titán', group: 'mate', desc: 'Gris carbón neutro industrial', tag: 'Neutro' },
-      { name: 'Vino Tinto Borgoña', group: 'mate', desc: 'Rojo obscuro cereza imperial', tag: 'Elegante' },
-      { name: 'Chocolate Espresso', group: 'mate', desc: 'Café tostado mate intenso', tag: 'Cálido' },
-      { name: 'Morado Medianoche', group: 'mate', desc: 'Púrpura nocturno profundo', tag: 'Oscuro' },
-      { name: 'Rojo Carmesí', group: 'mate', desc: 'Rojo vivo brillante de alta saturación', tag: 'Vibrante' },
-      // Sedas & Metales
-      { name: 'Seda Oro Champagne', group: 'sedas', desc: 'Brillo metálico satinado oro 24K', tag: 'Seda' },
-      { name: 'Seda Bronce / Cobre', group: 'sedas', desc: 'Destello cobrizo cálido metalizado', tag: 'Seda' },
-      { name: 'Plata Metálico', group: 'sedas', desc: 'Reflejo níquel aluminio brillante', tag: 'Metálico' },
-      { name: 'Oro Rosado', group: 'sedas', desc: 'Tono rose gold metalizado de lujo', tag: 'Seda' },
-      // Especiales
-      { name: 'Madera Woodfill', group: 'especiales', desc: 'Filamento con 20% fibra de madera real', tag: 'Madera real' },
-      { name: 'Mármol Granulado', group: 'especiales', desc: 'Textura mineral moteada arquitectónica', tag: 'Piedra' },
-      { name: 'Glow Neón', group: 'especiales', desc: 'Recarga con luz y brilla en la oscuridad', tag: 'Nocturno' },
-      { name: 'Translúcido Cristal', group: 'especiales', desc: 'Polímero semitransparente difusor', tag: 'Translúcido' },
-      { name: 'Tornasol Arcoíris', group: 'especiales', desc: 'Gradiente continuo multicolor', tag: 'Multicolor' },
-      // Claros & Pasteles
-      { name: 'Verde Salvia', group: 'claros', desc: 'Tono botánico claro relajante', tag: 'Pastel' },
-      { name: 'Verde Menta', group: 'claros', desc: 'Menta refrescante suave', tag: 'Pastel' },
-      { name: 'Arena / Crema', group: 'claros', desc: 'Neutro cálido beige tipo cerámica', tag: 'Neutro' },
-      { name: 'Azul Cielo', group: 'claros', desc: 'Azul pastel claro muy limpio', tag: 'Pastel' },
-      { name: 'Rosa Pastel', group: 'claros', desc: 'Rosa suave aterciopelado', tag: 'Pastel' },
-      { name: 'Lavanda / Violeta', group: 'claros', desc: 'Lila floral aromático claro', tag: 'Pastel' }
+      // Mate & Oscuros (Precio estándar = $0)
+      { name: 'Negro Ónix Mate', group: 'mate', desc: 'Acabado mate profundo sin brillos plásticos', tag: 'Mate', extraPrice: 0 },
+      { name: 'Blanco Marfil', group: 'mate', desc: 'Blanco suave cálido de alta cobertura', tag: 'Mate', extraPrice: 0 },
+      { name: 'Verde Bosque Profundo', group: 'mate', desc: 'Verde sobrio del taller Artesano Digital', tag: 'Taller', extraPrice: 0 },
+      { name: 'Verde Olivo Táctico', group: 'mate', desc: 'Tono militar orgánico mate muy popular', tag: 'Mate', extraPrice: 0 },
+      { name: 'Terracota', group: 'mate', desc: 'Arcilla cálida mexicana cocida al sol', tag: 'Cálido', extraPrice: 0 },
+      { name: 'Mostaza Colonial', group: 'mate', desc: 'Amarillo ocre colonial cálido', tag: 'Cálido', extraPrice: 0 },
+      { name: 'Azul Marino Medianoche', group: 'mate', desc: 'Azul muy oscuro elegante y corporativo', tag: 'Oscuro', extraPrice: 0 },
+      { name: 'Gris Plomo Titán', group: 'mate', desc: 'Gris carbón neutro industrial', tag: 'Neutro', extraPrice: 0 },
+      { name: 'Vino Tinto Borgoña', group: 'mate', desc: 'Rojo obscuro cereza imperial', tag: 'Elegante', extraPrice: 0 },
+      { name: 'Chocolate Espresso', group: 'mate', desc: 'Café tostado mate intenso', tag: 'Cálido', extraPrice: 0 },
+      { name: 'Morado Medianoche', group: 'mate', desc: 'Púrpura nocturno profundo', tag: 'Oscuro', extraPrice: 0 },
+      { name: 'Rojo Carmesí', group: 'mate', desc: 'Rojo vivo brillante de alta saturación', tag: 'Vibrante', extraPrice: 0 },
+
+      // Sedas & Metales (+ $25 MXN)
+      { name: 'Seda Oro Champagne', group: 'sedas', desc: 'Brillo metálico satinado oro 24K (+ $25 MXN)', tag: 'Seda', extraPrice: 25 },
+      { name: 'Seda Bronce / Cobre', group: 'sedas', desc: 'Destello cobrizo cálido metalizado (+ $25 MXN)', tag: 'Seda', extraPrice: 25 },
+      { name: 'Plata Metálico', group: 'sedas', desc: 'Reflejo níquel aluminio brillante (+ $25 MXN)', tag: 'Metálico', extraPrice: 25 },
+      { name: 'Oro Rosado', group: 'sedas', desc: 'Tono rose gold metalizado de lujo (+ $25 MXN)', tag: 'Seda', extraPrice: 25 },
+
+      // Especiales, Maderas, Glow y Flexibles
+      { name: 'Madera Woodfill', group: 'especiales', desc: '20% fibra de madera natural real lijable (+ $30 MXN)', tag: 'Madera real', extraPrice: 30 },
+      { name: 'TPU Flexible / Goma', group: 'especiales', desc: 'Elastómero elástico irrompible amortiguador (+ $35 MXN)', tag: 'Flexible', extraPrice: 35 },
+      { name: 'PETG Exterior Resistente', group: 'especiales', desc: 'Resistente a rayos UV, agua y 75°C (+ $20 MXN)', tag: 'Técnico', extraPrice: 20 },
+      { name: 'Mármol Granulado', group: 'especiales', desc: 'Textura mineral punteada arquitectónica (+ $20 MXN)', tag: 'Piedra', extraPrice: 20 },
+      { name: 'Glow Neón', group: 'especiales', desc: 'Fosforescente que brilla en la noche (+ $35 MXN)', tag: 'Nocturno', extraPrice: 35 },
+      { name: 'Translúcido Cristal', group: 'especiales', desc: 'Polímero semitransparente difusor (+ $15 MXN)', tag: 'Translúcido', extraPrice: 15 },
+      { name: 'Tornasol Arcoíris', group: 'especiales', desc: 'Gradiente continuo multicolor (+ $25 MXN)', tag: 'Multicolor', extraPrice: 25 },
+
+      // Claros & Pasteles (Precio estándar = $0)
+      { name: 'Verde Salvia', group: 'claros', desc: 'Tono botánico claro relajante', tag: 'Pastel', extraPrice: 0 },
+      { name: 'Verde Menta', group: 'claros', desc: 'Menta refrescante suave', tag: 'Pastel', extraPrice: 0 },
+      { name: 'Arena / Crema', group: 'claros', desc: 'Neutro cálido beige tipo cerámica', tag: 'Neutro', extraPrice: 0 },
+      { name: 'Azul Cielo', group: 'claros', desc: 'Azul pastel claro muy limpio', tag: 'Pastel', extraPrice: 0 },
+      { name: 'Rosa Pastel', group: 'claros', desc: 'Rosa suave aterciopelado', tag: 'Pastel', extraPrice: 0 },
+      { name: 'Lavanda / Violeta', group: 'claros', desc: 'Lila floral aromático claro', tag: 'Pastel', extraPrice: 0 }
     ]
   },
   textile: {
@@ -325,16 +441,16 @@ export const WORKSHOP_PALETTES_BY_CATEGORY = {
     badge: 'Algodón & Gabardina',
     note: 'Telas seleccionadas en 100% algodón crudo, gabardina estructurada para gorras y lonetas de alta resistencia.',
     colors: [
-      { name: 'Manta Cruda 100% Algodón', desc: 'Tejido artesanal crudo con motas naturales sin blanquear', tag: '100% Algodón' },
-      { name: 'Negro Carbón', desc: 'Teñido reactivo profundo que no destiñe', tag: 'Básico' },
-      { name: 'Blanco Óptico', desc: 'Blanco puro brillante para máxima nitidez', tag: 'Básico' },
-      { name: 'Gris Jaspe', desc: 'Hilado bicolor texturizado melange muy suave', tag: 'Melange' },
-      { name: 'Azul Marino', desc: 'Azul institucional oscuro clásico', tag: 'Clásico' },
-      { name: 'Verde Militar', desc: 'Verde oliva estructurado de uso rudo', tag: 'Táctico' },
-      { name: 'Rojo Carmesí', desc: 'Rojo escarlata intenso y llamativo', tag: 'Vibrante' },
-      { name: 'Beige Arena', desc: 'Tono arena cálido elegante para playa o eventos', tag: 'Neutro' },
-      { name: 'Rosa Palo Empolvado', desc: 'Rosa suave vintage muy solicitado en bodas y bautizos', tag: 'Pastel' },
-      { name: 'Mezclilla Azul', desc: 'Tejido pesado tipo denim azul añil resistente', tag: 'Denim' }
+      { name: 'Manta Cruda 100% Algodón', desc: 'Tejido artesanal crudo con motas naturales sin blanquear', tag: '100% Algodón', extraPrice: 0 },
+      { name: 'Negro Carbón', desc: 'Teñido reactivo profundo que no destiñe', tag: 'Básico', extraPrice: 0 },
+      { name: 'Blanco Óptico', desc: 'Blanco puro brillante para máxima nitidez', tag: 'Básico', extraPrice: 0 },
+      { name: 'Gris Jaspe', desc: 'Hilado bicolor texturizado melange (+ $15 MXN)', tag: 'Melange', extraPrice: 15 },
+      { name: 'Azul Marino', desc: 'Azul institucional oscuro clásico', tag: 'Clásico', extraPrice: 0 },
+      { name: 'Verde Militar', desc: 'Verde oliva estructurado de uso rudo (+ $15 MXN)', tag: 'Táctico', extraPrice: 15 },
+      { name: 'Rojo Carmesí', desc: 'Rojo escarlata intenso (+ $15 MXN)', tag: 'Vibrante', extraPrice: 15 },
+      { name: 'Beige Arena', desc: 'Tono arena cálido elegante (+ $15 MXN)', tag: 'Neutro', extraPrice: 15 },
+      { name: 'Rosa Palo Empolvado', desc: 'Rosa suave vintage muy solicitado en bodas (+ $20 MXN)', tag: 'Pastel', extraPrice: 20 },
+      { name: 'Mezclilla Azul', desc: 'Tejido pesado tipo denim azul añil (+ $35 MXN)', tag: 'Denim', extraPrice: 35 }
     ]
   },
   sublimation: {
@@ -346,14 +462,14 @@ export const WORKSHOP_PALETTES_BY_CATEGORY = {
     isSublimationNotice: true,
     note: '📸 En sublimación no hay límite de colores: Puedes estampar fotografías, logotipos, degradados y dedicatorias a todo color con resolución fotográfica HD y fijación permanente.',
     colors: [
-      { name: 'Base Blanca Brillante (Full Color)', desc: 'Base blanca con barniz polimérico para fotografía nítida a todo color', tag: 'Recomendado' },
-      { name: 'Base Plata Satinado Metálico', desc: 'Fondo aluminio plata satinado: los colores adoptan brillo metálico', tag: 'Metálico' },
-      { name: 'Base Oro Satinado Metálico', desc: 'Fondo dorado champagne de lujo con destellos tornasol', tag: 'Metálico' },
-      { name: 'Taza Cerámica con Interior y Asa Negra', desc: 'Cuerpo exterior blanco para tu foto + interior y asa negro azabache', tag: 'Bicolor' },
-      { name: 'Taza Cerámica con Interior y Asa Roja', desc: 'Cuerpo exterior blanco para tu foto + interior y asa rojo carmín', tag: 'Bicolor' },
-      { name: 'Taza Cerámica con Interior y Asa Azul', desc: 'Cuerpo exterior blanco para tu foto + interior y asa azul marino', tag: 'Bicolor' },
-      { name: 'Taza Cerámica con Interior y Asa Verde', desc: 'Cuerpo exterior blanco para tu foto + interior y asa verde bosque', tag: 'Bicolor' },
-      { name: 'Taza Cerámica con Interior y Asa Rosa', desc: 'Cuerpo exterior blanco para tu foto + interior y asa rosa pastel', tag: 'Bicolor' }
+      { name: 'Base Blanca Brillante (Full Color)', desc: 'Base blanca con barniz polimérico para fotografía nítida a todo color', tag: 'Recomendado', extraPrice: 0 },
+      { name: 'Base Plata Satinado Metálico', desc: 'Fondo aluminio plata satinado: reflejo metálico (+ $25 MXN)', tag: 'Metálico', extraPrice: 25 },
+      { name: 'Base Oro Satinado Metálico', desc: 'Fondo dorado champagne con destellos tornasol (+ $25 MXN)', tag: 'Metálico', extraPrice: 25 },
+      { name: 'Taza Cerámica con Interior y Asa Negra', desc: 'Cuerpo blanco + interior y asa negro azabache (+ $15 MXN)', tag: 'Bicolor', extraPrice: 15 },
+      { name: 'Taza Cerámica con Interior y Asa Roja', desc: 'Cuerpo blanco + interior y asa rojo carmín (+ $15 MXN)', tag: 'Bicolor', extraPrice: 15 },
+      { name: 'Taza Cerámica con Interior y Asa Azul', desc: 'Cuerpo blanco + interior y asa azul marino (+ $15 MXN)', tag: 'Bicolor', extraPrice: 15 },
+      { name: 'Taza Cerámica con Interior y Asa Verde', desc: 'Cuerpo blanco + interior y asa verde bosque (+ $15 MXN)', tag: 'Bicolor', extraPrice: 15 },
+      { name: 'Taza Cerámica con Interior y Asa Rosa', desc: 'Cuerpo blanco + interior y asa rosa pastel (+ $15 MXN)', tag: 'Bicolor', extraPrice: 15 }
     ]
   },
   vinyl: {
@@ -364,17 +480,17 @@ export const WORKSHOP_PALETTES_BY_CATEGORY = {
     badge: 'Oracal & Siser',
     note: 'Vinil alemán Oracal 651 de 5+ años de durabilidad exterior y Vinil Textil Siser italiano con termo-fijación indeleble.',
     colors: [
-      { name: 'Vinil Rotulación Negro Brillante', desc: 'Oracal 651 calandrado para ventanas, autos y muros', tag: 'Rotulación' },
-      { name: 'Vinil Rotulación Blanco Mate', desc: 'Oracal 651 blanco no reflejante de máxima visibilidad', tag: 'Rotulación' },
-      { name: 'Vinil Dorado Metálico', desc: 'Oro brillante espejo para detalles y logotipos finos', tag: 'Metálico' },
-      { name: 'Vinil Plateado Cromo', desc: 'Plata cromado espejo de alto impacto visual', tag: 'Cromo' },
-      { name: 'Vinil Holográfico Tornasol', desc: 'Prismático arcoíris que cambia de color según la luz', tag: 'Holográfico' },
-      { name: 'Vinil Textil Negro Mate Siser', desc: 'Termotransferible elástico suave al tacto en prendas', tag: 'Textil' },
-      { name: 'Vinil Textil Blanco Nieve', desc: 'Blanco opaco para prendas claras u oscuras', tag: 'Textil' },
-      { name: 'Vinil Textil Oro Foil Espejo', desc: 'Brillo reflectivo oro metálico que no se cuartea', tag: 'Textil' },
-      { name: 'Vinil Textil Puff 3D en Relieve (Negro)', desc: 'Efecto inflado tridimensional espumado al calor', tag: 'Puff 3D' },
-      { name: 'Vinil Textil Puff 3D en Relieve (Blanco)', desc: 'Efecto inflado 3D blanco nieve en relieve alto', tag: 'Puff 3D' },
-      { name: 'Vinil Neón Flúor', desc: 'Amarillo/Verde neón fluorescente de alta visibilidad', tag: 'Neón' }
+      { name: 'Vinil Rotulación Negro Brillante', desc: 'Oracal 651 calandrado para ventanas, autos y muros', tag: 'Rotulación', extraPrice: 0 },
+      { name: 'Vinil Rotulación Blanco Mate', desc: 'Oracal 651 blanco no reflejante de máxima visibilidad', tag: 'Rotulación', extraPrice: 0 },
+      { name: 'Vinil Dorado Metálico', desc: 'Oro brillante espejo para logotipos finos (+ $20 MXN)', tag: 'Metálico', extraPrice: 20 },
+      { name: 'Vinil Plateado Cromo', desc: 'Plata cromado espejo de alto impacto visual (+ $20 MXN)', tag: 'Cromo', extraPrice: 20 },
+      { name: 'Vinil Holográfico Tornasol', desc: 'Prismático arcoíris que cambia de color según la luz (+ $30 MXN)', tag: 'Holográfico', extraPrice: 30 },
+      { name: 'Vinil Textil Negro Mate Siser', desc: 'Termotransferible elástico suave al tacto (+ $20 MXN)', tag: 'Textil', extraPrice: 20 },
+      { name: 'Vinil Textil Blanco Nieve', desc: 'Blanco opaco para prendas oscuras (+ $20 MXN)', tag: 'Textil', extraPrice: 20 },
+      { name: 'Vinil Textil Oro Foil Espejo', desc: 'Brillo reflectivo oro metálico que no se cuartea (+ $30 MXN)', tag: 'Textil', extraPrice: 30 },
+      { name: 'Vinil Textil Puff 3D en Relieve (Negro)', desc: 'Efecto inflado tridimensional espumado al calor (+ $35 MXN)', tag: 'Puff 3D', extraPrice: 35 },
+      { name: 'Vinil Textil Puff 3D en Relieve (Blanco)', desc: 'Efecto inflado 3D blanco nieve en relieve alto (+ $35 MXN)', tag: 'Puff 3D', extraPrice: 35 },
+      { name: 'Vinil Neón Flúor', desc: 'Amarillo/Verde neón fluorescente de alta visibilidad (+ $30 MXN)', tag: 'Neón', extraPrice: 30 }
     ]
   },
   acrylic: {
@@ -386,15 +502,15 @@ export const WORKSHOP_PALETTES_BY_CATEGORY = {
     isAcrylicNotice: true,
     note: '⚠️ Nota técnica sobre láser diodo: El haz de luz de 455 nm corta directamente acrílicos oscuros y espejo. Los acrílicos transparentes y blancos se maquilan con fresadora CNC o CO2.',
     colors: [
-      { name: 'Acrílico Negro Ónix 3mm', desc: 'Corte directo en láser diodo con cantos pulidos espejo', tag: 'Corte diodo' },
-      { name: 'Acrílico Rojo Translúcido', desc: 'Corte directo en láser diodo, pasa luz roja brillante', tag: 'Corte diodo' },
-      { name: 'Acrílico Azul Eléctrico', desc: 'Corte directo en láser diodo, tonalidad zafiro vivo', tag: 'Corte diodo' },
-      { name: 'Acrílico Verde Esmeralda', desc: 'Corte directo en láser diodo, verde translúcido joya', tag: 'Corte diodo' },
-      { name: 'Acrílico Amarillo Neón', desc: 'Corte directo en láser diodo con bordes luminosos', tag: 'Corte diodo' },
-      { name: 'Acrílico Espejo Oro', desc: 'Grabado reverso y corte diodo con reflejo espejo oro', tag: 'Espejo' },
-      { name: 'Acrílico Espejo Plata', desc: 'Grabado reverso con reflejo plata cromo idéntico al vidrio', tag: 'Espejo' },
-      { name: 'Acrílico Cristal Transparente', desc: '100% transparente: maquila en fresadora CNC o láser CO2', tag: 'CNC / CO2' },
-      { name: 'Acrílico Blanco Difusor', desc: 'Blanco lechoso para lámparas: maquila CNC o láser CO2', tag: 'CNC / CO2' }
+      { name: 'Acrílico Negro Ónix 3mm', desc: 'Corte directo en láser diodo con cantos pulidos espejo', tag: 'Corte diodo', extraPrice: 0 },
+      { name: 'Acrílico Rojo Translúcido', desc: 'Corte directo en láser diodo, pasa luz roja brillante (+ $25 MXN)', tag: 'Corte diodo', extraPrice: 25 },
+      { name: 'Acrílico Azul Eléctrico', desc: 'Corte directo en láser diodo, tonalidad zafiro vivo (+ $25 MXN)', tag: 'Corte diodo', extraPrice: 25 },
+      { name: 'Acrílico Verde Esmeralda', desc: 'Corte directo en láser diodo, verde joya (+ $25 MXN)', tag: 'Corte diodo', extraPrice: 25 },
+      { name: 'Acrílico Amarillo Neón', desc: 'Corte directo en láser diodo con bordes luminosos (+ $25 MXN)', tag: 'Corte diodo', extraPrice: 25 },
+      { name: 'Acrílico Espejo Oro', desc: 'Grabado reverso y corte con reflejo espejo oro (+ $45 MXN)', tag: 'Espejo', extraPrice: 45 },
+      { name: 'Acrílico Espejo Plata', desc: 'Grabado reverso con reflejo plata cromo idéntico al vidrio (+ $45 MXN)', tag: 'Espejo', extraPrice: 45 },
+      { name: 'Acrílico Cristal Transparente', desc: '100% transparente: maquila en fresadora CNC o láser CO2 (+ $35 MXN)', tag: 'CNC / CO2', extraPrice: 35 },
+      { name: 'Acrílico Blanco Difusor', desc: 'Blanco lechoso para lámparas: maquila CNC o láser CO2 (+ $35 MXN)', tag: 'CNC / CO2', extraPrice: 35 }
     ]
   }
 };
