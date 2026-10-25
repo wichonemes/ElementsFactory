@@ -1665,19 +1665,28 @@ app.post('/api/admin/sync-catalog', requireAdmin, (req, res) => {
   }
 });
 
-if (cloudDb.enabled) {
-  await cloudDb.transaction(() => {
-    if (cloudDb.read().users.some(user => bcrypt.compareSync('Artesano2026!', user.passwordHash))) {
-      console.warn('[SEGURIDAD] Recuerda cambiar la contraseña predeterminada del administrador.');
-    }
-    // Sincronizar catálogo oficial con Postgres al arrancar
-    db.syncCatalogWithCodebase();
-  });
-} else if (process.env.NODE_ENV !== 'test') {
-  // Sincronizar catálogo local (salvo en pruebas unitarias)
-  db.syncCatalogWithCodebase();
-}
-
-const server = app.listen(PORT, '0.0.0.0', () => {
+const server = app.listen(PORT, '0.0.0.0', async () => {
   console.log(`Server running at http://localhost:${server.address().port}`);
+  
+  if (cloudDb.enabled) {
+    try {
+      await cloudDb.transaction(() => {
+        if (cloudDb.read().users.some(user => bcrypt.compareSync('Artesano2026!', user.passwordHash))) {
+          console.warn('[SEGURIDAD] Recuerda cambiar la contraseña predeterminada del administrador.');
+        }
+        // Sincronizar catálogo oficial con Postgres al arrancar
+        db.syncCatalogWithCodebase();
+      });
+    } catch (err) {
+      console.error('[DATABASE] Error conectando a base de datos externa en arranque. Continuando con catálogo local:', err.message);
+      db.syncCatalogWithCodebase();
+    }
+  } else if (process.env.NODE_ENV !== 'test') {
+    // Sincronizar catálogo local (salvo en pruebas unitarias)
+    try {
+      db.syncCatalogWithCodebase();
+    } catch (err) {
+      console.error('[DATABASE] Error en sincronización local de catálogo:', err.message);
+    }
+  }
 });
