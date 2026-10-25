@@ -19,7 +19,10 @@ import {
   ALL_WORKSHOP_COLORS,
   detectProductMaterialCategory,
   checkIfColorVariant,
-  getDefaultOptionsForCategory
+  getDefaultOptionsForCategory,
+  isCustomPhotoOrDrawingProduct,
+  getAvailableMaterialTabsForProduct,
+  productNeedsColorVariant
 } from '../utils/colorUtils';
 import { playCoinSound, playMarioPowerDownSound } from '../utils/soundEffects';
 import { getBundleTiers } from './PackagesAndServicesView';
@@ -63,6 +66,10 @@ export default function ProductDetailModal({
   const [activeIdx, setActiveIdx] = useState(0);
 
   const primaryMaterialCat = useMemo(() => detectProductMaterialCategory(product), [product]);
+  const isCustomPhotoProduct = useMemo(() => isCustomPhotoOrDrawingProduct(product), [product]);
+  const needsColor = useMemo(() => productNeedsColorVariant(product), [product]);
+  const availableMaterialTabs = useMemo(() => getAvailableMaterialTabsForProduct(product), [product]);
+
   const existingColorVariant = useMemo(() => {
     return (product?.variants || []).find(v => checkIfColorVariant(v));
   }, [product?.variants]);
@@ -75,9 +82,11 @@ export default function ProductDetailModal({
         : v.options;
       init[v.name] = (filtered.length > 0 ? filtered[0] : v.options[0]);
     });
+    // Solo agregar Color / Acabado si NO es personalizado por foto y realmente requiere color
     const hasCol = (product?.variants || []).some(v => checkIfColorVariant(v));
-    if (!hasCol) {
-      const defOpts = getDefaultOptionsForCategory(detectProductMaterialCategory(product));
+    if (!hasCol && !isCustomPhotoOrDrawingProduct(product) && productNeedsColorVariant(product)) {
+      const tabs = getAvailableMaterialTabsForProduct(product);
+      const defOpts = getDefaultOptionsForCategory(tabs[0] || 'pla');
       init['Color / Acabado'] = defOpts[0];
     }
     return init;
@@ -85,7 +94,10 @@ export default function ProductDetailModal({
 
   const [customText, setCustomText] = useState('');
   const [showMoreColorsTab, setShowMoreColorsTab] = useState(false);
-  const [selectedPaletteTab, setSelectedPaletteTab] = useState(() => detectProductMaterialCategory(product));
+  const [selectedPaletteTab, setSelectedPaletteTab] = useState(() => {
+    const tabs = getAvailableMaterialTabsForProduct(product);
+    return tabs[0] || detectProductMaterialCategory(product);
+  });
   const [activePlaSubGroup, setActivePlaSubGroup] = useState('todos');
   const [showPersonalizationInput, setShowPersonalizationInput] = useState(false);
   const [quantity, setQuantity] = useState(product?.specifications?.minQuantity || 1);
@@ -96,8 +108,8 @@ export default function ProductDetailModal({
   // Sincronizar variantes y pestañas al cambiar de producto
   useEffect(() => {
     if (!product) return;
-    const cat = detectProductMaterialCategory(product);
-    setSelectedPaletteTab(cat);
+    const tabs = getAvailableMaterialTabsForProduct(product);
+    setSelectedPaletteTab(tabs[0] || 'pla');
     setShowMoreColorsTab(false);
     setActivePlaSubGroup('todos');
     
@@ -110,8 +122,8 @@ export default function ProductDetailModal({
         init[v.name] = (filtered.length > 0 ? filtered[0] : v.options[0]);
       });
       const hasCol = (product.variants || []).some(v => checkIfColorVariant(v));
-      if (!hasCol) {
-        const defOpts = getDefaultOptionsForCategory(cat);
+      if (!hasCol && !isCustomPhotoOrDrawingProduct(product) && productNeedsColorVariant(product)) {
+        const defOpts = getDefaultOptionsForCategory(tabs[0] || 'pla');
         init['Color / Acabado'] = defOpts[0];
       }
       return init;
@@ -300,22 +312,26 @@ export default function ProductDetailModal({
   };
 
   const colorVariantToRender = useMemo(() => {
+    if (isCustomPhotoProduct || !needsColor) return null;
     if (existingColorVariant) return existingColorVariant;
+    const initialCategory = availableMaterialTabs[0] || primaryMaterialCat;
     return {
       name: 'Color / Acabado',
-      options: getDefaultOptionsForCategory(primaryMaterialCat)
+      options: getDefaultOptionsForCategory(initialCategory)
     };
-  }, [existingColorVariant, primaryMaterialCat]);
+  }, [isCustomPhotoProduct, needsColor, existingColorVariant, availableMaterialTabs, primaryMaterialCat]);
 
   const otherVariants = useMemo(() => {
     return (product?.variants || []).filter(v => v !== existingColorVariant);
   }, [product?.variants, existingColorVariant]);
 
   const currentColorValue = useMemo(() => {
+    if (!colorVariantToRender) return null;
     return selectedVariants[colorVariantToRender.name] || colorVariantToRender.options[0];
   }, [selectedVariants, colorVariantToRender]);
 
   const activeColorOptions = useMemo(() => {
+    if (!colorVariantToRender) return [];
     const baseOptions = isFlashDeal
       ? colorVariantToRender.options.filter(opt => !opt.toLowerCase().includes('personalizad'))
       : colorVariantToRender.options;
@@ -324,6 +340,13 @@ export default function ProductDetailModal({
     }
     return baseOptions;
   }, [colorVariantToRender, isFlashDeal, currentColorValue]);
+
+  const availableColorsCount = useMemo(() => {
+    return availableMaterialTabs.reduce((acc, tab) => {
+      const p = WORKSHOP_PALETTES_BY_CATEGORY[tab];
+      return acc + (p?.colors?.length || 0);
+    }, 0);
+  }, [availableMaterialTabs]);
 
   return (
     <div
@@ -810,17 +833,33 @@ export default function ProductDetailModal({
               {(() => {
                 const colorVar = colorVariantToRender;
                 const currentColor = currentColorValue;
-                const currentCatData = WORKSHOP_PALETTES_BY_CATEGORY[selectedPaletteTab] || WORKSHOP_PALETTES_BY_CATEGORY.pla;
+                const activeTabKey = availableMaterialTabs.includes(selectedPaletteTab)
+                  ? selectedPaletteTab
+                  : availableMaterialTabs[0] || 'pla';
+                const currentCatData = WORKSHOP_PALETTES_BY_CATEGORY[activeTabKey] || WORKSHOP_PALETTES_BY_CATEGORY.pla;
                 const filteredPaletteColors = (currentCatData.colors || []).filter(c => {
-                  if (selectedPaletteTab === 'pla' && activePlaSubGroup !== 'todos') {
+                  if (activeTabKey === 'pla' && activePlaSubGroup !== 'todos') {
                     return c.group === activePlaSubGroup;
                   }
                   return true;
                 });
-                const totalWorkshopColorsCount = ALL_WORKSHOP_COLORS.length;
+                const totalWorkshopColorsCount = availableColorsCount;
 
                 return (
                   <div className="space-y-3.5 pt-1">
+                    {/* Caso 1: Piezas 100% personalizables por foto / dibujo (Funkos y Dibujos 3D infantiles) */}
+                    {isCustomPhotoProduct && (
+                      <div className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-amber-50 via-[#FFF9F2] to-orange-50 border border-amber-300/80 shadow-xs space-y-1.5">
+                        <div className="flex items-center gap-2 text-xs font-black text-amber-900 uppercase tracking-wider">
+                          <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
+                          <span>Acabados y colores 100% personalizados por foto</span>
+                        </div>
+                        <p className="text-[11.5px] text-amber-900/90 leading-relaxed">
+                          Esta pieza se modela en 3D y se pinta artesanalmente a partir de las fotos reales o el dibujo de tu pequeño. No requieres elegir colores fijos aquí: una vez realizado tu pedido, nos comunicamos contigo por WhatsApp para coordinar vestimenta, peinado, tonos y detalles exactos.
+                        </p>
+                      </div>
+                    )}
+
                     {/* Otras variantes que no son de color (como Medida, Drenaje, Formato, etc.) */}
                     {otherVariants.map(variant => {
                       const availableOptions = isFlashDeal 
@@ -868,149 +907,144 @@ export default function ProductDetailModal({
                       );
                     })}
 
-                    {/* SECCIÓN HOMOLOGADA DE COLOR & ACABADO (Siempre visible para TODOS los productos) */}
-                    <div className="space-y-2 p-3 sm:p-3.5 rounded-2xl bg-[#FAF9F5] border border-[#E8DFC8]/90 shadow-2xs">
-                      <div className="flex items-center justify-between flex-wrap gap-2">
-                        <label className="text-xs font-bold text-[#1F2421] uppercase tracking-wider flex items-center gap-1.5">
-                          <span>{colorVar.name}:</span>
-                          {currentColor && (
-                            <span className="text-[#2D4F3E] font-black normal-case text-xs bg-white border border-[#2D4F3E]/20 px-2 py-0.5 rounded-md flex items-center gap-1.5 shadow-2xs">
-                              <span
-                                className="w-2.5 h-2.5 rounded-full border border-black/30 shrink-0"
-                                style={{ background: getFilamentColor(currentColor)?.css || '#2D4F3E' }}
-                              />
-                              <span className="truncate max-w-[170px] sm:max-w-xs">{currentColor}</span>
+                    {/* SECCIÓN HOMOLOGADA DE COLOR & ACABADO (Solo para productos que requieren color) */}
+                    {colorVar && (
+                      <div className="space-y-2 p-3 sm:p-3.5 rounded-2xl bg-[#FAF9F5] border border-[#E8DFC8]/90 shadow-2xs">
+                        <div className="flex items-center justify-between flex-wrap gap-2">
+                          <label className="text-xs font-bold text-[#1F2421] uppercase tracking-wider flex items-center gap-1.5">
+                            <span>{colorVar.name}:</span>
+                            {currentColor && (
+                              <span className="text-[#2D4F3E] font-black normal-case text-xs bg-white border border-[#2D4F3E]/20 px-2 py-0.5 rounded-md flex items-center gap-1.5 shadow-2xs">
+                                <span
+                                  className="w-2.5 h-2.5 rounded-full border border-black/30 shrink-0"
+                                  style={{ background: getFilamentColor(currentColor)?.css || '#2D4F3E' }}
+                                />
+                                <span className="truncate max-w-[170px] sm:max-w-xs">{currentColor}</span>
+                              </span>
+                            )}
+                          </label>
+
+                          {/* Botón "+ Más colores y acabados" */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              playCoinSound();
+                              setShowMoreColorsTab(prev => !prev);
+                            }}
+                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border shadow-2xs ${
+                              showMoreColorsTab
+                                ? 'bg-[#2D4F3E] text-white border-[#2D4F3E]'
+                                : 'bg-white hover:bg-emerald-50/50 text-[#2D4F3E] border-[#2D4F3E]/30'
+                            }`}
+                          >
+                            <Palette className="w-3.5 h-3.5" />
+                            <span>{showMoreColorsTab ? '▲ Ocultar paletas' : '🎨 + Más colores'}</span>
+                            <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
+                              showMoreColorsTab ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-800'
+                            }`}>
+                              {totalWorkshopColorsCount} tonos
                             </span>
-                          )}
-                        </label>
+                          </button>
+                        </div>
 
-                        {/* Botón "+ Más colores y acabados" */}
-                        <button
-                          type="button"
-                          onClick={() => {
-                            playCoinSound();
-                            setShowMoreColorsTab(prev => !prev);
-                          }}
-                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border shadow-2xs ${
-                            showMoreColorsTab
-                              ? 'bg-[#2D4F3E] text-white border-[#2D4F3E]'
-                              : 'bg-white hover:bg-emerald-50/50 text-[#2D4F3E] border-[#2D4F3E]/30'
-                          }`}
-                        >
-                          <Palette className="w-3.5 h-3.5" />
-                          <span>{showMoreColorsTab ? '▲ Ocultar paletas' : '🎨 + Más colores'}</span>
-                          <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
-                            showMoreColorsTab ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-800'
-                          }`}>
-                            {totalWorkshopColorsCount} tonos
-                          </span>
-                        </button>
-                      </div>
-
-                      {/* Swatches circulares rápidos */}
-                      <div className="flex flex-wrap items-center gap-2 pt-0.5">
-                        {activeColorOptions.map(opt => {
-                          const isSelected = currentColor === opt;
-                          const swatch = getFilamentColor(opt);
-                          return (
-                            <button
-                              key={opt}
-                              type="button"
-                              onClick={() => {
-                                playCoinSound();
-                                handleVariantChange(colorVar.name, opt);
-                              }}
-                              className={`group/c relative p-0.5 rounded-full transition-all cursor-pointer flex items-center justify-center ${
-                                isSelected
-                                  ? 'ring-2 ring-[#2D4F3E] ring-offset-2 scale-110 shadow-xs'
-                                  : 'hover:scale-110 hover:ring-2 hover:ring-gray-300'
-                              }`}
-                              title={opt}
-                            >
-                              <span
-                                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-black/20 shadow-2xs flex items-center justify-center transition-transform"
-                                style={{
-                                  background: swatch?.css || '#D1D5DB',
-                                  borderColor: swatch?.border || '#9CA3AF',
-                                  boxShadow: swatch?.glow ? '0 0 8px rgba(110, 231, 183, 0.9)' : undefined
+                        {/* Swatches circulares rápidos */}
+                        <div className="flex flex-wrap items-center gap-2 pt-0.5">
+                          {activeColorOptions.map(opt => {
+                            const isSelected = currentColor === opt;
+                            const swatch = getFilamentColor(opt);
+                            return (
+                              <button
+                                key={opt}
+                                type="button"
+                                onClick={() => {
+                                  playCoinSound();
+                                  handleVariantChange(colorVar.name, opt);
                                 }}
+                                className={`group/c relative p-0.5 rounded-full transition-all cursor-pointer flex items-center justify-center ${
+                                  isSelected
+                                    ? 'ring-2 ring-[#2D4F3E] ring-offset-2 scale-110 shadow-xs'
+                                    : 'hover:scale-110 hover:ring-2 hover:ring-gray-300'
+                                }`}
+                                title={opt}
                               >
-                                {isSelected && (
-                                  <span className={`text-[11px] font-black ${
-                                    isDarkColor(swatch) ? 'text-white drop-shadow-sm' : 'text-gray-900'
-                                  }`}>
-                                    ✓
-                                  </span>
-                                )}
-                              </span>
-                              {/* Tooltip con nombre de color */}
-                              <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover/c:block z-30 px-2 py-0.5 text-[10px] font-bold text-white bg-black/90 rounded-md whitespace-nowrap shadow-md pointer-events-none">
-                                {opt}
-                              </span>
-                            </button>
-                          );
-                        })}
-                      </div>
-
-                      {/* DESPLIEGUE DEL CATÁLOGO COMPLETO DE COLORES & ACABADOS POR MATERIAL */}
-                      {showMoreColorsTab && (
-                        <div className="mt-3 p-3 sm:p-4 rounded-2xl bg-white border-2 border-[#2D4F3E]/40 space-y-3 shadow-md animate-fade-in">
-                          {/* Header de la pestaña */}
-                          <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-                            <div className="flex items-center gap-2">
-                              <div className="w-7 h-7 rounded-lg bg-[#2D4F3E] text-white flex items-center justify-center shadow-2xs">
-                                <Palette className="w-4 h-4" />
-                              </div>
-                              <div>
-                                <h4 className="text-xs font-black text-[#1F2421]">
-                                  Catálogo de Colores &amp; Acabados de Taller
-                                </h4>
-                                <p className="text-[10px] text-gray-500">
-                                  Elige el tono o acabado exacto para la fabricación de tu pieza
-                                </p>
-                              </div>
-                            </div>
-
-                            <button
-                              type="button"
-                              onClick={() => setShowMoreColorsTab(false)}
-                              className="text-[10.5px] font-bold text-gray-500 hover:text-gray-800 px-2 py-1 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
-                            >
-                              ▲ Cerrar catálogo
-                            </button>
-                          </div>
-
-                          {/* Pestañas de Materiales */}
-                          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-                            {Object.values(WORKSHOP_PALETTES_BY_CATEGORY).map(cat => {
-                              const isTabActive = selectedPaletteTab === cat.id;
-                              const isRecommended = primaryMaterialCat === cat.id;
-                              return (
-                                <button
-                                  key={cat.id}
-                                  type="button"
-                                  onClick={() => {
-                                    playCoinSound();
-                                    setSelectedPaletteTab(cat.id);
+                                <span
+                                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-black/20 shadow-2xs flex items-center justify-center transition-transform"
+                                  style={{
+                                    background: swatch?.css || '#D1D5DB',
+                                    borderColor: swatch?.border || '#9CA3AF',
+                                    boxShadow: swatch?.glow ? '0 0 8px rgba(110, 231, 183, 0.9)' : undefined
                                   }}
-                                  className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer shrink-0 ${
-                                    isTabActive
-                                      ? 'bg-[#2D4F3E] text-white shadow-xs ring-1 ring-[#2D4F3E]'
-                                      : 'bg-stone-50 hover:bg-stone-100 text-gray-700 border border-[#E8E4DA]'
-                                  }`}
                                 >
-                                  <span>{cat.label}</span>
-                                  {isRecommended && (
-                                    <span className={`text-[8.5px] px-1 py-0.2 rounded font-black uppercase ${
-                                      isTabActive ? 'bg-amber-400 text-stone-900' : 'bg-emerald-100 text-emerald-800'
+                                  {isSelected && (
+                                    <span className={`text-[11px] font-black ${
+                                      isDarkColor(swatch) ? 'text-white drop-shadow-sm' : 'text-gray-900'
                                     }`}>
-                                      Recomendado
+                                      ✓
                                     </span>
                                   )}
-                                </button>
-                              );
-                            })}
-                          </div>
+                                </span>
+                                {/* Tooltip con nombre de color */}
+                                <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover/c:block z-30 px-2 py-0.5 text-[10px] font-bold text-white bg-black/90 rounded-md whitespace-nowrap shadow-md pointer-events-none">
+                                  {opt}
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
+
+                        {/* DESPLIEGUE DEL CATÁLOGO COMPLETO DE COLORES & ACABADOS POR MATERIAL */}
+                        {showMoreColorsTab && (
+                          <div className="mt-3 p-3 sm:p-4 rounded-2xl bg-white border-2 border-[#2D4F3E]/40 space-y-3 shadow-md animate-fade-in">
+                            {/* Header de la pestaña */}
+                            <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+                              <div className="flex items-center gap-2">
+                                <div className="w-7 h-7 rounded-lg bg-[#2D4F3E] text-white flex items-center justify-center shadow-2xs">
+                                  <Palette className="w-4 h-4" />
+                                </div>
+                                <div>
+                                  <h4 className="text-xs font-black text-[#1F2421]">
+                                    Catálogo de Colores &amp; Acabados para este Material
+                                  </h4>
+                                  <p className="text-[10px] text-gray-500">
+                                    Elige el tono o acabado exacto compatible con la fabricación de tu pieza
+                                  </p>
+                                </div>
+                              </div>
+
+                              <button
+                                type="button"
+                                onClick={() => setShowMoreColorsTab(false)}
+                                className="text-[10.5px] font-bold text-gray-500 hover:text-gray-800 px-2 py-1 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+                              >
+                                ▲ Cerrar catálogo
+                              </button>
+                            </div>
+
+                            {/* Pestañas de Materiales estrictamente compatibles con este producto */}
+                            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                              {availableMaterialTabs.map(tabKey => {
+                                const cat = WORKSHOP_PALETTES_BY_CATEGORY[tabKey];
+                                if (!cat) return null;
+                                const isTabActive = activeTabKey === tabKey;
+                                return (
+                                  <button
+                                    key={tabKey}
+                                    type="button"
+                                    onClick={() => {
+                                      playCoinSound();
+                                      setSelectedPaletteTab(tabKey);
+                                    }}
+                                    className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer shrink-0 ${
+                                      isTabActive
+                                        ? 'bg-[#2D4F3E] text-white shadow-xs ring-1 ring-[#2D4F3E]'
+                                        : 'bg-stone-50 hover:bg-stone-100 text-gray-700 border border-[#E8E4DA]'
+                                    }`}
+                                  >
+                                    <span>{cat.label}</span>
+                                  </button>
+                                );
+                              })}
+                            </div>
 
                           {/* Avisos Técnicos Contextuales */}
                           {currentCatData.isSublimationNotice && (
@@ -1126,8 +1160,9 @@ export default function ProductDetailModal({
                         </div>
                       )}
                     </div>
-                  </div>
-                );
+                  )}
+                </div>
+              );
               })()}
 
               {/* Personalización Opcional Secundaria (Plegable para agilizar la compra) */}

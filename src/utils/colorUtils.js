@@ -400,6 +400,147 @@ export const WORKSHOP_PALETTES_BY_CATEGORY = {
 };
 
 /**
+ * Detecta si el producto es un Funko personalizado o dibujo de niños 3D.
+ * Para estos productos NO se debe mostrar selector de colores fijos ni catálogo de acabados,
+ * ya que se modelan y pintan 100% a medida según las fotos / dibujos del cliente.
+ */
+export function isCustomPhotoOrDrawingProduct(product) {
+  if (!product) return false;
+  const code = (product.code || '').toUpperCase();
+  const sku = (product.sku || '').toUpperCase();
+  const name = (product.name || '').toLowerCase();
+  const cats = (product.categories || []).map(c => String(c).toLowerCase());
+  const worlds = (product.worlds || []).map(w => String(w).toLowerCase());
+
+  if (code.startsWith('CUST-FUNKO') || code.startsWith('CUST-DIBUJO')) return true;
+  if (sku.startsWith('CUST-3D-') || sku.includes('FUNKO') || sku.includes('DIBUJO')) return true;
+  if (cats.some(c => c.includes('dibujo') || c.includes('funko'))) return true;
+  if (worlds.some(w => w === 'personalizados') && (name.includes('funko') || name.includes('dibujo') || name.includes('foto'))) return true;
+  if (name.includes('funko') || name.includes('de dibujo a figura') || name.includes('dibujo infantil') || name.includes('de dibujo a 3d')) return true;
+  return false;
+}
+
+/**
+ * Retorna ÚNICAMENTE las pestañas de materiales compatibles con los materiales REALES del producto.
+ * Evita mostrar barnices de madera en gorras o telas en cajitas de corte láser.
+ */
+export function getAvailableMaterialTabsForProduct(product) {
+  if (!product) return ['pla'];
+  const techs = (product.techniques || []).map(t => String(t).toLowerCase());
+  const mat = (product.specifications?.material || '').toLowerCase();
+  const name = (product.name || '').toLowerCase();
+  const cat = (product.category || '').toLowerCase();
+  const cats = (product.categories || []).map(c => String(c).toLowerCase());
+
+  const available = [];
+
+  // 1. Madera / MDF / Tintes & Barnices
+  const isWood = (
+    techs.some(t => ['laser', 'carpinteria', 'madera', 'cnc'].includes(t)) ||
+    mat.includes('madera') || mat.includes('mdf') || mat.includes('pino') ||
+    mat.includes('nogal') || mat.includes('triplay') || mat.includes('haya') ||
+    mat.includes('abedul') || mat.includes('tzalam') || mat.includes('roble') ||
+    name.includes('madera') || name.includes('mdf') || name.includes('posavasos') ||
+    name.includes('camarita') || name.includes('colgador') || name.includes('servilletero') ||
+    cats.some(c => c.includes('madera') || c.includes('laser'))
+  ) && !mat.includes('100% tela') && !name.includes('gorra');
+
+  if (isWood) available.push('wood');
+
+  // 2. Impresión 3D (PLA / PETG / TPU / Resina)
+  const isPla = (
+    techs.some(t => ['3d', 'fdm', 'sla', 'resina', 'impresion 3d'].includes(t)) ||
+    mat.includes('pla') || mat.includes('petg') || mat.includes('tpu') ||
+    mat.includes('filamento') || mat.includes('resina 3d') ||
+    name.includes('3d') || name.includes('maceta') || name.includes('soporte') ||
+    name.includes('flexi') || name.includes('lámpara') || name.includes('lampara') ||
+    cats.some(c => c.includes('3d'))
+  );
+  if (isPla) available.push('pla');
+
+  // 3. Textiles (Gorras, Playeras, Manta, Loneta)
+  const isTextile = (
+    techs.some(t => ['textil', 'bordado', 'dtf', 'costura'].includes(t)) ||
+    mat.includes('tela') || mat.includes('algodón') || mat.includes('algodon') ||
+    mat.includes('manta') || mat.includes('loneta') || mat.includes('gabardina') ||
+    mat.includes('mezclilla') || mat.includes('poliéster') || mat.includes('poliester') ||
+    name.includes('gorra') || name.includes('playera') || name.includes('tote') ||
+    name.includes('bolsa') || name.includes('mandil') || name.includes('cojín') ||
+    cats.some(c => c.includes('textil') || c.includes('gorra'))
+  );
+  if (isTextile) available.push('textile');
+
+  // 4. Sublimación Full Color (Tazas, Termos, Fotobotones)
+  const isSublimation = (
+    techs.some(t => ['sublimacion', 'sublimación', 'sublimable'].includes(t)) ||
+    mat.includes('sublim') || mat.includes('cerámica') || mat.includes('ceramica') ||
+    name.includes('taza') || name.includes('termo') || name.includes('fotobotón') ||
+    name.includes('fotoboton') || name.includes('mousepad') ||
+    cats.some(c => c.includes('sublimacion'))
+  );
+  if (isSublimation) available.push('sublimation');
+
+  // 5. Vinil (Rotulación y Termotransferible)
+  const isVinyl = (
+    techs.some(t => ['vinil', 'vinyl', 'rotulacion', 'rotulación'].includes(t)) ||
+    mat.includes('vinil') || mat.includes('oracal') || mat.includes('siser') ||
+    name.includes('vinil') || name.includes('calcomanía') || name.includes('sticker') ||
+    cats.some(c => c.includes('vinil'))
+  );
+  if (isVinyl) available.push('vinyl');
+
+  // 6. Acrílico Cast (Negro, Espejo, Colores)
+  const isAcrylic = (
+    techs.some(t => ['acrilico', 'acrílico'].includes(t)) ||
+    mat.includes('acrílico') || mat.includes('acrilico') ||
+    name.includes('acrílico') || name.includes('acrilico') ||
+    name.includes('espejo oro') || name.includes('espejo plata') ||
+    cats.some(c => c.includes('acrilico'))
+  );
+  if (isAcrylic) available.push('acrylic');
+
+  // Fallback si no coincidió ninguno
+  if (available.length === 0) {
+    const fallback = detectProductMaterialCategory(product);
+    available.push(fallback);
+  }
+
+  return available;
+}
+
+/**
+ * Determina si a un producto le corresponde mostrar selector de color o filamento.
+ */
+export function productNeedsColorVariant(product) {
+  if (!product) return false;
+  if (isCustomPhotoOrDrawingProduct(product)) return false;
+
+  const hasExplicitColorVariant = (product.variants || []).some(v => checkIfColorVariant(v));
+  if (hasExplicitColorVariant) return true;
+
+  // Si no tiene variantes explícitas de color:
+  // Si ya tiene otras variantes estructuradas (ej: tipo de material, tamaño, grabado) y ninguna es color, no forzamos color sintético
+  if (product.variants && product.variants.length > 0) {
+    return false;
+  }
+
+  // Si no tiene ninguna variante, solo creamos color si es un producto monomaterial como 3D o textil liso
+  const techs = product.techniques || [];
+  const mat = (product.specifications?.material || '').toLowerCase();
+  const name = (product.name || '').toLowerCase();
+
+  if (techs.includes('3d') || mat.includes('pla') || mat.includes('filamento')) {
+    return true;
+  }
+
+  if (name.includes('gorra') || name.includes('playera') || techs.includes('textil')) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
  * Detecta qué categoría de material y técnica le corresponde al producto
  */
 export function detectProductMaterialCategory(product) {

@@ -4,7 +4,7 @@ import {
   TreePine, Printer3d, Sparkles, Shirt, Radio,
   Ruler, MapPin, Truck, PartyPopper, Check, Copy, ArrowRight,
   Palette, Layers, Scissors, Flame, AlertTriangle, Box, FileText,
-  Tag, PlusCircle, SprayCan, Type, Info, ChevronDown, ChevronUp
+  Tag, PlusCircle, SprayCan, Type, Info, ChevronDown, ChevronUp, ChevronLeft
 } from 'lucide-react';
 import { playCoinSound, playMarioPowerDownSound } from '../utils/soundEffects';
 
@@ -218,6 +218,30 @@ export default function QuoteCalculatorModal({
   onAddToCart
 }) {
   if (!isOpen) return null;
+
+  // Manejo de salida nativa y gesto atrás en móviles (popstate)
+  useEffect(() => {
+    if (!isOpen) return;
+    const calcKey = 'artesano_quote_calc_' + Date.now();
+    window.history.pushState({ modal: calcKey }, '', window.location.href);
+
+    const onPopState = () => {
+      if (onClose) onClose();
+    };
+
+    window.addEventListener('popstate', onPopState);
+    return () => {
+      window.removeEventListener('popstate', onPopState);
+    };
+  }, [isOpen]);
+
+  const handleSafeClose = () => {
+    if (window.history.state?.modal?.startsWith('artesano_quote_calc_')) {
+      window.history.back();
+    } else {
+      if (onClose) onClose();
+    }
+  };
 
   // Pestaña de material activa actualmente para ver sus subtipos
   const [activeMaterialTab, setActiveMaterialTab] = useState('madera');
@@ -655,42 +679,61 @@ export default function QuoteCalculatorModal({
   const activeSubtypes = SUB_MATERIALS_CONFIG[activeMaterialTab] || [];
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/75 backdrop-blur-sm flex items-center justify-center p-2.5 sm:p-4 animate-fade-in">
+    <div
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 overflow-hidden bg-black/75 backdrop-blur-sm animate-fade-in overscroll-contain touch-pan-y"
+      onClick={handleSafeClose}
+    >
       <div 
-        className="relative bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-[#E8E4DA] overflow-hidden my-4 sm:my-6 transition-all"
+        className="relative bg-white rounded-t-3xl sm:rounded-3xl max-w-2xl w-full shadow-2xl border-t sm:border border-[#E8E4DA] overflow-hidden max-h-[92vh] sm:max-h-[90vh] flex flex-col overscroll-contain touch-pan-y transition-all"
         onClick={e => e.stopPropagation()}
       >
-        
-        {/* Header Elegante */}
-        <div className="bg-[#17251E] text-white p-4 sm:p-5 flex items-center justify-between border-b border-[#D4A359]/30">
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-[#D4A359] to-[#9E472A] flex items-center justify-center text-white shadow-md">
-              <Calculator className="w-6 h-6 stroke-[2.5]" />
+        {/* Mobile Swipe / Drag Handle Indicator */}
+        <div className="sm:hidden pt-2.5 pb-1 flex justify-center bg-[#17251E] shrink-0">
+          <div className="w-12 h-1 bg-white/30 rounded-full" />
+        </div>
+
+        {/* Header Elegante con Botón Volver Táctil */}
+        <div className="bg-[#17251E] text-white px-4 py-3 sm:px-5 sm:py-4 flex items-center justify-between border-b border-[#D4A359]/30 shrink-0">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            {/* Botón Volver táctil para móvil */}
+            <button
+              type="button"
+              onClick={handleSafeClose}
+              className="sm:hidden flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 active:bg-white/30 text-white text-xs font-bold transition-all cursor-pointer border border-white/15 shrink-0"
+              title="Volver"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              <span>Volver</span>
+            </button>
+
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-[#D4A359] to-[#9E472A] flex items-center justify-center text-white shadow-md shrink-0">
+              <Calculator className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.5]" />
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-[#D4A359]/20 text-[#E5C378] font-bold">
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5">
+                <span className="text-[9.5px] sm:text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-[#D4A359]/20 text-[#E5C378] font-bold">
                   {product?.sku || product?.code || 'COTIZADOR'}
                 </span>
-                <span className="text-xs text-gray-300 font-medium">Calculadora Cotizadora de Taller</span>
+                <span className="text-[11px] text-gray-300 font-medium hidden sm:inline">Calculadora Cotizadora de Taller</span>
               </div>
-              <h2 className="text-sm sm:text-base md:text-lg font-bold text-white truncate max-w-sm sm:max-w-md">
+              <h2 className="text-xs sm:text-base font-bold text-white truncate max-w-[190px] sm:max-w-md">
                 {customProductName || product?.name || 'Servicio de Fabricación & Personalización'}
               </h2>
             </div>
           </div>
 
           <button
-            onClick={onClose}
-            className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
+            onClick={handleSafeClose}
+            className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
             aria-label="Cerrar calculadora"
+            title="Cerrar"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Content Body */}
-        <div className="p-4 sm:p-6 space-y-5 max-h-[78vh] overflow-y-auto">
+        {/* Content Body: Único contenedor con scroll fluido overscroll-contain */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 overscroll-contain touch-pan-y">
           
           {/* APARTADO PREVIO: PRODUCTO / OBJETO A COTIZAR */}
           <div className="space-y-1.5 p-3 sm:p-4 rounded-2xl bg-[#FAF7F0] border border-[#E8E4DA] shadow-2xs">
@@ -1282,6 +1325,16 @@ export default function QuoteCalculatorModal({
               <span>Cotizar por WhatsApp</span>
             </button>
           </div>
+
+          {/* Botón Volver adicional visible al pie para celulares */}
+          <button
+            type="button"
+            onClick={handleSafeClose}
+            className="w-full py-2.5 px-4 rounded-xl text-stone-600 hover:text-stone-900 bg-stone-100 hover:bg-stone-200 text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer border border-stone-200/80 active:scale-98"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            <span>← Volver a la tienda</span>
+          </button>
 
         </div>
 
