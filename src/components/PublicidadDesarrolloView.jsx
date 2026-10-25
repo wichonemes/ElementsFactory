@@ -6,10 +6,7 @@ import {
   Printer,
   Film,
   MessageCircle,
-  ExternalLink,
-  ChevronDown,
-  Eye,
-  MapPin
+  ChevronDown
 } from 'lucide-react';
 
 export default function PublicidadDesarrolloView({
@@ -242,89 +239,6 @@ export default function PublicidadDesarrolloView({
               </div>
             );
           })}
-        </div>
-
-        {/* ================= SECCIÓN PORTAFOLIO PERSONAL DE WICHO NEMES (AL FINAL) ================= */}
-        <div className="pt-8 sm:pt-10 border-t border-stone-800/80 space-y-4">
-          <div className="text-center space-y-1">
-            <span className="text-[10px] sm:text-xs font-black uppercase tracking-wider text-[#e8b84f]">
-              Portafolio &amp; Diseñador
-            </span>
-            <h3 className="text-base sm:text-lg font-black text-white font-heading">
-              ¿Quieres revisar proyectos anteriores antes de cotizar?
-            </h3>
-            <p className="text-xs text-stone-400 max-w-md mx-auto">
-              Conoce el trabajo de Wicho Nemes y las soluciones creadas para otros negocios y marcas.
-            </p>
-          </div>
-
-          <div className="max-w-xl mx-auto">
-            <div className="relative rounded-3xl bg-gradient-to-br from-[#151921] to-[#0F1218] border border-stone-700/60 p-4 sm:p-5 shadow-2xl">
-              
-              {/* Header de la tarjeta */}
-              <div className="flex items-center justify-between pb-2.5 border-b border-white/10">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-xl border border-[#e8b84f]/40 bg-[#0B0D11] flex items-center justify-center p-1.5 shadow-inner">
-                    <img
-                      src="/maquetado-inicio-wicho-v2/assets/marca-wicho.png"
-                      alt="Wicho Nemes Logo"
-                      className="w-full h-full object-contain"
-                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                    />
-                  </div>
-                  <div>
-                    <div className="font-heading font-black text-white text-sm tracking-tight">Wicho Nemes</div>
-                    <div className="text-[10px] text-[#e8b84f] font-bold">Diseñador Gráfico &amp; Digital</div>
-                  </div>
-                </div>
-
-                <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[10px] font-bold">
-                  Taller Abierto
-                </span>
-              </div>
-
-              {/* Retrato y Presentación */}
-              <div className="py-3 flex items-center gap-3">
-                <div className="w-16 h-20 sm:w-20 sm:h-24 shrink-0 rounded-2xl bg-gradient-to-b from-[#202631] to-[#0E1116] border border-white/15 overflow-hidden shadow-lg">
-                  <img
-                    src="/maquetado-inicio-wicho-v2/assets/perfil-sin-fondo.png"
-                    alt="Wicho Nemes"
-                    className="w-full h-full object-cover object-top"
-                    onError={(e) => {
-                      e.currentTarget.src = '/brand/artesano_isotipo_transparente.png';
-                    }}
-                  />
-                </div>
-
-                <div className="space-y-1 text-xs text-stone-300 leading-relaxed font-normal">
-                  <p className="italic text-stone-200 text-[11px] line-clamp-2">
-                    "Ideas claras. Diseño con intención. Cada pieza visual debe resolver un propósito comercial real."
-                  </p>
-                  <div className="text-[10px] text-stone-400 flex items-center gap-1">
-                    <MapPin className="w-3 h-3 text-[#e8b84f] shrink-0" />
-                    <span>San Luis Potosí, SLP · Envíos nacionales.</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Botón Activo: Ver Trabajos */}
-              <div className="pt-2.5 border-t border-white/10 flex items-center justify-between gap-2">
-                <span className="text-stone-400 text-[11px] font-medium">Portafolio personal:</span>
-                <a
-                  href="/maquetado-inicio-wicho-v2/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#e8b84f] to-[#d4a359] hover:from-[#f0c765] hover:to-[#e8b84f] text-[#0B0D11] font-black text-xs transition-all flex items-center gap-1.5 shadow-md active:scale-95 cursor-pointer"
-                  title="Abrir portafolio de Wicho Nemes"
-                >
-                  <Eye className="w-3.5 h-3.5" />
-                  <span>Ver Trabajos</span>
-                  <ExternalLink className="w-3 h-3 ml-0.5" />
-                </a>
-              </div>
-
-            </div>
-          </div>
         </div>
 
       </main>
