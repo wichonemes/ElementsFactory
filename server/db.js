@@ -15427,6 +15427,23 @@ class Database {
     const db = this.read();
     let items = db.products || [];
 
+    // Purgar productos eliminados de la tienda (galga, tobera y lista negra)
+    items = items.filter(p => !DELETED_PRODUCTS_BLOCKLIST.includes(p.id) && !(p.worlds && p.worlds.length === 1 && p.worlds[0] === 'industria'));
+
+    // Actualizar precios de Starter Packs si aún tienen los precios antiguos no rentables
+    items = items.map(p => {
+      if (p.id === 'starter-pack-joyeria-t27' && p.price < 540) {
+        return { ...p, price: 540, regularPrice: 680 };
+      }
+      if (p.id === 'starter-pack-gym-t32' && p.price < 490) {
+        return { ...p, price: 490, regularPrice: 620 };
+      }
+      if (p.id === 'starter-pack-barberia-t18' && p.price < 480) {
+        return { ...p, price: 480, regularPrice: 590 };
+      }
+      return p;
+    });
+
     // Filter by status: public only sees published; admin can request all or specific
     if (filters.status && filters.status !== 'all') {
       items = items.filter(p => p.status === filters.status);
