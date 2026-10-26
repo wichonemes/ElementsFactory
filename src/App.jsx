@@ -858,7 +858,7 @@ export default function App() {
       )}
 
       {/* Area Cover Banner (when a specific area is selected) */}
-      {activeWorld !== 'all' && activeWorld !== 'paquetes-servicios' && activeWorld !== 'publicidad-desarrollo' && currentWorldObj && (
+      {activeWorld !== 'all' && activeWorld !== 'paquetes-servicios' && activeWorld !== 'publicidad-desarrollo' && activeWorld !== 'industria' && currentWorldObj && (
         <div className="relative bg-[#1F2421] text-white overflow-hidden py-10 sm:py-14 border-b border-black/20">
           <div className="absolute inset-0 opacity-20">
             <img src={currentWorldObj.image} alt="" className="w-full h-full object-cover" />
