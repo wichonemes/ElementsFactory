@@ -18,7 +18,9 @@ import {
   Check,
   Mail,
   Building2,
-  Sliders
+  Sliders,
+  X,
+  Plus
 } from 'lucide-react';
 
 export default function PublicidadDesarrolloView({
@@ -27,15 +29,15 @@ export default function PublicidadDesarrolloView({
   onOpenCalculator,
   onSelectWorld
 }) {
-  const [activeTab, setActiveTab] = useState('servicios'); // 'servicios' | 'cotizador'
+  const [activeTab, setActiveTab] = useState('servicios');
   const [expandedService, setExpandedService] = useState('branding');
   
-  // Cotizador en 2 pasos
-  const [quoteService, setQuoteService] = useState('branding');
-  const [quoteScope, setQuoteScope] = useState('estandar');
+  // Alcance del Proyecto: Selección modular de productos con desglose en tiempo real
+  const [selectedItemIds, setSelectedItemIds] = useState(['lona_2x1']);
+  const [activeCategoryFilter, setActiveCategoryFilter] = useState('todas');
   const [quoteNotes, setQuoteNotes] = useState('');
   
-  const cotizadorRef = useRef(null);
+  const alcanceRef = useRef(null);
   const whatsappPhone = (settings?.whatsappNumber || '5214440000000').replace(/[^0-9]/g, '');
 
   // Estado de feedback al copiar enlace
@@ -165,60 +167,234 @@ export default function PublicidadDesarrolloView({
 
   const curService = servicesList.find(s => s.id === expandedService);
 
-  // Cálculo estimativo en tiempo real del cotizador (en 2 pasos)
-  const quoteEstimate = useMemo(() => {
-    let base = 1500;
-    let label = 'Paquete Base';
+  // Catálogo detallado de productos y servicios para el Alcance del Proyecto
+  const projectItemsCatalog = [
+    // --- IDENTIDAD & BRANDING ---
+    {
+      id: 'logo_solo',
+      category: 'branding',
+      categoryLabel: 'Identidad & Marca',
+      title: 'Diseño o Rediseño de Logotipo',
+      subtitle: 'Solo logotipo principal',
+      desc: 'Logo vectorial maestro (.AI, .PDF, .SVG) y versiones en alta resolución (.PNG transparente).',
+      price: 1200,
+      badge: 'Solo Logo'
+    },
+    {
+      id: 'identidad_completa',
+      category: 'branding',
+      categoryLabel: 'Identidad & Marca',
+      title: 'Identidad Visual & Branding Completo',
+      subtitle: 'Sistema visual comercial',
+      desc: 'Logotipo principal + isotipo + paleta de color oficial + tipografías + mini manual de marca.',
+      price: 2500,
+      badge: 'Marca Completa'
+    },
+    {
+      id: 'vectorizado_logo',
+      category: 'branding',
+      categoryLabel: 'Identidad & Marca',
+      title: 'Vectorización / Limpieza de Logo',
+      subtitle: 'De foto o boceto a vectores',
+      desc: 'Trazado y limpieza en curvas de un logotipo existente para que no se pixelee al imprimir.',
+      price: 450,
+      badge: 'Vectorizado'
+    },
+    {
+      id: 'papeleria_redes',
+      category: 'branding',
+      categoryLabel: 'Identidad & Marca',
+      title: 'Diseño de Papelería & Redes Sociales',
+      subtitle: 'Tarjetas, membrete y avatares',
+      desc: 'Diseño de tarjeta comercial, hoja membretada digital y kit de portadas/perfil para tus redes.',
+      price: 750,
+      badge: 'Papelería'
+    },
 
-    if (quoteService === 'branding') {
-      base = quoteScope === 'inicio' ? 1800 : quoteScope === 'estandar' ? 3200 : 5500;
-      label = 'Branding & Identidad';
-    } else if (quoteService === 'publicidad') {
-      base = quoteScope === 'inicio' ? 850 : quoteScope === 'estandar' ? 2400 : 4900;
-      label = 'Lonas, Vinil & Rotulación';
-    } else if (quoteService === 'web') {
-      base = quoteScope === 'inicio' ? 2900 : quoteScope === 'estandar' ? 5800 : 11500;
-      label = 'Desarrollo Web & Tienda';
-    } else if (quoteService === 'combo') {
-      base = quoteScope === 'inicio' ? 4500 : quoteScope === 'estandar' ? 8500 : 15000;
-      label = 'Paquete Integral (Marca + Web + Físico)';
+    // --- PUBLICIDAD, LONAS & GRAN FORMATO ---
+    {
+      id: 'lona_1x1',
+      category: 'publicidad',
+      categoryLabel: 'Lonas & Gran Formato',
+      title: 'Lona Publicitaria 1.0 × 1.0 m',
+      subtitle: '1 m² lista para instalar',
+      desc: 'Impresión en lona frontlite 13oz de alta resolución con bastilla perimetral reforzada y ojillos metálicos.',
+      price: 260,
+      badge: '1.0 × 1.0 m'
+    },
+    {
+      id: 'lona_2x1',
+      category: 'publicidad',
+      categoryLabel: 'Lonas & Gran Formato',
+      title: 'Lona Publicitaria 2.0 × 1.0 m',
+      subtitle: '2 m² estándar de fachada',
+      desc: 'El tamaño más solicitado para avisos de fachada, negocios y locales. Impresión HD con ojillos perimetrales.',
+      price: 480,
+      badge: '2.0 × 1.0 m · Popular'
+    },
+    {
+      id: 'lona_3x1_5',
+      category: 'publicidad',
+      categoryLabel: 'Lonas & Gran Formato',
+      title: 'Lona Gran Formato 3.0 × 1.5 m',
+      subtitle: '4.5 m² alta visibilidad exterior',
+      desc: 'Ideal para marquesinas comerciales, inauguraciones y muros de alto tráfico visual. Máxima durabilidad.',
+      price: 950,
+      badge: '3.0 × 1.5 m'
+    },
+    {
+      id: 'lona_medida_especial',
+      category: 'publicidad',
+      categoryLabel: 'Lonas & Gran Formato',
+      title: 'Lona a Medida Especial (por m²)',
+      subtitle: 'Cualquier dimensión que requieras',
+      desc: 'Base por metro cuadrado para toldos, estructuras grandes o medidas específicas para tu local.',
+      price: 190,
+      badge: 'Estimado / m²'
+    },
+    {
+      id: 'vinil_rotulacion',
+      category: 'publicidad',
+      categoryLabel: 'Lonas & Gran Formato',
+      title: 'Vinil Adhesivo o Microperforado',
+      subtitle: 'Para cristales, muros o autos',
+      desc: 'Vinil microperforado para aparadores (permite ver hacia afuera) o vinil opaco para corte y rotulación.',
+      price: 380,
+      badge: 'Estimado / m²'
+    },
+
+    // --- EDITORIAL, MENÚS & CATÁLOGOS ---
+    {
+      id: 'catalogo_digital',
+      category: 'editorial',
+      categoryLabel: 'Catálogos & Editorial',
+      title: 'Catálogo de Productos Digital (PDF)',
+      subtitle: 'Con enlaces de compra / WhatsApp',
+      desc: 'Diseño y diagramación de tus productos con fotos, descripciones, precios y botones directos a WhatsApp.',
+      price: 1600,
+      badge: 'Catálogo PDF'
+    },
+    {
+      id: 'menu_restaurante',
+      category: 'editorial',
+      categoryLabel: 'Catálogos & Editorial',
+      title: 'Diseño de Menú / Carta para Restaurante',
+      subtitle: 'Formato digital (QR) o impreso',
+      desc: 'Estructuración clara de platillos, bebidas y promociones con tipografía legible y presentación atractiva.',
+      price: 850,
+      badge: 'Menú / QR'
+    },
+    {
+      id: 'folleto_triptico',
+      category: 'editorial',
+      categoryLabel: 'Catálogos & Editorial',
+      title: 'Folleto Publicitario Díptico o Tríptico',
+      subtitle: 'Diseño listo para imprenta',
+      desc: 'Folleto informativo de tus servicios con jerarquía visual cuidada y archivos en alta resolución.',
+      price: 650,
+      badge: 'Díptico / Tríptico'
+    },
+    {
+      id: 'tarjetas_millar',
+      category: 'editorial',
+      categoryLabel: 'Catálogos & Editorial',
+      title: 'Tarjetas de Presentación (Diseño + Millar)',
+      subtitle: '1,000 pzas impresas a color',
+      desc: 'Diseño profesional personalizado + impresión de 1,000 tarjetas frente y vuelta con laminado mate o brillante.',
+      price: 620,
+      badge: '1,000 tarjetas'
+    },
+
+    // --- DESARROLLO WEB & DIGITAL ---
+    {
+      id: 'landing_comercial',
+      category: 'web',
+      categoryLabel: 'Web & Digital',
+      title: 'Landing Page Comercial (Una Página)',
+      subtitle: 'Página de venta y captación',
+      desc: 'Sitio de una sola página optimizado para conversiones rápidas, promociones y pedidos directos a WhatsApp.',
+      price: 2800,
+      badge: 'Landing Page'
+    },
+    {
+      id: 'sitio_catalogo',
+      category: 'web',
+      categoryLabel: 'Web & Digital',
+      title: 'Sitio Web Completo / Catálogo Multi-sección',
+      subtitle: 'Plataforma empresarial moderna',
+      desc: 'Sitio con múltiples secciones (Inicio, Catálogo, Servicios, Contacto, Mapa) ultra rápido y responsivo.',
+      price: 5800,
+      badge: 'Sitio Multi-página'
+    },
+    {
+      id: 'pack_redes',
+      category: 'web',
+      categoryLabel: 'Web & Digital',
+      title: 'Pack de Plantillas para Redes Sociales',
+      subtitle: 'Banners y promociones',
+      desc: 'Diseño de 6 a 8 piezas gráficas optimizadas para anuncios y publicaciones de Facebook e Instagram.',
+      price: 950,
+      badge: 'Pack Redes'
     }
+  ];
 
-    return { base, label };
-  }, [quoteService, quoteScope]);
+  // Alternar selección de un producto con clic
+  const toggleItem = (itemId) => {
+    setSelectedItemIds((prev) => {
+      if (prev.includes(itemId)) {
+        return prev.filter((id) => id !== itemId);
+      } else {
+        return [...prev, itemId];
+      }
+    });
+  };
 
-  const handleOpenCotizador = (serviceId) => {
-    if (serviceId) setQuoteService(serviceId);
+  const filteredCatalog = useMemo(() => {
+    if (activeCategoryFilter === 'todas') return projectItemsCatalog;
+    return projectItemsCatalog.filter((item) => item.category === activeCategoryFilter);
+  }, [activeCategoryFilter]);
+
+  const selectedItems = useMemo(() => {
+    return projectItemsCatalog.filter((item) => selectedItemIds.includes(item.id));
+  }, [selectedItemIds]);
+
+  const totalEstimate = useMemo(() => {
+    return selectedItems.reduce((acc, item) => acc + item.price, 0);
+  }, [selectedItems]);
+
+  const handleOpenAlcance = (serviceCategory) => {
+    if (serviceCategory) {
+      const catMap = {
+        branding: 'branding',
+        publicidad: 'publicidad',
+        web: 'web',
+        audiovisual: 'editorial'
+      };
+      if (catMap[serviceCategory]) {
+        setActiveCategoryFilter(catMap[serviceCategory]);
+      }
+    }
     setTimeout(() => {
-      const el = document.getElementById('cotizador-diseno') || cotizadorRef.current;
+      const el = document.getElementById('alcance-proyecto') || alcanceRef.current;
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }, 60);
   };
 
-  const handleSendWhatsAppQuote = () => {
-    const serviceNameMap = {
-      branding: 'Diseño Gráfico & Branding',
-      publicidad: 'Publicidad Comercial, Lonas & Gran Formato',
-      web: 'Desarrollo Web & Catálogo / Tienda Online',
-      combo: 'Paquete Integral (Marca + Web + Publicidad)'
-    };
-
-    const scopeMap = {
-      inicio: 'Inicial / Emprendedor',
-      estandar: 'Estándar Profesional',
-      completo: 'Edición VIP Todo Incluido'
-    };
+  const handleSendWhatsAppScope = () => {
+    const itemsListText = selectedItems.length > 0
+      ? selectedItems.map((i) => `• ${i.title} (${i.badge}) — $${i.price.toLocaleString('es-MX')} MXN`).join('\n')
+      : '• Proyecto a la medida (por definir)';
 
     const text = `Hola Wicho / Artesano Digital,
-Me interesa una cotización de *Publicidad & Desarrollo Digital*:
+Armé el *Alcance de mi Proyecto* en tu portal:
 
-• *1. Especialidad:* ${serviceNameMap[quoteService] || quoteService}
-• *2. Alcance:* ${scopeMap[quoteScope] || quoteScope}
-• *Estimado orientativo:* $${quoteEstimate.base.toLocaleString('es-MX')} MXN
-${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
-¿Podemos platicar sobre este proyecto?`;
+${itemsListText}
+
+*Inversión Total Desglosada:* $${totalEstimate.toLocaleString('es-MX')} MXN
+${quoteNotes.trim() ? `\n*Detalles / Medidas:* ${quoteNotes.trim()}\n` : ''}
+¿Podemos platicar sobre este proyecto para confirmar tiempos de entrega?`;
 
     const url = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
@@ -240,14 +416,14 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
             Estrategia de identidad, lonas de gran formato, rotulación en vinil, desarrollo web interactivo y producción publicitaria.
           </p>
 
-          {/* Botón de Acción Principal Directo al Cotizador en 2 Pasos */}
+          {/* Botón de Acción Principal Directo al Alcance del Proyecto */}
           <div className="pt-1">
             <button
               type="button"
-              onClick={() => handleOpenCotizador('branding')}
+              onClick={() => handleOpenAlcance()}
               className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-[#e8b84f] to-[#d4a359] hover:from-[#d4a359] hover:to-[#c29235] text-[#0B0D11] font-black text-xs sm:text-sm transition-all shadow-lg active:scale-98 cursor-pointer flex items-center justify-center gap-2"
             >
-              <span>Cotizar Proyecto (2 Pasos)</span>
+              <span>Armar Alcance del Proyecto</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -395,34 +571,20 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
                     <span>{curService.idealFor}</span>
                   </div>
 
-                  {/* Barra de Acción con Acceso Directo al Cotizador o WhatsApp */}
-                  <div className="pt-2 border-t border-stone-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                  {/* Pie de la Ficha Técnica (Sin botones redundantes) */}
+                  <div className="pt-2 border-t border-stone-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                     <span className="text-[11px] text-stone-400 font-mono">
-                      Atención directa con Wicho Nemes · Cotizaciones a medida
+                      Especialidad técnica · Entregables garantizados por Wicho Nemes
                     </span>
 
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => handleOpenCotizador(curService.id === 'audiovisual' ? 'branding' : curService.id)}
-                        className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#e8b84f] to-[#d4a359] hover:from-[#f0c765] hover:to-[#e8b84f] text-[#0A0D11] font-black text-xs transition-all flex items-center justify-center gap-1.5 shadow-md active:scale-95 cursor-pointer"
-                      >
-                        <Sliders className="w-3.5 h-3.5" />
-                        <span>Calcular Inversión (2 Pasos)</span>
-                      </button>
-
-                      <a
-                        href={`https://wa.me/${whatsappPhone}?text=${encodeURIComponent(
-                          `Hola Wicho, me interesa cotizar *${curService.title}* de tu portafolio de Diseño & Publicidad.`
-                        )}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="px-3.5 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-black font-extrabold text-xs transition-all flex items-center justify-center gap-1.5 shadow-md active:scale-95 cursor-pointer"
-                      >
-                        <MessageCircle className="w-3.5 h-3.5 fill-black text-transparent" />
-                        <span>WhatsApp</span>
-                      </a>
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleOpenAlcance(curService.id)}
+                      className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#e8b84f] to-[#d4a359] hover:from-[#f0c765] hover:to-[#e8b84f] text-[#0A0D11] font-black text-xs transition-all flex items-center justify-center gap-1.5 shadow-md active:scale-95 cursor-pointer"
+                    >
+                      <span>Elegir productos en Alcance del Proyecto</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
                   </div>
 
                 </div>
@@ -431,161 +593,224 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
 
         </section>
 
-        {/* ================= SECCIÓN 2: COTIZADOR INTERACTIVO EN 2 PASOS (TOTALMENTE EN NEGRO) ================= */}
-        <section id="cotizador-diseno" ref={cotizadorRef} className="space-y-6 pt-6 border-t border-stone-800 animate-fadeIn">
+        {/* ================= SECCIÓN 2: ALCANCE DEL PROYECTO (SELECCIÓN MODULAR CON DESGLOSE) ================= */}
+        <section id="alcance-proyecto" ref={alcanceRef} className="space-y-6 pt-6 border-t border-stone-800 animate-fadeIn">
           
-          {/* Encabezado de la Sección de Cotización con proyecto especial integrado */}
+          {/* Encabezado del Alcance del Proyecto */}
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-stone-800/80 pb-3">
             <div>
               <div className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-[#e8b84f] flex items-center gap-2">
                 <span className="w-5 h-px bg-[#e8b84f]" />
-                <span>02 / Cotizador Rápido de Proyecto</span>
+                <span>02 / Alcance del Proyecto</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-black text-white mt-1">
-                Calcula la Inversión de tu Proyecto
+                Elige con un Clic los Productos que Necesitas
               </h2>
               <p className="text-xs text-stone-300 mt-1">
-                ¿Tienes un proyecto especial con medidas específicas? Cotiza en 2 pasos con cálculo al instante.
+                Selecciona solo lo que requieres (ej. solo tu logo, solo una lona o solo un catálogo). Combina a tu gusto y revisa el desglose con precios estimados en tiempo real.
               </p>
             </div>
             <span className="text-xs text-stone-400 font-mono hidden sm:inline self-end">
-              Paso 1: Servicio · Paso 2: Alcance
+              {selectedItems.length} {selectedItems.length === 1 ? 'producto elegido' : 'productos elegidos'}
             </span>
           </div>
 
-          {/* CONTENEDOR DE LOS 2 PASOS EN NEGRO */}
-          <div className="bg-[#10131A] rounded-3xl border border-stone-800 p-4 sm:p-6 shadow-2xl space-y-5 text-white">
-              
-              {/* PASO 1: ESPECIALIDAD O SERVICIO */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <label className="text-xs font-black uppercase tracking-wider text-stone-200 flex items-center gap-1.5">
-                    <span className="w-5 h-5 rounded-full bg-[#e8b84f] text-[#0B0D11] text-[11px] flex items-center justify-center font-black">1</span>
-                    <span>Especialidad o Servicio:</span>
-                  </label>
-                  <span className="text-[11px] text-stone-400 font-medium">Toca una opción</span>
-                </div>
+          {/* Filtros por Categoría */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+            {[
+              { id: 'todas', label: 'Todos los productos' },
+              { id: 'publicidad', label: 'Lonas & Gran Formato' },
+              { id: 'branding', label: 'Identidad & Marca' },
+              { id: 'editorial', label: 'Catálogos & Menús' },
+              { id: 'web', label: 'Web & Digital' }
+            ].map((tab) => {
+              const isActive = activeCategoryFilter === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setActiveCategoryFilter(tab.id)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer border ${
+                    isActive
+                      ? 'bg-[#e8b84f] text-[#0B0D11] border-[#e8b84f] shadow-md'
+                      : 'bg-[#141822] text-stone-300 border-stone-800 hover:border-stone-700 hover:text-white'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {[
-                    { id: 'branding', title: 'Diseño Gráfico & Branding', desc: 'Logotipo, identidad visual y manual', price: 'Desde $1,800' },
-                    { id: 'publicidad', title: 'Publicidad Comercial & Lonas', desc: 'Gran formato, vinil y rotulación', price: 'Desde $850' },
-                    { id: 'web', title: 'Desarrollo Web & Tienda', desc: 'Sitio responsivo y catálogo WhatsApp', price: 'Desde $2,900' },
-                    { id: 'combo', title: 'Paquete Integral Todo-en-Uno', desc: 'Marca + Web + Rotulación física', price: 'Desde $4,500' }
-                  ].map((s) => {
-                    const isSelected = quoteService === s.id;
-                    return (
-                      <button
-                        key={s.id}
-                        type="button"
-                        onClick={() => setQuoteService(s.id)}
-                        className={`p-3 rounded-2xl text-left border transition-all cursor-pointer flex items-center justify-between gap-2 ${
-                          isSelected
-                            ? 'border-[#e8b84f] bg-[#e8b84f]/15 ring-2 ring-[#e8b84f]/30 shadow-md'
-                            : 'border-stone-800 hover:border-stone-700 bg-[#161B23]'
-                        }`}
-                      >
-                        <div className="min-w-0">
-                          <div className="font-black text-xs text-white truncate">
-                            {s.title}
-                          </div>
-                          <div className="text-[11px] text-stone-400 truncate">{s.desc}</div>
-                        </div>
-                        <span className={`shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                          isSelected ? 'bg-[#e8b84f] text-[#0B0D11]' : 'bg-[#202633] text-stone-300'
-                        }`}>
-                          {s.price}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* PASO 2: ALCANCE DE PROYECTO */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <label className="text-xs font-black uppercase tracking-wider text-stone-200 flex items-center gap-1.5">
-                    <span className="w-5 h-5 rounded-full bg-[#e8b84f] text-[#0B0D11] text-[11px] flex items-center justify-center font-black">2</span>
-                    <span>Alcance del Proyecto:</span>
-                  </label>
-                  <span className="text-[11px] text-stone-400 font-medium">Nivel de profundidad</span>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                  {[
-                    { id: 'inicio', title: 'Inicio / Emprendedor', desc: 'Esencial para arrancar bien' },
-                    { id: 'estandar', title: 'Estándar Profesional', desc: 'El más completo y recomendado' },
-                    { id: 'completo', title: 'Edición Integral VIP', desc: 'Máximo alcance y todo incluido' }
-                  ].map((lvl) => {
-                    const isSelected = quoteScope === lvl.id;
-                    return (
-                      <button
-                        key={lvl.id}
-                        type="button"
-                        onClick={() => setQuoteScope(lvl.id)}
-                        className={`p-3 rounded-2xl text-left border transition-all cursor-pointer ${
-                          isSelected
-                            ? 'border-[#e8b84f] bg-[#e8b84f]/15 ring-2 ring-[#e8b84f]/30 shadow-md'
-                            : 'border-stone-800 hover:border-stone-700 bg-[#161B23]'
-                        }`}
-                      >
-                        <div className="font-black text-xs text-white">{lvl.title}</div>
-                        <div className="text-[11px] text-stone-400 mt-0.5 leading-tight">{lvl.desc}</div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* TARJETA DESTACADA DEL COSTO ORIENTATIVO (UBICADA EXACTAMENTE AL FINAL) */}
-              <div className="pt-3 border-t border-stone-800/80 space-y-4">
-                
-                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#141820] to-[#1C2532] text-white shadow-2xl border border-[#e8b84f]/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div className="space-y-0.5">
-                    <div className="text-[10px] font-bold uppercase tracking-wider text-[#e8b84f] flex items-center gap-1">
-                      <DollarSign className="w-3.5 h-3.5" />
-                      <span>Inversión Estimada:</span>
+          {/* Cuadrícula de Productos Seleccionables */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+            {filteredCatalog.map((item) => {
+              const isSelected = selectedItemIds.includes(item.id);
+              return (
+                <div
+                  key={item.id}
+                  onClick={() => toggleItem(item.id)}
+                  className={`p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer select-none flex flex-col justify-between gap-2.5 relative hover:-translate-y-0.5 ${
+                    isSelected
+                      ? 'border-[#e8b84f] bg-[#1a1c22] shadow-xl ring-2 ring-[#e8b84f]/25'
+                      : 'border-stone-800/90 bg-[#0F1218] hover:border-stone-700 hover:bg-[#141820]'
+                  }`}
+                >
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between gap-1.5">
+                      <span className={`text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md border ${
+                        isSelected
+                          ? 'bg-[#e8b84f]/20 text-[#e8b84f] border-[#e8b84f]/40'
+                          : 'bg-stone-800/60 text-stone-400 border-stone-700/50'
+                      }`}>
+                        {item.badge}
+                      </span>
+                      <div className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 border transition-colors ${
+                        isSelected
+                          ? 'bg-[#e8b84f] text-[#0B0D11] border-[#e8b84f]'
+                          : 'border-stone-700 text-transparent'
+                      }`}>
+                        <Check className="w-3.5 h-3.5 stroke-[3]" />
+                      </div>
                     </div>
-                    <div className="text-2xl sm:text-3xl font-black font-heading text-[#e8b84f] tracking-tight">
-                      ${quoteEstimate.base.toLocaleString('es-MX')} <span className="text-xs font-normal text-stone-300">MXN</span>
-                    </div>
-                    <div className="text-[11px] text-stone-300">
-                      {quoteEstimate.label} · {quoteScope === 'inicio' ? 'Básico' : quoteScope === 'estandar' ? 'Profesional' : 'VIP Todo Incluido'}
-                    </div>
+
+                    <h4 className="text-xs sm:text-sm font-extrabold text-white leading-snug pt-0.5">
+                      {item.title}
+                    </h4>
+                    <p className="text-[11px] text-stone-400 leading-relaxed font-normal">
+                      {item.desc}
+                    </p>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={handleSendWhatsAppQuote}
-                    className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-xs sm:text-sm transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+                  <div className="pt-2 border-t border-white/5 flex items-center justify-between">
+                    <span className="text-[10px] text-stone-400 font-mono">
+                      {item.categoryLabel}
+                    </span>
+                    <span className="text-xs font-black font-mono text-[#e8b84f]">
+                      ${item.price.toLocaleString('es-MX')} MXN
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* DESGLOSE Y RESUMEN DEL ALCANCE CON PRECIOS */}
+          <div className="bg-[#10131A] rounded-3xl border border-stone-800 p-4 sm:p-6 shadow-2xl space-y-4 text-white">
+            
+            <div className="flex items-center justify-between border-b border-stone-800 pb-2.5">
+              <div className="flex items-center gap-2">
+                <Sliders className="w-4 h-4 text-[#e8b84f]" />
+                <h3 className="text-sm font-black text-white uppercase tracking-wider">
+                  Resumen de tu Alcance ({selectedItems.length} {selectedItems.length === 1 ? 'ítem' : 'ítems'})
+                </h3>
+              </div>
+              {selectedItems.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setSelectedItemIds([])}
+                  className="text-[10px] text-stone-400 hover:text-rose-400 font-mono underline cursor-pointer"
+                >
+                  Limpiar selección
+                </button>
+              )}
+            </div>
+
+            {/* Lista Desglosada */}
+            {selectedItems.length === 0 ? (
+              <div className="p-4 rounded-2xl bg-black/30 border border-dashed border-stone-800 text-center space-y-1">
+                <p className="text-xs text-stone-300 font-medium">
+                  Aún no has seleccionado ningún producto.
+                </p>
+                <p className="text-[11px] text-stone-500">
+                  Haz clic en las tarjetas de arriba para añadir tu lona, logotipo, catálogo o sitio web a la cotización.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-1.5 max-h-56 overflow-y-auto pr-1">
+                {selectedItems.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex items-center justify-between text-xs py-2 px-3 rounded-xl bg-[#141822] border border-white/5"
                   >
-                    <MessageCircle className="w-4 h-4 fill-white" />
-                    <span>Cotizar por WhatsApp</span>
-                  </button>
+                    <div className="flex items-center gap-2 min-w-0 pr-2">
+                      <div className="w-4 h-4 rounded-full bg-[#e8b84f]/20 text-[#e8b84f] flex items-center justify-center shrink-0">
+                        <Check className="w-3 h-3" />
+                      </div>
+                      <span className="text-stone-100 font-bold truncate">{item.title}</span>
+                      <span className="text-[10px] text-stone-400 font-mono hidden sm:inline shrink-0">
+                        ({item.badge})
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2.5 shrink-0">
+                      <span className="text-[#e8b84f] font-mono font-bold">
+                        ${item.price.toLocaleString('es-MX')} MXN
+                      </span>
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); toggleItem(item.id); }}
+                        className="text-stone-500 hover:text-rose-400 p-0.5 transition-colors cursor-pointer"
+                        title="Quitar"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* TARJETA DESTACADA DE INVERSIÓN TOTAL ESTIMADA Y BOTÓN DIRECTO DE WHATSAPP */}
+            <div className="pt-2 border-t border-stone-800/80 space-y-3">
+              
+              <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#141820] to-[#1C2532] text-white shadow-2xl border border-[#e8b84f]/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="space-y-0.5">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-[#e8b84f] flex items-center gap-1">
+                    <DollarSign className="w-3.5 h-3.5" />
+                    <span>Inversión Total Desglosada:</span>
+                  </div>
+                  <div className="text-2xl sm:text-3xl font-black font-heading text-[#e8b84f] tracking-tight">
+                    ${totalEstimate.toLocaleString('es-MX')} <span className="text-xs font-normal text-stone-300">MXN</span>
+                  </div>
+                  <div className="text-[11px] text-stone-300">
+                    {selectedItems.length > 0
+                      ? `${selectedItems.length} ${selectedItems.length === 1 ? 'servicio / producto seleccionado' : 'servicios / productos seleccionados'}`
+                      : 'Selección vacía'}
+                  </div>
                 </div>
 
-                {/* CUÉNTANOS TU IDEA: UBICADO ABAJO DE LA TARJETA DE COTIZAR */}
-                <div className="p-3.5 rounded-2xl bg-[#080A0E] border border-stone-800 space-y-1.5">
-                  <label className="text-xs font-bold text-stone-200 flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-[#e8b84f]" />
-                    <span>Cuéntanos tu idea (opcional):</span>
-                  </label>
-                  <textarea
-                    rows="2"
-                    value={quoteNotes}
-                    onChange={(e) => setQuoteNotes(e.target.value)}
-                    placeholder="Escribe brevemente tu idea si deseas añadir medidas o detalles (ej. Lona de 3x2m para inauguración y diseño de logo)..."
-                    className="w-full p-2.5 rounded-xl border border-stone-700 text-xs text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-[#e8b84f] bg-[#141820]"
-                  />
-                  <p className="text-[10px] text-stone-400">
-                    Si escribes detalles aquí, se incluirán automáticamente en tu mensaje de WhatsApp al pulsar el botón de arriba.
-                  </p>
-                </div>
+                <button
+                  type="button"
+                  onClick={handleSendWhatsAppScope}
+                  className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-xs sm:text-sm transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <MessageCircle className="w-4 h-4 fill-white" />
+                  <span>Cotizar este Alcance por WhatsApp</span>
+                </button>
+              </div>
 
+              {/* CAMPO DE NOTAS / MEDIDAS ESPECIALES */}
+              <div className="p-3.5 rounded-2xl bg-[#080A0E] border border-stone-800 space-y-1.5">
+                <label className="text-xs font-bold text-stone-200 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-[#e8b84f]" />
+                  <span>¿Tienes medidas especiales o especificaciones adicionales? (opcional):</span>
+                </label>
+                <textarea
+                  rows="2"
+                  value={quoteNotes}
+                  onChange={(e) => setQuoteNotes(e.target.value)}
+                  placeholder="Ej. La lona la requiero para una estructura de 4.2 × 1.8 metros, o requiero que el menú incluya 3 secciones..."
+                  className="w-full p-2.5 rounded-xl border border-stone-700 text-xs text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-[#e8b84f] bg-[#141820]"
+                />
+                <p className="text-[10px] text-stone-400">
+                  Tus especificaciones y los productos seleccionados se adjuntarán automáticamente en tu mensaje de WhatsApp.
+                </p>
               </div>
 
             </div>
+
+          </div>
 
         </section>
 
