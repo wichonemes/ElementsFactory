@@ -40,6 +40,12 @@ export default function IndustriaView({
   const [showColorsDrawer, setShowColorsDrawer] = useState(false);
   const [colorDrawerMaterial, setColorDrawerMaterial] = useState('petg');
 
+  // Estado para desplegar información técnica en las 4 Aplicaciones
+  const [expandedApp, setExpandedApp] = useState(null);
+
+  // Estado para desplegar información completa en Información Clave
+  const [expandedInfo, setExpandedInfo] = useState(null);
+
   // Catálogo de Colores Técnicos por Polímero
   const INDUSTRIAL_COLORS_BY_MATERIAL = {
     petg: {
@@ -102,11 +108,11 @@ export default function IndustriaView({
     empresa: '',
     correo: '',
     whatsapp: '',
-    aplicacion: 'Prototipo rápido (24 a 72 hrs)',
+    aplicacion: 'Prototipos funcionales (desde 24 a 72 hrs)',
     material: 'PETG Técnico (Tenaz)',
     colorSeleccionado: 'Negro Ónix Mate (Estándar)',
     cantidad: '1',
-    urgencia: '24 a 72 hrs',
+    urgencia: 'Desde 24 a 72 hrs',
     detalles: '',
     requiereNda: false,
     archivoNombre: ''
@@ -324,7 +330,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
             </div>
 
             {/* Ficha Técnica Blueprint Vectorial (Desktop / Pantallas grandes) */}
-            <div className="hidden lg:block lg:col-span-5">
+            <div className="lg:col-span-5 mt-4 lg:mt-0">
               <div className="rounded-2xl border border-white/15 bg-[#10161A] p-4 sm:p-5 shadow-2xl relative overflow-hidden">
                 <div className="flex items-center justify-between pb-3 border-b border-white/10 font-mono text-[10px]">
                   <span className="text-gray-400 flex items-center gap-1.5">
@@ -410,7 +416,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          3. SECCIÓN 01: 4 SOLUCIONES CON DENSIDAD INDUSTRIAL
+          3. SECCIÓN 01: 4 SOLUCIONES CON PESTAÑAS DESPLEGABLES
           ======================================================== */}
       <section className="py-8 sm:py-14 border-b border-white/10 bg-[#0E1317]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -423,116 +429,347 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
               Cuatro problemas de planta. Una respuesta local.
             </h2>
+            <p className="text-xs sm:text-sm text-gray-400 mt-1">
+              Haz clic en cualquiera de las 4 soluciones para desplegar información técnica, ejemplos reales y beneficios.
+            </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 lg:gap-5">
             
-            {/* Tarjeta 1 */}
-            <div className="p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-white/10 bg-[#12181C] hover:border-[#5BB8FF]/50 transition-all shadow-lg space-y-2.5 sm:space-y-3.5 relative overflow-hidden group">
-              <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 border-b border-white/5 pb-1.5 sm:pb-2">
-                <span className="text-[#5BB8FF] font-bold">PROTO-01</span>
-                <span className="hidden sm:inline">ENTREGA: 24 A 72 HRS</span>
-                <span className="sm:hidden text-gray-300">24–72 hrs</span>
-              </div>
-              <div className="flex items-start gap-2 sm:gap-3.5">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-[#5BB8FF]/10 border border-[#5BB8FF]/20 flex items-center justify-center shrink-0 text-[#5BB8FF] shadow-[0_0_12px_rgba(91,184,255,0.15)] group-hover:scale-105 transition-transform">
-                  <Layers className="w-4 h-4 sm:w-5 sm:h-5" />
+            {/* Tarjeta 1: Prototipos Funcionales */}
+            <div
+              className={`rounded-xl sm:rounded-2xl border transition-all duration-300 bg-[#12181C] shadow-lg overflow-hidden ${
+                expandedApp === 'proto'
+                  ? 'border-[#5BB8FF] shadow-[0_0_20px_rgba(91,184,255,0.15)] ring-1 ring-[#5BB8FF]/40'
+                  : 'border-white/10 hover:border-[#5BB8FF]/50'
+              }`}
+            >
+              <div
+                onClick={() => setExpandedApp(expandedApp === 'proto' ? null : 'proto')}
+                className="p-4 sm:p-5 cursor-pointer space-y-3"
+              >
+                <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 border-b border-white/5 pb-2">
+                  <span className="text-[#5BB8FF] font-bold">PROTO-01</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-300">Entrega: 24 a 72 hrs</span>
+                    <span className={`text-[10px] px-2 py-0.5 rounded flex items-center gap-1 font-sans transition-colors ${
+                      expandedApp === 'proto' ? 'bg-[#5BB8FF] text-black font-bold' : 'bg-white/5 text-gray-300 hover:text-white'
+                    }`}>
+                      {expandedApp === 'proto' ? 'Menos info' : '+ Más info'}
+                      <ChevronDown className={`w-3 h-3 transition-transform ${expandedApp === 'proto' ? 'rotate-180' : ''}`} />
+                    </span>
+                  </div>
                 </div>
-                <div className="space-y-1 flex-1 min-w-0">
-                  <h3 className="text-xs sm:text-base font-bold text-white group-hover:text-[#5BB8FF] transition-colors leading-snug">
-                    Prototipos funcionales
-                  </h3>
-                  <p className="text-[10px] sm:text-xs text-gray-300 leading-snug line-clamp-3 sm:line-clamp-none">
-                    Prueba ajustes, interferencias de ensamble y holguras imprimiendo directamente tu archivo 3D antes de mandar a fabricar en serie o invertir en moldes.
-                  </p>
+
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-[#5BB8FF]/10 border border-[#5BB8FF]/20 flex items-center justify-center shrink-0 text-[#5BB8FF] shadow-[0_0_12px_rgba(91,184,255,0.15)]">
+                    <Layers className="w-5 h-5" />
+                  </div>
+                  <div className="space-y-1 flex-1 min-w-0">
+                    <h3 className="text-sm sm:text-base font-bold text-white leading-snug">
+                      Prototipos funcionales
+                    </h3>
+                    <p className="text-xs text-gray-300 leading-snug">
+                      Prueba ajustes, interferencias de ensamble y holguras imprimiendo directamente tu archivo 3D antes de mandar a fabricar en serie o invertir en moldes.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5 sm:gap-2 text-[9px] sm:text-[10px] font-mono">
+                  <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300">Tolerancia ±0.15 mm</span>
+                  <span className="px-2 py-0.5 rounded bg-[#5BB8FF]/10 text-[#5BB8FF] border border-[#5BB8FF]/20">PETG · PLA+ Pro</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300">Archivos .step / .stl</span>
                 </div>
               </div>
-              <div className="pt-1 flex flex-wrap gap-1 sm:gap-2 text-[8.5px] sm:text-[10px] font-mono">
-                <span className="px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded bg-white/5 border border-white/10 text-gray-300">±0.15 mm</span>
-                <span className="px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded bg-[#5BB8FF]/10 text-[#5BB8FF] border border-[#5BB8FF]/20">PETG · PLA+</span>
-                <span className="hidden sm:inline px-2.5 py-1 rounded bg-white/5 border border-white/10 text-gray-300">Archivos .step / .stl</span>
-              </div>
+
+              {/* Pestaña de información técnica desplegable */}
+              {expandedApp === 'proto' && (
+                <div className="p-4 sm:p-5 bg-[#090D10] border-t border-white/10 text-xs space-y-3 animate-fadeIn">
+                  <div className="space-y-1.5">
+                    <span className="font-mono text-[10px] uppercase text-[#5BB8FF] font-bold block">
+                      Validación de Ensamble y DFM:
+                    </span>
+                    <p className="text-gray-300 leading-relaxed text-[11px] sm:text-xs">
+                      Permite verificar en físico antes de maquinados costosos: pruebas de ensamble con tornillería estándar M3 a M8, validación de holguras con rodamientos y prueba ergonómica en mano del operario.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 font-mono text-[10.5px]">
+                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/5">
+                      <span className="text-gray-400 block text-[9px] uppercase">Formatos compatibles</span>
+                      <strong className="text-white">.STEP, .STP, .STL, .3MF, .OBJ</strong>
+                    </div>
+                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/5">
+                      <span className="text-gray-400 block text-[9px] uppercase">Ahorro estimado</span>
+                      <strong className="text-[#8FB99B]">Evita modificaciones de molde ($40,000+)</strong>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 flex items-center justify-between border-t border-white/5">
+                    <span className="text-[10px] text-gray-400 font-mono">Tiempo de fabricación: 24 a 72 hrs</span>
+                    <a
+                      href="#cotizar-industria"
+                      onClick={() => setFormData(prev => ({ ...prev, aplicacion: 'Prototipos funcionales (desde 24 a 72 hrs)', urgencia: 'Desde 24 a 72 hrs' }))}
+                      className="px-3 py-1.5 rounded-lg bg-[#5BB8FF] hover:bg-[#8AD2FF] text-black font-bold text-xs inline-flex items-center gap-1 transition-colors"
+                    >
+                      <span>Cotizar este prototipo</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Tarjeta 2 */}
-            <div className="p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-white/10 bg-[#12181C] hover:border-[#8FB99B]/50 transition-all shadow-lg space-y-2.5 sm:space-y-3.5 relative overflow-hidden group">
-              <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 border-b border-white/5 pb-1.5 sm:pb-2">
-                <span className="text-[#8FB99B] font-bold">JIG-02</span>
-                <span className="hidden sm:inline">HERRAMENTAL A MEDIDA</span>
-                <span className="sm:hidden text-gray-300">A medida</span>
-              </div>
-              <div className="flex items-start gap-2 sm:gap-3.5">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-[#8FB99B]/10 border border-[#8FB99B]/20 flex items-center justify-center shrink-0 text-[#8FB99B] shadow-[0_0_12px_rgba(143,185,155,0.15)] group-hover:scale-105 transition-transform">
-                  <Wrench className="w-4 h-4 sm:w-5 sm:h-5" />
+            {/* Tarjeta 2: Utillaje y Herramentales */}
+            <div
+              className={`rounded-xl sm:rounded-2xl border transition-all duration-300 bg-[#12181C] shadow-lg overflow-hidden ${
+                expandedApp === 'jig'
+                  ? 'border-[#8FB99B] shadow-[0_0_20px_rgba(143,185,155,0.15)] ring-1 ring-[#8FB99B]/40'
+                  : 'border-white/10 hover:border-[#8FB99B]/50'
+              }`}
+            >
+              <div
+                onClick={() => setExpandedApp(expandedApp === 'jig' ? null : 'jig')}
+                className="p-4 sm:p-5 cursor-pointer space-y-3"
+              >
+                <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 border-b border-white/5 pb-2">
+                  <span className="text-[#8FB99B] font-bold">JIG-02</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-300">Herramental a medida</span>
+                    <span className={`text-[10px] px-2 py-0.5 rounded flex items-center gap-1 font-sans transition-colors ${
+                      expandedApp === 'jig' ? 'bg-[#8FB99B] text-black font-bold' : 'bg-white/5 text-gray-300 hover:text-white'
+                    }`}>
+                      {expandedApp === 'jig' ? 'Menos info' : '+ Más info'}
+                      <ChevronDown className={`w-3 h-3 transition-transform ${expandedApp === 'jig' ? 'rotate-180' : ''}`} />
+                    </span>
+                  </div>
                 </div>
-                <div className="space-y-1 flex-1 min-w-0">
-                  <h3 className="text-xs sm:text-base font-bold text-white group-hover:text-[#8FB99B] transition-colors leading-snug">
-                    Utillaje y herramentales
-                  </h3>
-                  <p className="text-[10px] sm:text-xs text-gray-300 leading-snug line-clamp-3 sm:line-clamp-none">
-                    Fabricamos con las medidas exactas de tu archivo nidos de apoyo, plantillas para operarios y mordazas protectoras que no rayan piezas terminadas.
-                  </p>
+
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-[#8FB99B]/10 border border-[#8FB99B]/20 flex items-center justify-center shrink-0 text-[#8FB99B] shadow-[0_0_12px_rgba(143,185,155,0.15)]">
+                    <Wrench className="w-5 h-5" />
+                  </div>
+                  <div className="space-y-1 flex-1 min-w-0">
+                    <h3 className="text-sm sm:text-base font-bold text-white leading-snug">
+                      Utillaje y herramentales
+                    </h3>
+                    <p className="text-xs text-gray-300 leading-snug">
+                      Fabricamos con las medidas exactas de tu archivo nidos de apoyo, plantillas para operarios y mordazas protectoras que no rayan piezas terminadas.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5 sm:gap-2 text-[9px] sm:text-[10px] font-mono">
+                  <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300">Ajuste fiel a plano</span>
+                  <span className="px-2 py-0.5 rounded bg-[#8FB99B]/10 text-[#8FB99B] border border-[#8FB99B]/20">TPU 95A · PETG</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300">Superficie antirrayón</span>
                 </div>
               </div>
-              <div className="pt-1 flex flex-wrap gap-1 sm:gap-2 text-[8.5px] sm:text-[10px] font-mono">
-                <span className="px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded bg-white/5 border border-white/10 text-gray-300">Ajuste fiel</span>
-                <span className="px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded bg-[#8FB99B]/10 text-[#8FB99B] border border-[#8FB99B]/20">TPU 95A · PETG</span>
-                <span className="hidden sm:inline px-2.5 py-1 rounded bg-white/5 border border-white/10 text-gray-300">Superficie antirrayón</span>
-              </div>
+
+              {/* Pestaña de información técnica desplegable */}
+              {expandedApp === 'jig' && (
+                <div className="p-4 sm:p-5 bg-[#090D10] border-t border-white/10 text-xs space-y-3 animate-fadeIn">
+                  <div className="space-y-1.5">
+                    <span className="font-mono text-[10px] uppercase text-[#8FB99B] font-bold block">
+                      Dispositivos Poka-Yoke y Protección de Línea:
+                    </span>
+                    <p className="text-gray-300 leading-relaxed text-[11px] sm:text-xs">
+                      Diseñados para estaciones de ensamble manual o semiautomático. Nidos de sujeción para atornilladores neumáticos, galgas de paso/no-paso e insertos en poliuretano TPU que previenen abolladuras y marcas cosméticas en piezas de vista.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 font-mono text-[10.5px]">
+                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/5">
+                      <span className="text-gray-400 block text-[9px] uppercase">Material de contacto</span>
+                      <strong className="text-white">TPU 95A (Goma no marcante)</strong>
+                    </div>
+                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/5">
+                      <span className="text-gray-400 block text-[9px] uppercase">Efectividad</span>
+                      <strong className="text-[#8FB99B]">Cero rayones y menor fatiga</strong>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 flex items-center justify-between border-t border-white/5">
+                    <span className="text-[10px] text-gray-400 font-mono">Resistencia mecánica garantizada</span>
+                    <a
+                      href="#cotizar-industria"
+                      onClick={() => setFormData(prev => ({ ...prev, aplicacion: 'Utillaje y herramentales', urgencia: 'A medida' }))}
+                      className="px-3 py-1.5 rounded-lg bg-[#8FB99B] hover:bg-[#a5cca0] text-black font-bold text-xs inline-flex items-center gap-1 transition-colors"
+                    >
+                      <span>Cotizar herramental / Jig</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Tarjeta 3 */}
-            <div className="p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-white/10 bg-[#12181C] hover:border-amber-400/50 transition-all shadow-lg space-y-2.5 sm:space-y-3.5 relative overflow-hidden group">
-              <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 border-b border-white/5 pb-1.5 sm:pb-2">
-                <span className="text-amber-400 font-bold">SPARE-03</span>
-                <span className="hidden sm:inline">SUSTITUCIÓN DIRECTA</span>
-                <span className="sm:hidden text-gray-300">Sustitución</span>
-              </div>
-              <div className="flex items-start gap-2 sm:gap-3.5">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center shrink-0 text-amber-300 shadow-[0_0_12px_rgba(251,191,36,0.15)] group-hover:scale-105 transition-transform">
-                  <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5" />
+            {/* Tarjeta 3: Refacciones y Obsoletos */}
+            <div
+              className={`rounded-xl sm:rounded-2xl border transition-all duration-300 bg-[#12181C] shadow-lg overflow-hidden ${
+                expandedApp === 'spare'
+                  ? 'border-amber-400 shadow-[0_0_20px_rgba(251,191,36,0.15)] ring-1 ring-amber-400/40'
+                  : 'border-white/10 hover:border-amber-400/50'
+              }`}
+            >
+              <div
+                onClick={() => setExpandedApp(expandedApp === 'spare' ? null : 'spare')}
+                className="p-4 sm:p-5 cursor-pointer space-y-3"
+              >
+                <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 border-b border-white/5 pb-2">
+                  <span className="text-amber-400 font-bold">SPARE-03</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-300">Sustitución directa</span>
+                    <span className={`text-[10px] px-2 py-0.5 rounded flex items-center gap-1 font-sans transition-colors ${
+                      expandedApp === 'spare' ? 'bg-amber-400 text-black font-bold' : 'bg-white/5 text-gray-300 hover:text-white'
+                    }`}>
+                      {expandedApp === 'spare' ? 'Menos info' : '+ Más info'}
+                      <ChevronDown className={`w-3 h-3 transition-transform ${expandedApp === 'spare' ? 'rotate-180' : ''}`} />
+                    </span>
+                  </div>
                 </div>
-                <div className="space-y-1 flex-1 min-w-0">
-                  <h3 className="text-xs sm:text-base font-bold text-white group-hover:text-amber-300 transition-colors leading-snug">
-                    Refacciones y obsoletos
-                  </h3>
-                  <p className="text-[10px] sm:text-xs text-gray-300 leading-snug line-clamp-3 sm:line-clamp-none">
-                    ¿Se rompió una pieza y el fabricante tarda semanas o ya no existe? Con tu archivo 3D o plano con medidas exactas, te la imprimimos en polímero técnico resistente.
-                  </p>
+
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center shrink-0 text-amber-300 shadow-[0_0_12px_rgba(251,191,36,0.15)]">
+                    <RotateCcw className="w-5 h-5" />
+                  </div>
+                  <div className="space-y-1 flex-1 min-w-0">
+                    <h3 className="text-sm sm:text-base font-bold text-white leading-snug">
+                      Refacciones y obsoletos
+                    </h3>
+                    <p className="text-xs text-gray-300 leading-snug">
+                      ¿Se rompió una pieza y el fabricante tarda semanas o ya no existe? Con tu archivo 3D o plano con medidas exactas, te la imprimimos en polímero técnico resistente.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5 sm:gap-2 text-[9px] sm:text-[10px] font-mono">
+                  <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300">Con tus cotas</span>
+                  <span className="px-2 py-0.5 rounded bg-amber-400/10 text-amber-300 border border-amber-400/20">PETG · ABS/ASA</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300">Desde 1 pieza</span>
                 </div>
               </div>
-              <div className="pt-1 flex flex-wrap gap-1 sm:gap-2 text-[8.5px] sm:text-[10px] font-mono">
-                <span className="px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded bg-white/5 border border-white/10 text-gray-300">Con tus cotas</span>
-                <span className="px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded bg-amber-400/10 text-amber-300 border border-amber-400/20">PETG · ABS/ASA</span>
-                <span className="hidden sm:inline px-2.5 py-1 rounded bg-white/5 border border-white/10 text-gray-300">Desde 1 pieza</span>
-              </div>
+
+              {/* Pestaña de información técnica desplegable */}
+              {expandedApp === 'spare' && (
+                <div className="p-4 sm:p-5 bg-[#090D10] border-t border-white/10 text-xs space-y-3 animate-fadeIn">
+                  <div className="space-y-1.5">
+                    <span className="font-mono text-[10px] uppercase text-amber-400 font-bold block">
+                      Reemplazo Inmediato para Evitar Paro de Máquina:
+                    </span>
+                    <p className="text-gray-300 leading-relaxed text-[11px] sm:text-xs">
+                      Replicamos en polímero de alta resistencia componentes críticos rotos: engranes helicoidales o rectos, poleas sincronizadas, levas, manetas de ajuste, bujes, codos de aspiración y carcasas de protección descatalogadas.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 font-mono text-[10.5px]">
+                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/5">
+                      <span className="text-gray-400 block text-[9px] uppercase">Resistencia Térmica</span>
+                      <strong className="text-white">Hasta 95°C continuos en ABS</strong>
+                    </div>
+                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/5">
+                      <span className="text-gray-400 block text-[9px] uppercase">Tiempo de respuesta</span>
+                      <strong className="text-amber-300">Entrega de urgencia 24 hrs</strong>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 flex items-center justify-between border-t border-white/5">
+                    <span className="text-[10px] text-gray-400 font-mono">Sustitución 1 a 1 de la pieza original</span>
+                    <a
+                      href="#cotizar-industria"
+                      onClick={() => setFormData(prev => ({ ...prev, aplicacion: 'Refacciones y obsoletos', urgencia: 'Sustitución directa' }))}
+                      className="px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-black font-bold text-xs inline-flex items-center gap-1 transition-colors"
+                    >
+                      <span>Cotizar refacción</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Tarjeta 4 */}
-            <div className="p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-white/10 bg-[#12181C] hover:border-purple-400/50 transition-all shadow-lg space-y-2.5 sm:space-y-3.5 relative overflow-hidden group">
-              <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 border-b border-white/5 pb-1.5 sm:pb-2">
-                <span className="text-purple-400 font-bold">BATCH-04</span>
-                <span className="hidden sm:inline">PRODUCCIÓN BAJO DEMANDA</span>
-                <span className="sm:hidden text-gray-300">Bajo demanda</span>
-              </div>
-              <div className="flex items-start gap-2 sm:gap-3.5">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-purple-400/10 border border-purple-400/20 flex items-center justify-center shrink-0 text-purple-300 shadow-[0_0_12px_rgba(192,132,252,0.15)] group-hover:scale-105 transition-transform">
-                  <Boxes className="w-4 h-4 sm:w-5 sm:h-5" />
+            {/* Tarjeta 4: Lotes Cortos y Preseries */}
+            <div
+              className={`rounded-xl sm:rounded-2xl border transition-all duration-300 bg-[#12181C] shadow-lg overflow-hidden ${
+                expandedApp === 'batch'
+                  ? 'border-purple-400 shadow-[0_0_20px_rgba(192,132,252,0.15)] ring-1 ring-purple-400/40'
+                  : 'border-white/10 hover:border-purple-400/50'
+              }`}
+            >
+              <div
+                onClick={() => setExpandedApp(expandedApp === 'batch' ? null : 'batch')}
+                className="p-4 sm:p-5 cursor-pointer space-y-3"
+              >
+                <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 border-b border-white/5 pb-2">
+                  <span className="text-purple-400 font-bold">BATCH-04</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-300">Bajo demanda</span>
+                    <span className={`text-[10px] px-2 py-0.5 rounded flex items-center gap-1 font-sans transition-colors ${
+                      expandedApp === 'batch' ? 'bg-purple-400 text-black font-bold' : 'bg-white/5 text-gray-300 hover:text-white'
+                    }`}>
+                      {expandedApp === 'batch' ? 'Menos info' : '+ Más info'}
+                      <ChevronDown className={`w-3 h-3 transition-transform ${expandedApp === 'batch' ? 'rotate-180' : ''}`} />
+                    </span>
+                  </div>
                 </div>
-                <div className="space-y-1 flex-1 min-w-0">
-                  <h3 className="text-xs sm:text-base font-bold text-white group-hover:text-purple-300 transition-colors leading-snug">
-                    Lotes Cortos y Preseries
-                  </h3>
-                  <p className="text-[10px] sm:text-xs text-gray-300 leading-snug line-clamp-3 sm:line-clamp-none">
-                    Producción continua de varias piezas bajo demanda para arranques, reemplazos o preseries sin tener que pagar matrices ni herramentales costosos.
-                  </p>
+
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-purple-400/10 border border-purple-400/20 flex items-center justify-center shrink-0 text-purple-300 shadow-[0_0_12px_rgba(192,132,252,0.15)]">
+                    <Boxes className="w-5 h-5" />
+                  </div>
+                  <div className="space-y-1 flex-1 min-w-0">
+                    <h3 className="text-sm sm:text-base font-bold text-white leading-snug">
+                      Lotes Cortos y Preseries
+                    </h3>
+                    <p className="text-xs text-gray-300 leading-snug">
+                      Producción continua de varias piezas bajo demanda para arranques, reemplazos o preseries sin tener que pagar matrices ni herramentales costosos.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5 sm:gap-2 text-[9px] sm:text-[10px] font-mono">
+                  <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300">Sin costo de molde</span>
+                  <span className="px-2 py-0.5 rounded bg-purple-400/10 text-purple-300 border border-purple-400/20">1 a 500+ piezas</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300">Entrega en SLP</span>
                 </div>
               </div>
-              <div className="pt-1 flex flex-wrap gap-1 sm:gap-2 text-[8.5px] sm:text-[10px] font-mono">
-                <span className="px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded bg-white/5 border border-white/10 text-gray-300">Sin matriz</span>
-                <span className="px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded bg-purple-400/10 text-purple-300 border border-purple-400/20">1 a 500+ pzs</span>
-                <span className="hidden sm:inline px-2.5 py-1 rounded bg-white/5 border border-white/10 text-gray-300">Entrega en SLP</span>
-              </div>
+
+              {/* Pestaña de información técnica desplegable */}
+              {expandedApp === 'batch' && (
+                <div className="p-4 sm:p-5 bg-[#090D10] border-t border-white/10 text-xs space-y-3 animate-fadeIn">
+                  <div className="space-y-1.5">
+                    <span className="font-mono text-[10px] uppercase text-purple-400 font-bold block">
+                      Manufactura Puente y Preseries Ágiles:
+                    </span>
+                    <p className="text-gray-300 leading-relaxed text-[11px] sm:text-xs">
+                      Ideal para producciones de 10 a 500 piezas antes de un molde definitivo, o para piezas de baja rotación donde nunca se amortizaría una matriz de inyección. Modifica el diseño de un lote al siguiente sin costos extra.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 font-mono text-[10.5px]">
+                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/5">
+                      <span className="text-gray-400 block text-[9px] uppercase">Capacidad de lote</span>
+                      <strong className="text-white">Escalable de 10 a 500+ pzs</strong>
+                    </div>
+                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/5">
+                      <span className="text-gray-400 block text-[9px] uppercase">Flexibilidad de diseño</span>
+                      <strong className="text-purple-300">Revisiones CAD instantáneas</strong>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 flex items-center justify-between border-t border-white/5">
+                    <span className="text-[10px] text-gray-400 font-mono">Entregas parciales o por lote completo</span>
+                    <a
+                      href="#cotizar-industria"
+                      onClick={() => setFormData(prev => ({ ...prev, aplicacion: 'Lotes Cortos y Preseries', urgencia: 'Bajo demanda' }))}
+                      className="px-3 py-1.5 rounded-lg bg-purple-400 hover:bg-purple-300 text-black font-bold text-xs inline-flex items-center gap-1 transition-colors"
+                    >
+                      <span>Cotizar lote de piezas</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
+                </div>
+              )}
             </div>
 
           </div>
@@ -689,74 +926,105 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          5. SECCIÓN 03: CÓMO TRABAJAMOS (PIPELINE HORIZONTAL COMPACTO)
+          5. SECCIÓN 03: CÓMO TRABAJAMOS (FLUJO VISUAL SIN REDUNDANCIA)
           ======================================================== */}
       <section className="py-8 sm:py-14 border-b border-white/10 bg-[#0E1317]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           
-          <div className="mb-5 sm:mb-8">
-            <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
+          <div className="mb-6 sm:mb-9 text-center sm:text-left">
+            <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center justify-center sm:justify-start gap-2">
               <span className="w-5 h-px bg-[#5BB8FF]" />
-              03 / Cómo trabajamos
+              03 / Proceso de Fabricación
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
-              De tu archivo a la pieza, sin vueltas.
+              De tu archivo a la pieza, directo y sin vueltas.
             </h2>
+            <p className="text-xs sm:text-sm text-gray-400 mt-1">
+              Flujo de manufactura transparente desde que nos envías tu modelo hasta que recibes tu pieza en mano.
+            </p>
           </div>
 
-          {/* Esquema de 4 Pasos con Flechas de Dirección */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+          {/* Pipeline Visual de Manufactura */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 relative">
             
-            <div className="p-3.5 sm:p-4 rounded-xl border border-white/10 bg-[#12181C] space-y-2 relative group hover:border-[#5BB8FF]/40 transition-colors">
-              <div className="flex items-center justify-between font-mono text-xs">
-                <span className="text-[#5BB8FF] font-black text-sm">01</span>
-                <span className="inline-flex items-center gap-1 text-[10px] text-[#5BB8FF] font-semibold bg-[#5BB8FF]/10 px-2 py-0.5 rounded">
-                  Paso 1 <ArrowRight className="w-3 h-3 inline" />
-                </span>
+            {/* Estación 1 */}
+            <div className="p-4 sm:p-5 rounded-2xl border border-white/10 bg-[#12181C] hover:border-[#5BB8FF]/50 transition-all shadow-md space-y-3 relative group">
+              <div className="flex items-center justify-between">
+                <div className="w-10 h-10 rounded-xl bg-[#5BB8FF]/10 border border-[#5BB8FF]/20 flex items-center justify-center text-[#5BB8FF] group-hover:scale-110 transition-transform">
+                  <UploadCloud className="w-5 h-5" />
+                </div>
+                <ArrowRight className="w-4 h-4 text-gray-600 hidden lg:block group-hover:text-[#5BB8FF] transition-colors" />
               </div>
-              <h4 className="font-bold text-xs sm:text-sm text-white">Archivo / Medidas</h4>
-              <p className="text-[10.5px] sm:text-xs text-gray-400 leading-relaxed">
-                Nos compartes tu archivo 3D (.step, .stl, .obj) o tu croquis con cotas exactas.
-              </p>
+              <div>
+                <h4 className="font-bold text-sm text-white">Envío de Archivo o Medidas</h4>
+                <p className="text-xs text-gray-300 mt-1 leading-relaxed">
+                  Nos compartes tu modelo 3D (.step, .stl, .3mf) o una foto con cotas y medidas exactas.
+                </p>
+              </div>
+              <div className="pt-1 flex items-center gap-1.5 font-mono text-[10px] text-[#5BB8FF]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#5BB8FF]" />
+                <span>Recepción Inmediata</span>
+              </div>
             </div>
 
-            <div className="p-3.5 sm:p-4 rounded-xl border border-white/10 bg-[#12181C] space-y-2 relative group hover:border-[#5BB8FF]/40 transition-colors">
-              <div className="flex items-center justify-between font-mono text-xs">
-                <span className="text-[#5BB8FF] font-black text-sm">02</span>
-                <span className="inline-flex items-center gap-1 text-[10px] text-[#5BB8FF] font-semibold bg-[#5BB8FF]/10 px-2 py-0.5 rounded">
-                  Paso 2 <ArrowRight className="w-3 h-3 inline" />
-                </span>
+            {/* Estación 2 */}
+            <div className="p-4 sm:p-5 rounded-2xl border border-white/10 bg-[#12181C] hover:border-amber-400/50 transition-all shadow-md space-y-3 relative group">
+              <div className="flex items-center justify-between">
+                <div className="w-10 h-10 rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
+                  <Sliders className="w-5 h-5" />
+                </div>
+                <ArrowRight className="w-4 h-4 text-gray-600 hidden lg:block group-hover:text-amber-400 transition-colors" />
               </div>
-              <h4 className="font-bold text-xs sm:text-sm text-white">Cotización Rápida</h4>
-              <p className="text-[10.5px] sm:text-xs text-gray-400 leading-relaxed">
-                Revisamos viabilidad y calculamos material y tiempo sin letras chiquitas.
-              </p>
+              <div>
+                <h4 className="font-bold text-sm text-white">Validación y Cotización</h4>
+                <p className="text-xs text-gray-300 mt-1 leading-relaxed">
+                  Revisamos imprimibilidad, definimos el polímero ideal para tu uso y te cotizamos al momento.
+                </p>
+              </div>
+              <div className="pt-1 flex items-center gap-1.5 font-mono text-[10px] text-amber-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                <span>Respuesta en Minutos</span>
+              </div>
             </div>
 
-            <div className="p-3.5 sm:p-4 rounded-xl border border-white/10 bg-[#12181C] space-y-2 relative group hover:border-[#5BB8FF]/40 transition-colors">
-              <div className="flex items-center justify-between font-mono text-xs">
-                <span className="text-[#5BB8FF] font-black text-sm">03</span>
-                <span className="inline-flex items-center gap-1 text-[10px] text-[#5BB8FF] font-semibold bg-[#5BB8FF]/10 px-2 py-0.5 rounded">
-                  Paso 3 <ArrowRight className="w-3 h-3 inline" />
-                </span>
+            {/* Estación 3 */}
+            <div className="p-4 sm:p-5 rounded-2xl border border-white/10 bg-[#12181C] hover:border-emerald-400/50 transition-all shadow-md space-y-3 relative group">
+              <div className="flex items-center justify-between">
+                <div className="w-10 h-10 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
+                  <Cpu className="w-5 h-5" />
+                </div>
+                <ArrowRight className="w-4 h-4 text-gray-600 hidden lg:block group-hover:text-emerald-400 transition-colors" />
               </div>
-              <h4 className="font-bold text-xs sm:text-sm text-white">Impresión 3D</h4>
-              <p className="text-[10.5px] sm:text-xs text-gray-400 leading-relaxed">
-                Fabricación técnica en polímero resistente y retiro limpio de soportes.
-              </p>
+              <div>
+                <h4 className="font-bold text-sm text-white">Fabricación en Polímero Técnico</h4>
+                <p className="text-xs text-gray-300 mt-1 leading-relaxed">
+                  Impresión 3D con calibración de tolerancias dimensionales y retiro limpio de soportes.
+                </p>
+              </div>
+              <div className="pt-1 flex items-center gap-1.5 font-mono text-[10px] text-emerald-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                <span>Tolerancia ±0.15 mm</span>
+              </div>
             </div>
 
-            <div className="p-3.5 sm:p-4 rounded-xl border border-white/10 bg-[#12181C] space-y-2 relative group hover:border-[#8FB99B]/40 transition-colors">
-              <div className="flex items-center justify-between font-mono text-xs">
-                <span className="text-[#8FB99B] font-black text-sm">04</span>
-                <span className="inline-flex items-center gap-1 text-[10px] text-[#8FB99B] font-semibold bg-[#8FB99B]/10 px-2 py-0.5 rounded">
-                  Listo <Check className="w-3 h-3 inline" />
-                </span>
+            {/* Estación 4 */}
+            <div className="p-4 sm:p-5 rounded-2xl border border-white/10 bg-[#12181C] hover:border-purple-400/50 transition-all shadow-md space-y-3 relative group">
+              <div className="flex items-center justify-between">
+                <div className="w-10 h-10 rounded-xl bg-purple-400/10 border border-purple-400/20 flex items-center justify-center text-purple-300 group-hover:scale-110 transition-transform">
+                  <Truck className="w-5 h-5" />
+                </div>
+                <CheckCircle2 className="w-4 h-4 text-[#8FB99B]" />
               </div>
-              <h4 className="font-bold text-xs sm:text-sm text-white">Entrega Local</h4>
-              <p className="text-[10.5px] sm:text-xs text-gray-400 leading-relaxed">
-                Entrega personal acordada en San Luis Potosí o retiro directo en taller.
-              </p>
+              <div>
+                <h4 className="font-bold text-sm text-white">Entrega en Planta</h4>
+                <p className="text-xs text-gray-300 mt-1 leading-relaxed">
+                  Recibes tus piezas listas en mano en San Luis Potosí de 24 a 72 horas para reactivar tu línea.
+                </p>
+              </div>
+              <div className="pt-1 flex items-center gap-1.5 font-mono text-[10px] text-purple-300">
+                <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
+                <span>Local SLP · 24 a 72 hrs</span>
+              </div>
             </div>
 
           </div>
@@ -765,7 +1033,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
           <div className="mt-4 p-3.5 rounded-xl border border-[#5BB8FF]/30 bg-[#5BB8FF]/5 flex items-center gap-3 text-xs text-gray-300">
             <span className="w-2 h-2 rounded-full bg-[#5BB8FF] shrink-0" />
             <span>
-              <strong className="text-white">¿Qué necesitas para cotizar?</strong> Tu archivo digital en formato .step, .stl u .obj, o las medidas exactas de tu pieza. Nosotros nos encargamos de que la impresión 3D quede con la máxima calidad.
+              <strong className="text-white">¿Qué necesitas para cotizar?</strong> Tu archivo digital en formato .step, .stl u .obj, o las medidas exactas de tu pieza. Nosotros nos encargamos de que la impresión 3D quede con la máxima calidad técnica.
             </span>
           </div>
 
@@ -819,7 +1087,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          7. SECCIÓN 05: LO QUE NECESITAS SABER
+          7. SECCIÓN 05: INFORMACIÓN CLAVE DESPLEGABLE (SIN PUNTOS SUSPENSIVOS)
           ======================================================== */}
       <section className="py-8 sm:py-14 border-b border-white/10 bg-[#0A0E11]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
@@ -832,48 +1100,167 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
               Lo que necesitas saber.
             </h2>
+            <p className="text-xs sm:text-sm text-gray-400 mt-1">
+              Toca cualquier tarjeta para desplegar los detalles completos de servicio y políticas.
+            </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-2.5 sm:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             
-            <div className="p-3 sm:p-4 rounded-xl border border-white/10 bg-[#12181C] space-y-1.5">
-              <div className="flex items-center gap-1.5 font-mono text-[10.5px] sm:text-xs text-white font-bold">
-                <FileText className="w-3.5 h-3.5 text-[#5BB8FF] shrink-0" />
-                <span className="truncate">¿Qué necesitas?</span>
+            {/* Tarjeta 1: ¿Qué necesitas? */}
+            <div
+              onClick={() => setExpandedInfo(expandedInfo === 'archivo' ? null : 'archivo')}
+              className={`p-4 rounded-xl border transition-all cursor-pointer bg-[#12181C] space-y-2 ${
+                expandedInfo === 'archivo'
+                  ? 'border-[#5BB8FF] shadow-[0_0_15px_rgba(91,184,255,0.2)] bg-[#141C22]'
+                  : 'border-white/10 hover:border-white/20'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 font-mono text-xs sm:text-sm text-white font-bold">
+                  <FileText className="w-4 h-4 text-[#5BB8FF] shrink-0" />
+                  <span>¿Qué necesitas para empezar?</span>
+                </div>
+                <span className={`text-[10px] px-2 py-0.5 rounded flex items-center gap-1 font-mono transition-colors ${
+                  expandedInfo === 'archivo' ? 'bg-[#5BB8FF] text-black font-bold' : 'bg-white/5 text-gray-400'
+                }`}>
+                  {expandedInfo === 'archivo' ? 'Cerrar' : '+ Detalle'}
+                  <ChevronDown className={`w-3 h-3 transition-transform ${expandedInfo === 'archivo' ? 'rotate-180' : ''}`} />
+                </span>
               </div>
-              <p className="text-[10px] sm:text-xs text-gray-400 leading-snug line-clamp-3 sm:line-clamp-none">
-                Tu archivo 3D (.step, .stl) o un croquis con las medidas exactas. La cotización es inmediata.
+              <p className="text-xs text-gray-300 leading-relaxed">
+                Tu archivo 3D (.step, .stl, .3mf) o un croquis claro con las medidas exactas de la pieza. La cotización es inmediata y sin costo.
               </p>
+              {expandedInfo === 'archivo' && (
+                <div className="pt-2 border-t border-white/10 text-[11px] text-gray-300 space-y-1.5 animate-fadeIn">
+                  <p>
+                    • <strong>Si tienes modelo 3D:</strong> Aceptamos archivos exportados desde SolidWorks, Inventor, Fusion 360, CATIA, NX, AutoCAD o Blender (.step, .stp, .stl, .3mf, .obj).
+                  </p>
+                  <p>
+                    • <strong>Si no tienes archivo 3D:</strong> Mándanos fotos nítidas con una regla o calibrador al lado y las medidas clave (diámetros, distancias entre centros, espesor).
+                  </p>
+                  <p>
+                    • <strong>Muestra física:</strong> Si te encuentras en San Luis Potosí, podemos coordinar la revisión directa de la pieza física dañada para replicarla con tus medidas.
+                  </p>
+                </div>
+              )}
             </div>
 
-            <div className="p-3 sm:p-4 rounded-xl border border-white/10 bg-[#12181C] space-y-1.5">
-              <div className="flex items-center gap-1.5 font-mono text-[10.5px] sm:text-xs text-white font-bold">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#8FB99B] shrink-0" />
-                <span className="truncate">Confidencialidad</span>
+            {/* Tarjeta 2: Confidencialidad */}
+            <div
+              onClick={() => setExpandedInfo(expandedInfo === 'nda' ? null : 'nda')}
+              className={`p-4 rounded-xl border transition-all cursor-pointer bg-[#12181C] space-y-2 ${
+                expandedInfo === 'nda'
+                  ? 'border-[#8FB99B] shadow-[0_0_15px_rgba(143,185,155,0.2)] bg-[#141C22]'
+                  : 'border-white/10 hover:border-white/20'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 font-mono text-xs sm:text-sm text-white font-bold">
+                  <ShieldCheck className="w-4 h-4 text-[#8FB99B] shrink-0" />
+                  <span>Confidencialidad y NDA</span>
+                </div>
+                <span className={`text-[10px] px-2 py-0.5 rounded flex items-center gap-1 font-mono transition-colors ${
+                  expandedInfo === 'nda' ? 'bg-[#8FB99B] text-black font-bold' : 'bg-white/5 text-gray-400'
+                }`}>
+                  {expandedInfo === 'nda' ? 'Cerrar' : '+ Detalle'}
+                  <ChevronDown className={`w-3 h-3 transition-transform ${expandedInfo === 'nda' ? 'rotate-180' : ''}`} />
+                </span>
               </div>
-              <p className="text-[10px] sm:text-xs text-gray-400 leading-snug line-clamp-3 sm:line-clamp-none">
-                Firmamos acuerdo de confidencialidad (NDA) antes de que envíes planos reservados.
+              <p className="text-xs text-gray-300 leading-relaxed">
+                Firmamos acuerdo de confidencialidad (NDA) antes de que envíes planos o información técnica reservada de tu empresa.
               </p>
+              {expandedInfo === 'nda' && (
+                <div className="pt-2 border-t border-white/10 text-[11px] text-gray-300 space-y-1.5 animate-fadeIn">
+                  <p>
+                    • <strong>Protección de secretos industriales:</strong> Tus diseños, patentes y herramentales no se comparten con terceros ni se publican en redes sociales sin tu visto bueno por escrito.
+                  </p>
+                  <p>
+                    • <strong>Formato de tu empresa o propio:</strong> Podemos firmar el convenio formal que maneja tu departamento legal o proveer nuestro formato estándar de confidencialidad bilateral.
+                  </p>
+                  <p>
+                    • <strong>Resguardo digital:</strong> Al concluir la fabricación, tus archivos quedan resguardados bajo llave o se eliminan permanentemente si así lo solicitas.
+                  </p>
+                </div>
+              )}
             </div>
 
-            <div className="p-3 sm:p-4 rounded-xl border border-white/10 bg-[#12181C] space-y-1.5">
-              <div className="flex items-center gap-1.5 font-mono text-[10.5px] sm:text-xs text-white font-bold">
-                <Boxes className="w-3.5 h-3.5 text-purple-400 shrink-0" />
-                <span className="truncate">Sin Mínimos</span>
+            {/* Tarjeta 3: Sin Mínimos */}
+            <div
+              onClick={() => setExpandedInfo(expandedInfo === 'minimos' ? null : 'minimos')}
+              className={`p-4 rounded-xl border transition-all cursor-pointer bg-[#12181C] space-y-2 ${
+                expandedInfo === 'minimos'
+                  ? 'border-purple-400 shadow-[0_0_15px_rgba(192,132,252,0.2)] bg-[#141C22]'
+                  : 'border-white/10 hover:border-white/20'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 font-mono text-xs sm:text-sm text-white font-bold">
+                  <Boxes className="w-4 h-4 text-purple-400 shrink-0" />
+                  <span>Sin Mínimos de Compra</span>
+                </div>
+                <span className={`text-[10px] px-2 py-0.5 rounded flex items-center gap-1 font-mono transition-colors ${
+                  expandedInfo === 'minimos' ? 'bg-purple-400 text-black font-bold' : 'bg-white/5 text-gray-400'
+                }`}>
+                  {expandedInfo === 'minimos' ? 'Cerrar' : '+ Detalle'}
+                  <ChevronDown className={`w-3 h-3 transition-transform ${expandedInfo === 'minimos' ? 'rotate-180' : ''}`} />
+                </span>
               </div>
-              <p className="text-[10px] sm:text-xs text-gray-400 leading-snug line-clamp-3 sm:line-clamp-none">
-                Desde 1 sola pieza para sustitución urgente, hasta lotes de 1 a 500 piezas sin costo de moldes.
+              <p className="text-xs text-gray-300 leading-relaxed">
+                Desde 1 sola pieza para sustitución urgente, hasta lotes de 1 a 500 piezas sin costo de apertura de molde ni herramentales.
               </p>
+              {expandedInfo === 'minimos' && (
+                <div className="pt-2 border-t border-white/10 text-[11px] text-gray-300 space-y-1.5 animate-fadeIn">
+                  <p>
+                    • <strong>Cero inversión inicial en moldes:</strong> Un molde de inyección convencional cuesta entre $30,000 y $150,000 MXN y tarda meses. Con nosotros pagas únicamente las piezas impresas que necesitas hoy.
+                  </p>
+                  <p>
+                    • <strong>Flexibilidad de iteración:</strong> Si después de la primera pieza requieres agrandar un orificio 1 milímetro o reforzar una arista, se corrige el archivo sin perder inversión previa.
+                  </p>
+                  <p>
+                    • <strong>Escalabilidad ágil:</strong> Comienza con 1 prototipo hoy y solicita 50 piezas la próxima semana con el mismo estándar dimensional.
+                  </p>
+                </div>
+              )}
             </div>
 
-            <div className="p-3 sm:p-4 rounded-xl border border-white/10 bg-[#12181C] space-y-1.5">
-              <div className="flex items-center gap-1.5 font-mono text-[10.5px] sm:text-xs text-white font-bold">
-                <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                <span className="truncate">Entrega Rápida</span>
+            {/* Tarjeta 4: Entrega Rápida */}
+            <div
+              onClick={() => setExpandedInfo(expandedInfo === 'entrega' ? null : 'entrega')}
+              className={`p-4 rounded-xl border transition-all cursor-pointer bg-[#12181C] space-y-2 ${
+                expandedInfo === 'entrega'
+                  ? 'border-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.2)] bg-[#141C22]'
+                  : 'border-white/10 hover:border-white/20'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 font-mono text-xs sm:text-sm text-white font-bold">
+                  <Clock className="w-4 h-4 text-amber-400 shrink-0" />
+                  <span>Entrega Rápida en SLP</span>
+                </div>
+                <span className={`text-[10px] px-2 py-0.5 rounded flex items-center gap-1 font-mono transition-colors ${
+                  expandedInfo === 'entrega' ? 'bg-amber-400 text-black font-bold' : 'bg-white/5 text-gray-400'
+                }`}>
+                  {expandedInfo === 'entrega' ? 'Cerrar' : '+ Detalle'}
+                  <ChevronDown className={`w-3 h-3 transition-transform ${expandedInfo === 'entrega' ? 'rotate-180' : ''}`} />
+                </span>
               </div>
-              <p className="text-[10px] sm:text-xs text-gray-400 leading-snug line-clamp-3 sm:line-clamp-none">
-                Prototipos listos desde 24 a 72 horas. Entrega directa y trato personalizado en San Luis Potosí.
+              <p className="text-xs text-gray-300 leading-relaxed">
+                Prototipos y refacciones listos desde 24 a 72 horas. Entrega directa y trato personalizado en San Luis Potosí.
               </p>
+              {expandedInfo === 'entrega' && (
+                <div className="pt-2 border-t border-white/10 text-[11px] text-gray-300 space-y-1.5 animate-fadeIn">
+                  <p>
+                    • <strong>Atención prioritaria para línea detenida:</strong> Si tienes una máquina parada por una refacción rota, iniciamos impresión el mismo día para tenerla lista en 24 horas.
+                  </p>
+                  <p>
+                    • <strong>Entrega local en planta:</strong> Coordinamos la entrega directamente en tu empresa en la Zona Industrial de San Luis Potosí o punto acordado, evitando retrasos de paqueterías foráneas.
+                  </p>
+                  <p>
+                    • <strong>Retiro en taller:</strong> También puedes recoger directamente tus piezas en nuestro taller en cuanto concluya la manufactura.
+                  </p>
+                </div>
+              )}
             </div>
 
           </div>
@@ -963,14 +1350,20 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                   <label className="block text-gray-300 font-semibold mb-1">Aplicación</label>
                   <select
                     value={formData.aplicacion}
-                    onChange={(e) => setFormData({ ...formData, aplicacion: e.target.value })}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      let urg = 'Desde 24 a 72 hrs';
+                      if (val.includes('Utillaje')) urg = 'A medida';
+                      else if (val.includes('Refacciones')) urg = 'Sustitución directa';
+                      else if (val.includes('Lotes')) urg = 'Bajo demanda';
+                      setFormData({ ...formData, aplicacion: val, urgencia: urg });
+                    }}
                     className="w-full px-3 py-2.5 rounded-xl bg-[#0A0E11] border border-white/15 text-white focus:outline-none focus:border-[#5BB8FF]"
                   >
-                    <option>Prototipo rápido (24 a 72 hrs)</option>
-                    <option>Utillaje / Jig de apoyo</option>
-                    <option>Refacción o pieza de sustitución</option>
-                    <option>Lote de piezas (1 a 500 pzs)</option>
-                    <option>Carcasa o gabinete técnico</option>
+                    <option value="Prototipos funcionales (desde 24 a 72 hrs)">Prototipos funcionales (desde 24 a 72 hrs)</option>
+                    <option value="Utillaje y herramentales">Utillaje y herramentales</option>
+                    <option value="Refacciones y obsoletos">Refacciones y obsoletos</option>
+                    <option value="Lotes Cortos y Preseries">Lotes Cortos y Preseries</option>
                   </select>
                 </div>
 
