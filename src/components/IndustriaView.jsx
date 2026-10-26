@@ -30,7 +30,8 @@ import {
   Copy,
   Mail,
   Building2,
-  Cog
+  Cog,
+  Send
 } from 'lucide-react';
 import { getFilamentColor } from '../utils/colorUtils';
 
@@ -285,101 +286,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
     <div className="min-h-screen bg-[#0A0E11] text-[#E9E6DD] font-sans selection:bg-[#5BB8FF] selection:text-[#0A0E11]">
       
       {/* ========================================================
-          1. HEADER TÉCNICO COMPACTO CON LOGO OFICIAL NEÓN
-          ======================================================== */}
-      <header className="sticky top-0 z-40 bg-[#0A0E11]/95 backdrop-blur-md border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-          
-          <div className="flex items-center">
-            {/* Isotipo Oficial Neón pegado y compacto en celular */}
-            <div onClick={onGoHome} className="flex items-center gap-1.5 sm:gap-2 cursor-pointer group" title="Ir a la tienda principal">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-[#5BB8FF] drop-shadow-[0_0_10px_rgba(91,184,255,0.6)] shrink-0 -mr-0.5 sm:mr-0 group-hover:scale-105 transition-transform">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="25 25 188 235" fill="currentColor" className="w-full h-full">
-                  <path d="M180.24,153.33s-6.44-6.53-6.44-6.54c-.92-1.02-.25-1.99-.13-2.15l6.53-6.43c.54-.53,.55-1.4,.02-1.94l-5.8-5.9c-.53-.54-1.4-.55-1.94-.02l-5.95,5.86c-.36,.36-.95,.35-1.3-.01l-14.32-14.57c-.6-.61-1.57-.62-2.18-.02l-23.16,22.79c-.61,.6-.61,1.57-.02,2.18l22.79,23.16c.6,.61,1.57,.61,2.18,.02l14.83-14.59c.36-.35,.93-.35,1.28,.01l5.77,5.87c.53,.54,1.4,.55,1.94,.02l5.89-5.8c.54-.53,.55-1.4,.02-1.94Z"/>
-                  <path d="M58.91,138.1s6.44,6.53,6.44,6.54c.92,1.02,.25,1.99,.13,2.15l-6.53,6.43c-.54,.53-.55,1.4-.02,1.94l5.8,5.9c.53,.54,1.4,.55,1.94,.02l5.95-5.86c.36-.36,.95-.35,1.3,.01l14.32,14.57c.6,.61,1.57,.62,2.18,.02l23.16-22.79c.61-.6,.61-1.57,.02-2.18l-22.79-23.16c-.6-.61-1.57-.61-2.18-.02l-14.83,14.59c-.36,.35-.93,.35-1.28-.01l-5.77-5.87c-.53-.54-1.4-.55-1.94-.02l-5.89,5.8c-.54,.53-.55,1.4-.02,1.94Z"/>
-                  <path d="M55.82,85.25l27.29,27.73c.92,.94,.91,2.44-.03,3.37l-8.08,7.95c-.94,.92-2.44,.91-3.37-.03l-6.16-6.26c-1.07-1.09-2.82-1.1-3.9-.03l-6.67,6.56c-1.01,.99-2.63,.98-3.62-.03l-16.11-16.23v-7.53l16.39-15.56c1.2-1.15,3.09-1.12,4.26,.06Z"/>
-                  <path d="M56.04,206.99l28.55-28.2c.96-.95,.97-2.51,.02-3.47l-8.22-8.32c-.95-.96-2.51-.97-3.47-.02l-6.79,6.71c-.93,.92-2.42,.91-3.34-.02l-7.12-7.21c-1.03-1.04-2.7-1.05-3.74-.02l-16.76,16.5v7.77l16.47,16.29c1.22,1.2,3.17,1.2,4.39,0Z"/>
-                  <path d="M181.8,206.43l-27.29-27.73c-.92-.94-.91-2.44,.03-3.37l8.08-7.95c.94-.92,2.44-.91,3.37,.03l6.16,6.26c1.07,1.09,2.82,1.1,3.9,.03l6.67-6.56c1.01-.99,2.63-.98,3.62,.03l17.46,17.72v4.49l-17.75,17.1c-1.2,1.15-3.09,1.12-4.26-.06Z"/>
-                  <path d="M184.77,87.15l-26.62,26.29c-.9,.89-.91,2.34-.02,3.24l7.66,7.76c.89,.9,2.34,.91,3.24,.02l6.33-6.25c.86-.85,2.26-.85,3.11,.02l6.64,6.72c.96,.97,2.52,.98,3.48,.02l15.2-15v-8.04l-14.93-14.77c-1.13-1.12-2.96-1.12-4.09,0Z"/>
-                  <path d="M176.93,210.65l-26.23-26.67c-.93-.95-2.45-.96-3.4-.03l-8.15,8.02c-.95,.93-.96,2.45-.03,3.4l5.89,6c.54,.55,.53,1.43-.02,1.97l-7.72,7.59c-1.02,1-1.03,2.64-.03,3.66l13.69,13.95h12.6l13.38-13.6c1.18-1.19,1.18-3.1,0-4.3Z"/>
-                  <path d="M111.46,207.92s6.64-6.54,6.64-6.54c1.03-.93,2.02-.26,2.18-.13l6.53,6.64c.54,.55,1.42,.56,1.97,.02l5.99-5.89c.55-.54,.56-1.42,.02-1.97l-5.95-6.05c-.36-.37-.36-.96,.01-1.32l14.81-14.55c.62-.61,.62-1.6,.02-2.21l-23.15-23.53c-.61-.62-1.6-.62-2.21-.02l-23.53,23.15c-.62,.61-.62,1.6-.02,2.21l14.83,15.07c.36,.36,.35,.94-.01,1.3l-5.96,5.86c-.55,.54-.56,1.42-.02,1.97l5.89,5.99c.54,.55,1.42,.56,1.97,.02Z"/>
-                  <path d="M62.61,209.01l25.49-25.16c.89-.88,2.32-.87,3.19,.02l7.08,7.17c.88,.89,.87,2.32-.02,3.19l-5.89,5.81c-.62,.61-.63,1.61-.01,2.23l7.44,7.54c.94,.96,.93,2.5-.02,3.44l-15.37,15.29h-7.15l-14.8-15.49c-1.09-1.13-1.07-2.93,.05-4.04Z"/>
-                  <path d="M58.13,79.53l29.98,30.5c1.08,1.09,2.84,1.11,3.93,.03l9.44-9.29c1.09-1.08,1.11-2.84,.03-3.93l-5.63-5.75c-1.07-1.09-1.05-2.83,.03-3.9l8.12-7.99c1.18-1.16,1.19-3.05,.03-4.23l-18.65-19.16h-8.8l-18.48,18.75c-1.37,1.38-1.37,3.59-.01,4.97Z"/>
-                  <path d="M183.73,78.89l-31.23,30.73c-1.06,1.04-2.75,1.02-3.79-.03l-8.95-9.1c-1.04-1.06-1.02-2.75,.03-3.79l7.43-7.31c1.01-1,1.03-2.63,.03-3.64l-7.76-7.88c-1.12-1.14-1.1-2.96,.03-4.08l18.27-17.98h8.48l17.52,18.3c1.29,1.35,1.27,3.48-.07,4.79Z"/>
-                  <path d="M114.18,84.86c-.67-.68-1.77-.69-2.45-.02l-6.27,6.17c-.68,.67-.69,1.77-.02,2.45l5.4,5.49c.34,.34,.35,.89,0,1.23-2.77,2.78-14.22,14.1-14.22,14.1-.59,.58-.6,1.54-.02,2.13l22.28,22.65c.58,.59,1.54,.6,2.13,.02l22.65-22.28c.59-.58,.6-1.54,.02-2.13l-29.51-29.8Z"/>
-                  <rect x="125.77" y="80.53" width="14.03" height="14.03" rx="2.88" ry="2.88" transform="translate(102.06 -68.51) rotate(45.46)"/>
-                </svg>
-              </div>
-              <div className="leading-tight">
-                <div className="font-extrabold text-sm sm:text-base tracking-tight text-white uppercase font-display group-hover:text-[#5BB8FF] transition-colors">
-                  ARTESANO DIGITAL
-                </div>
-                <div className="font-mono text-[9.5px] sm:text-[10.5px] text-[#5BB8FF] tracking-wider uppercase font-semibold">
-                  FABRICACIÓN 3D · SLP
-                </div>
-              </div>
-            </div>
-
-            {/* Menú de Navegación Rápida para PC (Desktop Nav Bar) */}
-            <nav className="hidden md:flex items-center gap-1 font-mono text-xs ml-4">
-              <a
-                href="#soluciones-industriales"
-                className="px-3 py-1.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all"
-              >
-                Soluciones
-              </a>
-              <a
-                href="#materiales-taller"
-                className="px-3 py-1.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all"
-              >
-                Materiales
-              </a>
-              <a
-                href="#proceso-industria"
-                className="px-3 py-1.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all"
-              >
-                Proceso
-              </a>
-              <a
-                href="#info-clave-industria"
-                className="px-3 py-1.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all"
-              >
-                Información Clave
-              </a>
-              <a
-                href="#consulta-colores-industria"
-                className="px-3 py-1.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all"
-              >
-                Carta Colores
-              </a>
-            </nav>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <span className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-[10px] font-mono tracking-widest text-[#8FB99B] border border-[#8FB99B]/30 bg-[#8FB99B]/10">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#8FB99B] animate-pulse" />
-              SLP · ZONA INDUSTRIAL
-            </span>
-            <button
-              type="button"
-              onClick={onGoHome}
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-white/10 hover:border-white/30 text-gray-300 hover:text-white font-mono text-xs transition-colors cursor-pointer"
-            >
-              <ShoppingBag className="w-3.5 h-3.5 text-[#8FB99B]" />
-              <span>Tienda</span>
-            </button>
-            <a
-              href="#cotizar-industria"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#5BB8FF] hover:bg-[#8AD2FF] text-[#0A0E11] font-bold text-xs tracking-wide uppercase transition-all shadow-[0_0_15px_rgba(91,184,255,0.3)] cursor-pointer"
-            >
-              <span>Cotizar Pieza</span>
-            </a>
-          </div>
-        </div>
-      </header>
-
-      {/* ========================================================
-          2. BANNER HERO INDUSTRIAL CON PLANO VECTORIAL (CONDENSADO MOBILE)
+          1. BANNER HERO INDUSTRIAL CON PLANO VECTORIAL (CONDENSADO MOBILE)
           ======================================================== */}
       <section className="relative overflow-hidden border-b border-white/10 bg-gradient-to-b from-[#10171D] via-[#0A0E11] to-[#0A0E11] pt-3.5 sm:pt-8 pb-4 sm:pb-12">
         {/* Rejilla milimétrica sutil de fondo */}
@@ -401,6 +308,23 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
               <p className="text-xs sm:text-base text-[#C4CCD0] max-w-xl leading-relaxed">
                 Taller local de manufactura bajo demanda para empresas de SLP. Prototipado funcional rápido, utillaje de ensamble, refacciones descatalogadas y lotes cortos en polímeros técnicos de grado ingeniería.
               </p>
+
+              {/* Botones de Acción Directa */}
+              <div className="pt-2 flex flex-wrap items-center gap-2.5">
+                <a
+                  href="#cotizar-industria"
+                  className="px-5 py-2.5 rounded-xl bg-[#5BB8FF] hover:bg-[#8AD2FF] text-[#0A0E11] font-extrabold text-xs tracking-wide uppercase transition-all shadow-[0_0_15px_rgba(91,184,255,0.3)] active:scale-95 cursor-pointer inline-flex items-center gap-1.5"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Cotizar Pieza Industrial</span>
+                </a>
+                <a
+                  href="#soluciones-industriales"
+                  className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-stone-200 border border-white/10 font-bold text-xs transition-all active:scale-95 cursor-pointer inline-flex items-center gap-1.5"
+                >
+                  <span>Ver 4 Aplicaciones</span>
+                </a>
+              </div>
             </div>
 
             {/* Plano Vectorial Técnico Integrado (Sin cuadro contenedor, estilizado) */}

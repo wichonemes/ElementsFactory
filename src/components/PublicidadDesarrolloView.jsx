@@ -17,7 +17,8 @@ import {
   Copy,
   Check,
   Mail,
-  Building2
+  Building2,
+  Sliders
 } from 'lucide-react';
 
 export default function PublicidadDesarrolloView({
@@ -212,9 +213,11 @@ export default function PublicidadDesarrolloView({
 
   const handleOpenCotizador = (serviceId) => {
     if (serviceId) setQuoteService(serviceId);
-    setActiveTab('cotizador');
     setTimeout(() => {
-      cotizadorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const el = document.getElementById('cotizador-diseno') || cotizadorRef.current;
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }, 60);
   };
 
@@ -277,58 +280,14 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
 
       </section>
 
-      {/* 2. BARRA DE NAVEGACIÓN LIMPIA Y COMPACTA (TEMA OSCURO) */}
-      <div className="sticky top-20 z-30 bg-[#0B0D11]/95 backdrop-blur-md border-b border-stone-800/80 shadow-lg">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-2 py-2.5">
-          
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setActiveTab('servicios')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
-                activeTab === 'servicios'
-                  ? 'bg-[#e8b84f] text-[#0B0D11] shadow-md'
-                  : 'bg-[#151921] text-stone-300 hover:text-white hover:bg-[#1E232E] border border-stone-800'
-              }`}
-            >
-              <span>Servicios &amp; Paquetes</span>
-            </button>
+      {/* 2. CONTENIDO PRINCIPAL FLUIDO Y COMPACTO (SIN BARRAS REDUNDANTES) */}
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-12">
 
-            <button
-              type="button"
-              onClick={() => handleOpenCotizador(quoteService)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
-                activeTab === 'cotizador'
-                  ? 'bg-[#e8b84f] text-[#0B0D11] shadow-md'
-                  : 'bg-[#151921] text-stone-300 hover:text-white hover:bg-[#1E232E] border border-stone-800'
-              }`}
-            >
-              <span>Cotizador Rápido</span>
-            </button>
-          </div>
+        {/* ================= SECCIÓN 1: ESPECIALIDADES & APLICACIONES (ESTRUCTURA UNIFICADA APP-GRID) ================= */}
+        <section id="especialidades-creativas" className="space-y-6 animate-fadeIn">
 
-          {onGoHome && (
-            <button
-              type="button"
-              onClick={onGoHome}
-              className="text-xs text-stone-400 hover:text-[#e8b84f] font-bold shrink-0 ml-auto cursor-pointer transition-colors"
-            >
-              ← Tienda
-            </button>
-          )}
-
-        </div>
-      </div>
-
-      {/* 3. CONTENIDO PRINCIPAL EN COLOR NEGRO */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-8">
-
-        {/* ================= SECCIÓN 1: SERVICIOS DIRECTOS (ESTRUCTURA UNIFICADA APP-GRID) ================= */}
-        {activeTab === 'servicios' && (
-          <div className="space-y-6 animate-fadeIn">
-
-            {/* Encabezado con Código de Área y Subtítulo */}
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-stone-800 pb-3">
+          {/* Encabezado con Código de Área y Subtítulo */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-stone-800 pb-3">
               <div>
                 <div className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-[#e8b84f] flex items-center gap-2">
                   <span className="w-5 h-px bg-[#e8b84f]" />
@@ -506,44 +465,58 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
                 onClick={() => handleOpenCotizador('branding')}
                 className="w-full sm:w-auto shrink-0 px-4 py-2 rounded-xl bg-[#e8b84f] hover:bg-[#d4a359] text-[#0B0D11] font-black text-xs transition-all shadow-md cursor-pointer"
               >
-                Abrir Cotizador
+                Ir al Cotizador
               </button>
             </div>
 
-          </div>
-        )}
+        </section>
 
         {/* ================= SECCIÓN 2: COTIZADOR INTERACTIVO EN 2 PASOS (TOTALMENTE EN NEGRO) ================= */}
-        {activeTab === 'cotizador' && (
-          <div ref={cotizadorRef} className="space-y-5 animate-fadeIn">
-            
-            {/* TARJETA DESTACADA DEL COSTO ORIENTATIVO */}
-            <div className="sticky top-32 z-20 p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-[#141820] to-[#1C2532] text-white shadow-2xl border border-[#e8b84f]/40 flex items-center justify-between gap-3">
-              <div className="space-y-0.5">
-                <div className="text-[10px] font-bold uppercase tracking-wider text-[#e8b84f] flex items-center gap-1">
-                  <DollarSign className="w-3 h-3" />
-                  <span>Inversión Estimada:</span>
-                </div>
-                <div className="text-2xl sm:text-3xl font-black font-heading text-[#e8b84f] tracking-tight">
-                  ${quoteEstimate.base.toLocaleString('es-MX')} <span className="text-xs font-normal text-stone-300">MXN</span>
-                </div>
-                <div className="text-[10px] text-stone-300 truncate max-w-[220px] sm:max-w-md">
-                  {quoteEstimate.label} · {quoteScope === 'inicio' ? 'Básico' : quoteScope === 'estandar' ? 'Profesional' : 'VIP Todo Incluido'}
-                </div>
+        <section id="cotizador-diseno" ref={cotizadorRef} className="space-y-6 pt-6 border-t border-stone-800 animate-fadeIn">
+          
+          {/* Encabezado de la Sección de Cotización */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-stone-800/80 pb-3">
+            <div>
+              <div className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-[#e8b84f] flex items-center gap-2">
+                <span className="w-5 h-px bg-[#e8b84f]" />
+                <span>02 / Cotizador Rápido de Proyecto</span>
               </div>
-
-              <button
-                type="button"
-                onClick={handleSendWhatsAppQuote}
-                className="shrink-0 px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-xs transition-all shadow-md active:scale-95 flex items-center gap-1.5 cursor-pointer"
-              >
-                <MessageCircle className="w-4 h-4 fill-white" />
-                <span>WhatsApp</span>
-              </button>
+              <h2 className="text-xl sm:text-2xl font-black text-white mt-1">
+                Calcula la Inversión de tu Proyecto
+              </h2>
+            </div>
+            <span className="text-xs text-stone-400 font-mono hidden sm:inline">
+              Elige especialidad y nivel de alcance
+            </span>
+          </div>
+            
+          {/* TARJETA DESTACADA DEL COSTO ORIENTATIVO (INTEGRADA SIN ESTORBAR EL SCROLL) */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#141820] to-[#1C2532] text-white shadow-2xl border border-[#e8b84f]/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="space-y-0.5">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-[#e8b84f] flex items-center gap-1">
+                <DollarSign className="w-3.5 h-3.5" />
+                <span>Inversión Estimada:</span>
+              </div>
+              <div className="text-2xl sm:text-3xl font-black font-heading text-[#e8b84f] tracking-tight">
+                ${quoteEstimate.base.toLocaleString('es-MX')} <span className="text-xs font-normal text-stone-300">MXN</span>
+              </div>
+              <div className="text-[11px] text-stone-300">
+                {quoteEstimate.label} · {quoteScope === 'inicio' ? 'Básico' : quoteScope === 'estandar' ? 'Profesional' : 'VIP Todo Incluido'}
+              </div>
             </div>
 
-            {/* CONTENEDOR DE LOS 2 PASOS EN NEGRO */}
-            <div className="bg-[#10131A] rounded-3xl border border-stone-800 p-4 sm:p-6 shadow-2xl space-y-5 text-white">
+            <button
+              type="button"
+              onClick={handleSendWhatsAppQuote}
+              className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-xs sm:text-sm transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <MessageCircle className="w-4 h-4 fill-white" />
+              <span>Cotizar por WhatsApp</span>
+            </button>
+          </div>
+
+          {/* CONTENEDOR DE LOS 2 PASOS EN NEGRO */}
+          <div className="bg-[#10131A] rounded-3xl border border-stone-800 p-4 sm:p-6 shadow-2xl space-y-5 text-white">
               
               {/* PASO 1: ESPECIALIDAD O SERVICIO */}
               <div className="space-y-2">
@@ -662,8 +635,7 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
 
             </div>
 
-          </div>
-        )}
+        </section>
 
         {/* ================= SECCIÓN PORTAFOLIO PERSONAL DE WICHO NEMES (AL FINAL) ================= */}
         <div className="pt-8 sm:pt-10 border-t border-stone-800/80 space-y-4">
