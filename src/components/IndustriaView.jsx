@@ -1030,10 +1030,10 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 textAccent: 'text-amber-400',
                 bgActive: 'bg-amber-400/10',
                 badge: 'Entrega Local',
-                desc: 'Fabricación y entrega rápida desde 24 a 72 horas para requerimientos de alta prioridad. Entrega acordada en planta o retiro directo en taller para empresas de San Luis Potosí.',
+                desc: 'Tiempos de fabricación desde 24 a 72 horas para requerimientos de alta prioridad. El plazo estimado final dependerá del volumen de piezas solicitadas y la complejidad geométrica de tu modelo.',
                 highlights: [
-                  'Prototipado prioritario listo en 24 a 72 horas',
-                  'Entrega local acordada en zona industrial o taller',
+                  'Plazos desde 24 a 72 horas según volumen y complejidad de la pieza',
+                  'Entrega local acordada en zona industrial o retiro en taller',
                   'Seguimiento directo por WhatsApp durante la fabricación'
                 ]
               }
