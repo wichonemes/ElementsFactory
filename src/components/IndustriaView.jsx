@@ -1483,137 +1483,229 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
 
       
       {/* ========================================================
-          7. PESTAÑA / DRAWER: CONSULTA DE COLORES Y ACABADOS POR MATERIAL
+          7. PESTAÑA / DRAWER: CARTA TÉCNICA DE ACABADOS (UX MOBILE-FIRST)
           ======================================================== */}
       <section id="consulta-colores-industria" className="py-6 sm:py-10 bg-[#0A0E11] border-t border-white/10">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <div className="rounded-2xl border border-white/15 bg-[#12181C] overflow-hidden shadow-xl transition-all">
-            {/* Header / Botón Pestaña Desplegable */}
+        <div className="max-w-4xl mx-auto px-3 sm:px-6">
+          <div className="rounded-2xl border border-white/15 bg-[#12181C] overflow-hidden shadow-2xl transition-all">
+            
+            {/* Header / Botón Pestaña Desplegable (Optimizado Mobile) */}
             <button
               type="button"
               onClick={() => setShowColorsDrawer(!showColorsDrawer)}
-              className="w-full p-4 sm:p-5 flex items-center justify-between gap-3 text-left bg-gradient-to-r from-white/[0.04] to-transparent hover:bg-white/[0.08] transition-colors cursor-pointer"
+              className="w-full p-3.5 sm:p-5 flex items-center justify-between gap-2.5 text-left bg-gradient-to-r from-white/[0.04] to-transparent hover:bg-white/[0.08] active:bg-white/[0.1] transition-colors cursor-pointer"
             >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#5BB8FF]/10 border border-[#5BB8FF]/30 flex items-center justify-center text-[#5BB8FF] shrink-0">
-                  <Palette className="w-5 h-5" />
+              <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#5BB8FF]/10 border border-[#5BB8FF]/30 flex items-center justify-center text-[#5BB8FF] shrink-0">
+                  <Palette className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
-                <div>
-                  <div className="font-mono text-[10px] sm:text-[11px] text-[#5BB8FF] uppercase tracking-wider font-bold">
-                    Carta Técnica de Acabados
-                  </div>
-                  <h3 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
-                    <span>Consulta colores dependiendo tu material</span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className="font-mono text-[9px] sm:text-[10px] text-[#5BB8FF] uppercase tracking-wider font-bold">
+                      Carta Técnica
+                    </span>
+                    <span className="text-[9px] font-mono px-1.5 py-0.2 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                       En stock
                     </span>
+                  </div>
+                  <h3 className="text-xs sm:text-base font-bold text-white truncate">
+                    Consulta colores dependiendo tu material
                   </h3>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 text-gray-400">
-                <span className="text-xs hidden sm:inline font-mono">
-                  {showColorsDrawer ? 'Ocultar catálogo' : 'Desplegar catálogo'}
-                </span>
-                <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${showColorsDrawer ? 'rotate-180 text-[#5BB8FF]' : ''}`} />
+              <div className="flex items-center gap-2 shrink-0">
+                {/* Mini preview del color seleccionado actual */}
+                <div className="hidden xs:flex items-center gap-1.5 px-2 py-1 rounded-lg bg-black/40 border border-white/10">
+                  <span
+                    className="w-3.5 h-3.5 rounded-full border border-black/30 shrink-0"
+                    style={{
+                      background: getFilamentColor(formData.colorSeleccionado)?.css || '#111',
+                      borderColor: getFilamentColor(formData.colorSeleccionado)?.border || '#555'
+                    }}
+                  />
+                  <span className="text-[10px] text-gray-300 font-mono truncate max-w-[80px] sm:max-w-[120px]">
+                    {formData.colorSeleccionado}
+                  </span>
+                </div>
+
+                <div className="w-7 h-7 rounded-lg bg-white/5 flex items-center justify-center text-gray-400">
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${showColorsDrawer ? 'rotate-180 text-[#5BB8FF]' : ''}`} />
+                </div>
               </div>
             </button>
 
             {/* Contenido desplegable */}
             {showColorsDrawer && (
-              <div className="p-4 sm:p-6 border-t border-white/10 space-y-5 bg-[#0D1216]">
-                {/* Selector de Polímero (Pestañas horizontales tipo tienda) */}
-                <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-thin">
-                  {Object.entries(INDUSTRIAL_COLORS_BY_MATERIAL).map(([key, item]) => (
+              <div className="p-3.5 sm:p-6 border-t border-white/10 space-y-4 bg-[#0D1216]">
+                
+                {/* 1. Selector de Polímero: Segmented Bar táctil de 4 botones sin scroll */}
+                <div className="grid grid-cols-4 gap-1 sm:gap-2 p-1 rounded-xl bg-black/40 border border-white/10">
+                  {[
+                    { id: 'petg', short: 'PETG', name: 'PETG', count: 9 },
+                    { id: 'tpu', short: 'TPU', name: 'TPU 95A', count: 6 },
+                    { id: 'plaplus', short: 'PLA+', name: 'PLA+ Pro', count: 7 },
+                    { id: 'abs', short: 'ABS', name: 'ABS / ASA', count: 3 }
+                  ].map(mat => (
                     <button
-                      key={key}
+                      key={mat.id}
                       type="button"
-                      onClick={() => setColorDrawerMaterial(key)}
-                      className={`px-3.5 py-2 rounded-xl text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-2 ${
-                        colorDrawerMaterial === key
-                          ? 'bg-[#5BB8FF] text-black shadow-md shadow-[#5BB8FF]/20 scale-102'
-                          : 'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white border border-white/10'
+                      onClick={() => setColorDrawerMaterial(mat.id)}
+                      className={`py-2 px-1 rounded-lg text-center transition-all cursor-pointer ${
+                        colorDrawerMaterial === mat.id
+                          ? 'bg-[#5BB8FF] text-black font-extrabold shadow-md scale-[1.02]'
+                          : 'text-gray-400 hover:text-white hover:bg-white/5 font-semibold'
                       }`}
                     >
-                      <span>{item.materialName}</span>
-                      <span className={`text-[10px] opacity-80 ${colorDrawerMaterial === key ? 'text-black/80' : 'text-gray-400'}`}>
-                        ({item.colors.length})
-                      </span>
+                      <div className="text-[11px] sm:text-xs leading-none truncate">
+                        <span className="sm:hidden">{mat.short}</span>
+                        <span className="hidden sm:inline">{mat.name}</span>
+                      </div>
+                      <div className={`text-[8.5px] sm:text-[9.5px] font-mono leading-none mt-1 opacity-80 ${
+                        colorDrawerMaterial === mat.id ? 'text-black' : 'text-gray-500'
+                      }`}>
+                        {mat.count} tonos
+                      </div>
                     </button>
                   ))}
                 </div>
 
-                {/* Info del material activo */}
-                <div className="flex items-center justify-between text-xs font-mono text-gray-400 px-1">
-                  <span>Material: <strong className="text-white">{INDUSTRIAL_COLORS_BY_MATERIAL[colorDrawerMaterial]?.materialName}</strong> ({INDUSTRIAL_COLORS_BY_MATERIAL[colorDrawerMaterial]?.tag})</span>
-                  <span className="text-[11px] text-[#5BB8FF]">Toca un color para aplicarlo a tu cotización ↑</span>
+                {/* Info rápida del material activo */}
+                <div className="flex items-center justify-between text-[10.5px] sm:text-xs font-mono text-gray-400 px-1 border-b border-white/5 pb-2">
+                  <div className="flex items-center gap-1.5 truncate">
+                    <span className="w-2 h-2 rounded-full bg-[#5BB8FF] shrink-0" />
+                    <span className="truncate">
+                      Polímero: <strong className="text-white">{INDUSTRIAL_COLORS_BY_MATERIAL[colorDrawerMaterial]?.materialName}</strong>
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-[#8FB99B] shrink-0">
+                    {INDUSTRIAL_COLORS_BY_MATERIAL[colorDrawerMaterial]?.tag}
+                  </span>
                 </div>
 
-                {/* Grid de colores con swatches reales de colorUtils */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
-                  {INDUSTRIAL_COLORS_BY_MATERIAL[colorDrawerMaterial]?.colors.map((color) => {
-                    const filament = getFilamentColor(color.name);
-                    const isSelected = formData.colorSeleccionado === color.name;
-                    return (
-                      <div
-                        key={color.name}
-                        onClick={() => {
-                          setFormData({ ...formData, colorSeleccionado: color.name });
-                        }}
-                        className={`p-3 rounded-xl border transition-all cursor-pointer flex items-center gap-3 ${
-                          isSelected
-                            ? 'bg-[#5BB8FF]/15 border-[#5BB8FF] shadow-[0_0_15px_rgba(91,184,255,0.2)]'
-                            : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
-                        }`}
-                      >
-                        {/* Swatch circular con brillo / sombra / borde */}
-                        <div
-                          className="w-8 h-8 rounded-full border shrink-0 shadow-md flex items-center justify-center transition-transform hover:scale-110"
-                          style={{
-                            background: filament?.css || '#333',
-                            borderColor: filament?.border || '#555',
-                            boxShadow: filament?.glow ? `0 0 10px ${filament.border}` : '0 2px 5px rgba(0,0,0,0.5)'
-                          }}
-                        >
-                          {isSelected && (
-                            <CheckCircle2 className={`w-4 h-4 ${filament?.isDark ? 'text-white' : 'text-black'}`} />
-                          )}
-                        </div>
+                {/* 2. Paleta de Swatches Circulares Táctiles (Mobile First) */}
+                <div className="p-3 sm:p-4 rounded-xl bg-[#090D10] border border-white/5 space-y-2.5">
+                  <div className="flex items-center justify-between text-[10px] font-mono text-gray-400">
+                    <span>Toca una muestra para seleccionarla:</span>
+                    <span className="text-[#5BB8FF]">{INDUSTRIAL_COLORS_BY_MATERIAL[colorDrawerMaterial]?.colors.length} tonos en stock</span>
+                  </div>
 
-                        {/* Texto */}
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center justify-between gap-1">
-                            <span className="text-xs font-bold text-white truncate">{color.name}</span>
-                            <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-white/10 text-gray-300 shrink-0">
-                              {color.finish}
-                            </span>
+                  {/* Swatches circulares estilo tienda */}
+                  <div className="flex flex-wrap items-center gap-2.5 sm:gap-3.5 py-1">
+                    {INDUSTRIAL_COLORS_BY_MATERIAL[colorDrawerMaterial]?.colors.map((color) => {
+                      const filament = getFilamentColor(color.name);
+                      const isSelected = formData.colorSeleccionado === color.name;
+                      return (
+                        <button
+                          key={color.name}
+                          type="button"
+                          onClick={() => {
+                            setFormData(prev => ({ ...prev, colorSeleccionado: color.name }));
+                          }}
+                          className={`group/c relative p-1 rounded-full transition-all cursor-pointer flex items-center justify-center ${
+                            isSelected
+                              ? 'ring-2 ring-[#5BB8FF] ring-offset-2 ring-offset-[#090D10] scale-110 shadow-[0_0_12px_rgba(91,184,255,0.4)]'
+                              : 'hover:scale-110 hover:ring-1 hover:ring-white/40'
+                          }`}
+                          title={`${color.name} (${color.finish})`}
+                        >
+                          <span
+                            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border flex items-center justify-center transition-transform shadow-md"
+                            style={{
+                              background: filament?.css || '#333',
+                              borderColor: filament?.border || '#555',
+                              boxShadow: filament?.glow ? `0 0 10px ${filament.border}` : '0 2px 4px rgba(0,0,0,0.5)'
+                            }}
+                          >
+                            {isSelected && (
+                              <Check className={`w-4 h-4 stroke-[3] ${filament?.isDark ? 'text-white' : 'text-black'}`} />
+                            )}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* 3. Ficha Táctil del Color Activo Seleccionado */}
+                {(() => {
+                  const activeColorObj = INDUSTRIAL_COLORS_BY_MATERIAL[colorDrawerMaterial]?.colors.find(
+                    c => c.name === formData.colorSeleccionado
+                  ) || INDUSTRIAL_COLORS_BY_MATERIAL[colorDrawerMaterial]?.colors[0];
+                  
+                  const activeFilament = getFilamentColor(activeColorObj?.name);
+                  const isCurSelected = formData.colorSeleccionado === activeColorObj?.name;
+
+                  return (
+                    <div className="p-3.5 sm:p-4 rounded-xl bg-gradient-to-r from-white/[0.04] to-white/[0.02] border border-[#5BB8FF]/30 space-y-2.5">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2.5">
+                          <span
+                            className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border shadow-sm shrink-0"
+                            style={{
+                              background: activeFilament?.css || '#111',
+                              borderColor: activeFilament?.border || '#444',
+                              boxShadow: activeFilament?.glow ? `0 0 8px ${activeFilament.border}` : undefined
+                            }}
+                          />
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs sm:text-sm font-bold text-white leading-tight">
+                                {activeColorObj?.name}
+                              </span>
+                              <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-[#5BB8FF]/15 text-[#5BB8FF] border border-[#5BB8FF]/30">
+                                {activeColorObj?.finish}
+                              </span>
+                            </div>
+                            <p className="text-[10px] sm:text-[11px] text-gray-300 mt-0.5 leading-snug">
+                              {activeColorObj?.desc}
+                            </p>
                           </div>
-                          <p className="text-[10px] text-gray-400 line-clamp-1 mt-0.5 leading-tight">
-                            {color.desc}
-                          </p>
                         </div>
                       </div>
-                    );
-                  })}
+
+                      <div className="pt-2 border-t border-white/5 flex items-center justify-between gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (activeColorObj) {
+                              setFormData(prev => ({ ...prev, colorSeleccionado: activeColorObj.name }));
+                            }
+                          }}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                            isCurSelected
+                              ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                              : 'bg-[#5BB8FF] text-black hover:bg-[#8AD2FF]'
+                          }`}
+                        >
+                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          <span>{isCurSelected ? 'Color seleccionado para tu orden' : 'Seleccionar este color'}</span>
+                        </button>
+
+                        <a
+                          href="#cotizar-industria"
+                          className="text-[11px] text-[#5BB8FF] hover:underline font-mono inline-flex items-center gap-1 shrink-0 font-bold"
+                        >
+                          <span>Subir al formulario ↑</span>
+                        </a>
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {/* Pie informativo */}
+                <div className="text-[10px] text-gray-400 font-mono flex items-center justify-between gap-2 pt-1 border-t border-white/5">
+                  <span>¿Color corporativo o RAL especial? Lo surtimos para tu lote.</span>
+                  <span className="text-gray-500">Taller SLP</span>
                 </div>
 
-                {/* Pie de la pestaña de consulta */}
-                <div className="pt-2 text-[11px] text-gray-400 font-mono border-t border-white/5 flex flex-wrap items-center justify-between gap-2">
-                  <span>¿Requieres un color PANTONE o RAL específico para tu línea? Lo conseguimos bajo pedido.</span>
-                  <a
-                    href="#cotizar-industria"
-                    className="text-[#5BB8FF] hover:underline font-bold text-xs"
-                  >
-                    Subir al formulario ↑
-                  </a>
-                </div>
               </div>
             )}
           </div>
         </div>
       </section>
 
-{/* ========================================================
+      {/* ========================================================
           8. SECCIÓN: REGRESO A LA TIENDA PRINCIPAL
           ======================================================== */}
       <section className="py-12 border-t border-white/10 bg-[#0A0E11] text-center">
