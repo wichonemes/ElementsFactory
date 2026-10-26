@@ -5,8 +5,8 @@ window.interfacesContent = {
     "heroText": "Cada interfaz empieza con un flujo: pantallas, estados y decisiones. Después se maqueta, se prototipa y se programa hasta que se siente inevitable.",
     "introKicker": "DISEÑO DE INTERFACES",
     "introTitle": "Lo que se ve también se construye.",
-    "introText": "Este archivo muestra el proceso completo de tres proyectos —CANACO, la tesis de Cuauhtémoc y Cyber Ninja— más el sistema de bienvenida y la propuesta de Talentos. Al final, el proceso real de este portafolio: retícula, editor, código y publicación.",
-    "collectionTitle": "Cuarenta y seis pantallas."
+    "introText": "Este archivo muestra el proceso completo de tres proyectos —CANACO, la tesis de Cuauhtémoc y Cyber Ninja— más la propuesta de Talentos. Al final, el proceso real de este portafolio: retícula, editor, código y publicación.",
+    "collectionTitle": "Cuarenta pantallas."
   },
   "sections": [
     {
@@ -82,19 +82,6 @@ window.interfacesContent = {
         "ui-09",
         "ui-10",
         "ui-11"
-      ]
-    },
-    {
-      "id": "bienvenidas",
-      "name": "Pantallas de bienvenida",
-      "intro": "El primer segundo de cada sistema: la marca recibe al usuario.",
-      "ids": [
-        "ui-13",
-        "ui-14",
-        "ui-15",
-        "ui-16",
-        "ui-20",
-        "ui-21"
       ]
     }
   ],
@@ -378,51 +365,9 @@ window.interfacesContent = {
       "caption": "La aplicación del sistema a un caso real.",
       "category": "Propuesta",
       "src": "assets/ui-11.jpg"
-    },
-    {
-      "id": "ui-13",
-      "title": "Bienvenida · Artesano",
-      "caption": "La marca de Artesano Digital en su pantalla de entrada.",
-      "category": "Pantalla",
-      "src": "assets/ui-13.jpg"
-    },
-    {
-      "id": "ui-14",
-      "title": "Bienvenida · Café San Luis",
-      "caption": "La taza y el nombre antes de pedir.",
-      "category": "Pantalla",
-      "src": "assets/ui-14.jpg"
-    },
-    {
-      "id": "ui-15",
-      "title": "Bienvenida · Civil Armory",
-      "caption": "El escudo como recibimiento.",
-      "category": "Pantalla",
-      "src": "assets/ui-15.jpg"
-    },
-    {
-      "id": "ui-16",
-      "title": "Bienvenida · Wicho Nemes",
-      "caption": "La marca personal en su pantalla inicial.",
-      "category": "Pantalla",
-      "src": "assets/ui-16.jpg"
-    },
-    {
-      "id": "ui-20",
-      "title": "Bienvenida · MILL",
-      "caption": "Un sistema para aprender jugando.",
-      "category": "Pantalla",
-      "src": "assets/ui-20.jpg"
-    },
-    {
-      "id": "ui-21",
-      "title": "Bienvenida · Digital Strategy",
-      "caption": "La agencia y su promesa en una pantalla.",
-      "category": "Pantalla",
-      "src": "assets/ui-21.jpg"
     }
   ]
 };
 // Proporciones nativas reales (ancho / alto): cada pieza conserva su forma.
-window.interfacesContent.ratios = {"proc-01":1.6,"proc-02":1.6,"proc-03":1.6,"proc-04":1.6,"proc-05":0.462,"lvi-02":1,"can-02":0.676,"can-03":0.816,"can-04":0.854,"lvi-04":1,"tes-02":4.183,"tes-03":1.766,"tes-06":1.763,"tes-07":1.716,"tes-04":1.766,"tes-05":1.766,"tes-08":5.714,"tes-09":0.798,"tes-10":0.658,"tes-11":1.898,"lvi-03":1,"cyb-02":1.818,"cyb-03":1.476,"cyb-04":1.831,"cyb-05":1.518,"cyb-06":1.778,"cyb-07":1.53,"cyb-08":3.938,"cyb-09":1,"ui-01":1.778,"ui-02":1.778,"ui-03":1.778,"ui-04":1.778,"ui-05":1.778,"ui-06":1.778,"ui-07":1.778,"ui-08":1.778,"ui-09":1.778,"ui-10":1.778,"ui-11":1.778,"ui-13":0.991,"ui-14":0.991,"ui-15":0.991,"ui-16":0.991,"ui-20":0.991,"ui-21":0.991};
+window.interfacesContent.ratios = {"proc-01":1.6,"proc-02":1.6,"proc-03":1.6,"proc-04":1.6,"proc-05":0.462,"lvi-02":1,"can-02":0.676,"can-03":0.816,"can-04":0.854,"lvi-04":1,"tes-02":4.183,"tes-03":1.766,"tes-06":1.763,"tes-07":1.716,"tes-04":1.766,"tes-05":1.766,"tes-08":5.714,"tes-09":0.798,"tes-10":0.658,"tes-11":1.898,"lvi-03":1,"cyb-02":1.818,"cyb-03":1.476,"cyb-04":1.831,"cyb-05":1.518,"cyb-06":1.778,"cyb-07":1.53,"cyb-08":3.938,"cyb-09":1,"ui-01":1.778,"ui-02":1.778,"ui-03":1.778,"ui-04":1.778,"ui-05":1.778,"ui-06":1.778,"ui-07":1.778,"ui-08":1.778,"ui-09":1.778,"ui-10":1.778,"ui-11":1.778};
 Object.entries(window.interfacesContent.ratios).forEach(([id, r]) => { const s = window.interfacesContent.stories.find(x => x.id === id); if (s) s.ratio = r; });
