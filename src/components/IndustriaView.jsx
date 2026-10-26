@@ -48,7 +48,8 @@ export default function IndustriaView({
     ? `${window.location.origin}${window.location.pathname}?area=industria`
     : 'https://artesano-digital.onrender.com/?area=industria';
 
-  const sharePortalText = `Hola, te comparto el portal de manufactura aditiva técnica y refacciones industriales de Artesano Digital. Especial para prototipado rápido en 24-72 hrs, utillajes de ensamble Poka-Yoke y refacciones mecánicas sin costo de apertura de moldes: ${sharePortalUrl}`;
+  // Mensaje natural para compartir entre colegas (sin tono de venta agresiva)
+  const sharePortalText = `Que una refacción no te detenga: servicio de manufactura e impresión 3D técnica en SLP para piezas mecánicas, utillaje y prototipos: ${sharePortalUrl}`;
 
   const handleShareWhatsApp = () => {
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(sharePortalText)}`, '_blank');
@@ -65,8 +66,8 @@ export default function IndustriaView({
   const handleNativeShare = () => {
     if (typeof navigator !== 'undefined' && navigator.share) {
       navigator.share({
-        title: 'Artesano Digital // Soluciones Industriales SLP',
-        text: 'Manufactura aditiva técnica, refacciones urgentes y utillaje sin moldes en San Luis Potosí.',
+        title: 'Que una refacción no te detenga // Impresión 3D Técnica SLP',
+        text: 'Servicio de manufactura e impresión 3D en SLP para refacciones mecánicas, utillajes y piezas a medida.',
         url: sharePortalUrl
       }).catch(() => {});
     } else {
@@ -74,8 +75,8 @@ export default function IndustriaView({
     }
   };
 
-  const mailToB2B = `mailto:?subject=${encodeURIComponent('Contacto de Manufactura Aditiva & Refacciones B2B - Artesano Digital')}&body=${encodeURIComponent(
-    `Estimado equipo de Mantenimiento / Compras / Ingeniería:\n\nLes comparto este taller local de manufactura aditiva y prototipado rápido en San Luis Potosí. Cuentan con capacidad para refacciones descatalogadas, utillaje de ensamble y preseries en polímeros técnicos (PETG, TPU, PLA+, ABS) desde 1 sola pieza y con acuerdo NDA:\n\n${sharePortalUrl}\n\nSaludos.`
+  const mailToB2B = `mailto:?subject=${encodeURIComponent('Contacto técnico: Impresión 3D y refacciones mecánicas en SLP')}&body=${encodeURIComponent(
+    `Hola:\n\nTe paso el dato de este taller en San Luis Potosí de manufactura aditiva y servicio de impresión 3D para refacciones mecánicas, piezas a medida y utillaje sin moldes ni mínimos:\n\n${sharePortalUrl}\n\nSaludos.`
   )}`;
 
   // Estado de la Pestaña Desplegable de Colores por Material
@@ -1595,7 +1596,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
               <div className="space-y-1.5 text-center sm:text-left">
                 <div className="inline-flex items-center gap-2 font-mono text-[10px] sm:text-[10.5px] uppercase tracking-[0.2em] text-[#5BB8FF]">
                   <Building2 className="w-3.5 h-3.5 text-[#5BB8FF]" />
-                  <span>Enlace B2B para Equipos de Planta</span>
+                  <span>Que una refacción no te detenga</span>
                 </div>
                 
                 <h3 className="text-lg sm:text-2xl font-black text-white tracking-tight">
@@ -1603,27 +1604,27 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 </h3>
                 
                 <p className="text-xs sm:text-sm text-gray-300 leading-relaxed max-w-2xl">
-                  Comparte este portal técnico con tu equipo. Así sabrán de inmediato que cuentan con un taller local en San Luis Potosí para sustitución urgente de refacciones, utillaje a la medida y prototipos en 24 a 72 horas sin moldes ni mínimos.
+                  Comparte este contacto con tu equipo de planta. Una opción de servicio de impresión 3D técnica en San Luis Potosí para fabricar refacciones mecánicas, utillaje de ensamble y piezas a la medida sin requerir moldes.
                 </p>
               </div>
 
               {/* Ficha Visual de Vista Previa del Enlace */}
-              <div className="p-3 sm:p-4 rounded-xl bg-[#070B0D] border border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-xs font-mono">
-                <div className="space-y-1 min-w-0">
+              <div className="p-3 sm:p-4 rounded-xl bg-[#070B0D] border border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-xs font-mono overflow-hidden">
+                <div className="space-y-1 min-w-0 w-full sm:w-auto">
                   <div className="flex items-center gap-1.5 text-[#5BB8FF] text-[9.5px] font-bold">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#5BB8FF]" />
-                    <span>PORTAL B2B · ARTESANO DIGITAL INDUSTRIA</span>
+                    <span>ARTESANO DIGITAL · INDUSTRIA</span>
                   </div>
                   <div className="text-white font-sans font-semibold text-xs sm:text-sm truncate">
-                    Manufactura Aditiva Industrial & Refacciones para Planta
+                    Servicio de Impresión 3D Técnica y Refacciones
                   </div>
                   <div className="text-gray-400 text-[10.5px] truncate font-mono">
                     {sharePortalUrl}
                   </div>
                 </div>
 
-                <span className="px-2.5 py-1 rounded bg-[#8FB99B]/15 text-[#8FB99B] border border-[#8FB99B]/30 text-[9.5px] shrink-0 font-bold">
-                  NDA Disponible · Sin Mínimos
+                <span className="px-2.5 py-1 rounded bg-[#8FB99B]/15 text-[#8FB99B] border border-[#8FB99B]/30 text-[9.5px] shrink-0 font-bold self-start sm:self-auto">
+                  NDA Confidencial · Sin Mínimos
                 </span>
               </div>
 
