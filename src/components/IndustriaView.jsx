@@ -24,8 +24,10 @@ import {
   Factory,
   Activity,
   Utensils,
-  Truck
+  Truck,
+  Palette
 } from 'lucide-react';
+import { getFilamentColor } from '../utils/colorUtils';
 
 export default function IndustriaView({
   settings,
@@ -33,6 +35,63 @@ export default function IndustriaView({
   onOpenCalculator
 }) {
   const whatsappPhone = (settings?.whatsappNumber || '5214440000000').replace(/[^0-9]/g, '');
+
+  // Estado de la Pestaña Desplegable de Colores por Material
+  const [showColorsDrawer, setShowColorsDrawer] = useState(false);
+  const [colorDrawerMaterial, setColorDrawerMaterial] = useState('petg');
+
+  // Catálogo de Colores Técnicos por Polímero
+  const INDUSTRIAL_COLORS_BY_MATERIAL = {
+    petg: {
+      materialName: 'PETG Técnico',
+      tag: 'Mecánico & Refacciones',
+      colors: [
+        { name: 'Negro Ónix Mate', desc: 'Acabado sobrio y resistente para carcasas y refacciones', finish: 'Satinado Técnico' },
+        { name: 'Blanco Puro', desc: 'Ductos de aire e interiores limpios de maquinaria', finish: 'Sólido' },
+        { name: 'Gris Plomo Titán', desc: 'Tono maquinaria neutro tipo acero fundido', finish: 'Industrial' },
+        { name: 'Azul Marino Medianoche', desc: 'Gabinetes, cajas y soportes corporativos', finish: 'Sólido' },
+        { name: 'Rojo Carmesí', desc: 'Guardas de seguridad y paros de emergencia', finish: 'Seguridad' },
+        { name: 'Naranja Cálido', desc: 'Galgas de advertencia y poka-yoke visual', finish: 'Alta Visibilidad' },
+        { name: 'Mostaza Colonial', desc: 'Zonas de precaución y señalética industrial', finish: 'Advertencia' },
+        { name: 'Verde Olivo Táctico', desc: 'Tono mate sobrio sin reflejos plásticos', finish: 'Mate' },
+        { name: 'Translúcido Cristal', desc: 'Difusor de luz o visor de flujo de líquidos', finish: 'Translúcido' }
+      ]
+    },
+    tpu: {
+      materialName: 'TPU 95A Elastómero',
+      tag: 'Flexible & Antirrayón',
+      colors: [
+        { name: 'Negro Ónix Mate', desc: 'Aspecto de caucho vulcanizado para amortiguadores', finish: 'Goma Flexible' },
+        { name: 'Blanco Puro', desc: 'Topes y ventosas limpias sin manchar superficies', finish: 'Goma Limpia' },
+        { name: 'Rojo Carmesí', desc: 'Topes de final de carrera y parachoques visuales', finish: 'Impacto Visual' },
+        { name: 'Azul Marino Medianoche', desc: 'Mordazas suaves para robots y nidos de ensamble', finish: 'Industrial' },
+        { name: 'Naranja Cálido', desc: 'Protecciones de arista y juntas visibles', finish: 'Flexible Señal' },
+        { name: 'Translúcido Cristal', desc: 'Sellos, fuelles y empaques semi-transparentes', finish: 'Goma Translúcida' }
+      ]
+    },
+    plaplus: {
+      materialName: 'PLA+ Pro Alta Rigidez',
+      tag: 'Prototipos & Pruebas DFM',
+      colors: [
+        { name: 'Negro Ónix Mate', desc: 'Máxima definición geométrica y comprobación de holguras', finish: 'Ultra Precisión' },
+        { name: 'Blanco Marfil', desc: 'Excelente contraste para revisión de cotas y ensambles', finish: 'Mate' },
+        { name: 'Gris Plomo Titán', desc: 'Símil visual de pieza maquinada en aluminio', finish: 'Neutro' },
+        { name: 'Verde Olivo Táctico', desc: 'Tono mate insignia del taller', finish: 'Mate Táctico' },
+        { name: 'Terracota', desc: 'Arcilla cálida con alta visibilidad de detalle', finish: 'Satinado' },
+        { name: 'Plata Metálico', desc: 'Reflejo metálico satinado para maquetas ejecutivas', finish: 'Seda Metálica' },
+        { name: 'Azul Marino Medianoche', desc: 'Maquetas corporativas de ensamble', finish: 'Sólido' }
+      ]
+    },
+    abs: {
+      materialName: 'ABS / ASA Industrial',
+      tag: 'Resistencia Térmica & UV',
+      colors: [
+        { name: 'Negro Ónix Mate', desc: 'Protección UV y resistencia a temperatura continua', finish: 'Térmico Exterior' },
+        { name: 'Blanco Puro', desc: 'Reflexión solar y baja absorción de calor en intemperie', finish: 'Intemperie' },
+        { name: 'Gris Plomo Titán', desc: 'Reemplazos técnicos y chasis de equipos', finish: 'Industrial' }
+      ]
+    }
+  };
 
   // Material Interactivo Seleccionado
   const [selectedMaterialTab, setSelectedMaterialTab] = useState('petg');
@@ -45,6 +104,7 @@ export default function IndustriaView({
     whatsapp: '',
     aplicacion: 'Prototipo rápido (24 a 72 hrs)',
     material: 'PETG Técnico (Tenaz)',
+    colorSeleccionado: 'Negro Ónix Mate (Estándar)',
     cantidad: '1',
     urgencia: '24 a 72 hrs',
     detalles: '',
@@ -78,6 +138,7 @@ export default function IndustriaView({
 ⚙️ *PARÁMETROS DE MANUFACTURA:*
 • *Aplicación:* ${formData.aplicacion}
 • *Polímero sugerido:* ${formData.material}
+• *Color / Acabado:* ${formData.colorSeleccionado || 'Negro Ónix Mate (Estándar)'}
 • *Cantidad:* ${formData.cantidad} pieza(s)
 • *Tiempo de entrega:* ${formData.urgencia}
 • *Archivo 3D / Plano:* ${formData.archivoNombre ? `Archivo: ${formData.archivoNombre}` : 'Muestra física / foto con cotas'}
@@ -940,6 +1001,35 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 </div>
               </div>
 
+              <div className="p-3 rounded-xl bg-white/5 border border-white/10 flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span
+                    className="w-4 h-4 rounded-full border border-black/30 shrink-0 shadow-sm"
+                    style={{
+                      background: getFilamentColor(formData.colorSeleccionado)?.css || '#111',
+                      borderColor: getFilamentColor(formData.colorSeleccionado)?.border || '#444'
+                    }}
+                  />
+                  <span className="text-gray-300 text-xs">
+                    Color seleccionado: <strong className="text-white">{formData.colorSeleccionado}</strong>
+                  </span>
+                </div>
+                <a
+                  href="#consulta-colores-industria"
+                  onClick={() => {
+                    setShowColorsDrawer(true);
+                    if (formData.material.includes('TPU')) setColorDrawerMaterial('tpu');
+                    else if (formData.material.includes('PLA')) setColorDrawerMaterial('plaplus');
+                    else if (formData.material.includes('ABS')) setColorDrawerMaterial('abs');
+                    else setColorDrawerMaterial('petg');
+                  }}
+                  className="text-[#5BB8FF] hover:underline font-bold text-[11px] flex items-center gap-1 cursor-pointer"
+                >
+                  <Palette className="w-3.5 h-3.5" />
+                  <span>Ver catálogo de colores abajo ↓</span>
+                </a>
+              </div>
+
               <div>
                 <label className="block text-gray-300 font-semibold mb-1">Archivo CAD o Foto de Referencia</label>
                 <div className="border border-dashed border-white/20 hover:border-[#5BB8FF] rounded-xl p-4 text-center cursor-pointer bg-[#0A0E11]/60 transition-colors">
@@ -998,7 +1088,139 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
         </div>
       </section>
 
+      
       {/* ========================================================
+          7. PESTAÑA / DRAWER: CONSULTA DE COLORES Y ACABADOS POR MATERIAL
+          ======================================================== */}
+      <section id="consulta-colores-industria" className="py-6 sm:py-10 bg-[#0A0E11] border-t border-white/10">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="rounded-2xl border border-white/15 bg-[#12181C] overflow-hidden shadow-xl transition-all">
+            {/* Header / Botón Pestaña Desplegable */}
+            <button
+              type="button"
+              onClick={() => setShowColorsDrawer(!showColorsDrawer)}
+              className="w-full p-4 sm:p-5 flex items-center justify-between gap-3 text-left bg-gradient-to-r from-white/[0.04] to-transparent hover:bg-white/[0.08] transition-colors cursor-pointer"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#5BB8FF]/10 border border-[#5BB8FF]/30 flex items-center justify-center text-[#5BB8FF] shrink-0">
+                  <Palette className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="font-mono text-[10px] sm:text-[11px] text-[#5BB8FF] uppercase tracking-wider font-bold">
+                    Carta Técnica de Acabados
+                  </div>
+                  <h3 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
+                    <span>Consulta colores dependiendo tu material</span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                      En stock
+                    </span>
+                  </h3>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 text-gray-400">
+                <span className="text-xs hidden sm:inline font-mono">
+                  {showColorsDrawer ? 'Ocultar catálogo' : 'Desplegar catálogo'}
+                </span>
+                <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${showColorsDrawer ? 'rotate-180 text-[#5BB8FF]' : ''}`} />
+              </div>
+            </button>
+
+            {/* Contenido desplegable */}
+            {showColorsDrawer && (
+              <div className="p-4 sm:p-6 border-t border-white/10 space-y-5 bg-[#0D1216]">
+                {/* Selector de Polímero (Pestañas horizontales tipo tienda) */}
+                <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-thin">
+                  {Object.entries(INDUSTRIAL_COLORS_BY_MATERIAL).map(([key, item]) => (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => setColorDrawerMaterial(key)}
+                      className={`px-3.5 py-2 rounded-xl text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-2 ${
+                        colorDrawerMaterial === key
+                          ? 'bg-[#5BB8FF] text-black shadow-md shadow-[#5BB8FF]/20 scale-102'
+                          : 'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white border border-white/10'
+                      }`}
+                    >
+                      <span>{item.materialName}</span>
+                      <span className={`text-[10px] opacity-80 ${colorDrawerMaterial === key ? 'text-black/80' : 'text-gray-400'}`}>
+                        ({item.colors.length})
+                      </span>
+                    </button>
+                  ))}
+                </div>
+
+                {/* Info del material activo */}
+                <div className="flex items-center justify-between text-xs font-mono text-gray-400 px-1">
+                  <span>Material: <strong className="text-white">{INDUSTRIAL_COLORS_BY_MATERIAL[colorDrawerMaterial]?.materialName}</strong> ({INDUSTRIAL_COLORS_BY_MATERIAL[colorDrawerMaterial]?.tag})</span>
+                  <span className="text-[11px] text-[#5BB8FF]">Toca un color para aplicarlo a tu cotización ↑</span>
+                </div>
+
+                {/* Grid de colores con swatches reales de colorUtils */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                  {INDUSTRIAL_COLORS_BY_MATERIAL[colorDrawerMaterial]?.colors.map((color) => {
+                    const filament = getFilamentColor(color.name);
+                    const isSelected = formData.colorSeleccionado === color.name;
+                    return (
+                      <div
+                        key={color.name}
+                        onClick={() => {
+                          setFormData({ ...formData, colorSeleccionado: color.name });
+                        }}
+                        className={`p-3 rounded-xl border transition-all cursor-pointer flex items-center gap-3 ${
+                          isSelected
+                            ? 'bg-[#5BB8FF]/15 border-[#5BB8FF] shadow-[0_0_15px_rgba(91,184,255,0.2)]'
+                            : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
+                        }`}
+                      >
+                        {/* Swatch circular con brillo / sombra / borde */}
+                        <div
+                          className="w-8 h-8 rounded-full border shrink-0 shadow-md flex items-center justify-center transition-transform hover:scale-110"
+                          style={{
+                            background: filament?.css || '#333',
+                            borderColor: filament?.border || '#555',
+                            boxShadow: filament?.glow ? `0 0 10px ${filament.border}` : '0 2px 5px rgba(0,0,0,0.5)'
+                          }}
+                        >
+                          {isSelected && (
+                            <CheckCircle2 className={`w-4 h-4 ${filament?.isDark ? 'text-white' : 'text-black'}`} />
+                          )}
+                        </div>
+
+                        {/* Texto */}
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center justify-between gap-1">
+                            <span className="text-xs font-bold text-white truncate">{color.name}</span>
+                            <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-white/10 text-gray-300 shrink-0">
+                              {color.finish}
+                            </span>
+                          </div>
+                          <p className="text-[10px] text-gray-400 line-clamp-1 mt-0.5 leading-tight">
+                            {color.desc}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Pie de la pestaña de consulta */}
+                <div className="pt-2 text-[11px] text-gray-400 font-mono border-t border-white/5 flex flex-wrap items-center justify-between gap-2">
+                  <span>¿Requieres un color PANTONE o RAL específico para tu línea? Lo conseguimos bajo pedido.</span>
+                  <a
+                    href="#cotizar-industria"
+                    className="text-[#5BB8FF] hover:underline font-bold text-xs"
+                  >
+                    Subir al formulario ↑
+                  </a>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+{/* ========================================================
           8. SECCIÓN: REGRESO A LA TIENDA PRINCIPAL
           ======================================================== */}
       <section className="py-12 border-t border-white/10 bg-[#0A0E11] text-center">
