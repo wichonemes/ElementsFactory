@@ -16,6 +16,7 @@ import FloatingSideNav from './components/FloatingSideNav';
 import TemuUrgencyModule from './components/TemuUrgencyModule';
 import PackagesAndServicesView from './components/PackagesAndServicesView';
 import PublicidadDesarrolloView from './components/PublicidadDesarrolloView';
+import IndustriaView from './components/IndustriaView';
 import HomePackageCard from './components/HomePackageCard';
 import BlitzClockWidget from './components/BlitzClockWidget';
 import CatalogBottomNav from './components/CatalogBottomNav';
@@ -907,6 +908,12 @@ export default function App() {
           onGoHome={handleGoHome}
           onOpenCalculator={handleOpenCalculator}
           onSelectWorld={handleSelectWorld}
+        />
+      ) : activeWorld === 'industria' ? (
+        <IndustriaView
+          settings={settings}
+          onGoHome={handleGoHome}
+          onOpenCalculator={handleOpenCalculator}
         />
       ) : activeWorld === 'paquetes-servicios' ? (
         <PackagesAndServicesView
