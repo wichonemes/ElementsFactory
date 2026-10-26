@@ -10,6 +10,7 @@ import {
   Cpu,
   Package,
   Boxes,
+  RotateCcw,
   MessageCircle,
   UploadCloud,
   ChevronDown,
@@ -37,10 +38,10 @@ export default function IndustriaView({
     empresa: '',
     correo: '',
     whatsapp: '',
-    aplicacion: 'Prototipo funcional / DFM',
+    aplicacion: 'Prototipo rápido (24 a 72 hrs)',
     material: 'PETG Técnico (Tenaz)',
     cantidad: '1',
-    urgencia: 'Normal (48 a 72 hrs)',
+    urgencia: '24 a 72 hrs',
     detalles: '',
     requiereNda: false,
     archivoNombre: ''
@@ -92,13 +93,13 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
     petg: {
       id: 'petg',
       name: 'PETG Técnico Industrial',
-      tag: 'USO MECÁNICO GENERAL · BAMBU & CREATOR 5',
+      tag: 'USO MECÁNICO GENERAL · ALTA TENACIDAD',
       temp: '75°C - 80°C',
       impact: 'Alto (Tenaz sin fractura frágil)',
       chemical: 'Resistente a lubricantes, agua y alcoholes',
       tensile: '50 MPa',
       density: '1.27 g/cm³',
-      summary: 'El caballo de batalla del taller. Excelente unión interlaminar, alta durabilidad y absorción de impacto sin romperse. Lo producimos a alta velocidad en nuestra granja Bambu Lab y Creator 5.',
+      summary: 'El caballo de batalla del taller. Excelente unión interlaminar, alta durabilidad y absorción de impacto sin romperse. Producido con máxima precisión dimensional para refacciones y piezas mecánicas.',
       apps: ['Guardas de seguridad de maquinaria', 'Ductos de aire y ventilación', 'Cajas de componentes electrónicos', 'Soportes de montaje y fijación']
     },
     tpu: {
@@ -122,20 +123,20 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       chemical: 'Estable en ambientes secos de oficina o ensamble',
       tensile: '55 MPa (Módulo de alta rigidez)',
       density: '1.24 g/cm³',
-      summary: 'Máxima precisión geométrica y definición de aristas para comprobaciones de holgura, pruebas de ensamble con tornillos y prototipos DFM entregados en 24 horas.',
-      apps: ['Maquetas de ensamble rápido DFM', 'Galgas de comprobación visual', 'Modelos ergonómicos de prueba', 'Piezas de ajuste pre-mecanizado']
+      summary: 'Máxima precisión geométrica y definición de aristas para comprobaciones de holgura, pruebas de ensamble con tornillos y prototipos entregados en 24 a 72 horas.',
+      apps: ['Maquetas de ensamble rápido', 'Galgas de comprobación visual', 'Modelos ergonómicos de prueba', 'Piezas de ajuste pre-mecanizado']
     },
     abs: {
       id: 'abs',
       name: 'ABS / ASA Industrial',
-      tag: 'CABINA CERRADA · FLASHFORGE CREATOR 5',
+      tag: 'CABINA CERRADA AISLADA · TÉRMICO',
       temp: '90°C - 95°C',
       impact: 'Alto con ductilidad térmica',
       chemical: 'Resistencia a intemperie UV (ASA) y calor',
       tensile: '42 MPa',
       density: '1.06 g/cm³',
-      summary: 'Procesado en cabina cerrada para retener temperatura de cama y evitar corrientes de aire. Recomendado para piezas de tamaño pequeño a mediano con exposición solar o calor.',
-      apps: ['Gabinetes y carcasas para intemperie', 'Refacciones automotrices bajo cofre', 'Plantillas de verificación de soldadura', 'Piezas sometidas a calor constante']
+      summary: 'Procesado en cabina cerrada para retener temperatura y evitar corrientes de aire. Recomendado para piezas de tamaño pequeño a mediano con requerimientos de calor o intemperie.',
+      apps: ['Gabinetes y carcasas para intemperie', 'Refacciones bajo temperatura', 'Plantillas de verificación térmica', 'Piezas sometidas a calor moderado']
     }
   };
 
@@ -243,11 +244,11 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 </div>
                 <div className="p-2.5 rounded-lg border border-white/10 bg-[#11171B]">
                   <div className="font-mono text-[9px] uppercase text-gray-400">Confidencialidad</div>
-                  <div className="font-bold text-xs text-[#8FB99B] mt-0.5">NDA firmado</div>
+                  <div className="font-bold text-xs text-[#8FB99B] mt-0.5">NDA disponible</div>
                 </div>
                 <div className="p-2.5 rounded-lg border border-white/10 bg-[#11171B]">
-                  <div className="font-mono text-[9px] uppercase text-gray-400">Facturación</div>
-                  <div className="font-bold text-xs text-white mt-0.5">CFDI 4.0 + OC</div>
+                  <div className="font-mono text-[9px] uppercase text-gray-400">Pieza Mínima</div>
+                  <div className="font-bold text-xs text-white mt-0.5">Desde 1 pieza</div>
                 </div>
                 <div className="p-2.5 rounded-lg border border-white/10 bg-[#11171B]">
                   <div className="font-mono text-[9px] uppercase text-gray-400">Volumen Unitario</div>
@@ -327,8 +328,8 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                     <strong className="text-white">PETG / ABS / TPU</strong>
                   </div>
                   <div className="p-2 rounded bg-white/5 border border-white/5">
-                    <span className="block text-gray-400 text-[8px] uppercase">Ensambles</span>
-                    <strong className="text-[#8FB99B]">Insertos M3-M8</strong>
+                    <span className="block text-gray-400 text-[8px] uppercase">Precisión</span>
+                    <strong className="text-[#8FB99B]">±0.15 mm</strong>
                   </div>
                   <div className="p-2 rounded bg-white/5 border border-white/5">
                     <span className="block text-gray-400 text-[8px] uppercase">Capacidad</span>
@@ -361,78 +362,106 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             
             {/* Tarjeta 1 */}
-            <div className="p-5 sm:p-6 rounded-2xl border border-white/10 bg-[#12181C] hover:border-[#5BB8FF]/50 transition-all shadow-lg space-y-3 relative overflow-hidden group">
+            <div className="p-5 sm:p-6 rounded-2xl border border-white/10 bg-[#12181C] hover:border-[#5BB8FF]/50 transition-all shadow-lg space-y-4 relative overflow-hidden group">
               <div className="flex items-center justify-between font-mono text-[10px] text-gray-400 border-b border-white/5 pb-2">
                 <span className="text-[#5BB8FF] font-bold">SOLUCIÓN // PROTO-01</span>
-                <span>ENTREGA: 24 A 48 HRS</span>
+                <span>ENTREGA: 24 A 72 HRS</span>
               </div>
-              <h3 className="text-lg font-bold text-white group-hover:text-[#5BB8FF] transition-colors">
-                Prototipado Funcional & Ensamble (DFM)
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
-                Prueba ajustes, interferencias de ensamble y ergonomía en piezas reales antes de liberar presupuesto para mecanizados CNC o herramentales de acero.
-              </p>
-              <div className="pt-2 flex flex-wrap gap-2 text-[10px] font-mono">
+              <div className="flex items-start gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-[#5BB8FF]/10 border border-[#5BB8FF]/20 flex items-center justify-center shrink-0 text-[#5BB8FF] shadow-[0_0_12px_rgba(91,184,255,0.15)] group-hover:scale-105 transition-transform">
+                  <Layers className="w-5 h-5" />
+                </div>
+                <div className="space-y-1.5 flex-1 min-w-0">
+                  <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-[#5BB8FF] transition-colors leading-snug">
+                    Prototipado Funcional & Ensamble
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
+                    Prueba ajustes, interferencias de ensamble y holguras imprimiendo directamente tu archivo 3D antes de mandar a fabricar en serie o invertir en moldes.
+                  </p>
+                </div>
+              </div>
+              <div className="pt-1 flex flex-wrap gap-2 text-[10px] font-mono">
                 <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-gray-300">Tolerancias ±0.15 mm</span>
                 <span className="px-2.5 py-1 rounded bg-[#5BB8FF]/10 text-[#5BB8FF] border border-[#5BB8FF]/20">PETG · PLA+ Pro</span>
-                <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-gray-300">Revisión CAD incluida</span>
+                <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-gray-300">Archivos .step / .stl</span>
               </div>
             </div>
 
             {/* Tarjeta 2 */}
-            <div className="p-5 sm:p-6 rounded-2xl border border-white/10 bg-[#12181C] hover:border-[#8FB99B]/50 transition-all shadow-lg space-y-3 relative overflow-hidden group">
+            <div className="p-5 sm:p-6 rounded-2xl border border-white/10 bg-[#12181C] hover:border-[#8FB99B]/50 transition-all shadow-lg space-y-4 relative overflow-hidden group">
               <div className="flex items-center justify-between font-mono text-[10px] text-gray-400 border-b border-white/5 pb-2">
                 <span className="text-[#8FB99B] font-bold">SOLUCIÓN // JIG-02</span>
                 <span>HERRAMENTAL A MEDIDA</span>
               </div>
-              <h3 className="text-lg font-bold text-white group-hover:text-[#8FB99B] transition-colors">
-                Utillaje, Jigs & Fixtures de Línea
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
-                Diseñamos y fabricamos nidos de sujeción para estaciones de ensamble, plantillas poka-yoke para operarios y mordazas protectoras que no rayan piezas pintadas.
-              </p>
-              <div className="pt-2 flex flex-wrap gap-2 text-[10px] font-mono">
-                <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-gray-300">Insertos roscados M3-M8</span>
+              <div className="flex items-start gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-[#8FB99B]/10 border border-[#8FB99B]/20 flex items-center justify-center shrink-0 text-[#8FB99B] shadow-[0_0_12px_rgba(143,185,155,0.15)] group-hover:scale-105 transition-transform">
+                  <Wrench className="w-5 h-5" />
+                </div>
+                <div className="space-y-1.5 flex-1 min-w-0">
+                  <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-[#8FB99B] transition-colors leading-snug">
+                    Utillaje, Jigs & Fixtures de Línea
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
+                    Fabricamos con las medidas exactas de tu archivo nidos de apoyo, plantillas para operarios y mordazas protectoras que no rayan piezas terminadas.
+                  </p>
+                </div>
+              </div>
+              <div className="pt-1 flex flex-wrap gap-2 text-[10px] font-mono">
+                <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-gray-300">Ajuste dimensional fiel</span>
                 <span className="px-2.5 py-1 rounded bg-[#8FB99B]/10 text-[#8FB99B] border border-[#8FB99B]/20">TPU 95A · PETG</span>
-                <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-gray-300">Anti-fricción</span>
+                <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-gray-300">Superficie antirrayón</span>
               </div>
             </div>
 
             {/* Tarjeta 3 */}
-            <div className="p-5 sm:p-6 rounded-2xl border border-white/10 bg-[#12181C] hover:border-amber-400/50 transition-all shadow-lg space-y-3 relative overflow-hidden group">
+            <div className="p-5 sm:p-6 rounded-2xl border border-white/10 bg-[#12181C] hover:border-amber-400/50 transition-all shadow-lg space-y-4 relative overflow-hidden group">
               <div className="flex items-center justify-between font-mono text-[10px] text-gray-400 border-b border-white/5 pb-2">
                 <span className="text-amber-400 font-bold">SOLUCIÓN // SPARE-03</span>
                 <span>SUSTITUCIÓN DIRECTA</span>
               </div>
-              <h3 className="text-lg font-bold text-white group-hover:text-amber-300 transition-colors">
-                Refacciones y Piezas Descatalogadas
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
-                ¿La pieza plástica se quebró y el fabricante original tarda 10 semanas o ya no existe? Tráenos la muestra rota: la medimos con vernier y la imprimimos en polímero técnico.
-              </p>
-              <div className="pt-2 flex flex-wrap gap-2 text-[10px] font-mono">
-                <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-gray-300">Ingeniería inversa básica</span>
+              <div className="flex items-start gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center shrink-0 text-amber-300 shadow-[0_0_12px_rgba(251,191,36,0.15)] group-hover:scale-105 transition-transform">
+                  <RotateCcw className="w-5 h-5" />
+                </div>
+                <div className="space-y-1.5 flex-1 min-w-0">
+                  <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-amber-300 transition-colors leading-snug">
+                    Refacciones y Piezas Descatalogadas
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
+                    ¿Se rompió una pieza y el fabricante tarda semanas o ya no existe? Con tu archivo 3D o plano con medidas exactas, te la imprimimos en polímero técnico resistente.
+                  </p>
+                </div>
+              </div>
+              <div className="pt-1 flex flex-wrap gap-2 text-[10px] font-mono">
+                <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-gray-300">Fabricación con tus cotas</span>
                 <span className="px-2.5 py-1 rounded bg-amber-400/10 text-amber-300 border border-amber-400/20">PETG · ABS/ASA</span>
                 <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-gray-300">Desde 1 pieza</span>
               </div>
             </div>
 
             {/* Tarjeta 4 */}
-            <div className="p-5 sm:p-6 rounded-2xl border border-white/10 bg-[#12181C] hover:border-purple-400/50 transition-all shadow-lg space-y-3 relative overflow-hidden group">
+            <div className="p-5 sm:p-6 rounded-2xl border border-white/10 bg-[#12181C] hover:border-purple-400/50 transition-all shadow-lg space-y-4 relative overflow-hidden group">
               <div className="flex items-center justify-between font-mono text-[10px] text-gray-400 border-b border-white/5 pb-2">
                 <span className="text-purple-400 font-bold">SOLUCIÓN // BATCH-04</span>
-                <span>GRANJA 3D SLP</span>
+                <span>PRODUCCIÓN BAJO DEMANDA</span>
               </div>
-              <h3 className="text-lg font-bold text-white group-hover:text-purple-300 transition-colors">
-                Lotes Cortos y Preseries (1 a 500+ piezas)
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
-                Producción en paralelo para arranques de producción, lotes piloto o requerimientos donde pagar un molde de inyección no es financieramente viable.
-              </p>
-              <div className="pt-2 flex flex-wrap gap-2 text-[10px] font-mono">
-                <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-gray-300">Cero costo de matriz</span>
-                <span className="px-2.5 py-1 rounded bg-purple-400/10 text-purple-300 border border-purple-400/20">Capacidad distribuida</span>
-                <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-gray-300">Escalamiento ágil</span>
+              <div className="flex items-start gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-purple-400/10 border border-purple-400/20 flex items-center justify-center shrink-0 text-purple-300 shadow-[0_0_12px_rgba(192,132,252,0.15)] group-hover:scale-105 transition-transform">
+                  <Boxes className="w-5 h-5" />
+                </div>
+                <div className="space-y-1.5 flex-1 min-w-0">
+                  <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-purple-300 transition-colors leading-snug">
+                    Lotes Cortos y Preseries (1 a 500+ piezas)
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
+                    Producción continua de varias piezas bajo demanda para arranques, reemplazos o preseries sin tener que pagar matrices ni herramentales costosos.
+                  </p>
+                </div>
+              </div>
+              <div className="pt-1 flex flex-wrap gap-2 text-[10px] font-mono">
+                <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-gray-300">Sin costo de matriz</span>
+                <span className="px-2.5 py-1 rounded bg-purple-400/10 text-purple-300 border border-purple-400/20">1 a 500+ piezas</span>
+                <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-gray-300">Entrega en SLP</span>
               </div>
             </div>
 
@@ -558,30 +587,30 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                   <span className="font-bold text-white">Hasta 500 × 500 × 500 mm</span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="text-gray-400 font-sans">Parque de máquinas</span>
-                  <span className="font-bold text-[#5BB8FF]">Bambu Lab + Creator 5 (IDEX)</span>
+                  <span className="text-gray-400 font-sans">Resolución de capa</span>
+                  <span className="font-bold text-[#5BB8FF]">0.12 a 0.28 mm</span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
                   <span className="text-gray-400 font-sans">Materiales en stock</span>
                   <span className="font-bold text-[#8FB99B]">PETG · TPU 95A · PLA+ Pro</span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="text-gray-400 font-sans">Tecnología IDEX</span>
-                  <span className="font-bold text-amber-300">Doble extrusor / Gran formato</span>
-                </div>
-                <div className="py-2.5 flex justify-between items-center">
-                  <span className="text-gray-400 font-sans">Insertos de latón</span>
-                  <span className="font-bold text-white">M2, M3, M4, M5, M6, M8</span>
+                  <span className="text-gray-400 font-sans">Térmico / Intemperie</span>
+                  <span className="font-bold text-amber-300">ABS / ASA (Cabina aislada)</span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
                   <span className="text-gray-400 font-sans">Capacidad de lote</span>
                   <span className="font-bold text-white">1 a 500+ piezas</span>
                 </div>
+                <div className="py-2.5 flex justify-between items-center">
+                  <span className="text-gray-400 font-sans">Acabado final</span>
+                  <span className="font-bold text-gray-300">Retiro limpio de soportes</span>
+                </div>
               </div>
 
               <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-[#C4CCD0] leading-relaxed">
-                <strong className="text-white block font-sans mb-1">Ensamble Modular de Gran Formato:</strong>
-                Piezas que superen el volumen monobloque se resuelven mediante ensambles mecánicos de espiga, cola de milano y tornillería pasante diseñados directamente en taller.
+                <strong className="text-white block font-sans mb-1">Capacidad de Gran Formato:</strong>
+                Fabricamos piezas de hasta 500 mm en una sola pieza sin uniones, o ensambles seccionados siguiendo las especificaciones de tu modelo 3D.
               </div>
             </div>
 
@@ -611,44 +640,44 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
             <div className="p-4 rounded-xl border border-white/10 bg-[#12181C] space-y-2 relative">
               <div className="flex items-center justify-between font-mono text-xs">
                 <span className="text-[#5BB8FF] font-black">01</span>
-                <span className="text-[9px] text-gray-500 uppercase">CAD / Foto</span>
+                <span className="text-[9px] text-gray-500 uppercase">CAD / Medidas</span>
               </div>
               <h4 className="font-bold text-sm text-white">Recepción</h4>
               <p className="text-xs text-gray-400 leading-relaxed">
-                Nos compartes tu archivo 3D (.step, .stl) o fotos con cotas de la muestra física.
+                Nos compartes tu archivo 3D (.step, .stl, .obj) o tu croquis con las medidas exactas.
               </p>
             </div>
 
             <div className="p-4 rounded-xl border border-white/10 bg-[#12181C] space-y-2 relative">
               <div className="flex items-center justify-between font-mono text-xs">
                 <span className="text-[#5BB8FF] font-black">02</span>
-                <span className="text-[9px] text-gray-500 uppercase">DFM</span>
+                <span className="text-[9px] text-gray-500 uppercase">Preparación</span>
               </div>
-              <h4 className="font-bold text-sm text-white">Revisamos tu pieza</h4>
+              <h4 className="font-bold text-sm text-white">Revisamos tu archivo</h4>
               <p className="text-xs text-gray-400 leading-relaxed">
-                Optimizamos la orientación de capa, tolerancias e infill según el esfuerzo mecánico.
+                Verificamos orientación de capa, soportes y porcentaje de relleno (infill) para que resista.
               </p>
             </div>
 
             <div className="p-4 rounded-xl border border-white/10 bg-[#12181C] space-y-2 relative">
               <div className="flex items-center justify-between font-mono text-xs">
                 <span className="text-[#5BB8FF] font-black">03</span>
-                <span className="text-[9px] text-gray-500 uppercase">B2B</span>
+                <span className="text-[9px] text-gray-500 uppercase">Transparente</span>
               </div>
-              <h4 className="font-bold text-sm text-white">Cotización Formal</h4>
+              <h4 className="font-bold text-sm text-white">Cotización Rápida</h4>
               <p className="text-xs text-gray-400 leading-relaxed">
-                Desglose claro de material, tiempos de máquina y costo unitario para compras.
+                Cálculo claro de material y tiempo de máquina sin letras chiquitas.
               </p>
             </div>
 
             <div className="p-4 rounded-xl border border-white/10 bg-[#12181C] space-y-2 relative">
               <div className="flex items-center justify-between font-mono text-xs">
                 <span className="text-[#5BB8FF] font-black">04</span>
-                <span className="text-[9px] text-gray-500 uppercase">Taller</span>
+                <span className="text-[9px] text-gray-500 uppercase">Taller SLP</span>
               </div>
-              <h4 className="font-bold text-sm text-white">Manufactura</h4>
+              <h4 className="font-bold text-sm text-white">Impresión 3D</h4>
               <p className="text-xs text-gray-400 leading-relaxed">
-                Impresión en granja local con reportes de avance y colocación de insertos roscados.
+                Impresión en polímero técnico con alta fidelidad y retiro limpio de soportes.
               </p>
             </div>
 
@@ -659,17 +688,17 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
               </div>
               <h4 className="font-bold text-sm text-white">Entrega Local</h4>
               <p className="text-xs text-gray-400 leading-relaxed">
-                Entrega rápida a tu planta o retiro en taller con factura fiscal CFDI y orden de compra.
+                Entrega personal acordada en San Luis Potosí o retiro directo en taller.
               </p>
             </div>
 
           </div>
 
-          {/* Nota de Levantamiento 3D */}
+          {/* Nota de Preparación */}
           <div className="mt-4 p-3.5 rounded-xl border border-[#5BB8FF]/30 bg-[#5BB8FF]/5 flex items-center gap-3 text-xs text-gray-300">
             <span className="w-2 h-2 rounded-full bg-[#5BB8FF] shrink-0" />
             <span>
-              <strong className="text-white">¿No tienes plano digital?</strong> Mándanos la muestra física rota o gastada a nuestro taller: realizamos el levantamiento dimensional y modelado CAD directo.
+              <strong className="text-white">¿Qué necesitas para cotizar?</strong> Tu archivo digital en formato .step, .stl u .obj, o las medidas exactas de tu pieza. Nosotros nos encargamos de que la impresión 3D quede con la máxima calidad.
             </span>
           </div>
 
@@ -677,7 +706,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          6. SECCIÓN 04: CERTEZAS DE COMPRAS Y PROVEEDURÍA
+          6. SECCIÓN 04: LO QUE NECESITAS SABER
           ======================================================== */}
       <section className="py-14 border-b border-white/10 bg-[#0A0E11]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
@@ -685,10 +714,10 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
           <div className="text-center mb-8">
             <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5BB8FF] inline-flex items-center gap-2">
               <span className="w-5 h-px bg-[#5BB8FF]" />
-              04 / Compras y Proveeduría
+              04 / Información Clave
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
-              Lo que necesita saber el área de compras.
+              Lo que necesitas saber.
             </h2>
           </div>
 
@@ -697,10 +726,10 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
             <div className="p-4 rounded-xl border border-white/10 bg-[#12181C] space-y-1.5">
               <div className="flex items-center gap-2 font-mono text-xs text-white font-bold">
                 <FileText className="w-4 h-4 text-[#5BB8FF]" />
-                <span>Facturación Fiscal CFDI 4.0</span>
+                <span>¿Qué necesitas para cotizar?</span>
               </div>
               <p className="text-xs text-gray-400 leading-relaxed">
-                Emitimos factura mexicana deducible con desglose de IVA. Soportamos catálogo de cuentas y flujo contra Orden de Compra (OC).
+                Tu archivo 3D (.step, .stl, .obj) o un croquis con todas las medidas exactas de tu pieza. Si ya tienes el modelo, la cotización es inmediata.
               </p>
             </div>
 
@@ -710,7 +739,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 <span>Convenio de Confidencialidad (NDA)</span>
               </div>
               <p className="text-xs text-gray-400 leading-relaxed">
-                Firmamos nuestro convenio estándar de confidencialidad o el formato oficial que tu área legal requiera antes de recibir planos o archivos STEP.
+                Si tu pieza es un desarrollo privado o confidencial, firmamos un acuerdo de confidencialidad antes de que nos envíes tus archivos.
               </p>
             </div>
 
@@ -720,17 +749,17 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 <span>Sin Mínimos Forzosos</span>
               </div>
               <p className="text-xs text-gray-400 leading-relaxed">
-                Fabricamos desde 1 pieza para una urgencia de mantenimiento correctivo hasta tiradas seriadas de 500+ unidades para almacén.
+                Imprimimos desde 1 sola pieza para una sustitución urgente, hasta lotes de 1 a 500 piezas sin pagar costos de moldes ni matrices.
               </p>
             </div>
 
             <div className="p-4 rounded-xl border border-white/10 bg-[#12181C] space-y-1.5">
               <div className="flex items-center gap-2 font-mono text-xs text-white font-bold">
-                <MapPin className="w-4 h-4 text-amber-400" />
-                <span>Entrega Directa a Planta en SLP</span>
+                <Clock className="w-4 h-4 text-amber-400" />
+                <span>Tiempos de Entrega Ágiles</span>
               </div>
               <p className="text-xs text-gray-400 leading-relaxed">
-                Entregas coordinadas a caseta de vigilancia, almacén o departamento de ingeniería en los parques industriales de San Luis Potosí.
+                Prototipos y piezas urgentes desde 24 a 72 horas. Entrega directa y trato personalizado en San Luis Potosí.
               </p>
             </div>
 
@@ -824,11 +853,11 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                     onChange={(e) => setFormData({ ...formData, aplicacion: e.target.value })}
                     className="w-full px-3 py-2.5 rounded-xl bg-[#0A0E11] border border-white/15 text-white focus:outline-none focus:border-[#5BB8FF]"
                   >
-                    <option>Prototipo funcional / DFM</option>
-                    <option>Utillaje / Jig de ensamble</option>
-                    <option>Refacción descatalogada</option>
-                    <option>Lote corto de producción</option>
-                    <option>Gabinete / Carcasa técnica</option>
+                    <option>Prototipo rápido (24 a 72 hrs)</option>
+                    <option>Utillaje / Jig de apoyo</option>
+                    <option>Refacción o pieza de sustitución</option>
+                    <option>Lote de piezas (1 a 500 pzs)</option>
+                    <option>Carcasa o gabinete técnico</option>
                   </select>
                 </div>
 
