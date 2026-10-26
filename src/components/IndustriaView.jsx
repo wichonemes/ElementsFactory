@@ -19,7 +19,12 @@ import {
   Sliders,
   Check,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  Car,
+  Factory,
+  Activity,
+  Utensils,
+  Truck
 } from 'lucide-react';
 
 export default function IndustriaView({
@@ -352,10 +357,10 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
           <div className="mb-8">
             <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
               <span className="w-5 h-px bg-[#5BB8FF]" />
-              01 / Casos de Planta
+              01 / Aplicaciones
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
-              Cuatro soluciones mecánicas sin el costo de una matriz.
+              Cuatro problemas de planta. Una respuesta local.
             </h2>
           </div>
 
@@ -373,7 +378,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 </div>
                 <div className="space-y-1.5 flex-1 min-w-0">
                   <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-[#5BB8FF] transition-colors leading-snug">
-                    Prototipado Funcional & Ensamble
+                    Prototipos funcionales
                   </h3>
                   <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
                     Prueba ajustes, interferencias de ensamble y holguras imprimiendo directamente tu archivo 3D antes de mandar a fabricar en serie o invertir en moldes.
@@ -399,7 +404,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 </div>
                 <div className="space-y-1.5 flex-1 min-w-0">
                   <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-[#8FB99B] transition-colors leading-snug">
-                    Utillaje, Jigs & Fixtures de Línea
+                    Utillaje y herramentales
                   </h3>
                   <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
                     Fabricamos con las medidas exactas de tu archivo nidos de apoyo, plantillas para operarios y mordazas protectoras que no rayan piezas terminadas.
@@ -425,7 +430,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 </div>
                 <div className="space-y-1.5 flex-1 min-w-0">
                   <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-amber-300 transition-colors leading-snug">
-                    Refacciones y Piezas Descatalogadas
+                    Refacciones y obsoletos
                   </h3>
                   <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
                     ¿Se rompió una pieza y el fabricante tarda semanas o ya no existe? Con tu archivo 3D o plano con medidas exactas, te la imprimimos en polímero técnico resistente.
@@ -451,7 +456,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 </div>
                 <div className="space-y-1.5 flex-1 min-w-0">
                   <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-purple-300 transition-colors leading-snug">
-                    Lotes Cortos y Preseries (1 a 500+ piezas)
+                    Lotes cortos
                   </h3>
                   <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
                     Producción continua de varias piezas bajo demanda para arranques, reemplazos o preseries sin tener que pagar matrices ni herramentales costosos.
@@ -706,7 +711,56 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          6. SECCIÓN 04: LO QUE NECESITAS SABER
+          6. SECCIÓN 04: SECTORES INDUSTRIALES SLP
+          ======================================================== */}
+      <section className="py-14 border-b border-white/10 bg-[#0E1317]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+            <div>
+              <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
+                <span className="w-5 h-px bg-[#5BB8FF]" />
+                04 / Sectores
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
+                Hecho para la zona industrial de SLP.
+              </h2>
+            </div>
+            <p className="text-xs sm:text-sm text-gray-400 max-w-md">
+              Piezas técnicas bajo demanda para los principales clústeres y líneas de manufactura en San Luis Potosí.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
+            {[
+              { name: 'Automotriz', icon: Car, color: 'text-[#5BB8FF]', bg: 'bg-[#5BB8FF]/10', border: 'border-[#5BB8FF]/20' },
+              { name: 'Tier 1 / 2', icon: Factory, color: 'text-[#8FB99B]', bg: 'bg-[#8FB99B]/10', border: 'border-[#8FB99B]/20' },
+              { name: 'Mantenimiento', icon: Wrench, color: 'text-amber-400', bg: 'bg-amber-400/10', border: 'border-amber-400/20' },
+              { name: 'Empaques', icon: Package, color: 'text-purple-400', bg: 'bg-purple-400/10', border: 'border-purple-400/20' },
+              { name: 'Médico', icon: Activity, color: 'text-rose-400', bg: 'bg-rose-400/10', border: 'border-rose-400/20' },
+              { name: 'Alimentos', icon: Utensils, color: 'text-emerald-400', bg: 'bg-emerald-400/10', border: 'border-emerald-400/20' },
+              { name: 'Logística', icon: Truck, color: 'text-cyan-400', bg: 'bg-cyan-400/10', border: 'border-cyan-400/20' }
+            ].map((sector) => {
+              const IconComp = sector.icon;
+              return (
+                <div
+                  key={sector.name}
+                  className="p-4 rounded-xl border border-white/10 bg-[#12181C] hover:border-[#5BB8FF]/40 transition-all text-center space-y-2.5 group shadow-lg"
+                >
+                  <div className={`w-11 h-11 mx-auto rounded-xl ${sector.bg} ${sector.border} border ${sector.color} flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_0_12px_rgba(0,0,0,0.3)]`}>
+                    <IconComp className="w-5 h-5" />
+                  </div>
+                  <div className="font-bold text-xs text-white group-hover:text-[#5BB8FF] transition-colors leading-tight">
+                    {sector.name}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================
+          7. SECCIÓN 05: LO QUE NECESITAS SABER
           ======================================================== */}
       <section className="py-14 border-b border-white/10 bg-[#0A0E11]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
@@ -714,7 +768,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
           <div className="text-center mb-8">
             <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5BB8FF] inline-flex items-center gap-2">
               <span className="w-5 h-px bg-[#5BB8FF]" />
-              04 / Información Clave
+              05 / Información Clave
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
               Lo que necesitas saber.
@@ -782,7 +836,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
             <div>
               <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
                 <span className="w-5 h-px bg-[#5BB8FF]" />
-                05 / Cotizador B2B
+                06 / Cotizador B2B
               </div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
                 ¿Tienes una pieza detenida en planta?
