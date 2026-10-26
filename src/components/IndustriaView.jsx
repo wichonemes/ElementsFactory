@@ -87,55 +87,55 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
     setFormSubmitted(true);
   };
 
-  // Diccionario de Materiales Técnicos con Especificaciones Reales
+  // Diccionario de Materiales Técnicos Calibrados a la Maquinaria del Taller
   const materialsData = {
     petg: {
       id: 'petg',
       name: 'PETG Técnico Industrial',
-      tag: 'USO MECÁNICO GENERAL',
+      tag: 'USO MECÁNICO GENERAL · BAMBU & CREATOR 5',
       temp: '75°C - 80°C',
-      impact: 'Alto (Tenaz)',
-      chemical: 'Resistente a alcoholes y lubricantes',
+      impact: 'Alto (Tenaz sin fractura frágil)',
+      chemical: 'Resistente a lubricantes, agua y alcoholes',
       tensile: '50 MPa',
       density: '1.27 g/cm³',
-      summary: 'El estándar de planta para guardas, ductos y piezas sujetas a impactos moderados y fatiga cíclica sin fractura frágil.',
-      apps: ['Guardas de seguridad de maquinaria', 'Ductos de aire y ventilación', 'Cajas de componentes electrónicos', 'Soportes para sensores industriales']
+      summary: 'El caballo de batalla del taller. Excelente unión interlaminar, alta durabilidad y absorción de impacto sin romperse. Lo producimos a alta velocidad en nuestra granja Bambu Lab y Creator 5.',
+      apps: ['Guardas de seguridad de maquinaria', 'Ductos de aire y ventilación', 'Cajas de componentes electrónicos', 'Soportes de montaje y fijación']
     },
     tpu: {
       id: 'tpu',
       name: 'TPU 95A Poliuretano Elastómero',
-      tag: 'AMORTIGUACIÓN & FLEXIBILIDAD',
+      tag: 'AMORTIGUACIÓN & IMPACTO · FLEXIBLE',
       temp: '85°C',
-      impact: 'Ultra Alto (No se fractura)',
+      impact: 'Ultra Alto (Elastomérico indestructible)',
       chemical: 'Excelente contra aceites minerales y grasas',
       tensile: '35 MPa (Elongación >450%)',
       density: '1.21 g/cm³',
-      summary: 'Caucho técnico con memoria de forma y altísima resistencia al desgarro. Ideal para amortiguar impactos y evitar marcar piezas en línea.',
-      apps: ['Topes de final de carrera', 'Nidos para piezas delicadas / sin rayones', 'Sellos, empaques y juntas', 'Mordazas para sujeción robótica']
+      summary: 'Caucho técnico con memoria de forma y altísima resistencia al desgarro. No marca ni raya superficies pulidas o pintadas en línea de ensamble.',
+      apps: ['Topes de final de carrera', 'Nidos para piezas delicadas / sin rayones', 'Sellos, empaques y juntas', 'Mordazas flexibles de sujeción']
     },
-    pacf: {
-      id: 'pacf',
-      name: 'PA-CF (Nylon + Fibra de Carbono)',
-      tag: 'GRADO INGENIERÍA ESTRUCTURAL',
-      temp: '150°C - 175°C',
-      impact: 'Grado Aeroespacial',
-      chemical: 'Resistencia a hidrocarburos y refrigerantes',
-      tensile: '95 MPa (Módulo 6000 MPa)',
-      density: '1.18 g/cm³',
-      summary: 'Polímero ultrarrígido reforzado con fibras cortas de carbono. Sustituto funcional directo de piezas de aluminio en herramentales y soportes.',
-      apps: ['Jigs de ensamble de alto torque', 'Herramientas de sujeción para fresado', 'Brazo robótico End-of-Arm Tooling', 'Piezas expuestas a altas temperaturas']
+    plaplus: {
+      id: 'plaplus',
+      name: 'PLA+ Pro Alta Rigidez',
+      tag: 'VALIDACIÓN DIMENSIONAL RÁPIDA · ALTA PRECISIÓN',
+      temp: '60°C',
+      impact: 'Medio-Alto (Rígido)',
+      chemical: 'Estable en ambientes secos de oficina o ensamble',
+      tensile: '55 MPa (Módulo de alta rigidez)',
+      density: '1.24 g/cm³',
+      summary: 'Máxima precisión geométrica y definición de aristas para comprobaciones de holgura, pruebas de ensamble con tornillos y prototipos DFM entregados en 24 horas.',
+      apps: ['Maquetas de ensamble rápido DFM', 'Galgas de comprobación visual', 'Modelos ergonómicos de prueba', 'Piezas de ajuste pre-mecanizado']
     },
     abs: {
       id: 'abs',
-      name: 'ABS / ASA Termorresistente',
-      tag: 'EXTERIOR & TEMPERATURA',
+      name: 'ABS / ASA Industrial',
+      tag: 'CÁMARA TÉRMICA CERRADA · FLASHFORGE CREATOR 5',
       temp: '95°C - 100°C',
       impact: 'Alto con ductilidad térmica',
-      chemical: 'Resistencia UV (ASA) y solidez dimensional',
+      chemical: 'Resistencia a intemperie UV (ASA) y calor',
       tensile: '42 MPa',
       density: '1.06 g/cm³',
-      summary: 'Excelente estabilidad dimensional bajo calor constante y exposición al sol directo en campo sin degradación por rayos UV.',
-      apps: ['Gabinete para intemperie', 'Refacciones automotrices bajo cofre', 'Plantillas de verificación de soldadura', 'Carcasas con maquinabilidad posterior']
+      summary: 'Polímero térmico procesado exclusivamente en nuestra Creator 5 con cámara cerrada calefactada para evitar deformación por enfriamiento. Ideal para piezas expuestas a calor continuo.',
+      apps: ['Gabinetes y carcasas para intemperie', 'Refacciones automotrices bajo cofre', 'Plantillas de verificación de soldadura', 'Piezas sometidas a calor constante']
     }
   };
 
@@ -251,7 +251,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 </div>
                 <div className="p-2.5 rounded-lg border border-white/10 bg-[#11171B]">
                   <div className="font-mono text-[9px] uppercase text-gray-400">Volumen Unitario</div>
-                  <div className="font-bold text-xs text-[#5BB8FF] mt-0.5">Hasta 330 mm</div>
+                  <div className="font-bold text-xs text-[#5BB8FF] mt-0.5">Hasta 500 mm</div>
                 </div>
               </div>
             </div>
@@ -323,8 +323,8 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
 
                 <div className="grid grid-cols-3 gap-2 pt-2 text-center font-mono text-[10px]">
                   <div className="p-2 rounded bg-white/5 border border-white/5">
-                    <span className="block text-gray-400 text-[8px] uppercase">Polímero Base</span>
-                    <strong className="text-white">PETG / PA-CF</strong>
+                    <span className="block text-gray-400 text-[8px] uppercase">Polímeros Taller</span>
+                    <strong className="text-white">PETG / ABS / TPU</strong>
                   </div>
                   <div className="p-2 rounded bg-white/5 border border-white/5">
                     <span className="block text-gray-400 text-[8px] uppercase">Ensambles</span>
@@ -393,7 +393,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
               </p>
               <div className="pt-2 flex flex-wrap gap-2 text-[10px] font-mono">
                 <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-gray-300">Insertos roscados M3-M8</span>
-                <span className="px-2.5 py-1 rounded bg-[#8FB99B]/10 text-[#8FB99B] border border-[#8FB99B]/20">TPU 95A · PA-CF</span>
+                <span className="px-2.5 py-1 rounded bg-[#8FB99B]/10 text-[#8FB99B] border border-[#8FB99B]/20">TPU 95A · PETG</span>
                 <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-gray-300">Anti-fricción</span>
               </div>
             </div>
@@ -466,7 +466,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 {[
                   { id: 'petg', label: 'PETG' },
                   { id: 'tpu', label: 'TPU 95A' },
-                  { id: 'pacf', label: 'PA-CF' },
+                  { id: 'plaplus', label: 'PLA+ Pro' },
                   { id: 'abs', label: 'ABS / ASA' }
                 ].map(mat => (
                   <button
@@ -555,15 +555,19 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
               <div className="divide-y divide-white/10 text-xs font-mono">
                 <div className="py-2.5 flex justify-between items-center">
                   <span className="text-gray-400 font-sans">Volumen monobloque</span>
-                  <span className="font-bold text-white">Hasta 330 × 320 × 325 mm</span>
+                  <span className="font-bold text-white">Hasta 500 × 500 × 500 mm</span>
+                </div>
+                <div className="py-2.5 flex justify-between items-center">
+                  <span className="text-gray-400 font-sans">Parque de máquinas</span>
+                  <span className="font-bold text-[#5BB8FF]">Bambu Lab + Creator 5 (IDEX)</span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
                   <span className="text-gray-400 font-sans">Materiales en stock</span>
-                  <span className="font-bold text-[#8FB99B]">PLA+ · PETG · TPU 95A</span>
+                  <span className="font-bold text-[#8FB99B]">PETG · TPU 95A · PLA+ Pro</span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="text-gray-400 font-sans">Grado ingeniería</span>
-                  <span className="font-bold text-[#5BB8FF]">PA-CF · ABS · ASA</span>
+                  <span className="text-gray-400 font-sans">Cámara cerrada calefactada</span>
+                  <span className="font-bold text-amber-300">ABS · ASA (Sin pandeo)</span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
                   <span className="text-gray-400 font-sans">Insertos de latón</span>
@@ -836,11 +840,10 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                     className="w-full px-3 py-2.5 rounded-xl bg-[#0A0E11] border border-white/15 text-white focus:outline-none focus:border-[#5BB8FF]"
                   >
                     <option>PETG Técnico (Tenaz)</option>
-                    <option>TPU 95A (Flexible / Antigolpe)</option>
-                    <option>PA-CF (Fibra de carbono)</option>
-                    <option>ABS / ASA (Térmico exterior)</option>
-                    <option>PLA+ Pro (Estudio dimensional)</option>
-                    <option>Asesórenme cuál conviene</option>
+                    <option>TPU 95A (Flexible / Antirrayón)</option>
+                    <option>PLA+ Pro (Estudio dimensional rápido)</option>
+                    <option>ABS / ASA (Cámara cerrada Creator 5)</option>
+                    <option>Recomiéndenme uno según mi pieza</option>
                   </select>
                 </div>
 
