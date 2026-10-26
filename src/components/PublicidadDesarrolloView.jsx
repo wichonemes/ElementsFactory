@@ -4,17 +4,17 @@ import {
   Globe,
   Printer,
   Film,
+  Sparkles,
   MessageCircle,
   ExternalLink,
-  ChevronDown,
   DollarSign,
   Eye,
-  Sparkles,
   MapPin,
   Share2,
   Copy,
   Check,
-  X
+  X,
+  Info
 } from 'lucide-react';
 
 export default function PublicidadDesarrolloView({
@@ -23,11 +23,10 @@ export default function PublicidadDesarrolloView({
   onOpenCalculator,
   onSelectWorld
 }) {
-  const [expandedService, setExpandedService] = useState('branding');
-  
   // Alcance del Proyecto: Selección modular de productos por área con desglose en tiempo real
   const [selectedItemIds, setSelectedItemIds] = useState(['logo_solo']);
   const [activeCategoryFilter, setActiveCategoryFilter] = useState('branding');
+  const [expandedInfoIds, setExpandedInfoIds] = useState([]);
   const [quoteNotes, setQuoteNotes] = useState('');
   
   const alcanceRef = useRef(null);
@@ -67,173 +66,106 @@ export default function PublicidadDesarrolloView({
     }
   };
 
-  // Paleta oficial de temas de color por área
+  // Paleta oficial de temas y estilos para las 5 áreas
   const categoryTheme = {
     branding: {
       id: 'branding',
       label: 'Identidad & Marca',
+      code: 'BRAND-01',
+      tag: 'Identidad Visual',
       icon: Palette,
-      activeTabClass: 'bg-gradient-to-r from-[#e8b84f] to-[#d4a359] text-[#0B0D11] border-[#e8b84f] font-black shadow-md',
+      activeCardClass: 'border-amber-400 bg-amber-500/10 ring-2 ring-amber-400/30 text-white',
+      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+      dotColor: 'bg-amber-400',
       activeRowClass: 'border-amber-400/90 bg-amber-500/15 ring-1 ring-amber-400/30',
       checkClass: 'bg-[#e8b84f] text-[#0B0D11] border-[#e8b84f]',
-      badgeClass: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
       priceClass: 'text-amber-200',
       chipClass: 'border-amber-500/40 bg-amber-500/10 text-amber-200'
     },
     publicidad: {
       id: 'publicidad',
       label: 'Lonas & Gran Formato',
+      code: 'PRINT-02',
+      tag: 'Gran Formato',
       icon: Printer,
-      activeTabClass: 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-[#0B0D11] border-emerald-400 font-black shadow-md',
+      activeCardClass: 'border-emerald-400 bg-emerald-500/10 ring-2 ring-emerald-400/30 text-white',
+      badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+      dotColor: 'bg-emerald-400',
       activeRowClass: 'border-emerald-400/90 bg-emerald-500/15 ring-1 ring-emerald-400/30',
       checkClass: 'bg-emerald-400 text-[#0B0D11] border-emerald-400',
-      badgeClass: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
       priceClass: 'text-emerald-200',
       chipClass: 'border-emerald-500/40 bg-emerald-500/10 text-emerald-200'
     },
     web: {
       id: 'web',
       label: 'Web & Tienda',
+      code: 'DEV-03',
+      tag: 'Desarrollo Web',
       icon: Globe,
-      activeTabClass: 'bg-gradient-to-r from-cyan-500 to-cyan-600 text-[#0B0D11] border-cyan-400 font-black shadow-md',
+      activeCardClass: 'border-cyan-400 bg-cyan-500/10 ring-2 ring-cyan-400/30 text-white',
+      badgeColor: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
+      dotColor: 'bg-cyan-400',
       activeRowClass: 'border-cyan-400/90 bg-cyan-500/15 ring-1 ring-cyan-400/30',
       checkClass: 'bg-cyan-400 text-[#0B0D11] border-cyan-400',
-      badgeClass: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
       priceClass: 'text-cyan-200',
       chipClass: 'border-cyan-500/40 bg-cyan-500/10 text-cyan-200'
     },
     editorial: {
       id: 'editorial',
       label: 'Catálogos & Redes',
+      code: 'EDIT-04',
+      tag: 'Contenido Digital',
       icon: Film,
-      activeTabClass: 'bg-gradient-to-r from-purple-500 to-purple-600 text-white border-purple-400 font-black shadow-md',
+      activeCardClass: 'border-purple-400 bg-purple-500/10 ring-2 ring-purple-400/30 text-white',
+      badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
+      dotColor: 'bg-purple-400',
       activeRowClass: 'border-purple-400/90 bg-purple-500/15 ring-1 ring-purple-400/30',
       checkClass: 'bg-purple-400 text-[#0B0D11] border-purple-400',
-      badgeClass: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
       priceClass: 'text-purple-200',
       chipClass: 'border-purple-500/40 bg-purple-500/10 text-purple-200'
+    },
+    otros: {
+      id: 'otros',
+      label: 'Otros & Especiales',
+      code: 'PLUS-05',
+      tag: 'Proyectos a Medida',
+      icon: Sparkles,
+      activeCardClass: 'border-sky-400 bg-sky-500/10 ring-2 ring-sky-400/30 text-white',
+      badgeColor: 'bg-sky-500/20 text-sky-300 border-sky-500/40',
+      dotColor: 'bg-sky-400',
+      activeRowClass: 'border-sky-400/90 bg-sky-500/15 ring-1 ring-sky-400/30',
+      checkClass: 'bg-sky-400 text-[#0B0D11] border-sky-400',
+      priceClass: 'text-sky-200',
+      chipClass: 'border-sky-500/40 bg-sky-500/10 text-sky-200'
     }
   };
 
-  // Catálogo de Servicios (4 Áreas Oficiales)
-  const servicesList = [
-    {
-      id: 'branding',
-      categoryTarget: 'branding',
-      code: 'BRAND-01',
-      icon: Palette,
-      tag: 'Identidad Visual',
-      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
-      activeBorder: 'border-amber-400 ring-2 ring-amber-400/30',
-      accentBar: 'bg-amber-400',
-      iconBg: 'bg-amber-500/20 text-amber-300 border border-amber-500/30',
-      checkColor: 'text-amber-400 bg-amber-500/20',
-      title: 'Diseño Gráfico & Branding Corporativo',
-      summary: 'Construcción de marcas memorables con voz propia, manual de identidad y aplicaciones comerciales completas.',
-      deliverables: [
-        'Logotipo principal, versiones alternativas e isotipo',
-        'Manual de identidad de marca (paleta de color, tipografía y retícula)',
-        'Papelería comercial: tarjetas, membretes y firmas de correo',
-        'Diseño de empaques, etiquetas y sellos de producto',
-        'Archivos vectoriales maestros (.AI, .PDF, .SVG, .PNG transparentes)'
-      ],
-      idealFor: 'Negocios nuevos, franquicias, pymes que buscan profesionalizar su imagen o rediseño de marca.'
-    },
-    {
-      id: 'publicidad',
-      categoryTarget: 'publicidad',
-      code: 'PRINT-02',
-      icon: Printer,
-      tag: 'Lonas & Gran Formato',
-      badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
-      activeBorder: 'border-emerald-400 ring-2 ring-emerald-400/30',
-      accentBar: 'bg-emerald-400',
-      iconBg: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30',
-      checkColor: 'text-emerald-400 bg-emerald-500/20',
-      title: 'Lonas, Vinil & Rotulación Comercial',
-      summary: 'Impresión digital de alta resolución para fachadas, eventos, exposiciones y puntos de venta.',
-      deliverables: [
-        'Lonas frontlite 13oz con bastilla perimetral y ojillos reforzados',
-        'Rotulación en vinil de corte e impreso para cristales y vehículos',
-        'Microperforado con protección UV para locales comerciales',
-        'Banners roll-up portátiles con estructura metálica y maletín',
-        'Señalética industrial, cuadros decorativos y placas de acrílico'
-      ],
-      idealFor: 'Comercios que requieren visibilidad exterior, inauguraciones, promociones y rotulación física.'
-    },
-    {
-      id: 'web',
-      categoryTarget: 'web',
-      code: 'DEV-03',
-      icon: Globe,
-      tag: 'Desarrollo Web',
-      badgeColor: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
-      activeBorder: 'border-cyan-400 ring-2 ring-cyan-400/30',
-      accentBar: 'bg-cyan-400',
-      iconBg: 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30',
-      checkColor: 'text-cyan-400 bg-cyan-500/20',
-      title: 'Desarrollo Web, Catálogos & Tiendas Online',
-      summary: 'Sitios web modernos, veloces y adaptados a celulares, con catálogo interactivo y cotizador directo por WhatsApp.',
-      deliverables: [
-        'Sitios web responsivos y optimizados para celular',
-        'Catálogo digital interactivo con buscador y filtro por áreas',
-        'Integración de checkout directo a WhatsApp con resumen de pedido',
-        'Panel de administración local para gestionar productos y precios',
-        'Dominio, hosting seguro con SSL y alta en Google'
-      ],
-      idealFor: 'Marcas que necesitan vender por internet, mostrar su catálogo 24/7 o automatizar sus cotizaciones.'
-    },
-    {
-      id: 'audiovisual',
-      categoryTarget: 'editorial',
-      code: 'MEDIA-04',
-      icon: Film,
-      tag: 'Contenido & Editorial',
-      badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
-      activeBorder: 'border-purple-400 ring-2 ring-purple-400/30',
-      accentBar: 'bg-purple-400',
-      iconBg: 'bg-purple-500/20 text-purple-300 border border-purple-500/30',
-      checkColor: 'text-purple-400 bg-purple-500/20',
-      title: 'Diseño Editorial, Menús & Contenido Digital',
-      summary: 'Producción de piezas para redes sociales, catálogos en PDF, menús digitales y diseño para imprenta.',
-      deliverables: [
-        'Catálogos digitales en PDF con botones interactivos a WhatsApp',
-        'Menús digitales para restaurantes y cafeterías',
-        'Packs de plantillas y gráficos promocionales para redes sociales',
-        'Flyers, folletos trípticos y volantes listos para imprenta',
-        'Presentaciones corporativas y material comercial de ventas'
-      ],
-      idealFor: 'Restaurantes, prestadores de servicios y marcas que promocionan sus productos en redes.'
-    }
+  // Lista de las 5 categorías fusionadas para los botones principales
+  const categoriesList = [
+    categoryTheme.branding,
+    categoryTheme.publicidad,
+    categoryTheme.web,
+    categoryTheme.editorial,
+    categoryTheme.otros
   ];
 
-  const curService = servicesList.find(s => s.id === expandedService);
-
-  // Al seleccionar un área en Sección 1, sincronizarla de inmediato con Sección 2
-  const handleSelectService = (srvId) => {
-    setExpandedService(srvId);
-    const catTarget = srvId === 'audiovisual' ? 'editorial' : srvId;
-    setActiveCategoryFilter(catTarget);
-  };
-
-  // Al tocar una pestaña en Sección 2, sincronizarla con la ficha técnica superior
-  const handleSelectCategoryTab = (catId) => {
-    setActiveCategoryFilter(catId);
-    setExpandedService(catId === 'editorial' ? 'audiovisual' : catId);
-  };
-
-  // Catálogo completo de productos organizados por área
+  // Catálogo completo de productos organizados por área con información detallada de entregables
   const projectItemsCatalog = [
-    // --- IDENTIDAD & BRANDING (ÁMBAR) ---
+    // --- 1. IDENTIDAD & BRANDING (ÁMBAR) ---
     {
       id: 'logo_solo',
       category: 'branding',
       categoryLabel: 'Identidad & Marca',
       title: 'Diseño de Logotipo Principal',
       subtitle: 'Solo logotipo vectorial maestro',
-      desc: 'Logo vectorial (.AI, .PDF, .SVG) y versiones en alta resolución (.PNG transparente).',
-      price: 1200,
-      badge: 'Solo Logo'
+      desc: 'Entrega de archivos maestros de identidad para uso comercial y publicidad.',
+      whatIncludes: [
+        'Propuesta de logotipo profesional diseñada con intención comercial.',
+        'Archivos vectoriales maestros editables (.AI de Illustrator, .PDF, .SVG).',
+        'Imágenes en alta resolución (.PNG transparente y .JPG para avatares).',
+        'Cesión completa de derechos de autor para uso de tu marca.'
+      ],
+      price: 1200
     },
     {
       id: 'identidad_completa',
@@ -241,9 +173,15 @@ export default function PublicidadDesarrolloView({
       categoryLabel: 'Identidad & Marca',
       title: 'Identidad Visual & Branding Completo',
       subtitle: 'Logo + Isotipo + Paleta + Manual de Marca',
-      desc: 'Logotipo principal + isotipo + paleta de color oficial + tipografías + guía de aplicación.',
-      price: 2500,
-      badge: 'Marca Completa'
+      desc: 'Sistema visual integral para posicionar tu negocio como marca sólida.',
+      whatIncludes: [
+        'Logotipo principal, versiones responsivas e isotipo / icono de marca.',
+        'Paleta de colores oficial con códigos HEX, RGB y CMYK para imprenta.',
+        'Selección y jerarquía tipográfica institucional.',
+        'Manual de identidad visual en PDF con normas de uso y aplicaciones correctas.',
+        'Kit completo de archivos vectoriales y transparentes en alta definición.'
+      ],
+      price: 2500
     },
     {
       id: 'vectorizado_logo',
@@ -251,9 +189,13 @@ export default function PublicidadDesarrolloView({
       categoryLabel: 'Identidad & Marca',
       title: 'Vectorización / Limpieza de Logo',
       subtitle: 'De foto o boceto a curvas nítidas',
-      desc: 'Trazado profesional en curvas de un logotipo existente para que no se pixelee al imprimir.',
-      price: 450,
-      badge: 'Vectorizado'
+      desc: 'Trazado técnico profesional para que tu logo nunca se pixelee.',
+      whatIncludes: [
+        'Redibujo técnico en curvas vectoriales de logotipo existente o boceto.',
+        'Eliminación de pixelado para que se pueda imprimir a cualquier tamaño.',
+        'Entrega en vectores (.AI, .SVG, .PDF) y PNG con fondo transparente.'
+      ],
+      price: 450
     },
     {
       id: 'papeleria_redes',
@@ -261,21 +203,31 @@ export default function PublicidadDesarrolloView({
       categoryLabel: 'Identidad & Marca',
       title: 'Diseño de Papelería & Redes Sociales',
       subtitle: 'Tarjetas comerciales, membrete y avatares',
-      desc: 'Diseño de tarjeta comercial, hoja membretada digital y kit de portadas/perfil para tus redes.',
-      price: 750,
-      badge: 'Papelería'
+      desc: 'Aplicación de marca a papelería comercial y perfiles digitales.',
+      whatIncludes: [
+        'Diseño de tarjeta de presentación comercial (frente y vuelta lista para imprenta).',
+        'Hoja membretada digital editable para cotizaciones y cartas en Word o PDF.',
+        'Kit de portadas y fotos de perfil adaptadas para WhatsApp, Facebook e Instagram.'
+      ],
+      price: 750
     },
 
-    // --- PUBLICIDAD, LONAS & GRAN FORMATO (ESMERALDA) ---
+    // --- 2. PUBLICIDAD, LONAS & GRAN FORMATO (ESMERALDA) ---
     {
       id: 'lona_1x1',
       category: 'publicidad',
       categoryLabel: 'Lonas & Gran Formato',
       title: 'Lona Publicitaria 1.0 × 1.0 m',
       subtitle: '1 m² lista para colgar · Bastilla y ojillos',
-      desc: 'Impresión en lona frontlite 13oz de alta resolución. Bastilla perimetral y ojillos metálicos.',
+      desc: 'Lona comercial compacta de alta durabilidad para exteriores.',
+      whatIncludes: [
+        'Lona frontlite de 13 oz resistente al sol, viento y lluvia.',
+        'Impresión digital a todo color en alta definición.',
+        'Bastilla perimetral termosellada con refuerzo para evitar desgarres.',
+        'Ojillos metálicos galvanizados en las 4 esquinas.',
+        'Nota de taller: No incluye diseño gráfico (requiere archivo en curvas o alta resolución).'
+      ],
       price: 260,
-      badge: '1.0 × 1.0 m',
       isPrint: true
     },
     {
@@ -284,9 +236,15 @@ export default function PublicidadDesarrolloView({
       categoryLabel: 'Lonas & Gran Formato',
       title: 'Lona Publicitaria 2.0 × 1.0 m',
       subtitle: '2 m² comercial · Medida más solicitada',
-      desc: 'Medida ideal para fachadas de negocios, promociones y eventos. Bastilla y ojillos cada metro.',
+      desc: 'Medida estándar más común para fachadas comerciales y promociones.',
+      whatIncludes: [
+        'Dimensiones: 2 metros de ancho por 1 metro de alto (2 m²).',
+        'Lona frontlite 13 oz de uso rudo para exteriores.',
+        'Bastilla perimetral reforzada y ojillos metálicos cada metro.',
+        'Acabado listo para montar con cinchos o cuerda.',
+        'Nota de taller: No incluye diseño gráfico.'
+      ],
       price: 490,
-      badge: '2.0 × 1.0 m',
       isPrint: true
     },
     {
@@ -295,9 +253,14 @@ export default function PublicidadDesarrolloView({
       categoryLabel: 'Lonas & Gran Formato',
       title: 'Lona Publicitaria 3.0 × 2.0 m',
       subtitle: '6 m² gran visibilidad exterior',
-      desc: 'Gran formato para eventos, marquesinas comerciales o espectaculares ligeros.',
+      desc: 'Formato amplio para marquesinas, bardas y espectaculares ligeros.',
+      whatIncludes: [
+        '6 metros cuadrados de alto impacto visual para tu negocio.',
+        'Lona frontlite 13 oz para exteriores con tintas UV duraderas.',
+        'Bastilla perimetral de refuerzo y ojillos metálicos cada 80 cm.',
+        'Nota de taller: No incluye diseño gráfico.'
+      ],
       price: 1350,
-      badge: '3.0 × 2.0 m',
       isPrint: true
     },
     {
@@ -306,9 +269,14 @@ export default function PublicidadDesarrolloView({
       categoryLabel: 'Lonas & Gran Formato',
       title: 'Rotulación en Vinil Adhesivo m²',
       subtitle: 'Por metro cuadrado para cristal o vehículo',
-      desc: 'Vinil de corte o impreso en alta resolución para cristales, muros lisos o vehículos.',
+      desc: 'Vinil comercial de alta adherencia para cristales, muros o vehículos.',
+      whatIncludes: [
+        'Vinil de corte o impreso en alta definición por metro cuadrado.',
+        'Adhesivo resistente para cristales, vitrinas, acrílico o carrocerías.',
+        'Acabado brillante o mate a elección.',
+        'Nota: No incluye diseño gráfico ni instalación en sitio.'
+      ],
       price: 380,
-      badge: 'Vinil m²',
       isPrint: true
     },
     {
@@ -317,9 +285,14 @@ export default function PublicidadDesarrolloView({
       categoryLabel: 'Lonas & Gran Formato',
       title: 'Vinil Microperforado para Cristales m²',
       subtitle: 'Privacidad interior con visión hacia afuera',
-      desc: 'Deja pasar la luz y muestra tu publicidad al exterior. Ideal para fachadas y medallones.',
+      desc: 'Publicidad visible desde la calle permitiendo entrar la luz natural.',
+      whatIncludes: [
+        'Vinil microperforado especial para ventanales y medallones de autos.',
+        'Muestra tu publicidad al exterior y permite ver hacia afuera desde dentro.',
+        'Protección solar ligera y reducción de deslumbramiento.',
+        'Nota: No incluye diseño gráfico.'
+      ],
       price: 420,
-      badge: 'Microperforado',
       isPrint: true
     },
     {
@@ -328,78 +301,176 @@ export default function PublicidadDesarrolloView({
       categoryLabel: 'Lonas & Gran Formato',
       title: 'Banner Roll-Up Retráctil 0.85 × 2.0 m',
       subtitle: 'Estructura de aluminio + lona impresa',
-      desc: 'Portátil y ligero. Incluye base de aluminio retráctil, lona impresa y bolsa de transporte.',
+      desc: 'Exhibidor portátil y ligero para expos, ferias y puntos de venta.',
+      whatIncludes: [
+        'Estructura retráctil portátil de aluminio de 0.85 × 2.0 m.',
+        'Lona impresa en calidad fotográfica montada lista para desenrollar.',
+        'Maletín de lona para fácil transportación.',
+        'Armado en menos de 1 minuto sin necesidad de herramientas.',
+        'Nota: No incluye diseño gráfico.'
+      ],
       price: 1150,
-      badge: 'Roll-Up',
       isPrint: true
     },
 
-    // --- DESARROLLO WEB & DIGITAL (CIAN) ---
+    // --- 3. DESARROLLO WEB & DIGITAL (CIAN) ---
     {
       id: 'landing_web',
       category: 'web',
-      categoryLabel: 'Web & Digital',
+      categoryLabel: 'Web & Tienda',
       title: 'Sitio Web / Landing Page Comercial',
       subtitle: '1 página responsiva adaptada a celular',
-      desc: 'Página web moderna, rápida y con botón de WhatsApp. Muestra tus servicios y ubicación.',
-      price: 2900,
-      badge: 'Landing Web'
+      desc: 'Presencia profesional en internet con llamada directa a la acción.',
+      whatIncludes: [
+        'Diseño web moderno 100% responsivo y adaptado a celulares y tablets.',
+        'Secciones: Portada, Servicios, Beneficios, Galería, Ubicación y Preguntas.',
+        'Botones directos de contacto a WhatsApp y llamada telefónica.',
+        'Optimización de velocidad de carga y alta en motores de búsqueda.',
+        'Configuración de dominio y hosting con certificado SSL seguro.'
+      ],
+      price: 2900
     },
     {
       id: 'tienda_catalogo',
       category: 'web',
-      categoryLabel: 'Web & Digital',
+      categoryLabel: 'Web & Tienda',
       title: 'Tienda Online / Catálogo WhatsApp',
       subtitle: 'Con carrito de compras y pedidos directos',
-      desc: 'Plataforma con catálogo interactivo, buscador, carrito y recepción de pedidos por WhatsApp.',
-      price: 5800,
-      badge: 'Tienda Online'
+      desc: 'Plataforma para mostrar productos y recibir pedidos estructurados por WhatsApp.',
+      whatIncludes: [
+        'Catálogo interactivo con buscador en vivo y filtros por categoría.',
+        'Carrito de compras integrado con resumen de pedido automático.',
+        'Panel de administración protegido para editar productos y precios.',
+        'Carga inicial de catálogo y configuración técnica en la nube.',
+        'Dominio propio, hosting seguro con SSL y soporte de arranque.'
+      ],
+      price: 5800
     },
 
-    // --- CONTENIDO EDITORIAL & MENÚS (MORADO) ---
+    // --- 4. CONTENIDO EDITORIAL & MENÚS (MORADO) ---
     {
       id: 'catalogo_pdf',
       category: 'editorial',
-      categoryLabel: 'Editorial & Redes',
+      categoryLabel: 'Catálogos & Redes',
       title: 'Catálogo Digital PDF Interactivo',
       subtitle: 'Para celular con enlaces a WhatsApp',
-      desc: 'Documento PDF diseñado para compartir por WhatsApp con botones directos de compra o consulta.',
-      price: 850,
-      badge: 'Catálogo PDF'
+      desc: 'Documento comercial en PDF con botones directos para cotizar.',
+      whatIncludes: [
+        'Diseño editorial estructurado de productos, descripciones y precios.',
+        'Botones interactivos que abren WhatsApp con el producto elegido.',
+        'Optimizado para envío ligero por WhatsApp y correo sin perder nitidez.',
+        'Entrega en PDF interactivo y versión apta para imprimir.'
+      ],
+      price: 850
     },
     {
       id: 'menu_digital',
       category: 'editorial',
-      categoryLabel: 'Editorial & Redes',
+      categoryLabel: 'Catálogos & Redes',
       title: 'Menú Digital para Restaurante o Bar',
       subtitle: 'Para lectura en móvil o código QR',
-      desc: 'Diseño claro y apetecible con fotos, precios y categorías para restaurantes y cafeterías.',
-      price: 750,
-      badge: 'Menú Digital'
+      desc: 'Menú visual y apetecible para restaurantes, cafeterías o bares.',
+      whatIncludes: [
+        'Diseño estructurado por secciones (bebidas, entradas, platos fuertes, combos).',
+        'Formato vertical para lectura rápida y cómoda en pantalla de celular.',
+        'Diseño de código QR institucional listo para imprimir y colocar en mesas.',
+        'Entrega en PDF de alta resolución y formatos de imagen.'
+      ],
+      price: 750
     },
     {
       id: 'pack_flyers_6',
       category: 'editorial',
-      categoryLabel: 'Editorial & Redes',
+      categoryLabel: 'Catálogos & Redes',
       title: 'Paquete 6 Diseños para Redes Sociales',
       subtitle: 'Posts o historias promocionales',
-      desc: '6 piezas gráficas con la identidad de tu marca para promocionar tus productos del mes.',
-      price: 600,
-      badge: '6 Posts Redes'
+      desc: 'Contenido visual consistente con tu marca para promociones del mes.',
+      whatIncludes: [
+        '6 piezas gráficas con tu logotipo, colores de marca y mensajes de venta.',
+        'Formatos a elegir: Cuadrado para feed (1080×1080) o historias (1080×1920).',
+        'Textos publicitarios claros y llamados a la acción comerciales.',
+        'Entrega en JPG y PNG optimizados para no perder calidad en redes.'
+      ],
+      price: 600
     },
     {
       id: 'volante_impreso',
       category: 'editorial',
-      categoryLabel: 'Editorial & Redes',
+      categoryLabel: 'Catálogos & Redes',
       title: 'Diseño de Volante / Flyer Publicitario',
       subtitle: '1 o 2 caras listo para imprenta',
-      desc: 'Diseño publicitario con jerarquía visual y texto comercial listo para impresión masiva.',
-      price: 450,
-      badge: 'Flyer'
+      desc: 'Diseño publicitario comercial con medidas estándar para imprenta.',
+      whatIncludes: [
+        'Diseño publicitario comercial (media carta o cuarto de carta).',
+        'Estructura visual: gancho principal, oferta, beneficios y contacto.',
+        'Entrega en archivo PDF de prensa con guías de corte, sangría y modo CMYK.'
+      ],
+      price: 450
+    },
+
+    // --- 5. OTROS & PROYECTOS ESPECIALES (SKY/AZUL) ---
+    {
+      id: 'proyecto_medida',
+      category: 'otros',
+      categoryLabel: 'Otros & Especiales',
+      title: 'Proyecto Especial a Medida',
+      subtitle: 'Medidas o especificaciones personalizadas',
+      desc: 'Cuéntanos qué necesitas y calculamos tu cotización exacta.',
+      whatIncludes: [
+        'Atención personalizada para medidas especiales de lonas, viniles o banners.',
+        'Revisión técnica de tus archivos, bocetos o requerimientos.',
+        'Asesoría directa por WhatsApp con presupuesto ajustado a tu necesidad.',
+        'Indica tus medidas en el campo de notas para cotizar contigo.'
+      ],
+      price: 0
+    },
+    {
+      id: 'asesoria_creativa',
+      category: 'otros',
+      categoryLabel: 'Otros & Especiales',
+      title: 'Asesoría Creativa & Técnica',
+      subtitle: 'Sesión de 45 min para resolver dudas de tu proyecto',
+      desc: 'Consulta técnica sobre materiales, identidad y estrategias visuales.',
+      whatIncludes: [
+        'Sesión personalizada por WhatsApp o llamada para aterrizar tu proyecto.',
+        'Recomendación de materiales óptimos, acabados, tipos de lona o tecnología web.',
+        'Diagnóstico de tu marca actual y sugerencias de mejora comercial.',
+        'El costo se descuenta de tu proyecto si decides contratar el servicio.'
+      ],
+      price: 350
+    },
+    {
+      id: 'vectorizado_urgente',
+      category: 'otros',
+      categoryLabel: 'Otros & Especiales',
+      title: 'Vectorización Express / Urgente',
+      subtitle: 'Entrega prioritaria el mismo día hábil',
+      desc: 'Trazado y limpieza de logotipo en tiempo récord para impresión inmediata.',
+      whatIncludes: [
+        'Trazado y limpieza de logotipo en curvas vectoriales exactas.',
+        'Atención prioritaria con entrega el mismo día hábil.',
+        'Archivos entregados en .AI, .PDF, .SVG y .PNG transparente.'
+      ],
+      price: 600
+    },
+    {
+      id: 'instalacion_slp',
+      category: 'otros',
+      categoryLabel: 'Otros & Especiales',
+      title: 'Instalación de Lona o Vinil en SLP',
+      subtitle: 'Mano de obra en San Luis Potosí capital',
+      desc: 'Colocación en altura estándar dentro de la zona metropolitana de SLP.',
+      whatIncludes: [
+        'Mano de obra para colgado o tensado de lona en altura estándar (hasta 3 m).',
+        'Zona metropolitana: San Luis Potosí y Soledad de Graciano Sánchez.',
+        'Incluye cinchos de uso rudo o pijas de fijación básica.',
+        'Sujeto a confirmación de superficie y tipo de fachada.'
+      ],
+      price: 350
     }
   ];
 
-  // Alternar selección de un ítem
+  // Alternar selección de un ítem para la cotización
   const toggleItem = (itemId) => {
     setSelectedItemIds(prev => {
       if (prev.includes(itemId)) {
@@ -410,7 +481,18 @@ export default function PublicidadDesarrolloView({
     });
   };
 
-  // Filtrado estricto por área: solo muestra los productos del área activa (los demás no se muestran hasta seleccionar otra área)
+  // Alternar extensión de información de lo que contiene cada producto
+  const toggleInfo = (itemId) => {
+    setExpandedInfoIds(prev => {
+      if (prev.includes(itemId)) {
+        return prev.filter(id => id !== itemId);
+      } else {
+        return [...prev, itemId];
+      }
+    });
+  };
+
+  // Filtrado estricto por área: solo muestra los productos del área activa
   const filteredCatalog = useMemo(() => {
     return projectItemsCatalog.filter(item => item.category === activeCategoryFilter);
   }, [activeCategoryFilter]);
@@ -436,16 +518,20 @@ export default function PublicidadDesarrolloView({
     }
 
     const itemsListText = selectedItems
-      .map(item => `• *${item.title}* (${item.subtitle}): $${item.price.toLocaleString('es-MX')} MXN`)
+      .map(item => {
+        const priceText = item.price > 0 ? `$${item.price.toLocaleString('es-MX')} MXN` : 'A cotizar según especificaciones';
+        return `• *${item.title}* (${item.subtitle}): ${priceText}`;
+      })
       .join('\n');
 
     const hasPrintItems = selectedItems.some(i => i.isPrint);
+    const hasSpecialQuote = selectedItems.some(i => i.price === 0);
 
     const text = `Hola Wicho, me interesa cotizar los siguientes productos de tu portal de *Diseño & Publicidad*:
 
 ${itemsListText}
 
-*Inversión Total Estimada:* $${totalEstimate.toLocaleString('es-MX')} MXN
+*Inversión Total Estimada:* $${totalEstimate.toLocaleString('es-MX')} MXN${hasSpecialQuote ? ' (+ conceptos a cotizar)' : ''}
 ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfico)_\n` : ''}${quoteNotes.trim() ? `\n• *Detalles / Medidas:* ${quoteNotes.trim()}\n` : ''}
 ¿Podemos platicar sobre este proyecto?`;
 
@@ -456,10 +542,10 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
   return (
     <div className="bg-[#0B0D11] text-stone-100 min-h-screen selection:bg-[#e8b84f] selection:text-[#0B0D11]">
       
-      {/* 1. HERO INSTITUCIONAL LIMPIO (SIN BOTONES REDUNDANTES) */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-[#080A0D] via-[#101319] to-[#0D1015] text-white pt-5 pb-6 sm:pt-8 sm:pb-9 px-4 sm:px-6 lg:px-8 border-b border-stone-800/80">
-        <div className="max-w-4xl mx-auto relative z-10 space-y-1.5 sm:space-y-2">
-          <h1 className="text-2xl sm:text-4xl font-black font-heading tracking-tight leading-[1.1]">
+      {/* 1. HERO INSTITUCIONAL LIMPIO */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-[#080A0D] via-[#101319] to-[#0D1015] text-white pt-4 pb-5 sm:pt-7 sm:pb-8 px-4 sm:px-6 lg:px-8 border-b border-stone-800/80">
+        <div className="max-w-4xl mx-auto relative z-10 space-y-1 sm:space-y-1.5">
+          <h1 className="text-2xl sm:text-3xl font-black font-heading tracking-tight leading-[1.1]">
             Diseño &amp; <span className="text-[#e8b84f]">Publicidad</span>
           </h1>
           <p className="text-xs sm:text-sm text-stone-300 font-normal leading-relaxed max-w-xl">
@@ -468,200 +554,97 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
         </div>
       </section>
 
-      {/* 2. CONTENIDO PRINCIPAL COMPACTO Y SIN SCROLL EXCESIVO */}
-      <main className="max-w-4xl mx-auto px-3.5 sm:px-6 py-4 sm:py-7 space-y-6 sm:space-y-8">
+      {/* 2. MÓDULO PRINCIPAL FUSIONADO: SELECCIONA ÁREA Y ELIGE PRODUCTOS CON DETALLE DESPLEGABLE */}
+      <main className="max-w-4xl mx-auto px-3.5 sm:px-6 py-4 sm:py-6 space-y-5 sm:space-y-7">
 
-        {/* ================= SECCIÓN 1: ÁREAS DE TRABAJO (4 APPS CUADRADAS) ================= */}
-        <section id="especialidades-creativas" className="space-y-3.5 animate-fadeIn">
+        {/* ================= CATÁLOGO Y ALCANCE DE PROYECTO (FUSIONADO 1 Y 2) ================= */}
+        <section id="alcance-proyecto" ref={alcanceRef} className="space-y-3.5 animate-fadeIn">
           
+          {/* Cabecera unificada */}
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-1 border-b border-stone-800 pb-2">
             <div>
               <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#e8b84f] flex items-center gap-1.5">
                 <span className="w-4 h-px bg-[#e8b84f]" />
-                <span>01 / Áreas de Trabajo</span>
+                <span>Servicios &amp; Alcance del Proyecto</span>
               </div>
-              <h2 className="text-lg sm:text-xl font-black text-white mt-0.5">
-                Soluciones de Identidad, Gran Formato y Web
+              <h2 className="text-base sm:text-lg font-black text-white mt-0.5">
+                Selecciona tu Área y Elige tus Productos
               </h2>
             </div>
-            <p className="text-[11px] text-stone-400 font-mono hidden md:block">
-              Toca un área para desplegar sus productos y cotizar abajo.
-            </p>
+            <span className="text-xs text-stone-400 font-mono self-end">
+              {selectedItems.length} {selectedItems.length === 1 ? 'producto elegido' : 'productos elegidos'}
+            </span>
           </div>
 
-          {/* Cuadrícula de 4 Especialidades tipo Apps (Optimizada para toque móvil) */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5">
-            {servicesList.map(srv => {
-              const isSelected = expandedService === srv.id;
-              const IconComp = srv.icon;
+          {/* Selectores de Área (5 Áreas sin barra deslizante: 2x2 + 1 en celular, 5 en desktop) */}
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-2.5">
+            {categoriesList.map(cat => {
+              const isSelected = activeCategoryFilter === cat.id;
+              const IconComp = cat.icon;
 
               return (
-                <div
-                  key={srv.id}
-                  onClick={() => handleSelectService(srv.id)}
-                  className={`rounded-2xl border transition-all duration-200 p-3 sm:p-3.5 cursor-pointer select-none flex flex-col justify-between active:scale-[0.97] touch-manipulation ${
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => setActiveCategoryFilter(cat.id)}
+                  className={`rounded-2xl border transition-all duration-200 p-2.5 sm:p-3 text-left flex flex-col justify-between cursor-pointer active:scale-[0.97] touch-manipulation select-none ${
+                    cat.id === 'otros' ? 'col-span-2 sm:col-span-1' : ''
+                  } ${
                     isSelected
-                      ? `${srv.activeBorder} bg-[#141822] shadow-xl`
+                      ? `${cat.activeCardClass} shadow-xl`
                       : 'border-stone-800 bg-[#0E1218] hover:border-stone-700'
                   }`}
                 >
-                  {/* Fila superior: Código de aplicación y Acción */}
-                  <div className="flex items-center justify-between font-mono text-[8.5px] sm:text-[9.5px] pb-1.5 border-b border-white/5">
+                  {/* Fila superior: Código y Estado */}
+                  <div className="flex items-center justify-between font-mono text-[8.5px] pb-1 border-b border-white/5 w-full">
                     <span className={`font-bold ${isSelected ? 'text-white' : 'text-stone-400'}`}>
-                      {srv.code}
+                      {cat.code}
                     </span>
-                    <span className="text-[8.5px] font-sans font-medium flex items-center gap-0.5 text-stone-400">
-                      <span>{isSelected ? 'Activo' : 'Ver'}</span>
-                      <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${isSelected ? 'rotate-180' : ''}`} />
+                    <span className={`text-[8px] font-sans font-bold px-1.5 py-0.2 rounded transition-all ${
+                      isSelected
+                        ? `${cat.badgeColor}`
+                        : 'text-stone-400 bg-white/5'
+                    }`}>
+                      {isSelected ? '● Activa' : 'Elegir'}
                     </span>
                   </div>
 
-                  {/* Contenido: Icono en cuadro con su código de color */}
-                  <div className="pt-2 sm:pt-2.5 space-y-2">
-                    <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform ${srv.iconBg} ${
-                      isSelected ? 'scale-105 shadow-md' : ''
+                  {/* Icono y Título */}
+                  <div className="pt-2 space-y-1">
+                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-transform ${
+                      isSelected ? 'bg-white/10 text-white scale-105' : 'bg-white/5 text-stone-300'
                     }`}>
-                      <IconComp className="w-5 h-5" />
+                      <IconComp className="w-4 h-4" />
                     </div>
 
                     <div>
-                      <span className={`inline-block text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded border ${srv.badgeColor}`}>
-                        {srv.tag}
+                      <span className={`inline-block text-[7.5px] sm:text-[8px] font-black uppercase tracking-wider px-1 py-0.2 rounded border ${cat.badgeColor}`}>
+                        {cat.tag}
                       </span>
-                      <h3 className="text-xs sm:text-sm font-extrabold text-white mt-1 leading-snug line-clamp-2">
-                        {srv.title}
+                      <h3 className="text-xs font-bold text-white mt-0.5 leading-tight line-clamp-1">
+                        {cat.label}
                       </h3>
                     </div>
                   </div>
-                </div>
+                </button>
               );
             })}
           </div>
 
-          {/* Ficha Técnica Desplegada (Completamente limpia, sin textos redundantes) */}
-          {curService && (() => {
-            const IconComp = curService.icon;
-
-            return (
-              <div className={`rounded-2xl border ${curService.activeBorder} bg-[#0D1016] p-3.5 sm:p-5 shadow-2xl relative overflow-hidden animate-fadeIn space-y-3`}>
-                
-                {/* Cabecera de la Ficha */}
-                <div className="flex items-center justify-between gap-3 border-b border-stone-800 pb-2.5">
-                  <div className="flex items-center gap-2.5">
-                    <div className={`w-10 h-10 rounded-xl ${curService.iconBg} flex items-center justify-center shrink-0 shadow-md`}>
-                      <IconComp className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-mono text-[9px] uppercase tracking-wider font-bold text-stone-400">
-                          {curService.code}
-                        </span>
-                        <span className={`text-[8.5px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded border ${curService.badgeColor}`}>
-                          {curService.tag}
-                        </span>
-                      </div>
-                      <h3 className="text-sm sm:text-base font-black text-white mt-0.5">
-                        {curService.title}
-                      </h3>
-                    </div>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={() => setExpandedService('')}
-                    className="px-2.5 py-1 rounded-lg text-stone-400 hover:text-white bg-white/5 hover:bg-white/10 active:scale-95 text-xs font-mono cursor-pointer transition-colors shrink-0"
-                  >
-                    ✕ Cerrar
-                  </button>
-                </div>
-
-                {/* Resumen */}
-                <p className="text-xs text-stone-300 leading-relaxed font-normal">
-                  {curService.summary}
-                </p>
-
-                {/* Entregables incluidos en recuadros estructurados */}
-                <div className="space-y-1.5">
-                  <div className="text-[9.5px] font-mono uppercase tracking-wider text-stone-400 font-bold">
-                    Entregables y especificaciones incluidas:
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 font-mono text-[11px]">
-                    {curService.deliverables.map((item, idx) => (
-                      <div key={idx} className="p-2 rounded-xl bg-[#141822] border border-stone-800/80 flex items-start gap-2">
-                        <div className={`w-4 h-4 rounded flex items-center justify-center shrink-0 mt-0.5 ${curService.checkColor}`}>
-                          <Check className="w-3 h-3" />
-                        </div>
-                        <span className="text-stone-200 text-xs font-sans leading-snug">{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Ideal para */}
-                <div className="p-2.5 rounded-xl bg-[#10141C] border border-stone-800/80 text-xs text-stone-300 flex items-start gap-2">
-                  <strong className="text-white shrink-0">Ideal para:</strong>
-                  <span>{curService.idealFor}</span>
-                </div>
-
-              </div>
-            );
-          })()}
-
-        </section>
-
-        {/* ================= SECCIÓN 2: ALCANCE DEL PROYECTO (SOLO MUESTRA EL ÁREA ACTIVA) ================= */}
-        <section id="alcance-proyecto" ref={alcanceRef} className="space-y-3.5 pt-3 border-t border-stone-800 animate-fadeIn">
-          
-          {/* Encabezado */}
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-1 border-b border-stone-800/80 pb-2">
-            <div>
-              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#e8b84f] flex items-center gap-1.5">
-                <span className="w-4 h-px bg-[#e8b84f]" />
-                <span>02 / Alcance del Proyecto &amp; Costos</span>
-              </div>
-              <h2 className="text-lg sm:text-xl font-black text-white mt-0.5">
-                Productos de {activeTheme.label}
-              </h2>
-              <p className="text-xs text-stone-300 mt-0.5">
-                Selecciona lo que necesites de esta área. Puedes cambiar de área arriba o con las pestañas.
-              </p>
-            </div>
-            <span className="text-xs text-stone-400 font-mono hidden sm:inline self-end">
-              {selectedItems.length} {selectedItems.length === 1 ? 'elegido' : 'elegidos'}
-            </span>
-          </div>
-
-          {/* CONTENEDOR MODULAR ULTRA COMPACTO PARA CELULAR */}
-          <div className="bg-[#10131A] rounded-2xl sm:rounded-3xl border border-stone-800 p-3 sm:p-5 shadow-2xl space-y-3.5 text-white">
+          {/* Contenedor de Productos del Área Activa */}
+          <div className="bg-[#10131A] rounded-2xl sm:rounded-3xl border border-stone-800 p-3 sm:p-4 shadow-2xl space-y-3 text-white">
             
-            {/* Pestañas de Área (Exclusivamente las 4 áreas, sin 'todas') */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-1.5 scrollbar-none touch-pan-x -mx-1 px-1">
-              {[
-                { id: 'branding', label: 'Identidad & Marca' },
-                { id: 'publicidad', label: 'Lonas & Gran Formato' },
-                { id: 'web', label: 'Web & Tienda' },
-                { id: 'editorial', label: 'Catálogos & Redes' }
-              ].map((tab) => {
-                const isActive = activeCategoryFilter === tab.id;
-                const tabTheme = categoryTheme[tab.id];
-                const TabIcon = tabTheme.icon;
-
-                return (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    onClick={() => handleSelectCategoryTab(tab.id)}
-                    className={`px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer border flex items-center gap-1.5 shrink-0 active:scale-95 touch-manipulation ${
-                      isActive
-                        ? tabTheme.activeTabClass
-                        : 'bg-[#141822] text-stone-300 border-stone-800 hover:border-stone-700 hover:text-white'
-                    }`}
-                  >
-                    <TabIcon className="w-3.5 h-3.5 shrink-0" />
-                    <span>{tab.label}</span>
-                  </button>
-                );
-              })}
+            {/* Encabezado del área activa */}
+            <div className="flex items-center justify-between border-b border-stone-800/80 pb-2">
+              <div className="flex items-center gap-2">
+                <span className={`w-2.5 h-2.5 rounded-full ${activeTheme.dotColor}`} />
+                <h3 className="text-xs sm:text-sm font-bold text-white">
+                  Productos de {activeTheme.label}
+                </h3>
+              </div>
+              <span className="text-[10px] text-stone-400 font-mono">
+                {filteredCatalog.length} opciones disponibles
+              </span>
             </div>
 
             {/* AVISO DE TALLER PARA IMPRESIÓN (SOLO EN LONAS & GRAN FORMATO) */}
@@ -669,61 +652,116 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
               <div className="p-2 sm:p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-200 text-[11px] sm:text-xs flex items-center gap-2">
                 <Printer className="w-3.5 h-3.5 shrink-0 text-emerald-400" />
                 <span>
-                  <strong>Nota de Impresión:</strong> Los precios de lonas y vinil <strong>no incluyen diseño gráfico</strong> (el cliente proporciona archivo listo o se cotiza el diseño por separado).
+                  <strong>Nota de Impresión:</strong> Los precios de lonas y vinil <strong>no incluyen diseño gráfico</strong>.
                 </span>
               </div>
             )}
 
-            {/* LISTA EXCLUSIVA DE PRODUCTOS DEL ÁREA ACTIVA (Sin mezclar con otras áreas) */}
-            <div className="space-y-1.5">
+            {/* LISTA EXCLUSIVA DE PRODUCTOS CON PESTAÑA DESPLEGABLE DE INFORMACIÓN */}
+            <div className="space-y-2">
               {filteredCatalog.map((item) => {
                 const isSelected = selectedItemIds.includes(item.id);
+                const isInfoOpen = expandedInfoIds.includes(item.id);
                 const itemTheme = categoryTheme[item.category] || activeTheme;
 
                 return (
                   <div
                     key={item.id}
-                    onClick={() => toggleItem(item.id)}
-                    className={`min-h-[48px] p-2.5 sm:p-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-3 select-none active:scale-[0.99] touch-manipulation ${
+                    className={`p-3 rounded-xl border transition-all select-none ${
                       isSelected
                         ? itemTheme.activeRowClass
-                        : 'border-stone-800/80 bg-[#141822] hover:border-stone-700 hover:bg-[#181d28]'
+                        : 'border-stone-800/80 bg-[#141822] hover:border-stone-700'
                     }`}
                   >
-                    {/* Checkbox y Título */}
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      <div className={`w-5 h-5 rounded-lg flex items-center justify-center shrink-0 border transition-all ${
-                        isSelected
-                          ? itemTheme.checkClass
-                          : 'border-stone-600 bg-stone-900/60 text-transparent'
-                      }`}>
-                        <Check className="w-3.5 h-3.5 stroke-[3]" />
+                    {/* Fila principal cliqueable para seleccionar */}
+                    <div
+                      onClick={() => toggleItem(item.id)}
+                      className="flex items-center justify-between gap-3 cursor-pointer touch-manipulation"
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div className={`w-5 h-5 rounded-lg flex items-center justify-center shrink-0 border transition-all ${
+                          isSelected
+                            ? itemTheme.checkClass
+                            : 'border-stone-600 bg-stone-900/60 text-transparent'
+                        }`}>
+                          <Check className="w-3.5 h-3.5 stroke-[3]" />
+                        </div>
+
+                        <div className="min-w-0">
+                          <div className="text-xs sm:text-sm font-bold text-white truncate flex items-center gap-1.5">
+                            <span>{item.title}</span>
+                            {item.isPrint && (
+                              <span className="text-[9px] font-normal text-emerald-400 shrink-0 hidden xs:inline">
+                                · Sin diseño
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-[10px] sm:text-[11px] text-stone-300 truncate leading-tight">
+                            {item.subtitle}
+                          </div>
+                        </div>
                       </div>
 
-                      <div className="min-w-0">
-                        <div className="text-xs sm:text-sm font-bold text-white truncate flex items-center gap-1.5">
-                          <span>{item.title}</span>
-                          {item.isPrint && (
-                            <span className="text-[9px] font-normal text-emerald-400 shrink-0 hidden xs:inline">
-                              · Sin diseño
-                            </span>
+                      {/* Precio */}
+                      <div className="shrink-0 text-right">
+                        <span className={`font-mono text-xs sm:text-sm font-bold ${
+                          isSelected ? itemTheme.priceClass : 'text-stone-200'
+                        }`}>
+                          {item.price > 0 ? (
+                            <>
+                              ${item.price.toLocaleString('es-MX')}
+                              <span className="text-[9px] text-stone-400 font-normal ml-0.5">MXN</span>
+                            </>
+                          ) : (
+                            <span className="text-[11px] text-stone-400 font-sans">A cotizar</span>
                           )}
-                        </div>
-                        <div className="text-[10px] sm:text-[11px] text-stone-300 truncate leading-tight">
-                          {item.subtitle}
-                        </div>
+                        </span>
                       </div>
                     </div>
 
-                    {/* Precio Pequeño y Discreto */}
-                    <div className="shrink-0 text-right">
-                      <span className={`font-mono text-xs sm:text-sm font-bold ${
-                        isSelected ? itemTheme.priceClass : 'text-stone-200'
+                    {/* Pestaña / Botón para extender la información de lo que contiene el producto */}
+                    <div className="mt-2 pt-2 border-t border-white/5 flex items-center justify-between">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleInfo(item.id);
+                        }}
+                        className="inline-flex items-center gap-1 text-[10px] sm:text-[10.5px] font-bold text-stone-400 hover:text-white transition-colors cursor-pointer touch-manipulation py-0.5"
+                      >
+                        <Info className="w-3 h-3 text-[#e8b84f]" />
+                        <span>{isInfoOpen ? 'Ocultar qué incluye ▴' : '¿Qué incluye este producto? ▾'}</span>
+                      </button>
+
+                      <span className={`text-[8.5px] font-mono uppercase px-1.5 py-0.5 rounded ${
+                        isSelected ? 'text-white/80' : 'text-stone-400'
                       }`}>
-                        ${item.price.toLocaleString('es-MX')}
-                        <span className="text-[9px] text-stone-400 font-normal ml-0.5">MXN</span>
+                        {isSelected ? '✓ Seleccionado' : 'Toca para agregar'}
                       </span>
                     </div>
+
+                    {/* Información extendida desplegable */}
+                    {isInfoOpen && (
+                      <div className="mt-2.5 p-2.5 rounded-lg bg-[#0E1218] border border-white/10 space-y-1.5 animate-fadeIn">
+                        <div className="text-[9.5px] font-mono uppercase tracking-wider text-[#e8b84f] font-bold">
+                          Especificaciones y entregables incluidos:
+                        </div>
+                        <ul className="space-y-1 text-[11px] text-stone-300">
+                          {item.whatIncludes?.map((detail, idx) => (
+                            <li key={idx} className="flex items-start gap-1.5 leading-snug">
+                              <Check className="w-3 h-3 text-emerald-400 shrink-0 mt-0.5" />
+                              <span>{detail}</span>
+                            </li>
+                          ))}
+                        </ul>
+                        {item.desc && (
+                          <p className="text-[10px] text-stone-400 pt-1 border-t border-white/5 font-sans leading-relaxed">
+                            {item.desc}
+                          </p>
+                        )}
+                      </div>
+                    )}
+
                   </div>
                 );
               })}
@@ -731,7 +769,6 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
 
             {/* RESUMEN DEL ALCANCE & BOTÓN DIRECTO DE WHATSAPP */}
             <div className="pt-3 border-t border-stone-800 space-y-3">
-              
               {/* Tarjeta de Total */}
               <div className="p-3.5 sm:p-4 rounded-xl bg-gradient-to-r from-[#141820] to-[#1C2532] text-white shadow-xl border border-[#e8b84f]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="space-y-0.5">
@@ -759,7 +796,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                 </button>
               </div>
 
-              {/* Chips de lo seleccionado con el código de color de su área */}
+              {/* Chips de selección acumulada con código de color */}
               {selectedItems.length > 0 && (
                 <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
                   <span className="text-[10px] text-stone-400 font-mono">Selección:</span>
@@ -813,7 +850,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
         </section>
 
         {/* ================= SECCIÓN PORTAFOLIO PERSONAL DE WICHO NEMES ================= */}
-        <div className="pt-5 border-t border-stone-800/80 space-y-3">
+        <div className="pt-4 border-t border-stone-800/80 space-y-3">
           <div className="text-center space-y-0.5">
             <span className="text-[10px] font-black uppercase tracking-wider text-[#e8b84f]">
               Portafolio &amp; Diseñador
@@ -893,7 +930,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
         </div>
 
         {/* ================= SECCIÓN COMPARTIR PORTAL ================= */}
-        <section className="pt-5 border-t border-stone-800">
+        <section className="pt-4 border-t border-stone-800">
           <div className="rounded-2xl border border-[#e8b84f]/30 bg-[#0E1218] p-3.5 sm:p-5 shadow-xl relative overflow-hidden">
             <div className="relative space-y-3">
               <div className="space-y-1 text-center sm:text-left">
