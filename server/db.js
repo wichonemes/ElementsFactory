@@ -1,3 +1,9 @@
+
+// Lista negra de productos eliminados permanentemente del catálogo
+const DELETED_PRODUCTS_BLOCKLIST = [
+  'galga-calibradora-roscas-ind2',
+  'tobera-ventilacion-automotriz-ind1'
+];
 import { cloudDb } from './cloud-db.js';
 import fs from 'fs';
 import path from 'path';
@@ -4777,7 +4783,8 @@ const initialProducts = [
     "code": "T32",
     "name": "Starter Pack GYM y Centros Deportivos",
     "priceType": "starting_at",
-    "price": 299,
+    "price": 490,
+    "regularPrice": 620,
     "priceUnit": "paquete",
     "status": "published",
     "featured": true,
@@ -4920,7 +4927,8 @@ const initialProducts = [
     "code": "T18",
     "name": "Starter Pack Barbería y Salón de Belleza",
     "priceType": "starting_at",
-    "price": 199,
+    "price": 480,
+    "regularPrice": 590,
     "priceUnit": "paquete",
     "status": "published",
     "featured": true,
@@ -5055,7 +5063,8 @@ const initialProducts = [
     "code": "T27",
     "name": "Starter Pack Joyería y Boutique de Accesorios",
     "priceType": "starting_at",
-    "price": 249,
+    "price": 540,
+    "regularPrice": 680,
     "priceUnit": "paquete",
     "status": "published",
     "featured": true,
@@ -15378,6 +15387,9 @@ class Database {
 
     // 3. Sincronizar Products
     if (!Array.isArray(data.products)) data.products = [];
+    // Purgar productos bloqueados o de industria en tienda comercial
+    data.products = data.products.filter(p => !DELETED_PRODUCTS_BLOCKLIST.includes(p.id) && !(p.worlds && p.worlds.length === 1 && p.worlds[0] === 'industria'));
+    
     for (const p of initialProducts) {
       const pIdx = data.products.findIndex(item => item.id === p.id);
       if (pIdx === -1) {
@@ -15511,6 +15523,8 @@ class Database {
     const index = db.products.findIndex(p => p.id === id);
     if (index === -1) return false;
     db.products.splice(index, 1);
+    if (!Array.isArray(db.deletedProductIds)) db.deletedProductIds = [];
+    if (!db.deletedProductIds.includes(id)) db.deletedProductIds.push(id);
     this.save(db);
     return true;
   }
