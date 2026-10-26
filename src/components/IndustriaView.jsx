@@ -308,25 +308,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 </a>
               </div>
 
-              {/* Métricas rápidas de planta */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-white/10">
-                <div className="p-2.5 rounded-lg border border-white/10 bg-[#11171B]">
-                  <div className="font-mono text-[9px] uppercase text-gray-400">Atención</div>
-                  <div className="font-bold text-xs text-white mt-0.5">Local SLP</div>
-                </div>
-                <div className="p-2.5 rounded-lg border border-white/10 bg-[#11171B]">
-                  <div className="font-mono text-[9px] uppercase text-gray-400">Confidencialidad</div>
-                  <div className="font-bold text-xs text-[#8FB99B] mt-0.5">NDA disponible</div>
-                </div>
-                <div className="p-2.5 rounded-lg border border-white/10 bg-[#11171B]">
-                  <div className="font-mono text-[9px] uppercase text-gray-400">Pieza Mínima</div>
-                  <div className="font-bold text-xs text-white mt-0.5">Desde 1 pieza</div>
-                </div>
-                <div className="p-2.5 rounded-lg border border-white/10 bg-[#11171B]">
-                  <div className="font-mono text-[9px] uppercase text-gray-400">Volumen Unitario</div>
-                  <div className="font-bold text-xs text-[#5BB8FF] mt-0.5">Hasta 500 mm</div>
-                </div>
-              </div>
+
             </div>
 
             {/* Ficha Técnica Blueprint Vectorial (Desktop / Pantallas grandes) */}
@@ -337,7 +319,13 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                     <span className="w-2 h-2 rounded-full bg-[#5BB8FF]" />
                     DWG-REF // SLP-IND-2026
                   </span>
-                  <span className="text-[#5BB8FF] font-bold">REVISIÓN TÉCNICA</span>
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded bg-[#8FB99B]/15 text-[#8FB99B] border border-[#8FB99B]/30 font-bold flex items-center gap-1 text-[9px] sm:text-[9.5px]">
+                      <ShieldCheck className="w-3 h-3" />
+                      <span>NDA DISPONIBLE</span>
+                    </span>
+                    <span className="text-[#5BB8FF] font-bold">REVISIÓN TÉCNICA</span>
+                  </div>
                 </div>
 
                 <div className="my-3 rounded-xl bg-[#080C0E] border border-white/10 p-3 relative">
