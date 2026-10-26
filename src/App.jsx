@@ -1236,6 +1236,7 @@ export default function App() {
         <ProductDetailModal
           product={selectedProduct}
           allProducts={products}
+          activeWorld={activeWorld}
           onSelectProduct={(newProd) => setSelectedProduct(newProd)}
           settings={settings}
           isFlashDeal={flashDeal.isProductOnFlashDeal(selectedProduct.id)}

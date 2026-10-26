@@ -28,12 +28,18 @@ import {
   parseVariantOptionDeltaPrice,
   getMaterialExtraBadge
 } from '../utils/colorUtils';
+import {
+  detectProductSector,
+  getRecommendedSectorProducts,
+  SECTOR_RECOMMENDATION_METADATA
+} from '../utils/recommendationsHelper';
 import { playCoinSound, playMarioPowerDownSound } from '../utils/soundEffects';
 import { getBundleTiers } from './PackagesAndServicesView';
 
 export default function ProductDetailModal({
   product,
   allProducts = [],
+  activeWorld = null,
   onSelectProduct,
   settings = null,
   isFlashDeal = false,
@@ -160,16 +166,19 @@ export default function ProductDetailModal({
     }
   };
 
-  // Sugerencias continuas al scrolear hasta abajo para nunca quedarse sin productos
-  const suggestedProducts = useMemo(() => {
-    if (!allProducts || allProducts.length === 0) return [];
-    const others = allProducts.filter(p => p.id !== product.id && p.status !== 'draft');
-    if (others.length === 0) return [];
+  // Detección del sector del producto actual y metadata para recomendaciones afines
+  const currentSector = useMemo(() => {
+    return detectProductSector(product, activeWorld);
+  }, [product, activeWorld]);
 
-    const sameArea = others.filter(p => p.worlds?.some(w => product.worlds?.includes(w)));
-    const remaining = others.filter(p => !sameArea.some(sa => sa.id === p.id));
-    return [...sameArea, ...remaining];
-  }, [allProducts, product]);
+  const sectorMeta = useMemo(() => {
+    return SECTOR_RECOMMENDATION_METADATA[currentSector] || SECTOR_RECOMMENDATION_METADATA.hogar;
+  }, [currentSector]);
+
+  // Sugerencias inteligentes del mismo sector / sector afín (eventos, negocios, hogar, personalizados, etc.)
+  const suggestedProducts = useMemo(() => {
+    return getRecommendedSectorProducts(product, allProducts, activeWorld, 8);
+  }, [product, allProducts, activeWorld]);
 
   // Arcade & Gamificación con hook unificado en sesión
   const [isArcadeOpen, setIsArcadeOpen] = useState(false);
@@ -1559,26 +1568,29 @@ export default function ProductDetailModal({
             </div>
           </div>
 
-          {/* Más productos que te pueden gustar (Sugerencias continuas al scrolear hasta abajo) */}
+          {/* Más productos que te pueden gustar (Sugerencias inteligentes del mismo sector) */}
           {suggestedProducts.length > 0 && (
             <div className="pt-8 border-t border-gray-200 space-y-4">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between flex-wrap gap-2">
                 <div>
-                  <h3 className="text-base sm:text-lg font-bold text-[#1F2421] font-heading flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-stone-500" />
-                    <span>Más creaciones del taller que te pueden interesar</span>
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold bg-[#2D4F3E]/10 text-[#2D4F3E] mb-1">
+                    <Sparkles className="w-3 h-3 text-[#2D4F3E]" />
+                    <span>{sectorMeta.badge}</span>
+                  </div>
+                  <h3 className="text-base sm:text-lg font-bold text-[#1F2421] font-heading">
+                    {sectorMeta.title}
                   </h3>
-                  <p className="text-xs text-gray-500 mt-0.5">
-                    Continúa explorando piezas de taller sin salirte de la tienda
+                  <p className="text-xs text-gray-500 mt-0.5 max-w-xl">
+                    {sectorMeta.subtitle}
                   </p>
                 </div>
                 <span className="text-[11px] font-bold text-stone-500 bg-stone-100 px-2.5 py-1 rounded-full">
-                  {suggestedProducts.length} productos
+                  {suggestedProducts.length} recomendados
                 </span>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-                {suggestedProducts.slice(0, 8).map(rel => (
+                {suggestedProducts.map(rel => (
                   <div
                     key={rel.id}
                     onClick={() => {
@@ -1599,7 +1611,14 @@ export default function ProductDetailModal({
                           loading="lazy"
                         />
                       </div>
-                      <div className="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-wider">{rel.code}</div>
+                      <div className="flex items-center justify-between gap-1">
+                        <span className="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-wider">{rel.code}</span>
+                        {rel.isBundle && (
+                          <span className="text-[9px] font-black uppercase px-1.5 py-0.2 rounded bg-amber-100 text-amber-900 border border-amber-200">
+                            Paquete
+                          </span>
+                        )}
+                      </div>
                       <div className="text-xs font-bold text-gray-800 line-clamp-2 mt-0.5 leading-snug group-hover:text-[#2D4F3E] transition-colors">{rel.name}</div>
                     </div>
                     <div className="mt-2 pt-2 border-t border-gray-100 flex items-center justify-between">
