@@ -101,8 +101,8 @@ body.admin-open .we-pins,body.admin-open .we-toolbar{opacity:0;pointer-events:no
 
 /* Icono de edición discreto, igual a la portada */
 .site-header .back-link{margin-left:auto}
-.site-header .admin-toggle{position:static;z-index:auto;margin-left:10px;width:28px;min-width:28px;height:28px;display:grid;place-items:center;padding:0;border:0;border-radius:8px;background:transparent;color:#8f969d;box-shadow:none;backdrop-filter:none;opacity:.62;font-size:0;line-height:1;cursor:pointer;transition:color .2s,background .2s,opacity .2s}
-.site-header .admin-toggle:hover{transform:none;background:#ffffff0a;color:var(--gold);opacity:1}
+.site-header .admin-toggle{position:static;z-index:auto;margin-left:10px;width:28px;min-width:28px;height:28px;display:grid;place-items:center;padding:0;border:0;border-radius:8px;background:transparent;color:#717882;box-shadow:none;backdrop-filter:none;opacity:.35;font-size:0;line-height:1;cursor:pointer;transition:color .2s,background .2s,opacity .2s}
+.site-header .admin-toggle:hover{transform:none;background:transparent;color:#9aa0a8;opacity:.85}
 .site-header .admin-toggle:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .site-header .admin-toggle svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .site-header .admin-toggle span{display:none}
@@ -127,10 +127,10 @@ body.admin-open .we-pins,body.admin-open .we-toolbar{opacity:0;pointer-events:no
 .back-link .back-arrow svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .floating-home svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 
-/* Iconos de línea refinados: edición más legible */
-.site-header .admin-toggle{width:29px;min-width:29px;height:29px;color:#a6acb2;opacity:.74}
-.site-header .admin-toggle svg{width:18px;height:18px;stroke-width:1.7}
-.site-header .admin-toggle:hover{color:var(--gold);opacity:1}
+/* Iconos de línea refinados: edición discreta */
+.site-header .admin-toggle{width:28px;min-width:28px;height:28px;color:#717882;opacity:.35}
+.site-header .admin-toggle svg{width:16px;height:16px;stroke-width:1.7}
+.site-header .admin-toggle:hover{color:#9aa0a8;opacity:.85}
 .back-link .back-arrow svg{width:16px;height:16px}
 @media(max-width:600px){
   .site-header .admin-toggle{width:28px;min-width:28px;height:28px;margin-left:8px}
