@@ -41,7 +41,8 @@ import {
   Wine,
   Shirt,
   Store,
-  Laptop
+  Laptop,
+  Layers
 } from 'lucide-react';
 
 export default function MobileCategoriesModal({
@@ -113,52 +114,51 @@ export default function MobileCategoriesModal({
 
   // Elementos interactivos con código de color respectivo por disciplina (100% iconos vectoriales)
   const categoryItemsByArea = {
-    servicios: [
-      { id: 'pub-branding', name: 'Branding y Logos', icon: Palette, serviceTab: 'diseno', iconBg: 'bg-amber-50 text-amber-600 border border-amber-300 shadow-amber-100' },
-      { id: 'pub-lonas', name: 'Lonas y Vinil', icon: Printer, serviceTab: 'diseno', iconBg: 'bg-rose-50 text-rose-600 border border-rose-300 shadow-rose-100' },
-      { id: 'pub-web', name: 'Sitios Web y Tiendas', icon: Globe, serviceTab: 'diseno', iconBg: 'bg-emerald-50 text-emerald-600 border border-emerald-300 shadow-emerald-100' },
-      { id: 'pub-3d', name: 'Modelado y Renders', icon: Box, serviceTab: 'diseno', iconBg: 'bg-sky-50 text-sky-600 border border-sky-300 shadow-sky-100' },
-      { id: 'pub-audiovisual', name: 'Fotografía y Video', icon: Film, serviceTab: 'diseno', iconBg: 'bg-purple-50 text-purple-600 border border-purple-300 shadow-purple-100' },
-      { id: 'pub-editorial', name: 'Catálogos PDF', icon: FileText, serviceTab: 'diseno', iconBg: 'bg-amber-50 text-amber-700 border border-amber-300 shadow-amber-100' },
-      { id: 'ind-prototipos', name: 'Prototipos 3D', icon: Box, serviceTab: 'industria', iconBg: 'bg-sky-50 text-[#0284C7] border border-[#5BB8FF] shadow-sky-100' },
-      { id: 'ind-jigs', name: 'Utillaje y Jigs', icon: Wrench, serviceTab: 'industria', iconBg: 'bg-emerald-50 text-[#245C33] border border-[#8FB99B] shadow-emerald-100' },
-      { id: 'ind-refacciones', name: 'Refacciones Técnicas', icon: Cog, serviceTab: 'industria', iconBg: 'bg-amber-50 text-amber-700 border border-amber-300 shadow-amber-100' },
-      { id: 'ind-lotes', name: 'Lotes Cortos B2B', icon: Printer, serviceTab: 'industria', iconBg: 'bg-purple-50 text-purple-700 border border-purple-300 shadow-purple-100' }
-    ],
     hogar: [
-      { id: 'hogar-organizacion', name: 'Llaveros y Perchas', icon: Key, catId: 'hogar-organizacion', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' },
-      { id: 'hogar-decoracion', name: 'Lámparas 3D', icon: Lightbulb, catId: 'hogar-decoracion', iconBg: 'bg-amber-50 text-amber-700 border border-amber-200 shadow-amber-50' },
-      { id: 'hogar-organizacion-2', name: 'Bandejas y Bowls', icon: Box, catId: 'hogar-organizacion', iconBg: 'bg-stone-50 text-stone-700 border border-stone-200 shadow-stone-50' },
-      { id: 'hogar-mascotas', name: 'Portabolsas Mascota', icon: Heart, catId: 'hogar-mascotas', iconBg: 'bg-rose-50 text-rose-600 border border-rose-200 shadow-rose-50' },
-      { id: 'hogar-gamer', name: 'Soportes Gamer', icon: Headphones, catId: 'hogar-gamer', iconBg: 'bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-indigo-50' },
-      { id: 'hogar-cocina', name: 'Posavasos Madera', icon: Coffee, catId: 'hogar-cocina', iconBg: 'bg-amber-50 text-amber-800 border border-amber-200 shadow-amber-50' },
+      { id: 'hogar-decoracion', name: 'Lámparas & Decoración', icon: Lightbulb, catId: 'hogar-decoracion', iconBg: 'bg-amber-50 text-amber-700 border border-amber-200 shadow-amber-50' },
+      { id: 'hogar-organizacion', name: 'Llaveros & Perchas', icon: Key, catId: 'hogar-organizacion', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' },
+      { id: 'hogar-cocina', name: 'Cocina & Posavasos', icon: Coffee, catId: 'hogar-cocina', iconBg: 'bg-amber-50 text-amber-800 border border-amber-200 shadow-amber-50' },
+      { id: 'hogar-mascotas', name: 'Mascotas & Peludos', icon: Heart, catId: 'hogar-mascotas', iconBg: 'bg-rose-50 text-rose-600 border border-rose-200 shadow-rose-50' },
+      { id: 'hogar-estudio', name: 'Home Office & Gamer', icon: Headphones, catId: 'hogar-estudio', iconBg: 'bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-indigo-50' },
       { id: 'juguetes-articulados', name: 'Juguetes Articulados', icon: ToyBrick, catId: 'juguetes-articulados', iconBg: 'bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-indigo-50' },
-      { id: 'juguetes-fidget', name: 'Juguetes & Fidget', icon: Smile, catId: 'juguetes-fidget', iconBg: 'bg-amber-50 text-amber-700 border border-amber-200 shadow-amber-50' },
+      { id: 'juguetes-fidget', name: 'Fidget & Antiestrés', icon: Smile, catId: 'juguetes-fidget', iconBg: 'bg-amber-50 text-amber-700 border border-amber-200 shadow-amber-50' },
       { id: 'pack-hogar', name: 'Combos & Paquetes Hogar', icon: Gift, isBundle: true, worldId: 'hogar', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' }
     ],
     negocios: [
-      { id: 'negocios-mostrador', name: 'Placas QR Mostrador', icon: QrCode, catId: 'negocios-mostrador', iconBg: 'bg-slate-50 text-slate-800 border border-slate-200 shadow-slate-50' },
-      { id: 'negocios-smart', name: 'Paneles Smart NFC', icon: Smartphone, catId: 'negocios-smart', iconBg: 'bg-sky-50 text-sky-700 border border-sky-200 shadow-sky-50' },
-      { id: 'negocios-senales', name: 'Letreros con Nombre', icon: Tag, catId: 'negocios-senales', iconBg: 'bg-amber-50 text-amber-700 border border-amber-200 shadow-amber-50' },
-      { id: 'negocios-restaurantes', name: 'Menús y Números', icon: Utensils, catId: 'negocios-restaurantes', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' },
-      { id: 'negocios-corporativo', name: 'Identificadores 3D', icon: Award, catId: 'negocios-corporativo', iconBg: 'bg-purple-50 text-purple-700 border border-purple-200 shadow-purple-50' },
-      { id: 'pack-negocios', name: 'Kits & Starter Packs', icon: Gift, isBundle: true, worldId: 'negocios', iconBg: 'bg-amber-50 text-amber-800 border border-amber-200 shadow-amber-50' }
+      { id: 'negocios-mostrador', name: 'Placas QR Mostrador', icon: QrCode, catId: 'negocios-tiendas', iconBg: 'bg-slate-50 text-slate-800 border border-slate-200 shadow-slate-50' },
+      { id: 'negocios-smart', name: 'Paneles Smart NFC', icon: Smartphone, catId: 'negocios-oficinas', iconBg: 'bg-sky-50 text-sky-700 border border-sky-200 shadow-sky-50' },
+      { id: 'negocios-restaurantes', name: 'Restaurantes & Menús', icon: Utensils, catId: 'negocios-restaurantes', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' },
+      { id: 'negocios-barberias', name: 'Barberías & Salones', icon: Scissors, catId: 'negocios-barberias', iconBg: 'bg-purple-50 text-purple-700 border border-purple-200 shadow-purple-50' },
+      { id: 'negocios-corporativo', name: 'Identificadores 3D', icon: Award, catId: 'negocios-oficinas', iconBg: 'bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-indigo-50' },
+      { id: 'pack-negocios', name: 'Kits & Packs Negocio', icon: Gift, isBundle: true, worldId: 'negocios', iconBg: 'bg-amber-50 text-amber-800 border border-amber-200 shadow-amber-50' }
+    ],
+    eventos: [
+      { id: 'eventos-bodas', name: 'Bodas & Recuerdos', icon: PartyPopper, catId: 'eventos-bodas', iconBg: 'bg-amber-50 text-amber-700 border border-amber-200 shadow-amber-50' },
+      { id: 'eventos-recuerdos', name: 'Recuerdos & Bautizos', icon: ImageIcon, catId: 'eventos-bautizos', iconBg: 'bg-sky-50 text-sky-700 border border-sky-200 shadow-sky-50' },
+      { id: 'eventos-xvanos', name: 'Souvenirs XV Años', icon: Crown, catId: 'eventos-xvanos', iconBg: 'bg-purple-50 text-purple-700 border border-purple-200 shadow-purple-50' },
+      { id: 'eventos-cumpleanos', name: 'Cumpleaños & Fiestas', icon: Gift, catId: 'eventos-cumpleanos', iconBg: 'bg-pink-50 text-pink-700 border border-pink-200 shadow-pink-50' },
+      { id: 'eventos-patchbar', name: 'Servicio Patch Bar', icon: Shirt, catId: 'eventos-bodas', isBundle: true, worldId: 'eventos', iconBg: 'bg-rose-50 text-rose-600 border border-rose-200 shadow-rose-50' },
+      { id: 'pack-eventos', name: 'Paquetes Fiesta & Boda', icon: Gift, isBundle: true, worldId: 'eventos', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' }
     ],
     personalizados: [
-      { id: 'personalizados-individual', name: 'Retrato Individual', icon: User, catId: 'personalizados-individual', iconBg: 'bg-sky-50 text-sky-700 border border-sky-200 shadow-sky-50' },
+      { id: 'personalizados-individual', name: 'Retrato Individual 3D', icon: User, catId: 'personalizados-individual', iconBg: 'bg-sky-50 text-sky-700 border border-sky-200 shadow-sky-50' },
       { id: 'personalizados-dibujo', name: 'De Dibujo a 3D', icon: PenTool, catId: 'personalizados-dibujo', iconBg: 'bg-amber-50 text-amber-700 border border-amber-200 shadow-amber-50' },
       { id: 'personalizados-mascotas', name: 'Mascotas Custom', icon: Heart, catId: 'personalizados-mascotas', iconBg: 'bg-rose-50 text-rose-600 border border-rose-200 shadow-rose-50' },
       { id: 'personalizados-parejas', name: 'Parejas & Boda', icon: Users, catId: 'personalizados-parejas', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' },
       { id: 'personalizados-profesiones', name: 'Profesiones', icon: GraduationCap, catId: 'personalizados-profesiones', iconBg: 'bg-purple-50 text-purple-700 border border-purple-200 shadow-purple-50' },
-      { id: 'personalizados-amigos', name: 'Set Dúo Amigos', icon: Sparkles, catId: 'personalizados-amigos', iconBg: 'bg-pink-50 text-pink-600 border border-pink-200 shadow-pink-50' }
+      { id: 'personalizados-amigos', name: 'Set Dúo Amigos', icon: Sparkles, catId: 'personalizados-amigos', iconBg: 'bg-pink-50 text-pink-600 border border-pink-200 shadow-pink-50' },
+      { id: 'personalizados-familia', name: 'Pack Familiar 3D', icon: Users, catId: 'personalizados-familia', iconBg: 'bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-indigo-50' }
     ],
-    eventos: [
-      { id: 'eventos-bodas', name: 'Letreros Bienvenida', icon: PartyPopper, catId: 'eventos-bodas', iconBg: 'bg-amber-50 text-amber-700 border border-amber-200 shadow-amber-50' },
-      { id: 'eventos-recuerdos', name: 'Fotoimanes Bautizo', icon: ImageIcon, catId: 'eventos-recuerdos', iconBg: 'bg-sky-50 text-sky-700 border border-sky-200 shadow-sky-50' },
-      { id: 'eventos-patchbar', name: 'Servicio Patch Bar', icon: Shirt, catId: 'eventos-patchbar', iconBg: 'bg-rose-50 text-rose-600 border border-rose-200 shadow-rose-50' },
-      { id: 'eventos-xvanos', name: 'Souvenirs XV Años', icon: Crown, catId: 'eventos-xvanos', iconBg: 'bg-purple-50 text-purple-700 border border-purple-200 shadow-purple-50' },
-      { id: 'eventos-copas', name: 'Copas Brindis Láser', icon: Wine, catId: 'eventos-copas', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' },
-      { id: 'pack-eventos', name: 'Paquetes de Boda y Fiestas', icon: Gift, isBundle: true, worldId: 'eventos', iconBg: 'bg-pink-50 text-pink-700 border border-pink-200 shadow-pink-50' }
+    servicios: [
+      // Fusión Oficial: Diseño y Publicidad + Industria y Manufactura
+      { id: 'pub-branding', name: 'Branding & Logos', icon: Palette, serviceTab: 'diseno', iconBg: 'bg-amber-50 text-amber-600 border border-amber-300 shadow-amber-100' },
+      { id: 'pub-lonas', name: 'Lonas & Gran Formato', icon: Printer, serviceTab: 'diseno', iconBg: 'bg-rose-50 text-rose-600 border border-rose-300 shadow-rose-100' },
+      { id: 'pub-web', name: 'Sitios Web & Tiendas', icon: Globe, serviceTab: 'diseno', iconBg: 'bg-emerald-50 text-emerald-600 border border-emerald-300 shadow-emerald-100' },
+      { id: 'pub-3d', name: 'Modelado 3D & Renders', icon: Box, serviceTab: 'diseno', iconBg: 'bg-sky-50 text-sky-600 border border-sky-300 shadow-sky-100' },
+      { id: 'ind-prototipos', name: 'Prototipos 3D Técnicos', icon: Box, serviceTab: 'industria', iconBg: 'bg-sky-50 text-[#0284C7] border border-[#5BB8FF] shadow-sky-100' },
+      { id: 'ind-jigs', name: 'Utillaje & Jigs', icon: Wrench, serviceTab: 'industria', iconBg: 'bg-emerald-50 text-[#245C33] border border-[#8FB99B] shadow-emerald-100' },
+      { id: 'ind-refacciones', name: 'Refacciones Técnicas', icon: Cog, serviceTab: 'industria', iconBg: 'bg-amber-50 text-amber-700 border border-amber-300 shadow-amber-100' },
+      { id: 'ind-lotes', name: 'Lotes Cortos B2B', icon: Printer, serviceTab: 'industria', iconBg: 'bg-purple-50 text-purple-700 border border-purple-300 shadow-purple-100' }
     ],
     tecnicas: [
       { id: 'tech-3d', name: 'Impresión 3D (PLA/TPU)', icon: Printer, techniqueId: '3d', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' },
@@ -169,7 +169,7 @@ export default function MobileCategoriesModal({
     ]
   };
 
-  const currentItems = categoryItemsByArea[activeAreaTab] || categoryItemsByArea['servicios'];
+  const currentItems = categoryItemsByArea[activeAreaTab] || categoryItemsByArea['hogar'];
 
   const handleItemClick = (item) => {
     if (item.techniqueId) {
@@ -180,7 +180,7 @@ export default function MobileCategoriesModal({
     } else if (activeAreaTab === 'servicios' || item.serviceTab) {
       if (onSelectWorld) onSelectWorld('servicios', item.serviceTab || 'diseno');
     } else {
-      if (onSelectWorld) onSelectWorld(activeAreaTab);
+      if (onSelectWorld) onSelectWorld(activeAreaTab, null, item.catId || 'all');
       if (onSelectCategory && item.catId) onSelectCategory(item.catId);
     }
     onClose();

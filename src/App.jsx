@@ -477,7 +477,7 @@ export default function App() {
   };
 
   // World / Area selector handler
-  const handleSelectWorld = (worldId, tab) => {
+  const handleSelectWorld = (worldId, tab, initialCategory = null) => {
     playSoftAreaSwitchSound();
     setSearchQuery(''); // Limpia la búsqueda para que el catálogo abra inmediatamente
     if (worldId === 'industria') {
@@ -494,7 +494,11 @@ export default function App() {
     } else {
       setActiveWorld(worldId);
     }
-    setSelectedCategory('all');
+    if (initialCategory) {
+      setSelectedCategory(initialCategory);
+    } else {
+      setSelectedCategory('all');
+    }
     setSelectedTechnique('all');
     setCatalogSeed(Date.now());
     // Posicionar limpiamente arriba de la pantalla para evitar saltos erráticos hacia abajo
