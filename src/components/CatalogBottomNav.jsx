@@ -12,7 +12,7 @@ export default function CatalogBottomNav({
   onSelectPackages,
   onScrollToTop
 }) {
-  // Configuración de las 3 áreas de productos individuales
+  // Configuración de las áreas del catálogo (Hogar, Negocios, Eventos, Personalizados, Servicios)
   const areasConfig = [
     {
       id: 'hogar',
@@ -36,13 +36,33 @@ export default function CatalogBottomNav({
     },
     {
       id: 'eventos',
-      name: 'Eventos Especiales',
-      fullName: 'Eventos & Celebraciones',
+      name: 'Eventos',
+      fullName: 'Eventos & Recuerdos',
       count: 34,
       icon: CalendarHeart,
       color: 'bg-rose-50/70 text-rose-900 border-rose-200 hover:border-rose-500 hover:bg-rose-50',
       badgeColor: 'bg-rose-100 text-rose-800',
-      desc: 'Recuerdos de bodas, XV años y graduaciones'
+      desc: 'Recuerdos de bodas, XV años y celebraciones'
+    },
+    {
+      id: 'personalizados',
+      name: 'Personalizados',
+      fullName: 'Personalizados',
+      count: 14,
+      icon: Sparkles,
+      color: 'bg-sky-50/70 text-sky-900 border-sky-200 hover:border-sky-500 hover:bg-sky-50',
+      badgeColor: 'bg-sky-100 text-sky-800',
+      desc: 'Figuras POP! Custom y esculturas 3D de fotos'
+    },
+    {
+      id: 'servicios',
+      name: 'Servicios',
+      fullName: 'Servicios de Taller & Diseño',
+      count: 8,
+      icon: Layers,
+      color: 'bg-[#121519] text-[#e8b84f] border-[#e8b84f]/40 hover:border-[#e8b84f] hover:bg-black',
+      badgeColor: 'bg-[#e8b84f] text-[#121519]',
+      desc: 'Diseño gráfico, lonas, web y manufactura técnica'
     }
   ];
 
@@ -291,36 +311,6 @@ export default function CatalogBottomNav({
               </button>
             );
           })}
-
-          {/* Tarjeta de Paquetes en caso de estar en 'all' */}
-          {activeWorld === 'all' && (
-            <button
-              type="button"
-              onClick={() => onSelectPackages('all')}
-              className="p-3.5 sm:p-4 rounded-2xl border border-[#D4A359]/40 bg-[#FFFDF9] hover:bg-amber-50 text-left transition-all duration-200 flex items-center justify-between gap-3 shadow-2xs hover:shadow-md hover:-translate-y-0.5 cursor-pointer"
-            >
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 border border-amber-300">
-                  <Gift className="w-5 h-5" />
-                </div>
-                <div className="min-w-0">
-                  <span className="text-xs font-bold block text-[#1F2421]">
-                    Paquetes & Servicios
-                  </span>
-                  <span className="text-[11px] text-gray-500 block leading-tight">
-                    Combos con descuento y Patch Bar
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-1.5 shrink-0">
-                <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900">
-                  9 combos
-                </span>
-                <ChevronRight className="w-4 h-4 text-amber-700" />
-              </div>
-            </button>
-          )}
         </div>
       </section>
     </nav>

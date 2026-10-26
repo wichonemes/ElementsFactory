@@ -19,16 +19,37 @@ export default function WorldSelector({ worlds, activeWorld, onSelectWorld, cate
     negocios: '02',
     eventos: '03',
     personalizados: '04',
-    servicios: '05',
-    industria: '05',
-    'publicidad-desarrollo': '06'
+    servicios: '05'
   };
+
+  const ORDERED_WORLD_IDS = ['hogar', 'negocios', 'eventos', 'personalizados', 'servicios'];
+
+  const fallbackServiciosWorld = {
+    id: 'servicios',
+    name: 'Servicios',
+    tagline: 'Diseño gráfico, desarrollo web, gran formato y manufactura técnica industrial',
+    image: '/uploads/brand_artesano_digital_og.jpg',
+    description: 'Portafolio integral de soluciones profesionales: identidad de marca, lonas y corte de vinil por Wicho Nemes, y manufactura aditiva técnica, refacciones bajo demanda y utillaje B2B.',
+    categories: [
+      { id: 'diseno', name: 'Diseño Gráfico & Branding' },
+      { id: 'web', name: 'Desarrollo Web & Tiendas' },
+      { id: 'lonas', name: 'Lonas & Gran Formato' },
+      { id: 'industria', name: 'Manufactura B2B & 3D' }
+    ]
+  };
+
+  const displayWorlds = ORDERED_WORLD_IDS.map(id => {
+    const found = worlds.find(w => w.id === id);
+    if (found) return found;
+    if (id === 'servicios') return fallbackServiciosWorld;
+    return null;
+  }).filter(Boolean);
 
   return (
     <section id="areas-section" className="py-10 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-24">
       {/* Grid de las Áreas Maestras */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-        {worlds.map((world, idx) => {
+        {displayWorlds.map((world, idx) => {
           const Icon = worldIcons[world.id] || Home;
           const isSelected = activeWorld === world.id;
           const subcats = (world.categories || []).slice(0, 5);

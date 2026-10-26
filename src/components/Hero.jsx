@@ -69,7 +69,7 @@ export default function Hero({
       badge: 'Novedad Térmica',
       title: 'Línea Térmica & Personalizada',
       description: 'Tazas mágicas de revelado térmico · Tarros cerveceros · Termos láser',
-      worldId: 'paquetes-servicios'
+      worldId: 'personalizados'
     }
   ];
 

@@ -55,20 +55,10 @@ export default function MobileCategoriesModal({
 }) {
   if (!isOpen) return null;
 
-  const [activeAreaTab, setActiveAreaTab] = useState('servicios');
+  const [activeAreaTab, setActiveAreaTab] = useState('hogar');
 
   // Áreas principales con sus códigos de color distintivos de marca
   const masterAreas = [
-    {
-      id: 'servicios',
-      name: 'Servicios\nTaller & Diseño',
-      icon: Layers,
-      accentColor: '#D4A359',
-      borderClass: 'border-l-[#D4A359]',
-      textClass: 'text-amber-900',
-      tagText: 'Diseño & Taller',
-      tagClass: 'bg-amber-100 text-amber-900 border border-amber-300'
-    },
     {
       id: 'hogar',
       name: 'Hogar y\nDecoración',
@@ -86,6 +76,14 @@ export default function MobileCategoriesModal({
       textClass: 'text-[#2D4F3E]'
     },
     {
+      id: 'eventos',
+      name: 'Eventos y\nRecuerdos',
+      icon: CalendarHeart,
+      accentColor: '#2D4F3E',
+      borderClass: 'border-l-[#2D4F3E]',
+      textClass: 'text-[#2D4F3E]'
+    },
+    {
       id: 'personalizados',
       name: 'Productos\nPersonalizados',
       icon: Sparkles,
@@ -94,12 +92,14 @@ export default function MobileCategoriesModal({
       textClass: 'text-[#2D4F3E]'
     },
     {
-      id: 'eventos',
-      name: 'Eventos y\nRecuerdos',
-      icon: CalendarHeart,
-      accentColor: '#2D4F3E',
-      borderClass: 'border-l-[#2D4F3E]',
-      textClass: 'text-[#2D4F3E]'
+      id: 'servicios',
+      name: 'Servicios\nTaller & Diseño',
+      icon: Layers,
+      accentColor: '#D4A359',
+      borderClass: 'border-l-[#D4A359]',
+      textClass: 'text-amber-900',
+      tagText: 'Diseño & Taller',
+      tagClass: 'bg-amber-100 text-amber-900 border border-amber-300'
     },
     {
       id: 'tecnicas',

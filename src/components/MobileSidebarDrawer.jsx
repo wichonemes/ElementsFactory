@@ -199,27 +199,6 @@ export default function MobileSidebarDrawer({
               <ChevronRight className="w-4 h-4 text-gray-400 group-hover:translate-x-0.5 transition-transform" />
             </button>
 
-            {/* Paquetes y Combos */}
-            <button
-              type="button"
-              onClick={() => {
-                onClose();
-                if (onSelectWorld) onSelectWorld('paquetes-servicios');
-              }}
-              className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-gray-50 active:bg-gray-100 transition-colors text-left group cursor-pointer"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-pink-50 text-pink-600 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                  <Gift className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-gray-900">Paquetes & Combos</div>
-                  <div className="text-[10px] text-gray-500">Kits para eventos, marcas y hogar</div>
-                </div>
-              </div>
-              <ChevronRight className="w-4 h-4 text-gray-400 group-hover:translate-x-0.5 transition-transform" />
-            </button>
-
             {/* Centro de Servicios Especializados (Diseño, Publicidad y Manufactura) */}
             <button
               type="button"

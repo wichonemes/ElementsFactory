@@ -59,10 +59,10 @@ export default function Footer({ onSelectWorld, onOpenAdmin, settings }) {
               </li>
               <li>
                 <button
-                  onClick={() => onSelectWorld('juguetes')}
+                  onClick={() => onSelectWorld('eventos')}
                   className="hover:text-emerald-400 transition-colors text-left"
                 >
-                  Juguetes Articulados
+                  Eventos Especiales
                 </button>
               </li>
               <li>
@@ -71,14 +71,6 @@ export default function Footer({ onSelectWorld, onOpenAdmin, settings }) {
                   className="hover:text-sky-300 transition-colors text-left text-sky-400 font-bold"
                 >
                   Personalizados (Funko &amp; 3D)
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onSelectWorld('eventos')}
-                  className="hover:text-emerald-400 transition-colors text-left"
-                >
-                  Eventos Especiales
                 </button>
               </li>
               <li>
