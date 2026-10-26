@@ -429,27 +429,12 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
               );
             })()}
 
-            {/* Banner Compacto de Cotización */}
-            <div className="rounded-2xl bg-gradient-to-r from-[#141820] via-[#1A212B] to-[#11141A] text-white p-4 shadow-xl border border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-3">
-              <div className="space-y-0.5 text-center sm:text-left">
-                <div className="text-xs font-bold text-[#e8b84f]">¿Tienes un proyecto especial con medidas específicas?</div>
-                <div className="text-xs text-stone-300">Cotiza en 2 pasos con cálculo de costo al instante.</div>
-              </div>
-              <button
-                type="button"
-                onClick={() => handleOpenCotizador('branding')}
-                className="w-full sm:w-auto shrink-0 px-4 py-2 rounded-xl bg-[#e8b84f] hover:bg-[#d4a359] text-[#0B0D11] font-black text-xs transition-all shadow-md cursor-pointer"
-              >
-                Ir al Cotizador
-              </button>
-            </div>
-
         </section>
 
         {/* ================= SECCIÓN 2: COTIZADOR INTERACTIVO EN 2 PASOS (TOTALMENTE EN NEGRO) ================= */}
         <section id="cotizador-diseno" ref={cotizadorRef} className="space-y-6 pt-6 border-t border-stone-800 animate-fadeIn">
           
-          {/* Encabezado de la Sección de Cotización */}
+          {/* Encabezado de la Sección de Cotización con proyecto especial integrado */}
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-stone-800/80 pb-3">
             <div>
               <div className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-[#e8b84f] flex items-center gap-2">
@@ -459,35 +444,13 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
               <h2 className="text-xl sm:text-2xl font-black text-white mt-1">
                 Calcula la Inversión de tu Proyecto
               </h2>
+              <p className="text-xs text-stone-300 mt-1">
+                ¿Tienes un proyecto especial con medidas específicas? Cotiza en 2 pasos con cálculo al instante.
+              </p>
             </div>
-            <span className="text-xs text-stone-400 font-mono hidden sm:inline">
-              Elige especialidad y nivel de alcance
+            <span className="text-xs text-stone-400 font-mono hidden sm:inline self-end">
+              Paso 1: Servicio · Paso 2: Alcance
             </span>
-          </div>
-            
-          {/* TARJETA DESTACADA DEL COSTO ORIENTATIVO (INTEGRADA SIN ESTORBAR EL SCROLL) */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#141820] to-[#1C2532] text-white shadow-2xl border border-[#e8b84f]/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="space-y-0.5">
-              <div className="text-[10px] font-bold uppercase tracking-wider text-[#e8b84f] flex items-center gap-1">
-                <DollarSign className="w-3.5 h-3.5" />
-                <span>Inversión Estimada:</span>
-              </div>
-              <div className="text-2xl sm:text-3xl font-black font-heading text-[#e8b84f] tracking-tight">
-                ${quoteEstimate.base.toLocaleString('es-MX')} <span className="text-xs font-normal text-stone-300">MXN</span>
-              </div>
-              <div className="text-[11px] text-stone-300">
-                {quoteEstimate.label} · {quoteScope === 'inicio' ? 'Básico' : quoteScope === 'estandar' ? 'Profesional' : 'VIP Todo Incluido'}
-              </div>
-            </div>
-
-            <button
-              type="button"
-              onClick={handleSendWhatsAppQuote}
-              className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-xs sm:text-sm transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <MessageCircle className="w-4 h-4 fill-white" />
-              <span>Cotizar por WhatsApp</span>
-            </button>
           </div>
 
           {/* CONTENEDOR DE LOS 2 PASOS EN NEGRO */}
@@ -575,19 +538,34 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
                 </div>
               </div>
 
-              {/* ACCIÓN PRINCIPAL: BOTÓN DE COTIZAR POR WHATSAPP */}
+              {/* TARJETA DESTACADA DEL COSTO ORIENTATIVO (UBICADA EXACTAMENTE AL FINAL) */}
               <div className="pt-3 border-t border-stone-800/80 space-y-4">
                 
-                <button
-                  type="button"
-                  onClick={handleSendWhatsAppQuote}
-                  className="w-full py-3.5 px-5 rounded-2xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-sm sm:text-base transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer active:scale-98"
-                >
-                  <MessageCircle className="w-5 h-5 fill-white" />
-                  <span>Cotizar por WhatsApp con Wicho (${quoteEstimate.base.toLocaleString('es-MX')} MXN)</span>
-                </button>
+                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#141820] to-[#1C2532] text-white shadow-2xl border border-[#e8b84f]/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="space-y-0.5">
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-[#e8b84f] flex items-center gap-1">
+                      <DollarSign className="w-3.5 h-3.5" />
+                      <span>Inversión Estimada:</span>
+                    </div>
+                    <div className="text-2xl sm:text-3xl font-black font-heading text-[#e8b84f] tracking-tight">
+                      ${quoteEstimate.base.toLocaleString('es-MX')} <span className="text-xs font-normal text-stone-300">MXN</span>
+                    </div>
+                    <div className="text-[11px] text-stone-300">
+                      {quoteEstimate.label} · {quoteScope === 'inicio' ? 'Básico' : quoteScope === 'estandar' ? 'Profesional' : 'VIP Todo Incluido'}
+                    </div>
+                  </div>
 
-                {/* CUÉNTANOS TU IDEA: UBICADO ABAJO DEL BOTÓN DE COTIZAR */}
+                  <button
+                    type="button"
+                    onClick={handleSendWhatsAppQuote}
+                    className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-xs sm:text-sm transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <MessageCircle className="w-4 h-4 fill-white" />
+                    <span>Cotizar por WhatsApp</span>
+                  </button>
+                </div>
+
+                {/* CUÉNTANOS TU IDEA: UBICADO ABAJO DE LA TARJETA DE COTIZAR */}
                 <div className="p-3.5 rounded-2xl bg-[#080A0E] border border-stone-800 space-y-1.5">
                   <label className="text-xs font-bold text-stone-200 flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5 text-[#e8b84f]" />
