@@ -788,7 +788,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 ¿Tienes una pieza detenida en planta?
               </h2>
               <p className="text-xs sm:text-sm text-gray-300 mt-1">
-                Completa los datos técnicos y recibe la respuesta y asesoría de Wicho en WhatsApp para revisar tiempos y viabilidad.
+                Completa los datos de tu pieza para revisar tiempos de impresión y enviarte cotización directa por WhatsApp.
               </p>
             </div>
 
