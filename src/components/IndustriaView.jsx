@@ -217,7 +217,7 @@ export default function IndustriaView({
 • *Color / Acabado:* ${formData.colorSeleccionado || 'Negro Ónix Mate (Estándar)'}
 • *Cantidad:* ${formData.cantidad} pieza(s)
 • *Tiempo de entrega:* ${formData.urgencia}
-• *Archivo 3D / Plano:* ${formData.archivoNombre ? `Archivo: ${formData.archivoNombre}` : 'Muestra física / foto con cotas'}
+• *Archivo 3D:* ${formData.archivoNombre ? `Archivo: ${formData.archivoNombre}` : 'Archivo digital por WhatsApp'}
 • *Convenio NDA:* ${formData.requiereNda ? 'SÍ (Requiero firma previa de confidencialidad)' : 'No necesario'}
 
 📝 *Requerimientos funcionales / Notas:*
@@ -478,7 +478,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 specs: [
                   { label: 'Aplicación', val: 'Poka-Yoke, guías y mordazas' },
                   { label: 'Materiales', val: 'TPU 95A antirrayón y PETG' },
-                  { label: 'Fabricación', val: 'A la medida de tu plano' },
+                  { label: 'Fabricación', val: 'A partir de tu archivo 3D' },
                   { label: 'Protección', val: 'Cero fricción sobre piezas pulidas' }
                 ],
                 quoteApp: 'Utillaje y herramentales',
@@ -497,7 +497,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 btnBg: 'bg-amber-400',
                 tag: 'SUSTITUCIÓN DIRECTA SIN MOLDES',
                 badge: 'Desde 1 sola pieza',
-                desc: '¿Se rompió una pieza y el fabricante tarda semanas o ya no existe? Con tu archivo 3D o plano con medidas exactas, te la imprimimos en polímero técnico resistente.',
+                desc: '¿Se rompió una pieza y el fabricante tarda semanas o ya no existe? Con tu archivo 3D (.stl, .step), te la imprimimos en polímero técnico resistente.',
                 specs: [
                   { label: 'Piezas', val: 'Engranes, poleas, levas y tapas' },
                   { label: 'Materiales', val: 'PETG industrial y ABS / ASA' },
@@ -846,9 +846,9 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                   <UploadCloud className="w-5 h-5" />
                 </div>
               </div>
-              <h4 className="font-bold text-xs sm:text-base text-white leading-tight">Archivo / Medidas</h4>
+              <h4 className="font-bold text-xs sm:text-base text-white leading-tight">Archivo 3D</h4>
               <p className="text-[10px] sm:text-xs text-gray-300 leading-relaxed">
-                Nos compartes tu archivo 3D (.step, .stl, .obj) o un croquis con las medidas exactas de tu pieza.
+                Nos compartes tu archivo 3D (.step, .stl, .obj) listo para impresión.
               </p>
             </div>
 
@@ -978,11 +978,11 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 textAccent: 'text-[#5BB8FF]',
                 bgActive: 'bg-[#5BB8FF]/10',
                 badge: 'Formatos CAD',
-                desc: 'Envíanos tu archivo 3D en formato STEP, STL, OBJ o SLDPRT. Si no tienes modelo digital, un croquis o plano acotado con las medidas milimétricas exactas de tu pieza es suficiente para cotizar de inmediato.',
+                desc: 'Envíanos tu archivo 3D en formato STL, STEP u OBJ listo para manufactura aditiva. Revisamos la viabilidad de impresión y te cotizamos según el material y volumen requerido.',
                 highlights: [
-                  'Formatos recibidos: .step, .stl, .obj, .iges, .sldprt',
-                  'Aceptamos croquis con cotas y fotos de muestra',
-                  'Respuesta y revisión técnica en menos de 2 horas hábiles'
+                  'Formatos recibidos: .stl, .step, .obj, .iges',
+                  'Impresión directa a partir de tu archivo digital',
+                  'Atención y cotización personalizada por WhatsApp'
                 ]
               },
               {
@@ -996,7 +996,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 textAccent: 'text-[#8FB99B]',
                 bgActive: 'bg-[#8FB99B]/10',
                 badge: 'NDA Garantizado',
-                desc: 'Protegemos tu propiedad intelectual y secretos de planta. Firmamos acuerdos de confidencialidad (NDA) antes de la recepción de planos o archivos sensibles para garantizar la total privacidad de tus desarrollos.',
+                desc: 'Protegemos tu propiedad intelectual y desarrollos. Firmamos acuerdos de confidencialidad (NDA) antes de la recepción de archivos o proyectos sensibles para garantizar la total privacidad.',
                 highlights: [
                   'Contrato NDA firmado previo al envío de archivos',
                   'Archivos almacenados en servidor seguro no público',
@@ -1338,7 +1338,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                   className="rounded border-white/20 bg-[#0A0E11] text-[#5BB8FF] focus:ring-0 w-4 h-4 cursor-pointer"
                 />
                 <label htmlFor="nda-checkbox-b2b" className="text-gray-300 text-xs cursor-pointer select-none">
-                  Requiero firma de convenio de confidencialidad (NDA) antes de compartir planos reservados.
+                  Requiero firma de convenio de confidencialidad (NDA) antes de compartir archivos reservados.
                 </label>
               </div>
 
