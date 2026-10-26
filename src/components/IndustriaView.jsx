@@ -406,7 +406,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          3. SECCIÓN 01: 4 SOLUCIONES (TITULOS E ICONOS, DESPLEGABLES AL CLICK)
+          3. SECCIÓN 01: 4 SOLUCIONES (2X2 COMPACTO + FICHA TÉCNICA HASTA ABAJO)
           ======================================================== */}
       <section className="py-7 sm:py-12 border-b border-white/10 bg-[#0E1317]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -421,226 +421,228 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
             </h2>
           </div>
 
-          {/* Grid de 4 Cuadros / Rectángulos (2x2 en celular y escritorio) */}
-          <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:gap-5">
-            
-            {/* Cuadro 1: Prototipos Funcionales */}
-            <div
-              className={`rounded-xl sm:rounded-2xl border transition-all duration-200 bg-[#12181C] shadow-md flex flex-col justify-between overflow-hidden cursor-pointer ${
-                expandedApp === 'proto'
-                  ? 'border-[#5BB8FF] ring-1 ring-[#5BB8FF]/40 bg-[#141C22]'
-                  : 'border-white/10 hover:border-[#5BB8FF]/50'
-              }`}
-            >
-              <div
-                onClick={() => setExpandedApp(expandedApp === 'proto' ? null : 'proto')}
-                className="p-3 sm:p-4 space-y-2 flex-1"
-              >
-                <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 border-b border-white/5 pb-1.5">
-                  <span className="text-[#5BB8FF] font-bold">PROTO-01</span>
-                  <div className="flex items-center gap-1 text-[9px] text-[#5BB8FF]">
-                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${expandedApp === 'proto' ? 'rotate-180' : ''}`} />
-                  </div>
+          {/* Diccionario de Aplicaciones con Códigos de Color Distintivos */}
+          {(() => {
+            const applicationsData = [
+              {
+                id: 'proto',
+                code: 'PROTO-01',
+                title: 'Prototipos funcionales',
+                icon: Layers,
+                accentColor: '#5BB8FF',
+                borderClass: 'border-[#5BB8FF]',
+                ringClass: 'ring-[#5BB8FF]/40',
+                bgActive: 'bg-[#5BB8FF]/10',
+                textAccent: 'text-[#5BB8FF]',
+                btnBg: 'bg-[#5BB8FF]',
+                tag: 'VALIDACIÓN RÁPIDA · DESDE 24 A 72 HRS',
+                badge: 'Formatos .step / .stl',
+                desc: 'Prueba ajustes, interferencias de ensamble y holguras imprimiendo directamente tu archivo 3D antes de mandar a fabricar en serie o invertir en moldes.',
+                specs: [
+                  { label: 'Tolerancia', val: '±0.15 mm en cotas críticas' },
+                  { label: 'Materiales', val: 'PETG Técnico y PLA+ Pro' },
+                  { label: 'Entrega', val: 'Desde 24 a 72 horas' },
+                  { label: 'Formatos CAD', val: 'STEP, STL, IGES, SLDPRT' }
+                ],
+                quoteApp: 'Prototipos funcionales (desde 24 a 72 hrs)',
+                urgencia: 'Desde 24 a 72 hrs'
+              },
+              {
+                id: 'jig',
+                code: 'JIG-02',
+                title: 'Utillaje y herramentales',
+                icon: Wrench,
+                accentColor: '#8FB99B',
+                borderClass: 'border-[#8FB99B]',
+                ringClass: 'ring-[#8FB99B]/40',
+                bgActive: 'bg-[#8FB99B]/10',
+                textAccent: 'text-[#8FB99B]',
+                btnBg: 'bg-[#8FB99B]',
+                tag: 'LÍNEA DE PRODUCCIÓN & ENSAMBLE',
+                badge: 'Ajuste fiel a cota',
+                desc: 'Fabricamos con las medidas exactas de tu archivo nidos de apoyo, plantillas para operarios y mordazas protectoras que no rayan piezas terminadas.',
+                specs: [
+                  { label: 'Aplicación', val: 'Poka-Yoke, guías y mordazas' },
+                  { label: 'Materiales', val: 'TPU 95A antirrayón y PETG' },
+                  { label: 'Fabricación', val: 'A la medida de tu plano' },
+                  { label: 'Protección', val: 'Cero fricción sobre piezas pulidas' }
+                ],
+                quoteApp: 'Utillaje y herramentales',
+                urgencia: 'A medida'
+              },
+              {
+                id: 'spare',
+                code: 'SPARE-03',
+                title: 'Refacciones y obsoletos',
+                icon: RotateCcw,
+                accentColor: '#FBBF24',
+                borderClass: 'border-amber-400',
+                ringClass: 'ring-amber-400/40',
+                bgActive: 'bg-amber-400/10',
+                textAccent: 'text-amber-400',
+                btnBg: 'bg-amber-400',
+                tag: 'SUSTITUCIÓN DIRECTA SIN MOLDES',
+                badge: 'Desde 1 sola pieza',
+                desc: '¿Se rompió una pieza y el fabricante tarda semanas o ya no existe? Con tu archivo 3D o plano con medidas exactas, te la imprimimos en polímero técnico resistente.',
+                specs: [
+                  { label: 'Piezas', val: 'Engranes, poleas, levas y tapas' },
+                  { label: 'Materiales', val: 'PETG industrial y ABS / ASA' },
+                  { label: 'Disponibilidad', val: 'Desde 1 sola pieza sin mínimos' },
+                  { label: 'Resistencia', val: 'Cargas mecánicas e impacto continuo' }
+                ],
+                quoteApp: 'Refacciones y obsoletos',
+                urgencia: 'Sustitución directa'
+              },
+              {
+                id: 'batch',
+                code: 'BATCH-04',
+                title: 'Lotes Cortos y Preseries',
+                icon: Boxes,
+                accentColor: '#C084FC',
+                borderClass: 'border-purple-400',
+                ringClass: 'ring-purple-400/40',
+                bgActive: 'bg-purple-400/10',
+                textAccent: 'text-purple-400',
+                btnBg: 'bg-purple-400',
+                tag: 'VOLUMEN FLEXIBLE BAJO DEMANDA',
+                badge: 'Escalable 10 a 500+ pzs',
+                desc: 'Producción continua de varias piezas bajo demanda para arranques, reemplazos o preseries sin tener que pagar matrices ni herramentales costosos.',
+                specs: [
+                  { label: 'Tirajes', val: 'De 10 a 500 piezas escalables' },
+                  { label: 'Ventaja', val: 'Cero costo de apertura de molde' },
+                  { label: 'Entrega', val: 'Entrega local programada en SLP' },
+                  { label: 'Repetibilidad', val: 'Impresión en paralelo en granja' }
+                ],
+                quoteApp: 'Lotes Cortos y Preseries',
+                urgencia: 'Bajo demanda'
+              }
+            ];
+
+            const curApp = applicationsData.find(a => a.id === expandedApp);
+
+            return (
+              <div className="space-y-4">
+                {/* Cuadrícula Simétrica 2x2 de Aplicaciones */}
+                <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:gap-5">
+                  {applicationsData.map(app => {
+                    const isSelected = expandedApp === app.id;
+                    const IconComp = app.icon;
+                    return (
+                      <div
+                        key={app.id}
+                        onClick={() => setExpandedApp(isSelected ? null : app.id)}
+                        className={`rounded-xl sm:rounded-2xl border transition-all duration-200 p-3 sm:p-4 cursor-pointer select-none flex flex-col justify-between ${
+                          isSelected
+                            ? `${app.borderClass} ring-2 ${app.ringClass} bg-[#141C22] shadow-lg`
+                            : 'border-white/10 bg-[#12181C] hover:border-white/25 active:scale-[0.98]'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] pb-1.5 border-b border-white/5">
+                          <span className={`font-bold ${isSelected ? app.textAccent : 'text-gray-400'}`}>
+                            {app.code}
+                          </span>
+                          <span className={`text-[8.5px] sm:text-[9.5px] font-sans font-medium flex items-center gap-0.5 ${
+                            isSelected ? app.textAccent : 'text-gray-400'
+                          }`}>
+                            <span>{isSelected ? 'Cerrar' : 'Ver ficha'}</span>
+                            <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${isSelected ? 'rotate-180' : ''}`} />
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-2 sm:gap-2.5 pt-2">
+                          <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 transition-transform ${
+                            isSelected ? `${app.bgActive} ${app.textAccent} scale-105` : 'bg-white/5 text-gray-300'
+                          }`}>
+                            <IconComp className="w-4 h-4 sm:w-5 sm:h-5" />
+                          </div>
+                          <h3 className="text-xs sm:text-base font-bold text-white leading-snug">
+                            {app.title}
+                          </h3>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
 
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-[#5BB8FF]/10 border border-[#5BB8FF]/20 flex items-center justify-center shrink-0 text-[#5BB8FF]">
-                    <Layers className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </div>
-                  <h3 className="text-xs sm:text-base font-bold text-white leading-snug">
-                    Prototipos funcionales
-                  </h3>
-                </div>
-              </div>
-
-              {expandedApp === 'proto' && (
-                <div className="p-3 sm:p-4 bg-[#090D10] border-t border-white/10 text-[10.5px] sm:text-xs space-y-2.5 animate-fadeIn">
-                  <p className="text-gray-300 leading-relaxed">
-                    Prueba ajustes, interferencias de ensamble y holguras imprimiendo directamente tu archivo 3D antes de mandar a fabricar en serie o invertir en moldes.
-                  </p>
-                  <div className="space-y-1 text-[10px] text-gray-400 font-mono">
-                    <div>• Tolerancia: ±0.15 mm en cotas críticas.</div>
-                    <div>• Materiales: PETG Técnico y PLA+ Pro.</div>
-                    <div>• Entrega: Desde 24 a 72 horas.</div>
-                  </div>
-                  <div className="pt-1 flex items-center justify-between border-t border-white/5">
-                    <span className="text-[9.5px] text-[#5BB8FF] font-mono">Formatos .step / .stl</span>
-                    <a
-                      href="#cotizar-industria"
-                      onClick={() => setFormData(prev => ({ ...prev, aplicacion: 'Prototipos funcionales (desde 24 a 72 hrs)', urgencia: 'Desde 24 a 72 hrs' }))}
-                      className="px-2.5 py-1 rounded bg-[#5BB8FF] text-black font-bold text-[10px] sm:text-xs inline-flex items-center gap-1 cursor-pointer"
+                {/* Ficha Técnica Completa Desplegada Hasta Abajo (Estilo Materiales Técnicos) */}
+                {curApp && (() => {
+                  const IconComp = curApp.icon;
+                  return (
+                    <div
+                      className={`rounded-2xl border ${curApp.borderClass} bg-[#0A0E11] p-4 sm:p-6 shadow-2xl relative overflow-hidden animate-fadeIn`}
                     >
-                      <span>Cotizar</span>
-                      <ArrowRight className="w-3 h-3" />
-                    </a>
-                  </div>
-                </div>
-              )}
-            </div>
+                      {/* Cabecera de la Ficha Técnica */}
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
+                        <div className="flex items-center gap-3">
+                          <div className={`w-10 h-10 rounded-xl ${curApp.bgActive} border border-white/10 flex items-center justify-center ${curApp.textAccent} shrink-0`}>
+                            <IconComp className="w-5 h-5" />
+                          </div>
+                          <div>
+                            <span className={`font-mono text-[9px] sm:text-[10px] uppercase tracking-wider block font-bold ${curApp.textAccent}`}>
+                              {curApp.code} · {curApp.tag}
+                            </span>
+                            <h4 className="text-base sm:text-xl font-bold text-white">
+                              {curApp.title}
+                            </h4>
+                          </div>
+                        </div>
 
-            {/* Cuadro 2: Utillaje y Herramentales */}
-            <div
-              className={`rounded-xl sm:rounded-2xl border transition-all duration-200 bg-[#12181C] shadow-md flex flex-col justify-between overflow-hidden cursor-pointer ${
-                expandedApp === 'jig'
-                  ? 'border-[#8FB99B] ring-1 ring-[#8FB99B]/40 bg-[#141C22]'
-                  : 'border-white/10 hover:border-[#8FB99B]/50'
-              }`}
-            >
-              <div
-                onClick={() => setExpandedApp(expandedApp === 'jig' ? null : 'jig')}
-                className="p-3 sm:p-4 space-y-2 flex-1"
-              >
-                <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 border-b border-white/5 pb-1.5">
-                  <span className="text-[#8FB99B] font-bold">JIG-02</span>
-                  <div className="flex items-center gap-1 text-[9px] text-[#8FB99B]">
-                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${expandedApp === 'jig' ? 'rotate-180' : ''}`} />
-                  </div>
-                </div>
+                        <div className="flex items-center gap-2 self-end sm:self-center">
+                          <span className="px-2.5 py-1 rounded bg-white/5 font-mono text-[10px] sm:text-xs text-gray-300 border border-white/10">
+                            {curApp.badge}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => setExpandedApp(null)}
+                            className="p-1 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 text-xs cursor-pointer"
+                            title="Cerrar detalle"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      </div>
 
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-[#8FB99B]/10 border border-[#8FB99B]/20 flex items-center justify-center shrink-0 text-[#8FB99B]">
-                    <Wrench className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </div>
-                  <h3 className="text-xs sm:text-base font-bold text-white leading-snug">
-                    Utillaje y herramentales
-                  </h3>
-                </div>
+                      {/* Descripción Completa */}
+                      <p className="text-xs sm:text-sm text-gray-300 leading-relaxed pt-3">
+                        {curApp.desc}
+                      </p>
+
+                      {/* Matriz de Parámetros y Especificaciones */}
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 font-mono text-[10px] sm:text-[11px]">
+                        {curApp.specs.map((sp, idx) => (
+                          <div key={idx} className="p-2 sm:p-2.5 rounded-lg bg-[#11171B] border border-white/5">
+                            <span className="block text-gray-400 text-[8px] uppercase tracking-wider">
+                              {sp.label}
+                            </span>
+                            <strong className="text-white text-[11px] block mt-0.5 leading-snug">
+                              {sp.val}
+                            </strong>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Barra de Acción con Código de Color */}
+                      <div className="mt-4 pt-3 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div className="text-[11px] text-gray-400 flex items-center gap-1.5">
+                          <span className={`w-2 h-2 rounded-full ${curApp.btnBg}`} />
+                          <span>Fabricación bajo demanda con cotización y trato local.</span>
+                        </div>
+
+                        <a
+                          href="#cotizar-industria"
+                          onClick={() => setFormData(prev => ({ ...prev, aplicacion: curApp.quoteApp, urgencia: curApp.urgencia }))}
+                          className={`px-4 py-2 rounded-xl text-black font-extrabold text-xs inline-flex items-center justify-center gap-1.5 cursor-pointer shadow-md hover:brightness-110 active:scale-95 transition-all ${curApp.btnBg}`}
+                        >
+                          <span>Cotizar {curApp.title}</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
+                    </div>
+                  );
+                })()}
               </div>
-
-              {expandedApp === 'jig' && (
-                <div className="p-3 sm:p-4 bg-[#090D10] border-t border-white/10 text-[10.5px] sm:text-xs space-y-2.5 animate-fadeIn">
-                  <p className="text-gray-300 leading-relaxed">
-                    Fabricamos con las medidas exactas de tu archivo nidos de apoyo, plantillas para operarios y mordazas protectoras que no rayan piezas terminadas.
-                  </p>
-                  <div className="space-y-1 text-[10px] text-gray-400 font-mono">
-                    <div>• Aplicación: Poka-Yoke, guías y mordazas.</div>
-                    <div>• Materiales: TPU 95A antirrayón y PETG.</div>
-                    <div>• Fabricación: A la medida de tu plano.</div>
-                  </div>
-                  <div className="pt-1 flex items-center justify-between border-t border-white/5">
-                    <span className="text-[9.5px] text-[#8FB99B] font-mono">Ajuste fiel a cota</span>
-                    <a
-                      href="#cotizar-industria"
-                      onClick={() => setFormData(prev => ({ ...prev, aplicacion: 'Utillaje y herramentales', urgencia: 'A medida' }))}
-                      className="px-2.5 py-1 rounded bg-[#8FB99B] text-black font-bold text-[10px] sm:text-xs inline-flex items-center gap-1 cursor-pointer"
-                    >
-                      <span>Cotizar</span>
-                      <ArrowRight className="w-3 h-3" />
-                    </a>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Cuadro 3: Refacciones y Obsoletos */}
-            <div
-              className={`rounded-xl sm:rounded-2xl border transition-all duration-200 bg-[#12181C] shadow-md flex flex-col justify-between overflow-hidden cursor-pointer ${
-                expandedApp === 'spare'
-                  ? 'border-amber-400 ring-1 ring-amber-400/40 bg-[#141C22]'
-                  : 'border-white/10 hover:border-amber-400/50'
-              }`}
-            >
-              <div
-                onClick={() => setExpandedApp(expandedApp === 'spare' ? null : 'spare')}
-                className="p-3 sm:p-4 space-y-2 flex-1"
-              >
-                <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 border-b border-white/5 pb-1.5">
-                  <span className="text-amber-400 font-bold">SPARE-03</span>
-                  <div className="flex items-center gap-1 text-[9px] text-amber-400">
-                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${expandedApp === 'spare' ? 'rotate-180' : ''}`} />
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center shrink-0 text-amber-300">
-                    <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </div>
-                  <h3 className="text-xs sm:text-base font-bold text-white leading-snug">
-                    Refacciones y obsoletos
-                  </h3>
-                </div>
-              </div>
-
-              {expandedApp === 'spare' && (
-                <div className="p-3 sm:p-4 bg-[#090D10] border-t border-white/10 text-[10.5px] sm:text-xs space-y-2.5 animate-fadeIn">
-                  <p className="text-gray-300 leading-relaxed">
-                    ¿Se rompió una pieza y el fabricante tarda semanas o ya no existe? Con tu archivo 3D o plano con medidas exactas, te la imprimimos en polímero técnico resistente.
-                  </p>
-                  <div className="space-y-1 text-[10px] text-gray-400 font-mono">
-                    <div>• Piezas: Engranes, poleas, levas, manetas y tapas.</div>
-                    <div>• Materiales: PETG industrial y ABS / ASA.</div>
-                    <div>• Disponibilidad: Desde 1 sola pieza.</div>
-                  </div>
-                  <div className="pt-1 flex items-center justify-between border-t border-white/5">
-                    <span className="text-[9.5px] text-amber-300 font-mono">Sustitución directa</span>
-                    <a
-                      href="#cotizar-industria"
-                      onClick={() => setFormData(prev => ({ ...prev, aplicacion: 'Refacciones y obsoletos', urgencia: 'Sustitución directa' }))}
-                      className="px-2.5 py-1 rounded bg-amber-400 text-black font-bold text-[10px] sm:text-xs inline-flex items-center gap-1 cursor-pointer"
-                    >
-                      <span>Cotizar</span>
-                      <ArrowRight className="w-3 h-3" />
-                    </a>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Cuadro 4: Lotes Cortos y Preseries */}
-            <div
-              className={`rounded-xl sm:rounded-2xl border transition-all duration-200 bg-[#12181C] shadow-md flex flex-col justify-between overflow-hidden cursor-pointer ${
-                expandedApp === 'batch'
-                  ? 'border-purple-400 ring-1 ring-purple-400/40 bg-[#141C22]'
-                  : 'border-white/10 hover:border-purple-400/50'
-              }`}
-            >
-              <div
-                onClick={() => setExpandedApp(expandedApp === 'batch' ? null : 'batch')}
-                className="p-3 sm:p-4 space-y-2 flex-1"
-              >
-                <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 border-b border-white/5 pb-1.5">
-                  <span className="text-purple-400 font-bold">BATCH-04</span>
-                  <div className="flex items-center gap-1 text-[9px] text-purple-400">
-                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${expandedApp === 'batch' ? 'rotate-180' : ''}`} />
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-purple-400/10 border border-purple-400/20 flex items-center justify-center shrink-0 text-purple-300">
-                    <Boxes className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </div>
-                  <h3 className="text-xs sm:text-base font-bold text-white leading-snug">
-                    Lotes Cortos y Preseries
-                  </h3>
-                </div>
-              </div>
-
-              {expandedApp === 'batch' && (
-                <div className="p-3 sm:p-4 bg-[#090D10] border-t border-white/10 text-[10.5px] sm:text-xs space-y-2.5 animate-fadeIn">
-                  <p className="text-gray-300 leading-relaxed">
-                    Producción continua de varias piezas bajo demanda para arranques, reemplazos o preseries sin tener que pagar matrices ni herramentales costosos.
-                  </p>
-                  <div className="space-y-1 text-[10px] text-gray-400 font-mono">
-                    <div>• Tirajes: De 10 a 500 piezas escalables.</div>
-                    <div>• Ventaja: Cero costo de apertura de molde.</div>
-                    <div>• Entrega: Entrega local programada en SLP.</div>
-                  </div>
-                  <div className="pt-1 flex items-center justify-between border-t border-white/5">
-                    <span className="text-[9.5px] text-purple-300 font-mono">Bajo demanda</span>
-                    <a
-                      href="#cotizar-industria"
-                      onClick={() => setFormData(prev => ({ ...prev, aplicacion: 'Lotes Cortos y Preseries', urgencia: 'Bajo demanda' }))}
-                      className="px-2.5 py-1 rounded bg-purple-400 text-black font-bold text-[10px] sm:text-xs inline-flex items-center gap-1 cursor-pointer"
-                    >
-                      <span>Cotizar</span>
-                      <ArrowRight className="w-3 h-3" />
-                    </a>
-                  </div>
-                </div>
-              )}
-            </div>
-
-          </div>
+            );
+          })()}
         </div>
       </section>
 
