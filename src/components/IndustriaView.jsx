@@ -293,49 +293,49 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </header>
 
       {/* ========================================================
-          2. BANNER HERO INDUSTRIAL CON PLANO VECTORIAL (CONSERVADO)
+          2. BANNER HERO INDUSTRIAL CON PLANO VECTORIAL (CONDENSADO MOBILE)
           ======================================================== */}
-      <section className="relative overflow-hidden border-b border-white/10 bg-gradient-to-b from-[#10171D] via-[#0A0E11] to-[#0A0E11] pt-6 sm:pt-10 pb-8 sm:pb-14">
+      <section className="relative overflow-hidden border-b border-white/10 bg-gradient-to-b from-[#10171D] via-[#0A0E11] to-[#0A0E11] pt-3.5 sm:pt-8 pb-4 sm:pb-12">
         {/* Rejilla milimétrica sutil de fondo */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 sm:gap-6 lg:gap-12 items-center">
             
             {/* Texto Principal */}
-            <div className="lg:col-span-7 space-y-4">
-              <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-[1.06]">
+            <div className="lg:col-span-7 space-y-2 sm:space-y-4">
+              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-[1.08]">
                 Que una refacción no detenga <span className="text-[#5BB8FF] drop-shadow-[0_0_20px_rgba(91,184,255,0.4)]">tu línea.</span>
               </h1>
 
-              <p className="text-base sm:text-lg text-[#C4CCD0] max-w-xl leading-relaxed">
+              <p className="text-xs sm:text-base text-[#C4CCD0] max-w-xl leading-relaxed">
                 Taller local de manufactura bajo demanda para empresas de SLP. Prototipado funcional rápido, utillaje de ensamble, refacciones descatalogadas y lotes cortos en polímeros técnicos de grado ingeniería.
               </p>
             </div>
 
-            {/* Ficha Técnica Blueprint Vectorial (Desktop / Pantallas grandes) */}
-            <div className="lg:col-span-5 mt-4 lg:mt-0">
-              <div className="rounded-2xl border border-white/15 bg-[#10161A] p-4 sm:p-5 shadow-2xl relative overflow-hidden">
-                <div className="flex items-center justify-between pb-3 border-b border-white/10 font-mono text-[10px]">
+            {/* Ficha Técnica Blueprint Vectorial (Optimizada y Condensada) */}
+            <div className="lg:col-span-5 mt-1 sm:mt-4 lg:mt-0">
+              <div className="rounded-xl sm:rounded-2xl border border-white/15 bg-[#10161A] p-3 sm:p-5 shadow-2xl relative overflow-hidden">
+                <div className="flex items-center justify-between pb-2 sm:pb-3 border-b border-white/10 font-mono text-[9px] sm:text-[10px]">
                   <span className="text-gray-400 flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-[#5BB8FF]" />
+                    <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#5BB8FF]" />
                     DWG-REF // SLP-IND-2026
                   </span>
-                  <div className="flex items-center gap-2">
-                    <span className="px-2 py-0.5 rounded bg-[#8FB99B]/15 text-[#8FB99B] border border-[#8FB99B]/30 font-bold flex items-center gap-1 text-[9px] sm:text-[9.5px]">
-                      <ShieldCheck className="w-3 h-3" />
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <span className="px-1.5 sm:px-2 py-0.5 rounded bg-[#8FB99B]/15 text-[#8FB99B] border border-[#8FB99B]/30 font-bold flex items-center gap-1 text-[8px] sm:text-[9.5px]">
+                      <ShieldCheck className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                       <span>NDA DISPONIBLE</span>
                     </span>
                     <span className="text-[#5BB8FF] font-bold">REVISIÓN TÉCNICA</span>
                   </div>
                 </div>
 
-                <div className="my-3 rounded-xl bg-[#080C0E] border border-white/10 p-3 relative">
-                  <div className="absolute top-2 right-2 text-[9px] font-mono text-[#8FB99B] bg-[#8FB99B]/10 px-2 py-0.5 rounded border border-[#8FB99B]/20">
+                <div className="my-2 sm:my-3 rounded-lg sm:rounded-xl bg-[#080C0E] border border-white/10 p-2 sm:p-3 relative">
+                  <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 text-[8px] sm:text-[9px] font-mono text-[#8FB99B] bg-[#8FB99B]/10 px-1.5 sm:px-2 py-0.5 rounded border border-[#8FB99B]/20">
                     TOLERANCIA ±0.15 mm
                   </div>
 
-                  <svg viewBox="0 0 400 240" className="w-full h-auto">
+                  <svg viewBox="20 68 340 165" className="w-full h-auto max-h-44 sm:max-h-none">
                     <defs>
                       <pattern id="grid-blueprint" width="20" height="20" patternUnits="userSpaceOnUse">
                         <path d="M20 0H0V20" fill="none" stroke="#FFFFFF" strokeOpacity="0.045" strokeWidth="1" />
@@ -384,18 +384,18 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                   </svg>
                 </div>
 
-                <div className="grid grid-cols-3 gap-2 pt-2 text-center font-mono text-[10px]">
-                  <div className="p-2 rounded bg-white/5 border border-white/5">
-                    <span className="block text-gray-400 text-[8px] uppercase">Polímeros Taller</span>
-                    <strong className="text-white">PETG / ABS / TPU</strong>
+                <div className="grid grid-cols-3 gap-1.5 sm:gap-2 pt-1 text-center font-mono text-[9px] sm:text-[10px]">
+                  <div className="p-1.5 sm:p-2 rounded bg-white/5 border border-white/5">
+                    <span className="block text-gray-400 text-[7.5px] sm:text-[8px] uppercase">Polímeros Taller</span>
+                    <strong className="text-white text-[9px] sm:text-[10px]">PETG / ABS / TPU</strong>
                   </div>
-                  <div className="p-2 rounded bg-white/5 border border-white/5">
-                    <span className="block text-gray-400 text-[8px] uppercase">Precisión</span>
-                    <strong className="text-[#8FB99B]">±0.15 mm</strong>
+                  <div className="p-1.5 sm:p-2 rounded bg-white/5 border border-white/5">
+                    <span className="block text-gray-400 text-[7.5px] sm:text-[8px] uppercase">Precisión</span>
+                    <strong className="text-[#8FB99B] text-[9px] sm:text-[10px]">±0.15 mm</strong>
                   </div>
-                  <div className="p-2 rounded bg-white/5 border border-white/5">
-                    <span className="block text-gray-400 text-[8px] uppercase">Capacidad</span>
-                    <strong className="text-[#5BB8FF]">1 a 500+ pzs</strong>
+                  <div className="p-1.5 sm:p-2 rounded bg-white/5 border border-white/5">
+                    <span className="block text-gray-400 text-[7.5px] sm:text-[8px] uppercase">Capacidad</span>
+                    <strong className="text-[#5BB8FF] text-[9px] sm:text-[10px]">1 a 500+ pzs</strong>
                   </div>
                 </div>
               </div>
