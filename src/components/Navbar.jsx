@@ -23,10 +23,8 @@ export default function Navbar({
     { id: 'all', label: 'Principal' },
     { id: 'hogar', label: 'Hogar' },
     { id: 'negocios', label: 'Negocio' },
-    { id: 'juguetes', label: 'Juguetes' },
-    { id: 'personalizados', label: 'Personalizados', isSpecial: true, isCustom: true },
     { id: 'eventos', label: 'Eventos' },
-    { id: 'paquetes-servicios', label: 'Paquetes', isSpecial: true },
+    { id: 'personalizados', label: 'Personalizados', isSpecial: true, isCustom: true },
     { id: 'industria', label: 'Industria' },
     { id: 'publicidad-desarrollo', label: 'Diseño y Publicidad', isSpecial: true, isHighlight: true }
   ];

@@ -31,13 +31,6 @@ const initialWorlds = [
     description: 'Soluciones comerciales por giro: señalética inteligente, soportes QR/NFC, organizadores para estaciones de trabajo y detalles de identidad para tus clientes.'
   },
   {
-    id: 'juguetes',
-    name: 'Juguetes',
-    tagline: 'Creatividad, movimiento y diversión táctil con tecnología print-in-place',
-    image: '/uploads/catalog-v2-j1-context-oficial.webp',
-    description: 'Juguetes articulados, figuras con movimiento dinámico, rompecabezas mecánicos y accesorios infantiles seguros, impresos en una sola pieza sin partes desprendibles peligrosas.'
-  },
-  {
     id: 'personalizados',
     name: 'Personalizados',
     tagline: 'Tus momentos, fotos y dibujos convertidos en figuras 3D únicas',
@@ -50,13 +43,6 @@ const initialWorlds = [
     tagline: 'Recuerdos y detalles que celebran los momentos más importantes',
     image: '/uploads/img_014.jpg',
     description: 'Elementos personalizados para bodas, bautizos, XV años, graduaciones y fechas conmemorativas. Diseñados para sorprender y ser conservados.'
-  },
-  {
-    id: 'paquetes-servicios',
-    name: 'Paquetes',
-    tagline: 'Kits coordinados para marcas, eventos y celebraciones con precio especial de taller',
-    image: '/uploads/kit_home_office_gamer_contexto.jpg',
-    description: 'Combos completos listos para regalar o implementar en tu negocio: kits de papelería nupcial, paquetes de bienvenida, letreros inteligentes y servicio Patch Bar en vivo.'
   },
   {
     id: 'industria',
@@ -259,25 +245,25 @@ const initialCategories = [
   },
   {
     "id": "juguetes-movimiento",
-    "worldId": "juguetes",
+    "worldId": "hogar",
     "name": "Juguetes con movimiento mecánico y acción",
     "order": 1
   },
   {
     "id": "juguetes-articulados",
-    "worldId": "juguetes",
+    "worldId": "hogar",
     "name": "Juguetes articulados print-in-place",
     "order": 2
   },
   {
     "id": "juguetes-fidget",
-    "worldId": "juguetes",
+    "worldId": "hogar",
     "name": "Fidget toys y rompecabezas de destreza",
     "order": 3
   },
   {
     "id": "juguetes-vehiculos",
-    "worldId": "juguetes",
+    "worldId": "hogar",
     "name": "Autos y vehículos miniatura",
     "order": 4
   },
@@ -366,9 +352,7 @@ const initialProducts = [
     "priceUnit": "pieza",
     "status": "published",
     "featured": true,
-    "worlds": [
-      "juguetes"
-    ],
+    "worlds": ["hogar", "juguetes"],
     "categories": [
       "juguetes-movimiento",
       "juguetes-articulados"
@@ -506,9 +490,7 @@ const initialProducts = [
     "priceUnit": "pieza",
     "status": "published",
     "featured": true,
-    "worlds": [
-      "juguetes"
-    ],
+    "worlds": ["hogar", "juguetes"],
     "categories": [
       "juguetes-articulados",
       "juguetes-fidget"

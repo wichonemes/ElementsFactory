@@ -64,43 +64,8 @@ export default function FiltersBar({
             })}
           </div>
 
-          {/* Right side: View Toggle & Count */}
+          {/* Right side: Results Count & Reset */}
           <div className="flex items-center gap-3 shrink-0 ml-auto">
-            
-            {/* Dedicated Switcher: Catálogo vs Paquetes & Promociones */}
-            {onToggleViewMode && (
-              <div className="flex items-center bg-[#F4F0E8] p-1 rounded-full border border-[#E8E4DA]">
-                <button
-                  type="button"
-                  onClick={() => onToggleViewMode('catalog')}
-                  className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
-                    viewMode === 'catalog'
-                      ? 'bg-[#2D4F3E] text-white shadow-2xs'
-                      : 'text-gray-600 hover:text-[#1F2421]'
-                  }`}
-                >
-                  Catálogo
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onToggleViewMode('promotions')}
-                  className={`px-3 py-1 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-                    viewMode === 'promotions'
-                      ? 'bg-[#D82B6E] text-white shadow-2xs'
-                      : 'text-gray-700 hover:text-[#D82B6E]'
-                  }`}
-                  title="Ver paquetes y promociones con descuento"
-                >
-                  <span>Paquetes y Promociones</span>
-                  {promosCount > 0 && (
-                    <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${viewMode === 'promotions' ? 'bg-white text-[#D82B6E]' : 'bg-[#D82B6E] text-white'}`}>
-                      {promosCount}
-                    </span>
-                  )}
-                </button>
-              </div>
-            )}
-
             <span className="text-xs text-gray-500 font-medium">
               {totalResults} {totalResults === 1 ? 'producto' : 'productos'}
             </span>

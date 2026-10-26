@@ -96,14 +96,6 @@ export default function MobileCategoriesModal({
       textClass: 'text-[#2D4F3E]'
     },
     {
-      id: 'juguetes',
-      name: 'Juguetes\nArticulados',
-      icon: Gamepad2,
-      accentColor: '#2D4F3E',
-      borderClass: 'border-l-[#2D4F3E]',
-      textClass: 'text-[#2D4F3E]'
-    },
-    {
       id: 'personalizados',
       name: 'Productos\nPersonalizados',
       icon: Sparkles,
@@ -118,16 +110,6 @@ export default function MobileCategoriesModal({
       accentColor: '#2D4F3E',
       borderClass: 'border-l-[#2D4F3E]',
       textClass: 'text-[#2D4F3E]'
-    },
-    {
-      id: 'paquetes',
-      name: 'Paquetes y\nServicios',
-      icon: Gift,
-      accentColor: '#D82B6E',
-      borderClass: 'border-l-[#D82B6E]',
-      textClass: 'text-[#D82B6E]',
-      tagText: 'Combos',
-      tagClass: 'bg-pink-100 text-pink-800 border border-pink-300'
     },
     {
       id: 'tecnicas',
@@ -161,18 +143,18 @@ export default function MobileCategoriesModal({
       { id: 'hogar-organizacion-2', name: 'Bandejas y Bowls', icon: Box, catId: 'hogar-organizacion', iconBg: 'bg-stone-50 text-stone-700 border border-stone-200 shadow-stone-50' },
       { id: 'hogar-mascotas', name: 'Portabolsas Mascota', icon: Heart, catId: 'hogar-mascotas', iconBg: 'bg-rose-50 text-rose-600 border border-rose-200 shadow-rose-50' },
       { id: 'hogar-gamer', name: 'Soportes Gamer', icon: Headphones, catId: 'hogar-gamer', iconBg: 'bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-indigo-50' },
-      { id: 'hogar-cocina', name: 'Posavasos Madera', icon: Coffee, catId: 'hogar-cocina', iconBg: 'bg-amber-50 text-amber-800 border border-amber-200 shadow-amber-50' }
+      { id: 'hogar-cocina', name: 'Posavasos Madera', icon: Coffee, catId: 'hogar-cocina', iconBg: 'bg-amber-50 text-amber-800 border border-amber-200 shadow-amber-50' },
+      { id: 'juguetes-articulados', name: 'Juguetes Articulados', icon: ToyBrick, catId: 'juguetes-articulados', iconBg: 'bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-indigo-50' },
+      { id: 'juguetes-fidget', name: 'Juguetes & Fidget', icon: Smile, catId: 'juguetes-fidget', iconBg: 'bg-amber-50 text-amber-700 border border-amber-200 shadow-amber-50' },
+      { id: 'pack-hogar', name: 'Combos & Paquetes Hogar', icon: Gift, isBundle: true, worldId: 'hogar', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' }
     ],
     negocios: [
       { id: 'negocios-mostrador', name: 'Placas QR Mostrador', icon: QrCode, catId: 'negocios-mostrador', iconBg: 'bg-slate-50 text-slate-800 border border-slate-200 shadow-slate-50' },
       { id: 'negocios-smart', name: 'Paneles Smart NFC', icon: Smartphone, catId: 'negocios-smart', iconBg: 'bg-sky-50 text-sky-700 border border-sky-200 shadow-sky-50' },
       { id: 'negocios-senales', name: 'Letreros con Nombre', icon: Tag, catId: 'negocios-senales', iconBg: 'bg-amber-50 text-amber-700 border border-amber-200 shadow-amber-50' },
       { id: 'negocios-restaurantes', name: 'Menús y Números', icon: Utensils, catId: 'negocios-restaurantes', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' },
-      { id: 'negocios-corporativo', name: 'Identificadores 3D', icon: Award, catId: 'negocios-corporativo', iconBg: 'bg-purple-50 text-purple-700 border border-purple-200 shadow-purple-50' }
-    ],
-    juguetes: [
-      { id: 'juguetes-articulados', name: 'Figuras Articuladas', icon: ToyBrick, catId: 'juguetes-articulados', iconBg: 'bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-indigo-50' },
-      { id: 'juguetes-fidget', name: 'Juguetes Fidget', icon: Smile, catId: 'juguetes-fidget', iconBg: 'bg-amber-50 text-amber-700 border border-amber-200 shadow-amber-50' }
+      { id: 'negocios-corporativo', name: 'Identificadores 3D', icon: Award, catId: 'negocios-corporativo', iconBg: 'bg-purple-50 text-purple-700 border border-purple-200 shadow-purple-50' },
+      { id: 'pack-negocios', name: 'Kits & Starter Packs', icon: Gift, isBundle: true, worldId: 'negocios', iconBg: 'bg-amber-50 text-amber-800 border border-amber-200 shadow-amber-50' }
     ],
     personalizados: [
       { id: 'personalizados-individual', name: 'Retrato Individual', icon: User, catId: 'personalizados-individual', iconBg: 'bg-sky-50 text-sky-700 border border-sky-200 shadow-sky-50' },
@@ -187,13 +169,8 @@ export default function MobileCategoriesModal({
       { id: 'eventos-recuerdos', name: 'Fotoimanes Bautizo', icon: ImageIcon, catId: 'eventos-recuerdos', iconBg: 'bg-sky-50 text-sky-700 border border-sky-200 shadow-sky-50' },
       { id: 'eventos-patchbar', name: 'Servicio Patch Bar', icon: Shirt, catId: 'eventos-patchbar', iconBg: 'bg-rose-50 text-rose-600 border border-rose-200 shadow-rose-50' },
       { id: 'eventos-xvanos', name: 'Souvenirs XV Años', icon: Crown, catId: 'eventos-xvanos', iconBg: 'bg-purple-50 text-purple-700 border border-purple-200 shadow-purple-50' },
-      { id: 'eventos-copas', name: 'Copas Brindis Láser', icon: Wine, catId: 'eventos-copas', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' }
-    ],
-    paquetes: [
-      { id: 'pack-hogar', name: 'Combo Recibidor', icon: Home, isBundle: true, worldId: 'hogar', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' },
-      { id: 'pack-gamer', name: 'Kit Home Office Pro', icon: Laptop, isBundle: true, worldId: 'hogar', iconBg: 'bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-indigo-50' },
-      { id: 'pack-negocios', name: 'Pack Barbería & Café', icon: Store, isBundle: true, worldId: 'negocios', iconBg: 'bg-amber-50 text-amber-800 border border-amber-200 shadow-amber-50' },
-      { id: 'pack-boda', name: 'Paquete Boda Total', icon: Gift, isBundle: true, worldId: 'eventos', iconBg: 'bg-pink-50 text-pink-700 border border-pink-200 shadow-pink-50' }
+      { id: 'eventos-copas', name: 'Copas Brindis Láser', icon: Wine, catId: 'eventos-copas', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' },
+      { id: 'pack-eventos', name: 'Paquetes de Boda y Fiestas', icon: Gift, isBundle: true, worldId: 'eventos', iconBg: 'bg-pink-50 text-pink-700 border border-pink-200 shadow-pink-50' }
     ],
     tecnicas: [
       { id: 'tech-3d', name: 'Impresión 3D (PLA/TPU)', icon: Printer, techniqueId: '3d', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' },
@@ -211,7 +188,7 @@ export default function MobileCategoriesModal({
       if (onSelectTechnique) onSelectTechnique(item.techniqueId);
       if (onSelectWorld) onSelectWorld('all');
     } else if (item.isBundle) {
-      if (onSelectWorld) onSelectWorld('paquetes-servicios');
+      if (onSelectWorld) onSelectWorld(item.worldId || activeAreaTab);
     } else if (activeAreaTab === 'publicidad-desarrollo' || item.serviceId) {
       if (onSelectWorld) onSelectWorld('publicidad-desarrollo');
     } else if (activeAreaTab === 'industria') {
@@ -296,9 +273,7 @@ export default function MobileCategoriesModal({
             <button
               type="button"
               onClick={() => {
-                if (activeAreaTab === 'paquetes') {
-                  if (onSelectWorld) onSelectWorld('paquetes-servicios');
-                } else if (activeAreaTab === 'publicidad-desarrollo') {
+                if (activeAreaTab === 'publicidad-desarrollo') {
                   if (onSelectWorld) onSelectWorld('publicidad-desarrollo');
                 } else if (activeAreaTab === 'industria') {
                   if (onSelectWorld) onSelectWorld('industria');

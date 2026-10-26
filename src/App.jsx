@@ -10,7 +10,6 @@ import AdminPanel from './components/AdminPanel';
 import Footer from './components/Footer';
 import CraftShowcase from './components/CraftShowcase';
 import PatchBarShowcase from './components/PatchBarShowcase';
-import PromotionsSection from './components/PromotionsSection';
 import QuoteCalculatorModal from './components/QuoteCalculatorModal';
 import FloatingSideNav from './components/FloatingSideNav';
 import TemuUrgencyModule from './components/TemuUrgencyModule';
@@ -60,7 +59,6 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedTechnique, setSelectedTechnique] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [viewMode, setViewMode] = useState('catalog'); // 'catalog' | 'promotions'
   const [catalogSeed, setCatalogSeed] = useState(() => Math.floor(Math.random() * 1000000) + Date.now());
   const [packagesInitialArea, setPackagesInitialArea] = useState('all');
 
@@ -88,7 +86,7 @@ export default function App() {
       cancelAnimationFrame(frameId);
       clearTimeout(timer);
     };
-  }, [activeWorld, selectedCategory, selectedTechnique, viewMode]);
+  }, [activeWorld, selectedCategory, selectedTechnique]);
 
   // Cart / Quote State (Persisted in localStorage)
   const [cartItems, setCartItems] = useState(() => {
@@ -299,10 +297,10 @@ export default function App() {
     });
   }, [products, activeWorld, selectedCategory, selectedTechnique, searchQuery]);
 
-  // Promotions for current area — rotated dynamically
-  const areaPromotions = useMemo(() => {
+  // Paquetes para la vista actual (Inicio o Área seleccionada) — rotados dinámicamente
+  const currentAreaPackages = useMemo(() => {
     const list = products.filter(p => p.isBundle && (activeWorld === 'all' || p.worlds?.includes(activeWorld)));
-    if (!list || list.length <= 1) return list;
+    if (!list || list.length === 0) return [];
 
     let s = ((catalogSeed + 7129) * 9301 + 49297) % 233280;
     const rnd = () => {
@@ -410,26 +408,6 @@ export default function App() {
     return result;
   }, [filteredProducts, flashDeal?.activeFlashProductIds, catalogSeed, activeWorld, selectedCategory, selectedTechnique, searchQuery]);
 
-  // Paquetes destacados ordenados aleatoriamente para los bloques de la página principal
-  const homePackagesList = useMemo(() => {
-    const list = products.filter(p => p.isBundle);
-    if (!list || list.length === 0) return [];
-    let s = ((catalogSeed + 5431) * 9301 + 49297) % 233280;
-    const rnd = () => {
-      s = (s * 9301 + 49297) % 233280;
-      return s / 233280;
-    };
-    const res = [...list];
-    let m = res.length, t, i;
-    while (m) {
-      i = Math.floor(rnd() * m--);
-      t = res[m];
-      res[m] = res[i];
-      res[i] = t;
-    }
-    return res;
-  }, [products, catalogSeed]);
-
   // Bucle infinito estilo Marketplace en la pantalla principal (scrolleo continuo de catálogo)
   const [infiniteLoopBatches, setInfiniteLoopBatches] = useState(1);
   const infiniteSentinelRef = useRef(null);
@@ -437,11 +415,10 @@ export default function App() {
   // Reiniciar tandas al cambiar de área, categoría, técnica o búsqueda
   useEffect(() => {
     setInfiniteLoopBatches(1);
-  }, [activeWorld, selectedCategory, selectedTechnique, searchQuery, viewMode]);
+  }, [activeWorld, selectedCategory, selectedTechnique, searchQuery]);
 
   // Observador de intersección para añadir más tandas de productos al llegar al final
   useEffect(() => {
-    if (viewMode !== 'catalog') return;
     const sentinel = infiniteSentinelRef.current;
     if (!sentinel) return;
 
@@ -456,7 +433,7 @@ export default function App() {
 
     observer.observe(sentinel);
     return () => observer.disconnect();
-  }, [viewMode, searchQuery, filteredProducts.length, regularProducts.length]);
+  }, [searchQuery, filteredProducts.length, regularProducts.length]);
 
   // Catálogo continuo en bucle para sensación de abundancia infinita
   const loopedCatalogProducts = useMemo(() => {
@@ -504,17 +481,9 @@ export default function App() {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   };
 
-  // Jump directly to packages of a specific area
+  // Jump directly to an area to see its products and packages
   const handleSelectPackages = (area = 'all') => {
-    playSoftAreaSwitchSound();
-    setSearchQuery(''); // Limpia búsqueda para mostrar de inmediato la vista de paquetes
-    setPackagesInitialArea(area);
-    setActiveWorld('paquetes-servicios');
-    setSelectedCategory('all');
-    setSelectedTechnique('all');
-    setViewMode('catalog');
-    setCatalogSeed(Date.now());
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    handleSelectWorld(area === 'all' ? 'all' : area);
   };
 
   // Cart operations
@@ -886,24 +855,6 @@ export default function App() {
                   {currentWorldObj.description}
                 </p>
               </div>
-
-              {/* Botón de Paquetes y Promociones dentro de cada Área */}
-              {areaPromotions.length > 0 && (
-                <button
-                  type="button"
-                  onClick={() => setViewMode(viewMode === 'promotions' ? 'catalog' : 'promotions')}
-                  className={`px-4 py-2.5 rounded-2xl text-xs font-bold transition-all shadow-md flex items-center gap-2 cursor-pointer shrink-0 ${
-                    viewMode === 'promotions'
-                      ? 'bg-white text-[#1F2421] hover:bg-gray-100 ring-2 ring-white/20'
-                      : 'bg-[#D82B6E] text-white hover:bg-[#c0235e]'
-                  }`}
-                >
-                  <span>{viewMode === 'promotions' ? '← Ver catálogo regular' : `Ver paquetes y promociones de ${currentWorldObj.name}`}</span>
-                  <span className="px-2 py-0.5 rounded-full bg-black/20 text-white text-[11px] font-black">
-                    {areaPromotions.length}
-                  </span>
-                </button>
-              )}
             </div>
           </div>
         </div>
@@ -955,21 +906,11 @@ export default function App() {
                 <button
                   onClick={() => {
                     setSelectedCategory('all');
-                    setViewMode('catalog');
                   }}
-                  className={`capitalize shrink-0 cursor-pointer ${selectedCategory === 'all' && viewMode === 'catalog' ? 'font-bold text-[#1F2421]' : 'hover:text-[#1F2421]'}`}
+                  className={`capitalize shrink-0 cursor-pointer ${selectedCategory === 'all' ? 'font-bold text-[#1F2421]' : 'hover:text-[#1F2421]'}`}
                 >
                   {currentWorldObj ? currentWorldObj.name : activeWorld}
                 </button>
-              </>
-            )}
-
-            {viewMode === 'promotions' && (
-              <>
-                <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />
-                <span className="font-bold text-[#D82B6E] shrink-0">
-                  Paquetes y Promociones
-                </span>
               </>
             )}
 
@@ -1038,7 +979,7 @@ export default function App() {
           </div>
         )}
 
-        {/* Dynamic Filters Bar with Paquetes & Promociones Switcher */}
+        {/* Dynamic Filters Bar */}
         <FiltersBar
           activeWorld={activeWorld}
           onSelectWorld={handleSelectWorld}
@@ -1047,30 +988,12 @@ export default function App() {
           onSelectCategory={setSelectedCategory}
           selectedTechnique={selectedTechnique}
           onSelectTechnique={setSelectedTechnique}
-          totalResults={viewMode === 'promotions' ? areaPromotions.length : (searchQuery ? filteredProducts.length : regularProducts.length)}
+          totalResults={searchQuery ? filteredProducts.length : regularProducts.length}
           onResetFilters={handleGoHome}
-          viewMode={viewMode}
-          onToggleViewMode={setViewMode}
-          promosCount={areaPromotions.length}
         />
 
-        {/* Paquetes & Promociones View (Only when viewMode === 'promotions') */}
-        {viewMode === 'promotions' && (
-          <div className="py-6">
-            <PromotionsSection
-              promotions={products.filter(p => p.isBundle)}
-              activeWorld={activeWorld}
-              onSelectProduct={(promo) => setSelectedProduct(promo)}
-              onAddToCart={handleAddToCart}
-              onOpenCalculator={handleOpenCalculator}
-              settings={settings}
-            />
-          </div>
-        )}
-
-        {/* Regular Products Grid (when in catalog view or searching) */}
-        {viewMode === 'catalog' && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        {/* Catalog Grid with Interleaved Packages */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
             
             {loading ? (
               <div className="py-24 text-center space-y-3">
@@ -1101,18 +1024,20 @@ export default function App() {
               </div>
             ) : (
               <div className="space-y-10">
-                {activeWorld === 'all' && selectedCategory === 'all' && selectedTechnique === 'all' && !searchQuery ? (
-                  /* Flujo en Principal: tandas de 8 productos en cuadrícula normal seguidas de un bloque designado de 2 paquetes */
+                {!searchQuery && currentAreaPackages.length > 0 ? (
+                  /* Flujo intercalado en Inicio o en cada Área: tandas de productos seguidas de un bloque designado de paquetes */
                   <div className="space-y-8 sm:space-y-12">
                     {Array.from({ length: Math.ceil(loopedCatalogProducts.length / 8) }).map((_, chunkIdx) => {
                       const chunkProds = loopedCatalogProducts.slice(chunkIdx * 8, (chunkIdx + 1) * 8);
-                      const p1 = homePackagesList.length > 0 ? homePackagesList[(chunkIdx * 2) % homePackagesList.length] : null;
-                      const p2 = homePackagesList.length > 1 ? homePackagesList[(chunkIdx * 2 + 1) % homePackagesList.length] : null;
+                      const p1 = currentAreaPackages[(chunkIdx * 2) % currentAreaPackages.length];
+                      const p2 = currentAreaPackages.length > 1
+                        ? currentAreaPackages[(chunkIdx * 2 + 1) % currentAreaPackages.length]
+                        : null;
                       const packagePair = [p1, p2].filter(Boolean);
 
                       return (
-                        <React.Fragment key={`home-chunk-${chunkIdx}`}>
-                          {/* Cuadrícula de 8 productos (3D, láser, sublimación, vinil, NFC y personalizados al azar) */}
+                        <React.Fragment key={`catalog-chunk-${activeWorld}-${chunkIdx}`}>
+                          {/* Cuadrícula de 8 productos regulares */}
                           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
                             {chunkProds.map(product => (
                               <ProductCard
@@ -1129,7 +1054,7 @@ export default function App() {
                             ))}
                           </div>
 
-                          {/* Bloque designado de 2 Paquetes de Taller */}
+                          {/* Bloque designado de paquetes intercalados para esta área */}
                           {packagePair.length > 0 && (
                             <div className="my-6 sm:my-8 p-3.5 sm:p-6 rounded-3xl bg-gradient-to-br from-[#FAF8F5] via-[#F4EFE6] to-[#ECE5D8] border border-[#E8E4DA] shadow-xs">
                               <div className="flex items-center justify-between pb-2.5 sm:pb-3 mb-3 sm:mb-4 border-b border-[#E8E4DA]/80">
@@ -1139,23 +1064,18 @@ export default function App() {
                                     Paquetes &amp; Combos de Ahorro
                                   </span>
                                   <span className="hidden md:inline text-xs text-stone-500 font-medium">
-                                    · Soluciones coordinadas de taller
+                                    · {currentWorldObj ? `Soluciones coordinadas de ${currentWorldObj.name}` : 'Soluciones coordinadas de taller'}
                                   </span>
                                 </div>
-                                <button
-                                  type="button"
-                                  onClick={() => handleSelectWorld('paquetes-servicios')}
-                                  className="text-[11px] sm:text-xs font-bold text-[#2D4F3E] hover:text-[#20392C] flex items-center gap-1 cursor-pointer bg-white px-2.5 sm:px-3 py-1 rounded-full border border-[#E8E4DA] shadow-2xs hover:shadow-xs transition-all"
-                                >
-                                  <span>Ver todos los paquetes</span>
-                                  <ChevronRight className="w-3.5 h-3.5" />
-                                </button>
+                                <span className="text-[11px] font-bold text-stone-600 bg-white px-2.5 sm:px-3 py-1 rounded-full border border-[#E8E4DA] shadow-2xs">
+                                  {currentAreaPackages.length} {currentAreaPackages.length === 1 ? 'combo disponible' : 'combos disponibles'}
+                                </span>
                               </div>
 
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-6">
                                 {packagePair.map((pkg, pIdx) => (
                                   <HomePackageCard
-                                    key={`home-pkg-${chunkIdx}-${pkg.id}-${pIdx}`}
+                                    key={`pkg-${activeWorld}-${chunkIdx}-${pkg.id}-${pIdx}`}
                                     packageItem={pkg}
                                     onSelectProduct={() => setSelectedProduct(pkg)}
                                     onAddToCart={handleAddToCart}
@@ -1170,7 +1090,7 @@ export default function App() {
                     })}
                   </div>
                 ) : (
-                  /* Cuadrícula estándar para áreas individuales o búsquedas */
+                  /* Cuadrícula estándar para búsquedas o áreas sin paquetes */
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
                     {loopedCatalogProducts.map(product => (
                       <ProductCard
@@ -1197,7 +1117,7 @@ export default function App() {
                 </div>
 
                 {/* Servicio Patch Bar en Vivo en Eventos (al final de los productos, justo antes de los paquetes combo de cada área) */}
-                {activeWorld === 'eventos' && !searchQuery && selectedCategory === 'all' && viewMode === 'catalog' && (
+                {activeWorld === 'eventos' && !searchQuery && selectedCategory === 'all' && (
                   <div className="pt-2">
                     <PatchBarShowcase
                       onOpenPatchBarProduct={() => {
@@ -1226,7 +1146,6 @@ export default function App() {
             )}
 
           </div>
-        )}
 
       </main>
       )}

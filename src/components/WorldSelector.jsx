@@ -16,12 +16,10 @@ export default function WorldSelector({ worlds, activeWorld, onSelectWorld, cate
   const worldNumbers = {
     hogar: '01',
     negocios: '02',
-    juguetes: '03',
+    eventos: '03',
     personalizados: '04',
-    eventos: '05',
-    'paquetes-servicios': '06',
-    industria: '07',
-    'publicidad-desarrollo': '08'
+    industria: '05',
+    'publicidad-desarrollo': '06'
   };
 
   return (
