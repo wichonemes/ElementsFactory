@@ -75,14 +75,15 @@ export default function PublicidadDesarrolloView({
     `Hola:\n\nTe comparto el enlace al portafolio y servicios de diseño gráfico, desarrollo web, lonas y publicidad comercial de Wicho Nemes en Artesano Digital:\n\n${sharePortalUrl}\n\nSaludos.`
   )}`;
 
-  // Catálogo de Servicios con Estructura de Color Profesional en Modo Oscuro
+  // Catálogo de Servicios con Estructura de Color Profesional en Modo Oscuro (Formato Apps Unificado)
   const servicesList = [
     {
       id: 'branding',
+      code: 'BRAND-01',
       icon: Palette,
       tag: 'Identidad Visual',
       badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
-      activeBorder: 'border-amber-400/80 ring-2 ring-amber-400/25',
+      activeBorder: 'border-amber-400 ring-2 ring-amber-400/30',
       accentBar: 'bg-amber-400',
       iconBg: 'bg-amber-500/20 text-amber-300 border border-amber-500/30',
       checkColor: 'text-amber-400 bg-amber-500/20',
@@ -99,10 +100,11 @@ export default function PublicidadDesarrolloView({
     },
     {
       id: 'publicidad',
+      code: 'LONAS-02',
       icon: Printer,
       tag: 'Gran Formato & Rotulación',
       badgeColor: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
-      activeBorder: 'border-rose-400/80 ring-2 ring-rose-400/25',
+      activeBorder: 'border-rose-400 ring-2 ring-rose-400/30',
       accentBar: 'bg-rose-400',
       iconBg: 'bg-rose-500/20 text-rose-300 border border-rose-500/30',
       checkColor: 'text-rose-400 bg-rose-500/20',
@@ -119,10 +121,11 @@ export default function PublicidadDesarrolloView({
     },
     {
       id: 'web',
+      code: 'WEB-03',
       icon: Globe,
       tag: 'E-Commerce & Digital',
       badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
-      activeBorder: 'border-emerald-400/80 ring-2 ring-emerald-400/25',
+      activeBorder: 'border-emerald-400 ring-2 ring-emerald-400/30',
       accentBar: 'bg-emerald-400',
       iconBg: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30',
       checkColor: 'text-emerald-400 bg-emerald-500/20',
@@ -139,10 +142,11 @@ export default function PublicidadDesarrolloView({
     },
     {
       id: 'modelado',
+      code: 'CAD-04',
       icon: Box,
       tag: 'Prototipado & 3D',
       badgeColor: 'bg-sky-500/20 text-sky-300 border-sky-500/40',
-      activeBorder: 'border-sky-400/80 ring-2 ring-sky-400/25',
+      activeBorder: 'border-sky-400 ring-2 ring-sky-400/30',
       accentBar: 'bg-sky-400',
       iconBg: 'bg-sky-500/20 text-sky-300 border border-sky-500/30',
       checkColor: 'text-sky-400 bg-sky-500/20',
@@ -159,10 +163,11 @@ export default function PublicidadDesarrolloView({
     },
     {
       id: 'audiovisual',
+      code: 'MEDIA-05',
       icon: Film,
       tag: 'Contenido & Editorial',
       badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
-      activeBorder: 'border-purple-400/80 ring-2 ring-purple-400/25',
+      activeBorder: 'border-purple-400 ring-2 ring-purple-400/30',
       accentBar: 'bg-purple-400',
       iconBg: 'bg-purple-500/20 text-purple-300 border border-purple-500/30',
       checkColor: 'text-purple-400 bg-purple-500/20',
@@ -177,6 +182,8 @@ export default function PublicidadDesarrolloView({
       idealFor: 'Campañas de lanzamiento, catálogos de temporada y presencia visual en redes.'
     }
   ];
+
+  const curService = servicesList.find(s => s.id === expandedService);
 
   // Cálculo estimativo en tiempo real del cotizador (en 2 pasos)
   const quoteEstimate = useMemo(() => {
@@ -316,111 +323,177 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
       {/* 3. CONTENIDO PRINCIPAL EN COLOR NEGRO */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-8">
 
-        {/* ================= SECCIÓN 1: SERVICIOS DIRECTOS (TOTALMENTE EN NEGRO) ================= */}
+        {/* ================= SECCIÓN 1: SERVICIOS DIRECTOS (ESTRUCTURA UNIFICADA APP-GRID) ================= */}
         {activeTab === 'servicios' && (
-          <div className="space-y-4 animate-fadeIn">
+          <div className="space-y-6 animate-fadeIn">
 
-            {/* Acordeón de Servicios Directo sin duplicar opciones */}
-            <div className="space-y-3">
+            {/* Encabezado con Código de Área y Subtítulo */}
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-stone-800 pb-3">
+              <div>
+                <div className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-[#e8b84f] flex items-center gap-2">
+                  <span className="w-5 h-px bg-[#e8b84f]" />
+                  <span>01 / Especialidades &amp; Portafolio Creativo</span>
+                </div>
+                <h2 className="text-xl sm:text-2xl font-black text-white mt-1">
+                  Soluciones de Identidad, Gran Formato y Web
+                </h2>
+              </div>
+              <p className="text-xs text-stone-400 font-mono hidden md:block text-right">
+                Haz clic en cualquier aplicación para desplegar entregables, especificaciones y cotización.
+              </p>
+            </div>
+
+            {/* Cuadrícula Adaptativa de Tarjetas Cuadradas tipo Apps */}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3.5">
               {servicesList.map(srv => {
-                const isExpanded = expandedService === srv.id;
-                const Icon = srv.icon;
+                const isSelected = expandedService === srv.id;
+                const IconComp = srv.icon;
 
                 return (
                   <div
                     key={srv.id}
-                    className={`rounded-2xl border transition-all overflow-hidden ${
-                      isExpanded
-                        ? `bg-[#12161D] ${srv.activeBorder} shadow-2xl ring-1 ring-white/10`
-                        : 'bg-[#0F1218] border-stone-800 hover:border-stone-700 shadow-md'
+                    onClick={() => setExpandedService(isSelected ? '' : srv.id)}
+                    className={`rounded-2xl border transition-all duration-200 p-3 sm:p-4 cursor-pointer select-none flex flex-col justify-between hover:-translate-y-0.5 ${
+                      isSelected
+                        ? `${srv.activeBorder} bg-[#141822] shadow-xl`
+                        : 'border-stone-800 bg-[#0E1218] hover:border-stone-700 active:scale-[0.98]'
                     }`}
                   >
-                    {/* Barra Superior con Acento de Color si está desplegado */}
-                    {isExpanded && <div className={`h-1.5 w-full ${srv.accentBar}`} />}
+                    {/* Fila superior: Código de aplicación y Acción */}
+                    <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] pb-2 border-b border-white/5">
+                      <span className={`font-bold ${isSelected ? 'text-white' : 'text-stone-400'}`}>
+                        {srv.code}
+                      </span>
+                      <span className="text-[8.5px] sm:text-[9.5px] font-sans font-medium flex items-center gap-0.5 text-stone-400">
+                        <span>{isSelected ? 'Cerrar' : 'Ver ficha'}</span>
+                        <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${isSelected ? 'rotate-180' : ''}`} />
+                      </span>
+                    </div>
 
-                    {/* Cabecera Tocable */}
-                    <button
-                      type="button"
-                      onClick={() => setExpandedService(isExpanded ? '' : srv.id)}
-                      className="w-full p-4 flex items-center justify-between gap-3 text-left cursor-pointer transition-colors hover:bg-white/5"
-                    >
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-transform ${srv.iconBg} ${
-                          isExpanded ? 'scale-105' : ''
-                        }`}>
-                          <Icon className="w-5 h-5" />
-                        </div>
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className={`text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md border ${srv.badgeColor}`}>
-                              {srv.tag}
-                            </span>
-                          </div>
-                          <h3 className="font-heading font-black text-sm text-white mt-0.5 truncate">
-                            {srv.title}
-                          </h3>
-                        </div>
+                    {/* Contenido: Icono en cuadro con su código de color correspondiente */}
+                    <div className="pt-3 space-y-2.5">
+                      <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0 transition-transform ${srv.iconBg} ${
+                        isSelected ? 'scale-105 shadow-md' : ''
+                      }`}>
+                        <IconComp className="w-5 h-5 sm:w-6 sm:h-6" />
                       </div>
 
-                      <div className="shrink-0 flex items-center gap-1.5">
-                        <span className="text-xs font-bold text-stone-400 hidden sm:inline">
-                          {isExpanded ? 'Ocultar' : 'Ver lo que incluye'}
+                      <div>
+                        {/* Etiqueta encerrada en su recuadro estructurado */}
+                        <span className={`inline-block text-[8.5px] sm:text-[9.5px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md border ${srv.badgeColor}`}>
+                          {srv.tag}
                         </span>
-                        <div className={`w-7 h-7 rounded-full flex items-center justify-center border transition-transform ${
-                          isExpanded ? 'bg-[#e8b84f] text-[#0B0D11] rotate-180 border-[#e8b84f]' : 'bg-[#181D26] text-stone-300 border-stone-700'
-                        }`}>
-                          <ChevronDown className="w-3.5 h-3.5" />
-                        </div>
+
+                        <h3 className="text-xs sm:text-sm font-extrabold text-white mt-1 leading-snug line-clamp-2">
+                          {srv.title}
+                        </h3>
                       </div>
-                    </button>
-
-                    {/* Contenido Desplegable Completo del Paquete */}
-                    {isExpanded && (
-                      <div className="px-4 pb-5 pt-1 border-t border-stone-800/80 space-y-3.5 animate-fadeIn">
-                        
-                        <p className="text-xs text-stone-300 leading-relaxed font-normal">
-                          {srv.summary}
-                        </p>
-
-                        {/* Entregables incluidos en el paquete (Bloque en color negro para diferenciar que son servicios) */}
-                        <div className="bg-[#080A0E] p-3.5 sm:p-4 rounded-2xl border border-stone-800 space-y-2.5 shadow-inner">
-                          <div className="text-[10px] font-black uppercase tracking-wider text-[#e8b84f] flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#e8b84f]" />
-                            <span>Servicios y entregables incluidos:</span>
-                          </div>
-
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-0.5">
-                            {srv.deliverables.map((item, idx) => (
-                              <div key={idx} className="flex items-start gap-2 text-xs text-stone-200 font-normal">
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#e8b84f] mt-1.5 shrink-0" />
-                                <span className="leading-snug">{item}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Botón Directo para Cotizar este Servicio */}
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
-                          <div className="text-[11px] text-stone-400 italic">
-                            <strong className="text-stone-200">Ideal para:</strong> {srv.idealFor}
-                          </div>
-
-                          <button
-                            type="button"
-                            onClick={() => handleOpenCotizador(srv.id === 'audiovisual' ? 'branding' : srv.id)}
-                            className="w-full sm:w-auto px-4 py-2 rounded-xl bg-gradient-to-r from-[#e8b84f] to-[#d4a359] hover:from-[#d4a359] hover:to-[#c29235] text-[#0B0D11] font-black text-xs transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 shrink-0"
-                          >
-                            <span>Cotizar este servicio</span>
-                            <ArrowRight className="w-3.5 h-3.5 text-[#0B0D11]" />
-                          </button>
-                        </div>
-
-                      </div>
-                    )}
+                    </div>
                   </div>
                 );
               })}
             </div>
+
+            {/* Ficha Técnica / Creativa Desplegada Hasta Abajo (Estilo Industrial Unificado) */}
+            {curService && (() => {
+              const IconComp = curService.icon;
+
+              return (
+                <div className={`rounded-2xl border ${curService.activeBorder} bg-[#0D1016] p-4 sm:p-6 shadow-2xl relative overflow-hidden animate-fadeIn space-y-4`}>
+                  
+                  {/* Cabecera de la Ficha Técnica */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-800 pb-3">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-12 h-12 rounded-xl ${curService.iconBg} flex items-center justify-center shrink-0 shadow-md`}>
+                        <IconComp className="w-6 h-6" />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-wider font-bold text-stone-400">
+                            {curService.code}
+                          </span>
+                          <span className={`text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md border ${curService.badgeColor}`}>
+                            {curService.tag}
+                          </span>
+                        </div>
+                        <h3 className="text-base sm:text-xl font-black text-white mt-0.5">
+                          {curService.title}
+                        </h3>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 self-end sm:self-center">
+                      <button
+                        type="button"
+                        onClick={() => setExpandedService('')}
+                        className="px-2.5 py-1 rounded-lg text-stone-400 hover:text-white bg-white/5 hover:bg-white/10 text-xs font-mono cursor-pointer transition-colors"
+                      >
+                        ✕ Cerrar detalle
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Resumen / Descripción */}
+                  <p className="text-xs sm:text-sm text-stone-300 leading-relaxed font-normal">
+                    {curService.summary}
+                  </p>
+
+                  {/* Entregables incluidos en recuadros estructurados oscuros */}
+                  <div className="space-y-2 pt-1">
+                    <div className="text-[10px] font-mono uppercase tracking-wider text-stone-400 font-bold">
+                      Servicios y entregables incluidos:
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 font-mono text-[11px]">
+                      {curService.deliverables.map((item, idx) => (
+                        <div key={idx} className="p-2.5 rounded-xl bg-[#141822] border border-stone-800/80 flex items-start gap-2.5">
+                          <div className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 mt-0.5 ${curService.checkColor}`}>
+                            <Check className="w-3.5 h-3.5" />
+                          </div>
+                          <span className="text-stone-200 text-xs font-sans leading-snug">{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Cuadro: Ideal para */}
+                  <div className="p-3 rounded-xl bg-[#10141C] border border-stone-800/80 text-xs text-stone-300 flex items-start gap-2">
+                    <strong className="text-white shrink-0">Ideal para:</strong>
+                    <span>{curService.idealFor}</span>
+                  </div>
+
+                  {/* Barra de Acción con Acceso Directo al Cotizador o WhatsApp */}
+                  <div className="pt-2 border-t border-stone-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                    <span className="text-[11px] text-stone-400 font-mono">
+                      Atención directa con Wicho Nemes · Cotizaciones a medida
+                    </span>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => handleOpenCotizador(curService.id === 'audiovisual' ? 'branding' : curService.id)}
+                        className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#e8b84f] to-[#d4a359] hover:from-[#f0c765] hover:to-[#e8b84f] text-[#0A0D11] font-black text-xs transition-all flex items-center justify-center gap-1.5 shadow-md active:scale-95 cursor-pointer"
+                      >
+                        <Sliders className="w-3.5 h-3.5" />
+                        <span>Calcular Inversión (2 Pasos)</span>
+                      </button>
+
+                      <a
+                        href={`https://wa.me/${whatsappPhone}?text=${encodeURIComponent(
+                          `Hola Wicho, me interesa cotizar *${curService.title}* de tu portafolio de Diseño & Publicidad.`
+                        )}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="px-3.5 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-black font-extrabold text-xs transition-all flex items-center justify-center gap-1.5 shadow-md active:scale-95 cursor-pointer"
+                      >
+                        <MessageCircle className="w-3.5 h-3.5 fill-black text-transparent" />
+                        <span>WhatsApp</span>
+                      </a>
+                    </div>
+                  </div>
+
+                </div>
+              );
+            })()}
 
             {/* Banner Compacto de Cotización */}
             <div className="rounded-2xl bg-gradient-to-r from-[#141820] via-[#1A212B] to-[#11141A] text-white p-4 shadow-xl border border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-3">

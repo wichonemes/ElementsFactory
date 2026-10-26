@@ -29,7 +29,8 @@ import {
   Share2,
   Copy,
   Mail,
-  Building2
+  Building2,
+  Cog
 } from 'lucide-react';
 import { getFilamentColor } from '../utils/colorUtils';
 
@@ -389,6 +390,10 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
             
             {/* Texto Principal */}
             <div className="lg:col-span-7 space-y-2 sm:space-y-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#5BB8FF]/10 border border-[#5BB8FF]/30 text-[#5BB8FF] font-mono text-[11px] font-bold">
+                <Cog className="w-4.5 h-4.5 text-[#5BB8FF] animate-[spin_12s_linear_infinite] shrink-0" />
+                <span>MANUFACTURA ADITIVA TÉCNICA · SLP</span>
+              </div>
               <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-[1.08]">
                 Que una refacción no detenga <span className="text-[#5BB8FF] drop-shadow-[0_0_20px_rgba(91,184,255,0.4)]">tu línea.</span>
               </h1>
@@ -503,8 +508,9 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 mb-5 sm:mb-8">
             <div>
               <div className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
+                <Cog className="w-4 h-4 text-[#5BB8FF] animate-[spin_10s_linear_infinite] shrink-0" />
                 <span className="w-5 h-px bg-[#5BB8FF]" />
-                01 / Aplicaciones Industriales
+                <span>01 / Aplicaciones Industriales</span>
               </div>
               <h2 className="text-xl sm:text-3xl font-extrabold text-white mt-1.5">
                 Cuatro problemas de planta. Una respuesta local.
@@ -643,19 +649,26 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                           </span>
                         </div>
 
-                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2.5 sm:gap-3 pt-3">
-                          <div className={`w-9 h-9 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform ${
-                            isSelected ? `${app.bgActive} ${app.textAccent} scale-105` : `bg-white/5 ${app.textAccent}`
+                        <div className="pt-3 space-y-2.5">
+                          <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0 border transition-transform ${
+                            isSelected
+                              ? `${app.bgActive} ${app.textAccent} ${app.borderClass} scale-105 shadow-md`
+                              : `bg-white/5 ${app.textAccent} border-white/10`
                           }`}>
-                            <IconComp className="w-4 h-4 sm:w-5 sm:h-5" />
+                            <IconComp className="w-5 h-5 sm:w-6 sm:h-6" />
                           </div>
+
                           <div>
-                            <h3 className="text-xs sm:text-sm lg:text-base font-bold text-white leading-snug">
+                            <span className={`inline-block text-[8.5px] sm:text-[9.5px] font-mono uppercase font-bold tracking-wider px-2 py-0.5 rounded-md border ${
+                              isSelected
+                                ? `${app.bgActive} ${app.textAccent} ${app.borderClass}`
+                                : 'bg-white/5 text-gray-300 border-white/10'
+                            }`}>
+                              {app.badge}
+                            </span>
+                            <h3 className="text-xs sm:text-sm lg:text-base font-bold text-white mt-1 leading-snug">
                               {app.title}
                             </h3>
-                            <p className="text-[10px] text-gray-400 font-mono hidden lg:block mt-0.5 line-clamp-1">
-                              {app.badge}
-                            </p>
                           </div>
                         </div>
                       </div>

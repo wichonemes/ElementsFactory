@@ -78,27 +78,39 @@ export default function ServiciosView({
               <button
                 type="button"
                 onClick={() => handleTabSwitch('diseno')}
-                className={`flex-1 md:flex-initial px-3.5 sm:px-5 py-2 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                className={`flex-1 md:flex-initial px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-[13px] font-black transition-all flex items-center justify-center gap-2 cursor-pointer ${
                   activeTab === 'diseno'
-                    ? 'bg-gradient-to-r from-[#e8b84f] to-[#d4a359] text-[#0A0D11] shadow-lg shadow-amber-500/20'
+                    ? 'bg-gradient-to-r from-[#e8b84f] to-[#d4a359] text-[#0A0D11] shadow-lg shadow-amber-500/25 ring-1 ring-[#e8b84f]/50'
                     : 'text-stone-300 hover:text-white hover:bg-white/5'
                 }`}
               >
-                <Palette className={`w-3.5 h-3.5 ${activeTab === 'diseno' ? 'text-[#0A0D11]' : 'text-[#e8b84f]'}`} />
+                <div className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 border transition-all ${
+                  activeTab === 'diseno'
+                    ? 'bg-black/20 text-[#0A0D11] border-black/20'
+                    : 'bg-[#e8b84f]/15 text-[#e8b84f] border-[#e8b84f]/30'
+                }`}>
+                  <Palette className="w-3.5 h-3.5" />
+                </div>
                 <span>Diseño y Publicidad</span>
               </button>
 
-              {/* Pestaña 2: Industria y Manufactura */}
+              {/* Pestaña 2: Industria y Manufactura (Engrane ampliado y unido al texto) */}
               <button
                 type="button"
                 onClick={() => handleTabSwitch('industria')}
-                className={`flex-1 md:flex-initial px-3.5 sm:px-5 py-2 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                className={`flex-1 md:flex-initial px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-[13px] font-black transition-all flex items-center justify-center gap-2 cursor-pointer ${
                   activeTab === 'industria'
-                    ? 'bg-gradient-to-r from-[#5BB8FF] to-[#3B82F6] text-[#0A0E11] shadow-lg shadow-sky-500/20'
+                    ? 'bg-gradient-to-r from-[#5BB8FF] to-[#3B82F6] text-[#0A0E11] shadow-lg shadow-sky-500/25 ring-1 ring-[#5BB8FF]/50'
                     : 'text-stone-300 hover:text-white hover:bg-white/5'
                 }`}
               >
-                <Cog className={`w-3.5 h-3.5 ${activeTab === 'industria' ? 'text-[#0A0E11]' : 'text-[#5BB8FF]'}`} />
+                <div className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 border transition-all ${
+                  activeTab === 'industria'
+                    ? 'bg-black/20 text-[#0A0E11] border-black/20'
+                    : 'bg-[#5BB8FF]/15 text-[#5BB8FF] border-[#5BB8FF]/30'
+                }`}>
+                  <Cog className="w-4.5 h-4.5 animate-[spin_12s_linear_infinite]" />
+                </div>
                 <span>Industria y Manufactura</span>
               </button>
 
