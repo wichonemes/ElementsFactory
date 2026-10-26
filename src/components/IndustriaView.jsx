@@ -46,21 +46,28 @@ export default function IndustriaView({
   // Estado para desplegar información completa en Información Clave
   const [expandedInfo, setExpandedInfo] = useState(null);
 
-  // Catálogo de Colores Técnicos por Polímero
+  // Catálogo Ampliado de Colores Técnicos por Polímero
   const INDUSTRIAL_COLORS_BY_MATERIAL = {
     petg: {
       materialName: 'PETG Técnico',
       tag: 'Mecánico & Refacciones',
       colors: [
-        { name: 'Negro Ónix Mate', desc: 'Acabado sobrio y resistente para carcasas y refacciones', finish: 'Satinado Técnico' },
+        { name: 'Negro Ónix Mate', desc: 'Acabado antirreflejo para carcasas y componentes mecánicos', finish: 'Satinado Técnico' },
+        { name: 'Negro Carbón', desc: 'Negro profundo de alta resistencia química y al desgaste', finish: 'Brillante Mecánico' },
         { name: 'Blanco Puro', desc: 'Ductos de aire e interiores limpios de maquinaria', finish: 'Sólido' },
-        { name: 'Gris Plomo Titán', desc: 'Tono maquinaria neutro tipo acero fundido', finish: 'Industrial' },
-        { name: 'Azul Marino Medianoche', desc: 'Gabinetes, cajas y soportes corporativos', finish: 'Sólido' },
-        { name: 'Rojo Carmesí', desc: 'Guardas de seguridad y paros de emergencia', finish: 'Seguridad' },
-        { name: 'Naranja Cálido', desc: 'Galgas de advertencia y poka-yoke visual', finish: 'Alta Visibilidad' },
-        { name: 'Mostaza Colonial', desc: 'Zonas de precaución y señalética industrial', finish: 'Advertencia' },
-        { name: 'Verde Olivo Táctico', desc: 'Tono mate sobrio sin reflejos plásticos', finish: 'Mate' },
-        { name: 'Translúcido Cristal', desc: 'Difusor de luz o visor de flujo de líquidos', finish: 'Translúcido' }
+        { name: 'Blanco Marfil', desc: 'Tono neutro cálido para inspección visual de ensambles', finish: 'Sólido Técnico' },
+        { name: 'Gris Plomo Titán', desc: 'Tono maquinaria neutro que disimula polvo y grasa', finish: 'Industrial' },
+        { name: 'Gris Perla', desc: 'Gris claro institucional para gabinetes y carcasas', finish: 'Neutro' },
+        { name: 'Plata Metálico', desc: 'Símil de aluminio pulido para maquetas ejecutivas', finish: 'Seda Metálica' },
+        { name: 'Azul Marino Medianoche', desc: 'Gabinetes, cajas y soportes corporativos', finish: 'Sólido Corporativo' },
+        { name: 'Azul Cobalto', desc: 'Identificación de líneas neumáticas y piezas activas', finish: 'Señalización' },
+        { name: 'Azul Cielo', desc: 'Galgas de verificación visual y codificación rápida', finish: 'Alta Visibilidad' },
+        { name: 'Rojo Carmesí', desc: 'Guardas de seguridad, topes y paros de emergencia', finish: 'Seguridad' },
+        { name: 'Naranja Cálido', desc: 'Galgas de advertencia y poka-yoke visual en celda', finish: 'Advertencia' },
+        { name: 'Mostaza Colonial', desc: 'Zonas de precaución y señalética industrial de planta', finish: 'Precaución' },
+        { name: 'Verde Olivo Táctico', desc: 'Tono mate sobrio sin reflejos plásticos', finish: 'Mate Táctico' },
+        { name: 'Verde Esmeralda', desc: 'Identificación de piezas aptas o verificadas', finish: 'Aprobación' },
+        { name: 'Translúcido Cristal', desc: 'Visor de flujo de líquidos o difusor de luz LED', finish: 'Translúcido' }
       ]
     },
     tpu: {
@@ -68,10 +75,14 @@ export default function IndustriaView({
       tag: 'Flexible & Antirrayón',
       colors: [
         { name: 'Negro Ónix Mate', desc: 'Aspecto de caucho vulcanizado para amortiguadores', finish: 'Goma Flexible' },
-        { name: 'Blanco Puro', desc: 'Topes y ventosas limpias sin manchar superficies', finish: 'Goma Limpia' },
+        { name: 'Negro Carbón', desc: 'Protecciones de impacto para esquinas y fixtures', finish: 'Goma Densa' },
+        { name: 'Blanco Puro', desc: 'Topes y ventosas limpias que no manchan piezas de vista', finish: 'Goma Limpia' },
+        { name: 'Gris Plomo Titán', desc: 'Apoyos y bases elásticas para estaciones de ensamble', finish: 'Amortiguador' },
         { name: 'Rojo Carmesí', desc: 'Topes de final de carrera y parachoques visuales', finish: 'Impacto Visual' },
-        { name: 'Azul Marino Medianoche', desc: 'Mordazas suaves para robots y nidos de ensamble', finish: 'Industrial' },
-        { name: 'Naranja Cálido', desc: 'Protecciones de arista y juntas visibles', finish: 'Flexible Señal' },
+        { name: 'Naranja Cálido', desc: 'Protecciones de arista y juntas visibles para operario', finish: 'Flexible Señal' },
+        { name: 'Mostaza Colonial', desc: 'Galgas flexibles para comprobación de tolerancias', finish: 'Precaución' },
+        { name: 'Azul Cobalto', desc: 'Mordazas suaves para robots y nidos de ensamble', finish: 'Sujeción Suave' },
+        { name: 'Verde Olivo', desc: 'Sellos y fuelles de protección en maquinaria pesada', finish: 'Goma Industrial' },
         { name: 'Translúcido Cristal', desc: 'Sellos, fuelles y empaques semi-transparentes', finish: 'Goma Translúcida' }
       ]
     },
@@ -80,21 +91,35 @@ export default function IndustriaView({
       tag: 'Prototipos & Pruebas DFM',
       colors: [
         { name: 'Negro Ónix Mate', desc: 'Máxima definición geométrica y comprobación de holguras', finish: 'Ultra Precisión' },
-        { name: 'Blanco Marfil', desc: 'Excelente contraste para revisión de cotas y ensambles', finish: 'Mate' },
-        { name: 'Gris Plomo Titán', desc: 'Símil visual de pieza maquinada en aluminio', finish: 'Neutro' },
-        { name: 'Verde Olivo Táctico', desc: 'Tono mate insignia del taller', finish: 'Mate Táctico' },
-        { name: 'Terracota', desc: 'Arcilla cálida con alta visibilidad de detalle', finish: 'Satinado' },
-        { name: 'Plata Metálico', desc: 'Reflejo metálico satinado para maquetas ejecutivas', finish: 'Seda Metálica' },
-        { name: 'Azul Marino Medianoche', desc: 'Maquetas corporativas de ensamble', finish: 'Sólido' }
+        { name: 'Negro Carbón', desc: 'Alta rigidez para ensambles mecánicos de prueba', finish: 'Sólido' },
+        { name: 'Blanco Puro', desc: 'Excelente contraste para revisión de cotas y maquetas', finish: 'Mate Puro' },
+        { name: 'Blanco Marfil', desc: 'Verificación de ensambles con tornillería y roscas', finish: 'Satinado' },
+        { name: 'Gris Plomo Titán', desc: 'Símil visual de pieza maquinada en bloque de aluminio', finish: 'Neutro' },
+        { name: 'Gris Perla', desc: 'Plantillas de inspección visual y maquetas de volumen', finish: 'Técnico' },
+        { name: 'Plata Metálico', desc: 'Reflejo metálico fino para presentaciones ejecutivas', finish: 'Seda Metálica' },
+        { name: 'Terracota', desc: 'Arcilla cálida con alta visibilidad de detalle y curvatura', finish: 'Satinado' },
+        { name: 'Rojo Carmesí', desc: 'Identificación de puntos críticos de interferencia', finish: 'Contraste Alto' },
+        { name: 'Naranja Cálido', desc: 'Validación de ergonomía y agarre manual', finish: 'Ergonómico' },
+        { name: 'Mostaza Colonial', desc: 'Comprobación de perfiles y soportes de sensor', finish: 'Inspección' },
+        { name: 'Verde Olivo Táctico', desc: 'Tono mate insignia del taller para prototipos maestros', finish: 'Mate Táctico' },
+        { name: 'Verde Menta', desc: 'Estudios de usabilidad y piezas de concepto estético', finish: 'Pastel Técnico' },
+        { name: 'Azul Marino Medianoche', desc: 'Maquetas corporativas y ensambles estructurales', finish: 'Sólido' },
+        { name: 'Azul Cobalto', desc: 'Piezas maestras de calibración dimensional', finish: 'Vibrante' },
+        { name: 'Lavanda / Violeta', desc: 'Diferenciación de versiones y prototipos de prueba', finish: 'Diferencial' }
       ]
     },
     abs: {
       materialName: 'ABS / ASA Industrial',
       tag: 'Resistencia Térmica & UV',
       colors: [
-        { name: 'Negro Ónix Mate', desc: 'Protección UV y resistencia a temperatura continua', finish: 'Térmico Exterior' },
-        { name: 'Blanco Puro', desc: 'Reflexión solar y baja absorción de calor en intemperie', finish: 'Intemperie' },
-        { name: 'Gris Plomo Titán', desc: 'Reemplazos técnicos y chasis de equipos', finish: 'Industrial' }
+        { name: 'Negro Ónix Mate', desc: 'Protección UV exterior y resistencia a temperatura continua', finish: 'Térmico Exterior' },
+        { name: 'Negro Carbón', desc: 'Chasis robustos y carcasas de protección eléctrica', finish: 'Industrial' },
+        { name: 'Blanco Puro', desc: 'Reflexión solar y baja absorción de calor en intemperie', finish: 'Intemperie Solar' },
+        { name: 'Gris Plomo Titán', desc: 'Reemplazos técnicos y cubiertas de bombas o motores', finish: 'Industrial' },
+        { name: 'Gris Perla', desc: 'Gabinetes de control para líneas de automatización', finish: 'Control' },
+        { name: 'Rojo Carmesí', desc: 'Guardas térmicas y tapas de zonas calientes en planta', finish: 'Alerta Térmica' },
+        { name: 'Azul Marino Medianoche', desc: 'Cajas de distribución y tableros bajo intemperie', finish: 'Exterior' },
+        { name: 'Naranja Cálido', desc: 'Carcasas visibles en ambientes con riesgo de impacto', finish: 'Señalización' }
       ]
     }
   };
@@ -292,21 +317,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 Taller local de manufactura bajo demanda para empresas de SLP. Prototipado funcional rápido, utillaje de ensamble, refacciones descatalogadas y lotes cortos en polímeros técnicos de grado ingeniería.
               </p>
 
-              <div className="flex flex-wrap items-center gap-3 pt-2">
-                <a
-                  href="#cotizar-industria"
-                  className="px-5 py-3 rounded-xl bg-[#5BB8FF] hover:bg-[#8AD2FF] text-[#0A0E11] font-black text-xs tracking-wider uppercase transition-all shadow-lg hover:shadow-[#5BB8FF]/30 cursor-pointer flex items-center gap-2"
-                >
-                  <MessageCircle className="w-4 h-4 fill-[#0A0E11]" />
-                  <span>Subir plano o foto para cotizar</span>
-                </a>
-                <a
-                  href="#materiales-taller"
-                  className="px-4 py-3 rounded-xl border border-white/20 hover:border-[#5BB8FF] text-white hover:text-[#5BB8FF] bg-white/5 font-semibold text-xs tracking-wide transition-colors cursor-pointer"
-                >
-                  <span>Matriz de Materiales</span>
-                </a>
-              </div>
+
 
 
             </div>
@@ -404,356 +415,278 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          3. SECCIÓN 01: 4 SOLUCIONES CON PESTAÑAS DESPLEGABLES
+          3. SECCIÓN 01: 4 SOLUCIONES EN 4 CUADROS (GRID 2x2 COMPACTO)
           ======================================================== */}
-      <section className="py-8 sm:py-14 border-b border-white/10 bg-[#0E1317]">
+      <section className="py-7 sm:py-12 border-b border-white/10 bg-[#0E1317]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           
-          <div className="mb-5 sm:mb-8">
-            <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
+          <div className="mb-4 sm:mb-7">
+            <div className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
               <span className="w-5 h-px bg-[#5BB8FF]" />
               01 / Aplicaciones
             </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
+            <h2 className="text-xl sm:text-3xl font-extrabold text-white mt-1.5">
               Cuatro problemas de planta. Una respuesta local.
             </h2>
-            <p className="text-xs sm:text-sm text-gray-400 mt-1">
-              Haz clic en cualquiera de las 4 soluciones para desplegar información técnica, ejemplos reales y beneficios.
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 lg:gap-5">
+          {/* Grid de 4 Cuadros / Rectángulos (2x2 en celular y escritorio para evitar scroll excesivo) */}
+          <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:gap-5">
             
-            {/* Tarjeta 1: Prototipos Funcionales */}
+            {/* Cuadro 1: Prototipos Funcionales */}
             <div
-              className={`rounded-xl sm:rounded-2xl border transition-all duration-300 bg-[#12181C] shadow-lg overflow-hidden ${
+              className={`rounded-xl sm:rounded-2xl border transition-all duration-200 bg-[#12181C] shadow-md flex flex-col justify-between overflow-hidden ${
                 expandedApp === 'proto'
-                  ? 'border-[#5BB8FF] shadow-[0_0_20px_rgba(91,184,255,0.15)] ring-1 ring-[#5BB8FF]/40'
+                  ? 'border-[#5BB8FF] ring-1 ring-[#5BB8FF]/40 bg-[#141C22]'
                   : 'border-white/10 hover:border-[#5BB8FF]/50'
               }`}
             >
               <div
                 onClick={() => setExpandedApp(expandedApp === 'proto' ? null : 'proto')}
-                className="p-4 sm:p-5 cursor-pointer space-y-3"
+                className="p-3 sm:p-5 cursor-pointer space-y-2 flex-1"
               >
-                <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 border-b border-white/5 pb-2">
+                <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 border-b border-white/5 pb-1.5">
                   <span className="text-[#5BB8FF] font-bold">PROTO-01</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-300">Entrega: 24 a 72 hrs</span>
-                    <span className={`text-[10px] px-2 py-0.5 rounded flex items-center gap-1 font-sans transition-colors ${
-                      expandedApp === 'proto' ? 'bg-[#5BB8FF] text-black font-bold' : 'bg-white/5 text-gray-300 hover:text-white'
+                  <div className="flex items-center gap-1.5">
+                    <span className="hidden sm:inline text-gray-300">Entrega 24 a 72 hrs</span>
+                    <span className={`text-[9px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded flex items-center gap-1 font-sans font-semibold ${
+                      expandedApp === 'proto' ? 'bg-[#5BB8FF] text-black' : 'bg-white/5 text-gray-300'
                     }`}>
-                      {expandedApp === 'proto' ? 'Menos info' : '+ Más info'}
+                      {expandedApp === 'proto' ? 'Cerrar' : '+ Info'}
                       <ChevronDown className={`w-3 h-3 transition-transform ${expandedApp === 'proto' ? 'rotate-180' : ''}`} />
                     </span>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#5BB8FF]/10 border border-[#5BB8FF]/20 flex items-center justify-center shrink-0 text-[#5BB8FF] shadow-[0_0_12px_rgba(91,184,255,0.15)]">
-                    <Layers className="w-5 h-5" />
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-[#5BB8FF]/10 border border-[#5BB8FF]/20 flex items-center justify-center shrink-0 text-[#5BB8FF]">
+                    <Layers className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
-                  <div className="space-y-1 flex-1 min-w-0">
-                    <h3 className="text-sm sm:text-base font-bold text-white leading-snug">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-xs sm:text-base font-bold text-white leading-snug">
                       Prototipos funcionales
                     </h3>
-                    <p className="text-xs text-gray-300 leading-snug">
+                    <p className="text-[10px] sm:text-xs text-gray-300 leading-snug mt-1">
                       Prueba ajustes, interferencias de ensamble y holguras imprimiendo directamente tu archivo 3D antes de mandar a fabricar en serie o invertir en moldes.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5 sm:gap-2 text-[9px] sm:text-[10px] font-mono">
-                  <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300">Tolerancia ±0.15 mm</span>
-                  <span className="px-2 py-0.5 rounded bg-[#5BB8FF]/10 text-[#5BB8FF] border border-[#5BB8FF]/20">PETG · PLA+ Pro</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300">Archivos .step / .stl</span>
+                <div className="flex flex-wrap gap-1 sm:gap-1.5 pt-1 text-[8.5px] sm:text-[9.5px] font-mono">
+                  <span className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300">±0.15 mm</span>
+                  <span className="px-1.5 py-0.5 rounded bg-[#5BB8FF]/10 text-[#5BB8FF] border border-[#5BB8FF]/20">PETG · PLA+</span>
                 </div>
               </div>
 
-              {/* Pestaña de información técnica desplegable */}
               {expandedApp === 'proto' && (
-                <div className="p-4 sm:p-5 bg-[#090D10] border-t border-white/10 text-xs space-y-3 animate-fadeIn">
-                  <div className="space-y-1.5">
-                    <span className="font-mono text-[10px] uppercase text-[#5BB8FF] font-bold block">
-                      Validación de Ensamble y DFM:
-                    </span>
-                    <p className="text-gray-300 leading-relaxed text-[11px] sm:text-xs">
-                      Permite verificar en físico antes de maquinados costosos: pruebas de ensamble con tornillería estándar M3 a M8, validación de holguras con rodamientos y prueba ergonómica en mano del operario.
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 font-mono text-[10.5px]">
-                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/5">
-                      <span className="text-gray-400 block text-[9px] uppercase">Formatos compatibles</span>
-                      <strong className="text-white">.STEP, .STP, .STL, .3MF, .OBJ</strong>
-                    </div>
-                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/5">
-                      <span className="text-gray-400 block text-[9px] uppercase">Ahorro estimado</span>
-                      <strong className="text-[#8FB99B]">Evita modificaciones de molde ($40,000+)</strong>
-                    </div>
-                  </div>
-
-                  <div className="pt-2 flex items-center justify-between border-t border-white/5">
-                    <span className="text-[10px] text-gray-400 font-mono">Tiempo de fabricación: 24 a 72 hrs</span>
+                <div className="p-3 sm:p-4 bg-[#090D10] border-t border-white/10 text-[10.5px] sm:text-xs space-y-2 animate-fadeIn">
+                  <p className="text-gray-300 leading-relaxed">
+                    Permite comprobar ensamble con tornillería estándar, holguras con rodamientos y prueba ergonómica en mano del operario antes de invertir en herramentales permanentes.
+                  </p>
+                  <div className="pt-1 flex items-center justify-between border-t border-white/5">
+                    <span className="text-[9.5px] text-[#5BB8FF] font-mono">Formatos: .STEP, .STP, .STL</span>
                     <a
                       href="#cotizar-industria"
                       onClick={() => setFormData(prev => ({ ...prev, aplicacion: 'Prototipos funcionales (desde 24 a 72 hrs)', urgencia: 'Desde 24 a 72 hrs' }))}
-                      className="px-3 py-1.5 rounded-lg bg-[#5BB8FF] hover:bg-[#8AD2FF] text-black font-bold text-xs inline-flex items-center gap-1 transition-colors"
+                      className="px-2.5 py-1 rounded bg-[#5BB8FF] text-black font-bold text-[10px] sm:text-xs inline-flex items-center gap-1"
                     >
-                      <span>Cotizar este prototipo</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <span>Cotizar</span>
+                      <ArrowRight className="w-3 h-3" />
                     </a>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Tarjeta 2: Utillaje y Herramentales */}
+            {/* Cuadro 2: Utillaje y Herramentales */}
             <div
-              className={`rounded-xl sm:rounded-2xl border transition-all duration-300 bg-[#12181C] shadow-lg overflow-hidden ${
+              className={`rounded-xl sm:rounded-2xl border transition-all duration-200 bg-[#12181C] shadow-md flex flex-col justify-between overflow-hidden ${
                 expandedApp === 'jig'
-                  ? 'border-[#8FB99B] shadow-[0_0_20px_rgba(143,185,155,0.15)] ring-1 ring-[#8FB99B]/40'
+                  ? 'border-[#8FB99B] ring-1 ring-[#8FB99B]/40 bg-[#141C22]'
                   : 'border-white/10 hover:border-[#8FB99B]/50'
               }`}
             >
               <div
                 onClick={() => setExpandedApp(expandedApp === 'jig' ? null : 'jig')}
-                className="p-4 sm:p-5 cursor-pointer space-y-3"
+                className="p-3 sm:p-5 cursor-pointer space-y-2 flex-1"
               >
-                <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 border-b border-white/5 pb-2">
+                <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 border-b border-white/5 pb-1.5">
                   <span className="text-[#8FB99B] font-bold">JIG-02</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-300">Herramental a medida</span>
-                    <span className={`text-[10px] px-2 py-0.5 rounded flex items-center gap-1 font-sans transition-colors ${
-                      expandedApp === 'jig' ? 'bg-[#8FB99B] text-black font-bold' : 'bg-white/5 text-gray-300 hover:text-white'
+                  <div className="flex items-center gap-1.5">
+                    <span className="hidden sm:inline text-gray-300">Herramental a medida</span>
+                    <span className={`text-[9px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded flex items-center gap-1 font-sans font-semibold ${
+                      expandedApp === 'jig' ? 'bg-[#8FB99B] text-black' : 'bg-white/5 text-gray-300'
                     }`}>
-                      {expandedApp === 'jig' ? 'Menos info' : '+ Más info'}
+                      {expandedApp === 'jig' ? 'Cerrar' : '+ Info'}
                       <ChevronDown className={`w-3 h-3 transition-transform ${expandedApp === 'jig' ? 'rotate-180' : ''}`} />
                     </span>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#8FB99B]/10 border border-[#8FB99B]/20 flex items-center justify-center shrink-0 text-[#8FB99B] shadow-[0_0_12px_rgba(143,185,155,0.15)]">
-                    <Wrench className="w-5 h-5" />
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-[#8FB99B]/10 border border-[#8FB99B]/20 flex items-center justify-center shrink-0 text-[#8FB99B]">
+                    <Wrench className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
-                  <div className="space-y-1 flex-1 min-w-0">
-                    <h3 className="text-sm sm:text-base font-bold text-white leading-snug">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-xs sm:text-base font-bold text-white leading-snug">
                       Utillaje y herramentales
                     </h3>
-                    <p className="text-xs text-gray-300 leading-snug">
+                    <p className="text-[10px] sm:text-xs text-gray-300 leading-snug mt-1">
                       Fabricamos con las medidas exactas de tu archivo nidos de apoyo, plantillas para operarios y mordazas protectoras que no rayan piezas terminadas.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5 sm:gap-2 text-[9px] sm:text-[10px] font-mono">
-                  <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300">Ajuste fiel a plano</span>
-                  <span className="px-2 py-0.5 rounded bg-[#8FB99B]/10 text-[#8FB99B] border border-[#8FB99B]/20">TPU 95A · PETG</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300">Superficie antirrayón</span>
+                <div className="flex flex-wrap gap-1 sm:gap-1.5 pt-1 text-[8.5px] sm:text-[9.5px] font-mono">
+                  <span className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300">Ajuste fiel</span>
+                  <span className="px-1.5 py-0.5 rounded bg-[#8FB99B]/10 text-[#8FB99B] border border-[#8FB99B]/20">TPU 95A · PETG</span>
                 </div>
               </div>
 
-              {/* Pestaña de información técnica desplegable */}
               {expandedApp === 'jig' && (
-                <div className="p-4 sm:p-5 bg-[#090D10] border-t border-white/10 text-xs space-y-3 animate-fadeIn">
-                  <div className="space-y-1.5">
-                    <span className="font-mono text-[10px] uppercase text-[#8FB99B] font-bold block">
-                      Dispositivos Poka-Yoke y Protección de Línea:
-                    </span>
-                    <p className="text-gray-300 leading-relaxed text-[11px] sm:text-xs">
-                      Diseñados para estaciones de ensamble manual o semiautomático. Nidos de sujeción para atornilladores neumáticos, galgas de paso/no-paso e insertos en poliuretano TPU que previenen abolladuras y marcas cosméticas en piezas de vista.
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 font-mono text-[10.5px]">
-                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/5">
-                      <span className="text-gray-400 block text-[9px] uppercase">Material de contacto</span>
-                      <strong className="text-white">TPU 95A (Goma no marcante)</strong>
-                    </div>
-                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/5">
-                      <span className="text-gray-400 block text-[9px] uppercase">Efectividad</span>
-                      <strong className="text-[#8FB99B]">Cero rayones y menor fatiga</strong>
-                    </div>
-                  </div>
-
-                  <div className="pt-2 flex items-center justify-between border-t border-white/5">
-                    <span className="text-[10px] text-gray-400 font-mono">Resistencia mecánica garantizada</span>
+                <div className="p-3 sm:p-4 bg-[#090D10] border-t border-white/10 text-[10.5px] sm:text-xs space-y-2 animate-fadeIn">
+                  <p className="text-gray-300 leading-relaxed">
+                    Nidos de apoyo para atornilladores, galgas Poka-Yoke de paso/no-paso e insertos en elastómero TPU que evitan marcas en piezas pulidas o pintadas.
+                  </p>
+                  <div className="pt-1 flex items-center justify-between border-t border-white/5">
+                    <span className="text-[9.5px] text-[#8FB99B] font-mono">Superficie antirrayón</span>
                     <a
                       href="#cotizar-industria"
                       onClick={() => setFormData(prev => ({ ...prev, aplicacion: 'Utillaje y herramentales', urgencia: 'A medida' }))}
-                      className="px-3 py-1.5 rounded-lg bg-[#8FB99B] hover:bg-[#a5cca0] text-black font-bold text-xs inline-flex items-center gap-1 transition-colors"
+                      className="px-2.5 py-1 rounded bg-[#8FB99B] text-black font-bold text-[10px] sm:text-xs inline-flex items-center gap-1"
                     >
-                      <span>Cotizar herramental / Jig</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <span>Cotizar</span>
+                      <ArrowRight className="w-3 h-3" />
                     </a>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Tarjeta 3: Refacciones y Obsoletos */}
+            {/* Cuadro 3: Refacciones y Obsoletos */}
             <div
-              className={`rounded-xl sm:rounded-2xl border transition-all duration-300 bg-[#12181C] shadow-lg overflow-hidden ${
+              className={`rounded-xl sm:rounded-2xl border transition-all duration-200 bg-[#12181C] shadow-md flex flex-col justify-between overflow-hidden ${
                 expandedApp === 'spare'
-                  ? 'border-amber-400 shadow-[0_0_20px_rgba(251,191,36,0.15)] ring-1 ring-amber-400/40'
+                  ? 'border-amber-400 ring-1 ring-amber-400/40 bg-[#141C22]'
                   : 'border-white/10 hover:border-amber-400/50'
               }`}
             >
               <div
                 onClick={() => setExpandedApp(expandedApp === 'spare' ? null : 'spare')}
-                className="p-4 sm:p-5 cursor-pointer space-y-3"
+                className="p-3 sm:p-5 cursor-pointer space-y-2 flex-1"
               >
-                <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 border-b border-white/5 pb-2">
+                <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 border-b border-white/5 pb-1.5">
                   <span className="text-amber-400 font-bold">SPARE-03</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-300">Sustitución directa</span>
-                    <span className={`text-[10px] px-2 py-0.5 rounded flex items-center gap-1 font-sans transition-colors ${
-                      expandedApp === 'spare' ? 'bg-amber-400 text-black font-bold' : 'bg-white/5 text-gray-300 hover:text-white'
+                  <div className="flex items-center gap-1.5">
+                    <span className="hidden sm:inline text-gray-300">Sustitución directa</span>
+                    <span className={`text-[9px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded flex items-center gap-1 font-sans font-semibold ${
+                      expandedApp === 'spare' ? 'bg-amber-400 text-black' : 'bg-white/5 text-gray-300'
                     }`}>
-                      {expandedApp === 'spare' ? 'Menos info' : '+ Más info'}
+                      {expandedApp === 'spare' ? 'Cerrar' : '+ Info'}
                       <ChevronDown className={`w-3 h-3 transition-transform ${expandedApp === 'spare' ? 'rotate-180' : ''}`} />
                     </span>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center shrink-0 text-amber-300 shadow-[0_0_12px_rgba(251,191,36,0.15)]">
-                    <RotateCcw className="w-5 h-5" />
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center shrink-0 text-amber-300">
+                    <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
-                  <div className="space-y-1 flex-1 min-w-0">
-                    <h3 className="text-sm sm:text-base font-bold text-white leading-snug">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-xs sm:text-base font-bold text-white leading-snug">
                       Refacciones y obsoletos
                     </h3>
-                    <p className="text-xs text-gray-300 leading-snug">
+                    <p className="text-[10px] sm:text-xs text-gray-300 leading-snug mt-1">
                       ¿Se rompió una pieza y el fabricante tarda semanas o ya no existe? Con tu archivo 3D o plano con medidas exactas, te la imprimimos en polímero técnico resistente.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5 sm:gap-2 text-[9px] sm:text-[10px] font-mono">
-                  <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300">Con tus cotas</span>
-                  <span className="px-2 py-0.5 rounded bg-amber-400/10 text-amber-300 border border-amber-400/20">PETG · ABS/ASA</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300">Desde 1 pieza</span>
+                <div className="flex flex-wrap gap-1 sm:gap-1.5 pt-1 text-[8.5px] sm:text-[9.5px] font-mono">
+                  <span className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300">Con tus cotas</span>
+                  <span className="px-1.5 py-0.5 rounded bg-amber-400/10 text-amber-300 border border-amber-400/20">PETG · ABS/ASA</span>
                 </div>
               </div>
 
-              {/* Pestaña de información técnica desplegable */}
               {expandedApp === 'spare' && (
-                <div className="p-4 sm:p-5 bg-[#090D10] border-t border-white/10 text-xs space-y-3 animate-fadeIn">
-                  <div className="space-y-1.5">
-                    <span className="font-mono text-[10px] uppercase text-amber-400 font-bold block">
-                      Reemplazo Inmediato para Evitar Paro de Máquina:
-                    </span>
-                    <p className="text-gray-300 leading-relaxed text-[11px] sm:text-xs">
-                      Replicamos en polímero de alta resistencia componentes críticos rotos: engranes helicoidales o rectos, poleas sincronizadas, levas, manetas de ajuste, bujes, codos de aspiración y carcasas de protección descatalogadas.
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 font-mono text-[10.5px]">
-                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/5">
-                      <span className="text-gray-400 block text-[9px] uppercase">Resistencia Térmica</span>
-                      <strong className="text-white">Hasta 95°C continuos en ABS</strong>
-                    </div>
-                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/5">
-                      <span className="text-gray-400 block text-[9px] uppercase">Tiempo de respuesta</span>
-                      <strong className="text-amber-300">Entrega de urgencia 24 hrs</strong>
-                    </div>
-                  </div>
-
-                  <div className="pt-2 flex items-center justify-between border-t border-white/5">
-                    <span className="text-[10px] text-gray-400 font-mono">Sustitución 1 a 1 de la pieza original</span>
+                <div className="p-3 sm:p-4 bg-[#090D10] border-t border-white/10 text-[10.5px] sm:text-xs space-y-2 animate-fadeIn">
+                  <p className="text-gray-300 leading-relaxed">
+                    Replicamos en polímero industrial componentes mecánicos rotos: engranes, poleas sincronizadas, levas, manetas de ajuste, bujes y tapas de maquinaria descatalogada.
+                  </p>
+                  <div className="pt-1 flex items-center justify-between border-t border-white/5">
+                    <span className="text-[9.5px] text-amber-300 font-mono">Desde 1 sola pieza</span>
                     <a
                       href="#cotizar-industria"
                       onClick={() => setFormData(prev => ({ ...prev, aplicacion: 'Refacciones y obsoletos', urgencia: 'Sustitución directa' }))}
-                      className="px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-black font-bold text-xs inline-flex items-center gap-1 transition-colors"
+                      className="px-2.5 py-1 rounded bg-amber-400 text-black font-bold text-[10px] sm:text-xs inline-flex items-center gap-1"
                     >
-                      <span>Cotizar refacción</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <span>Cotizar</span>
+                      <ArrowRight className="w-3 h-3" />
                     </a>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Tarjeta 4: Lotes Cortos y Preseries */}
+            {/* Cuadro 4: Lotes Cortos y Preseries */}
             <div
-              className={`rounded-xl sm:rounded-2xl border transition-all duration-300 bg-[#12181C] shadow-lg overflow-hidden ${
+              className={`rounded-xl sm:rounded-2xl border transition-all duration-200 bg-[#12181C] shadow-md flex flex-col justify-between overflow-hidden ${
                 expandedApp === 'batch'
-                  ? 'border-purple-400 shadow-[0_0_20px_rgba(192,132,252,0.15)] ring-1 ring-purple-400/40'
+                  ? 'border-purple-400 ring-1 ring-purple-400/40 bg-[#141C22]'
                   : 'border-white/10 hover:border-purple-400/50'
               }`}
             >
               <div
                 onClick={() => setExpandedApp(expandedApp === 'batch' ? null : 'batch')}
-                className="p-4 sm:p-5 cursor-pointer space-y-3"
+                className="p-3 sm:p-5 cursor-pointer space-y-2 flex-1"
               >
-                <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 border-b border-white/5 pb-2">
+                <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 border-b border-white/5 pb-1.5">
                   <span className="text-purple-400 font-bold">BATCH-04</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-300">Bajo demanda</span>
-                    <span className={`text-[10px] px-2 py-0.5 rounded flex items-center gap-1 font-sans transition-colors ${
-                      expandedApp === 'batch' ? 'bg-purple-400 text-black font-bold' : 'bg-white/5 text-gray-300 hover:text-white'
+                  <div className="flex items-center gap-1.5">
+                    <span className="hidden sm:inline text-gray-300">Bajo demanda</span>
+                    <span className={`text-[9px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded flex items-center gap-1 font-sans font-semibold ${
+                      expandedApp === 'batch' ? 'bg-purple-400 text-black' : 'bg-white/5 text-gray-300'
                     }`}>
-                      {expandedApp === 'batch' ? 'Menos info' : '+ Más info'}
+                      {expandedApp === 'batch' ? 'Cerrar' : '+ Info'}
                       <ChevronDown className={`w-3 h-3 transition-transform ${expandedApp === 'batch' ? 'rotate-180' : ''}`} />
                     </span>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-purple-400/10 border border-purple-400/20 flex items-center justify-center shrink-0 text-purple-300 shadow-[0_0_12px_rgba(192,132,252,0.15)]">
-                    <Boxes className="w-5 h-5" />
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-purple-400/10 border border-purple-400/20 flex items-center justify-center shrink-0 text-purple-300">
+                    <Boxes className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
-                  <div className="space-y-1 flex-1 min-w-0">
-                    <h3 className="text-sm sm:text-base font-bold text-white leading-snug">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-xs sm:text-base font-bold text-white leading-snug">
                       Lotes Cortos y Preseries
                     </h3>
-                    <p className="text-xs text-gray-300 leading-snug">
+                    <p className="text-[10px] sm:text-xs text-gray-300 leading-snug mt-1">
                       Producción continua de varias piezas bajo demanda para arranques, reemplazos o preseries sin tener que pagar matrices ni herramentales costosos.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5 sm:gap-2 text-[9px] sm:text-[10px] font-mono">
-                  <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300">Sin costo de molde</span>
-                  <span className="px-2 py-0.5 rounded bg-purple-400/10 text-purple-300 border border-purple-400/20">1 a 500+ piezas</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300">Entrega en SLP</span>
+                <div className="flex flex-wrap gap-1 sm:gap-1.5 pt-1 text-[8.5px] sm:text-[9.5px] font-mono">
+                  <span className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300">Sin matriz</span>
+                  <span className="px-1.5 py-0.5 rounded bg-purple-400/10 text-purple-300 border border-purple-400/20">1 a 500+ pzs</span>
                 </div>
               </div>
 
-              {/* Pestaña de información técnica desplegable */}
               {expandedApp === 'batch' && (
-                <div className="p-4 sm:p-5 bg-[#090D10] border-t border-white/10 text-xs space-y-3 animate-fadeIn">
-                  <div className="space-y-1.5">
-                    <span className="font-mono text-[10px] uppercase text-purple-400 font-bold block">
-                      Manufactura Puente y Preseries Ágiles:
-                    </span>
-                    <p className="text-gray-300 leading-relaxed text-[11px] sm:text-xs">
-                      Ideal para producciones de 10 a 500 piezas antes de un molde definitivo, o para piezas de baja rotación donde nunca se amortizaría una matriz de inyección. Modifica el diseño de un lote al siguiente sin costos extra.
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 font-mono text-[10.5px]">
-                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/5">
-                      <span className="text-gray-400 block text-[9px] uppercase">Capacidad de lote</span>
-                      <strong className="text-white">Escalable de 10 a 500+ pzs</strong>
-                    </div>
-                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/5">
-                      <span className="text-gray-400 block text-[9px] uppercase">Flexibilidad de diseño</span>
-                      <strong className="text-purple-300">Revisiones CAD instantáneas</strong>
-                    </div>
-                  </div>
-
-                  <div className="pt-2 flex items-center justify-between border-t border-white/5">
-                    <span className="text-[10px] text-gray-400 font-mono">Entregas parciales o por lote completo</span>
+                <div className="p-3 sm:p-4 bg-[#090D10] border-t border-white/10 text-[10.5px] sm:text-xs space-y-2 animate-fadeIn">
+                  <p className="text-gray-300 leading-relaxed">
+                    Producciones de 10 a 500 piezas sin la inversión de un molde permanente. Puedes iterar y modificar el diseño entre lote y lote sin costos de remaquinado.
+                  </p>
+                  <div className="pt-1 flex items-center justify-between border-t border-white/5">
+                    <span className="text-[9.5px] text-purple-300 font-mono">Entrega en SLP</span>
                     <a
                       href="#cotizar-industria"
                       onClick={() => setFormData(prev => ({ ...prev, aplicacion: 'Lotes Cortos y Preseries', urgencia: 'Bajo demanda' }))}
-                      className="px-3 py-1.5 rounded-lg bg-purple-400 hover:bg-purple-300 text-black font-bold text-xs inline-flex items-center gap-1 transition-colors"
+                      className="px-2.5 py-1 rounded bg-purple-400 text-black font-bold text-[10px] sm:text-xs inline-flex items-center gap-1"
                     >
-                      <span>Cotizar lote de piezas</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <span>Cotizar</span>
+                      <ArrowRight className="w-3 h-3" />
                     </a>
                   </div>
                 </div>
@@ -914,114 +847,99 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          5. SECCIÓN 03: CÓMO TRABAJAMOS (FLUJO VISUAL SIN REDUNDANCIA)
+          5. SECCIÓN 03: CÓMO TRABAJAMOS (4 PASOS EN BLOQUE 2x2)
           ======================================================== */}
-      <section className="py-8 sm:py-14 border-b border-white/10 bg-[#0E1317]">
+      <section className="py-7 sm:py-12 border-b border-white/10 bg-[#0E1317]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           
-          <div className="mb-6 sm:mb-9 text-center sm:text-left">
-            <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center justify-center sm:justify-start gap-2">
+          <div className="mb-4 sm:mb-7">
+            <div className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
               <span className="w-5 h-px bg-[#5BB8FF]" />
-              03 / Proceso de Fabricación
+              03 / Cómo trabajamos
             </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
-              De tu archivo a la pieza, directo y sin vueltas.
+            <h2 className="text-xl sm:text-3xl font-extrabold text-white mt-1.5">
+              De tu archivo a la pieza en 4 pasos claros.
             </h2>
-            <p className="text-xs sm:text-sm text-gray-400 mt-1">
-              Flujo de manufactura transparente desde que nos envías tu modelo hasta que recibes tu pieza en mano.
-            </p>
           </div>
 
-          {/* Pipeline Visual de Manufactura */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 relative">
+          {/* Bloque de 4 cuadros (2x2 en celular, 4 en línea en escritorio para evitar scroll) */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
             
-            {/* Estación 1 */}
-            <div className="p-4 sm:p-5 rounded-2xl border border-white/10 bg-[#12181C] hover:border-[#5BB8FF]/50 transition-all shadow-md space-y-3 relative group">
-              <div className="flex items-center justify-between">
-                <div className="w-10 h-10 rounded-xl bg-[#5BB8FF]/10 border border-[#5BB8FF]/20 flex items-center justify-center text-[#5BB8FF] group-hover:scale-110 transition-transform">
-                  <UploadCloud className="w-5 h-5" />
-                </div>
-                <ArrowRight className="w-4 h-4 text-gray-600 hidden lg:block group-hover:text-[#5BB8FF] transition-colors" />
+            {/* Paso 1 */}
+            <div className="p-3 sm:p-4 rounded-xl border border-white/10 bg-[#12181C] space-y-2 relative group hover:border-[#5BB8FF]/40 transition-colors">
+              <div className="flex items-center justify-between font-mono text-xs">
+                <span className="text-[#5BB8FF] font-black text-sm">01</span>
+                <span className="inline-flex items-center gap-1 text-[9.5px] sm:text-[10px] text-[#5BB8FF] font-semibold bg-[#5BB8FF]/10 px-2 py-0.5 rounded">
+                  Paso 1 <ArrowRight className="w-3 h-3 inline" />
+                </span>
               </div>
-              <div>
-                <h4 className="font-bold text-sm text-white">Envío de Archivo o Medidas</h4>
-                <p className="text-xs text-gray-300 mt-1 leading-relaxed">
-                  Nos compartes tu modelo 3D (.step, .stl, .3mf) o una foto con cotas y medidas exactas.
-                </p>
+              <div className="flex items-center gap-2">
+                <UploadCloud className="w-4 h-4 text-[#5BB8FF] shrink-0" />
+                <h4 className="font-bold text-xs sm:text-sm text-white leading-tight">Archivo / Medidas</h4>
               </div>
-              <div className="pt-1 flex items-center gap-1.5 font-mono text-[10px] text-[#5BB8FF]">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#5BB8FF]" />
-                <span>Recepción Inmediata</span>
-              </div>
+              <p className="text-[10px] sm:text-xs text-gray-300 leading-relaxed">
+                Nos compartes tu archivo 3D (.step, .stl, .obj) o un croquis con las medidas exactas de tu pieza.
+              </p>
             </div>
 
-            {/* Estación 2 */}
-            <div className="p-4 sm:p-5 rounded-2xl border border-white/10 bg-[#12181C] hover:border-amber-400/50 transition-all shadow-md space-y-3 relative group">
-              <div className="flex items-center justify-between">
-                <div className="w-10 h-10 rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
-                  <Sliders className="w-5 h-5" />
-                </div>
-                <ArrowRight className="w-4 h-4 text-gray-600 hidden lg:block group-hover:text-amber-400 transition-colors" />
+            {/* Paso 2 */}
+            <div className="p-3 sm:p-4 rounded-xl border border-white/10 bg-[#12181C] space-y-2 relative group hover:border-amber-400/40 transition-colors">
+              <div className="flex items-center justify-between font-mono text-xs">
+                <span className="text-amber-400 font-black text-sm">02</span>
+                <span className="inline-flex items-center gap-1 text-[9.5px] sm:text-[10px] text-amber-300 font-semibold bg-amber-400/10 px-2 py-0.5 rounded">
+                  Paso 2 <ArrowRight className="w-3 h-3 inline" />
+                </span>
               </div>
-              <div>
-                <h4 className="font-bold text-sm text-white">Validación y Cotización</h4>
-                <p className="text-xs text-gray-300 mt-1 leading-relaxed">
-                  Revisamos imprimibilidad, definimos el polímero ideal para tu uso y te cotizamos al momento.
-                </p>
+              <div className="flex items-center gap-2">
+                <Sliders className="w-4 h-4 text-amber-400 shrink-0" />
+                <h4 className="font-bold text-xs sm:text-sm text-white leading-tight">Cotización Rápida</h4>
               </div>
-              <div className="pt-1 flex items-center gap-1.5 font-mono text-[10px] text-amber-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                <span>Respuesta en Minutos</span>
-              </div>
+              <p className="text-[10px] sm:text-xs text-gray-300 leading-relaxed">
+                Revisamos la geometría, elegimos el polímero ideal y te cotizamos de inmediato sin compromiso.
+              </p>
             </div>
 
-            {/* Estación 3 */}
-            <div className="p-4 sm:p-5 rounded-2xl border border-white/10 bg-[#12181C] hover:border-emerald-400/50 transition-all shadow-md space-y-3 relative group">
-              <div className="flex items-center justify-between">
-                <div className="w-10 h-10 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
-                  <Cpu className="w-5 h-5" />
-                </div>
-                <ArrowRight className="w-4 h-4 text-gray-600 hidden lg:block group-hover:text-emerald-400 transition-colors" />
+            {/* Paso 3 */}
+            <div className="p-3 sm:p-4 rounded-xl border border-white/10 bg-[#12181C] space-y-2 relative group hover:border-emerald-400/40 transition-colors">
+              <div className="flex items-center justify-between font-mono text-xs">
+                <span className="text-emerald-400 font-black text-sm">03</span>
+                <span className="inline-flex items-center gap-1 text-[9.5px] sm:text-[10px] text-emerald-300 font-semibold bg-emerald-400/10 px-2 py-0.5 rounded">
+                  Paso 3 <ArrowRight className="w-3 h-3 inline" />
+                </span>
               </div>
-              <div>
-                <h4 className="font-bold text-sm text-white">Fabricación en Polímero Técnico</h4>
-                <p className="text-xs text-gray-300 mt-1 leading-relaxed">
-                  Impresión 3D con calibración de tolerancias dimensionales y retiro limpio de soportes.
-                </p>
+              <div className="flex items-center gap-2">
+                <Cpu className="w-4 h-4 text-emerald-400 shrink-0" />
+                <h4 className="font-bold text-xs sm:text-sm text-white leading-tight">Fabricación Técnica</h4>
               </div>
-              <div className="pt-1 flex items-center gap-1.5 font-mono text-[10px] text-emerald-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                <span>Tolerancia ±0.15 mm</span>
-              </div>
+              <p className="text-[10px] sm:text-xs text-gray-300 leading-relaxed">
+                Impresión 3D en polímero técnico con tolerancias controladas y retiro limpio de soportes.
+              </p>
             </div>
 
-            {/* Estación 4 */}
-            <div className="p-4 sm:p-5 rounded-2xl border border-white/10 bg-[#12181C] hover:border-purple-400/50 transition-all shadow-md space-y-3 relative group">
-              <div className="flex items-center justify-between">
-                <div className="w-10 h-10 rounded-xl bg-purple-400/10 border border-purple-400/20 flex items-center justify-center text-purple-300 group-hover:scale-110 transition-transform">
-                  <Truck className="w-5 h-5" />
-                </div>
-                <CheckCircle2 className="w-4 h-4 text-[#8FB99B]" />
+            {/* Paso 4 */}
+            <div className="p-3 sm:p-4 rounded-xl border border-white/10 bg-[#12181C] space-y-2 relative group hover:border-[#8FB99B]/40 transition-colors">
+              <div className="flex items-center justify-between font-mono text-xs">
+                <span className="text-[#8FB99B] font-black text-sm">04</span>
+                <span className="inline-flex items-center gap-1 text-[9.5px] sm:text-[10px] text-[#8FB99B] font-semibold bg-[#8FB99B]/10 px-2 py-0.5 rounded">
+                  Paso 4 <Check className="w-3 h-3 inline" />
+                </span>
               </div>
-              <div>
-                <h4 className="font-bold text-sm text-white">Entrega en Planta</h4>
-                <p className="text-xs text-gray-300 mt-1 leading-relaxed">
-                  Recibes tus piezas listas en mano en San Luis Potosí de 24 a 72 horas para reactivar tu línea.
-                </p>
+              <div className="flex items-center gap-2">
+                <Truck className="w-4 h-4 text-[#8FB99B] shrink-0" />
+                <h4 className="font-bold text-xs sm:text-sm text-white leading-tight">Entrega en Planta</h4>
               </div>
-              <div className="pt-1 flex items-center gap-1.5 font-mono text-[10px] text-purple-300">
-                <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
-                <span>Local SLP · 24 a 72 hrs</span>
-              </div>
+              <p className="text-[10px] sm:text-xs text-gray-300 leading-relaxed">
+                Entrega personal acordada en San Luis Potosí o retiro directo en taller en 24 a 72 horas.
+              </p>
             </div>
 
           </div>
 
           {/* Nota de Preparación */}
-          <div className="mt-4 p-3.5 rounded-xl border border-[#5BB8FF]/30 bg-[#5BB8FF]/5 flex items-center gap-3 text-xs text-gray-300">
+          <div className="mt-3.5 p-3 sm:p-3.5 rounded-xl border border-[#5BB8FF]/30 bg-[#5BB8FF]/5 flex items-center gap-2.5 text-xs text-gray-300">
             <span className="w-2 h-2 rounded-full bg-[#5BB8FF] shrink-0" />
             <span>
-              <strong className="text-white">¿Qué necesitas para cotizar?</strong> Tu archivo digital en formato .step, .stl u .obj, o las medidas exactas de tu pieza. Nosotros nos encargamos de que la impresión 3D quede con la máxima calidad técnica.
+              <strong className="text-white">¿Qué necesitas para cotizar?</strong> Tu archivo digital en formato .step, .stl u .obj, o las medidas exactas de tu pieza. Nosotros nos encargamos de que la manufactura quede exacta.
             </span>
           </div>
 
@@ -1075,178 +993,144 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          7. SECCIÓN 05: INFORMACIÓN CLAVE DESPLEGABLE (SIN PUNTOS SUSPENSIVOS)
+          7. SECCIÓN 05: INFORMACIÓN CLAVE (GRID 2x2, TEXTO COMPLETO SIN PUNTOS SUSPENSIVOS)
           ======================================================== */}
-      <section className="py-8 sm:py-14 border-b border-white/10 bg-[#0A0E11]">
+      <section className="py-7 sm:py-12 border-b border-white/10 bg-[#0A0E11]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           
-          <div className="text-center mb-5 sm:mb-8">
-            <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5BB8FF] inline-flex items-center gap-2">
+          <div className="mb-4 sm:mb-7">
+            <div className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
               <span className="w-5 h-px bg-[#5BB8FF]" />
               05 / Información Clave
             </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
+            <h2 className="text-xl sm:text-3xl font-extrabold text-white mt-1.5">
               Lo que necesitas saber.
             </h2>
-            <p className="text-xs sm:text-sm text-gray-400 mt-1">
-              Toca cualquier tarjeta para desplegar los detalles completos de servicio y políticas.
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+          {/* Grid de 4 Cuadros (2x2 en celular y escritorio) */}
+          <div className="grid grid-cols-2 gap-2.5 sm:gap-4">
             
-            {/* Tarjeta 1: ¿Qué necesitas? */}
+            {/* Cuadro 1: ¿Qué necesitas? */}
             <div
               onClick={() => setExpandedInfo(expandedInfo === 'archivo' ? null : 'archivo')}
-              className={`p-4 rounded-xl border transition-all cursor-pointer bg-[#12181C] space-y-2 ${
+              className={`p-3 sm:p-4 rounded-xl border transition-all cursor-pointer bg-[#12181C] space-y-1.5 ${
                 expandedInfo === 'archivo'
-                  ? 'border-[#5BB8FF] shadow-[0_0_15px_rgba(91,184,255,0.2)] bg-[#141C22]'
+                  ? 'border-[#5BB8FF] bg-[#141C22]'
                   : 'border-white/10 hover:border-white/20'
               }`}
             >
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 font-mono text-xs sm:text-sm text-white font-bold">
-                  <FileText className="w-4 h-4 text-[#5BB8FF] shrink-0" />
-                  <span>¿Qué necesitas para empezar?</span>
+                <div className="flex items-center gap-1.5 font-mono text-[10.5px] sm:text-xs text-white font-bold">
+                  <FileText className="w-3.5 h-3.5 text-[#5BB8FF] shrink-0" />
+                  <span>¿Qué necesitas?</span>
                 </div>
-                <span className={`text-[10px] px-2 py-0.5 rounded flex items-center gap-1 font-mono transition-colors ${
+                <span className={`text-[9px] px-1.5 py-0.2 rounded font-mono ${
                   expandedInfo === 'archivo' ? 'bg-[#5BB8FF] text-black font-bold' : 'bg-white/5 text-gray-400'
                 }`}>
-                  {expandedInfo === 'archivo' ? 'Cerrar' : '+ Detalle'}
-                  <ChevronDown className={`w-3 h-3 transition-transform ${expandedInfo === 'archivo' ? 'rotate-180' : ''}`} />
+                  {expandedInfo === 'archivo' ? 'Cerrar' : '+ Info'}
                 </span>
               </div>
-              <p className="text-xs text-gray-300 leading-relaxed">
-                Tu archivo 3D (.step, .stl, .3mf) o un croquis claro con las medidas exactas de la pieza. La cotización es inmediata y sin costo.
+              <p className="text-[10px] sm:text-xs text-gray-300 leading-snug">
+                Tu archivo 3D en formato .step o .stl, o un croquis con las cotas exactas. La cotización es inmediata.
               </p>
               {expandedInfo === 'archivo' && (
-                <div className="pt-2 border-t border-white/10 text-[11px] text-gray-300 space-y-1.5 animate-fadeIn">
-                  <p>
-                    • <strong>Si tienes modelo 3D:</strong> Aceptamos archivos exportados desde SolidWorks, Inventor, Fusion 360, CATIA, NX, AutoCAD o Blender (.step, .stp, .stl, .3mf, .obj).
-                  </p>
-                  <p>
-                    • <strong>Si no tienes archivo 3D:</strong> Mándanos fotos nítidas con una regla o calibrador al lado y las medidas clave (diámetros, distancias entre centros, espesor).
-                  </p>
-                  <p>
-                    • <strong>Muestra física:</strong> Si te encuentras en San Luis Potosí, podemos coordinar la revisión directa de la pieza física dañada para replicarla con tus medidas.
-                  </p>
+                <div className="pt-2 border-t border-white/10 text-[10px] sm:text-[11px] text-gray-300 space-y-1 animate-fadeIn">
+                  <p>• Aceptamos archivos .step, .stp, .stl, .3mf y .obj exportados de cualquier software CAD.</p>
+                  <p>• Si no tienes modelo 3D, envíanos fotos con regla y las medidas principales de tu pieza.</p>
                 </div>
               )}
             </div>
 
-            {/* Tarjeta 2: Confidencialidad */}
+            {/* Cuadro 2: Confidencialidad */}
             <div
               onClick={() => setExpandedInfo(expandedInfo === 'nda' ? null : 'nda')}
-              className={`p-4 rounded-xl border transition-all cursor-pointer bg-[#12181C] space-y-2 ${
+              className={`p-3 sm:p-4 rounded-xl border transition-all cursor-pointer bg-[#12181C] space-y-1.5 ${
                 expandedInfo === 'nda'
-                  ? 'border-[#8FB99B] shadow-[0_0_15px_rgba(143,185,155,0.2)] bg-[#141C22]'
+                  ? 'border-[#8FB99B] bg-[#141C22]'
                   : 'border-white/10 hover:border-white/20'
               }`}
             >
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 font-mono text-xs sm:text-sm text-white font-bold">
-                  <ShieldCheck className="w-4 h-4 text-[#8FB99B] shrink-0" />
-                  <span>Confidencialidad y NDA</span>
+                <div className="flex items-center gap-1.5 font-mono text-[10.5px] sm:text-xs text-white font-bold">
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#8FB99B] shrink-0" />
+                  <span>Confidencialidad</span>
                 </div>
-                <span className={`text-[10px] px-2 py-0.5 rounded flex items-center gap-1 font-mono transition-colors ${
+                <span className={`text-[9px] px-1.5 py-0.2 rounded font-mono ${
                   expandedInfo === 'nda' ? 'bg-[#8FB99B] text-black font-bold' : 'bg-white/5 text-gray-400'
                 }`}>
-                  {expandedInfo === 'nda' ? 'Cerrar' : '+ Detalle'}
-                  <ChevronDown className={`w-3 h-3 transition-transform ${expandedInfo === 'nda' ? 'rotate-180' : ''}`} />
+                  {expandedInfo === 'nda' ? 'Cerrar' : '+ Info'}
                 </span>
               </div>
-              <p className="text-xs text-gray-300 leading-relaxed">
-                Firmamos acuerdo de confidencialidad (NDA) antes de que envíes planos o información técnica reservada de tu empresa.
+              <p className="text-[10px] sm:text-xs text-gray-300 leading-snug">
+                Firmamos acuerdo de confidencialidad (NDA) antes de que envíes planos reservados de tu empresa.
               </p>
               {expandedInfo === 'nda' && (
-                <div className="pt-2 border-t border-white/10 text-[11px] text-gray-300 space-y-1.5 animate-fadeIn">
-                  <p>
-                    • <strong>Protección de secretos industriales:</strong> Tus diseños, patentes y herramentales no se comparten con terceros ni se publican en redes sociales sin tu visto bueno por escrito.
-                  </p>
-                  <p>
-                    • <strong>Formato de tu empresa o propio:</strong> Podemos firmar el convenio formal que maneja tu departamento legal o proveer nuestro formato estándar de confidencialidad bilateral.
-                  </p>
-                  <p>
-                    • <strong>Resguardo digital:</strong> Al concluir la fabricación, tus archivos quedan resguardados bajo llave o se eliminan permanentemente si así lo solicitas.
-                  </p>
+                <div className="pt-2 border-t border-white/10 text-[10px] sm:text-[11px] text-gray-300 space-y-1 animate-fadeIn">
+                  <p>• Tus diseños y planos no se comparten con terceros ni se difunden en redes sociales.</p>
+                  <p>• Podemos firmar el convenio formal de tu departamento legal o proveer nuestro formato estándar.</p>
                 </div>
               )}
             </div>
 
-            {/* Tarjeta 3: Sin Mínimos */}
+            {/* Cuadro 3: Sin Mínimos */}
             <div
               onClick={() => setExpandedInfo(expandedInfo === 'minimos' ? null : 'minimos')}
-              className={`p-4 rounded-xl border transition-all cursor-pointer bg-[#12181C] space-y-2 ${
+              className={`p-3 sm:p-4 rounded-xl border transition-all cursor-pointer bg-[#12181C] space-y-1.5 ${
                 expandedInfo === 'minimos'
-                  ? 'border-purple-400 shadow-[0_0_15px_rgba(192,132,252,0.2)] bg-[#141C22]'
+                  ? 'border-purple-400 bg-[#141C22]'
                   : 'border-white/10 hover:border-white/20'
               }`}
             >
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 font-mono text-xs sm:text-sm text-white font-bold">
-                  <Boxes className="w-4 h-4 text-purple-400 shrink-0" />
-                  <span>Sin Mínimos de Compra</span>
+                <div className="flex items-center gap-1.5 font-mono text-[10.5px] sm:text-xs text-white font-bold">
+                  <Boxes className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                  <span>Sin Mínimos</span>
                 </div>
-                <span className={`text-[10px] px-2 py-0.5 rounded flex items-center gap-1 font-mono transition-colors ${
+                <span className={`text-[9px] px-1.5 py-0.2 rounded font-mono ${
                   expandedInfo === 'minimos' ? 'bg-purple-400 text-black font-bold' : 'bg-white/5 text-gray-400'
                 }`}>
-                  {expandedInfo === 'minimos' ? 'Cerrar' : '+ Detalle'}
-                  <ChevronDown className={`w-3 h-3 transition-transform ${expandedInfo === 'minimos' ? 'rotate-180' : ''}`} />
+                  {expandedInfo === 'minimos' ? 'Cerrar' : '+ Info'}
                 </span>
               </div>
-              <p className="text-xs text-gray-300 leading-relaxed">
-                Desde 1 sola pieza para sustitución urgente, hasta lotes de 1 a 500 piezas sin costo de apertura de molde ni herramentales.
+              <p className="text-[10px] sm:text-xs text-gray-300 leading-snug">
+                Desde 1 sola pieza para sustitución urgente, hasta lotes de 1 a 500 piezas sin costo de moldes.
               </p>
               {expandedInfo === 'minimos' && (
-                <div className="pt-2 border-t border-white/10 text-[11px] text-gray-300 space-y-1.5 animate-fadeIn">
-                  <p>
-                    • <strong>Cero inversión inicial en moldes:</strong> Un molde de inyección convencional cuesta entre $30,000 y $150,000 MXN y tarda meses. Con nosotros pagas únicamente las piezas impresas que necesitas hoy.
-                  </p>
-                  <p>
-                    • <strong>Flexibilidad de iteración:</strong> Si después de la primera pieza requieres agrandar un orificio 1 milímetro o reforzar una arista, se corrige el archivo sin perder inversión previa.
-                  </p>
-                  <p>
-                    • <strong>Escalabilidad ágil:</strong> Comienza con 1 prototipo hoy y solicita 50 piezas la próxima semana con el mismo estándar dimensional.
-                  </p>
+                <div className="pt-2 border-t border-white/10 text-[10px] sm:text-[11px] text-gray-300 space-y-1 animate-fadeIn">
+                  <p>• Cero gastos de apertura de matriz, lo que ahorra costos fijos para pruebas de ajuste.</p>
+                  <p>• Posibilidad de corregir holguras de una pieza a la siguiente sin penalización económica.</p>
                 </div>
               )}
             </div>
 
-            {/* Tarjeta 4: Entrega Rápida */}
+            {/* Cuadro 4: Entrega Rápida */}
             <div
               onClick={() => setExpandedInfo(expandedInfo === 'entrega' ? null : 'entrega')}
-              className={`p-4 rounded-xl border transition-all cursor-pointer bg-[#12181C] space-y-2 ${
+              className={`p-3 sm:p-4 rounded-xl border transition-all cursor-pointer bg-[#12181C] space-y-1.5 ${
                 expandedInfo === 'entrega'
-                  ? 'border-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.2)] bg-[#141C22]'
+                  ? 'border-amber-400 bg-[#141C22]'
                   : 'border-white/10 hover:border-white/20'
               }`}
             >
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 font-mono text-xs sm:text-sm text-white font-bold">
-                  <Clock className="w-4 h-4 text-amber-400 shrink-0" />
-                  <span>Entrega Rápida en SLP</span>
+                <div className="flex items-center gap-1.5 font-mono text-[10.5px] sm:text-xs text-white font-bold">
+                  <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                  <span>Entrega Rápida</span>
                 </div>
-                <span className={`text-[10px] px-2 py-0.5 rounded flex items-center gap-1 font-mono transition-colors ${
+                <span className={`text-[9px] px-1.5 py-0.2 rounded font-mono ${
                   expandedInfo === 'entrega' ? 'bg-amber-400 text-black font-bold' : 'bg-white/5 text-gray-400'
                 }`}>
-                  {expandedInfo === 'entrega' ? 'Cerrar' : '+ Detalle'}
-                  <ChevronDown className={`w-3 h-3 transition-transform ${expandedInfo === 'entrega' ? 'rotate-180' : ''}`} />
+                  {expandedInfo === 'entrega' ? 'Cerrar' : '+ Info'}
                 </span>
               </div>
-              <p className="text-xs text-gray-300 leading-relaxed">
-                Prototipos y refacciones listos desde 24 a 72 horas. Entrega directa y trato personalizado en San Luis Potosí.
+              <p className="text-[10px] sm:text-xs text-gray-300 leading-snug">
+                Prototipos listos desde 24 a 72 horas. Entrega directa y trato personalizado en San Luis Potosí.
               </p>
               {expandedInfo === 'entrega' && (
-                <div className="pt-2 border-t border-white/10 text-[11px] text-gray-300 space-y-1.5 animate-fadeIn">
-                  <p>
-                    • <strong>Atención prioritaria para línea detenida:</strong> Si tienes una máquina parada por una refacción rota, iniciamos impresión el mismo día para tenerla lista en 24 horas.
-                  </p>
-                  <p>
-                    • <strong>Entrega local en planta:</strong> Coordinamos la entrega directamente en tu empresa en la Zona Industrial de San Luis Potosí o punto acordado, evitando retrasos de paqueterías foráneas.
-                  </p>
-                  <p>
-                    • <strong>Retiro en taller:</strong> También puedes recoger directamente tus piezas en nuestro taller en cuanto concluya la manufactura.
-                  </p>
+                <div className="pt-2 border-t border-white/10 text-[10px] sm:text-[11px] text-gray-300 space-y-1 animate-fadeIn">
+                  <p>• Atención inmediata para emergencias de piezas rotas que tienen detenida una máquina.</p>
+                  <p>• Coordinamos entrega directa en tu planta de la Zona Industrial de San Luis Potosí.</p>
                 </div>
               )}
             </div>
