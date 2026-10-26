@@ -303,12 +303,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             
             {/* Texto Principal */}
-            <div className="lg:col-span-7 space-y-5">
-              <div className="inline-flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.2em] text-[#5BB8FF]">
-                <span className="w-5 h-px bg-[#5BB8FF] inline-block" />
-                Manufactura Aditiva Industrial · San Luis Potosí
-              </div>
-
+            <div className="lg:col-span-7 space-y-4">
               <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-[1.06]">
                 Que una refacción no detenga <span className="text-[#5BB8FF] drop-shadow-[0_0_20px_rgba(91,184,255,0.4)]">tu línea.</span>
               </h1>
@@ -316,10 +311,6 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
               <p className="text-base sm:text-lg text-[#C4CCD0] max-w-xl leading-relaxed">
                 Taller local de manufactura bajo demanda para empresas de SLP. Prototipado funcional rápido, utillaje de ensamble, refacciones descatalogadas y lotes cortos en polímeros técnicos de grado ingeniería.
               </p>
-
-
-
-
             </div>
 
             {/* Ficha Técnica Blueprint Vectorial (Desktop / Pantallas grandes) */}
