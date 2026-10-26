@@ -1410,9 +1410,8 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 })()}
 
                 {/* Pie informativo */}
-                <div className="text-[10px] text-gray-400 font-mono flex items-center justify-between gap-2 pt-1 border-t border-white/5">
-                  <span>¿Color corporativo o RAL especial? Lo surtimos para tu lote.</span>
-                  <span className="text-gray-500">Taller SLP</span>
+                <div className="text-[10px] text-gray-400 font-mono pt-1.5 border-t border-white/5 text-center sm:text-left">
+                  <span>¿Requieres un tono específico fuera de catálogo? Validamos disponibilidad con nuestros distribuidores de filamento antes de confirmar.</span>
                 </div>
 
               </div>
