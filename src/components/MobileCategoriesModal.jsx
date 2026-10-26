@@ -154,7 +154,7 @@ export default function MobileCategoriesModal({
       { id: 'pub-branding', name: 'Branding & Logos', icon: Palette, serviceTab: 'diseno', iconBg: 'bg-amber-50 text-amber-600 border border-amber-300 shadow-amber-100' },
       { id: 'pub-lonas', name: 'Lonas & Gran Formato', icon: Printer, serviceTab: 'diseno', iconBg: 'bg-rose-50 text-rose-600 border border-rose-300 shadow-rose-100' },
       { id: 'pub-web', name: 'Sitios Web & Tiendas', icon: Globe, serviceTab: 'diseno', iconBg: 'bg-emerald-50 text-emerald-600 border border-emerald-300 shadow-emerald-100' },
-      { id: 'pub-3d', name: 'Modelado 3D & Renders', icon: Box, serviceTab: 'diseno', iconBg: 'bg-sky-50 text-sky-600 border border-sky-300 shadow-sky-100' },
+      { id: 'pub-editorial', name: 'Catálogos & Contenido', icon: FileText, serviceTab: 'diseno', iconBg: 'bg-purple-50 text-purple-600 border border-purple-300 shadow-purple-100' },
       { id: 'ind-prototipos', name: 'Prototipos 3D Técnicos', icon: Box, serviceTab: 'industria', iconBg: 'bg-sky-50 text-[#0284C7] border border-[#5BB8FF] shadow-sky-100' },
       { id: 'ind-jigs', name: 'Utillaje & Jigs', icon: Wrench, serviceTab: 'industria', iconBg: 'bg-emerald-50 text-[#245C33] border border-[#8FB99B] shadow-emerald-100' },
       { id: 'ind-refacciones', name: 'Refacciones Técnicas', icon: Cog, serviceTab: 'industria', iconBg: 'bg-amber-50 text-amber-700 border border-amber-300 shadow-amber-100' },

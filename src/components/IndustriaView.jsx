@@ -296,11 +296,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 sm:gap-6 lg:gap-12 items-center">
             
             {/* Texto Principal */}
-            <div className="lg:col-span-7 space-y-2 sm:space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#5BB8FF]/10 border border-[#5BB8FF]/30 text-[#5BB8FF] font-mono text-[11px] font-bold">
-                <Cog className="w-4.5 h-4.5 text-[#5BB8FF] animate-[spin_12s_linear_infinite] shrink-0" />
-                <span>MANUFACTURA ADITIVA TÉCNICA · SLP</span>
-              </div>
+            <div className="lg:col-span-7 space-y-3 sm:space-y-4">
               <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-[1.08]">
                 Que una refacción no detenga <span className="text-[#5BB8FF] drop-shadow-[0_0_20px_rgba(91,184,255,0.4)]">tu línea.</span>
               </h1>
@@ -309,20 +305,14 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 Taller local de manufactura bajo demanda para empresas de SLP. Prototipado funcional rápido, utillaje de ensamble, refacciones descatalogadas y lotes cortos en polímeros técnicos de grado ingeniería.
               </p>
 
-              {/* Botones de Acción Directa */}
-              <div className="pt-2 flex flex-wrap items-center gap-2.5">
+              {/* Botón de Acción Directa Principal */}
+              <div className="pt-1">
                 <a
                   href="#cotizar-industria"
-                  className="px-5 py-2.5 rounded-xl bg-[#5BB8FF] hover:bg-[#8AD2FF] text-[#0A0E11] font-extrabold text-xs tracking-wide uppercase transition-all shadow-[0_0_15px_rgba(91,184,255,0.3)] active:scale-95 cursor-pointer inline-flex items-center gap-1.5"
+                  className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-[#5BB8FF] hover:bg-[#8AD2FF] text-[#0A0E11] font-extrabold text-xs sm:text-sm tracking-wide uppercase transition-all shadow-[0_0_15px_rgba(91,184,255,0.3)] active:scale-95 cursor-pointer inline-flex items-center justify-center gap-2"
                 >
-                  <Send className="w-3.5 h-3.5" />
+                  <Send className="w-4 h-4" />
                   <span>Cotizar Pieza Industrial</span>
-                </a>
-                <a
-                  href="#soluciones-industriales"
-                  className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-stone-200 border border-white/10 font-bold text-xs transition-all active:scale-95 cursor-pointer inline-flex items-center gap-1.5"
-                >
-                  <span>Ver 4 Aplicaciones</span>
                 </a>
               </div>
             </div>

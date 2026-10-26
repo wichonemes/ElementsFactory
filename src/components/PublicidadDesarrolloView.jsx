@@ -142,29 +142,8 @@ export default function PublicidadDesarrolloView({
       idealFor: 'Marcas que necesitan vender por internet, mostrar su catálogo 24/7 o automatizar sus cotizaciones.'
     },
     {
-      id: 'modelado',
-      code: 'CAD-04',
-      icon: Box,
-      tag: 'Prototipado & 3D',
-      badgeColor: 'bg-sky-500/20 text-sky-300 border-sky-500/40',
-      activeBorder: 'border-sky-400 ring-2 ring-sky-400/30',
-      accentBar: 'bg-sky-400',
-      iconBg: 'bg-sky-500/20 text-sky-300 border border-sky-500/30',
-      checkColor: 'text-sky-400 bg-sky-500/20',
-      title: 'Modelado 3D & Renderizado Técnico',
-      summary: 'De la idea al render fotorrealista y a la manufactura física mediante impresión 3D aditiva FDM.',
-      deliverables: [
-        'Diseño CAD paramétrico y modelado orgánico/técnico',
-        'Renders fotorrealistas de producto para catálogos y publicidad',
-        'Prototipos funcionales y piezas mecánicas a medida',
-        'Carcasas y gabinetes para electrónica y proyectos especiales',
-        'Producción en serie corta en filamentos técnicos (PLA, PETG, ABS)'
-      ],
-      idealFor: 'Emprendedores de producto físico, ingenieros, inventores y fabricantes de piezas personalizadas.'
-    },
-    {
       id: 'audiovisual',
-      code: 'MEDIA-05',
+      code: 'MEDIA-04',
       icon: Film,
       tag: 'Contenido & Editorial',
       badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
@@ -200,9 +179,6 @@ export default function PublicidadDesarrolloView({
     } else if (quoteService === 'web') {
       base = quoteScope === 'inicio' ? 2900 : quoteScope === 'estandar' ? 5800 : 11500;
       label = 'Desarrollo Web & Tienda';
-    } else if (quoteService === 'modelado') {
-      base = quoteScope === 'inicio' ? 1200 : quoteScope === 'estandar' ? 2800 : 6000;
-      label = 'Modelado 3D & Render';
     } else if (quoteService === 'combo') {
       base = quoteScope === 'inicio' ? 4500 : quoteScope === 'estandar' ? 8500 : 15000;
       label = 'Paquete Integral (Marca + Web + Físico)';
@@ -226,7 +202,6 @@ export default function PublicidadDesarrolloView({
       branding: 'Diseño Gráfico & Branding',
       publicidad: 'Publicidad Comercial, Lonas & Gran Formato',
       web: 'Desarrollo Web & Catálogo / Tienda Online',
-      modelado: 'Modelado 3D & Renders Técnicos',
       combo: 'Paquete Integral (Marca + Web + Publicidad)'
     };
 
@@ -262,7 +237,7 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
           </h1>
           
           <p className="text-xs sm:text-sm text-stone-300 font-normal leading-relaxed max-w-xl">
-            Estrategia de identidad, lonas de gran formato, rotulación en vinil, desarrollo web interactivo y modelado 3D de taller.
+            Estrategia de identidad, lonas de gran formato, rotulación en vinil, desarrollo web interactivo y producción publicitaria.
           </p>
 
           {/* Botón de Acción Principal Directo al Cotizador en 2 Pasos */}
@@ -302,8 +277,8 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
               </p>
             </div>
 
-            {/* Cuadrícula Adaptativa de Tarjetas Cuadradas tipo Apps */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3.5">
+            {/* Cuadrícula Adaptativa de Tarjetas Cuadradas tipo Apps (4 Especialidades Oficiales) */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4">
               {servicesList.map(srv => {
                 const isSelected = expandedService === srv.id;
                 const IconComp = srv.icon;
@@ -533,7 +508,6 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
                     { id: 'branding', title: 'Diseño Gráfico & Branding', desc: 'Logotipo, identidad visual y manual', price: 'Desde $1,800' },
                     { id: 'publicidad', title: 'Publicidad Comercial & Lonas', desc: 'Gran formato, vinil y rotulación', price: 'Desde $850' },
                     { id: 'web', title: 'Desarrollo Web & Tienda', desc: 'Sitio responsivo y catálogo WhatsApp', price: 'Desde $2,900' },
-                    { id: 'modelado', title: 'Modelado 3D & Renders', desc: 'CAD paramétrico y prototipado FDM', price: 'Desde $1,200' },
                     { id: 'combo', title: 'Paquete Integral Todo-en-Uno', desc: 'Marca + Web + Rotulación física', price: 'Desde $4,500' }
                   ].map((s) => {
                     const isSelected = quoteService === s.id;
