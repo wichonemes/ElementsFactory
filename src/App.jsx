@@ -1356,12 +1356,13 @@ export default function App() {
         onAddToCart={handleAddToCart}
       />
 
-      {/* Barra Inferior Fija para Celular estilo Mercado Libre (5 Botones Nativos) */}
+      {/* Barra Inferior Fija para Celular con Tema Adaptativo (Oscuro en Industria y Publicidad) */}
       {!isAdminOpen && !selectedProduct && (
         <MobileBottomNav
           activeTab={mobileNavTab}
           onSelectTab={handleMobileNavTab}
           cartCount={totalCartCount}
+          activeWorld={activeWorld}
         />
       )}
 
