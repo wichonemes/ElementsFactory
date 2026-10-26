@@ -355,92 +355,96 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
               </p>
             </div>
 
-            {/* Ficha Técnica Blueprint Vectorial (Optimizada y Condensada) */}
-            <div className="lg:col-span-5 mt-1 sm:mt-4 lg:mt-0">
-              <div className="rounded-xl sm:rounded-2xl border border-white/15 bg-[#10161A] p-3 sm:p-5 shadow-2xl relative overflow-hidden">
-                <div className="flex items-center justify-between pb-2 sm:pb-3 border-b border-white/10 font-mono text-[9px] sm:text-[10px]">
-                  <span className="text-gray-400 flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#5BB8FF]" />
-                    DWG-REF // SLP-IND-2026
+            {/* Plano Vectorial Técnico Integrado (Sin cuadro contenedor, estilizado) */}
+            <div className="lg:col-span-5 relative mt-1 sm:mt-0 flex flex-col justify-center">
+              
+              {/* Anotaciones Técnicas Superiores tipo HUD */}
+              <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 pb-1.5">
+                <span className="flex items-center gap-1.5 tracking-wider">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#5BB8FF] animate-pulse" />
+                  <span>DWG-REF // SLP-IND-2026</span>
+                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[#8FB99B] font-bold text-[8.5px] sm:text-[9.5px] flex items-center gap-1">
+                    <ShieldCheck className="w-3 h-3" />
+                    <span>NDA DISPONIBLE</span>
                   </span>
-                  <div className="flex items-center gap-1.5 sm:gap-2">
-                    <span className="px-1.5 sm:px-2 py-0.5 rounded bg-[#8FB99B]/15 text-[#8FB99B] border border-[#8FB99B]/30 font-bold flex items-center gap-1 text-[8px] sm:text-[9.5px]">
-                      <ShieldCheck className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                      <span>NDA DISPONIBLE</span>
-                    </span>
-                    <span className="text-[#5BB8FF] font-bold">REVISIÓN TÉCNICA</span>
-                  </div>
-                </div>
-
-                <div className="my-2 sm:my-3 rounded-lg sm:rounded-xl bg-[#080C0E] border border-white/10 p-2 sm:p-3 relative">
-                  <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 text-[8px] sm:text-[9px] font-mono text-[#8FB99B] bg-[#8FB99B]/10 px-1.5 sm:px-2 py-0.5 rounded border border-[#8FB99B]/20">
-                    TOLERANCIA ±0.15 mm
-                  </div>
-
-                  <svg viewBox="20 68 340 165" className="w-full h-auto max-h-44 sm:max-h-none">
-                    <defs>
-                      <pattern id="grid-blueprint" width="20" height="20" patternUnits="userSpaceOnUse">
-                        <path d="M20 0H0V20" fill="none" stroke="#FFFFFF" strokeOpacity="0.045" strokeWidth="1" />
-                      </pattern>
-                      <marker id="arrow-cad" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto-start-reverse">
-                        <path d="M0 0 L6 3 L0 6 Z" fill="#5BB8FF" />
-                      </marker>
-                    </defs>
-                    <rect width="400" height="240" fill="url(#grid-blueprint)" />
-
-                    {/* Geometría funcional en corte */}
-                    <path
-                      d="M60 80 H150 V130 L220 170 H340 V200 H60 Z"
-                      fill="#141E24"
-                      stroke="#5BB8FF"
-                      strokeWidth="1.8"
-                      strokeLinejoin="round"
-                    />
-                    <path d="M150 130 L220 170" stroke="#8AD2FF" strokeWidth="1" strokeDasharray="3 3" />
-
-                    {/* Nervadura de refuerzo */}
-                    <line x1="150" y1="80" x2="150" y2="130" stroke="#ffffff25" strokeWidth="1" />
-                    <line x1="220" y1="170" x2="220" y2="200" stroke="#ffffff25" strokeWidth="1" />
-
-                    {/* Barrenos avellanados para tornillería M6 */}
-                    <circle cx="100" cy="110" r="7" fill="#080C0E" stroke="#E9E6DD" strokeWidth="1.5" />
-                    <circle cx="100" cy="180" r="8" fill="#080C0E" stroke="#E9E6DD" strokeWidth="1.5" />
-                    <circle cx="270" cy="185" r="8" fill="#080C0E" stroke="#E9E6DD" strokeWidth="1.5" />
-                    <circle cx="315" cy="185" r="6" fill="#080C0E" stroke="#E9E6DD" strokeWidth="1.5" />
-
-                    {/* Líneas de cota */}
-                    <g stroke="#5BB8FF" strokeWidth="1" opacity="0.8">
-                      <line x1="60" y1="222" x2="340" y2="222" markerStart="url(#arrow-cad)" markerEnd="url(#arrow-cad)" />
-                      <line x1="60" y1="205" x2="60" y2="228" />
-                      <line x1="340" y1="205" x2="340" y2="228" />
-                      <line x1="42" y1="80" x2="42" y2="200" markerStart="url(#arrow-cad)" markerEnd="url(#arrow-cad)" />
-                      <line x1="36" y1="80" x2="55" y2="80" />
-                      <line x1="36" y1="200" x2="55" y2="200" />
-                    </g>
-                    <text x="200" y="217" fill="#5BB8FF" textAnchor="middle" fontSize="9.5" fontFamily="monospace">
-                      280.0 mm
-                    </text>
-                    <text x="32" y="145" fill="#5BB8FF" textAnchor="middle" transform="rotate(-90 32 145)" fontSize="9.5" fontFamily="monospace">
-                      120.0 mm
-                    </text>
-                  </svg>
-                </div>
-
-                <div className="grid grid-cols-3 gap-1.5 sm:gap-2 pt-1 text-center font-mono text-[9px] sm:text-[10px]">
-                  <div className="p-1.5 sm:p-2 rounded bg-white/5 border border-white/5">
-                    <span className="block text-gray-400 text-[7.5px] sm:text-[8px] uppercase">Polímeros Taller</span>
-                    <strong className="text-white text-[9px] sm:text-[10px]">PETG / ABS / TPU</strong>
-                  </div>
-                  <div className="p-1.5 sm:p-2 rounded bg-white/5 border border-white/5">
-                    <span className="block text-gray-400 text-[7.5px] sm:text-[8px] uppercase">Precisión</span>
-                    <strong className="text-[#8FB99B] text-[9px] sm:text-[10px]">±0.15 mm</strong>
-                  </div>
-                  <div className="p-1.5 sm:p-2 rounded bg-white/5 border border-white/5">
-                    <span className="block text-gray-400 text-[7.5px] sm:text-[8px] uppercase">Capacidad</span>
-                    <strong className="text-[#5BB8FF] text-[9px] sm:text-[10px]">1 a 500+ pzs</strong>
-                  </div>
+                  <span className="text-[#5BB8FF] text-[8.5px] sm:text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#5BB8FF]/10 border border-[#5BB8FF]/20">
+                    ±0.15 mm
+                  </span>
                 </div>
               </div>
+
+              {/* Dibujo Vectorial CAD Integrado directamente */}
+              <div className="relative py-1 flex items-center justify-center">
+                <svg viewBox="20 68 340 165" className="w-full h-auto max-h-48 sm:max-h-56 filter drop-shadow-[0_0_20px_rgba(91,184,255,0.18)]">
+                  <defs>
+                    <pattern id="grid-blueprint" width="20" height="20" patternUnits="userSpaceOnUse">
+                      <path d="M20 0H0V20" fill="none" stroke="#FFFFFF" strokeOpacity="0.04" strokeWidth="1" />
+                    </pattern>
+                    <marker id="arrow-cad" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto-start-reverse">
+                      <path d="M0 0 L6 3 L0 6 Z" fill="#5BB8FF" />
+                    </marker>
+                  </defs>
+                  <rect width="400" height="240" fill="url(#grid-blueprint)" />
+
+                  {/* Geometría funcional en corte */}
+                  <path
+                    d="M60 80 H150 V130 L220 170 H340 V200 H60 Z"
+                    fill="#10171D"
+                    fillOpacity="0.85"
+                    stroke="#5BB8FF"
+                    strokeWidth="1.8"
+                    strokeLinejoin="round"
+                  />
+                  <path d="M150 130 L220 170" stroke="#8AD2FF" strokeWidth="1" strokeDasharray="3 3" />
+
+                  {/* Nervadura de refuerzo */}
+                  <line x1="150" y1="80" x2="150" y2="130" stroke="#ffffff25" strokeWidth="1" />
+                  <line x1="220" y1="170" x2="220" y2="200" stroke="#ffffff25" strokeWidth="1" />
+
+                  {/* Barrenos avellanados para tornillería M6 */}
+                  <circle cx="100" cy="110" r="7" fill="#0A0E11" stroke="#E9E6DD" strokeWidth="1.5" />
+                  <circle cx="100" cy="180" r="8" fill="#0A0E11" stroke="#E9E6DD" strokeWidth="1.5" />
+                  <circle cx="270" cy="185" r="8" fill="#0A0E11" stroke="#E9E6DD" strokeWidth="1.5" />
+                  <circle cx="315" cy="185" r="6" fill="#0A0E11" stroke="#E9E6DD" strokeWidth="1.5" />
+
+                  {/* Líneas de cota */}
+                  <g stroke="#5BB8FF" strokeWidth="1" opacity="0.85">
+                    <line x1="60" y1="222" x2="340" y2="222" markerStart="url(#arrow-cad)" markerEnd="url(#arrow-cad)" />
+                    <line x1="60" y1="205" x2="60" y2="228" />
+                    <line x1="340" y1="205" x2="340" y2="228" />
+                    <line x1="42" y1="80" x2="42" y2="200" markerStart="url(#arrow-cad)" markerEnd="url(#arrow-cad)" />
+                    <line x1="36" y1="80" x2="55" y2="80" />
+                    <line x1="36" y1="200" x2="55" y2="200" />
+                  </g>
+                  <text x="200" y="217" fill="#5BB8FF" textAnchor="middle" fontSize="9.5" fontFamily="monospace">
+                    280.0 mm
+                  </text>
+                  <text x="32" y="145" fill="#5BB8FF" textAnchor="middle" transform="rotate(-90 32 145)" fontSize="9.5" fontFamily="monospace">
+                    120.0 mm
+                  </text>
+                </svg>
+              </div>
+
+              {/* Indicadores de Taller estilizados (Sin cajas rígidas) */}
+              <div className="flex items-center justify-between text-center font-mono text-[9px] sm:text-[10px] text-gray-400 pt-1.5 border-t border-white/10">
+                <div>
+                  <span className="block text-[7.5px] uppercase text-gray-500">Materiales</span>
+                  <strong className="text-white">PETG / ABS / TPU</strong>
+                </div>
+                <div className="h-4 w-px bg-white/10" />
+                <div>
+                  <span className="block text-[7.5px] uppercase text-gray-500">Tolerancia</span>
+                  <strong className="text-[#8FB99B]">±0.15 mm</strong>
+                </div>
+                <div className="h-4 w-px bg-white/10" />
+                <div>
+                  <span className="block text-[7.5px] uppercase text-gray-500">Capacidad</span>
+                  <strong className="text-[#5BB8FF]">1 a 500+ pzs</strong>
+                </div>
+              </div>
+
             </div>
 
           </div>
@@ -917,7 +921,8 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-2.5">
+          {/* Tira Minimalista de Sectores Industriales (Sin globitos) */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 pt-2 border-t border-white/10">
             {[
               { name: 'Automotriz', icon: Car, color: 'text-[#5BB8FF]' },
               { name: 'Mantenimiento', icon: Wrench, color: 'text-amber-400' },
@@ -930,12 +935,10 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
               return (
                 <div
                   key={sector.name}
-                  className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl border border-white/10 bg-[#12181C] hover:border-[#5BB8FF]/40 transition-colors group"
+                  className="flex items-center gap-2 text-xs sm:text-sm text-gray-300 hover:text-white transition-colors"
                 >
-                  <IconComp className={`w-4 h-4 sm:w-5 sm:h-5 ${sector.color} shrink-0 group-hover:scale-110 transition-transform`} />
-                  <span className="font-semibold text-xs sm:text-sm text-gray-200 group-hover:text-white transition-colors">
-                    {sector.name}
-                  </span>
+                  <IconComp className={`w-4 h-4 sm:w-4.5 sm:h-4.5 ${sector.color} shrink-0`} />
+                  <span className="font-semibold">{sector.name}</span>
                 </div>
               );
             })}
