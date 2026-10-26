@@ -761,17 +761,19 @@ export default function App() {
       </div>
 
       {/* Top Navigation para Móviles estilo Mercado Libre */}
-      <MobileMercadoLibreHeader
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        onClearSearch={() => setSearchQuery('')}
-        activeWorld={activeWorld}
-        onSelectWorld={handleSelectWorld}
-        onOpenCart={() => setIsCartOpen(true)}
-        cartCount={totalCartCount}
-        onToggleSidebar={() => setIsMoreMenuOpen(true)}
-        settings={settings}
-      />
+      {activeWorld !== 'industria' && (
+        <MobileMercadoLibreHeader
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          onClearSearch={() => setSearchQuery('')}
+          activeWorld={activeWorld}
+          onSelectWorld={handleSelectWorld}
+          onOpenCart={() => setIsCartOpen(true)}
+          cartCount={totalCartCount}
+          onToggleSidebar={() => setIsMoreMenuOpen(true)}
+          settings={settings}
+        />
+      )}
 
       {/* BANNER DE ESTADO DE SERVICIO: LOCAL, NACIONAL Y PAUSA DE TALLER (Escritorio) */}
       {settings?.serviceStatus?.isPaused ? (

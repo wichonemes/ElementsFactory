@@ -149,9 +149,9 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           
           <div className="flex items-center gap-3 sm:gap-4">
-            {/* Isotipo Oficial Neón sin bordes cuadrados */}
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 flex items-center justify-center text-[#5BB8FF] drop-shadow-[0_0_10px_rgba(91,184,255,0.5)] flex-shrink-0">
+            {/* Isotipo Oficial Neón sin bordes cuadrados (más grande) */}
+            <div onClick={onGoHome} className="flex items-center gap-3.5 cursor-pointer group" title="Ir a la tienda principal">
+              <div className="w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center text-[#5BB8FF] drop-shadow-[0_0_12px_rgba(91,184,255,0.6)] flex-shrink-0 group-hover:scale-105 transition-transform">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 238.98 284.35" fill="currentColor" className="w-full h-full">
                   <path d="M180.24,153.33s-6.44-6.53-6.44-6.54c-.92-1.02-.25-1.99-.13-2.15l6.53-6.43c.54-.53,.55-1.4,.02-1.94l-5.8-5.9c-.53-.54-1.4-.55-1.94-.02l-5.95,5.86c-.36,.36-.95,.35-1.3-.01l-14.32-14.57c-.6-.61-1.57-.62-2.18-.02l-23.16,22.79c-.61,.6-.61,1.57-.02,2.18l22.79,23.16c.6,.61,1.57,.61,2.18,.02l14.83-14.59c.36-.35,.93-.35,1.28,.01l5.77,5.87c.53,.54,1.4,.55,1.94,.02l5.89-5.8c.54-.53,.55-1.4,.02-1.94Z"/>
                   <path d="M58.91,138.1s6.44,6.53,6.44,6.54c.92,1.02,.25,1.99,.13,2.15l-6.53,6.43c-.54,.53-.55,1.4-.02,1.94l5.8,5.9c.53,.54,1.4,.55,1.94,.02l5.95-5.86c.36-.36,.95-.35,1.3,.01l14.32,14.57c.6,.61,1.57,.62,2.18,.02l23.16-22.79c.61-.6,.61-1.57,.02-2.18l-22.79-23.16c-.6-.61-1.57-.61-2.18-.02l-14.83,14.59c-.36,.35-.93,.35-1.28-.01l-5.77-5.87c-.53-.54-1.4-.55-1.94-.02l-5.89,5.8c-.54,.53-.55,1.4-.02,1.94Z"/>
@@ -169,10 +169,10 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 </svg>
               </div>
               <div className="leading-tight">
-                <div className="font-extrabold text-xs sm:text-sm tracking-tight text-white uppercase font-display">
+                <div className="font-extrabold text-sm sm:text-base tracking-tight text-white uppercase font-display group-hover:text-[#5BB8FF] transition-colors">
                   ARTESANO DIGITAL
                 </div>
-                <div className="font-mono text-[9px] text-[#5BB8FF] tracking-wider uppercase font-semibold">
+                <div className="font-mono text-[9.5px] sm:text-[10.5px] text-[#5BB8FF] tracking-wider uppercase font-semibold">
                   FABRICACIÓN 3D · SLP
                 </div>
               </div>
