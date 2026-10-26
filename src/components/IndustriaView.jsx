@@ -126,7 +126,6 @@ export default function IndustriaView({
 
   // Material Interactivo Seleccionado (Desplegable y ocultable al click)
   const [selectedMaterialTab, setSelectedMaterialTab] = useState(null);
-  const [showCapacityDetails, setShowCapacityDetails] = useState(false);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -648,202 +647,137 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          4. SECCIÓN 02: MATERIALES Y CAPACIDAD TÉCNICA DINÁMICA
+          4. SECCIÓN 02: MATERIALES TÉCNICOS DINÁMICOS
           ======================================================== */}
-      <section id="materiales-taller" className="py-8 sm:py-14 border-b border-white/10 bg-[#0A0E11]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <section id="materiales-taller" className="py-7 sm:py-12 border-b border-white/10 bg-[#0A0E11]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
           
-          <div className="mb-5 sm:mb-8">
-            <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
+          <div className="mb-4 sm:mb-7">
+            <div className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
               <span className="w-5 h-px bg-[#5BB8FF]" />
-              02 / Materiales & Capacidad
+              02 / Materiales Técnicos
             </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
+            <h2 className="text-xl sm:text-3xl font-extrabold text-white mt-1.5">
               Polímeros de ingeniería calibrados en taller.
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
+          {/* Selector Dinámico de Polímeros (Desplegable y Ocultable al Click) */}
+          <div className="bg-[#11171B] border border-white/10 rounded-2xl p-4 sm:p-6 space-y-4 sm:space-y-5">
             
-            {/* Selector Dinámico de Polímeros (Desplegable y Ocultable al Click) */}
-            <div className="lg:col-span-7 bg-[#11171B] border border-white/10 rounded-2xl p-4 sm:p-6 space-y-4 sm:space-y-5">
-              
-              <div className="flex items-center justify-between pb-1 border-b border-white/5">
-                <span className="font-mono text-[9.5px] uppercase tracking-wider text-gray-400">
-                  Selecciona un polímero para ver ficha técnica:
-                </span>
-                {selectedMaterialTab && (
-                  <button
-                    type="button"
-                    onClick={() => setSelectedMaterialTab(null)}
-                    className="text-[10px] text-[#5BB8FF] font-mono hover:underline cursor-pointer flex items-center gap-1"
-                  >
-                    <span>Ocultar especificaciones</span>
-                    <ChevronDown className="w-3 h-3 rotate-180" />
-                  </button>
-                )}
-              </div>
-
-              {/* Botones de selección de material */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                {[
-                  { id: 'petg', label: 'PETG', tag: 'Mecánico', color: '#5BB8FF' },
-                  { id: 'tpu', label: 'TPU 95A', tag: 'Flexible', color: '#8FB99B' },
-                  { id: 'plaplus', label: 'PLA+ Pro', tag: 'Rígido', color: '#FBBF24' },
-                  { id: 'abs', label: 'ABS / ASA', tag: 'Térmico', color: '#C084FC' }
-                ].map(mat => {
-                  const isSelected = selectedMaterialTab === mat.id;
-                  return (
-                    <button
-                      key={mat.id}
-                      type="button"
-                      onClick={() => setSelectedMaterialTab(isSelected ? null : mat.id)}
-                      className={`py-2 px-2.5 sm:px-3 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer border flex items-center justify-between gap-1.5 ${
-                        isSelected
-                          ? 'bg-[#5BB8FF] text-[#0A0E11] border-[#5BB8FF] shadow-[0_0_12px_rgba(91,184,255,0.35)]'
-                          : 'bg-white/5 text-gray-300 border-white/10 hover:border-white/20 active:scale-95'
-                      }`}
-                    >
-                      <div className="text-left">
-                        <div className="font-bold">{mat.label}</div>
-                        <div className={`text-[8.5px] uppercase font-sans ${isSelected ? 'text-[#0A0E11]/80 font-bold' : 'text-gray-400'}`}>
-                          {mat.tag}
-                        </div>
-                      </div>
-                      <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${isSelected ? 'rotate-180' : ''}`} />
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Ficha técnica del material activo (Desplegable / Ocultable al click) */}
-              {selectedMaterialTab && (() => {
-                const cur = materialsData[selectedMaterialTab];
-                if (!cur) return null;
-                return (
-                  <div className="space-y-4 pt-2 border-t border-white/10 animate-fadeIn">
-                    <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                      <div>
-                        <span className="font-mono text-[9px] uppercase tracking-wider text-[#5BB8FF] block">
-                          {cur.tag}
-                        </span>
-                        <h4 className="text-lg font-bold text-white">{cur.name}</h4>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="px-2.5 py-1 rounded bg-white/5 font-mono text-xs text-gray-300 border border-white/10">
-                          {cur.temp}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => setSelectedMaterialTab(null)}
-                          className="p-1 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 text-xs cursor-pointer"
-                          title="Cerrar especificaciones"
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    </div>
-
-                    <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
-                      {cur.summary}
-                    </p>
-
-                    {/* Matriz de Parámetros Mecánicos */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 font-mono text-[11px] pt-1">
-                      <div className="p-2.5 rounded-lg bg-black/30 border border-white/5">
-                        <span className="block text-gray-500 text-[8px] uppercase">Tracción</span>
-                        <strong className="text-white text-xs">{cur.tensile}</strong>
-                      </div>
-                      <div className="p-2.5 rounded-lg bg-black/30 border border-white/5">
-                        <span className="block text-gray-500 text-[8px] uppercase">Resistencia Impacto</span>
-                        <strong className="text-[#8FB99B] text-xs">{cur.impact}</strong>
-                      </div>
-                      <div className="p-2.5 rounded-lg bg-black/30 border border-white/5 col-span-2 sm:col-span-1">
-                        <span className="block text-gray-500 text-[8px] uppercase">Químicos</span>
-                        <strong className="text-amber-300 text-[10px] leading-tight block">{cur.chemical}</strong>
-                      </div>
-                    </div>
-
-                    {/* Aplicaciones Típicas en Planta */}
-                    <div className="pt-2">
-                      <div className="font-mono text-[9px] uppercase tracking-wider text-gray-400 mb-2">
-                        Aplicaciones Recomendadas en Línea:
-                      </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-gray-300">
-                        {cur.apps.map((app, idx) => (
-                          <div key={idx} className="flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#5BB8FF]" />
-                            <span>{app}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })()}
-
-            </div>
-
-            {/* Asidero de Capacidad y Especificaciones de Taller (Colapsable / Desplegable al click) */}
-            <div className="lg:col-span-5 bg-[#12181C] border border-white/15 rounded-2xl p-4 sm:p-5 shadow-xl space-y-3">
-              <div
-                onClick={() => setShowCapacityDetails(!showCapacityDetails)}
-                className="flex items-center justify-between border-b border-white/10 pb-2.5 cursor-pointer select-none group"
-              >
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#5BB8FF]" />
-                  <h3 className="font-mono text-xs uppercase tracking-wider text-white font-bold group-hover:text-[#5BB8FF] transition-colors">
-                    Capacidad y especificaciones
-                  </h3>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-[9px] text-[#5BB8FF] hidden sm:inline">PLANTA SLP</span>
-                  <span className="text-[10px] text-[#5BB8FF] font-mono flex items-center gap-1 font-semibold">
-                    <span>{showCapacityDetails ? 'Ocultar' : 'Ver límites'}</span>
-                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${showCapacityDetails ? 'rotate-180' : ''}`} />
-                  </span>
-                </div>
-              </div>
-
-              {/* Vista previa compacta siempre visible */}
-              <div className="flex items-center justify-between text-xs font-mono text-gray-300 py-1">
-                <span className="text-gray-400 font-sans text-[11px]">Volumen monobloque:</span>
-                <strong className="text-white text-xs">Hasta 500 × 500 × 500 mm</strong>
-              </div>
-
-              {/* Especificaciones completas desplegables al click */}
-              {showCapacityDetails && (
-                <div className="space-y-3 pt-1 border-t border-white/5 animate-fadeIn">
-                  <div className="divide-y divide-white/10 text-xs font-mono">
-                    <div className="py-2 flex justify-between items-center">
-                      <span className="text-gray-400 font-sans">Resolución de capa</span>
-                      <span className="font-bold text-[#5BB8FF]">0.12 a 0.28 mm</span>
-                    </div>
-                    <div className="py-2 flex justify-between items-center">
-                      <span className="text-gray-400 font-sans">Materiales en stock</span>
-                      <span className="font-bold text-[#8FB99B]">PETG · TPU 95A · PLA+ Pro</span>
-                    </div>
-                    <div className="py-2 flex justify-between items-center">
-                      <span className="text-gray-400 font-sans">Térmico / Intemperie</span>
-                      <span className="font-bold text-amber-300">ABS / ASA (Cabina aislada)</span>
-                    </div>
-                    <div className="py-2 flex justify-between items-center">
-                      <span className="text-gray-400 font-sans">Capacidad de lote</span>
-                      <span className="font-bold text-white">1 a 500+ piezas</span>
-                    </div>
-                    <div className="py-2 flex justify-between items-center">
-                      <span className="text-gray-400 font-sans">Acabado final</span>
-                      <span className="font-bold text-gray-300">Retiro limpio de soportes</span>
-                    </div>
-                  </div>
-
-                  <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-xs text-[#C4CCD0] leading-relaxed">
-                    <strong className="text-white block font-sans mb-1">Capacidad de Gran Formato:</strong>
-                    Fabricamos piezas de hasta 500 mm en una sola pieza sin uniones, o ensambles seccionados siguiendo las especificaciones de tu modelo 3D.
-                  </div>
-                </div>
+            <div className="flex items-center justify-between pb-1 border-b border-white/5">
+              <span className="font-mono text-[9.5px] uppercase tracking-wider text-gray-400">
+                Selecciona un polímero para ver ficha técnica:
+              </span>
+              {selectedMaterialTab && (
+                <button
+                  type="button"
+                  onClick={() => setSelectedMaterialTab(null)}
+                  className="text-[10px] text-[#5BB8FF] font-mono hover:underline cursor-pointer flex items-center gap-1"
+                >
+                  <span>Ocultar especificaciones</span>
+                  <ChevronDown className="w-3 h-3 rotate-180" />
+                </button>
               )}
             </div>
+
+            {/* Botones de selección de material */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {[
+                { id: 'petg', label: 'PETG', tag: 'Mecánico', color: '#5BB8FF' },
+                { id: 'tpu', label: 'TPU 95A', tag: 'Flexible', color: '#8FB99B' },
+                { id: 'plaplus', label: 'PLA+ Pro', tag: 'Rígido', color: '#FBBF24' },
+                { id: 'abs', label: 'ABS / ASA', tag: 'Térmico', color: '#C084FC' }
+              ].map(mat => {
+                const isSelected = selectedMaterialTab === mat.id;
+                return (
+                  <button
+                    key={mat.id}
+                    type="button"
+                    onClick={() => setSelectedMaterialTab(isSelected ? null : mat.id)}
+                    className={`py-2 px-2.5 sm:px-3 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer border flex items-center justify-between gap-1.5 ${
+                      isSelected
+                        ? 'bg-[#5BB8FF] text-[#0A0E11] border-[#5BB8FF] shadow-[0_0_12px_rgba(91,184,255,0.35)]'
+                        : 'bg-white/5 text-gray-300 border-white/10 hover:border-white/20 active:scale-95'
+                    }`}
+                  >
+                    <div className="text-left">
+                      <div className="font-bold">{mat.label}</div>
+                      <div className={`text-[8.5px] uppercase font-sans ${isSelected ? 'text-[#0A0E11]/80 font-bold' : 'text-gray-400'}`}>
+                        {mat.tag}
+                      </div>
+                    </div>
+                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${isSelected ? 'rotate-180' : ''}`} />
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Ficha técnica del material activo (Desplegable / Ocultable al click) */}
+            {selectedMaterialTab && (() => {
+              const cur = materialsData[selectedMaterialTab];
+              if (!cur) return null;
+              return (
+                <div className="space-y-4 pt-2 border-t border-white/10 animate-fadeIn">
+                  <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                    <div>
+                      <span className="font-mono text-[9px] uppercase tracking-wider text-[#5BB8FF] block">
+                        {cur.tag}
+                      </span>
+                      <h4 className="text-lg font-bold text-white">{cur.name}</h4>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="px-2.5 py-1 rounded bg-white/5 font-mono text-xs text-gray-300 border border-white/10">
+                        {cur.temp}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedMaterialTab(null)}
+                        className="p-1 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 text-xs cursor-pointer"
+                        title="Cerrar especificaciones"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
+                    {cur.summary}
+                  </p>
+
+                  {/* Matriz de Parámetros Mecánicos */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 font-mono text-[11px] pt-1">
+                    <div className="p-2.5 rounded-lg bg-black/30 border border-white/5">
+                      <span className="block text-gray-500 text-[8px] uppercase">Tracción</span>
+                      <strong className="text-white text-xs">{cur.tensile}</strong>
+                    </div>
+                    <div className="p-2.5 rounded-lg bg-black/30 border border-white/5">
+                      <span className="block text-gray-500 text-[8px] uppercase">Resistencia Impacto</span>
+                      <strong className="text-[#8FB99B] text-xs">{cur.impact}</strong>
+                    </div>
+                    <div className="p-2.5 rounded-lg bg-black/30 border border-white/5 col-span-2 sm:col-span-1">
+                      <span className="block text-gray-500 text-[8px] uppercase">Químicos</span>
+                      <strong className="text-amber-300 text-[10px] leading-tight block">{cur.chemical}</strong>
+                    </div>
+                  </div>
+
+                  {/* Aplicaciones Típicas en Planta */}
+                  <div className="pt-2">
+                    <div className="font-mono text-[9px] uppercase tracking-wider text-gray-400 mb-2">
+                      Aplicaciones Recomendadas en Línea:
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-gray-300">
+                      {cur.apps.map((app, idx) => (
+                        <div key={idx} className="flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#5BB8FF]" />
+                          <span>{app}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
 
           </div>
         </div>
