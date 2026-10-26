@@ -14,7 +14,9 @@ import {
   Copy,
   Check,
   X,
-  Info
+  Info,
+  Building2,
+  Package
 } from 'lucide-react';
 
 export default function PublicidadDesarrolloView({
@@ -66,7 +68,7 @@ export default function PublicidadDesarrolloView({
     }
   };
 
-  // Paleta oficial de temas y estilos para las 5 áreas
+  // Paleta oficial de temas y estilos para las 4 áreas principales
   const categoryTheme = {
     branding: {
       id: 'branding',
@@ -114,7 +116,7 @@ export default function PublicidadDesarrolloView({
       id: 'editorial',
       label: 'Catálogos & Redes',
       code: 'EDIT-04',
-      tag: 'Contenido Digital',
+      tag: 'Contenido & Impresos',
       icon: Film,
       activeCardClass: 'border-purple-400 bg-purple-500/10 ring-2 ring-purple-400/30 text-white',
       badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
@@ -123,30 +125,15 @@ export default function PublicidadDesarrolloView({
       checkClass: 'bg-purple-400 text-[#0B0D11] border-purple-400',
       priceClass: 'text-purple-200',
       chipClass: 'border-purple-500/40 bg-purple-500/10 text-purple-200'
-    },
-    otros: {
-      id: 'otros',
-      label: 'Otros & Especiales',
-      code: 'PLUS-05',
-      tag: 'Proyectos a Medida',
-      icon: Sparkles,
-      activeCardClass: 'border-sky-400 bg-sky-500/10 ring-2 ring-sky-400/30 text-white',
-      badgeColor: 'bg-sky-500/20 text-sky-300 border-sky-500/40',
-      dotColor: 'bg-sky-400',
-      activeRowClass: 'border-sky-400/90 bg-sky-500/15 ring-1 ring-sky-400/30',
-      checkClass: 'bg-sky-400 text-[#0B0D11] border-sky-400',
-      priceClass: 'text-sky-200',
-      chipClass: 'border-sky-500/40 bg-sky-500/10 text-sky-200'
     }
   };
 
-  // Lista de las 5 categorías fusionadas para los botones principales
+  // Lista de las 4 áreas principales para los botones superiores (2x2 en celular, 4 en desktop)
   const categoriesList = [
     categoryTheme.branding,
     categoryTheme.publicidad,
     categoryTheme.web,
-    categoryTheme.editorial,
-    categoryTheme.otros
+    categoryTheme.editorial
   ];
 
   // Catálogo completo de productos organizados por área con información detallada de entregables
@@ -198,18 +185,18 @@ export default function PublicidadDesarrolloView({
       price: 450
     },
     {
-      id: 'papeleria_redes',
+      id: 'membretes_firmas',
       category: 'branding',
       categoryLabel: 'Identidad & Marca',
-      title: 'Diseño de Papelería & Redes Sociales',
-      subtitle: 'Tarjetas comerciales, membrete y avatares',
-      desc: 'Aplicación de marca a papelería comercial y perfiles digitales.',
+      title: 'Papelería Digital & Firmas de Correo',
+      subtitle: 'Hoja membretada institucional y kit de perfiles',
+      desc: 'Aplicación institucional de marca para comunicación comercial formal.',
       whatIncludes: [
-        'Diseño de tarjeta de presentación comercial (frente y vuelta lista para imprenta).',
-        'Hoja membretada digital editable para cotizaciones y cartas en Word o PDF.',
-        'Kit de portadas y fotos de perfil adaptadas para WhatsApp, Facebook e Instagram.'
+        'Hoja membretada digital editable en Word y plantilla PDF.',
+        'Diseño de firma digital para correos electrónicos corporativos.',
+        'Kit de portadas y avatares institucionales para redes comerciales.'
       ],
-      price: 750
+      price: 550
     },
 
     // --- 2. PUBLICIDAD, LONAS & GRAN FORMATO (ESMERALDA) ---
@@ -347,7 +334,22 @@ export default function PublicidadDesarrolloView({
       price: 5800
     },
 
-    // --- 4. CONTENIDO EDITORIAL & MENÚS (MORADO) ---
+    // --- 4. CONTENIDO EDITORIAL, TARJETAS & MENÚS (MORADO) ---
+    {
+      id: 'tarjetas_presentacion',
+      category: 'editorial',
+      categoryLabel: 'Catálogos & Redes',
+      title: 'Diseño de Tarjetas de Presentación',
+      subtitle: 'Frente y vuelta · Lista para imprenta',
+      desc: 'Diseño comercial profesional de tarjeta de presentación con acabados listos para imprimir.',
+      whatIncludes: [
+        'Diseño gráfico personalizado frente y vuelta con tu logotipo y datos de contacto.',
+        'Formato estándar comercial (9 × 5 cm) con guías de corte, sangría y modo CMYK.',
+        'Entrega en archivo PDF de prensa de alta resolución para imprimir.',
+        'Versión digital optimizada para compartir por WhatsApp como tarjeta virtual.'
+      ],
+      price: 350
+    },
     {
       id: 'catalogo_pdf',
       category: 'editorial',
@@ -406,67 +408,70 @@ export default function PublicidadDesarrolloView({
         'Entrega en archivo PDF de prensa con guías de corte, sangría y modo CMYK.'
       ],
       price: 450
-    },
+    }
+  ];
 
-    // --- 5. OTROS & PROYECTOS ESPECIALES (SKY/AZUL) ---
+  // Paquetes & Servicios para Empresas (Ubicados debajo del portafolio)
+  const corporatePackages = [
     {
-      id: 'proyecto_medida',
-      category: 'otros',
-      categoryLabel: 'Otros & Especiales',
-      title: 'Proyecto Especial a Medida',
-      subtitle: 'Medidas o especificaciones personalizadas',
-      desc: 'Cuéntanos qué necesitas y calculamos tu cotización exacta.',
-      whatIncludes: [
-        'Atención personalizada para medidas especiales de lonas, viniles o banners.',
-        'Revisión técnica de tus archivos, bocetos o requerimientos.',
-        'Asesoría directa por WhatsApp con presupuesto ajustado a tu necesidad.',
-        'Indica tus medidas en el campo de notas para cotizar contigo.'
-      ],
-      price: 0
+      id: 'pack_apertura',
+      badge: 'Más Solicitado para Negocios',
+      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+      title: 'Paquete Apertura Comercial / Local Nuevo',
+      subtitle: 'Logo + Lona 2.0 × 1.0 m + Tarjetas + Volantes',
+      priceText: '$2,250 MXN',
+      idealFor: 'Negocios nuevos, locales comerciales y puntos de venta en inauguración.',
+      includes: [
+        'Diseño de logotipo vectorial maestro (.AI, .PDF, .PNG transparente).',
+        'Lona publicitaria de 2.0 × 1.0 m impresa en 13 oz con bastilla y ojillos lista para colgar.',
+        'Diseño de tarjetas de presentación comerciales frente y vuelta lista para imprenta.',
+        'Diseño de volante publicitario para promoción de apertura.'
+      ]
     },
     {
-      id: 'asesoria_creativa',
-      category: 'otros',
-      categoryLabel: 'Otros & Especiales',
-      title: 'Asesoría Creativa & Técnica',
-      subtitle: 'Sesión de 45 min para resolver dudas de tu proyecto',
-      desc: 'Consulta técnica sobre materiales, identidad y estrategias visuales.',
-      whatIncludes: [
-        'Sesión personalizada por WhatsApp o llamada para aterrizar tu proyecto.',
-        'Recomendación de materiales óptimos, acabados, tipos de lona o tecnología web.',
-        'Diagnóstico de tu marca actual y sugerencias de mejora comercial.',
-        'El costo se descuenta de tu proyecto si decides contratar el servicio.'
-      ],
-      price: 350
+      id: 'pack_digital_360',
+      badge: 'Solución Digital Completa',
+      badgeColor: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
+      title: 'Paquete Digital & Ventas 360°',
+      subtitle: 'Identidad Completa + Sitio Web + Catálogo WhatsApp',
+      priceText: '$7,200 MXN',
+      idealFor: 'Marcas y empresas que buscan vender por internet y proyectar autoridad.',
+      includes: [
+        'Identidad visual completa (logo principal, isotipo, manual de marca y paleta oficial).',
+        'Sitio web responsivo de alto rendimiento adaptado a celulares y con botones directos.',
+        'Catálogo digital interactivo en PDF con botones directos para pedidos en WhatsApp.',
+        'Pack de 6 artes publicitarios para redes sociales.'
+      ]
     },
     {
-      id: 'vectorizado_urgente',
-      category: 'otros',
-      categoryLabel: 'Otros & Especiales',
-      title: 'Vectorización Express / Urgente',
-      subtitle: 'Entrega prioritaria el mismo día hábil',
-      desc: 'Trazado y limpieza de logotipo en tiempo récord para impresión inmediata.',
-      whatIncludes: [
-        'Trazado y limpieza de logotipo en curvas vectoriales exactas.',
-        'Atención prioritaria con entrega el mismo día hábil.',
-        'Archivos entregados en .AI, .PDF, .SVG y .PNG transparente.'
-      ],
-      price: 600
+      id: 'pack_poliza_mensual',
+      badge: 'Póliza Mensual para Empresas',
+      badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
+      title: 'Maquila de Diseño & Soporte Comercial Continuo',
+      subtitle: 'Diseñador dedicado para tu negocio (redes, catálogos e impresos)',
+      priceText: '$3,200 MXN / mes',
+      idealFor: 'Restaurantes, franquicias y pymes con promociones y cambios semanales.',
+      includes: [
+        '15 piezas gráficas mensuales (posts, historias promocionales, flyers o banners).',
+        'Actualización continua de menús digitales o listas de precios.',
+        'Adaptación rápida de artes para lonas y promociones de temporada.',
+        'Atención prioritaria directa por WhatsApp con entregas ágiles.'
+      ]
     },
     {
-      id: 'instalacion_slp',
-      category: 'otros',
-      categoryLabel: 'Otros & Especiales',
-      title: 'Instalación de Lona o Vinil en SLP',
-      subtitle: 'Mano de obra en San Luis Potosí capital',
-      desc: 'Colocación en altura estándar dentro de la zona metropolitana de SLP.',
-      whatIncludes: [
-        'Mano de obra para colgado o tensado de lona en altura estándar (hasta 3 m).',
-        'Zona metropolitana: San Luis Potosí y Soledad de Graciano Sánchez.',
-        'Incluye cinchos de uso rudo o pijas de fijación básica.',
-        'Sujeto a confirmación de superficie y tipo de fachada.'
-      ],
-      price: 350
+      id: 'pack_medida_corporativo',
+      badge: 'Proyecto a la Medida',
+      badgeColor: 'bg-sky-500/20 text-sky-300 border-sky-500/40',
+      title: 'Proyecto Especial Corporativo / Gran Escala',
+      subtitle: 'Lonas de gran dimensión, rotulación de flotillas o plataformas a medida',
+      priceText: 'Cotización Personalizada',
+      idealFor: 'Empresas, constructoras, eventos masivos y requerimientos industriales.',
+      includes: [
+        'Levantamiento de especificaciones técnicas y medidas no estándar.',
+        'Asesoría en materiales de uso rudo para exteriores de gran formato.',
+        'Cotización formal y factura fiscal para tu empresa.',
+        'Atención personalizada directa por WhatsApp.'
+      ]
     }
   ];
 
@@ -518,22 +523,28 @@ export default function PublicidadDesarrolloView({
     }
 
     const itemsListText = selectedItems
-      .map(item => {
-        const priceText = item.price > 0 ? `$${item.price.toLocaleString('es-MX')} MXN` : 'A cotizar según especificaciones';
-        return `• *${item.title}* (${item.subtitle}): ${priceText}`;
-      })
+      .map(item => `• *${item.title}* (${item.subtitle}): $${item.price.toLocaleString('es-MX')} MXN`)
       .join('\n');
 
     const hasPrintItems = selectedItems.some(i => i.isPrint);
-    const hasSpecialQuote = selectedItems.some(i => i.price === 0);
 
     const text = `Hola Wicho, me interesa cotizar los siguientes productos de tu portal de *Diseño & Publicidad*:
 
 ${itemsListText}
 
-*Inversión Total Estimada:* $${totalEstimate.toLocaleString('es-MX')} MXN${hasSpecialQuote ? ' (+ conceptos a cotizar)' : ''}
+*Inversión Total Estimada:* $${totalEstimate.toLocaleString('es-MX')} MXN
 ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfico)_\n` : ''}${quoteNotes.trim() ? `\n• *Detalles / Medidas:* ${quoteNotes.trim()}\n` : ''}
 ¿Podemos platicar sobre este proyecto?`;
+
+    const url = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+  };
+
+  // Cotizar un paquete empresarial específico directamente por WhatsApp
+  const handleQuoteCorporatePackage = (pkg) => {
+    const text = `Hola Wicho, me interesa cotizar el *${pkg.title}* (${pkg.priceText}) que vi en tu sección de empresas de *Diseño & Publicidad*.
+
+¿Podemos platicar sobre los detalles para mi negocio?`;
 
     const url = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
@@ -557,7 +568,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
       {/* 2. MÓDULO PRINCIPAL FUSIONADO: SELECCIONA ÁREA Y ELIGE PRODUCTOS CON DETALLE DESPLEGABLE */}
       <main className="max-w-4xl mx-auto px-3.5 sm:px-6 py-4 sm:py-6 space-y-5 sm:space-y-7">
 
-        {/* ================= CATÁLOGO Y ALCANCE DE PROYECTO (FUSIONADO 1 Y 2) ================= */}
+        {/* ================= CATÁLOGO Y ALCANCE DE PROYECTO (4 ÁREAS PRINCIPALES) ================= */}
         <section id="alcance-proyecto" ref={alcanceRef} className="space-y-3.5 animate-fadeIn">
           
           {/* Cabecera unificada */}
@@ -576,8 +587,8 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
             </span>
           </div>
 
-          {/* Selectores de Área (5 Áreas sin barra deslizante: 2x2 + 1 en celular, 5 en desktop) */}
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-2.5">
+          {/* Selectores de Área (4 Áreas sin barra deslizante: 2x2 en celular, 4 en desktop) */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
             {categoriesList.map(cat => {
               const isSelected = activeCategoryFilter === cat.id;
               const IconComp = cat.icon;
@@ -588,8 +599,6 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                   type="button"
                   onClick={() => setActiveCategoryFilter(cat.id)}
                   className={`rounded-2xl border transition-all duration-200 p-2.5 sm:p-3 text-left flex flex-col justify-between cursor-pointer active:scale-[0.97] touch-manipulation select-none ${
-                    cat.id === 'otros' ? 'col-span-2 sm:col-span-1' : ''
-                  } ${
                     isSelected
                       ? `${cat.activeCardClass} shadow-xl`
                       : 'border-stone-800 bg-[#0E1218] hover:border-stone-700'
@@ -707,14 +716,8 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                         <span className={`font-mono text-xs sm:text-sm font-bold ${
                           isSelected ? itemTheme.priceClass : 'text-stone-200'
                         }`}>
-                          {item.price > 0 ? (
-                            <>
-                              ${item.price.toLocaleString('es-MX')}
-                              <span className="text-[9px] text-stone-400 font-normal ml-0.5">MXN</span>
-                            </>
-                          ) : (
-                            <span className="text-[11px] text-stone-400 font-sans">A cotizar</span>
-                          )}
+                          ${item.price.toLocaleString('es-MX')}
+                          <span className="text-[9px] text-stone-400 font-normal ml-0.5">MXN</span>
                         </span>
                       </div>
                     </div>
@@ -928,6 +931,84 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
             </div>
           </div>
         </div>
+
+        {/* ================= OTROS & SERVICIOS PARA EMPRESAS (UBICADO DEBAJO DEL PORTAFOLIO) ================= */}
+        <section className="pt-4 border-t border-stone-800/80 space-y-3.5 animate-fadeIn">
+          
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-1 border-b border-stone-800 pb-2">
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#e8b84f] flex items-center gap-1.5">
+                <Building2 className="w-3.5 h-3.5 text-[#e8b84f]" />
+                <span>Otros &amp; Soluciones Especiales</span>
+              </div>
+              <h2 className="text-base sm:text-lg font-black text-white mt-0.5">
+                Paquetes Comerciales &amp; Servicios para Empresas
+              </h2>
+            </div>
+            <p className="text-[11px] text-stone-400 font-mono hidden md:block">
+              Propuestas integrales para inauguraciones, franquicias y soporte continuo.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {corporatePackages.map((pkg) => (
+              <div
+                key={pkg.id}
+                className="rounded-2xl border border-stone-800 bg-[#0E1218] hover:border-stone-700 p-4 flex flex-col justify-between space-y-3.5 transition-all shadow-xl"
+              >
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className={`text-[8.5px] font-black uppercase tracking-wider px-2 py-0.5 rounded border ${pkg.badgeColor}`}>
+                      {pkg.badge}
+                    </span>
+                    <span className="font-mono text-xs font-black text-white">
+                      {pkg.priceText}
+                    </span>
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-extrabold text-white leading-snug">
+                      {pkg.title}
+                    </h3>
+                    <p className="text-xs text-stone-400 mt-0.5">
+                      {pkg.subtitle}
+                    </p>
+                  </div>
+
+                  {/* Entregables incluidos en el paquete */}
+                  <div className="space-y-1.5 pt-1 border-t border-white/5">
+                    <div className="text-[9.5px] font-mono uppercase tracking-wider text-stone-400 font-bold">
+                      ¿Qué contiene este paquete?
+                    </div>
+                    <ul className="space-y-1 text-xs text-stone-300">
+                      {pkg.includes.map((inc, i) => (
+                        <li key={i} className="flex items-start gap-1.5 text-[11px] leading-snug">
+                          <Check className="w-3 h-3 text-emerald-400 shrink-0 mt-0.5" />
+                          <span>{inc}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="p-2 rounded-lg bg-white/5 text-[10.5px] text-stone-300">
+                    <strong className="text-white">Ideal para: </strong>
+                    <span>{pkg.idealFor}</span>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => handleQuoteCorporatePackage(pkg)}
+                  className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-[#e8b84f] to-[#d4a359] hover:from-[#f0c765] hover:to-[#e8b84f] active:scale-95 text-[#0B0D11] font-black text-xs flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer touch-manipulation"
+                >
+                  <MessageCircle className="w-3.5 h-3.5 fill-[#0B0D11]" />
+                  <span>Cotizar este paquete por WhatsApp</span>
+                </button>
+              </div>
+            ))}
+          </div>
+
+        </section>
 
         {/* ================= SECCIÓN COMPARTIR PORTAL ================= */}
         <section className="pt-4 border-t border-stone-800">
