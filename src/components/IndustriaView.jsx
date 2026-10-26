@@ -128,13 +128,13 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
     abs: {
       id: 'abs',
       name: 'ABS / ASA Industrial',
-      tag: 'CÁMARA TÉRMICA CERRADA · FLASHFORGE CREATOR 5',
-      temp: '95°C - 100°C',
+      tag: 'CABINA CERRADA · FLASHFORGE CREATOR 5',
+      temp: '90°C - 95°C',
       impact: 'Alto con ductilidad térmica',
       chemical: 'Resistencia a intemperie UV (ASA) y calor',
       tensile: '42 MPa',
       density: '1.06 g/cm³',
-      summary: 'Polímero térmico procesado exclusivamente en nuestra Creator 5 con cámara cerrada calefactada para evitar deformación por enfriamiento. Ideal para piezas expuestas a calor continuo.',
+      summary: 'Procesado en cabina cerrada para retener temperatura de cama y evitar corrientes de aire. Recomendado para piezas de tamaño pequeño a mediano con exposición solar o calor.',
       apps: ['Gabinetes y carcasas para intemperie', 'Refacciones automotrices bajo cofre', 'Plantillas de verificación de soldadura', 'Piezas sometidas a calor constante']
     }
   };
@@ -566,8 +566,8 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                   <span className="font-bold text-[#8FB99B]">PETG · TPU 95A · PLA+ Pro</span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="text-gray-400 font-sans">Cámara cerrada calefactada</span>
-                  <span className="font-bold text-amber-300">ABS · ASA (Sin pandeo)</span>
+                  <span className="text-gray-400 font-sans">Tecnología IDEX</span>
+                  <span className="font-bold text-amber-300">Doble extrusor / Gran formato</span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
                   <span className="text-gray-400 font-sans">Insertos de latón</span>
@@ -842,7 +842,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                     <option>PETG Técnico (Tenaz)</option>
                     <option>TPU 95A (Flexible / Antirrayón)</option>
                     <option>PLA+ Pro (Estudio dimensional rápido)</option>
-                    <option>ABS / ASA (Cámara cerrada Creator 5)</option>
+                    <option>ABS / ASA (Piezas medianas / térmico)</option>
                     <option>Recomiéndenme uno según mi pieza</option>
                   </select>
                 </div>
