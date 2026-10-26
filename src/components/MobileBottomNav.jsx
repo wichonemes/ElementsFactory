@@ -9,18 +9,19 @@ export default function MobileBottomNav({
 }) {
   const isIndustria = activeWorld === 'industria';
   const isPublicidad = activeWorld === 'publicidad-desarrollo';
-  const isDark = isIndustria || isPublicidad;
+  const isServicios = activeWorld === 'servicios';
+  const isDark = isIndustria || isPublicidad || isServicios;
 
   // Clases dinámicas de la barra según el área activa
   const navBg = isIndustria
     ? 'bg-[#0A0E11]/95 backdrop-blur-md border-t border-white/10 shadow-[0_-2px_15px_rgba(0,0,0,0.7)]'
-    : isPublicidad
+    : (isPublicidad || isServicios)
     ? 'bg-[#0D1410]/95 backdrop-blur-md border-t border-white/10 shadow-[0_-2px_15px_rgba(0,0,0,0.7)]'
     : 'bg-white/98 backdrop-blur-md border-t border-gray-200 shadow-[0_-2px_10px_rgba(0,0,0,0.06)]';
 
   const activeColor = isIndustria
     ? 'text-[#5BB8FF]'
-    : isPublicidad
+    : (isPublicidad || isServicios)
     ? 'text-[#D4A359]'
     : 'text-[#2D4F3E]';
 

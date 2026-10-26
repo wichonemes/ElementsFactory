@@ -14,8 +14,7 @@ import QuoteCalculatorModal from './components/QuoteCalculatorModal';
 import FloatingSideNav from './components/FloatingSideNav';
 import TemuUrgencyModule from './components/TemuUrgencyModule';
 import PackagesAndServicesView from './components/PackagesAndServicesView';
-import PublicidadDesarrolloView from './components/PublicidadDesarrolloView';
-import IndustriaView from './components/IndustriaView';
+import ServiciosView from './components/ServiciosView';
 import HomePackageCard from './components/HomePackageCard';
 import BlitzClockWidget from './components/BlitzClockWidget';
 import CatalogBottomNav from './components/CatalogBottomNav';
@@ -51,10 +50,20 @@ export default function App() {
   // Navigation & Filter States
   const [activeWorld, setActiveWorld] = useState(() => {
     if (typeof window !== 'undefined') {
-      const p = new URLSearchParams(window.location.search).get('area') || new URLSearchParams(window.location.search).get('view');
-      if (p === 'industria' || p === 'publicidad-desarrollo' || p === 'paquetes-servicios') return p;
+      const p = new URLSearchParams(window.location.search).get('area') || new URLSearchParams(window.location.search).get('view') || new URLSearchParams(window.location.search).get('world');
+      if (p === 'industria' || p === 'publicidad-desarrollo' || p === 'servicios') return 'servicios';
+      if (p === 'paquetes-servicios') return p;
+      if (p) return p;
     }
     return 'all';
+  });
+
+  const [servicesInitialTab, setServicesInitialTab] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const p = new URLSearchParams(window.location.search).get('area') || new URLSearchParams(window.location.search).get('view') || new URLSearchParams(window.location.search).get('tab');
+      if (p === 'industria' || p === 'manufactura') return 'industria';
+    }
+    return 'diseno';
   });
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedTechnique, setSelectedTechnique] = useState('all');
@@ -463,19 +472,30 @@ export default function App() {
     setSelectedCategory('all');
     setSelectedTechnique('all');
     setSearchQuery('');
-    setViewMode('catalog');
     setCatalogSeed(Date.now());
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   };
 
   // World / Area selector handler
-  const handleSelectWorld = (worldId) => {
+  const handleSelectWorld = (worldId, tab) => {
     playSoftAreaSwitchSound();
-    setSearchQuery(''); // Limpia la búsqueda para que el catálogo o paquetes abran inmediatamente
-    setActiveWorld(worldId);
+    setSearchQuery(''); // Limpia la búsqueda para que el catálogo abra inmediatamente
+    if (worldId === 'industria') {
+      setActiveWorld('servicios');
+      setServicesInitialTab('industria');
+    } else if (worldId === 'publicidad-desarrollo') {
+      setActiveWorld('servicios');
+      setServicesInitialTab('diseno');
+    } else if (worldId === 'servicios') {
+      setActiveWorld('servicios');
+      if (tab) {
+        setServicesInitialTab(tab);
+      }
+    } else {
+      setActiveWorld(worldId);
+    }
     setSelectedCategory('all');
     setSelectedTechnique('all');
-    setViewMode('catalog');
     setCatalogSeed(Date.now());
     // Posicionar limpiamente arriba de la pantalla para evitar saltos erráticos hacia abajo
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -736,7 +756,7 @@ export default function App() {
       </div>
 
       {/* Top Navigation para Móviles estilo Mercado Libre */}
-      {activeWorld !== 'industria' && (
+      {activeWorld !== 'industria' && activeWorld !== 'servicios' && activeWorld !== 'publicidad-desarrollo' && (
         <MobileMercadoLibreHeader
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
@@ -835,7 +855,7 @@ export default function App() {
       )}
 
       {/* Area Cover Banner (when a specific area is selected) */}
-      {activeWorld !== 'all' && activeWorld !== 'paquetes-servicios' && activeWorld !== 'publicidad-desarrollo' && activeWorld !== 'industria' && currentWorldObj && (
+      {activeWorld !== 'all' && activeWorld !== 'paquetes-servicios' && activeWorld !== 'publicidad-desarrollo' && activeWorld !== 'industria' && activeWorld !== 'servicios' && currentWorldObj && (
         <div className="relative bg-[#1F2421] text-white overflow-hidden py-10 sm:py-14 border-b border-black/20">
           <div className="absolute inset-0 opacity-20">
             <img src={currentWorldObj.image} alt="" className="w-full h-full object-cover" />
@@ -860,19 +880,14 @@ export default function App() {
         </div>
       )}
 
-      {/* Vista Dedicada de Publicidad & Desarrollo Digital */}
-      {activeWorld === 'publicidad-desarrollo' ? (
-        <PublicidadDesarrolloView
+      {/* Vista Unificada de Servicios Especializados (Diseño, Publicidad & Manufactura Industrial) */}
+      {(activeWorld === 'servicios' || activeWorld === 'publicidad-desarrollo' || activeWorld === 'industria') ? (
+        <ServiciosView
           settings={settings}
           onGoHome={handleGoHome}
           onOpenCalculator={handleOpenCalculator}
           onSelectWorld={handleSelectWorld}
-        />
-      ) : activeWorld === 'industria' ? (
-        <IndustriaView
-          settings={settings}
-          onGoHome={handleGoHome}
-          onOpenCalculator={handleOpenCalculator}
+          initialTab={servicesInitialTab}
         />
       ) : activeWorld === 'paquetes-servicios' ? (
         <PackagesAndServicesView

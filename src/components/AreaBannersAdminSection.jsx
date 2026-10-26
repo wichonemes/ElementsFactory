@@ -47,6 +47,10 @@ const SUGGESTED_AREA_IMAGES = {
   'publicidad-desarrollo': [
     { label: 'Branding y Publicidad', url: '/uploads/bundle_promo_biz_1.jpg' },
     { label: 'Diseño Gráfico & Digital', url: '/uploads/t39_smart_deck_streamer_workspace.png' }
+  ],
+  servicios: [
+    { label: 'Branding, Diseño & Lonas', url: '/uploads/brand_artesano_digital_og.jpg' },
+    { label: 'Manufactura Aditiva e Industria', url: '/uploads/industria_portada_oficial_ingenieria.webp' }
   ]
 };
 
@@ -106,6 +110,13 @@ const AREA_METADATA = {
     color: 'indigo',
     badgeText: 'Colección Oficial Diseño & Publicidad',
     gradient: 'from-[#181B34] via-[#242A52] to-[#101224]'
+  },
+  servicios: {
+    label: 'Servicios (Diseño & Industria)',
+    icon: Layers,
+    color: 'amber',
+    badgeText: 'Centro Oficial de Servicios',
+    gradient: 'from-[#17251E] via-[#23352B] to-[#0E1713]'
   }
 };
 
@@ -305,6 +316,7 @@ export default function AreaBannersAdminSection({
           { id: 'personalizados', label: 'Personalizados', icon: Sparkles, desc: 'Dibujos 3D y creaciones' },
           { id: 'eventos', label: 'Eventos Especiales', icon: CalendarHeart, desc: 'Bodas, fiestas y recuerdos' },
           { id: 'paquetes-servicios', label: 'Paquetes & Kits', icon: Gift, desc: 'Combos promocionales' },
+          { id: 'servicios', label: 'Servicios', icon: Layers, desc: 'Diseño & manufactura técnica' },
           { id: 'industria', label: 'Industria Técnica', icon: Wrench, desc: 'Piezas mecánicas y utillaje' },
           { id: 'publicidad-desarrollo', label: 'Diseño & Publicidad', icon: Palette, desc: 'Branding y diseño web' }
         ].map(area => {

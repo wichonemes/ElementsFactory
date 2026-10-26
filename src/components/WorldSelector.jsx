@@ -9,6 +9,7 @@ export default function WorldSelector({ worlds, activeWorld, onSelectWorld, cate
     personalizados: Sparkles,
     eventos: CalendarHeart,
     'paquetes-servicios': Gift,
+    servicios: Layers,
     industria: Cog,
     'publicidad-desarrollo': Layers
   };
@@ -18,6 +19,7 @@ export default function WorldSelector({ worlds, activeWorld, onSelectWorld, cate
     negocios: '02',
     eventos: '03',
     personalizados: '04',
+    servicios: '05',
     industria: '05',
     'publicidad-desarrollo': '06'
   };

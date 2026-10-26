@@ -45,18 +45,11 @@ const initialWorlds = [
     description: 'Elementos personalizados para bodas, bautizos, XV años, graduaciones y fechas conmemorativas. Diseñados para sorprender y ser conservados.'
   },
   {
-    id: 'industria',
-    name: 'Industria',
-    tagline: 'Refacciones funcionales bajo demanda, utillaje y prototipado rápido en polímeros de ingeniería',
-    image: '/uploads/industria_portada_oficial_ingenieria.webp',
-    description: 'Soluciones técnicas para empresas, talleres mecánicos y manufactura: refacciones automotrices bajo demanda, calibradores de taller, plantillas de ensamble y muestras de validación dimensional.'
-  },
-  {
-    id: 'publicidad-desarrollo',
-    name: 'Diseño y Publicidad',
-    tagline: 'Diseño gráfico, desarrollo web y gran formato por Wicho Nemes',
+    id: 'servicios',
+    name: 'Servicios',
+    tagline: 'Diseño gráfico, desarrollo web, gran formato y manufactura técnica industrial',
     image: '/uploads/brand_artesano_digital_og.jpg',
-    description: 'Soluciones digitales integrales: tiendas online, páginas web interactivas, campañas publicitarias de tráfico, rotulación vehicular, lonas de gran formato y modelado 3D.'
+    description: 'Portafolio integral de soluciones profesionales: identidad de marca, lonas y corte de vinil por Wicho Nemes, y manufactura aditiva técnica, refacciones bajo demanda y utillaje B2B.'
   }
 ];
 
@@ -268,28 +261,40 @@ const initialCategories = [
     "order": 4
   },
   {
-    "id": "industria-automotriz",
-    "worldId": "industria",
-    "name": "Refacciones y componentes automotrices",
+    "id": "servicios-diseno-publicidad",
+    "worldId": "servicios",
+    "name": "Diseño gráfico, branding y lonas",
     "order": 1
   },
   {
-    "id": "industria-calibracion",
-    "worldId": "industria",
-    "name": "Herramientas de taller y galgas de medición",
+    "id": "servicios-web-digital",
+    "worldId": "servicios",
+    "name": "Desarrollo web y modelado 3D",
     "order": 2
   },
   {
-    "id": "industria-utillaje",
-    "worldId": "industria",
-    "name": "Utillaje, guías y plantillas de ensamble",
+    "id": "industria-automotriz",
+    "worldId": "servicios",
+    "name": "Refacciones y componentes automotrices",
     "order": 3
   },
   {
-    "id": "industria-gabinetes",
-    "worldId": "industria",
-    "name": "Carcasas técnicas y prototipos de ingeniería",
+    "id": "industria-calibracion",
+    "worldId": "servicios",
+    "name": "Herramientas de taller y galgas",
     "order": 4
+  },
+  {
+    "id": "industria-utillaje",
+    "worldId": "servicios",
+    "name": "Utillaje y plantillas de ensamble",
+    "order": 5
+  },
+  {
+    "id": "industria-gabinetes",
+    "worldId": "servicios",
+    "name": "Prototipos 3D e ingeniería",
+    "order": 6
   },
   {
     "id": "personalizados-individual",

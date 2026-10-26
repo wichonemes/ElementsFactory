@@ -22,12 +22,9 @@ export default function MobileMercadoLibreHeader({
     { id: 'all', label: 'Principal' },
     { id: 'hogar', label: 'Hogar' },
     { id: 'negocios', label: 'Negocio' },
-    { id: 'juguetes', label: 'Juguetes' },
-    { id: 'personalizados', label: 'Personalizados' },
     { id: 'eventos', label: 'Eventos' },
-    { id: 'paquetes-servicios', label: 'Paquetes' },
-    { id: 'industria', label: 'Industria' },
-    { id: 'publicidad-desarrollo', label: 'Diseño y Publicidad' }
+    { id: 'personalizados', label: 'Personalizados' },
+    { id: 'servicios', label: 'Servicios' }
   ];
 
   return (

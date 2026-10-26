@@ -83,26 +83,10 @@ export default function Footer({ onSelectWorld, onOpenAdmin, settings }) {
               </li>
               <li>
                 <button
-                  onClick={() => onSelectWorld('paquetes-servicios')}
-                  className="hover:text-emerald-400 transition-colors text-left flex items-center gap-1 text-[#E5C378] font-bold"
-                >
-                  <span>Paquetes &amp; Combos</span>
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onSelectWorld('industria')}
-                  className="hover:text-emerald-400 transition-colors text-left"
-                >
-                  Industria &amp; Prototipos
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onSelectWorld('publicidad-desarrollo')}
+                  onClick={() => onSelectWorld('servicios')}
                   className="hover:text-amber-300 transition-colors text-left flex items-center gap-1 text-[#e8b84f] font-bold"
                 >
-                  <span>Diseño y Publicidad</span>
+                  <span>Servicios (Diseño &amp; Taller)</span>
                 </button>
               </li>
             </ul>

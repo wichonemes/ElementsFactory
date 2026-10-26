@@ -25,8 +25,7 @@ export default function Navbar({
     { id: 'negocios', label: 'Negocio' },
     { id: 'eventos', label: 'Eventos' },
     { id: 'personalizados', label: 'Personalizados', isSpecial: true, isCustom: true },
-    { id: 'industria', label: 'Industria' },
-    { id: 'publicidad-desarrollo', label: 'Diseño y Publicidad', isSpecial: true, isHighlight: true }
+    { id: 'servicios', label: 'Servicios', isSpecial: true, isHighlight: true }
   ];
 
   return (
@@ -133,7 +132,7 @@ export default function Navbar({
             {worlds.map(w => {
               const isActive = activeWorld === w.id;
               if (w.isSpecial) {
-                const isHighlight = w.id === 'publicidad-desarrollo';
+                const isHighlight = w.id === 'servicios' || w.id === 'publicidad-desarrollo';
                 const isCustom = w.id === 'personalizados';
                 return (
                   <button

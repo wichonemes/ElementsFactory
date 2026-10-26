@@ -55,29 +55,19 @@ export default function MobileCategoriesModal({
 }) {
   if (!isOpen) return null;
 
-  const [activeAreaTab, setActiveAreaTab] = useState('publicidad-desarrollo');
+  const [activeAreaTab, setActiveAreaTab] = useState('servicios');
 
   // Áreas principales con sus códigos de color distintivos de marca
   const masterAreas = [
     {
-      id: 'publicidad-desarrollo',
-      name: 'Diseño y\nPublicidad',
-      icon: Palette,
+      id: 'servicios',
+      name: 'Servicios\nTaller & Diseño',
+      icon: Layers,
       accentColor: '#D4A359',
       borderClass: 'border-l-[#D4A359]',
       textClass: 'text-amber-900',
-      tagText: 'Estudio Creativo',
+      tagText: 'Diseño & Taller',
       tagClass: 'bg-amber-100 text-amber-900 border border-amber-300'
-    },
-    {
-      id: 'industria',
-      name: 'Industria &\nTaller',
-      icon: Cog,
-      accentColor: '#5BB8FF',
-      borderClass: 'border-l-[#5BB8FF]',
-      textClass: 'text-sky-900',
-      tagText: 'Manufactura B2B',
-      tagClass: 'bg-sky-100 text-sky-900 border border-sky-300'
     },
     {
       id: 'hogar',
@@ -123,19 +113,17 @@ export default function MobileCategoriesModal({
 
   // Elementos interactivos con código de color respectivo por disciplina (100% iconos vectoriales)
   const categoryItemsByArea = {
-    'publicidad-desarrollo': [
-      { id: 'pub-branding', name: 'Branding y Logos', icon: Palette, serviceId: 'branding', iconBg: 'bg-amber-50 text-amber-600 border border-amber-300 shadow-amber-100' },
-      { id: 'pub-lonas', name: 'Lonas y Vinil', icon: Printer, serviceId: 'publicidad', iconBg: 'bg-rose-50 text-rose-600 border border-rose-300 shadow-rose-100' },
-      { id: 'pub-web', name: 'Sitios Web y Tiendas', icon: Globe, serviceId: 'web', iconBg: 'bg-emerald-50 text-emerald-600 border border-emerald-300 shadow-emerald-100' },
-      { id: 'pub-3d', name: 'Modelado y Renders', icon: Box, serviceId: 'modelado', iconBg: 'bg-sky-50 text-sky-600 border border-sky-300 shadow-sky-100' },
-      { id: 'pub-audiovisual', name: 'Fotografía y Video', icon: Film, serviceId: 'audiovisual', iconBg: 'bg-purple-50 text-purple-600 border border-purple-300 shadow-purple-100' },
-      { id: 'pub-editorial', name: 'Catálogos PDF', icon: FileText, serviceId: 'audiovisual', iconBg: 'bg-amber-50 text-amber-700 border border-amber-300 shadow-amber-100' }
-    ],
-    industria: [
-      { id: 'ind-prototipos', name: 'Prototipos 3D', icon: Box, catId: 'industria', iconBg: 'bg-sky-50 text-[#0284C7] border border-[#5BB8FF] shadow-sky-100' },
-      { id: 'ind-jigs', name: 'Utillaje y Jigs', icon: Wrench, catId: 'industria', iconBg: 'bg-emerald-50 text-[#245C33] border border-[#8FB99B] shadow-emerald-100' },
-      { id: 'ind-refacciones', name: 'Refacciones', icon: Cog, catId: 'industria', iconBg: 'bg-amber-50 text-amber-700 border border-amber-300 shadow-amber-100' },
-      { id: 'ind-lotes', name: 'Lotes Cortos', icon: Printer, catId: 'industria', iconBg: 'bg-purple-50 text-purple-700 border border-purple-300 shadow-purple-100' }
+    servicios: [
+      { id: 'pub-branding', name: 'Branding y Logos', icon: Palette, serviceTab: 'diseno', iconBg: 'bg-amber-50 text-amber-600 border border-amber-300 shadow-amber-100' },
+      { id: 'pub-lonas', name: 'Lonas y Vinil', icon: Printer, serviceTab: 'diseno', iconBg: 'bg-rose-50 text-rose-600 border border-rose-300 shadow-rose-100' },
+      { id: 'pub-web', name: 'Sitios Web y Tiendas', icon: Globe, serviceTab: 'diseno', iconBg: 'bg-emerald-50 text-emerald-600 border border-emerald-300 shadow-emerald-100' },
+      { id: 'pub-3d', name: 'Modelado y Renders', icon: Box, serviceTab: 'diseno', iconBg: 'bg-sky-50 text-sky-600 border border-sky-300 shadow-sky-100' },
+      { id: 'pub-audiovisual', name: 'Fotografía y Video', icon: Film, serviceTab: 'diseno', iconBg: 'bg-purple-50 text-purple-600 border border-purple-300 shadow-purple-100' },
+      { id: 'pub-editorial', name: 'Catálogos PDF', icon: FileText, serviceTab: 'diseno', iconBg: 'bg-amber-50 text-amber-700 border border-amber-300 shadow-amber-100' },
+      { id: 'ind-prototipos', name: 'Prototipos 3D', icon: Box, serviceTab: 'industria', iconBg: 'bg-sky-50 text-[#0284C7] border border-[#5BB8FF] shadow-sky-100' },
+      { id: 'ind-jigs', name: 'Utillaje y Jigs', icon: Wrench, serviceTab: 'industria', iconBg: 'bg-emerald-50 text-[#245C33] border border-[#8FB99B] shadow-emerald-100' },
+      { id: 'ind-refacciones', name: 'Refacciones Técnicas', icon: Cog, serviceTab: 'industria', iconBg: 'bg-amber-50 text-amber-700 border border-amber-300 shadow-amber-100' },
+      { id: 'ind-lotes', name: 'Lotes Cortos B2B', icon: Printer, serviceTab: 'industria', iconBg: 'bg-purple-50 text-purple-700 border border-purple-300 shadow-purple-100' }
     ],
     hogar: [
       { id: 'hogar-organizacion', name: 'Llaveros y Perchas', icon: Key, catId: 'hogar-organizacion', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' },
@@ -181,7 +169,7 @@ export default function MobileCategoriesModal({
     ]
   };
 
-  const currentItems = categoryItemsByArea[activeAreaTab] || categoryItemsByArea['publicidad-desarrollo'];
+  const currentItems = categoryItemsByArea[activeAreaTab] || categoryItemsByArea['servicios'];
 
   const handleItemClick = (item) => {
     if (item.techniqueId) {
@@ -189,10 +177,8 @@ export default function MobileCategoriesModal({
       if (onSelectWorld) onSelectWorld('all');
     } else if (item.isBundle) {
       if (onSelectWorld) onSelectWorld(item.worldId || activeAreaTab);
-    } else if (activeAreaTab === 'publicidad-desarrollo' || item.serviceId) {
-      if (onSelectWorld) onSelectWorld('publicidad-desarrollo');
-    } else if (activeAreaTab === 'industria') {
-      if (onSelectWorld) onSelectWorld('industria');
+    } else if (activeAreaTab === 'servicios' || item.serviceTab) {
+      if (onSelectWorld) onSelectWorld('servicios', item.serviceTab || 'diseno');
     } else {
       if (onSelectWorld) onSelectWorld(activeAreaTab);
       if (onSelectCategory && item.catId) onSelectCategory(item.catId);
@@ -262,31 +248,25 @@ export default function MobileCategoriesModal({
         <div className="w-[62%] p-3 overflow-y-auto bg-white space-y-4">
           <div className="flex items-center justify-between pb-1 border-b border-gray-100">
             <span className={`text-xs font-extrabold uppercase tracking-wide ${
-              activeAreaTab === 'publicidad-desarrollo'
+              activeAreaTab === 'servicios'
                 ? 'text-amber-900'
-                : activeAreaTab === 'industria'
-                ? 'text-sky-900'
                 : 'text-gray-800'
             }`}>
-              {masterAreas.find(a => a.id === activeAreaTab)?.name.replace('\\n', ' ')}
+              {masterAreas.find(a => a.id === activeAreaTab)?.name.replace('\n', ' ')}
             </span>
             <button
               type="button"
               onClick={() => {
-                if (activeAreaTab === 'publicidad-desarrollo') {
-                  if (onSelectWorld) onSelectWorld('publicidad-desarrollo');
-                } else if (activeAreaTab === 'industria') {
-                  if (onSelectWorld) onSelectWorld('industria');
+                if (activeAreaTab === 'servicios') {
+                  if (onSelectWorld) onSelectWorld('servicios');
                 } else if (activeAreaTab !== 'tecnicas') {
                   if (onSelectWorld) onSelectWorld(activeAreaTab);
                 }
                 onClose();
               }}
               className={`text-[11px] font-bold hover:underline cursor-pointer ${
-                activeAreaTab === 'publicidad-desarrollo'
+                activeAreaTab === 'servicios'
                   ? 'text-amber-800'
-                  : activeAreaTab === 'industria'
-                  ? 'text-sky-700'
                   : 'text-[#2D4F3E]'
               }`}
             >

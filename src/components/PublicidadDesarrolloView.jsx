@@ -12,7 +12,12 @@ import {
   DollarSign,
   Eye,
   Sparkles,
-  MapPin
+  MapPin,
+  Share2,
+  Copy,
+  Check,
+  Mail,
+  Building2
 } from 'lucide-react';
 
 export default function PublicidadDesarrolloView({
@@ -31,6 +36,44 @@ export default function PublicidadDesarrolloView({
   
   const cotizadorRef = useRef(null);
   const whatsappPhone = (settings?.whatsappNumber || '5214440000000').replace(/[^0-9]/g, '');
+
+  // Estado de feedback al copiar enlace
+  const [copiedLink, setCopiedLink] = useState(false);
+
+  // URL canónica para compartir el portal de diseño y publicidad
+  const sharePortalUrl = typeof window !== 'undefined'
+    ? `${window.location.origin}${window.location.pathname}?world=servicios&tab=diseno`
+    : 'https://artesano-digital.onrender.com/?world=servicios&tab=diseno';
+
+  const sharePortalText = `Diseño gráfico, desarrollo web y gran formato por Wicho Nemes en Artesano Digital: identidad visual, tiendas online, lonas y modelado 3D: ${sharePortalUrl}`;
+
+  const handleShareWhatsApp = () => {
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(sharePortalText)}`, '_blank');
+  };
+
+  const handleCopyShareLink = () => {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(sharePortalUrl);
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2500);
+    }
+  };
+
+  const handleNativeShare = () => {
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      navigator.share({
+        title: 'Diseño Gráfico, Web & Publicidad // Wicho Nemes',
+        text: 'Soluciones visuales y digitales completas: branding, sitios web interactivos, gran formato y modelado 3D en San Luis Potosí.',
+        url: sharePortalUrl
+      }).catch(() => {});
+    } else {
+      handleCopyShareLink();
+    }
+  };
+
+  const mailToClient = `mailto:?subject=${encodeURIComponent('Recomendación: Portafolio de Diseño y Publicidad de Wicho Nemes')}&body=${encodeURIComponent(
+    `Hola:\n\nTe comparto el enlace al portafolio y servicios de diseño gráfico, desarrollo web, lonas y publicidad comercial de Wicho Nemes en Artesano Digital:\n\n${sharePortalUrl}\n\nSaludos.`
+  )}`;
 
   // Catálogo de Servicios con Estructura de Color Profesional en Modo Oscuro
   const servicesList = [
@@ -631,6 +674,121 @@ ${quoteNotes.trim() ? `\n• *Idea del proyecto:* ${quoteNotes.trim()}\n` : ''}
             </div>
           </div>
         </div>
+
+        {/* ========================================================
+            SECCIÓN: COMPARTIR ESTE PORTAL DE DISEÑO Y PUBLICIDAD
+            ======================================================== */}
+        <section className="mt-10 sm:mt-16 pt-8 sm:pt-12 border-t border-stone-800">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6">
+            <div className="rounded-2xl border border-[#e8b84f]/35 bg-[#0E1218] p-4 sm:p-7 shadow-2xl relative overflow-hidden">
+              
+              {/* Rejilla sutil de fondo */}
+              <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+
+              <div className="relative space-y-5">
+                
+                {/* Encabezado */}
+                <div className="space-y-1.5 text-center sm:text-left">
+                  <div className="inline-flex items-center gap-2 font-mono text-[10px] sm:text-[10.5px] uppercase tracking-[0.2em] text-[#e8b84f]">
+                    <Sparkles className="w-3.5 h-3.5 text-[#e8b84f]" />
+                    <span>Diseño Gráfico, Web &amp; Gran Formato</span>
+                  </div>
+                  
+                  <h3 className="text-lg sm:text-2xl font-black text-white tracking-tight">
+                    ¿Conoces a un emprendedor o negocio que necesite identidad, web o publicidad?
+                  </h3>
+                  
+                  <p className="text-xs sm:text-sm text-gray-300 leading-relaxed max-w-2xl">
+                    Comparte este portafolio con tu equipo, socios o colegas. Soluciones visuales completas desde San Luis Potosí: tiendas en línea, logotipos comerciales, lonas de gran formato, rotulación y modelado 3D por Wicho Nemes.
+                  </p>
+                </div>
+
+                {/* Ficha Visual de Vista Previa del Enlace */}
+                <div className="p-3 sm:p-4 rounded-xl bg-[#070A0E] border border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-xs font-mono overflow-hidden">
+                  <div className="space-y-1 min-w-0 w-full sm:w-auto">
+                    <div className="flex items-center gap-1.5 text-[#e8b84f] text-[9.5px] font-bold">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#e8b84f]" />
+                      <span>ARTESANO DIGITAL · DISEÑO &amp; PUBLICIDAD</span>
+                    </div>
+                    <div className="text-white font-sans font-semibold text-xs sm:text-sm truncate">
+                      Portafolio y Servicios Creativos por Wicho Nemes
+                    </div>
+                    <div className="text-gray-400 text-[10.5px] truncate font-mono">
+                      {sharePortalUrl}
+                    </div>
+                  </div>
+
+                  <span className="px-2.5 py-1 rounded bg-[#e8b84f]/15 text-[#e8b84f] border border-[#e8b84f]/30 text-[9.5px] shrink-0 font-bold self-start sm:self-auto">
+                    Atención Directa · San Luis Potosí
+                  </span>
+                </div>
+
+                {/* Botones de Acción para Compartir */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 pt-1">
+                  
+                  {/* 1. Compartir por WhatsApp */}
+                  <button
+                    type="button"
+                    onClick={handleShareWhatsApp}
+                    className="w-full py-2.5 sm:py-3 px-3.5 rounded-xl bg-[#25D366] hover:bg-[#20ba59] active:scale-95 text-black font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer"
+                  >
+                    <MessageCircle className="w-4 h-4 fill-black text-transparent" />
+                    <span>Compartir por WhatsApp</span>
+                  </button>
+
+                  {/* 2. Copiar Enlace Directo con feedback */}
+                  <button
+                    type="button"
+                    onClick={handleCopyShareLink}
+                    className={`w-full py-2.5 sm:py-3 px-3.5 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-95 ${
+                      copiedLink
+                        ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/50 shadow-emerald-500/10'
+                        : 'bg-white/5 hover:bg-white/10 text-white border-white/15'
+                    }`}
+                  >
+                    {copiedLink ? (
+                      <>
+                        <Check className="w-4 h-4 text-emerald-400" />
+                        <span>¡Enlace copiado!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-4 h-4 text-[#e8b84f]" />
+                        <span>Copiar enlace directo</span>
+                      </>
+                    )}
+                  </button>
+
+                  {/* 3. Compartir en Celular (Nativo) o Enviar por Correo */}
+                  <button
+                    type="button"
+                    onClick={handleNativeShare}
+                    className="w-full py-2.5 sm:py-3 px-3.5 rounded-xl bg-[#e8b84f] hover:bg-[#d4a359] active:scale-95 text-black font-extrabold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg sm:hidden"
+                  >
+                    <Share2 className="w-4 h-4" />
+                    <span>Compartir desde tu celular</span>
+                  </button>
+
+                  <a
+                    href={mailToClient}
+                    className="hidden sm:inline-flex w-full py-2.5 sm:py-3 px-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/15 text-xs font-bold items-center justify-center gap-2 transition-all cursor-pointer text-center"
+                  >
+                    <Mail className="w-4 h-4 text-[#e8b84f]" />
+                    <span>Recomendar por Correo</span>
+                  </a>
+
+                </div>
+
+                {/* Mensaje de cortesía */}
+                <div className="text-[10px] sm:text-[10.5px] text-gray-400 font-mono text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-1 pt-2 border-t border-white/5">
+                  <span>Trato directo con el diseñador y cotizaciones de proyecto a medida.</span>
+                  <span className="text-[#e8b84f] font-bold">San Luis Potosí · Envíos nacionales</span>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </section>
 
       </main>
 
