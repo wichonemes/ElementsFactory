@@ -25,7 +25,11 @@ import {
   Activity,
   Utensils,
   Truck,
-  Palette
+  Palette,
+  Share2,
+  Copy,
+  Mail,
+  Building2
 } from 'lucide-react';
 import { getFilamentColor } from '../utils/colorUtils';
 
@@ -35,6 +39,44 @@ export default function IndustriaView({
   onOpenCalculator
 }) {
   const whatsappPhone = (settings?.whatsappNumber || '5214440000000').replace(/[^0-9]/g, '');
+
+  // Estado de feedback al copiar enlace
+  const [copiedLink, setCopiedLink] = useState(false);
+
+  // URL canónica para compartir el portal industrial
+  const sharePortalUrl = typeof window !== 'undefined'
+    ? `${window.location.origin}${window.location.pathname}?area=industria`
+    : 'https://artesano-digital.onrender.com/?area=industria';
+
+  const sharePortalText = `Hola, te comparto el portal de manufactura aditiva técnica y refacciones industriales de Artesano Digital. Especial para prototipado rápido en 24-72 hrs, utillajes de ensamble Poka-Yoke y refacciones mecánicas sin costo de apertura de moldes: ${sharePortalUrl}`;
+
+  const handleShareWhatsApp = () => {
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(sharePortalText)}`, '_blank');
+  };
+
+  const handleCopyShareLink = () => {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(sharePortalUrl);
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2500);
+    }
+  };
+
+  const handleNativeShare = () => {
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      navigator.share({
+        title: 'Artesano Digital // Soluciones Industriales SLP',
+        text: 'Manufactura aditiva técnica, refacciones urgentes y utillaje sin moldes en San Luis Potosí.',
+        url: sharePortalUrl
+      }).catch(() => {});
+    } else {
+      handleCopyShareLink();
+    }
+  };
+
+  const mailToB2B = `mailto:?subject=${encodeURIComponent('Contacto de Manufactura Aditiva & Refacciones B2B - Artesano Digital')}&body=${encodeURIComponent(
+    `Estimado equipo de Mantenimiento / Compras / Ingeniería:\n\nLes comparto este taller local de manufactura aditiva y prototipado rápido en San Luis Potosí. Cuentan con capacidad para refacciones descatalogadas, utillaje de ensamble y preseries en polímeros técnicos (PETG, TPU, PLA+, ABS) desde 1 sola pieza y con acuerdo NDA:\n\n${sharePortalUrl}\n\nSaludos.`
+  )}`;
 
   // Estado de la Pestaña Desplegable de Colores por Material
   const [showColorsDrawer, setShowColorsDrawer] = useState(false);
@@ -1535,7 +1577,122 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          8. SECCIÓN: REGRESO A LA TIENDA PRINCIPAL
+          8. SECCIÓN: COMPARTIR ESTE PORTAL CON EQUIPOS INDUSTRIALES / PLANTAS
+          ======================================================== */}
+      <section className="py-8 sm:py-14 border-t border-white/10 bg-gradient-to-b from-[#0A0E11] via-[#10171D] to-[#0A0E11]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="rounded-2xl border border-[#5BB8FF]/30 bg-[#0E151A] p-4 sm:p-7 shadow-2xl relative overflow-hidden">
+            
+            {/* Rejilla técnica de fondo */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+
+            <div className="relative space-y-5">
+              
+              {/* Encabezado B2B de Comunicación Directa */}
+              <div className="space-y-1.5 text-center sm:text-left">
+                <div className="inline-flex items-center gap-2 font-mono text-[10px] sm:text-[10.5px] uppercase tracking-[0.2em] text-[#5BB8FF]">
+                  <Building2 className="w-3.5 h-3.5 text-[#5BB8FF]" />
+                  <span>Enlace B2B para Equipos de Planta</span>
+                </div>
+                
+                <h3 className="text-lg sm:text-2xl font-black text-white tracking-tight">
+                  ¿Conoces a un colega de Mantenimiento, Compras o Ingeniería?
+                </h3>
+                
+                <p className="text-xs sm:text-sm text-gray-300 leading-relaxed max-w-2xl">
+                  Comparte este portal técnico con tu equipo. Así sabrán de inmediato que cuentan con un taller local en San Luis Potosí para sustitución urgente de refacciones, utillaje a la medida y prototipos en 24 a 72 horas sin moldes ni mínimos.
+                </p>
+              </div>
+
+              {/* Ficha Visual de Vista Previa del Enlace */}
+              <div className="p-3 sm:p-4 rounded-xl bg-[#070B0D] border border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-xs font-mono">
+                <div className="space-y-1 min-w-0">
+                  <div className="flex items-center gap-1.5 text-[#5BB8FF] text-[9.5px] font-bold">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#5BB8FF]" />
+                    <span>PORTAL B2B · ARTESANO DIGITAL INDUSTRIA</span>
+                  </div>
+                  <div className="text-white font-sans font-semibold text-xs sm:text-sm truncate">
+                    Manufactura Aditiva Industrial & Refacciones para Planta
+                  </div>
+                  <div className="text-gray-400 text-[10.5px] truncate font-mono">
+                    {sharePortalUrl}
+                  </div>
+                </div>
+
+                <span className="px-2.5 py-1 rounded bg-[#8FB99B]/15 text-[#8FB99B] border border-[#8FB99B]/30 text-[9.5px] shrink-0 font-bold">
+                  NDA Disponible · Sin Mínimos
+                </span>
+              </div>
+
+              {/* Botones de Acción para Compartir */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 pt-1">
+                
+                {/* 1. Compartir por WhatsApp */}
+                <button
+                  type="button"
+                  onClick={handleShareWhatsApp}
+                  className="w-full py-2.5 sm:py-3 px-3.5 rounded-xl bg-[#25D366] hover:bg-[#20ba59] active:scale-95 text-black font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer"
+                >
+                  <MessageCircle className="w-4 h-4 fill-black text-transparent" />
+                  <span>Compartir por WhatsApp</span>
+                </button>
+
+                {/* 2. Copiar Enlace Directo con feedback */}
+                <button
+                  type="button"
+                  onClick={handleCopyShareLink}
+                  className={`w-full py-2.5 sm:py-3 px-3.5 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-95 ${
+                    copiedLink
+                      ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/50 shadow-emerald-500/10'
+                      : 'bg-white/5 hover:bg-white/10 text-white border-white/15'
+                  }`}
+                >
+                  {copiedLink ? (
+                    <>
+                      <Check className="w-4 h-4 text-emerald-400" />
+                      <span>¡Enlace copiado!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-4 h-4 text-[#5BB8FF]" />
+                      <span>Copiar enlace directo</span>
+                    </>
+                  )}
+                </button>
+
+                {/* 3. Compartir en Celular (Nativo) o Enviar a Compras */}
+                <button
+                  type="button"
+                  onClick={handleNativeShare}
+                  className="w-full py-2.5 sm:py-3 px-3.5 rounded-xl bg-[#5BB8FF] hover:bg-[#4aa3e6] active:scale-95 text-black font-extrabold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg sm:hidden"
+                >
+                  <Share2 className="w-4 h-4" />
+                  <span>Compartir desde tu celular</span>
+                </button>
+
+                <a
+                  href={mailToB2B}
+                  className="hidden sm:inline-flex w-full py-2.5 sm:py-3 px-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/15 text-xs font-bold items-center justify-center gap-2 transition-all cursor-pointer text-center"
+                >
+                  <Mail className="w-4 h-4 text-[#5BB8FF]" />
+                  <span>Enviar a Compras / Planta</span>
+                </a>
+
+              </div>
+
+              {/* Mensaje de cortesía para equipos de planta */}
+              <div className="text-[10px] sm:text-[10.5px] text-gray-400 font-mono text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-1 pt-2 border-t border-white/5">
+                <span>Atención directa y confidencial para parques industriales y talleres mecánicos.</span>
+                <span className="text-[#8FB99B] font-bold">San Luis Potosí · Envíos nacionales</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================
+          9. SECCIÓN: REGRESO A LA TIENDA PRINCIPAL
           ======================================================== */}
       <section className="py-12 border-t border-white/10 bg-[#0A0E11] text-center">
         <div className="max-w-3xl mx-auto px-4 space-y-3">

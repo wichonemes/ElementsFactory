@@ -50,7 +50,13 @@ export default function App() {
   const flashDeal = useFlashDeal(products, settings);
 
   // Navigation & Filter States
-  const [activeWorld, setActiveWorld] = useState('all'); // 'all' | 'hogar' | 'negocios' | 'eventos'
+  const [activeWorld, setActiveWorld] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const p = new URLSearchParams(window.location.search).get('area') || new URLSearchParams(window.location.search).get('view');
+      if (p === 'industria' || p === 'publicidad-desarrollo' || p === 'paquetes-servicios') return p;
+    }
+    return 'all';
+  });
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedTechnique, setSelectedTechnique] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
