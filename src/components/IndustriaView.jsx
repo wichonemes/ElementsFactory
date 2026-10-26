@@ -551,7 +551,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
 
                         <div className="flex items-center gap-2 sm:gap-2.5 pt-2">
                           <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 transition-transform ${
-                            isSelected ? `${app.bgActive} ${app.textAccent} scale-105` : 'bg-white/5 text-gray-300'
+                            isSelected ? `${app.bgActive} ${app.textAccent} scale-105` : `bg-white/5 ${app.textAccent}`
                           }`}>
                             <IconComp className="w-4 h-4 sm:w-5 sm:h-5" />
                           </div>
