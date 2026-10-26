@@ -149,17 +149,6 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           
           <div className="flex items-center gap-3 sm:gap-4">
-            <button
-              onClick={onGoHome}
-              className="px-3.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-200 hover:text-white border border-white/10 hover:border-[#5BB8FF]/50 transition-all flex items-center gap-2 text-xs font-bold cursor-pointer group shadow-sm active:scale-95"
-              title="Volver a la tienda de regalos y catálogo"
-            >
-              <ArrowLeft className="w-3.5 h-3.5 text-[#5BB8FF] group-hover:-translate-x-0.5 transition-transform" />
-              <span>Tienda Principal</span>
-            </button>
-
-            <div className="h-4 w-px bg-white/15" />
-
             {/* Isotipo Oficial Neón sin bordes cuadrados */}
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 flex items-center justify-center text-[#5BB8FF] drop-shadow-[0_0_10px_rgba(91,184,255,0.5)] flex-shrink-0">
