@@ -18,7 +18,30 @@ import {
   Globe,
   Box,
   Film,
-  FileText
+  FileText,
+  Key,
+  Lightbulb,
+  Coffee,
+  Headphones,
+  QrCode,
+  Smartphone,
+  Tag,
+  Utensils,
+  Award,
+  ToyBrick,
+  Smile,
+  User,
+  Users,
+  Heart,
+  PenTool,
+  GraduationCap,
+  Image as ImageIcon,
+  PartyPopper,
+  Crown,
+  Wine,
+  Shirt,
+  Store,
+  Laptop
 } from 'lucide-react';
 
 export default function MobileCategoriesModal({
@@ -116,7 +139,7 @@ export default function MobileCategoriesModal({
     }
   ];
 
-  // Elementos interactivos con código de color respectivo por disciplina
+  // Elementos interactivos con código de color respectivo por disciplina (100% iconos vectoriales)
   const categoryItemsByArea = {
     'publicidad-desarrollo': [
       { id: 'pub-branding', name: 'Branding y Logos', icon: Palette, serviceId: 'branding', iconBg: 'bg-amber-50 text-amber-600 border border-amber-300 shadow-amber-100' },
@@ -133,51 +156,51 @@ export default function MobileCategoriesModal({
       { id: 'ind-lotes', name: 'Lotes Cortos', icon: Printer, catId: 'industria', iconBg: 'bg-purple-50 text-purple-700 border border-purple-300 shadow-purple-100' }
     ],
     hogar: [
-      { id: 'hogar-organizacion', name: 'Llaveros y Perchas', image: '/uploads/img_002.jpg', catId: 'hogar-organizacion' },
-      { id: 'hogar-decoracion', name: 'Lámparas 3D', image: '/uploads/img_001.jpg', catId: 'hogar-decoracion' },
-      { id: 'hogar-organizacion-2', name: 'Bandejas y Bowls', image: '/uploads/img_001.jpg', catId: 'hogar-organizacion' },
-      { id: 'hogar-mascotas', name: 'Portabolsas Mascota', image: '/uploads/img_002.jpg', catId: 'hogar-mascotas' },
-      { id: 'hogar-gamer', name: 'Soportes Gamer', image: '/uploads/img_001.jpg', catId: 'hogar-gamer' },
-      { id: 'hogar-cocina', name: 'Posavasos Madera', image: '/uploads/img_002.jpg', catId: 'hogar-cocina' }
+      { id: 'hogar-organizacion', name: 'Llaveros y Perchas', icon: Key, catId: 'hogar-organizacion', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' },
+      { id: 'hogar-decoracion', name: 'Lámparas 3D', icon: Lightbulb, catId: 'hogar-decoracion', iconBg: 'bg-amber-50 text-amber-700 border border-amber-200 shadow-amber-50' },
+      { id: 'hogar-organizacion-2', name: 'Bandejas y Bowls', icon: Box, catId: 'hogar-organizacion', iconBg: 'bg-stone-50 text-stone-700 border border-stone-200 shadow-stone-50' },
+      { id: 'hogar-mascotas', name: 'Portabolsas Mascota', icon: Heart, catId: 'hogar-mascotas', iconBg: 'bg-rose-50 text-rose-600 border border-rose-200 shadow-rose-50' },
+      { id: 'hogar-gamer', name: 'Soportes Gamer', icon: Headphones, catId: 'hogar-gamer', iconBg: 'bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-indigo-50' },
+      { id: 'hogar-cocina', name: 'Posavasos Madera', icon: Coffee, catId: 'hogar-cocina', iconBg: 'bg-amber-50 text-amber-800 border border-amber-200 shadow-amber-50' }
     ],
     negocios: [
-      { id: 'negocios-mostrador', name: 'Placas QR Mostrador', image: '/uploads/pack_barberia_boutique_contexto.jpg', catId: 'negocios-mostrador' },
-      { id: 'negocios-smart', name: 'Paneles Smart NFC', image: '/uploads/pack_barberia_boutique_contexto.jpg', catId: 'negocios-smart' },
-      { id: 'negocios-senales', name: 'Letreros con Nombre', image: '/uploads/pack_barberia_boutique_contexto.jpg', catId: 'negocios-senales' },
-      { id: 'negocios-restaurantes', name: 'Menús y Números', image: '/uploads/pack_barberia_boutique_contexto.jpg', catId: 'negocios-restaurantes' },
-      { id: 'negocios-corporativo', name: 'Identificadores 3D', image: '/uploads/pack_barberia_boutique_contexto.jpg', catId: 'negocios-corporativo' }
+      { id: 'negocios-mostrador', name: 'Placas QR Mostrador', icon: QrCode, catId: 'negocios-mostrador', iconBg: 'bg-slate-50 text-slate-800 border border-slate-200 shadow-slate-50' },
+      { id: 'negocios-smart', name: 'Paneles Smart NFC', icon: Smartphone, catId: 'negocios-smart', iconBg: 'bg-sky-50 text-sky-700 border border-sky-200 shadow-sky-50' },
+      { id: 'negocios-senales', name: 'Letreros con Nombre', icon: Tag, catId: 'negocios-senales', iconBg: 'bg-amber-50 text-amber-700 border border-amber-200 shadow-amber-50' },
+      { id: 'negocios-restaurantes', name: 'Menús y Números', icon: Utensils, catId: 'negocios-restaurantes', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' },
+      { id: 'negocios-corporativo', name: 'Identificadores 3D', icon: Award, catId: 'negocios-corporativo', iconBg: 'bg-purple-50 text-purple-700 border border-purple-200 shadow-purple-50' }
     ],
     juguetes: [
-      { id: 'juguetes-articulados', name: 'Jaguar Articulado', image: '/uploads/catalog-v2-j1-context-oficial.webp', catId: 'juguetes-articulados' },
-      { id: 'juguetes-fidget', name: 'Zorrito Flexible', image: '/uploads/catalog-v2-j2-context-oficial.webp', catId: 'juguetes-fidget' }
+      { id: 'juguetes-articulados', name: 'Figuras Articuladas', icon: ToyBrick, catId: 'juguetes-articulados', iconBg: 'bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-indigo-50' },
+      { id: 'juguetes-fidget', name: 'Juguetes Fidget', icon: Smile, catId: 'juguetes-fidget', iconBg: 'bg-amber-50 text-amber-700 border border-amber-200 shadow-amber-50' }
     ],
     personalizados: [
-      { id: 'personalizados-individual', name: 'Retrato Individual', image: '/uploads/personalizados-figuras-funko.jpg', catId: 'personalizados-individual' },
-      { id: 'personalizados-dibujo', name: 'De Dibujo a 3D', image: '/uploads/personalizados-dibujo-figura-3d.jpg', catId: 'personalizados-dibujo' },
-      { id: 'personalizados-mascotas', name: 'Mascotas Custom', image: '/uploads/funko-mascotas-perro-gato.jpg', catId: 'personalizados-mascotas' },
-      { id: 'personalizados-parejas', name: 'Parejas & Boda', image: '/uploads/funko-pareja-novios-boda.jpg', catId: 'personalizados-parejas' },
-      { id: 'personalizados-profesiones', name: 'Profesiones', image: '/uploads/funko-profesion-graduacion.jpg', catId: 'personalizados-profesiones' },
-      { id: 'personalizados-amigos', name: 'Set Dúo Amigos', image: '/uploads/funko-amigos-cumpleanos.jpg', catId: 'personalizados-amigos' }
+      { id: 'personalizados-individual', name: 'Retrato Individual', icon: User, catId: 'personalizados-individual', iconBg: 'bg-sky-50 text-sky-700 border border-sky-200 shadow-sky-50' },
+      { id: 'personalizados-dibujo', name: 'De Dibujo a 3D', icon: PenTool, catId: 'personalizados-dibujo', iconBg: 'bg-amber-50 text-amber-700 border border-amber-200 shadow-amber-50' },
+      { id: 'personalizados-mascotas', name: 'Mascotas Custom', icon: Heart, catId: 'personalizados-mascotas', iconBg: 'bg-rose-50 text-rose-600 border border-rose-200 shadow-rose-50' },
+      { id: 'personalizados-parejas', name: 'Parejas & Boda', icon: Users, catId: 'personalizados-parejas', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' },
+      { id: 'personalizados-profesiones', name: 'Profesiones', icon: GraduationCap, catId: 'personalizados-profesiones', iconBg: 'bg-purple-50 text-purple-700 border border-purple-200 shadow-purple-50' },
+      { id: 'personalizados-amigos', name: 'Set Dúo Amigos', icon: Sparkles, catId: 'personalizados-amigos', iconBg: 'bg-pink-50 text-pink-600 border border-pink-200 shadow-pink-50' }
     ],
     eventos: [
-      { id: 'eventos-bodas', name: 'Letreros Bienvenida', image: '/uploads/bienvenida_ceremonia_boda.jpg', catId: 'eventos-bodas' },
-      { id: 'eventos-recuerdos', name: 'Fotoimanes Bautizo', image: '/uploads/bienvenida_ceremonia_boda.jpg', catId: 'eventos-recuerdos' },
-      { id: 'eventos-patchbar', name: 'Servicio Patch Bar', image: '/uploads/bienvenida_ceremonia_boda.jpg', catId: 'eventos-patchbar' },
-      { id: 'eventos-xvanos', name: 'Souvenirs XV Años', image: '/uploads/bienvenida_ceremonia_boda.jpg', catId: 'eventos-xvanos' },
-      { id: 'eventos-copas', name: 'Copas Brindis Láser', image: '/uploads/bienvenida_ceremonia_boda.jpg', catId: 'eventos-copas' }
+      { id: 'eventos-bodas', name: 'Letreros Bienvenida', icon: PartyPopper, catId: 'eventos-bodas', iconBg: 'bg-amber-50 text-amber-700 border border-amber-200 shadow-amber-50' },
+      { id: 'eventos-recuerdos', name: 'Fotoimanes Bautizo', icon: ImageIcon, catId: 'eventos-recuerdos', iconBg: 'bg-sky-50 text-sky-700 border border-sky-200 shadow-sky-50' },
+      { id: 'eventos-patchbar', name: 'Servicio Patch Bar', icon: Shirt, catId: 'eventos-patchbar', iconBg: 'bg-rose-50 text-rose-600 border border-rose-200 shadow-rose-50' },
+      { id: 'eventos-xvanos', name: 'Souvenirs XV Años', icon: Crown, catId: 'eventos-xvanos', iconBg: 'bg-purple-50 text-purple-700 border border-purple-200 shadow-purple-50' },
+      { id: 'eventos-copas', name: 'Copas Brindis Láser', icon: Wine, catId: 'eventos-copas', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' }
     ],
     paquetes: [
-      { id: 'pack-hogar', name: 'Combo Recibidor', image: '/uploads/kit_home_office_gamer_contexto.jpg', isBundle: true, worldId: 'hogar' },
-      { id: 'pack-gamer', name: 'Kit Home Office Pro', image: '/uploads/kit_home_office_gamer_contexto.jpg', isBundle: true, worldId: 'hogar' },
-      { id: 'pack-negocios', name: 'Pack Barbería & Café', image: '/uploads/pack_barberia_boutique_contexto.jpg', isBundle: true, worldId: 'negocios' },
-      { id: 'pack-boda', name: 'Paquete Boda Total', image: '/uploads/bienvenida_ceremonia_boda.jpg', isBundle: true, worldId: 'eventos' }
+      { id: 'pack-hogar', name: 'Combo Recibidor', icon: Home, isBundle: true, worldId: 'hogar', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' },
+      { id: 'pack-gamer', name: 'Kit Home Office Pro', icon: Laptop, isBundle: true, worldId: 'hogar', iconBg: 'bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-indigo-50' },
+      { id: 'pack-negocios', name: 'Pack Barbería & Café', icon: Store, isBundle: true, worldId: 'negocios', iconBg: 'bg-amber-50 text-amber-800 border border-amber-200 shadow-amber-50' },
+      { id: 'pack-boda', name: 'Paquete Boda Total', icon: Gift, isBundle: true, worldId: 'eventos', iconBg: 'bg-pink-50 text-pink-700 border border-pink-200 shadow-pink-50' }
     ],
     tecnicas: [
-      { id: 'tech-3d', name: 'Impresión 3D (PLA/TPU)', icon: Printer, techniqueId: '3d' },
-      { id: 'tech-laser', name: 'Corte y Grabado Láser', icon: Flame, techniqueId: 'laser' },
-      { id: 'tech-sublimation', name: 'Sublimación Térmica', icon: Palette, techniqueId: 'sublimation' },
-      { id: 'tech-vinyl', name: 'Vinil y DTF Textil', icon: Scissors, techniqueId: 'vinyl' },
-      { id: 'tech-nfc', name: 'Enlaces Smart NFC', icon: Radio, techniqueId: 'nfc' }
+      { id: 'tech-3d', name: 'Impresión 3D (PLA/TPU)', icon: Printer, techniqueId: '3d', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' },
+      { id: 'tech-laser', name: 'Corte y Grabado Láser', icon: Flame, techniqueId: 'laser', iconBg: 'bg-orange-50 text-orange-700 border border-orange-200 shadow-orange-50' },
+      { id: 'tech-sublimation', name: 'Sublimación Térmica', icon: Palette, techniqueId: 'sublimation', iconBg: 'bg-purple-50 text-purple-700 border border-purple-200 shadow-purple-50' },
+      { id: 'tech-vinyl', name: 'Vinil y DTF Textil', icon: Scissors, techniqueId: 'vinyl', iconBg: 'bg-rose-50 text-rose-700 border border-rose-200 shadow-rose-50' },
+      { id: 'tech-nfc', name: 'Enlaces Smart NFC', icon: Radio, techniqueId: 'nfc', iconBg: 'bg-sky-50 text-sky-700 border border-sky-200 shadow-sky-50' }
     ]
   };
 
@@ -305,16 +328,10 @@ export default function MobileCategoriesModal({
                 onClick={() => handleItemClick(item)}
                 className="flex flex-col items-center gap-1 group active:scale-95 transition-transform cursor-pointer"
               >
-                <div className={`w-13 h-13 sm:w-14 sm:h-14 rounded-full overflow-hidden flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform ${
-                  item.iconBg ? item.iconBg : 'bg-gray-100 border border-gray-200'
+                <div className={`w-13 h-13 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform ${
+                  item.iconBg ? item.iconBg : 'bg-gray-100 border border-gray-200 text-gray-700'
                 }`}>
-                  {item.image ? (
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                    />
-                  ) : item.icon && typeof item.icon !== 'string' ? (
+                  {item.icon && typeof item.icon !== 'string' ? (
                     <item.icon className="w-5 h-5 sm:w-6 sm:h-6" />
                   ) : (
                     <Sparkles className="w-5 h-5 text-[#2D4F3E]" />
