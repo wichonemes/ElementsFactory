@@ -128,16 +128,26 @@
 
   async function renderGallery() {
     $('#projectCount').textContent = String(state.projects.length).padStart(2, '0');
-    const pattern = ['tile--rectangle', '', '', 'tile--rectangle', '', '', '', 'tile--rectangle', '', '', '', ''];
+    const pattern = [true, false, false, false, false, true, false, false, false, false, true, false];
     const cards = await Promise.all(state.projects.map(async (project, index) => {
-      const shape = (project.wide ?? pattern[index % pattern.length]) ? 'tile--rectangle' : 'tile--square';
+      const isWide = Boolean(project.wide ?? pattern[index % pattern.length]);
+      const shape = isWide ? 'tile--rectangle w6' : 'tile--square w3';
       const src = await imageUrl(project);
-      return `<article class="project-card ${shape}">
-        <a class="project-image" href="${escapeHtml(safeUrl(project.url))}" target="_blank" rel="noopener noreferrer" aria-label="Ver proyecto ${escapeHtml(project.name)}">
-          <span class="project-arrow" aria-hidden="true">↗</span>
-          <span class="project-art"><img src="${escapeHtml(src)}" alt="Identidad visual de ${escapeHtml(project.name)}" loading="lazy"></span>
-          <span class="project-meta"><span class="project-title">${escapeHtml(project.name)}</span><span class="project-link">Ver proyecto <span aria-hidden="true">↗</span></span></span>
+      const num = String(index + 1).padStart(2, '0');
+      const tag = project.category || 'IDENTIDAD · MARCA';
+      const caption = project.caption || 'Diseño de logotipo e identidad comercial';
+      const hasUrl = Boolean(project.url && project.url !== '#');
+      const href = escapeHtml(safeUrl(project.url || '#'));
+      return `<article class="story-card project-card ${shape}" data-id="${escapeHtml(project.id || `source-${index + 1}`)}">
+        <a class="story-image project-image" href="${href}" ${hasUrl ? 'target="_blank" rel="noopener noreferrer"' : ''} aria-label="Ver proyecto ${escapeHtml(project.name)}">
+          <img src="${escapeHtml(src)}" alt="Identidad visual de ${escapeHtml(project.name)}" loading="lazy">
         </a>
+        ${hasUrl ? `<a class="story-open project-arrow" href="${href}" target="_blank" rel="noopener noreferrer" aria-label="Ver proyecto ${escapeHtml(project.name)}">↗</a>` : ''}
+        <div class="story-copy">
+          <p class="story-tag"><b>${num}</b>${escapeHtml(tag)}</p>
+          <h4 class="project-title">${escapeHtml(project.name)}</h4>
+          <p>${escapeHtml(caption)}</p>
+        </div>
       </article>`;
     }));
     grid.innerHTML = cards.join('');

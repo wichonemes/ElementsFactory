@@ -157,7 +157,7 @@
       const project = idn.state.projects[i];
       if (!project) return;
       const title = card.querySelector('.project-title');
-      const art = card.querySelector('.project-art');
+      const art = card.querySelector('.story-image') || card.querySelector('.project-art') || card;
       const img = card.querySelector('img');
       const artTarget = img || art;
       if (title) addPin(title, 'edit', 'Editar nombre del proyecto', () => editField(title, () => project.name, v => {
