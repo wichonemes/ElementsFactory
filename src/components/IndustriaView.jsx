@@ -318,6 +318,40 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 </div>
               </div>
             </div>
+
+            {/* Menú de Navegación Rápida para PC (Desktop Nav Bar) */}
+            <nav className="hidden md:flex items-center gap-1 font-mono text-xs ml-4">
+              <a
+                href="#soluciones-industriales"
+                className="px-3 py-1.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all"
+              >
+                Soluciones
+              </a>
+              <a
+                href="#materiales-taller"
+                className="px-3 py-1.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all"
+              >
+                Materiales
+              </a>
+              <a
+                href="#proceso-industria"
+                className="px-3 py-1.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all"
+              >
+                Proceso
+              </a>
+              <a
+                href="#info-clave-industria"
+                className="px-3 py-1.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all"
+              >
+                Información Clave
+              </a>
+              <a
+                href="#consulta-colores-industria"
+                className="px-3 py-1.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all"
+              >
+                Carta Colores
+              </a>
+            </nav>
           </div>
 
           <div className="flex items-center gap-3">
@@ -325,6 +359,14 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
               <span className="w-1.5 h-1.5 rounded-full bg-[#8FB99B] animate-pulse" />
               SLP · ZONA INDUSTRIAL
             </span>
+            <button
+              type="button"
+              onClick={onGoHome}
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-white/10 hover:border-white/30 text-gray-300 hover:text-white font-mono text-xs transition-colors cursor-pointer"
+            >
+              <ShoppingBag className="w-3.5 h-3.5 text-[#8FB99B]" />
+              <span>Tienda</span>
+            </button>
             <a
               href="#cotizar-industria"
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#5BB8FF] hover:bg-[#8AD2FF] text-[#0A0E11] font-bold text-xs tracking-wide uppercase transition-all shadow-[0_0_15px_rgba(91,184,255,0.3)] cursor-pointer"
@@ -453,19 +495,24 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          3. SECCIÓN 01: 4 SOLUCIONES (2X2 COMPACTO + FICHA TÉCNICA HASTA ABAJO)
+          3. SECCIÓN 01: 4 SOLUCIONES (2X2 EN MÓVIL, 4 EN FILA EN PC)
           ======================================================== */}
-      <section className="py-7 sm:py-12 border-b border-white/10 bg-[#0E1317]">
+      <section id="soluciones-industriales" className="py-7 sm:py-14 border-b border-white/10 bg-[#0E1317]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           
-          <div className="mb-4 sm:mb-7">
-            <div className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
-              <span className="w-5 h-px bg-[#5BB8FF]" />
-              01 / Aplicaciones
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 mb-5 sm:mb-8">
+            <div>
+              <div className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
+                <span className="w-5 h-px bg-[#5BB8FF]" />
+                01 / Aplicaciones Industriales
+              </div>
+              <h2 className="text-xl sm:text-3xl font-extrabold text-white mt-1.5">
+                Cuatro problemas de planta. Una respuesta local.
+              </h2>
             </div>
-            <h2 className="text-xl sm:text-3xl font-extrabold text-white mt-1.5">
-              Cuatro problemas de planta. Una respuesta local.
-            </h2>
+            <p className="text-xs text-gray-400 font-mono hidden md:block max-w-sm text-right">
+              Haz clic en cualquier aplicación para desplegar sus parámetros de tolerancia, materiales y cotización directa.
+            </p>
           </div>
 
           {/* Diccionario de Aplicaciones con Códigos de Color Distintivos */}
@@ -569,8 +616,8 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
 
             return (
               <div className="space-y-4">
-                {/* Cuadrícula Simétrica 2x2 de Aplicaciones */}
-                <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:gap-5">
+                {/* Cuadrícula Adaptativa: 2x2 en Celular, 4 Columnas en PC */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-5">
                   {applicationsData.map(app => {
                     const isSelected = expandedApp === app.id;
                     const IconComp = app.icon;
@@ -578,13 +625,13 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                       <div
                         key={app.id}
                         onClick={() => setExpandedApp(isSelected ? null : app.id)}
-                        className={`rounded-xl sm:rounded-2xl border transition-all duration-200 p-3 sm:p-4 cursor-pointer select-none flex flex-col justify-between ${
+                        className={`rounded-xl sm:rounded-2xl border transition-all duration-200 p-3 sm:p-5 cursor-pointer select-none flex flex-col justify-between hover:-translate-y-0.5 ${
                           isSelected
-                            ? `${app.borderClass} ring-2 ${app.ringClass} bg-[#141C22] shadow-lg`
+                            ? `${app.borderClass} ring-2 ${app.ringClass} bg-[#141C22] shadow-xl`
                             : 'border-white/10 bg-[#12181C] hover:border-white/25 active:scale-[0.98]'
                         }`}
                       >
-                        <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] pb-1.5 border-b border-white/5">
+                        <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] pb-2 border-b border-white/5">
                           <span className={`font-bold ${isSelected ? app.textAccent : 'text-gray-400'}`}>
                             {app.code}
                           </span>
@@ -596,15 +643,20 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                           </span>
                         </div>
 
-                        <div className="flex items-center gap-2 sm:gap-2.5 pt-2">
-                          <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 transition-transform ${
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2.5 sm:gap-3 pt-3">
+                          <div className={`w-9 h-9 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform ${
                             isSelected ? `${app.bgActive} ${app.textAccent} scale-105` : `bg-white/5 ${app.textAccent}`
                           }`}>
                             <IconComp className="w-4 h-4 sm:w-5 sm:h-5" />
                           </div>
-                          <h3 className="text-xs sm:text-base font-bold text-white leading-snug">
-                            {app.title}
-                          </h3>
+                          <div>
+                            <h3 className="text-xs sm:text-sm lg:text-base font-bold text-white leading-snug">
+                              {app.title}
+                            </h3>
+                            <p className="text-[10px] text-gray-400 font-mono hidden lg:block mt-0.5 line-clamp-1">
+                              {app.badge}
+                            </p>
+                          </div>
                         </div>
                       </div>
                     );
@@ -696,17 +748,22 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       {/* ========================================================
           4. SECCIÓN 02: MATERIALES TÉCNICOS DINÁMICOS
           ======================================================== */}
-      <section id="materiales-taller" className="py-7 sm:py-12 border-b border-white/10 bg-[#0A0E11]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+      <section id="materiales-taller" className="py-7 sm:py-14 border-b border-white/10 bg-[#0A0E11]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           
-          <div className="mb-4 sm:mb-7">
-            <div className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
-              <span className="w-5 h-px bg-[#5BB8FF]" />
-              02 / Materiales Técnicos
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 mb-5 sm:mb-8">
+            <div>
+              <div className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
+                <span className="w-5 h-px bg-[#5BB8FF]" />
+                02 / Materiales Técnicos Calibrados
+              </div>
+              <h2 className="text-xl sm:text-3xl font-extrabold text-white mt-1.5">
+                Polímeros de ingeniería calibrados en taller.
+              </h2>
             </div>
-            <h2 className="text-xl sm:text-3xl font-extrabold text-white mt-1.5">
-              Polímeros de ingeniería calibrados en taller.
-            </h2>
+            <p className="text-xs text-gray-400 font-mono hidden md:block max-w-sm text-right">
+              Perfiles térmicos y mecánicos optimizados para garantizar resistencia a impacto, tracción y fluidos de máquina.
+            </p>
           </div>
 
           {/* Selector Dinámico de Polímeros (Desplegable y Ocultable al Click) */}
@@ -831,67 +888,80 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          5. SECCIÓN 03: CÓMO TRABAJAMOS (NÚMEROS GRANDES)
+          5. SECCIÓN 03: CÓMO TRABAJAMOS (PROCESO ÁGIL)
           ======================================================== */}
-      <section className="py-7 sm:py-12 border-b border-white/10 bg-[#0E1317]">
+      <section id="proceso-industria" className="py-7 sm:py-14 border-b border-white/10 bg-[#0E1317]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           
-          <div className="mb-4 sm:mb-7">
-            <div className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
-              <span className="w-5 h-px bg-[#5BB8FF]" />
-              03 / Cómo trabajamos
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 mb-5 sm:mb-8">
+            <div>
+              <div className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
+                <span className="w-5 h-px bg-[#5BB8FF]" />
+                03 / Proceso Técnico de Fabricación
+              </div>
+              <h2 className="text-xl sm:text-3xl font-extrabold text-white mt-1.5">
+                De tu archivo a la pieza en 4 pasos claros.
+              </h2>
             </div>
-            <h2 className="text-xl sm:text-3xl font-extrabold text-white mt-1.5">
-              De tu archivo a la pieza en 4 pasos claros.
-            </h2>
+            <p className="text-xs text-gray-400 font-mono hidden md:block max-w-sm text-right">
+              Flujo directo sin intermediarios ni demoras burocráticas para dar respuesta ágil a paros de línea.
+            </p>
           </div>
 
           {/* Bloque de 4 cuadros (2x2 en celular, 4 en línea en escritorio) */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-5">
             
             {/* Paso 1 */}
-            <div className="p-3.5 sm:p-5 rounded-xl border border-white/10 bg-[#12181C] space-y-2 relative group hover:border-[#5BB8FF]/40 transition-colors">
+            <div className="p-3.5 sm:p-6 rounded-2xl border border-white/10 bg-[#12181C] space-y-3 relative group hover:border-[#5BB8FF]/50 transition-all hover:-translate-y-1 hover:shadow-xl">
               <div className="flex items-center justify-between">
-                <span className="text-[#5BB8FF] font-black text-2xl sm:text-3xl font-mono">01</span>
-                <UploadCloud className="w-5 h-5 text-[#5BB8FF]" />
+                <span className="text-[#5BB8FF] font-black text-2xl sm:text-4xl font-mono">01</span>
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#5BB8FF]/10 flex items-center justify-center text-[#5BB8FF]">
+                  <UploadCloud className="w-5 h-5" />
+                </div>
               </div>
-              <h4 className="font-bold text-xs sm:text-sm text-white leading-tight">Archivo / Medidas</h4>
+              <h4 className="font-bold text-xs sm:text-base text-white leading-tight">Archivo / Medidas</h4>
               <p className="text-[10px] sm:text-xs text-gray-300 leading-relaxed">
                 Nos compartes tu archivo 3D (.step, .stl, .obj) o un croquis con las medidas exactas de tu pieza.
               </p>
             </div>
 
             {/* Paso 2 */}
-            <div className="p-3.5 sm:p-5 rounded-xl border border-white/10 bg-[#12181C] space-y-2 relative group hover:border-amber-400/40 transition-colors">
+            <div className="p-3.5 sm:p-6 rounded-2xl border border-white/10 bg-[#12181C] space-y-3 relative group hover:border-amber-400/50 transition-all hover:-translate-y-1 hover:shadow-xl">
               <div className="flex items-center justify-between">
-                <span className="text-amber-400 font-black text-2xl sm:text-3xl font-mono">02</span>
-                <Sliders className="w-5 h-5 text-amber-400" />
+                <span className="text-amber-400 font-black text-2xl sm:text-4xl font-mono">02</span>
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-400/10 flex items-center justify-center text-amber-400">
+                  <Sliders className="w-5 h-5" />
+                </div>
               </div>
-              <h4 className="font-bold text-xs sm:text-sm text-white leading-tight">Cotización Rápida</h4>
+              <h4 className="font-bold text-xs sm:text-base text-white leading-tight">Cotización Rápida</h4>
               <p className="text-[10px] sm:text-xs text-gray-300 leading-relaxed">
                 Revisamos la geometría, elegimos el polímero ideal y te cotizamos de inmediato sin compromiso.
               </p>
             </div>
 
             {/* Paso 3 */}
-            <div className="p-3.5 sm:p-5 rounded-xl border border-white/10 bg-[#12181C] space-y-2 relative group hover:border-emerald-400/40 transition-colors">
+            <div className="p-3.5 sm:p-6 rounded-2xl border border-white/10 bg-[#12181C] space-y-3 relative group hover:border-emerald-400/50 transition-all hover:-translate-y-1 hover:shadow-xl">
               <div className="flex items-center justify-between">
-                <span className="text-emerald-400 font-black text-2xl sm:text-3xl font-mono">03</span>
-                <Cpu className="w-5 h-5 text-emerald-400" />
+                <span className="text-emerald-400 font-black text-2xl sm:text-4xl font-mono">03</span>
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-400/10 flex items-center justify-center text-emerald-400">
+                  <Cpu className="w-5 h-5" />
+                </div>
               </div>
-              <h4 className="font-bold text-xs sm:text-sm text-white leading-tight">Fabricación Técnica</h4>
+              <h4 className="font-bold text-xs sm:text-base text-white leading-tight">Fabricación Técnica</h4>
               <p className="text-[10px] sm:text-xs text-gray-300 leading-relaxed">
                 Impresión 3D en polímero técnico con tolerancias controladas y retiro limpio de soportes.
               </p>
             </div>
 
             {/* Paso 4 */}
-            <div className="p-3.5 sm:p-5 rounded-xl border border-white/10 bg-[#12181C] space-y-2 relative group hover:border-[#8FB99B]/40 transition-colors">
+            <div className="p-3.5 sm:p-6 rounded-2xl border border-white/10 bg-[#12181C] space-y-3 relative group hover:border-[#8FB99B]/50 transition-all hover:-translate-y-1 hover:shadow-xl">
               <div className="flex items-center justify-between">
-                <span className="text-[#8FB99B] font-black text-2xl sm:text-3xl font-mono">04</span>
-                <Truck className="w-5 h-5 text-[#8FB99B]" />
+                <span className="text-[#8FB99B] font-black text-2xl sm:text-4xl font-mono">04</span>
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#8FB99B]/10 flex items-center justify-center text-[#8FB99B]">
+                  <Truck className="w-5 h-5" />
+                </div>
               </div>
-              <h4 className="font-bold text-xs sm:text-sm text-white leading-tight">Entrega en Planta</h4>
+              <h4 className="font-bold text-xs sm:text-base text-white leading-tight">Entrega en Planta</h4>
               <p className="text-[10px] sm:text-xs text-gray-300 leading-relaxed">
                 Entrega personal acordada en San Luis Potosí o retiro directo en taller en 24 a 72 horas.
               </p>
@@ -948,19 +1018,24 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          7. SECCIÓN 05: INFORMACIÓN CLAVE (2X2 INTERACTIVO CON DETALLE ABAJO)
+          7. SECCIÓN 05: INFORMACIÓN CLAVE (2X2 EN MÓVIL, 4 EN FILA EN PC)
           ======================================================== */}
-      <section className="py-7 sm:py-12 border-b border-white/10 bg-[#0A0E11]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+      <section id="info-clave-industria" className="py-7 sm:py-14 border-b border-white/10 bg-[#0A0E11]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           
-          <div className="mb-4 sm:mb-7">
-            <div className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
-              <span className="w-5 h-px bg-[#5BB8FF]" />
-              05 / Información Clave
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 mb-5 sm:mb-8">
+            <div>
+              <div className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
+                <span className="w-5 h-px bg-[#5BB8FF]" />
+                05 / Información Clave para Empresas
+              </div>
+              <h2 className="text-xl sm:text-3xl font-extrabold text-white mt-1.5">
+                Lo que necesitas saber.
+              </h2>
             </div>
-            <h2 className="text-xl sm:text-3xl font-extrabold text-white mt-1.5">
-              Lo que necesitas saber.
-            </h2>
+            <p className="text-xs text-gray-400 font-mono hidden md:block max-w-sm text-right">
+              Políticas claras de confidencialidad, formatos recibidos y tiempos garantizados de entrega local.
+            </p>
           </div>
 
           {(() => {
@@ -1042,9 +1117,9 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
             const curInfo = keyInfoData.find(k => k.id === expandedInfo);
 
             return (
-              <div className="space-y-3.5">
-                {/* Cuadrícula 2x2 fija de tarjetas informativas */}
-                <div className="grid grid-cols-2 gap-2.5 sm:gap-4">
+              <div className="space-y-4">
+                {/* Cuadrícula Adaptativa: 2x2 en Celular, 4 Columnas en PC */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-5">
                   {keyInfoData.map(item => {
                     const isSelected = expandedInfo === item.id;
                     const IconComp = item.icon;
@@ -1052,13 +1127,13 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                       <div
                         key={item.id}
                         onClick={() => setExpandedInfo(isSelected ? null : item.id)}
-                        className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-200 cursor-pointer select-none flex flex-col justify-between ${
+                        className={`p-3 sm:p-5 rounded-xl sm:rounded-2xl border transition-all duration-200 cursor-pointer select-none flex flex-col justify-between hover:-translate-y-0.5 ${
                           isSelected
-                            ? `${item.borderClass} ring-2 ${item.ringClass} bg-[#141C22] shadow-lg`
+                            ? `${item.borderClass} ring-2 ${item.ringClass} bg-[#141C22] shadow-xl`
                             : 'border-white/10 bg-[#12181C] hover:border-white/25 active:scale-[0.98]'
                         }`}
                       >
-                        <div className="flex items-center justify-between pb-1.5 border-b border-white/5 font-mono text-[9px] sm:text-[10px]">
+                        <div className="flex items-center justify-between pb-2 border-b border-white/5 font-mono text-[9px] sm:text-[10px]">
                           <span className={`font-bold ${isSelected ? item.textAccent : 'text-gray-400'}`}>
                             {item.subtitle}
                           </span>
@@ -1070,15 +1145,20 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                           </span>
                         </div>
 
-                        <div className="flex items-center gap-2 sm:gap-2.5 pt-2">
-                          <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center shrink-0 transition-transform ${
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2.5 sm:gap-3 pt-3">
+                          <div className={`w-9 h-9 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform ${
                             isSelected ? `${item.bgActive} ${item.textAccent} scale-105` : `bg-white/5 ${item.textAccent}`
                           }`}>
-                            <IconComp className="w-4 h-4" />
+                            <IconComp className="w-4 h-4 sm:w-5 sm:h-5" />
                           </div>
-                          <h3 className="text-xs sm:text-sm font-bold text-white leading-snug">
-                            {item.title}
-                          </h3>
+                          <div>
+                            <h3 className="text-xs sm:text-sm lg:text-base font-bold text-white leading-snug">
+                              {item.title}
+                            </h3>
+                            <p className="text-[10px] text-gray-400 font-mono hidden lg:block mt-0.5 line-clamp-1">
+                              {item.badge}
+                            </p>
+                          </div>
                         </div>
                       </div>
                     );
@@ -1147,15 +1227,16 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       {/* ========================================================
           8. SECCIÓN 06: TERMINAL DE COTIZACIÓN INDUSTRIAL B2B
           ======================================================== */}
-      <section id="cotizar-industria" className="py-8 sm:py-14 bg-[#0E1317]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      <section id="cotizar-industria" className="py-8 sm:py-16 bg-[#0E1317]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
           
-          <div className="p-4 sm:p-8 rounded-2xl border border-white/15 bg-[#12181C] shadow-2xl space-y-4 sm:space-y-6 relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-4 font-mono text-[9px] text-[#5BB8FF] opacity-50 hidden sm:block">
-              TERMINAL // COTIZACIÓN RÁPIDA
+          <div className="p-4 sm:p-10 rounded-2xl border border-white/15 bg-[#12181C] shadow-2xl space-y-5 sm:space-y-7 relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-5 font-mono text-[9px] text-[#5BB8FF] opacity-60 hidden sm:flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#5BB8FF] animate-pulse" />
+              <span>TERMINAL // COTIZACIÓN DIRECTA B2B</span>
             </div>
 
-            <div>
+            <div className="max-w-2xl">
               <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
                 <span className="w-5 h-px bg-[#5BB8FF]" />
                 06 / Cotizador B2B
@@ -1163,8 +1244,8 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
               <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
                 ¿Tienes una pieza detenida en planta?
               </h2>
-              <p className="text-xs sm:text-sm text-gray-300 mt-1">
-                Completa los datos de tu pieza para revisar tiempos de impresión y enviarte cotización directa por WhatsApp.
+              <p className="text-xs sm:text-sm text-gray-300 mt-1.5 leading-relaxed">
+                Completa los datos técnicos de tu requerimiento. Revisamos viabilidad geométrica, cubicación y tiempos de impresión para enviarte respuesta directa por WhatsApp.
               </p>
             </div>
 
