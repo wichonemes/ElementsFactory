@@ -14,7 +14,6 @@ import {
   Share2,
   Copy,
   Check,
-  Sliders,
   X
 } from 'lucide-react';
 
@@ -26,8 +25,8 @@ export default function PublicidadDesarrolloView({
 }) {
   const [expandedService, setExpandedService] = useState('branding');
   
-  // Alcance del Proyecto: Selección modular de productos con desglose en tiempo real
-  const [selectedItemIds, setSelectedItemIds] = useState(['lona_2x1']);
+  // Alcance del Proyecto: Selección modular de productos por área con desglose en tiempo real
+  const [selectedItemIds, setSelectedItemIds] = useState(['logo_solo']);
   const [activeCategoryFilter, setActiveCategoryFilter] = useState('branding');
   const [quoteNotes, setQuoteNotes] = useState('');
   
@@ -75,7 +74,7 @@ export default function PublicidadDesarrolloView({
       label: 'Identidad & Marca',
       icon: Palette,
       activeTabClass: 'bg-gradient-to-r from-[#e8b84f] to-[#d4a359] text-[#0B0D11] border-[#e8b84f] font-black shadow-md',
-      activeRowClass: 'border-amber-400 bg-amber-500/10 ring-1 ring-amber-400/30',
+      activeRowClass: 'border-amber-400/90 bg-amber-500/15 ring-1 ring-amber-400/30',
       checkClass: 'bg-[#e8b84f] text-[#0B0D11] border-[#e8b84f]',
       badgeClass: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
       priceClass: 'text-amber-200',
@@ -86,7 +85,7 @@ export default function PublicidadDesarrolloView({
       label: 'Lonas & Gran Formato',
       icon: Printer,
       activeTabClass: 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-[#0B0D11] border-emerald-400 font-black shadow-md',
-      activeRowClass: 'border-emerald-400 bg-emerald-500/10 ring-1 ring-emerald-400/30',
+      activeRowClass: 'border-emerald-400/90 bg-emerald-500/15 ring-1 ring-emerald-400/30',
       checkClass: 'bg-emerald-400 text-[#0B0D11] border-emerald-400',
       badgeClass: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
       priceClass: 'text-emerald-200',
@@ -97,7 +96,7 @@ export default function PublicidadDesarrolloView({
       label: 'Web & Tienda',
       icon: Globe,
       activeTabClass: 'bg-gradient-to-r from-cyan-500 to-cyan-600 text-[#0B0D11] border-cyan-400 font-black shadow-md',
-      activeRowClass: 'border-cyan-400 bg-cyan-500/10 ring-1 ring-cyan-400/30',
+      activeRowClass: 'border-cyan-400/90 bg-cyan-500/15 ring-1 ring-cyan-400/30',
       checkClass: 'bg-cyan-400 text-[#0B0D11] border-cyan-400',
       badgeClass: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
       priceClass: 'text-cyan-200',
@@ -108,22 +107,11 @@ export default function PublicidadDesarrolloView({
       label: 'Catálogos & Redes',
       icon: Film,
       activeTabClass: 'bg-gradient-to-r from-purple-500 to-purple-600 text-white border-purple-400 font-black shadow-md',
-      activeRowClass: 'border-purple-400 bg-purple-500/10 ring-1 ring-purple-400/30',
+      activeRowClass: 'border-purple-400/90 bg-purple-500/15 ring-1 ring-purple-400/30',
       checkClass: 'bg-purple-400 text-[#0B0D11] border-purple-400',
       badgeClass: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
       priceClass: 'text-purple-200',
       chipClass: 'border-purple-500/40 bg-purple-500/10 text-purple-200'
-    },
-    todas: {
-      id: 'todas',
-      label: 'Ver Todos',
-      icon: Sliders,
-      activeTabClass: 'bg-gradient-to-r from-[#e8b84f] to-[#d4a359] text-[#0B0D11] border-[#e8b84f] font-black shadow-md',
-      activeRowClass: 'border-[#e8b84f] bg-[#e8b84f]/10 ring-1 ring-[#e8b84f]/30',
-      checkClass: 'bg-[#e8b84f] text-[#0B0D11] border-[#e8b84f]',
-      badgeClass: 'bg-[#e8b84f]/20 text-[#e8b84f] border-[#e8b84f]/40',
-      priceClass: 'text-[#e8b84f]',
-      chipClass: 'border-[#e8b84f]/40 bg-[#e8b84f]/10 text-amber-200'
     }
   };
 
@@ -221,21 +209,20 @@ export default function PublicidadDesarrolloView({
 
   const curService = servicesList.find(s => s.id === expandedService);
 
-  // Al seleccionar una tarjeta en Sección 1, sincronizar automáticamente los productos del área en Sección 2
+  // Al seleccionar un área en Sección 1, sincronizarla de inmediato con Sección 2
   const handleSelectService = (srvId) => {
     setExpandedService(srvId);
     const catTarget = srvId === 'audiovisual' ? 'editorial' : srvId;
     setActiveCategoryFilter(catTarget);
   };
 
-  // Al tocar una pestaña en Sección 2, sincronizar también la especialidad superior
+  // Al tocar una pestaña en Sección 2, sincronizarla con la ficha técnica superior
   const handleSelectCategoryTab = (catId) => {
     setActiveCategoryFilter(catId);
-    if (catId === 'editorial') setExpandedService('audiovisual');
-    else if (catId !== 'todas') setExpandedService(catId);
+    setExpandedService(catId === 'editorial' ? 'audiovisual' : catId);
   };
 
-  // Catálogo de productos detallado con código de color y precios discretos
+  // Catálogo completo de productos organizados por área
   const projectItemsCatalog = [
     // --- IDENTIDAD & BRANDING (ÁMBAR) ---
     {
@@ -423,13 +410,12 @@ export default function PublicidadDesarrolloView({
     });
   };
 
-  // Filtrado de productos por categoría
+  // Filtrado estricto por área: solo muestra los productos del área activa (los demás no se muestran hasta seleccionar otra área)
   const filteredCatalog = useMemo(() => {
-    if (activeCategoryFilter === 'todas') return projectItemsCatalog;
     return projectItemsCatalog.filter(item => item.category === activeCategoryFilter);
   }, [activeCategoryFilter]);
 
-  // Lista de ítems seleccionados
+  // Lista de ítems seleccionados (conserva la selección global acumulada de todas las áreas)
   const selectedItems = useMemo(() => {
     return projectItemsCatalog.filter(item => selectedItemIds.includes(item.id));
   }, [selectedItemIds]);
@@ -439,8 +425,8 @@ export default function PublicidadDesarrolloView({
     return selectedItems.reduce((acc, cur) => acc + cur.price, 0);
   }, [selectedItems]);
 
-  // Tema activo de la categoría seleccionada
-  const activeTheme = categoryTheme[activeCategoryFilter] || categoryTheme.todas;
+  // Tema activo del área seleccionada
+  const activeTheme = categoryTheme[activeCategoryFilter] || categoryTheme.branding;
 
   // Envío a WhatsApp con el desglose exacto
   const handleSendWhatsAppScope = () => {
@@ -483,12 +469,12 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
       </section>
 
       {/* 2. CONTENIDO PRINCIPAL COMPACTO Y SIN SCROLL EXCESIVO */}
-      <main className="max-w-4xl mx-auto px-3.5 sm:px-6 py-5 sm:py-8 space-y-8 sm:space-y-10">
+      <main className="max-w-4xl mx-auto px-3.5 sm:px-6 py-4 sm:py-7 space-y-6 sm:space-y-8">
 
-        {/* ================= SECCIÓN 1: ESPECIALIDADES & APLICACIONES (4 APPS CUADRADAS) ================= */}
-        <section id="especialidades-creativas" className="space-y-4 animate-fadeIn">
+        {/* ================= SECCIÓN 1: ÁREAS DE TRABAJO (4 APPS CUADRADAS) ================= */}
+        <section id="especialidades-creativas" className="space-y-3.5 animate-fadeIn">
           
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-1 border-b border-stone-800 pb-2.5">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-1 border-b border-stone-800 pb-2">
             <div>
               <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#e8b84f] flex items-center gap-1.5">
                 <span className="w-4 h-px bg-[#e8b84f]" />
@@ -503,8 +489,8 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
             </p>
           </div>
 
-          {/* Cuadrícula de 4 Especialidades tipo Apps */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3.5">
+          {/* Cuadrícula de 4 Especialidades tipo Apps (Optimizada para toque móvil) */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5">
             {servicesList.map(srv => {
               const isSelected = expandedService === srv.id;
               const IconComp = srv.icon;
@@ -513,10 +499,10 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                 <div
                   key={srv.id}
                   onClick={() => handleSelectService(srv.id)}
-                  className={`rounded-2xl border transition-all duration-200 p-2.5 sm:p-3.5 cursor-pointer select-none flex flex-col justify-between hover:-translate-y-0.5 ${
+                  className={`rounded-2xl border transition-all duration-200 p-3 sm:p-3.5 cursor-pointer select-none flex flex-col justify-between active:scale-[0.97] touch-manipulation ${
                     isSelected
                       ? `${srv.activeBorder} bg-[#141822] shadow-xl`
-                      : 'border-stone-800 bg-[#0E1218] hover:border-stone-700 active:scale-[0.98]'
+                      : 'border-stone-800 bg-[#0E1218] hover:border-stone-700'
                   }`}
                 >
                   {/* Fila superior: Código de aplicación y Acción */}
@@ -525,17 +511,17 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                       {srv.code}
                     </span>
                     <span className="text-[8.5px] font-sans font-medium flex items-center gap-0.5 text-stone-400">
-                      <span>{isSelected ? 'Cerrar' : 'Ver'}</span>
+                      <span>{isSelected ? 'Activo' : 'Ver'}</span>
                       <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${isSelected ? 'rotate-180' : ''}`} />
                     </span>
                   </div>
 
                   {/* Contenido: Icono en cuadro con su código de color */}
                   <div className="pt-2 sm:pt-2.5 space-y-2">
-                    <div className={`w-9 h-9 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform ${srv.iconBg} ${
+                    <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform ${srv.iconBg} ${
                       isSelected ? 'scale-105 shadow-md' : ''
                     }`}>
-                      <IconComp className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <IconComp className="w-5 h-5" />
                     </div>
 
                     <div>
@@ -557,7 +543,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
             const IconComp = curService.icon;
 
             return (
-              <div className={`rounded-2xl border ${curService.activeBorder} bg-[#0D1016] p-3.5 sm:p-5 shadow-2xl relative overflow-hidden animate-fadeIn space-y-3.5`}>
+              <div className={`rounded-2xl border ${curService.activeBorder} bg-[#0D1016] p-3.5 sm:p-5 shadow-2xl relative overflow-hidden animate-fadeIn space-y-3`}>
                 
                 {/* Cabecera de la Ficha */}
                 <div className="flex items-center justify-between gap-3 border-b border-stone-800 pb-2.5">
@@ -583,7 +569,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                   <button
                     type="button"
                     onClick={() => setExpandedService('')}
-                    className="px-2 py-1 rounded-lg text-stone-400 hover:text-white bg-white/5 hover:bg-white/10 text-xs font-mono cursor-pointer transition-colors shrink-0"
+                    className="px-2.5 py-1 rounded-lg text-stone-400 hover:text-white bg-white/5 hover:bg-white/10 active:scale-95 text-xs font-mono cursor-pointer transition-colors shrink-0"
                   >
                     ✕ Cerrar
                   </button>
@@ -623,21 +609,21 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
 
         </section>
 
-        {/* ================= SECCIÓN 2: ALCANCE DEL PROYECTO (CONECTADO A LA SELECCIÓN SUPERIOR Y CÓDIGO DE COLOR) ================= */}
-        <section id="alcance-proyecto" ref={alcanceRef} className="space-y-4 pt-4 border-t border-stone-800 animate-fadeIn">
+        {/* ================= SECCIÓN 2: ALCANCE DEL PROYECTO (SOLO MUESTRA EL ÁREA ACTIVA) ================= */}
+        <section id="alcance-proyecto" ref={alcanceRef} className="space-y-3.5 pt-3 border-t border-stone-800 animate-fadeIn">
           
           {/* Encabezado */}
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-1 border-b border-stone-800/80 pb-2.5">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-1 border-b border-stone-800/80 pb-2">
             <div>
               <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#e8b84f] flex items-center gap-1.5">
                 <span className="w-4 h-px bg-[#e8b84f]" />
                 <span>02 / Alcance del Proyecto &amp; Costos</span>
               </div>
               <h2 className="text-lg sm:text-xl font-black text-white mt-0.5">
-                Selecciona con un Clic los Productos que Necesitas
+                Productos de {activeTheme.label}
               </h2>
               <p className="text-xs text-stone-300 mt-0.5">
-                Elige exactamente lo que buscas en cada área y revisa el desglose con precios en tiempo real.
+                Selecciona lo que necesites de esta área. Puedes cambiar de área arriba o con las pestañas.
               </p>
             </div>
             <span className="text-xs text-stone-400 font-mono hidden sm:inline self-end">
@@ -646,39 +632,40 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
           </div>
 
           {/* CONTENEDOR MODULAR ULTRA COMPACTO PARA CELULAR */}
-          <div className="bg-[#10131A] rounded-2xl sm:rounded-3xl border border-stone-800 p-3.5 sm:p-5 shadow-2xl space-y-4 text-white">
+          <div className="bg-[#10131A] rounded-2xl sm:rounded-3xl border border-stone-800 p-3 sm:p-5 shadow-2xl space-y-3.5 text-white">
             
-            {/* Pestañas de Categoría con Código de Color */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+            {/* Pestañas de Área (Exclusivamente las 4 áreas, sin 'todas') */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-1.5 scrollbar-none touch-pan-x -mx-1 px-1">
               {[
                 { id: 'branding', label: 'Identidad & Marca' },
                 { id: 'publicidad', label: 'Lonas & Gran Formato' },
                 { id: 'web', label: 'Web & Tienda' },
-                { id: 'editorial', label: 'Catálogos & Redes' },
-                { id: 'todas', label: 'Ver Todos' }
+                { id: 'editorial', label: 'Catálogos & Redes' }
               ].map((tab) => {
                 const isActive = activeCategoryFilter === tab.id;
-                const tabTheme = categoryTheme[tab.id] || categoryTheme.todas;
+                const tabTheme = categoryTheme[tab.id];
+                const TabIcon = tabTheme.icon;
 
                 return (
                   <button
                     key={tab.id}
                     type="button"
                     onClick={() => handleSelectCategoryTab(tab.id)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer border ${
+                    className={`px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer border flex items-center gap-1.5 shrink-0 active:scale-95 touch-manipulation ${
                       isActive
                         ? tabTheme.activeTabClass
                         : 'bg-[#141822] text-stone-300 border-stone-800 hover:border-stone-700 hover:text-white'
                     }`}
                   >
-                    {tab.label}
+                    <TabIcon className="w-3.5 h-3.5 shrink-0" />
+                    <span>{tab.label}</span>
                   </button>
                 );
               })}
             </div>
 
-            {/* AVISO DE TALLER PARA IMPRESIÓN (SOLICITADO: NO INCLUYE DISEÑO) */}
-            {(activeCategoryFilter === 'publicidad' || activeCategoryFilter === 'todas') && (
+            {/* AVISO DE TALLER PARA IMPRESIÓN (SOLO EN LONAS & GRAN FORMATO) */}
+            {activeCategoryFilter === 'publicidad' && (
               <div className="p-2 sm:p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-200 text-[11px] sm:text-xs flex items-center gap-2">
                 <Printer className="w-3.5 h-3.5 shrink-0 text-emerald-400" />
                 <span>
@@ -687,7 +674,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
               </div>
             )}
 
-            {/* LISTA COMPACTA DE PRODUCTOS CON CÓDIGO DE COLOR POR ÁREA */}
+            {/* LISTA EXCLUSIVA DE PRODUCTOS DEL ÁREA ACTIVA (Sin mezclar con otras áreas) */}
             <div className="space-y-1.5">
               {filteredCatalog.map((item) => {
                 const isSelected = selectedItemIds.includes(item.id);
@@ -697,7 +684,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                   <div
                     key={item.id}
                     onClick={() => toggleItem(item.id)}
-                    className={`p-2.5 sm:p-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-3 select-none ${
+                    className={`min-h-[48px] p-2.5 sm:p-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-3 select-none active:scale-[0.99] touch-manipulation ${
                       isSelected
                         ? itemTheme.activeRowClass
                         : 'border-stone-800/80 bg-[#141822] hover:border-stone-700 hover:bg-[#181d28]'
@@ -705,16 +692,16 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                   >
                     {/* Checkbox y Título */}
                     <div className="flex items-center gap-2.5 min-w-0">
-                      <div className={`w-4 h-4 rounded-md flex items-center justify-center shrink-0 border transition-colors ${
+                      <div className={`w-5 h-5 rounded-lg flex items-center justify-center shrink-0 border transition-all ${
                         isSelected
                           ? itemTheme.checkClass
                           : 'border-stone-600 bg-stone-900/60 text-transparent'
                       }`}>
-                        <Check className="w-3 h-3 stroke-[3]" />
+                        <Check className="w-3.5 h-3.5 stroke-[3]" />
                       </div>
 
                       <div className="min-w-0">
-                        <div className="text-xs font-bold text-white truncate flex items-center gap-1.5">
+                        <div className="text-xs sm:text-sm font-bold text-white truncate flex items-center gap-1.5">
                           <span>{item.title}</span>
                           {item.isPrint && (
                             <span className="text-[9px] font-normal text-emerald-400 shrink-0 hidden xs:inline">
@@ -722,7 +709,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                             </span>
                           )}
                         </div>
-                        <div className="text-[10px] text-stone-400 truncate leading-tight">
+                        <div className="text-[10px] sm:text-[11px] text-stone-300 truncate leading-tight">
                           {item.subtitle}
                         </div>
                       </div>
@@ -730,7 +717,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
 
                     {/* Precio Pequeño y Discreto */}
                     <div className="shrink-0 text-right">
-                      <span className={`font-mono text-[11px] sm:text-xs font-bold ${
+                      <span className={`font-mono text-xs sm:text-sm font-bold ${
                         isSelected ? itemTheme.priceClass : 'text-stone-200'
                       }`}>
                         ${item.price.toLocaleString('es-MX')}
@@ -765,7 +752,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                 <button
                   type="button"
                   onClick={handleSendWhatsAppScope}
-                  className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-xs sm:text-sm transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#25D366] hover:bg-[#20ba5a] active:scale-95 text-white font-black text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer touch-manipulation"
                 >
                   <MessageCircle className="w-4 h-4 fill-white" />
                   <span>Cotizar por WhatsApp</span>
@@ -774,20 +761,20 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
 
               {/* Chips de lo seleccionado con el código de color de su área */}
               {selectedItems.length > 0 && (
-                <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
                   <span className="text-[10px] text-stone-400 font-mono">Selección:</span>
                   {selectedItems.map((item) => {
-                    const itemTheme = categoryTheme[item.category] || categoryTheme.todas;
+                    const itemTheme = categoryTheme[item.category] || categoryTheme.branding;
 
                     return (
                       <span
                         key={item.id}
                         onClick={() => toggleItem(item.id)}
-                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md border text-[10px] cursor-pointer hover:border-rose-400 hover:text-rose-300 transition-colors ${itemTheme.chipClass}`}
+                        className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border text-[10.5px] cursor-pointer hover:border-rose-400 hover:text-rose-300 transition-colors active:scale-95 touch-manipulation ${itemTheme.chipClass}`}
                         title="Clic para remover"
                       >
                         <span>{item.title}</span>
-                        <X className="w-3 h-3 text-stone-400 hover:text-rose-400" />
+                        <X className="w-3 h-3 text-stone-400 hover:text-rose-400 shrink-0" />
                       </span>
                     );
                   })}
@@ -812,7 +799,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                   value={quoteNotes}
                   onChange={(e) => setQuoteNotes(e.target.value)}
                   placeholder="Ej. Medidas especiales de lona (3.5 × 1.8 m), acabados requeridos o fecha límite..."
-                  className="w-full p-2 rounded-xl border border-stone-700 text-xs text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-1 focus:ring-[#e8b84f] bg-[#141820]"
+                  className="w-full p-2.5 rounded-xl border border-stone-700 text-xs text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-1 focus:ring-[#e8b84f] bg-[#141820]"
                 />
                 <p className="text-[9.5px] text-stone-400">
                   Tus detalles se adjuntarán automáticamente al mensaje de WhatsApp.
@@ -826,7 +813,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
         </section>
 
         {/* ================= SECCIÓN PORTAFOLIO PERSONAL DE WICHO NEMES ================= */}
-        <div className="pt-6 border-t border-stone-800/80 space-y-3">
+        <div className="pt-5 border-t border-stone-800/80 space-y-3">
           <div className="text-center space-y-0.5">
             <span className="text-[10px] font-black uppercase tracking-wider text-[#e8b84f]">
               Portafolio &amp; Diseñador
@@ -892,7 +879,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                   href="/maquetado-inicio-wicho-v2/"
                   target="_blank"
                   rel="noreferrer"
-                  className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#e8b84f] to-[#d4a359] hover:from-[#f0c765] hover:to-[#e8b84f] text-[#0B0D11] font-black text-xs transition-all flex items-center gap-1.5 shadow-md active:scale-95 cursor-pointer"
+                  className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#e8b84f] to-[#d4a359] hover:from-[#f0c765] hover:to-[#e8b84f] text-[#0B0D11] font-black text-xs transition-all flex items-center gap-1.5 shadow-md active:scale-95 cursor-pointer touch-manipulation"
                   title="Abrir portafolio de Wicho Nemes"
                 >
                   <Eye className="w-3.5 h-3.5" />
@@ -906,7 +893,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
         </div>
 
         {/* ================= SECCIÓN COMPARTIR PORTAL ================= */}
-        <section className="pt-6 border-t border-stone-800">
+        <section className="pt-5 border-t border-stone-800">
           <div className="rounded-2xl border border-[#e8b84f]/30 bg-[#0E1218] p-3.5 sm:p-5 shadow-xl relative overflow-hidden">
             <div className="relative space-y-3">
               <div className="space-y-1 text-center sm:text-left">
@@ -926,7 +913,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                 <button
                   type="button"
                   onClick={handleShareWhatsApp}
-                  className="w-full py-2 px-3 rounded-xl bg-[#25D366] hover:bg-[#20ba59] active:scale-95 text-black font-extrabold text-xs flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer"
+                  className="w-full py-2.5 px-3 rounded-xl bg-[#25D366] hover:bg-[#20ba59] active:scale-95 text-black font-extrabold text-xs flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer touch-manipulation"
                 >
                   <MessageCircle className="w-3.5 h-3.5 fill-black" />
                   <span>Compartir por WhatsApp</span>
@@ -935,7 +922,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                 <button
                   type="button"
                   onClick={handleNativeShare}
-                  className="w-full py-2 px-3 rounded-xl bg-[#1A222E] hover:bg-[#222C3C] text-stone-200 hover:text-white font-bold text-xs flex items-center justify-center gap-2 border border-stone-700 transition-all cursor-pointer"
+                  className="w-full py-2.5 px-3 rounded-xl bg-[#1A222E] hover:bg-[#222C3C] text-stone-200 hover:text-white font-bold text-xs flex items-center justify-center gap-2 border border-stone-700 transition-all cursor-pointer active:scale-95 touch-manipulation"
                 >
                   <Share2 className="w-3.5 h-3.5 text-[#e8b84f]" />
                   <span>Compartir Enlace</span>
@@ -944,7 +931,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                 <button
                   type="button"
                   onClick={handleCopyShareLink}
-                  className="w-full py-2 px-3 rounded-xl bg-[#141822] hover:bg-[#1A202E] text-stone-300 hover:text-white font-mono text-xs flex items-center justify-center gap-2 border border-stone-800 transition-all cursor-pointer"
+                  className="w-full py-2.5 px-3 rounded-xl bg-[#141822] hover:bg-[#1A202E] text-stone-300 hover:text-white font-mono text-xs flex items-center justify-center gap-2 border border-stone-800 transition-all cursor-pointer active:scale-95 touch-manipulation"
                 >
                   {copiedLink ? (
                     <>
