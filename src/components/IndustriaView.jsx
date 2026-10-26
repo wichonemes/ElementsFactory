@@ -203,7 +203,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       {/* ========================================================
           2. BANNER HERO INDUSTRIAL CON PLANO VECTORIAL (CONSERVADO)
           ======================================================== */}
-      <section className="relative overflow-hidden border-b border-white/10 bg-gradient-to-b from-[#10171D] via-[#0A0E11] to-[#0A0E11] pt-10 pb-14">
+      <section className="relative overflow-hidden border-b border-white/10 bg-gradient-to-b from-[#10171D] via-[#0A0E11] to-[#0A0E11] pt-6 sm:pt-10 pb-8 sm:pb-14">
         {/* Rejilla milimétrica sutil de fondo */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
 
@@ -351,10 +351,10 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       {/* ========================================================
           3. SECCIÓN 01: 4 SOLUCIONES CON DENSIDAD INDUSTRIAL
           ======================================================== */}
-      <section className="py-14 border-b border-white/10 bg-[#0E1317]">
+      <section className="py-8 sm:py-14 border-b border-white/10 bg-[#0E1317]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           
-          <div className="mb-8">
+          <div className="mb-5 sm:mb-8">
             <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
               <span className="w-5 h-px bg-[#5BB8FF]" />
               01 / Aplicaciones
@@ -364,10 +364,10 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-5">
             
             {/* Tarjeta 1 */}
-            <div className="p-5 sm:p-6 rounded-2xl border border-white/10 bg-[#12181C] hover:border-[#5BB8FF]/50 transition-all shadow-lg space-y-4 relative overflow-hidden group">
+            <div className="p-4 sm:p-5 rounded-2xl border border-white/10 bg-[#12181C] hover:border-[#5BB8FF]/50 transition-all shadow-lg space-y-3.5 relative overflow-hidden group">
               <div className="flex items-center justify-between font-mono text-[10px] text-gray-400 border-b border-white/5 pb-2">
                 <span className="text-[#5BB8FF] font-bold">SOLUCIÓN // PROTO-01</span>
                 <span>ENTREGA: 24 A 72 HRS</span>
@@ -393,7 +393,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
             </div>
 
             {/* Tarjeta 2 */}
-            <div className="p-5 sm:p-6 rounded-2xl border border-white/10 bg-[#12181C] hover:border-[#8FB99B]/50 transition-all shadow-lg space-y-4 relative overflow-hidden group">
+            <div className="p-4 sm:p-5 rounded-2xl border border-white/10 bg-[#12181C] hover:border-[#8FB99B]/50 transition-all shadow-lg space-y-3.5 relative overflow-hidden group">
               <div className="flex items-center justify-between font-mono text-[10px] text-gray-400 border-b border-white/5 pb-2">
                 <span className="text-[#8FB99B] font-bold">SOLUCIÓN // JIG-02</span>
                 <span>HERRAMENTAL A MEDIDA</span>
@@ -419,7 +419,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
             </div>
 
             {/* Tarjeta 3 */}
-            <div className="p-5 sm:p-6 rounded-2xl border border-white/10 bg-[#12181C] hover:border-amber-400/50 transition-all shadow-lg space-y-4 relative overflow-hidden group">
+            <div className="p-4 sm:p-5 rounded-2xl border border-white/10 bg-[#12181C] hover:border-amber-400/50 transition-all shadow-lg space-y-3.5 relative overflow-hidden group">
               <div className="flex items-center justify-between font-mono text-[10px] text-gray-400 border-b border-white/5 pb-2">
                 <span className="text-amber-400 font-bold">SOLUCIÓN // SPARE-03</span>
                 <span>SUSTITUCIÓN DIRECTA</span>
@@ -445,7 +445,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
             </div>
 
             {/* Tarjeta 4 */}
-            <div className="p-5 sm:p-6 rounded-2xl border border-white/10 bg-[#12181C] hover:border-purple-400/50 transition-all shadow-lg space-y-4 relative overflow-hidden group">
+            <div className="p-4 sm:p-5 rounded-2xl border border-white/10 bg-[#12181C] hover:border-purple-400/50 transition-all shadow-lg space-y-3.5 relative overflow-hidden group">
               <div className="flex items-center justify-between font-mono text-[10px] text-gray-400 border-b border-white/5 pb-2">
                 <span className="text-purple-400 font-bold">SOLUCIÓN // BATCH-04</span>
                 <span>PRODUCCIÓN BAJO DEMANDA</span>
@@ -456,7 +456,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 </div>
                 <div className="space-y-1.5 flex-1 min-w-0">
                   <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-purple-300 transition-colors leading-snug">
-                    Lotes cortos
+                    Lotes Cortos y Preseries
                   </h3>
                   <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
                     Producción continua de varias piezas bajo demanda para arranques, reemplazos o preseries sin tener que pagar matrices ni herramentales costosos.
@@ -477,10 +477,10 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       {/* ========================================================
           4. SECCIÓN 02: MATERIALES Y CAPACIDAD TÉCNICA DINÁMICA
           ======================================================== */}
-      <section id="materiales-taller" className="py-14 border-b border-white/10 bg-[#0A0E11]">
+      <section id="materiales-taller" className="py-8 sm:py-14 border-b border-white/10 bg-[#0A0E11]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           
-          <div className="mb-8">
+          <div className="mb-5 sm:mb-8">
             <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
               <span className="w-5 h-px bg-[#5BB8FF]" />
               02 / Materiales & Capacidad
@@ -490,10 +490,10 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
             
             {/* Selector Dinámico de Polímeros */}
-            <div className="lg:col-span-7 bg-[#11171B] border border-white/10 rounded-2xl p-5 sm:p-6 space-y-5">
+            <div className="lg:col-span-7 bg-[#11171B] border border-white/10 rounded-2xl p-4 sm:p-6 space-y-4 sm:space-y-5">
               
               {/* Botones de selección de material */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -626,10 +626,10 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       {/* ========================================================
           5. SECCIÓN 03: CÓMO TRABAJAMOS (PIPELINE HORIZONTAL COMPACTO)
           ======================================================== */}
-      <section className="py-14 border-b border-white/10 bg-[#0E1317]">
+      <section className="py-8 sm:py-14 border-b border-white/10 bg-[#0E1317]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           
-          <div className="mb-8">
+          <div className="mb-5 sm:mb-8">
             <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
               <span className="w-5 h-px bg-[#5BB8FF]" />
               03 / Cómo trabajamos
@@ -711,47 +711,45 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          6. SECCIÓN 04: SECTORES INDUSTRIALES SLP
+          6. SECCIÓN 04: SECTORES INDUSTRIALES
           ======================================================== */}
-      <section className="py-14 border-b border-white/10 bg-[#0E1317]">
+      <section className="py-8 sm:py-12 border-b border-white/10 bg-[#0E1317]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 sm:gap-4 mb-5 sm:mb-7">
             <div>
-              <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
+              <div className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-[#5BB8FF] flex items-center gap-2">
                 <span className="w-5 h-px bg-[#5BB8FF]" />
                 04 / Sectores
               </div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
-                Hecho para la zona industrial de SLP.
+              <h2 className="text-xl sm:text-3xl font-extrabold text-white mt-1.5">
+                Hecho para la zona industrial.
               </h2>
             </div>
-            <p className="text-xs sm:text-sm text-gray-400 max-w-md">
-              Piezas técnicas bajo demanda para los principales clústeres y líneas de manufactura en San Luis Potosí.
+            <p className="text-xs text-gray-400 max-w-sm">
+              Suministro ágil bajo demanda para líneas productivas y talleres.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-2.5">
             {[
-              { name: 'Automotriz', icon: Car, color: 'text-[#5BB8FF]', bg: 'bg-[#5BB8FF]/10', border: 'border-[#5BB8FF]/20' },
-              { name: 'Tier 1 / 2', icon: Factory, color: 'text-[#8FB99B]', bg: 'bg-[#8FB99B]/10', border: 'border-[#8FB99B]/20' },
-              { name: 'Mantenimiento', icon: Wrench, color: 'text-amber-400', bg: 'bg-amber-400/10', border: 'border-amber-400/20' },
-              { name: 'Empaques', icon: Package, color: 'text-purple-400', bg: 'bg-purple-400/10', border: 'border-purple-400/20' },
-              { name: 'Médico', icon: Activity, color: 'text-rose-400', bg: 'bg-rose-400/10', border: 'border-rose-400/20' },
-              { name: 'Alimentos', icon: Utensils, color: 'text-emerald-400', bg: 'bg-emerald-400/10', border: 'border-emerald-400/20' },
-              { name: 'Logística', icon: Truck, color: 'text-cyan-400', bg: 'bg-cyan-400/10', border: 'border-cyan-400/20' }
+              { name: 'Automotriz', icon: Car, color: 'text-[#5BB8FF]' },
+              { name: 'Tier 1 / 2', icon: Factory, color: 'text-[#8FB99B]' },
+              { name: 'Mantenimiento', icon: Wrench, color: 'text-amber-400' },
+              { name: 'Empaques', icon: Package, color: 'text-purple-400' },
+              { name: 'Médico', icon: Activity, color: 'text-rose-400' },
+              { name: 'Alimentos', icon: Utensils, color: 'text-emerald-400' },
+              { name: 'Logística', icon: Truck, color: 'text-cyan-400' }
             ].map((sector) => {
               const IconComp = sector.icon;
               return (
                 <div
                   key={sector.name}
-                  className="p-4 rounded-xl border border-white/10 bg-[#12181C] hover:border-[#5BB8FF]/40 transition-all text-center space-y-2.5 group shadow-lg"
+                  className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl border border-white/10 bg-[#12181C] hover:border-[#5BB8FF]/40 transition-colors group"
                 >
-                  <div className={`w-11 h-11 mx-auto rounded-xl ${sector.bg} ${sector.border} border ${sector.color} flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_0_12px_rgba(0,0,0,0.3)]`}>
-                    <IconComp className="w-5 h-5" />
-                  </div>
-                  <div className="font-bold text-xs text-white group-hover:text-[#5BB8FF] transition-colors leading-tight">
+                  <IconComp className={`w-4 h-4 sm:w-5 sm:h-5 ${sector.color} shrink-0 group-hover:scale-110 transition-transform`} />
+                  <span className="font-semibold text-xs sm:text-sm text-gray-200 group-hover:text-white transition-colors">
                     {sector.name}
-                  </div>
+                  </span>
                 </div>
               );
             })}
@@ -762,10 +760,10 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       {/* ========================================================
           7. SECCIÓN 05: LO QUE NECESITAS SABER
           ======================================================== */}
-      <section className="py-14 border-b border-white/10 bg-[#0A0E11]">
+      <section className="py-8 sm:py-14 border-b border-white/10 bg-[#0A0E11]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           
-          <div className="text-center mb-8">
+          <div className="text-center mb-5 sm:mb-8">
             <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5BB8FF] inline-flex items-center gap-2">
               <span className="w-5 h-px bg-[#5BB8FF]" />
               05 / Información Clave
@@ -823,12 +821,12 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          7. SECCIÓN 05: TERMINAL DE COTIZACIÓN INDUSTRIAL B2B
+          8. SECCIÓN 06: TERMINAL DE COTIZACIÓN INDUSTRIAL B2B
           ======================================================== */}
-      <section id="cotizar-industria" className="py-14 bg-[#0E1317]">
+      <section id="cotizar-industria" className="py-8 sm:py-14 bg-[#0E1317]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           
-          <div className="p-6 sm:p-8 rounded-2xl border border-white/15 bg-[#12181C] shadow-2xl space-y-6 relative overflow-hidden">
+          <div className="p-4 sm:p-8 rounded-2xl border border-white/15 bg-[#12181C] shadow-2xl space-y-4 sm:space-y-6 relative overflow-hidden">
             <div className="absolute top-0 right-0 p-4 font-mono text-[9px] text-[#5BB8FF] opacity-50 hidden sm:block">
               TERMINAL // COTIZACIÓN RÁPIDA
             </div>
