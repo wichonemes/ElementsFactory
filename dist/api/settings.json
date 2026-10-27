@@ -649,5 +649,20 @@
         "uploadedAt": "2026-10-16T00:45:54.105Z"
       }
     ]
+  },
+  "showCategoryBackgroundPhotos": false,
+  "categoryBackgroundPhotos": {
+    "diseno": {
+      "branding": "./portafolio/assets/artesano-cover.webp",
+      "publicidad": "./portafolio/assets/civil-shirts.webp",
+      "web": "./interfaces/assets/ui-01.jpg",
+      "editorial": "./portafolio/assets/popol-spread.webp"
+    },
+    "industria": {
+      "proto": "./uploads/catalog-v2-ind1-context-oficial.webp",
+      "jig": "./uploads/catalog-v2-ind2-context-oficial.webp",
+      "spare": "./uploads/industria_portada_oficial_ingenieria.webp",
+      "batch": "./uploads/catalog-v2-ind1-detail-oficial.webp"
+    }
   }
 }

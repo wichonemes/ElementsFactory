@@ -7266,6 +7266,252 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </button>
                     </form>
                   </div>
+
+                  {/* CARD DE GESTIÓN: FOTOGRAFÍAS DE FONDO EN TARJETAS DE DISEÑO E INDUSTRIA */}
+                  <div className="lg:col-span-2 bg-white p-5 sm:p-6 rounded-2xl border border-[#E8E4DA] shadow-xs space-y-6">
+                    {/* Header */}
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-center text-purple-800 shrink-0">
+                          <ImageIcon className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h4 className="text-sm sm:text-base font-bold text-[#1F2421] font-heading">
+                              Fotos de Fondo en Tarjetas (Diseño e Industria)
+                            </h4>
+                            <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black border ${
+                              businessSettings?.showCategoryBackgroundPhotos
+                                ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                                : 'bg-gray-100 text-gray-700 border-gray-300'
+                            }`}>
+                              {businessSettings?.showCategoryBackgroundPhotos ? '● Fotos Activadas' : '○ Desactivadas por defecto (Modo Oscuro)'}
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-gray-500 mt-0.5">
+                            Decide si deseas mostrar imágenes con desenfoque detrás de las tarjetas o mantener el estilo oscuro minimalista de alta definición. También puedes personalizar o sustituir las fotos de cada tarjeta.
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Toggle Switch */}
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={async () => {
+                            const newStatus = !businessSettings?.showCategoryBackgroundPhotos;
+                            const updated = {
+                              ...businessSettings,
+                              showCategoryBackgroundPhotos: newStatus
+                            };
+                            setBusinessSettings(updated);
+                            try {
+                              await fetch('/api/admin/settings', {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                                body: JSON.stringify(updated)
+                              });
+                            } catch (e) {}
+                            localStorage.setItem('artesano_settings_cache', JSON.stringify(updated));
+                            setServiceStatusMsg({
+                              text: newStatus ? 'Fotos de fondo activadas en la tienda.' : 'Fotos de fondo desactivadas (Modo oscuro activo).',
+                              type: 'success'
+                            });
+                            setTimeout(() => setServiceStatusMsg({ text: '', type: '' }), 3500);
+                          }}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors cursor-pointer shrink-0 ${
+                            businessSettings?.showCategoryBackgroundPhotos ? 'bg-[#2D4F3E]' : 'bg-gray-300'
+                          }`}
+                          title="Activar o desactivar fotos de fondo"
+                        >
+                          <span
+                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                              businessSettings?.showCategoryBackgroundPhotos ? 'translate-x-6' : 'translate-x-1'
+                            }`}
+                          />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Editor de Fotografías (Tarjetas de Diseño e Industria) */}
+                    <div className="space-y-6">
+                      {/* 1. SECTOR DISEÑO & PUBLICIDAD */}
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2 text-xs font-bold text-gray-800">
+                            <Palette className="w-4 h-4 text-amber-600" />
+                            <span>Tarjetas de Diseño & Publicidad (4 Secciones)</span>
+                          </div>
+                          <span className="text-[10px] text-gray-400 font-mono">BRAND-01, PRINT-02, DEV-03, EDIT-04</span>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                          {[
+                            { key: 'branding', label: 'BRAND-01: Identidad & Marca', defaultUrl: './portafolio/assets/artesano-cover.webp' },
+                            { key: 'publicidad', label: 'PRINT-02: Lonas & Gran Formato', defaultUrl: './portafolio/assets/civil-shirts.webp' },
+                            { key: 'web', label: 'DEV-03: Web & Tienda', defaultUrl: './interfaces/assets/ui-01.jpg' },
+                            { key: 'editorial', label: 'EDIT-04: Catálogos & Redes', defaultUrl: './portafolio/assets/popol-spread.webp' }
+                          ].map(card => {
+                            const currentVal = businessSettings?.categoryBackgroundPhotos?.diseno?.[card.key] ?? card.defaultUrl;
+                            return (
+                              <div key={card.key} className="p-3 rounded-xl border border-gray-200 bg-gray-50/60 space-y-2">
+                                <div className="text-[11px] font-bold text-gray-800 truncate" title={card.label}>
+                                  {card.label}
+                                </div>
+                                <div className="w-full h-20 rounded-lg overflow-hidden bg-black/80 relative border border-gray-200">
+                                  <img
+                                    src={currentVal}
+                                    alt=""
+                                    className="w-full h-full object-cover"
+                                    onError={(e) => { e.currentTarget.src = card.defaultUrl; }}
+                                  />
+                                </div>
+                                <div>
+                                  <label className="block text-[9.5px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">
+                                    Ruta o URL de la foto:
+                                  </label>
+                                  <input
+                                    type="text"
+                                    value={currentVal}
+                                    onChange={(e) => {
+                                      const val = e.target.value;
+                                      const updated = {
+                                        ...businessSettings,
+                                        categoryBackgroundPhotos: {
+                                          ...(businessSettings?.categoryBackgroundPhotos || {}),
+                                          diseno: {
+                                            ...((businessSettings?.categoryBackgroundPhotos?.diseno) || {}),
+                                            [card.key]: val
+                                          }
+                                        }
+                                      };
+                                      setBusinessSettings(updated);
+                                    }}
+                                    placeholder="./uploads/tu_foto.jpg"
+                                    className="w-full px-2 py-1 text-[11px] rounded border border-gray-300 bg-white focus:outline-none focus:border-[#2D4F3E]"
+                                  />
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* 2. SECTOR INDUSTRIA & MANUFACTURA */}
+                      <div className="space-y-3 pt-4 border-t border-gray-100">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2 text-xs font-bold text-gray-800">
+                            <Wrench className="w-4 h-4 text-sky-600" />
+                            <span>Tarjetas de Industria & Manufactura (4 Soluciones)</span>
+                          </div>
+                          <span className="text-[10px] text-gray-400 font-mono">PROTO-01, JIG-02, SPARE-03, BATCH-04</span>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                          {[
+                            { key: 'proto', label: 'PROTO-01: Prototipos funcionales', defaultUrl: './uploads/catalog-v2-ind1-context-oficial.webp' },
+                            { key: 'jig', label: 'JIG-02: Utillaje y herramentales', defaultUrl: './uploads/catalog-v2-ind2-context-oficial.webp' },
+                            { key: 'spare', label: 'SPARE-03: Refacciones y obsoletos', defaultUrl: './uploads/industria_portada_oficial_ingenieria.webp' },
+                            { key: 'batch', label: 'BATCH-04: Lotes Cortos y Preseries', defaultUrl: './uploads/catalog-v2-ind1-detail-oficial.webp' }
+                          ].map(card => {
+                            const currentVal = businessSettings?.categoryBackgroundPhotos?.industria?.[card.key] ?? card.defaultUrl;
+                            return (
+                              <div key={card.key} className="p-3 rounded-xl border border-gray-200 bg-gray-50/60 space-y-2">
+                                <div className="text-[11px] font-bold text-gray-800 truncate" title={card.label}>
+                                  {card.label}
+                                </div>
+                                <div className="w-full h-20 rounded-lg overflow-hidden bg-black/80 relative border border-gray-200">
+                                  <img
+                                    src={currentVal}
+                                    alt=""
+                                    className="w-full h-full object-cover"
+                                    onError={(e) => { e.currentTarget.src = card.defaultUrl; }}
+                                  />
+                                </div>
+                                <div>
+                                  <label className="block text-[9.5px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">
+                                    Ruta o URL de la foto:
+                                  </label>
+                                  <input
+                                    type="text"
+                                    value={currentVal}
+                                    onChange={(e) => {
+                                      const val = e.target.value;
+                                      const updated = {
+                                        ...businessSettings,
+                                        categoryBackgroundPhotos: {
+                                          ...(businessSettings?.categoryBackgroundPhotos || {}),
+                                          industria: {
+                                            ...((businessSettings?.categoryBackgroundPhotos?.industria) || {}),
+                                            [card.key]: val
+                                          }
+                                        }
+                                      };
+                                      setBusinessSettings(updated);
+                                    }}
+                                    placeholder="./uploads/tu_foto.jpg"
+                                    className="w-full px-2 py-1 text-[11px] rounded border border-gray-300 bg-white focus:outline-none focus:border-[#2D4F3E]"
+                                  />
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Botones de acción */}
+                      <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-gray-100">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const updated = {
+                              ...businessSettings,
+                              categoryBackgroundPhotos: {
+                                diseno: {
+                                  branding: './portafolio/assets/artesano-cover.webp',
+                                  publicidad: './portafolio/assets/civil-shirts.webp',
+                                  web: './interfaces/assets/ui-01.jpg',
+                                  editorial: './portafolio/assets/popol-spread.webp'
+                                },
+                                industria: {
+                                  proto: './uploads/catalog-v2-ind1-context-oficial.webp',
+                                  jig: './uploads/catalog-v2-ind2-context-oficial.webp',
+                                  spare: './uploads/industria_portada_oficial_ingenieria.webp',
+                                  batch: './uploads/catalog-v2-ind1-detail-oficial.webp'
+                                }
+                              }
+                            };
+                            setBusinessSettings(updated);
+                            setServiceStatusMsg({ text: 'Rutas restauradas a valores predeterminados.', type: 'success' });
+                            setTimeout(() => setServiceStatusMsg({ text: '', type: '' }), 3000);
+                          }}
+                          className="px-3 py-1.5 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 text-xs font-semibold"
+                        >
+                          Restablecer Rutas Predeterminadas
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={async () => {
+                            try {
+                              await fetch('/api/admin/settings', {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                                body: JSON.stringify(businessSettings)
+                              });
+                            } catch (e) {}
+                            localStorage.setItem('artesano_settings_cache', JSON.stringify(businessSettings));
+                            setServiceStatusMsg({ text: 'Configuración y fotos guardadas exitosamente.', type: 'success' });
+                            setTimeout(() => setServiceStatusMsg({ text: '', type: '' }), 4000);
+                          }}
+                          className="px-5 py-2 rounded-xl bg-[#2D4F3E] text-white text-xs font-bold hover:bg-[#20392C] flex items-center gap-1.5"
+                        >
+                          <Save className="w-3.5 h-3.5" />
+                          <span>Guardar Fotos y Preferencias</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
 

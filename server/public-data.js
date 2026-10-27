@@ -1,5 +1,5 @@
 const productFields = new Set(`id code sku name priceType price priceUnit status featured worlds categories techniques primaryImage gallery shortDescription fullDescription specifications variants customizationOptions availability createdAt updatedAt whiteBgImage detailImage measureImage dimensionsImage isBundle flashDealConfig stockQuantity badge discountPercent includedItems regularPrice savings`.split(' '));
-const settingsFields = new Set(`businessName tagline subtagline whatsappNumber businessEmail serviceZone businessHours quoteNoteDefault freeShippingNotice serviceStatus flashDealsStatus flashDealsLimits campaignsConfig arcadeConfig mobileCatalogConfig`.split(' '));
+const settingsFields = new Set(`businessName tagline subtagline whatsappNumber businessEmail serviceZone businessHours quoteNoteDefault freeShippingNotice serviceStatus flashDealsStatus flashDealsLimits campaignsConfig arcadeConfig mobileCatalogConfig showCategoryBackgroundPhotos categoryBackgroundPhotos`.split(' '));
 export const publicProduct = product => Object.fromEntries(Object.entries(product).filter(([key]) => productFields.has(key)));
 export const publicSettings = settings => Object.fromEntries(Object.entries(settings).filter(([key]) => settingsFields.has(key)));
 

@@ -437,6 +437,9 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
 
           {/* Diccionario de Aplicaciones con Códigos de Color Distintivos */}
           {(() => {
+            const customIndImages = settings?.categoryBackgroundPhotos?.industria || {};
+            const showBackgroundPhotos = Boolean(settings?.showCategoryBackgroundPhotos);
+
             const applicationsData = [
               {
                 id: 'proto',
@@ -455,7 +458,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 btnBg: 'bg-[#5BB8FF]',
                 tag: 'VALIDACIÓN RÁPIDA · DESDE 24 A 72 HRS',
                 badge: 'Formatos .step / .stl',
-                bgImage: './uploads/catalog-v2-ind1-context-oficial.webp',
+                bgImage: customIndImages.proto || './uploads/catalog-v2-ind1-context-oficial.webp',
                 shortDesc: 'Validación rápida de cotas, holguras y ensamble desde archivo 3D.',
                 desc: 'Prueba ajustes, interferencias de ensamble y holguras imprimiendo directamente tu archivo 3D antes de mandar a fabricar en serie o invertir en moldes.',
                 specs: [
@@ -484,7 +487,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 btnBg: 'bg-[#8FB99B]',
                 tag: 'LÍNEA DE PRODUCCIÓN & ENSAMBLE',
                 badge: 'Ajuste fiel a cota',
-                bgImage: './uploads/catalog-v2-ind2-context-oficial.webp',
+                bgImage: customIndImages.jig || './uploads/catalog-v2-ind2-context-oficial.webp',
                 shortDesc: 'Galgas de control, nidos Poka-Yoke y mordazas que no rayan piezas.',
                 desc: 'Fabricamos con las medidas exactas de tu archivo nidos de apoyo, plantillas para operarios y mordazas protectoras que no rayan piezas terminadas.',
                 specs: [
@@ -513,7 +516,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 btnBg: 'bg-amber-400',
                 tag: 'SUSTITUCIÓN DIRECTA SIN MOLDES',
                 badge: 'Desde 1 sola pieza',
-                bgImage: './uploads/industria_portada_oficial_ingenieria.webp',
+                bgImage: customIndImages.spare || './uploads/industria_portada_oficial_ingenieria.webp',
                 shortDesc: 'Sustitución de bujes, poleas y piezas descontinuadas desde 1 pieza.',
                 desc: '¿Se rompió una pieza y el fabricante tarda semanas o ya no existe? Con tu archivo 3D (.stl, .step), te la imprimimos en polímero técnico resistente.',
                 specs: [
@@ -542,7 +545,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 btnBg: 'bg-purple-400',
                 tag: 'VOLUMEN FLEXIBLE BAJO DEMANDA',
                 badge: 'Escalable 10 a 500+ pzs',
-                bgImage: './uploads/bundle_promo_biz_2.jpg',
+                bgImage: customIndImages.batch || './uploads/catalog-v2-ind1-detail-oficial.webp',
                 shortDesc: 'Producción continua de 10 a 500 piezas sin costo de apertura de molde.',
                 desc: 'Producción continua de varias piezas bajo demanda para arranques, reemplazos o preseries sin tener que pagar matrices ni herramentales costosos.',
                 specs: [
@@ -575,18 +578,20 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                             : 'border-white/10 bg-[#0B0F13] hover:border-white/25 active:scale-[0.98] shadow-md'
                         }`}
                       >
-                        {/* Foto desenfocada de fondo con opacidad visible y zoom sutil en hover */}
-                        <img
-                          src={app.bgImage}
-                          alt=""
-                          aria-hidden="true"
-                          className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 filter blur-[0.6px] pointer-events-none select-none scale-105 group-hover:scale-110 ${
-                            isSelected ? 'opacity-65' : 'opacity-45 group-hover:opacity-60'
-                          }`}
-                        />
-
-                        {/* Degradado equilibrado: ligero arriba para apreciar la fotografía, oscuro abajo para el texto */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#060A0D] via-[#060A0D]/70 to-[#060A0D]/25 pointer-events-none" />
+                        {/* Foto desenfocada de fondo con opacidad visible (desactivada por defecto, configurable en admin) */}
+                        {showBackgroundPhotos && (
+                          <>
+                            <img
+                              src={app.bgImage}
+                              alt=""
+                              aria-hidden="true"
+                              className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 filter blur-[0.6px] pointer-events-none select-none scale-105 group-hover:scale-110 ${
+                                isSelected ? 'opacity-65' : 'opacity-45 group-hover:opacity-60'
+                              }`}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#060A0D] via-[#060A0D]/70 to-[#060A0D]/25 pointer-events-none" />
+                          </>
+                        )}
 
                         {/* Fila superior: Código con línea decorativa estilo referencia y Estado */}
                         <div className="relative z-10 flex items-start justify-between w-full">
