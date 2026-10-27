@@ -15333,6 +15333,8 @@ class Database {
 
   save(data) {
     if (cloudDb.enabled) return cloudDb.save(data);
+    const dir = path.dirname(DB_PATH);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     const tmpPath = `${DB_PATH}.tmp`;
     fs.writeFileSync(tmpPath, JSON.stringify(data, null, 2), 'utf-8');
     fs.renameSync(tmpPath, DB_PATH);

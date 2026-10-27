@@ -1,14 +1,13 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { db } from '../server/db.js';
-import { publicProduct, publicSettings } from '../server/public-data.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
 const publicApiDir = path.join(rootDir, 'public', 'api');
 const srcDataDir = path.join(rootDir, 'src', 'data');
+const localDbPath = path.join(rootDir, 'server', 'data', 'db.json');
 
 // Helper to make root-relative URLs relative so they work anywhere (GitHub Pages subfolders, etc.)
 function normalizeUrl(url) {
@@ -62,12 +61,32 @@ function normalizeSettingsUrls(settings) {
   return copy;
 }
 
-function exportStaticApi() {
-  console.log('[EXPORT_STATIC_API] Iniciando generación de datos estáticos para despliegue sin servidor...');
+async function exportStaticApi() {
+  console.log('[EXPORT_STATIC_API] Verificando fuente de datos para catálogo estático...');
 
   // Ensure directories exist
   if (!fs.existsSync(publicApiDir)) fs.mkdirSync(publicApiDir, { recursive: true });
   if (!fs.existsSync(srcDataDir)) fs.mkdirSync(srcDataDir, { recursive: true });
+
+  // If running in CI / GitHub Actions where server/data/db.json is gitignored:
+  if (!fs.existsSync(localDbPath)) {
+    const fallbackPath = path.join(srcDataDir, 'catalogFallback.json');
+    const productsJsonPath = path.join(publicApiDir, 'products.json');
+
+    if (fs.existsSync(fallbackPath) && fs.existsSync(productsJsonPath)) {
+      console.log('[EXPORT_STATIC_API] Modo CI detectado: server/data/db.json no está en el repo, pero public/api y src/data/catalogFallback.json ya están precompilados. Continuando.');
+      return;
+    }
+    console.warn('[EXPORT_STATIC_API] Advertencia: db.json no encontrado y los respaldos no están completos.');
+    return;
+  }
+
+  // Ensure server/data dir exists
+  fs.mkdirSync(path.dirname(localDbPath), { recursive: true });
+
+  // Dynamically import db modules only when db.json exists
+  const { db } = await import('../server/db.js');
+  const { publicProduct, publicSettings } = await import('../server/public-data.js');
 
   const rawProducts = db.getProducts({ status: 'published' }).map(publicProduct);
   const products = rawProducts.map(normalizeProductUrls);
@@ -100,12 +119,14 @@ function exportStaticApi() {
   };
   fs.writeFileSync(path.join(srcDataDir, 'catalogFallback.json'), JSON.stringify(bundle, null, 2), 'utf-8');
 
-  console.log(`[EXPORT_STATIC_API] Exito:
+  console.log(`[EXPORT_STATIC_API] Generación exitosa:
   - ${products.length} productos publicados
   - ${worlds.length} mundos
   - ${categories.length} categorías
-  - Configuración y campañas listas
-  - Archivos creados en public/api/ y src/data/catalogFallback.json`);
+  - Configuración y campañas listas`);
 }
 
-exportStaticApi();
+exportStaticApi().catch(err => {
+  console.error('[EXPORT_STATIC_API] Error durante la exportación:', err);
+  process.exit(1);
+});
