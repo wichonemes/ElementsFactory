@@ -205,7 +205,7 @@ export default function QuoteDrawer({
     const cleanPath = typeof window !== 'undefined' ? window.location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '') : '';
     const baseUrl = typeof window !== 'undefined' && window.location.origin
       ? `${window.location.origin}${cleanPath}`
-      : 'https://wichonemes.github.io/ElementsFactory';
+      : 'https://wichonemes.github.io/artesano';
 
     let msg = isDirect
       ? `*PEDIDO DIRECTO INMEDIATO — ARTESANO DIGITAL*\n`

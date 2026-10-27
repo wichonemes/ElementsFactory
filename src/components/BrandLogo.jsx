@@ -10,22 +10,31 @@ export default function BrandLogo({
   light = false,
   iconOnly = false 
 }) {
+  const basePath = './brand/';
+  const iconSrc = `${basePath}artesano_isotipo_transparente.png`;
+
   if (iconOnly) {
     return (
       <div className={`inline-flex items-center select-none ${className}`}>
         <img
-          src="/brand/artesano_isotipo_transparente.png"
+          src={iconSrc}
           alt="Artesano Digital"
           className="h-9 w-auto object-contain drop-shadow-sm"
           loading="eager"
+          onError={(e) => {
+            if (!e.currentTarget.dataset.fallback) {
+              e.currentTarget.dataset.fallback = '1';
+              e.currentTarget.src = './brand/artesano_digital_icono.svg';
+            }
+          }}
         />
       </div>
     );
   }
 
   const logoSrc = light
-    ? '/brand/artesano_digital_color_whitetext.svg'
-    : '/brand/artesano_digital_color_darktext.svg';
+    ? `${basePath}artesano_digital_color_whitetext.svg`
+    : `${basePath}artesano_digital_color_darktext.svg`;
 
   return (
     <div className={`inline-flex flex-col select-none ${className}`}>
@@ -35,6 +44,14 @@ export default function BrandLogo({
           alt="Artesano Digital"
           className="h-8 sm:h-9 w-auto object-contain max-w-[210px]"
           loading="eager"
+          onError={(e) => {
+            if (!e.currentTarget.dataset.fallback) {
+              e.currentTarget.dataset.fallback = '1';
+              e.currentTarget.src = light
+                ? './brand/logo_artesano_blanco.png'
+                : './brand/logo_artesano_negro.png';
+            }
+          }}
         />
       </div>
       {showTagline && (

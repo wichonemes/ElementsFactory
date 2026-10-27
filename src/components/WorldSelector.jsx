@@ -29,7 +29,7 @@ export default function WorldSelector({ worlds, activeWorld, onSelectWorld, cate
     name: 'Servicios',
     tagline: 'Diseño gráfico, desarrollo web, gran formato y manufactura técnica industrial',
     image: './uploads/brand_artesano_digital_og.jpg',
-    description: 'Portafolio integral de soluciones profesionales: identidad de marca, lonas y corte de vinil por Wicho Nemes, y manufactura aditiva técnica, refacciones bajo demanda y utillaje B2B.',
+    description: 'Portafolio integral de soluciones profesionales: identidad de marca, lonas y corte de vinil en Artesano Digital, y manufactura aditiva técnica, refacciones bajo demanda y utillaje B2B.',
     categories: [
       { id: 'diseno', name: 'Diseño Gráfico & Branding' },
       { id: 'web', name: 'Desarrollo Web & Tiendas' },

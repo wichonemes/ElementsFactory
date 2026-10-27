@@ -40,9 +40,9 @@ export default function PublicidadDesarrolloView({
   // URL canónica para compartir el portal de diseño y publicidad
   const sharePortalUrl = typeof window !== 'undefined'
     ? `${window.location.origin}${window.location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '')}/?world=servicios&tab=diseno`
-    : 'https://wichonemes.github.io/ElementsFactory/?world=servicios&tab=diseno';
+    : 'https://wichonemes.github.io/artesano/?world=servicios&tab=diseno';
 
-  const sharePortalText = `Diseño gráfico, desarrollo web y gran formato por Wicho Nemes en Artesano Digital: identidad visual, tiendas online, lonas y producción publicitaria: ${sharePortalUrl}`;
+  const sharePortalText = `Diseño gráfico, desarrollo web y gran formato en Artesano Digital: identidad visual, tiendas online, lonas y producción publicitaria: ${sharePortalUrl}`;
 
   const handleShareWhatsApp = () => {
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(sharePortalText)}`, '_blank');
@@ -59,7 +59,7 @@ export default function PublicidadDesarrolloView({
   const handleNativeShare = () => {
     if (typeof navigator !== 'undefined' && navigator.share) {
       navigator.share({
-        title: 'Diseño Gráfico, Web & Publicidad // Wicho Nemes',
+        title: 'Diseño Gráfico, Web & Publicidad // Artesano Digital',
         text: 'Soluciones visuales y digitales completas: branding, sitios web interactivos, gran formato y publicidad en San Luis Potosí.',
         url: sharePortalUrl
       }).catch(() => {});
@@ -552,7 +552,7 @@ export default function PublicidadDesarrolloView({
 
     const hasPrintItems = selectedItems.some(i => i.isPrint);
 
-    const text = `Hola Wicho, me interesa cotizar los siguientes productos de tu portal de *Diseño & Publicidad*:
+    const text = `Hola Artesano Digital, me interesa cotizar los siguientes productos de su portal de *Diseño & Publicidad*:
 
 ${itemsListText}
 
@@ -566,7 +566,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
 
   // Cotizar un paquete empresarial específico directamente por WhatsApp
   const handleQuoteCorporatePackage = (pkg) => {
-    const text = `Hola Wicho, me interesa cotizar el *${pkg.title}* (${pkg.priceText}) que vi en tu sección de empresas de *Diseño & Publicidad*.
+    const text = `Hola Artesano Digital, me interesa cotizar el *${pkg.title}* (${pkg.priceText}) que vi en su sección de empresas de *Diseño & Publicidad*.
 
 ¿Podemos platicar sobre los detalles para mi negocio?`;
 
@@ -920,17 +920,17 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
 
         </section>
 
-        {/* ================= SECCIÓN PORTAFOLIO PERSONAL DE WICHO NEMES ================= */}
+        {/* ================= SECCIÓN PORTAFOLIO OFICIAL ARTESANO DIGITAL ================= */}
         <div className="pt-4 border-t border-stone-800/80 space-y-3">
           <div className="text-center space-y-0.5">
             <span className="text-[10px] font-black uppercase tracking-wider text-[#e8b84f]">
-              Portafolio &amp; Diseñador
+              Portafolio Oficial
             </span>
             <h3 className="text-base font-black text-white font-heading">
               ¿Quieres revisar proyectos anteriores antes de cotizar?
             </h3>
             <p className="text-xs text-stone-400 max-w-md mx-auto">
-              Conoce el trabajo de Wicho Nemes y las soluciones creadas para otros negocios y marcas.
+              Conoce el portafolio de Artesano Digital y las soluciones creadas para marcas y negocios.
             </p>
           </div>
 
@@ -941,15 +941,15 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-lg border border-[#e8b84f]/40 bg-[#0B0D11] flex items-center justify-center p-1 shadow-inner">
                     <img
-                      src="./maquetado-inicio-wicho-v2/assets/marca-wicho.png"
-                      alt="Wicho Nemes Logo"
+                      src="./brand/artesano_isotipo_transparente.png"
+                      alt="Artesano Digital Logo"
                       className="w-full h-full object-contain"
                       onError={(e) => { e.currentTarget.style.display = 'none'; }}
                     />
                   </div>
                   <div>
-                    <div className="font-heading font-black text-white text-xs sm:text-sm tracking-tight">Wicho Nemes</div>
-                    <div className="text-[9.5px] text-[#e8b84f] font-bold">Diseñador Gráfico &amp; Digital</div>
+                    <div className="font-heading font-black text-white text-xs sm:text-sm tracking-tight">Artesano Digital</div>
+                    <div className="text-[9.5px] text-[#e8b84f] font-bold">Estudio Creativo &amp; Portafolio</div>
                   </div>
                 </div>
 
@@ -959,11 +959,11 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
               </div>
 
               <div className="py-2.5 flex items-center gap-3">
-                <div className="w-14 h-18 sm:w-16 sm:h-20 shrink-0 rounded-xl bg-gradient-to-b from-[#202631] to-[#0E1116] border border-white/15 overflow-hidden shadow-md">
+                <div className="w-14 h-18 sm:w-16 sm:h-20 shrink-0 rounded-xl bg-gradient-to-b from-[#202631] to-[#0E1116] border border-white/15 overflow-hidden shadow-md flex items-center justify-center p-2">
                   <img
-                    src="./maquetado-inicio-wicho-v2/assets/perfil-sin-fondo.png"
-                    alt="Wicho Nemes"
-                    className="w-full h-full object-cover object-top"
+                    src="./brand/artesano_digital_icono.svg"
+                    alt="Artesano Digital"
+                    className="w-full h-full object-contain"
                     onError={(e) => {
                       e.currentTarget.src = './brand/artesano_isotipo_transparente.png';
                     }}
@@ -972,7 +972,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
 
                 <div className="space-y-1 text-xs text-stone-300 leading-relaxed font-normal">
                   <p className="italic text-stone-200 text-[11px] line-clamp-2">
-                    "Ideas claras. Diseño con intención. Cada pieza visual debe resolver un propósito comercial real."
+                    "Si lo piensas, se hace. Cada pieza visual y publicitaria resuelve un propósito comercial real."
                   </p>
                   <div className="text-[10px] text-stone-400 flex items-center gap-1">
                     <MapPin className="w-3 h-3 text-[#e8b84f] shrink-0" />
@@ -982,16 +982,16 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
               </div>
 
               <div className="pt-2 border-t border-white/10 flex items-center justify-between gap-2">
-                <span className="text-stone-400 text-[10.5px] font-medium">Portafolio personal:</span>
+                <span className="text-stone-400 text-[10.5px] font-medium">Portafolio oficial:</span>
                 <a
-                  href="./maquetado-inicio-wicho-v2/index.html"
+                  href="./portafolio/"
                   target="_blank"
                   rel="noreferrer"
                   className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#e8b84f] to-[#d4a359] hover:from-[#f0c765] hover:to-[#e8b84f] text-[#0B0D11] font-black text-xs transition-all flex items-center gap-1.5 shadow-md active:scale-95 cursor-pointer touch-manipulation"
-                  title="Abrir portafolio de Wicho Nemes"
+                  title="Abrir portafolio de Artesano Digital"
                 >
                   <Eye className="w-3.5 h-3.5" />
-                  <span>Ver Trabajos</span>
+                  <span>Ver Portafolio</span>
                   <ExternalLink className="w-3 h-3 ml-0.5" />
                 </a>
               </div>
@@ -1091,7 +1091,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                   ¿Conoces a un negocio que necesite identidad, web o lonas?
                 </h3>
                 <p className="text-xs text-gray-300 leading-relaxed max-w-xl">
-                  Comparte este portal con tu equipo o socios. Soluciones visuales completas desde San Luis Potosí por Wicho Nemes.
+                  Comparte este portal con tu equipo o socios. Soluciones visuales completas desde San Luis Potosí por Artesano Digital.
                 </p>
               </div>
 
