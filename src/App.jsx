@@ -29,14 +29,68 @@ import { useFlashDeal } from './hooks/useFlashDeal';
 import { Home, Briefcase, CalendarHeart, Sparkles, ChevronRight, ShoppingBag, Layers, MessageCircle, Gift, RotateCw, Calendar, AlertTriangle, MapPin, Truck, Gamepad2 } from 'lucide-react';
 import { formatServiceDate } from './utils/serviceStatus';
 import { playCoinSound, playSoftAreaSwitchSound, playMarioPowerDownSound } from './utils/soundEffects';
+import catalogFallbackData from './data/catalogFallback.json';
+
+const normalizeAssetUrl = (url) => {
+  if (!url || typeof url !== 'string') return url;
+  if (/^(https?:|data:|blob:|\/\/)/.test(url)) return url;
+  if (url.startsWith('/')) return '.' + url;
+  return url;
+};
+
+const normalizeProductItem = (p) => {
+  if (!p) return p;
+  return {
+    ...p,
+    primaryImage: normalizeAssetUrl(p.primaryImage),
+    whiteBgImage: normalizeAssetUrl(p.whiteBgImage),
+    detailImage: normalizeAssetUrl(p.detailImage),
+    measureImage: normalizeAssetUrl(p.measureImage),
+    dimensionsImage: normalizeAssetUrl(p.dimensionsImage),
+    gallery: Array.isArray(p.gallery) ? p.gallery.map(normalizeAssetUrl) : []
+  };
+};
+
+const normalizeWorldItem = (w) => {
+  if (!w) return w;
+  return {
+    ...w,
+    image: normalizeAssetUrl(w.image),
+    bannerImage: normalizeAssetUrl(w.bannerImage),
+    icon: normalizeAssetUrl(w.icon)
+  };
+};
+
+const normalizeSettingsData = (s) => {
+  if (!s) return s;
+  const clone = { ...s };
+  if (clone.campaignsConfig) {
+    if (clone.campaignsConfig.bannerImage) {
+      clone.campaignsConfig.bannerImage = normalizeAssetUrl(clone.campaignsConfig.bannerImage);
+    }
+    if (Array.isArray(clone.campaignsConfig.seasons)) {
+      clone.campaignsConfig.seasons = clone.campaignsConfig.seasons.map(season => ({
+        ...season,
+        bannerImage: normalizeAssetUrl(season.bannerImage)
+      }));
+    }
+    if (clone.campaignsConfig.monthlyEvents?.showcaseSlides) {
+      clone.campaignsConfig.monthlyEvents.showcaseSlides = clone.campaignsConfig.monthlyEvents.showcaseSlides.map(slide => ({
+        ...slide,
+        image: normalizeAssetUrl(slide.image)
+      }));
+    }
+  }
+  return clone;
+};
 
 export default function App() {
-  // Server Data
-  const [worlds, setWorlds] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [settings, setSettings] = useState(null);
-  const [loading, setLoading] = useState(true);
+  // Server Data (con inicio instantáneo desde respaldo estático)
+  const [worlds, setWorlds] = useState(() => (catalogFallbackData.worlds || []).map(normalizeWorldItem));
+  const [categories, setCategories] = useState(() => catalogFallbackData.categories || []);
+  const [products, setProducts] = useState(() => (catalogFallbackData.products || []).map(normalizeProductItem));
+  const [settings, setSettings] = useState(() => normalizeSettingsData(catalogFallbackData.settings || null));
+  const [loading, setLoading] = useState(false);
   const [isArcadeOpen, setIsArcadeOpen] = useState(false);
   const [arcadeInitialTab, setArcadeInitialTab] = useState('play');
 
@@ -113,7 +167,7 @@ export default function App() {
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
   const [calculatorProduct, setCalculatorProduct] = useState(null);
-  const [campaignsConfig, setCampaignsConfig] = useState(null);
+  const [campaignsConfig, setCampaignsConfig] = useState(() => catalogFallbackData.campaigns || null);
   const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false);
   const [isCatalogSelectorOpen, setIsCatalogSelectorOpen] = useState(false);
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(() => typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('menu'));
@@ -238,31 +292,44 @@ export default function App() {
   }, [settings]);
 
   const loadCatalogData = async () => {
-    setLoading(true);
     try {
-      const [resWorlds, resCats, resProds, resSettings, resCamp] = await Promise.all([
-        fetch('/api/worlds'),
-        fetch('/api/categories'),
-        fetch('/api/products?status=published'),
-        fetch('/api/settings'),
-        fetch('/api/campaigns').catch(() => null)
-      ]);
+      const fetchJsonWithFallback = async (liveUrl, staticUrl) => {
+        try {
+          const res = await fetch(liveUrl);
+          if (res.ok) {
+            const ct = res.headers.get('content-type') || '';
+            if (ct.includes('application/json')) {
+              return await res.json();
+            }
+          }
+        } catch (_) {}
+        try {
+          const staticRes = await fetch(staticUrl);
+          if (staticRes.ok) {
+            const ct = staticRes.headers.get('content-type') || '';
+            if (ct.includes('application/json') || staticUrl.endsWith('.json')) {
+              return await staticRes.json();
+            }
+          }
+        } catch (_) {}
+        return null;
+      };
 
       const [dataWorlds, dataCats, dataProds, dataSettings, dataCamp] = await Promise.all([
-        resWorlds.json(),
-        resCats.json(),
-        resProds.json(),
-        resSettings.json(),
-        resCamp && resCamp.ok ? resCamp.json().catch(() => null) : Promise.resolve(null)
+        fetchJsonWithFallback('/api/worlds', './api/worlds.json'),
+        fetchJsonWithFallback('/api/categories', './api/categories.json'),
+        fetchJsonWithFallback('/api/products?status=published', './api/products.json'),
+        fetchJsonWithFallback('/api/settings', './api/settings.json'),
+        fetchJsonWithFallback('/api/campaigns', './api/campaigns.json')
       ]);
 
-      setWorlds(dataWorlds || []);
-      setCategories(dataCats || []);
-      setProducts(dataProds || []);
-      setSettings(dataSettings || null);
-      if (dataCamp) setCampaignsConfig(dataCamp);
+      if (Array.isArray(dataWorlds) && dataWorlds.length > 0) setWorlds(dataWorlds.map(normalizeWorldItem));
+      if (Array.isArray(dataCats) && dataCats.length > 0) setCategories(dataCats);
+      if (Array.isArray(dataProds) && dataProds.length > 0) setProducts(dataProds.map(normalizeProductItem));
+      if (dataSettings && typeof dataSettings === 'object') setSettings(normalizeSettingsData(dataSettings));
+      if (dataCamp && typeof dataCamp === 'object') setCampaignsConfig(dataCamp);
     } catch (err) {
-      console.error('Error loading catalog data:', err);
+      console.warn('Catálogo usando datos estáticos:', err);
     } finally {
       setLoading(false);
     }
@@ -679,7 +746,7 @@ export default function App() {
     return [
       {
         id: 'hogar-estilo',
-        image: '/uploads/img_001.jpg',
+        image: './uploads/img_001.jpg',
         badge: 'Hogar & Decoración',
         title: 'Colección Hogar & Decoración',
         description: 'Lámparas 3D, maceteros geométricos y percheros de pared',
@@ -687,7 +754,7 @@ export default function App() {
       },
       {
         id: 'branding-comercial',
-        image: '/uploads/pack_barberia_boutique_contexto.jpg',
+        image: './uploads/pack_barberia_boutique_contexto.jpg',
         badge: 'Negocios & Marcas',
         title: 'Branding Comercial & Mostrador',
         description: 'Señalética inteligente, QR y enlaces NFC para negocios',
@@ -695,7 +762,7 @@ export default function App() {
       },
       {
         id: 'bodas-eventos',
-        image: '/uploads/bienvenida_ceremonia_boda.jpg',
+        image: './uploads/bienvenida_ceremonia_boda.jpg',
         badge: 'Eventos Especiales',
         title: 'Bodas, XV Años & Recuerdos',
         description: 'Letreros de bienvenida, copas grabadas y souvenirs de taller',
@@ -703,7 +770,7 @@ export default function App() {
       },
       {
         id: 'setup-gamer',
-        image: '/uploads/kit_home_office_gamer_contexto.jpg',
+        image: './uploads/kit_home_office_gamer_contexto.jpg',
         badge: 'Setup & Gaming',
         title: 'Setup Gamer & Home Office',
         description: 'Soportes de audífonos, bandejas y organizadores 3D',
@@ -964,14 +1031,14 @@ export default function App() {
                 <div className="flex -space-x-3 shrink-0">
                   <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden border-2 border-white/20 bg-black/40 shadow-xs">
                     <img
-                      src="/uploads/personalizados-figuras-funko.jpg"
+                      src="./uploads/personalizados-figuras-funko.jpg"
                       alt="Funko Custom"
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden border-2 border-sky-400/50 bg-black/40 shadow-xs">
                     <img
-                      src="/uploads/personalizados-dibujo-figura-3d.jpg"
+                      src="./uploads/personalizados-dibujo-figura-3d.jpg"
                       alt="De Dibujo a 3D"
                       className="w-full h-full object-cover"
                     />
@@ -1017,7 +1084,7 @@ export default function App() {
             {loading ? (
               <div className="py-24 text-center space-y-3">
                 <img
-                  src="/brand/artesano_isotipo_transparente.png"
+                  src="./brand/artesano_isotipo_transparente.png"
                   alt="Cargando"
                   className="w-10 h-10 object-contain mx-auto animate-bounce"
                 />

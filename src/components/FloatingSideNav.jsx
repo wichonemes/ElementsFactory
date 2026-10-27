@@ -67,7 +67,7 @@ export default function FloatingSideNav({
             className="w-11 h-11 rounded-xl overflow-hidden hover:scale-105 active:scale-95 transition-transform duration-200 cursor-pointer shadow-xs border border-black/10 bg-[#262626] flex items-center justify-center p-1"
           >
             <img
-              src="/brand/artesano_isotipo_transparente.png"
+              src="./brand/artesano_isotipo_transparente.png"
               alt="Artesano Digital - Catálogo"
               className="w-8 h-8 object-contain"
             />

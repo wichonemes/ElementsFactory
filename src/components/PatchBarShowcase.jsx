@@ -13,19 +13,19 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
     {
       id: 'completo',
       label: 'Estación en madera',
-      image: '/uploads/patch_bar_servicio_en_vivo.jpg',
+      image: './uploads/patch_bar_servicio_en_vivo.jpg',
       caption: 'Mobiliario de madera artesanal con repisas para gorras, charolas de parches y prensa térmica industrial.'
     },
     {
       id: 'parches',
       label: 'Muestrario de parches',
-      image: '/uploads/angle_patch_bar.jpg',
+      image: './uploads/angle_patch_bar.jpg',
       caption: 'Parches y stickers textiles de alta durabilidad: iniciales, frases de celebración y monogramas personalizados.'
     },
     {
       id: 'infografia',
       label: 'Medidas y capacidad',
-      image: '/uploads/info_patch_bar.jpg',
+      image: './uploads/info_patch_bar.jpg',
       caption: 'Estación de 160 x 80 cm, apta para salones y jardines, con capacidad de 50 a 300+ invitados.'
     }
   ];

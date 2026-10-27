@@ -28,15 +28,26 @@ export default function QuoteDrawer({
   const [deliveryNotes, setDeliveryNotes] = useState('');
   const [copied, setCopied] = useState(false);
 
-  // Cupones activos cargados desde el servidor
+  // Cupones activos cargados desde el servidor con fallback estático
   const [serverCoupons, setServerCoupons] = useState([]);
   useEffect(() => {
-    fetch('/api/coupons')
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) setServerCoupons(data);
-      })
-      .catch(() => {});
+    const loadCoupons = async () => {
+      try {
+        const res = await fetch('/api/coupons');
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data)) return setServerCoupons(data);
+        }
+      } catch (_) {}
+      try {
+        const res = await fetch('./api/coupons.json');
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data)) return setServerCoupons(data);
+        }
+      } catch (_) {}
+    };
+    loadCoupons();
   }, []);
 
   // Cupón y Código de Descuento
@@ -191,7 +202,10 @@ export default function QuoteDrawer({
   // Construcción del mensaje estructurado para WhatsApp con enlaces directos
   const buildWhatsAppMessage = () => {
     const isDirect = checkoutMode === 'direct';
-    const baseUrl = typeof window !== 'undefined' && window.location.origin ? window.location.origin : 'https://artesanodigital.mx';
+    const cleanPath = typeof window !== 'undefined' ? window.location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '') : '';
+    const baseUrl = typeof window !== 'undefined' && window.location.origin
+      ? `${window.location.origin}${cleanPath}`
+      : 'https://wichonemes.github.io/ElementsFactory';
 
     let msg = isDirect
       ? `*PEDIDO DIRECTO INMEDIATO — ARTESANO DIGITAL*\n`

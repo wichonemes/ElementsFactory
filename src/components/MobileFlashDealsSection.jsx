@@ -61,7 +61,7 @@ export default function MobileFlashDealsSection({
                 >
                   <div className="w-10 h-10 rounded-lg bg-gray-50 overflow-hidden shrink-0 border border-gray-200">
                     <img
-                      src={p.primaryImage || '/uploads/img_001.jpg'}
+                      src={p.primaryImage || './uploads/img_001.jpg'}
                       alt={p.name}
                       className="w-full h-full object-cover"
                     />
@@ -92,7 +92,7 @@ export default function MobileFlashDealsSection({
             {/* Foto grande con badge de relámpago y temporizador */}
             <div className="relative aspect-square rounded-xl overflow-hidden bg-gray-50 mb-1.5 border border-gray-100">
               <img
-                src={featured.primaryImage || '/uploads/img_001.jpg'}
+                src={featured.primaryImage || './uploads/img_001.jpg'}
                 alt={featured.name}
                 className="w-full h-full object-cover"
               />

@@ -971,11 +971,11 @@ export default function PackagesAndServicesView({
       setCampaignConfig(settings.campaignsConfig);
     } else {
       fetch('/api/campaigns')
-        .then(res => res.ok ? res.json() : null)
+        .then(res => res.ok ? res.json() : fetch('./api/campaigns.json').then(r => r.json()))
         .then(data => {
           if (data) setCampaignConfig(data);
         })
-        .catch(err => console.error('Error cargando campañas en vista:', err));
+        .catch(() => {});
     }
   }, [settings?.campaignsConfig]);
 
@@ -1291,7 +1291,7 @@ export default function PackagesAndServicesView({
           {/* Marca de Agua Sutil de Taller para Protección de Imagen con Logotipo Oficial */}
           <div className="absolute bottom-2 right-2 z-10 flex items-center gap-1 px-1.5 py-[2px] rounded-full bg-black/15 backdrop-blur-2xs text-[7px] font-medium text-white/60 pointer-events-none select-none tracking-tight border border-white/5 shadow-2xs">
             <img
-              src="/brand/artesano_isotipo_transparente.png"
+              src="./brand/artesano_isotipo_transparente.png"
               alt=""
               className="w-2 h-2 object-contain shrink-0 opacity-75"
             />

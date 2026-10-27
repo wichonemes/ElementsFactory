@@ -1,0 +1,206 @@
+{
+  "activeSeasonId": "otono",
+  "title": "Colección Otoño & Tradición: Maderas Cálidas y Piezas de Taller",
+  "subtitle": "Detalles artesanales conmemorativos, bandejas vaciabolsillos y porta-velas en maderas nobles.",
+  "bannerBadge": "🍁 Edición Especial de Otoño",
+  "bannerImage": "./uploads/bundle_promo_biz_1.jpg",
+  "promoNotice": "🍂 15% de descuento adicional en paquetes de madera natural tratada.",
+  "highlightedBundleId": "PROMO-HOG-1",
+  "accentTheme": "vino_borgona",
+  "seasons": [
+    {
+      "id": "invierno",
+      "name": "Invierno & Navidad",
+      "icon": "❄️",
+      "badge": "🎄 Edición Especial Navideña",
+      "title": "Especial de Navidad & Año Nuevo: Regalos y Paquetes Corporativos",
+      "subtitle": "Kits coordinados en madera, grabado láser y piezas 3D con hasta 25% de ahorro para empresas y familias.",
+      "bannerImage": "./uploads/bundle_promo_hogar_1.jpg",
+      "promoNotice": "🎁 Envoltura de regalo de cortesía y grabado de nombres sin costo en pedidos de temporada.",
+      "themeColor": "rose",
+      "suggestedBundles": [
+        "kit-home-office-gamer-pro",
+        "set-suite-nupcial-novia-novio",
+        "PROMO-HOG-1"
+      ]
+    },
+    {
+      "id": "otono",
+      "name": "Otoño & Día de Muertos",
+      "icon": "🍂",
+      "badge": "🍁 Edición Especial de Otoño",
+      "title": "Colección Otoño & Tradición: Maderas Cálidas y Piezas de Taller",
+      "subtitle": "Detalles artesanales conmemorativos, bandejas vaciabolsillos y porta-velas en maderas nobles.",
+      "bannerImage": "./uploads/bundle_promo_biz_1.jpg",
+      "promoNotice": "🍂 15% de descuento adicional en paquetes de madera natural tratada.",
+      "themeColor": "amber",
+      "suggestedBundles": [
+        "PROMO-HOG-1",
+        "PROMO-HOG-3",
+        "starter-pack-barberia-t18"
+      ],
+      "accentTheme": "vino_borgona",
+      "seasonalEffect": "halloween_spooky",
+      "textColorMode": "white"
+    },
+    {
+      "id": "verano",
+      "name": "Verano & Vacaciones",
+      "icon": "☀️",
+      "badge": "🏖️ Especial de Verano",
+      "title": "Temporada de Verano: Gorras, Termos y Accesorios de Viaje",
+      "subtitle": "Paquetes playeros, gorras trucker personalizadas con parche y termos térmicos para tus escapadas.",
+      "bannerImage": "./uploads/bundle_promo_ev_1.jpg",
+      "promoNotice": "☀️ Llévate 2 llaveros de viaje de cortesía al adquirir cualquier paquete de verano.",
+      "themeColor": "blue",
+      "suggestedBundles": [
+        "pack-consentido-peludo-mascotas",
+        "gorra-trucker-personalizada-vinil-parche",
+        "termo-metalico-termico-20oz-personalizado"
+      ]
+    },
+    {
+      "id": "primavera",
+      "name": "Primavera, Amor & Madres",
+      "icon": "🌸",
+      "badge": "💝 Especial San Valentín & Día de las Madres",
+      "title": "Especial de Primavera: Recuerdos Inolvidables para Mamá y Parejas",
+      "subtitle": "Llaveros familiares Polaroid, tazas mágicas reveladoras y detalles con grabado botánico.",
+      "bannerImage": "./uploads/bundle_promo_hogar_2.jpg",
+      "promoNotice": "🌸 Caja kraft decorada y tarjeta con dedicatoria personalizada incluida.",
+      "themeColor": "emerald",
+      "suggestedBundles": [
+        "PROMO-HOG-1",
+        "PROMO-HOG-2",
+        "llavero-camarita-l9"
+      ]
+    },
+    {
+      "id": "bodas",
+      "name": "Bodas, XV Años & Graduaciones",
+      "icon": "🎓",
+      "badge": "💍 Temporada de Celebraciones",
+      "title": "Suite Nupcial & Eventos: Paquetes Todo Incluido para Tu Fiesta",
+      "subtitle": "Letreros de bienvenida, copas de brindis, números de mesa 3D y servicio Patch Bar en vivo.",
+      "bannerImage": "./uploads/bienvenida_ceremonia_boda.jpg",
+      "promoNotice": "💍 Reserva con 15 días de anticipación y recibe 10 marcacopas de cortesía.",
+      "themeColor": "amber",
+      "suggestedBundles": [
+        "set-suite-nupcial-novia-novio",
+        "centro-mesa-presidencial-3d-copas",
+        "paquete-boda-de-ensueno-todo-incluido"
+      ]
+    },
+    {
+      "id": "custom",
+      "name": "Especial del Mes Personalizado",
+      "icon": "⭐",
+      "badge": "⭐ Promoción del Mes de Taller",
+      "title": "Especial del Mes: Combos Destacados de Artesano Digital",
+      "subtitle": "Nuestros paquetes más vendidos combinados con precios de fábrica y entrega prioritaria.",
+      "bannerImage": "./uploads/bundle_promo_biz_2.jpg",
+      "promoNotice": "⭐ Personalización gratuita de logotipo y tipografía en cualquier paquete seleccionado.",
+      "themeColor": "emerald",
+      "suggestedBundles": [
+        "kit-home-office-gamer-pro",
+        "starter-pack-barberia-t18"
+      ]
+    }
+  ],
+  "seasonalEffect": "halloween_spooky",
+  "monthlyEvents": {
+    "baseEventMode": "major",
+    "showcaseSlides": [
+      {
+        "id": "hogar-estilo",
+        "image": "./uploads/img_001.jpg",
+        "categoryTag": "Hogar & Estilo",
+        "badge": "Novedad de Temporada",
+        "title": "Colección Hogar y Estilo",
+        "description": "Lámpara moderna T38 · Maceta espiral T6 · Colgador Bienvenidos L14",
+        "worldId": "hogar"
+      },
+      {
+        "id": "branding-comercial",
+        "image": "./uploads/pack_barberia_boutique_contexto.jpg",
+        "categoryTag": "Negocios & Marcas",
+        "badge": "Temporada Comercial",
+        "title": "Branding Comercial & Mostrador",
+        "description": "Soportes verticales QR · Enlaces NFC inteligentes · Letreros 3D",
+        "worldId": "negocios"
+      },
+      {
+        "id": "bodas-eventos",
+        "image": "./uploads/bienvenida_ceremonia_boda.jpg",
+        "categoryTag": "Bodas & Eventos",
+        "badge": "Edición Especial Ceremonias",
+        "title": "Colección Bodas & Celebraciones",
+        "description": "Letreros de bienvenida · Copas grabadas · Recuerdos en madera",
+        "worldId": "eventos"
+      },
+      {
+        "id": "setup-gamer",
+        "image": "./uploads/kit_home_office_gamer_contexto.jpg",
+        "categoryTag": "Setup & Gaming",
+        "badge": "Lanzamiento de Taller",
+        "title": "Setup Gamer & Home Office",
+        "description": "Smart Deck · Soporte para audífonos · Organizador modular 3D",
+        "worldId": "hogar"
+      },
+      {
+        "id": "linea-termica",
+        "image": "./uploads/sublimacion_taza_tarro_contexto.jpg",
+        "categoryTag": "Sublimación & Textil",
+        "badge": "Novedad Térmica",
+        "title": "Línea Térmica & Personalizada",
+        "description": "Tazas mágicas de revelado térmico · Tarros cerveceros · Termos láser",
+        "worldId": "paquetes-servicios"
+      }
+    ],
+    "majorEvent": {
+      "id": "major-event",
+      "active": true,
+      "title": "Gran Bazar Artesanal de Fin de Mes",
+      "subtitle": "Descuento especial en paquetes de taller + envoltura de cortesía y grabado láser de nombres sin costo.",
+      "badge": "🔥 EVENTO GRANDE DEL MES",
+      "discountText": "15% OFF",
+      "couponCode": "GRANMES15",
+      "startDate": "2026-10-24",
+      "endDate": "2026-10-31",
+      "progressPercent": 84,
+      "benefitType": "free_gift",
+      "benefitText": "Envío Prioritario + Detalle Grabado de Cortesía"
+    },
+    "midMonthEvent": {
+      "id": "mid-month-event",
+      "active": false,
+      "title": "Quincena Relámpago Artesanal",
+      "subtitle": "¡Llegó la quincena! Llévate kits coordinados para hogar o negocio con precio de taller y 2X monedas arcade.",
+      "badge": "⚡ QUINCENA ARTESANAL FLASH",
+      "discountText": "10% OFF",
+      "couponCode": "QUINCENA10",
+      "startDate": "2026-10-22",
+      "endDate": "2026-10-18",
+      "progressPercent": 68,
+      "benefitType": "double_coins",
+      "benefitText": "2X Monedas para Juegos + 10% Directo"
+    },
+    "flashSpecial": {
+      "id": "flash-special-event",
+      "active": false,
+      "title": "Venta Relámpago de Fin de Semana & Liquidación",
+      "subtitle": "¡Especial de Fin de Semana! Promociones relámpago, últimas piezas y liquidaciones de taller con cupón exclusivo.",
+      "badge": "⚡ OFERTA RELÁMPAGO DE FIN DE SEMANA",
+      "discountText": "30% OFF",
+      "couponCode": "FLASHFINDE30",
+      "startDate": "2026-10-17",
+      "endDate": "2026-10-19",
+      "progressPercent": 92,
+      "benefitType": "liquidation",
+      "benefitText": "Promociones Relámpago + Liquidación de Taller + Envío Express"
+    }
+  },
+  "isDraft": false,
+  "lastPublishedAt": "2026-10-15T17:32:24.067Z",
+  "textColorMode": "white"
+}

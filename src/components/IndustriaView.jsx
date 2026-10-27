@@ -47,8 +47,8 @@ export default function IndustriaView({
 
   // URL canónica para compartir el portal industrial
   const sharePortalUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}${window.location.pathname}?area=industria`
-    : 'https://artesano-digital.onrender.com/?area=industria';
+    ? `${window.location.origin}${window.location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '')}/?area=industria`
+    : 'https://wichonemes.github.io/ElementsFactory/?area=industria';
 
   // Mensaje natural para compartir entre colegas (sin tono de venta agresiva)
   const sharePortalText = `Que una refacción no te detenga: servicio de manufactura e impresión 3D técnica en SLP para piezas mecánicas, utillaje y prototipos: ${sharePortalUrl}`;

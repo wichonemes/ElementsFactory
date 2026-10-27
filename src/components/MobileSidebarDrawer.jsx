@@ -55,7 +55,7 @@ export default function MobileSidebarDrawer({
           <div className="flex items-center gap-3 min-w-0">
             <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 p-1 flex items-center justify-center shrink-0">
               <img
-                src="/brand/artesano_isotipo_transparente.png"
+                src="./brand/artesano_isotipo_transparente.png"
                 alt="Artesano Digital"
                 className="w-full h-full object-contain"
               />

@@ -537,7 +537,7 @@ export default function WorkshopArcadeModal({
   useEffect(() => {
     if (isOpen) {
       fetch('/api/arcade/config')
-        .then(res => res.json())
+        .then(res => res.ok ? res.json() : fetch('./api/arcade.json').then(r => r.json()))
         .then(data => {
           if (data && typeof data === 'object') setLiveArcadeConfig(data);
         })

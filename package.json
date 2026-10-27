@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "node server/build-noop.js",
-    "build:vite": "vite build",
+    "build:vite": "node scripts/export_static_api.js && vite build",
     "preview": "vite preview",
     "server": "node server/index.js",
     "start": "node server/index.js",

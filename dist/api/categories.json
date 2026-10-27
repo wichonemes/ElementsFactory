@@ -1,0 +1,254 @@
+[
+  {
+    "id": "hogar-organizacion",
+    "worldId": "hogar",
+    "name": "Organización y almacenamiento",
+    "order": 1,
+    "productCount": 4
+  },
+  {
+    "id": "hogar-decoracion",
+    "worldId": "hogar",
+    "name": "Decoración y espacios",
+    "order": 2,
+    "productCount": 10
+  },
+  {
+    "id": "hogar-mascotas",
+    "worldId": "hogar",
+    "name": "Mascotas",
+    "order": 3,
+    "productCount": 4
+  },
+  {
+    "id": "hogar-infantil",
+    "worldId": "hogar",
+    "name": "Juguetes y actividades infantiles",
+    "order": 4,
+    "productCount": 8
+  },
+  {
+    "id": "hogar-estudio",
+    "worldId": "hogar",
+    "name": "Estudio, escritorio y home office",
+    "order": 5,
+    "productCount": 9
+  },
+  {
+    "id": "hogar-cocina",
+    "worldId": "hogar",
+    "name": "Cocina y mesa",
+    "order": 6,
+    "productCount": 4
+  },
+  {
+    "id": "hogar-regalos",
+    "worldId": "hogar",
+    "name": "Regalos y detalles personales",
+    "order": 7,
+    "productCount": 18
+  },
+  {
+    "id": "hogar-hobbies",
+    "worldId": "hogar",
+    "name": "Hobbies y colecciones",
+    "order": 8,
+    "productCount": 3
+  },
+  {
+    "id": "negocios-restaurantes",
+    "worldId": "negocios",
+    "name": "Restaurantes, cafeterías y reposterías",
+    "order": 1,
+    "productCount": 7
+  },
+  {
+    "id": "negocios-barberias",
+    "worldId": "negocios",
+    "name": "Barberías, salones de belleza y uñas",
+    "order": 2,
+    "productCount": 3
+  },
+  {
+    "id": "negocios-tiendas",
+    "worldId": "negocios",
+    "name": "Tiendas, boutiques y comercios",
+    "order": 3,
+    "productCount": 8
+  },
+  {
+    "id": "negocios-joyerias",
+    "worldId": "negocios",
+    "name": "Joyerías y accesorios",
+    "order": 4,
+    "productCount": 3
+  },
+  {
+    "id": "negocios-veterinarias",
+    "worldId": "negocios",
+    "name": "Veterinarias y estéticas caninas",
+    "order": 6,
+    "productCount": 1
+  },
+  {
+    "id": "negocios-gym",
+    "worldId": "negocios",
+    "name": "Gimnasios y centros deportivos",
+    "order": 7,
+    "productCount": 2
+  },
+  {
+    "id": "negocios-oficinas",
+    "worldId": "negocios",
+    "name": "Oficinas, profesionales y coworking",
+    "order": 8,
+    "productCount": 12
+  },
+  {
+    "id": "negocios-consultorios",
+    "worldId": "negocios",
+    "name": "Consultorios y bienestar",
+    "order": 10,
+    "productCount": 1
+  },
+  {
+    "id": "negocios-emprendedores",
+    "worldId": "negocios",
+    "name": "Emprendedores, ferias y exposiciones",
+    "order": 12,
+    "productCount": 5
+  },
+  {
+    "id": "eventos-cumpleanos",
+    "worldId": "eventos",
+    "name": "Cumpleaños",
+    "order": 1,
+    "productCount": 9
+  },
+  {
+    "id": "eventos-bautizos",
+    "worldId": "eventos",
+    "name": "Bautizos",
+    "order": 2,
+    "productCount": 1
+  },
+  {
+    "id": "eventos-xvanos",
+    "worldId": "eventos",
+    "name": "XV años",
+    "order": 4,
+    "productCount": 8
+  },
+  {
+    "id": "eventos-bodas",
+    "worldId": "eventos",
+    "name": "Bodas y aniversarios",
+    "order": 5,
+    "productCount": 23
+  },
+  {
+    "id": "eventos-graduaciones",
+    "worldId": "eventos",
+    "name": "Graduaciones",
+    "order": 7,
+    "productCount": 4
+  },
+  {
+    "id": "eventos-temporada",
+    "worldId": "eventos",
+    "name": "Celebraciones de temporada",
+    "order": 8,
+    "productCount": 2
+  },
+  {
+    "id": "eventos-empresariales",
+    "worldId": "eventos",
+    "name": "Eventos empresariales",
+    "order": 9,
+    "productCount": 6
+  },
+  {
+    "id": "eventos-otras",
+    "worldId": "eventos",
+    "name": "Otras celebraciones",
+    "order": 10,
+    "productCount": 1
+  },
+  {
+    "id": "juguetes-movimiento",
+    "worldId": "hogar",
+    "name": "Juguetes con movimiento mecánico y acción",
+    "order": 1,
+    "productCount": 1
+  },
+  {
+    "id": "juguetes-articulados",
+    "worldId": "hogar",
+    "name": "Juguetes articulados print-in-place",
+    "order": 2,
+    "productCount": 2
+  },
+  {
+    "id": "juguetes-fidget",
+    "worldId": "hogar",
+    "name": "Fidget toys y rompecabezas de destreza",
+    "order": 3,
+    "productCount": 2
+  },
+  {
+    "id": "personalizados-individual",
+    "worldId": "personalizados",
+    "name": "Retrato Individual",
+    "order": 1,
+    "productCount": 1
+  },
+  {
+    "id": "personalizados-mascotas",
+    "worldId": "personalizados",
+    "name": "Mascotas",
+    "order": 2,
+    "productCount": 1
+  },
+  {
+    "id": "personalizados-parejas",
+    "worldId": "personalizados",
+    "name": "Parejas & Aniversario",
+    "order": 3,
+    "productCount": 1
+  },
+  {
+    "id": "personalizados-profesiones",
+    "worldId": "personalizados",
+    "name": "Profesiones & Graduaciones",
+    "order": 4,
+    "productCount": 1
+  },
+  {
+    "id": "personalizados-amigos",
+    "worldId": "personalizados",
+    "name": "Amigos & Cumpleaños",
+    "order": 5,
+    "productCount": 1
+  },
+  {
+    "id": "personalizados-familia",
+    "worldId": "personalizados",
+    "name": "Pack Familiar",
+    "order": 6,
+    "productCount": 1
+  },
+  {
+    "id": "personalizados-abuelitos",
+    "worldId": "personalizados",
+    "name": "Homenaje a los Abuelitos",
+    "order": 7,
+    "productCount": 1
+  },
+  {
+    "id": "personalizados-dibujo",
+    "worldId": "personalizados",
+    "name": "De Dibujo a 3D",
+    "order": 8,
+    "productCount": 7
+  }
+]

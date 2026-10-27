@@ -167,12 +167,13 @@ export default function SalesMarketingSection({ token, products = [], settings =
   // Generate UTM Tracking URL
   const generateUtmLink = (form) => {
     const origin = window.location.origin;
+    const cleanPath = window.location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '');
     const cleanCode = (form.code || '').trim().toUpperCase();
     const source = (form.socialNetwork || 'instagram').toLowerCase();
     const medium = form.utmMedium || 'social';
     const campaign = `pub_${cleanCode.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
 
-    let url = `${origin}/?pub=${encodeURIComponent(cleanCode)}&utm_source=${encodeURIComponent(source)}&utm_medium=${encodeURIComponent(medium)}&utm_campaign=${encodeURIComponent(campaign)}&utm_content=${encodeURIComponent(cleanCode)}`;
+    let url = `${origin}${cleanPath}/?pub=${encodeURIComponent(cleanCode)}&utm_source=${encodeURIComponent(source)}&utm_medium=${encodeURIComponent(medium)}&utm_campaign=${encodeURIComponent(campaign)}&utm_content=${encodeURIComponent(cleanCode)}`;
 
     if (form.productId && form.productId !== 'general' && form.productId !== 'paquetes') {
       url += `&prod=${encodeURIComponent(form.productId)}`;

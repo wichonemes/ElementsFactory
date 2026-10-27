@@ -146,7 +146,7 @@ export default function ProductCard({
           loading="lazy"
           onError={(e) => {
             e.currentTarget.onerror = null;
-            e.currentTarget.src = '/uploads/img_002.jpg';
+            e.currentTarget.src = './uploads/img_002.jpg';
           }}
         />
 
@@ -196,7 +196,7 @@ export default function ProductCard({
           {/* Marca de Agua Sutil de Taller */}
           <div className="flex items-center gap-1 px-1.5 py-[2px] rounded-full bg-black/20 backdrop-blur-2xs text-[7px] font-medium text-white/80 select-none tracking-tight border border-white/5 shadow-2xs">
             <img
-              src="/brand/artesano_isotipo_transparente.png"
+              src="./brand/artesano_isotipo_transparente.png"
               alt=""
               className="w-2 h-2 object-contain shrink-0 opacity-80"
             />
