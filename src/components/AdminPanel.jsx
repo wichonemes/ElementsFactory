@@ -1137,6 +1137,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   const [marginsWorld, setMarginsWorld] = useState('all');
   const [marginsTechnique, setMarginsTechnique] = useState('all');
   const [marginsStatus, setMarginsStatus] = useState('all'); // 'all' | 'optimal' | 'low' | 'loss' | 'missing'
+  const [marginSalesChannel, setMarginSalesChannel] = useState('direct'); // 'direct' | 'mercadolibre' | 'custom'
+  const [customCommission, setCustomCommission] = useState(16);
+  const [customFixedFee, setCustomFixedFee] = useState(25);
 
   // Category Filter & Technique Audit State
   const [categoryWorld, setCategoryWorld] = useState('all');
@@ -3713,8 +3716,18 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       const isQuote = p.priceType === 'quote' || price === 0;
       const hasCost = p.costPrice !== undefined && p.costPrice !== null && p.costPrice !== '';
       const cost = hasCost ? Number(p.costPrice) : 0;
-      const commission = 0; // Venta directa por defecto
-      const fixedFee = 0;
+      
+      // Canal de Venta & Deducciones de Plataforma (Mercado Libre / Directo)
+      let commission = 0;
+      let fixedFee = 0;
+      if (marginSalesChannel === 'mercadolibre') {
+        commission = 0.16; // 16% promedio de comisión ML por categoría
+        fixedFee = price < 299 && price > 0 ? 25 : 0; // Cargo fijo por unidad en ventas < $299 MXN
+      } else if (marginSalesChannel === 'custom') {
+        commission = (Number(customCommission) || 0) / 100;
+        fixedFee = Number(customFixedFee) || 0;
+      }
+      const platformFee = Math.round((price * commission + fixedFee) * 10) / 10;
 
       let profit = 0;
       let margin = 0;
@@ -3736,7 +3749,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         missingCostCount++;
         maxCost = Math.round(price * (1 - targetMargin) * 10) / 10;
       } else {
-        profit = Math.round((price * (1 - commission) - fixedFee - cost) * 10) / 10;
+        profit = Math.round((price - platformFee - cost) * 10) / 10;
         margin = price > 0 ? (profit / price) : 0;
         markup = cost > 0 ? (profit / cost) : 0;
         maxCost = Math.round((price * (1 - commission - targetMargin) - fixedFee) * 10) / 10;
@@ -3775,6 +3788,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         hasCost,
         commission,
         fixedFee,
+        platformFee,
         profit,
         marginPct: Math.round(margin * 1000) / 10,
         markupPct: Math.round(markup * 1000) / 10,
@@ -3805,7 +3819,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       missingCostCount,
       quoteCount
     };
-  }, [products, workshopParams]);
+  }, [products, workshopParams, marginSalesChannel, customCommission, customFixedFee]);
 
   // Technique List & Definitions for Filtering and Audits
   const techniqueList = [
@@ -6004,6 +6018,83 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                     {/* 4 KPIS SUPERIORES DE SALUD FINANCIERA (CALCULADOS EN TIEMPO REAL SEGÚN ÁREA Y TÉCNICA) */}
                     <div className="space-y-2">
+                      {/* BARRA DE CANAL DE VENTA / GASTOS DE MERCADO LIBRE */}
+                      <div className="bg-[#FAF8F5] p-3 sm:p-3.5 rounded-xl border border-[#E8E4DA] flex flex-wrap items-center justify-between gap-2.5">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-xs font-bold text-gray-700 flex items-center gap-1.5">
+                            <ShoppingCart className="w-4 h-4 text-[#2D4F3E]" />
+                            <span>Canal de Venta:</span>
+                          </span>
+                          <div className="inline-flex rounded-lg border border-gray-300 p-0.5 bg-white shadow-2xs">
+                            <button
+                              type="button"
+                              onClick={() => setMarginSalesChannel('direct')}
+                              className={`px-3 py-1 text-xs font-bold rounded-md transition-all cursor-pointer ${
+                                marginSalesChannel === 'direct'
+                                  ? 'bg-[#2D4F3E] text-white shadow-xs'
+                                  : 'text-gray-600 hover:text-gray-900'
+                              }`}
+                            >
+                              🏪 Taller / Web Oficial (0% comisiones)
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setMarginSalesChannel('mercadolibre')}
+                              className={`px-3 py-1 text-xs font-bold rounded-md transition-all flex items-center gap-1 cursor-pointer ${
+                                marginSalesChannel === 'mercadolibre'
+                                  ? 'bg-amber-400 text-amber-950 font-black shadow-xs'
+                                  : 'text-gray-600 hover:text-gray-900'
+                              }`}
+                              title="Mercado Libre México: 16% comisión de categoría + $25 cargo fijo en productos menores a $299 MXN"
+                            >
+                              <span>💛</span>
+                              <span>Mercado Libre México (16% + $25 fijo)</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setMarginSalesChannel('custom')}
+                              className={`px-3 py-1 text-xs font-bold rounded-md transition-all cursor-pointer ${
+                                marginSalesChannel === 'custom'
+                                  ? 'bg-purple-700 text-white shadow-xs'
+                                  : 'text-gray-600 hover:text-gray-900'
+                              }`}
+                            >
+                              ✏️ Personalizado
+                            </button>
+                          </div>
+                        </div>
+
+                        {marginSalesChannel === 'mercadolibre' && (
+                          <div className="text-[11px] text-amber-900 font-semibold bg-amber-100/70 px-2.5 py-1 rounded-lg border border-amber-300 flex items-center gap-1.5 animate-fade-in">
+                            <span className="text-sm">⚠️</span>
+                            <span>Comisiones ML aplicadas: <strong>16% comisión</strong> + <strong>$25 MXN fijos</strong> por unidad vendida (&lt;$299 MXN).</span>
+                          </div>
+                        )}
+
+                        {marginSalesChannel === 'custom' && (
+                          <div className="flex items-center gap-2.5 text-xs animate-fade-in">
+                            <div className="flex items-center gap-1">
+                              <label className="font-bold text-gray-600 text-[11px]">Comisión %:</label>
+                              <input
+                                type="number"
+                                value={customCommission}
+                                onChange={e => setCustomCommission(Number(e.target.value))}
+                                className="w-14 px-2 py-0.5 rounded border border-gray-300 bg-white font-bold text-center"
+                              />
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <label className="font-bold text-gray-600 text-[11px]">Cargo Fijo $:</label>
+                              <input
+                                type="number"
+                                value={customFixedFee}
+                                onChange={e => setCustomFixedFee(Number(e.target.value))}
+                                className="w-14 px-2 py-0.5 rounded border border-gray-300 bg-white font-bold text-center"
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
                       {(marginsTechnique !== 'all' || marginsWorld !== 'all' || marginsSearch.trim()) && (
                         <div className="flex items-center justify-between px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900">
                           <div className="flex items-center gap-1.5 font-medium">
@@ -6310,6 +6401,11 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                         <option value="combo">/ combo</option>
                                         <option value="servicio">/ servicio</option>
                                       </select>
+                                      {row.platformFee > 0 && (
+                                        <span className="text-[8.5px] font-bold text-amber-900 bg-amber-100/90 px-1 py-0 rounded border border-amber-300 whitespace-nowrap" title={`Deducción de plataforma: $${row.platformFee} ($${(row.price * row.commission).toFixed(1)} com. + $${row.fixedFee} fijo)`}>
+                                          -${row.platformFee} ML
+                                        </span>
+                                      )}
                                     </div>
                                   </div>
                                 </td>

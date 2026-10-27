@@ -343,7 +343,180 @@ const initialCategories = [
     "worldId": "personalizados",
     "name": "De Dibujo a 3D",
     "order": 8
+  },
+  {
+  "id": "clicker-mecanico-fidget-t42",
+  "code": "T42",
+  "name": "Clicker Mecánico Antiestrés (Fidget con Switch de Teclado)",
+  "priceType": "fixed",
+  "price": 89,
+  "priceUnit": "pieza",
+  "status": "published",
+  "featured": true,
+  "worlds": [
+    "juegos",
+    "oficina",
+    "hogar"
+  ],
+  "categories": [
+    "juguetes-fidget",
+    "oficina-accesorios"
+  ],
+  "techniques": [
+    "3d",
+    "assembly"
+  ],
+  "primaryImage": "/uploads/t42_clicker_mecanico_contexto.webp",
+  "gallery": [
+    "/uploads/t42_clicker_mecanico_contexto.webp",
+    "/uploads/t42_clicker_mecanico_estudio.webp"
+  ],
+  "shortDescription": "Juguete antiestrés clicker con switch mecánico de 3 pines tipo Outemu Blue con sonido táctil clicky y keycap impreso en 3D.",
+  "fullDescription": "El juguete sensorial definitivo para oficina o setup gamer: combina un switch mecánico de teclado de 3 pines de alta durabilidad (más de 50 millones de pulsaciones) con carcasa y keycap impresos en 3D. Incorpora argolla de llavero para llevarlo a todas partes. Alivia la ansiedad y el estrés mientras trabajas o juegas.",
+  "specifications": {
+    "dimensions": "3.2 x 2.4 x 2.8 cm",
+    "material": "PLA de alta tenacidad y switch mecánico de teclado 3 pines (Outemu Blue táctil sonoro)",
+    "finish": "Textura mate ergonómica y keycap intercambiable",
+    "includes": "Carcasa 3D + switch mecánico instalado + keycap decorativo + argolla metálica reforzada",
+    "minQuantity": 1,
+    "estimatedLeadTime": "1 a 2 días hábiles"
+  },
+  "variants": [
+    {
+      "name": "Color de carcasa",
+      "options": [
+        "Negro Carbón",
+        "Blanco Nieve",
+        "Verde Olivo Taller",
+        "Azul Zafiro",
+        "Terracota"
+      ]
+    },
+    {
+      "name": "Tipo de sonido / Switch",
+      "options": [
+        "Clicky Sonoro (Outemu Blue)",
+        "Lineal Silencioso (Outemu Red)"
+      ]
+    }
+  ],
+  "stockQuantity": 25,
+  "costPrice": 32,
+  "costBreakdown": {
+    "plaGrams": 18,
+    "tpuGrams": 0,
+    "otherMaterialsCost": 9.7,
+    "machineHours": 0.75,
+    "otherEquipCost": 0,
+    "manualWorkMin": 5,
+    "prepCost": 0,
+    "packagingCost": 3.5,
+    "additionalFailuresCost": 1.55,
+    "fixedOverheadCost": 0,
+    "shippingCost": 0,
+    "costStatus": "Verificado Taller"
+  },
+  "sku": "JUG-3D-SWI-MAT-042",
+  "createdAt": "2026-10-25T19:18:35.313Z",
+  "updatedAt": "2026-10-25T19:18:35.313Z",
+  "whiteBgImage": "/uploads/t42_clicker_mecanico_estudio.webp",
+  "galleryMeta": [
+    {
+      "label": "1. Vista de contexto en setup gamer / escritorio",
+      "shortLabel": "Contexto",
+      "type": "context",
+      "materialInfo": "Carcasa PLA verde olivo mate con switch mecánico táctil y keycap crema"
+    },
+    {
+      "label": "2. Foto de estudio fondo blanco estilo Mercado Libre",
+      "shortLabel": "Fondo Blanco",
+      "type": "white_angle",
+      "materialInfo": "Vista isométrica 45° con switch Outemu y argolla metálica reforzada"
+    }
+  ],
+  "manufacturingRecipe": {
+    "yieldUnits": 1,
+    "technique": "3d",
+    "notes": "Carcasa y keycap impresos en Bambu Lab A1 Mini en filamento PLA verde olivo mate y crema con switch mecánico táctil Outemu Blue de Mercado Libre y argolla metálica.",
+    "lastUpdated": "2026-10-27T21:11:17.876Z",
+    "machinePowerWatts": 120,
+    "manufacturingTimeMinutes": 45,
+    "kwhCost": 3.5,
+    "energyCost": 0.78,
+    "wearCost": 2.25,
+    "laborTimeMinutes": 5,
+    "laborRatePerHour": 60,
+    "laborCost": 5,
+    "items": [
+      {
+        "id": "item-t42-pla",
+        "materialId": "mat-pla-verde-olivo",
+        "name": "Filamento PLA Verde Olivo Mate y Crema Taller (PrintLab / 3D Market)",
+        "category": "3d",
+        "supplyType": "direct",
+        "netQuantity": 18,
+        "wasteQuantity": 2.7,
+        "wasteType": "supports_and_purge",
+        "totalQuantity": 20.7,
+        "unit": "g",
+        "unitCost": 0.5,
+        "totalCost": 10.35
+      },
+      {
+        "id": "item-t42-switch",
+        "materialId": "mat-switches-clicker-mecanico",
+        "name": "Switch Mecánico de Teclado 3 Pines Outemu Blue (Mercado Libre México MLM2097835304 con flete e importación)",
+        "category": "assembly",
+        "supplyType": "direct",
+        "netQuantity": 1,
+        "wasteQuantity": 0,
+        "wasteType": "none",
+        "totalQuantity": 1,
+        "unit": "pieza",
+        "unitCost": 7.2,
+        "totalCost": 7.2
+      },
+      {
+        "id": "item-t42-argolla",
+        "materialId": "mat-argollas-llavero",
+        "name": "Argolla Metálica Reforzada para Llavero con Cadena (El Rey del Tornillo)",
+        "category": "assembly",
+        "supplyType": "direct",
+        "netQuantity": 1,
+        "wasteQuantity": 0,
+        "wasteType": "none",
+        "totalQuantity": 1,
+        "unit": "pieza",
+        "unitCost": 2.5,
+        "totalCost": 2.5
+      },
+      {
+        "id": "item-t42-empaque",
+        "materialId": "mat-empaque-bolsa-kraft",
+        "name": "Bolsa Kraft con Ventana y Etiqueta Térmica con Código de Barras (CartoEmpaques)",
+        "category": "consumables",
+        "supplyType": "indirect",
+        "netQuantity": 1,
+        "wasteQuantity": 0,
+        "wasteType": "none",
+        "totalQuantity": 1,
+        "unit": "pieza",
+        "unitCost": 3.5,
+        "totalCost": 3.5
+      }
+    ],
+    "totalMaterialCost": 23.55,
+    "totalWasteCost": 1.35,
+    "packagingAndShipping": {
+      "enabled": true,
+      "packagingType": "bolsa_kraft",
+      "packagingCost": 3.5,
+      "packagingDetails": "Bolsita kraft con ventana transparente + etiqueta térmica de producto con SKU JUG-3D-SWI-MAT-042",
+      "marketplaceFeeEstimated": 39.24,
+      "notes": "En Mercado Libre se descuenta 16% de comisión (.24) + .00 de cargo fijo por unidad."
+    }
   }
+}
 ];
 
 // Initial Confirmed Products from approved catalog
