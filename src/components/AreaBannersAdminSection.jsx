@@ -1092,7 +1092,6 @@ export default function AreaBannersAdminSection({
               { id: 'personalizados', label: 'Personalizados', icon: Sparkles, desc: 'Dibujos 3D y creaciones' },
               { id: 'eventos', label: 'Eventos Especiales', icon: CalendarHeart, desc: 'Bodas, fiestas y recuerdos' },
               { id: 'paquetes-servicios', label: 'Paquetes & Kits', icon: Gift, desc: 'Combos promocionales' },
-              { id: 'servicios', label: 'Servicios', icon: Layers, desc: 'Diseño & manufactura técnica' },
               { id: 'industria', label: 'Industria Técnica', icon: Wrench, desc: 'Piezas mecánicas y utillaje' },
               { id: 'publicidad-desarrollo', label: 'Diseño & Publicidad', icon: Palette, desc: 'Branding y diseño web' }
             ].map(area => {
@@ -1126,7 +1125,7 @@ export default function AreaBannersAdminSection({
           </div>
 
           {/* CALLOUT: Acceso rápido a las tarjetas selectoras si está en diseño o industria */}
-          {(activeAreaId === 'publicidad-desarrollo' || activeAreaId === 'industria' || activeAreaId === 'servicios') && (
+          {(activeAreaId === 'publicidad-desarrollo' || activeAreaId === 'industria') && (
             <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-in fade-in">
               <div className="flex items-center gap-2.5 text-xs text-amber-950">
                 <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
