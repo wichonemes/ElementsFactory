@@ -13,3 +13,5 @@ product_repository/
 server/backups/
 /catalog-v2-*.webp
 /*.jpg
+
+.vercel
