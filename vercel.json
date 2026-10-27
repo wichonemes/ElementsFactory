@@ -1,4 +1,16 @@
 {
+  "version": 2,
   "buildCommand": "npm run build:vite",
-  "outputDirectory": "dist"
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/((?!api/|portafolio|mi-portafolio|identidad-corporativa|audiovisual|animacion|ilustracion|modelado-3d|impresos|editorial|interfaces|brand|uploads|assets).*)*",
+      "destination": "/index.html"
+    }
+  ]
 }
