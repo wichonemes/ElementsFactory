@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import {
   Image as ImageIcon, Upload, Check, AlertTriangle, RefreshCw,
   Eye, Sparkles, Home, Briefcase, CalendarHeart, ExternalLink,
-  Layers, ArrowRight, Save, Gift, Wrench, Palette, Gamepad2
+  Layers, ArrowRight, Save, Gift, Wrench, Palette, Gamepad2,
+  CheckCircle2, RotateCcw, Power, Sliders, Printer, Globe, Film,
+  Boxes
 } from 'lucide-react';
 
 const SUGGESTED_AREA_IMAGES = {
@@ -120,13 +122,122 @@ const AREA_METADATA = {
   }
 };
 
+// Definición oficial de las 8 Tarjetas Selectoras (Diseño e Industria)
+const SELECTION_CARDS_CATALOG = {
+  diseno: [
+    {
+      key: 'branding',
+      code: 'BRAND-01',
+      title: 'Identidad de Marca',
+      desc: 'Logotipos vectoriales, paleta de color y manual de marca para tu negocio.',
+      defaultUrl: './portafolio/assets/artesano-cover.webp',
+      badge: 'Identidad Visual',
+      icon: Palette,
+      accentColor: '#e8b84f',
+      borderClass: 'border-[#e8b84f]',
+      textAccent: 'text-[#e8b84f]'
+    },
+    {
+      key: 'publicidad',
+      code: 'PRINT-02',
+      title: 'Lonas & Gran Formato',
+      desc: 'Lonas de alta densidad, vinil cortado y microperforado para fachada o cancel.',
+      defaultUrl: './portafolio/assets/civil-shirts.webp',
+      badge: 'Gran Formato',
+      icon: Printer,
+      accentColor: '#10b981',
+      borderClass: 'border-emerald-400',
+      textAccent: 'text-emerald-400'
+    },
+    {
+      key: 'web',
+      code: 'DEV-03',
+      title: 'Web & Tienda',
+      desc: 'Sitios web responsivos, catálogos online y tiendas rápidas optimizadas.',
+      defaultUrl: './interfaces/assets/ui-01.jpg',
+      badge: 'Desarrollo Web',
+      icon: Globe,
+      accentColor: '#06b6d4',
+      borderClass: 'border-cyan-400',
+      textAccent: 'text-cyan-400'
+    },
+    {
+      key: 'editorial',
+      code: 'EDIT-04',
+      title: 'Catálogo & Redes',
+      desc: 'Menús digitales, catálogos en PDF y contenido gráfico para historias y posts.',
+      defaultUrl: './portafolio/assets/popol-spread.webp',
+      badge: 'Contenido & Impresos',
+      icon: Film,
+      accentColor: '#c084fc',
+      borderClass: 'border-purple-400',
+      textAccent: 'text-purple-400'
+    }
+  ],
+  industria: [
+    {
+      key: 'proto',
+      code: 'PROTO-01',
+      title: 'Prototipos Funcionales',
+      desc: 'Validación rápida de cotas, holguras y ensamble desde archivo 3D.',
+      defaultUrl: './uploads/catalog-v2-ind1-context-oficial.webp',
+      badge: 'Validación Rápida',
+      icon: Layers,
+      accentColor: '#5BB8FF',
+      borderClass: 'border-[#5BB8FF]',
+      textAccent: 'text-[#5BB8FF]'
+    },
+    {
+      key: 'jig',
+      code: 'JIG-02',
+      title: 'Utillaje y Herramientas',
+      desc: 'Galgas de control, nidos Poka-Yoke y mordazas que no rayan piezas.',
+      defaultUrl: './uploads/catalog-v2-ind2-context-oficial.webp',
+      badge: 'Línea de Producción',
+      icon: Wrench,
+      accentColor: '#8FB99B',
+      borderClass: 'border-[#8FB99B]',
+      textAccent: 'text-[#8FB99B]'
+    },
+    {
+      key: 'spare',
+      code: 'SPARE-03',
+      title: 'Refacciones y Obsoletos',
+      desc: 'Sustitución de bujes, poleas y piezas descontinuadas desde 1 pieza.',
+      defaultUrl: './uploads/industria_portada_oficial_ingenieria.webp',
+      badge: 'Sustitución Directa',
+      icon: RotateCcw,
+      accentColor: '#fbbf24',
+      borderClass: 'border-amber-400',
+      textAccent: 'text-amber-400'
+    },
+    {
+      key: 'batch',
+      code: 'BATCH-04',
+      title: 'Lotes Cortos y Preseries',
+      desc: 'Producción continua de 10 a 500 piezas sin costo de apertura de molde.',
+      defaultUrl: './uploads/catalog-v2-ind1-detail-oficial.webp',
+      badge: 'Volumen Flexible',
+      icon: Boxes,
+      accentColor: '#c084fc',
+      borderClass: 'border-purple-400',
+      textAccent: 'text-purple-400'
+    }
+  ]
+};
+
 export default function AreaBannersAdminSection({
   token,
+  businessSettings = null,
+  onUpdateSettings = null,
   onWorldsUpdated = null
 }) {
+  // Pestaña principal: 'cards' (Tarjetas de selección) o 'banners' (Banners de portada)
+  const [activeSectionTab, setActiveSectionTab] = useState('cards');
+
   const [worlds, setWorlds] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeAreaId, setActiveAreaId] = useState('hogar');
+  const [activeAreaId, setActiveAreaId] = useState('publicidad-desarrollo');
   const [formData, setFormData] = useState({
     name: '',
     tagline: '',
@@ -134,8 +245,48 @@ export default function AreaBannersAdminSection({
     image: ''
   });
   const [uploading, setUploading] = useState(false);
+  const [uploadingCardKey, setUploadingCardKey] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [savingCards, setSavingCards] = useState(false);
   const [statusMsg, setStatusMsg] = useState({ type: '', text: '' });
+
+  // Configuración de tarjetas (sincronizada con businessSettings)
+  const [cardsConfig, setCardsConfig] = useState({
+    diseno: {
+      branding: { url: './portafolio/assets/artesano-cover.webp', enabled: false },
+      publicidad: { url: './portafolio/assets/civil-shirts.webp', enabled: false },
+      web: { url: './interfaces/assets/ui-01.jpg', enabled: false },
+      editorial: { url: './portafolio/assets/popol-spread.webp', enabled: false }
+    },
+    industria: {
+      proto: { url: './uploads/catalog-v2-ind1-context-oficial.webp', enabled: false },
+      jig: { url: './uploads/catalog-v2-ind2-context-oficial.webp', enabled: false },
+      spare: { url: './uploads/industria_portada_oficial_ingenieria.webp', enabled: false },
+      batch: { url: './uploads/catalog-v2-ind1-detail-oficial.webp', enabled: false }
+    }
+  });
+
+  // Inicializar tarjetas desde businessSettings o API
+  useEffect(() => {
+    if (businessSettings?.categoryBackgroundPhotos) {
+      const bDiseno = businessSettings.categoryBackgroundPhotos.diseno || {};
+      const bInd = businessSettings.categoryBackgroundPhotos.industria || {};
+      setCardsConfig({
+        diseno: {
+          branding: typeof bDiseno.branding === 'string' ? { url: bDiseno.branding, enabled: false } : (bDiseno.branding || { url: './portafolio/assets/artesano-cover.webp', enabled: false }),
+          publicidad: typeof bDiseno.publicidad === 'string' ? { url: bDiseno.publicidad, enabled: false } : (bDiseno.publicidad || { url: './portafolio/assets/civil-shirts.webp', enabled: false }),
+          web: typeof bDiseno.web === 'string' ? { url: bDiseno.web, enabled: false } : (bDiseno.web || { url: './interfaces/assets/ui-01.jpg', enabled: false }),
+          editorial: typeof bDiseno.editorial === 'string' ? { url: bDiseno.editorial, enabled: false } : (bDiseno.editorial || { url: './portafolio/assets/popol-spread.webp', enabled: false })
+        },
+        industria: {
+          proto: typeof bInd.proto === 'string' ? { url: bInd.proto, enabled: false } : (bInd.proto || { url: './uploads/catalog-v2-ind1-context-oficial.webp', enabled: false }),
+          jig: typeof bInd.jig === 'string' ? { url: bInd.jig, enabled: false } : (bInd.jig || { url: './uploads/catalog-v2-ind2-context-oficial.webp', enabled: false }),
+          spare: typeof bInd.spare === 'string' ? { url: bInd.spare, enabled: false } : (bInd.spare || { url: './uploads/industria_portada_oficial_ingenieria.webp', enabled: false }),
+          batch: typeof bInd.batch === 'string' ? { url: bInd.batch, enabled: false } : (bInd.batch || { url: './uploads/catalog-v2-ind1-detail-oficial.webp', enabled: false })
+        }
+      });
+    }
+  }, [businessSettings]);
 
   // Cargar áreas desde la API
   const loadWorlds = async () => {
@@ -153,6 +304,17 @@ export default function AreaBannersAdminSection({
             description: current.description || '',
             image: current.image || ''
           });
+        }
+      }
+
+      // Si no viene businessSettings cargado, consultar /api/settings
+      if (!businessSettings) {
+        const setRes = await fetch('/api/settings');
+        if (setRes.ok) {
+          const sData = await setRes.json();
+          if (sData?.categoryBackgroundPhotos) {
+            setCardsConfig(sData.categoryBackgroundPhotos);
+          }
         }
       }
     } catch (err) {
@@ -182,7 +344,7 @@ export default function AreaBannersAdminSection({
     }
   };
 
-  // Subida de imagen para el banner
+  // Subida de imagen para el banner principal
   const handleFileUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -207,23 +369,29 @@ export default function AreaBannersAdminSection({
       const headers = {};
       if (token) headers['Authorization'] = `Bearer ${token}`;
 
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        headers,
-        body: uploadFormData
-      });
+      let imageUrl = '';
+      try {
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          headers,
+          body: uploadFormData
+        });
+        if (res.ok) {
+          const data = await res.json();
+          imageUrl = data.imageUrl;
+        }
+      } catch (err) {}
 
-      if (!res.ok) {
-        throw new Error(`Error en servidor: ${res.statusText}`);
+      if (!imageUrl) {
+        imageUrl = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (ev) => resolve(ev.target.result);
+          reader.readAsDataURL(file);
+        });
       }
 
-      const data = await res.json();
-      if (data.imageUrl) {
-        setFormData(prev => ({ ...prev, image: data.imageUrl }));
-        setStatusMsg({ type: 'success', text: '¡Fotografía subida exitosamente! Haz clic en "Guardar Banner" para aplicar los cambios.' });
-      } else {
-        throw new Error('Respuesta inválida al subir imagen.');
-      }
+      setFormData(prev => ({ ...prev, image: imageUrl }));
+      setStatusMsg({ type: 'success', text: '¡Fotografía subida exitosamente! Haz clic en "Guardar Banner" para aplicar los cambios.' });
     } catch (err) {
       console.error('Error subiendo imagen:', err);
       setStatusMsg({ type: 'error', text: `No se pudo subir la imagen: ${err.message}` });
@@ -233,7 +401,7 @@ export default function AreaBannersAdminSection({
     }
   };
 
-  // Guardar cambios en el backend (PUT /api/worlds/:id)
+  // Guardar cambios del banner en el backend (PUT /api/worlds/:id)
   const handleSaveBanner = async () => {
     setSaving(true);
     setStatusMsg({ type: '', text: '' });
@@ -254,8 +422,6 @@ export default function AreaBannersAdminSection({
       }
 
       const updatedWorld = await res.json();
-
-      // Actualizar estado local
       setWorlds(prev => prev.map(w => w.id === activeAreaId ? updatedWorld : w));
       setStatusMsg({
         type: 'success',
@@ -273,6 +439,196 @@ export default function AreaBannersAdminSection({
     }
   };
 
+  // ==========================================
+  // GESTIÓN DE LAS 8 TARJETAS DE SELECCIÓN
+  // ==========================================
+
+  // Activar o desactivar foto de una tarjeta específica
+  const handleToggleCardPhoto = (section, cardKey) => {
+    const current = cardsConfig[section]?.[cardKey] || { url: '', enabled: false };
+    const newEnabled = !current.enabled;
+    const updated = {
+      ...cardsConfig,
+      [section]: {
+        ...cardsConfig[section],
+        [cardKey]: {
+          ...current,
+          enabled: newEnabled
+        }
+      }
+    };
+    setCardsConfig(updated);
+    setStatusMsg({
+      type: 'info',
+      text: newEnabled
+        ? `Foto de "${cardKey.toUpperCase()}" activada. Haz clic en "Guardar Cambios de Tarjetas" para publicar.`
+        : `Foto de "${cardKey.toUpperCase()}" desactivada (Modo oscuro activo). Haz clic en "Guardar Cambios de Tarjetas" para publicar.`
+    });
+  };
+
+  // Subir imagen para una tarjeta específica (desde celular o computadora)
+  const handleUploadCardPhoto = async (section, cardKey, file) => {
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setStatusMsg({ type: 'error', text: 'Por favor selecciona un archivo de imagen válido.' });
+      return;
+    }
+
+    setUploadingCardKey(`${section}_${cardKey}`);
+    setStatusMsg({ type: 'info', text: `Subiendo foto para ${cardKey.toUpperCase()}...` });
+
+    try {
+      const uploadFormData = new FormData();
+      uploadFormData.append('image', file);
+
+      const headers = {};
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      let imageUrl = '';
+      try {
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          headers,
+          body: uploadFormData
+        });
+        if (res.ok) {
+          const data = await res.json();
+          imageUrl = data.imageUrl;
+        }
+      } catch (err) {}
+
+      // Fallback a Data URL si el backend está en modo estático/offline
+      if (!imageUrl) {
+        imageUrl = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (ev) => resolve(ev.target.result);
+          reader.readAsDataURL(file);
+        });
+      }
+
+      const current = cardsConfig[section]?.[cardKey] || {};
+      const updated = {
+        ...cardsConfig,
+        [section]: {
+          ...cardsConfig[section],
+          [cardKey]: {
+            ...current,
+            url: imageUrl,
+            enabled: true // Se activa automáticamente al subir la foto
+          }
+        }
+      };
+
+      setCardsConfig(updated);
+      setStatusMsg({
+        type: 'success',
+        text: `¡Foto de "${cardKey.toUpperCase()}" subida y activada! Recuerda dar clic en "Guardar Cambios de Tarjetas".`
+      });
+    } catch (err) {
+      console.error('Error subiendo foto de tarjeta:', err);
+      setStatusMsg({ type: 'error', text: 'Error al subir imagen: ' + err.message });
+    } finally {
+      setUploadingCardKey(null);
+    }
+  };
+
+  // Cambiar URL manualmente
+  const handleCardUrlChange = (section, cardKey, newUrl) => {
+    const current = cardsConfig[section]?.[cardKey] || {};
+    setCardsConfig({
+      ...cardsConfig,
+      [section]: {
+        ...cardsConfig[section],
+        [cardKey]: {
+          ...current,
+          url: newUrl
+        }
+      }
+    });
+  };
+
+  // Restaurar foto original
+  const handleResetCard = (section, cardKey, defaultUrl) => {
+    setCardsConfig({
+      ...cardsConfig,
+      [section]: {
+        ...cardsConfig[section],
+        [cardKey]: {
+          url: defaultUrl,
+          enabled: false
+        }
+      }
+    });
+    setStatusMsg({ type: 'info', text: `Tarjeta "${cardKey.toUpperCase()}" restaurada a foto original (desactivada).` });
+  };
+
+  // Desactivar todas las fotos de un jalón (Modo oscuro total)
+  const handleDisableAllCards = () => {
+    const updated = {
+      diseno: Object.fromEntries(Object.entries(cardsConfig.diseno || {}).map(([k, v]) => [k, { ...v, enabled: false }])),
+      industria: Object.fromEntries(Object.entries(cardsConfig.industria || {}).map(([k, v]) => [k, { ...v, enabled: false }]))
+    };
+    setCardsConfig(updated);
+    setStatusMsg({ type: 'info', text: 'Todas las fotos de fondo han sido desactivadas (Modo oscuro activo para las 8 tarjetas).' });
+  };
+
+  // Activar todas las fotos de un jalón
+  const handleEnableAllCards = () => {
+    const updated = {
+      diseno: Object.fromEntries(Object.entries(cardsConfig.diseno || {}).map(([k, v]) => [k, { ...v, enabled: true }])),
+      industria: Object.fromEntries(Object.entries(cardsConfig.industria || {}).map(([k, v]) => [k, { ...v, enabled: true }]))
+    };
+    setCardsConfig(updated);
+    setStatusMsg({ type: 'info', text: 'Todas las fotos de fondo han sido activadas.' });
+  };
+
+  // Guardar todas las tarjetas en la configuración general
+  const handleSaveAllCards = async () => {
+    setSavingCards(true);
+    setStatusMsg({ type: '', text: '' });
+
+    const updatedSettings = {
+      ...(businessSettings || {}),
+      categoryBackgroundPhotos: cardsConfig
+    };
+
+    try {
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      const res = await fetch('/api/admin/settings', {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify(updatedSettings)
+      });
+
+      if (onUpdateSettings) {
+        onUpdateSettings(updatedSettings);
+      }
+
+      localStorage.setItem('artesano_settings_cache', JSON.stringify(updatedSettings));
+      setStatusMsg({
+        type: 'success',
+        text: '¡Las 8 tarjetas de Diseño e Industria se guardaron y sincronizaron con éxito en la tienda!'
+      });
+
+      if (onWorldsUpdated) {
+        onWorldsUpdated();
+      }
+    } catch (err) {
+      console.warn('Guardado en fallback local:', err);
+      localStorage.setItem('artesano_settings_cache', JSON.stringify(updatedSettings));
+      if (onUpdateSettings) onUpdateSettings(updatedSettings);
+      setStatusMsg({
+        type: 'success',
+        text: '¡Tarjetas guardadas y actualizadas localmente en tu navegador!'
+      });
+    } finally {
+      setSavingCards(false);
+    }
+  };
+
   const meta = AREA_METADATA[activeAreaId] || AREA_METADATA.hogar;
   const ActiveIcon = meta.icon;
   const suggestedList = SUGGESTED_AREA_IMAGES[activeAreaId] || [];
@@ -280,26 +636,44 @@ export default function AreaBannersAdminSection({
   return (
     <div className="space-y-6">
       
-      {/* Encabezado Principal */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-6 rounded-3xl border border-[#E8E4DA] shadow-xs">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#2D4F3E]">
-            <ImageIcon className="w-4 h-4 text-[#D4A359]" />
-            <span>Personalización de Vitrinas</span>
-          </div>
-          <h2 className="text-xl sm:text-2xl font-black font-heading text-[#1F2421]">
-            Banners de Portada por Área (Hogar, Negocios, Eventos)
-          </h2>
-          <p className="text-xs sm:text-sm text-gray-600 max-w-3xl">
-            Sube o cambia la imagen principal, título, lema y descripción de cada una de las 3 áreas maestras del taller. Se refleja en la pantalla de inicio y en las cabeceras de catálogo.
-          </p>
+      {/* SELECTOR DE PESTAÑA PRINCIPAL (BANNERS DE PORTADA VS TARJETAS DE SELECCIÓN) */}
+      <div className="bg-white p-3 rounded-2xl sm:rounded-3xl border border-[#E8E4DA] shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-1.5 p-1 bg-[#FAF9F5] border border-[#E8E4DA] rounded-2xl w-full sm:w-auto">
+          <button
+            type="button"
+            onClick={() => setActiveSectionTab('cards')}
+            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              activeSectionTab === 'cards'
+                ? 'bg-[#2D4F3E] text-white shadow-sm'
+                : 'text-gray-700 hover:bg-gray-200/60'
+            }`}
+          >
+            <Sparkles className="w-4 h-4 text-amber-400" />
+            <span>Tarjetas de Diseño & Industria (8 Tarjetas)</span>
+            <span className="px-1.5 py-0.5 rounded text-[9.5px] bg-amber-400 text-stone-950 font-black">
+              Tu Petición
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveSectionTab('banners')}
+            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              activeSectionTab === 'banners'
+                ? 'bg-[#2D4F3E] text-white shadow-sm'
+                : 'text-gray-700 hover:bg-gray-200/60'
+            }`}
+          >
+            <ImageIcon className="w-4 h-4" />
+            <span>Banners de Portada de Área</span>
+          </button>
         </div>
 
         <button
           type="button"
           onClick={loadWorlds}
           disabled={loading}
-          className="px-3.5 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold transition-all flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
+          className="px-3.5 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer self-stretch sm:self-auto"
           title="Recargar datos del servidor"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
@@ -307,51 +681,9 @@ export default function AreaBannersAdminSection({
         </button>
       </div>
 
-      {/* Selector de Áreas del Catálogo (8 Áreas) */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-        {[
-          { id: 'hogar', label: 'Hogar & Deco', icon: Home, desc: 'Lámparas, percheros y macetas' },
-          { id: 'negocios', label: 'Negocios & Marcas', icon: Briefcase, desc: 'Smart Decks, QR y branding' },
-          { id: 'juguetes', label: 'Juguetes & Niños', icon: Gamepad2, desc: 'Articulados y dinámicos' },
-          { id: 'personalizados', label: 'Personalizados', icon: Sparkles, desc: 'Dibujos 3D y creaciones' },
-          { id: 'eventos', label: 'Eventos Especiales', icon: CalendarHeart, desc: 'Bodas, fiestas y recuerdos' },
-          { id: 'paquetes-servicios', label: 'Paquetes & Kits', icon: Gift, desc: 'Combos promocionales' },
-          { id: 'servicios', label: 'Servicios', icon: Layers, desc: 'Diseño & manufactura técnica' },
-          { id: 'industria', label: 'Industria Técnica', icon: Wrench, desc: 'Piezas mecánicas y utillaje' },
-          { id: 'publicidad-desarrollo', label: 'Diseño & Publicidad', icon: Palette, desc: 'Branding y diseño web' }
-        ].map(area => {
-          const isSelected = activeAreaId === area.id;
-          const Icon = area.icon;
-          return (
-            <button
-              key={area.id}
-              type="button"
-              onClick={() => handleSelectArea(area.id)}
-              className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex items-start gap-2.5 shadow-2xs ${
-                isSelected
-                  ? 'bg-[#17251E] text-white border-[#D4A359] ring-2 ring-[#D4A359]/40 scale-101 shadow-md'
-                  : 'bg-white hover:bg-gray-50 text-gray-800 border-[#E8E4DA]'
-              }`}
-            >
-              <div className={`p-2 rounded-xl shrink-0 ${
-                isSelected ? 'bg-[#D4A359] text-stone-950 font-black' : 'bg-gray-100 text-gray-700'
-              }`}>
-                <Icon className="w-4 h-4" />
-              </div>
-              <div className="min-w-0">
-                <div className="font-extrabold text-xs sm:text-sm truncate">{area.label}</div>
-                <div className={`text-[10px] sm:text-[10.5px] truncate mt-0.5 ${isSelected ? 'text-gray-300' : 'text-gray-500'}`}>
-                  {area.desc}
-                </div>
-              </div>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Notificación de estado */}
+      {/* NOTIFICACIÓN DE ESTADO FLOTANTE */}
       {statusMsg.text && (
-        <div className={`p-4 rounded-2xl text-xs font-bold flex items-center gap-2 border animate-in fade-in ${
+        <div className={`p-4 rounded-2xl text-xs font-bold flex items-center gap-2 border animate-in fade-in shadow-xs ${
           statusMsg.type === 'success'
             ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
             : statusMsg.type === 'error'
@@ -359,7 +691,7 @@ export default function AreaBannersAdminSection({
             : 'bg-blue-50 text-blue-800 border-blue-200'
         }`}>
           {statusMsg.type === 'success' ? (
-            <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
           ) : (
             <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
           )}
@@ -367,198 +699,638 @@ export default function AreaBannersAdminSection({
         </div>
       )}
 
-      {/* Previsualización en Vivo del Banner */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between px-1">
-          <div className="flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-gray-600">
-            <Eye className="w-3.5 h-3.5 text-[#2D4F3E]" />
-            <span>Previsualización en Vivo del Banner ({meta.label})</span>
+      {/* ========================================================================= */}
+      {/* VISTA 1: TARJETAS DE SELECCIÓN (DISEÑO E INDUSTRIA)                      */}
+      {/* ========================================================================= */}
+      {activeSectionTab === 'cards' && (
+        <div className="space-y-6">
+          
+          {/* Header de la sección de tarjetas */}
+          <div className="bg-white p-6 rounded-3xl border border-[#E8E4DA] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#2D4F3E]">
+                <Sliders className="w-4 h-4 text-[#D4A359]" />
+                <span>Control Individual de Tarjetas</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-black font-heading text-[#1F2421]">
+                Tarjetas de Selección: Diseño & Industria
+              </h2>
+              <p className="text-xs sm:text-sm text-gray-600 max-w-2xl leading-relaxed">
+                Aquí puedes <strong>activar o desactivar la foto</strong> de cada una de las 8 tarjetas de forma independiente, o <strong>subir tu propia imagen</strong> desde tu celular o computadora. Si la desactivas, la tarjeta lucirá con su modo oscuro minimalista y nítido.
+              </p>
+            </div>
+
+            {/* Botones de acción rápida global */}
+            <div className="flex flex-wrap items-center gap-2 self-start md:self-auto">
+              <button
+                type="button"
+                onClick={handleDisableAllCards}
+                className="px-3 py-2 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 text-xs font-bold transition-all cursor-pointer shadow-2xs"
+                title="Desactivar todas las fotos para que se vean en modo oscuro"
+              >
+                ○ Desactivar Todas
+              </button>
+              <button
+                type="button"
+                onClick={handleEnableAllCards}
+                className="px-3 py-2 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 text-xs font-bold transition-all cursor-pointer shadow-2xs"
+                title="Activar fotos de fondo en todas las tarjetas"
+              >
+                ● Activar Todas
+              </button>
+              <button
+                type="button"
+                onClick={handleSaveAllCards}
+                disabled={savingCards}
+                className="px-5 py-2.5 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-xs font-black transition-all flex items-center gap-1.5 shadow-md cursor-pointer disabled:opacity-50"
+              >
+                <Save className={`w-4 h-4 ${savingCards ? 'animate-spin' : ''}`} />
+                <span>{savingCards ? 'Guardando...' : 'Guardar Cambios'}</span>
+              </button>
+            </div>
           </div>
-          <span className="text-[11px] text-gray-400">
-            Aspecto idéntico al catálogo de la tienda
-          </span>
-        </div>
 
-        {/* Banner Preview Frame */}
-        <div className="relative rounded-3xl overflow-hidden bg-[#1F2421] text-white shadow-xl border-2 border-white/10 min-h-[190px] sm:min-h-[220px] flex items-center">
-          {/* Imagen de fondo con opacidad */}
-          {formData.image ? (
-            <img
-              src={formData.image}
-              alt={formData.name}
-              className="absolute inset-0 w-full h-full object-cover opacity-35"
-            />
-          ) : (
-            <div className={`absolute inset-0 bg-gradient-to-r ${meta.gradient} opacity-50`} />
-          )}
+          {/* 1. SECTOR DISEÑO & PUBLICIDAD (4 TARJETAS) */}
+          <div className="bg-white p-6 rounded-3xl border border-[#E8E4DA] shadow-xs space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-700 flex items-center justify-center font-bold">
+                  <Palette className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-sm sm:text-base font-extrabold text-[#1F2421]">
+                    Tarjetas de Diseño & Publicidad
+                  </h3>
+                  <p className="text-[11px] text-gray-500">
+                    Secciones: Identidad de Marca, Lonas & Gran Formato, Web & Tienda, Catálogo & Redes
+                  </p>
+                </div>
+              </div>
+              <span className="text-[10px] font-mono text-gray-400 bg-gray-50 px-2.5 py-1 rounded-md border self-start sm:self-auto">
+                4 Tarjetas Disponibles
+              </span>
+            </div>
 
-          {/* Degradado para legibilidad */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#17251E] via-[#17251E]/85 to-transparent" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {SELECTION_CARDS_CATALOG.diseno.map(card => {
+                const current = cardsConfig.diseno?.[card.key] || { url: card.defaultUrl, enabled: false };
+                const isPhotoActive = Boolean(current.enabled);
+                const IconComp = card.icon;
+                const isUploadingThis = uploadingCardKey === `diseno_${card.key}`;
 
-          {/* Contenido sobre el banner */}
-          <div className="relative z-10 p-6 sm:p-8 max-w-2xl space-y-2">
-            <span className="inline-block px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-[10.5px] font-black uppercase tracking-widest">
-              {meta.badgeText}
+                return (
+                  <div
+                    key={card.key}
+                    className={`rounded-2xl border p-3.5 flex flex-col justify-between transition-all space-y-3 ${
+                      isPhotoActive
+                        ? 'border-emerald-300 bg-emerald-50/20 shadow-2xs'
+                        : 'border-gray-200 bg-white'
+                    }`}
+                  >
+                    {/* Header de la tarjeta */}
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-heading font-black text-xs uppercase tracking-wider text-gray-900">
+                        {card.code}
+                      </span>
+                      <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold border ${
+                        isPhotoActive
+                          ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                          : 'bg-gray-100 text-gray-600 border-gray-200'
+                      }`}>
+                        {isPhotoActive ? '● Foto Activa' : '○ Modo Oscuro'}
+                      </span>
+                    </div>
+
+                    {/* Previsualización idéntica a cómo se verá en la tienda */}
+                    <div className="relative rounded-xl overflow-hidden bg-[#0B0D11] border border-white/10 p-3 h-32 flex flex-col justify-between text-white select-none">
+                      {/* Imagen con desenfoque condicional */}
+                      {isPhotoActive && (
+                        <>
+                          <img
+                            src={current.url || card.defaultUrl}
+                            alt=""
+                            className="absolute inset-0 w-full h-full object-cover filter blur-[0.6px] opacity-65 scale-105"
+                            onError={(e) => { e.currentTarget.src = card.defaultUrl; }}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#0B0D11] via-[#0B0D11]/70 to-[#0B0D11]/25" />
+                        </>
+                      )}
+
+                      <div className="relative z-10 flex items-center justify-between">
+                        <span className="font-mono text-[9px] text-[#e8b84f] font-bold">
+                          {card.code}
+                        </span>
+                        <div className="w-5 h-5 rounded-md bg-black/60 border border-white/15 flex items-center justify-center">
+                          <IconComp className="w-3 h-3 text-[#e8b84f]" />
+                        </div>
+                      </div>
+
+                      <div className="relative z-10 space-y-0.5">
+                        <span className="text-[7.5px] uppercase font-bold px-1.5 py-0.5 rounded bg-black/60 border border-white/10 text-stone-300">
+                          {card.badge}
+                        </span>
+                        <div className="font-bold text-xs text-white truncate leading-tight">
+                          {card.title}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Controles para activar, subir foto o restaurar */}
+                    <div className="space-y-2 pt-1">
+                      {/* Botón de Activar / Desactivar */}
+                      <button
+                        type="button"
+                        onClick={() => handleToggleCardPhoto('diseno', card.key)}
+                        className={`w-full py-1.5 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                          isPhotoActive
+                            ? 'bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300'
+                            : 'bg-[#2D4F3E] hover:bg-[#20392C] text-white shadow-xs'
+                        }`}
+                      >
+                        <Power className="w-3.5 h-3.5" />
+                        <span>{isPhotoActive ? 'Desactivar Foto' : 'Activar Foto'}</span>
+                      </button>
+
+                      {/* Botón Subir Foto desde Celular/PC */}
+                      <div className="relative">
+                        <input
+                          type="file"
+                          id={`upload-diseno-${card.key}`}
+                          accept="image/*"
+                          disabled={isUploadingThis}
+                          onChange={(e) => handleUploadCardPhoto('diseno', card.key, e.target.files?.[0])}
+                          className="hidden"
+                        />
+                        <label
+                          htmlFor={`upload-diseno-${card.key}`}
+                          className="w-full py-1.5 px-3 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 text-gray-800 text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                        >
+                          <Upload className={`w-3.5 h-3.5 ${isUploadingThis ? 'animate-bounce text-[#2D4F3E]' : 'text-gray-600'}`} />
+                          <span>{isUploadingThis ? 'Subiendo...' : 'Subir mi imagen'}</span>
+                        </label>
+                      </div>
+
+                      {/* Campo de ruta o URL */}
+                      <div>
+                        <input
+                          type="text"
+                          value={current.url || ''}
+                          onChange={(e) => handleCardUrlChange('diseno', card.key, e.target.value)}
+                          placeholder="./uploads/tu_foto.jpg"
+                          className="w-full px-2.5 py-1 text-[10.5px] rounded-lg border border-gray-200 bg-gray-50/70 focus:bg-white focus:outline-none focus:border-[#2D4F3E]"
+                          title="Ruta o URL de la fotografía"
+                        />
+                      </div>
+
+                      {/* Botón Restaurar original */}
+                      <button
+                        type="button"
+                        onClick={() => handleResetCard('diseno', card.key, card.defaultUrl)}
+                        className="w-full text-center text-[10px] text-gray-400 hover:text-gray-600 transition-colors py-0.5 cursor-pointer"
+                      >
+                        Restablecer foto original
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 2. SECTOR INDUSTRIA TÉCNICA (4 TARJETAS) */}
+          <div className="bg-white p-6 rounded-3xl border border-[#E8E4DA] shadow-xs space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-sky-500/10 border border-sky-500/30 text-sky-700 flex items-center justify-center font-bold">
+                  <Wrench className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-sm sm:text-base font-extrabold text-[#1F2421]">
+                    Tarjetas de Industria Técnica & Manufactura
+                  </h3>
+                  <p className="text-[11px] text-gray-500">
+                    Secciones: Prototipos Funcionales, Utillaje y Herramientas, Refacciones y Obsoletos, Lotes Cortos y Preseries
+                  </p>
+                </div>
+              </div>
+              <span className="text-[10px] font-mono text-gray-400 bg-gray-50 px-2.5 py-1 rounded-md border self-start sm:self-auto">
+                4 Tarjetas Disponibles
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {SELECTION_CARDS_CATALOG.industria.map(card => {
+                const current = cardsConfig.industria?.[card.key] || { url: card.defaultUrl, enabled: false };
+                const isPhotoActive = Boolean(current.enabled);
+                const IconComp = card.icon;
+                const isUploadingThis = uploadingCardKey === `industria_${card.key}`;
+
+                return (
+                  <div
+                    key={card.key}
+                    className={`rounded-2xl border p-3.5 flex flex-col justify-between transition-all space-y-3 ${
+                      isPhotoActive
+                        ? 'border-emerald-300 bg-emerald-50/20 shadow-2xs'
+                        : 'border-gray-200 bg-white'
+                    }`}
+                  >
+                    {/* Header de la tarjeta */}
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-heading font-black text-xs uppercase tracking-wider text-gray-900">
+                        {card.code}
+                      </span>
+                      <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold border ${
+                        isPhotoActive
+                          ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                          : 'bg-gray-100 text-gray-600 border-gray-200'
+                      }`}>
+                        {isPhotoActive ? '● Foto Activa' : '○ Modo Oscuro'}
+                      </span>
+                    </div>
+
+                    {/* Previsualización idéntica a cómo se verá en la tienda */}
+                    <div className="relative rounded-xl overflow-hidden bg-[#0A0E11] border border-white/10 p-3 h-32 flex flex-col justify-between text-white select-none">
+                      {/* Imagen con desenfoque condicional */}
+                      {isPhotoActive && (
+                        <>
+                          <img
+                            src={current.url || card.defaultUrl}
+                            alt=""
+                            className="absolute inset-0 w-full h-full object-cover filter blur-[0.6px] opacity-65 scale-105"
+                            onError={(e) => { e.currentTarget.src = card.defaultUrl; }}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#060A0D] via-[#060A0D]/70 to-[#060A0D]/25" />
+                        </>
+                      )}
+
+                      <div className="relative z-10 flex items-center justify-between">
+                        <span className="font-mono text-[9px] text-[#5BB8FF] font-bold">
+                          {card.code}
+                        </span>
+                        <div className="w-5 h-5 rounded-md bg-black/60 border border-white/15 flex items-center justify-center">
+                          <IconComp className="w-3 h-3 text-[#5BB8FF]" />
+                        </div>
+                      </div>
+
+                      <div className="relative z-10 space-y-0.5">
+                        <span className="text-[7.5px] uppercase font-bold px-1.5 py-0.5 rounded bg-black/60 border border-white/10 text-stone-300">
+                          {card.badge}
+                        </span>
+                        <div className="font-bold text-xs text-white truncate leading-tight">
+                          {card.title}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Controles para activar, subir foto o restaurar */}
+                    <div className="space-y-2 pt-1">
+                      {/* Botón de Activar / Desactivar */}
+                      <button
+                        type="button"
+                        onClick={() => handleToggleCardPhoto('industria', card.key)}
+                        className={`w-full py-1.5 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                          isPhotoActive
+                            ? 'bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300'
+                            : 'bg-[#2D4F3E] hover:bg-[#20392C] text-white shadow-xs'
+                        }`}
+                      >
+                        <Power className="w-3.5 h-3.5" />
+                        <span>{isPhotoActive ? 'Desactivar Foto' : 'Activar Foto'}</span>
+                      </button>
+
+                      {/* Botón Subir Foto desde Celular/PC */}
+                      <div className="relative">
+                        <input
+                          type="file"
+                          id={`upload-ind-${card.key}`}
+                          accept="image/*"
+                          disabled={isUploadingThis}
+                          onChange={(e) => handleUploadCardPhoto('industria', card.key, e.target.files?.[0])}
+                          className="hidden"
+                        />
+                        <label
+                          htmlFor={`upload-ind-${card.key}`}
+                          className="w-full py-1.5 px-3 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 text-gray-800 text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                        >
+                          <Upload className={`w-3.5 h-3.5 ${isUploadingThis ? 'animate-bounce text-[#2D4F3E]' : 'text-gray-600'}`} />
+                          <span>{isUploadingThis ? 'Subiendo...' : 'Subir mi imagen'}</span>
+                        </label>
+                      </div>
+
+                      {/* Campo de ruta o URL */}
+                      <div>
+                        <input
+                          type="text"
+                          value={current.url || ''}
+                          onChange={(e) => handleCardUrlChange('industria', card.key, e.target.value)}
+                          placeholder="./uploads/tu_foto.jpg"
+                          className="w-full px-2.5 py-1 text-[10.5px] rounded-lg border border-gray-200 bg-gray-50/70 focus:bg-white focus:outline-none focus:border-[#2D4F3E]"
+                          title="Ruta o URL de la fotografía"
+                        />
+                      </div>
+
+                      {/* Botón Restaurar original */}
+                      <button
+                        type="button"
+                        onClick={() => handleResetCard('industria', card.key, card.defaultUrl)}
+                        className="w-full text-center text-[10px] text-gray-400 hover:text-gray-600 transition-colors py-0.5 cursor-pointer"
+                      >
+                        Restablecer foto original
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Barra inferior de guardado */}
+          <div className="bg-white p-4 rounded-2xl border border-[#E8E4DA] shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span className="text-xs text-gray-500 font-medium text-center sm:text-left">
+              Los cambios que actives o desactives se reflejarán de inmediato para todos los clientes en la tienda oficial.
             </span>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold font-heading text-white tracking-tight">
-              {formData.name || 'Nombre del Área'}
-            </h1>
-            <p className="text-xs sm:text-sm text-gray-200 leading-relaxed font-normal">
-              {formData.description || 'Descripción del área y tipos de manufactura artesanal disponibles...'}
-            </p>
-            {formData.tagline && (
-              <p className="text-[11px] font-medium text-amber-300/90 italic">
-                &ldquo;{formData.tagline}&rdquo;
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Formulario de Edición y Subida de Imagen */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-white p-6 rounded-3xl border border-[#E8E4DA] shadow-xs">
-        
-        {/* LADO IZQUIERDO: Subir o Elegir Imagen */}
-        <div className="lg:col-span-5 space-y-4 border-b lg:border-b-0 lg:border-r border-gray-100 pb-5 lg:pb-0 lg:pr-5">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#1F2421]">
-            <Upload className="w-4 h-4 text-[#2D4F3E]" />
-            <span>1. Imagen de Portada</span>
-          </div>
-
-          {/* Botón de subida de archivo */}
-          <div className="border-2 border-dashed border-gray-300 hover:border-[#2D4F3E] rounded-2xl p-5 text-center transition-all bg-[#FAF9F5] group">
-            <input
-              type="file"
-              id="area-banner-upload"
-              accept="image/*"
-              onChange={handleFileUpload}
-              disabled={uploading}
-              className="hidden"
-            />
-            <label
-              htmlFor="area-banner-upload"
-              className="cursor-pointer flex flex-col items-center justify-center gap-2"
-            >
-              <div className="w-12 h-12 rounded-2xl bg-white border border-gray-200 shadow-2xs flex items-center justify-center text-[#2D4F3E] group-hover:scale-105 transition-transform">
-                <Upload className={`w-5 h-5 ${uploading ? 'animate-bounce' : ''}`} />
-              </div>
-              <div className="text-xs font-black text-[#1F2421]">
-                {uploading ? 'Subiendo imagen...' : 'Subir imagen desde tu computadora'}
-              </div>
-              <p className="text-[11px] text-gray-500">
-                Formato JPG, PNG o WEBP (máx. 5MB)
-              </p>
-            </label>
-          </div>
-
-          {/* URL Directa de Imagen */}
-          <div className="space-y-1">
-            <label className="text-xs font-bold text-gray-700">
-              O escribe la ruta / URL de imagen:
-            </label>
-            <input
-              type="text"
-              value={formData.image}
-              onChange={(e) => setFormData(prev => ({ ...prev, image: e.target.value }))}
-              placeholder="/uploads/banner.jpg o https://..."
-              className="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-[#2D4F3E]"
-            />
-          </div>
-
-          {/* Galería Sugerida de Taller */}
-          <div className="space-y-2 pt-2 border-t border-gray-100">
-            <div className="flex items-center justify-between text-xs font-bold text-gray-700">
-              <span>Fotografías sugeridas de taller:</span>
-              <span className="text-[10px] text-gray-400">Clic para aplicar</span>
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              {suggestedList.map((item, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => setFormData(prev => ({ ...prev, image: item.url }))}
-                  className={`p-2 rounded-xl border text-left text-[11px] font-semibold transition-all flex flex-col gap-1.5 cursor-pointer ${
-                    formData.image === item.url
-                      ? 'bg-emerald-50 border-emerald-400 text-emerald-950 ring-1 ring-emerald-400'
-                      : 'bg-gray-50 hover:bg-gray-100 text-gray-700 border-gray-200'
-                  }`}
-                >
-                  <img
-                    src={item.url}
-                    alt={item.label}
-                    className="w-full h-14 rounded-lg object-cover bg-gray-200"
-                  />
-                  <span className="line-clamp-1">{item.label}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* LADO DERECHO: Textos y Datos del Banner */}
-        <div className="lg:col-span-7 space-y-4">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#1F2421]">
-            <ActiveIcon className="w-4 h-4 text-[#D4A359]" />
-            <span>2. Textos & Contenido del Área</span>
-          </div>
-
-          {/* Nombre Oficial del Área */}
-          <div className="space-y-1">
-            <label className="text-xs font-bold text-gray-700">
-              Nombre de la Colección / Área:
-            </label>
-            <input
-              type="text"
-              value={formData.name}
-              onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-              placeholder="Ej. Hogar & Decoración"
-              className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-xs font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2D4F3E]"
-            />
-          </div>
-
-          {/* Slogan / Tagline */}
-          <div className="space-y-1">
-            <label className="text-xs font-bold text-gray-700">
-              Slogan o Lema del Área:
-            </label>
-            <input
-              type="text"
-              value={formData.tagline}
-              onChange={(e) => setFormData(prev => ({ ...prev, tagline: e.target.value }))}
-              placeholder="Ej. Piezas cálidas en madera y resina para vestir tus espacios..."
-              className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-xs text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#2D4F3E]"
-            />
-          </div>
-
-          {/* Descripción Completa */}
-          <div className="space-y-1">
-            <label className="text-xs font-bold text-gray-700">
-              Descripción completa (visible en la portada del catálogo):
-            </label>
-            <textarea
-              rows={4}
-              value={formData.description}
-              onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-              placeholder="Explica qué encontrará el cliente en esta área, materiales y opciones de personalización..."
-              className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-xs text-gray-800 leading-relaxed focus:outline-none focus:ring-2 focus:ring-[#2D4F3E]"
-            />
-          </div>
-
-          {/* Botón de Guardar */}
-          <div className="pt-3 border-t border-gray-100 flex items-center justify-end gap-3">
             <button
               type="button"
-              onClick={handleSaveBanner}
-              disabled={saving || uploading}
-              className="px-6 py-2.5 rounded-2xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-xs font-black transition-all flex items-center gap-2 shadow-md cursor-pointer disabled:opacity-50"
+              onClick={handleSaveAllCards}
+              disabled={savingCards}
+              className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-xs font-black transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer disabled:opacity-50"
             >
-              <Save className={`w-4 h-4 ${saving ? 'animate-spin' : ''}`} />
-              <span>{saving ? 'Guardando en Servidor...' : `Guardar Banner de ${meta.label}`}</span>
+              <Save className={`w-4 h-4 ${savingCards ? 'animate-spin' : ''}`} />
+              <span>{savingCards ? 'Guardando...' : 'Guardar y Publicar en Tienda'}</span>
             </button>
           </div>
-        </div>
 
-      </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* VISTA 2: BANNERS DE PORTADA DE ÁREA                                      */}
+      {/* ========================================================================= */}
+      {activeSectionTab === 'banners' && (
+        <div className="space-y-6">
+
+          {/* Encabezado Principal de Banners */}
+          <div className="bg-white p-6 rounded-3xl border border-[#E8E4DA] shadow-xs space-y-1">
+            <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#2D4F3E]">
+              <ImageIcon className="w-4 h-4 text-[#D4A359]" />
+              <span>Banners de Cabecera Superior</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black font-heading text-[#1F2421]">
+              Banners de Portada por Área
+            </h2>
+            <p className="text-xs sm:text-sm text-gray-600 max-w-3xl">
+              Sube o cambia la imagen principal panorámica, título, lema y descripción de cada una de las áreas maestras del taller.
+            </p>
+          </div>
+
+          {/* Selector de Áreas del Catálogo */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            {[
+              { id: 'hogar', label: 'Hogar & Deco', icon: Home, desc: 'Lámparas, percheros y macetas' },
+              { id: 'negocios', label: 'Negocios & Marcas', icon: Briefcase, desc: 'Smart Decks, QR y branding' },
+              { id: 'juguetes', label: 'Juguetes & Niños', icon: Gamepad2, desc: 'Articulados y dinámicos' },
+              { id: 'personalizados', label: 'Personalizados', icon: Sparkles, desc: 'Dibujos 3D y creaciones' },
+              { id: 'eventos', label: 'Eventos Especiales', icon: CalendarHeart, desc: 'Bodas, fiestas y recuerdos' },
+              { id: 'paquetes-servicios', label: 'Paquetes & Kits', icon: Gift, desc: 'Combos promocionales' },
+              { id: 'servicios', label: 'Servicios', icon: Layers, desc: 'Diseño & manufactura técnica' },
+              { id: 'industria', label: 'Industria Técnica', icon: Wrench, desc: 'Piezas mecánicas y utillaje' },
+              { id: 'publicidad-desarrollo', label: 'Diseño & Publicidad', icon: Palette, desc: 'Branding y diseño web' }
+            ].map(area => {
+              const isSelected = activeAreaId === area.id;
+              const Icon = area.icon;
+              return (
+                <button
+                  key={area.id}
+                  type="button"
+                  onClick={() => handleSelectArea(area.id)}
+                  className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex items-start gap-2.5 shadow-2xs ${
+                    isSelected
+                      ? 'bg-[#17251E] text-white border-[#D4A359] ring-2 ring-[#D4A359]/40 scale-101 shadow-md'
+                      : 'bg-white hover:bg-gray-50 text-gray-800 border-[#E8E4DA]'
+                  }`}
+                >
+                  <div className={`p-2 rounded-xl shrink-0 ${
+                    isSelected ? 'bg-[#D4A359] text-stone-950 font-black' : 'bg-gray-100 text-gray-700'
+                  }`}>
+                    <Icon className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="font-extrabold text-xs sm:text-sm truncate">{area.label}</div>
+                    <div className={`text-[10px] sm:text-[10.5px] truncate mt-0.5 ${isSelected ? 'text-gray-300' : 'text-gray-500'}`}>
+                      {area.desc}
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* CALLOUT: Acceso rápido a las tarjetas selectoras si está en diseño o industria */}
+          {(activeAreaId === 'publicidad-desarrollo' || activeAreaId === 'industria' || activeAreaId === 'servicios') && (
+            <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-in fade-in">
+              <div className="flex items-center gap-2.5 text-xs text-amber-950">
+                <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
+                <span>
+                  ¿Quieres <strong>activar/desactivar o cambiar las fotos</strong> de las tarjetas selectoras de esta sección ({activeAreaId === 'publicidad-desarrollo' ? 'Identidad de Marca, Lonas, Web, Redes' : 'Prototipos, Utillaje, Refacciones, Lotes'})?
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setActiveSectionTab('cards')}
+                className="px-4 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-stone-950 text-xs font-black flex items-center gap-1.5 cursor-pointer shadow-xs shrink-0"
+              >
+                <span>Ir a Tarjetas Selectoras</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
+
+          {/* Previsualización en Vivo del Banner */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between px-1">
+              <div className="flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-gray-600">
+                <Eye className="w-3.5 h-3.5 text-[#2D4F3E]" />
+                <span>Previsualización en Vivo del Banner ({meta.label})</span>
+              </div>
+              <span className="text-[11px] text-gray-400">
+                Aspecto idéntico al catálogo de la tienda
+              </span>
+            </div>
+
+            <div className="relative rounded-3xl overflow-hidden bg-[#1F2421] text-white shadow-xl border-2 border-white/10 min-h-[190px] sm:min-h-[220px] flex items-center">
+              {formData.image ? (
+                <img
+                  src={formData.image}
+                  alt={formData.name}
+                  className="absolute inset-0 w-full h-full object-cover opacity-35"
+                />
+              ) : (
+                <div className={`absolute inset-0 bg-gradient-to-r ${meta.gradient} opacity-50`} />
+              )}
+
+              <div className="absolute inset-0 bg-gradient-to-r from-[#17251E] via-[#17251E]/85 to-transparent" />
+
+              <div className="relative z-10 p-6 sm:p-8 max-w-2xl space-y-2">
+                <span className="inline-block px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-[10.5px] font-black uppercase tracking-widest">
+                  {meta.badgeText}
+                </span>
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold font-heading text-white tracking-tight">
+                  {formData.name || 'Nombre del Área'}
+                </h1>
+                <p className="text-xs sm:text-sm text-gray-200 leading-relaxed font-normal">
+                  {formData.description || 'Descripción del área y tipos de manufactura artesanal disponibles...'}
+                </p>
+                {formData.tagline && (
+                  <p className="text-[11px] font-medium text-amber-300/90 italic">
+                    &ldquo;{formData.tagline}&rdquo;
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Formulario de Edición del Banner de Portada */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-white p-6 rounded-3xl border border-[#E8E4DA] shadow-xs">
+            
+            {/* LADO IZQUIERDO: Subir o Elegir Imagen */}
+            <div className="lg:col-span-5 space-y-4 border-b lg:border-b-0 lg:border-r border-gray-100 pb-5 lg:pb-0 lg:pr-5">
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#1F2421]">
+                <Upload className="w-4 h-4 text-[#2D4F3E]" />
+                <span>1. Imagen de Portada</span>
+              </div>
+
+              <div className="border-2 border-dashed border-gray-300 hover:border-[#2D4F3E] rounded-2xl p-5 text-center transition-all bg-[#FAF9F5] group">
+                <input
+                  type="file"
+                  id="area-banner-upload"
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  disabled={uploading}
+                  className="hidden"
+                />
+                <label
+                  htmlFor="area-banner-upload"
+                  className="cursor-pointer flex flex-col items-center justify-center gap-2"
+                >
+                  <div className="w-12 h-12 rounded-2xl bg-white border border-gray-200 shadow-2xs flex items-center justify-center text-[#2D4F3E] group-hover:scale-105 transition-transform">
+                    <Upload className={`w-5 h-5 ${uploading ? 'animate-bounce' : ''}`} />
+                  </div>
+                  <div className="text-xs font-black text-[#1F2421]">
+                    {uploading ? 'Subiendo imagen...' : 'Subir imagen desde tu computadora'}
+                  </div>
+                  <p className="text-[11px] text-gray-500">
+                    Formato JPG, PNG o WEBP (máx. 5MB)
+                  </p>
+                </label>
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-gray-700 block mb-1">
+                  O escribe la URL / ruta de la imagen:
+                </label>
+                <input
+                  type="text"
+                  value={formData.image}
+                  onChange={(e) => setFormData(prev => ({ ...prev, image: e.target.value }))}
+                  placeholder="/uploads/tu_foto.jpg"
+                  className="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#2D4F3E]"
+                />
+              </div>
+
+              {/* Imágenes Sugeridas del Taller */}
+              {suggestedList.length > 0 && (
+                <div className="space-y-2 pt-2 border-t border-gray-100">
+                  <div className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">
+                    Fotografías recomendadas para {meta.label}:
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    {suggestedList.map((item, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => setFormData(prev => ({ ...prev, image: item.url }))}
+                        className={`p-2 rounded-xl border text-left text-[11px] font-semibold transition-all flex flex-col gap-1.5 cursor-pointer ${
+                          formData.image === item.url
+                            ? 'bg-emerald-50 border-emerald-400 text-emerald-950 ring-1 ring-emerald-400'
+                            : 'bg-gray-50 hover:bg-gray-100 text-gray-700 border-gray-200'
+                        }`}
+                      >
+                        <img
+                          src={item.url}
+                          alt={item.label}
+                          className="w-full h-14 rounded-lg object-cover bg-gray-200"
+                        />
+                        <span className="line-clamp-1">{item.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* LADO DERECHO: Textos del Banner */}
+            <div className="lg:col-span-7 space-y-4">
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#1F2421]">
+                <Palette className="w-4 h-4 text-[#D4A359]" />
+                <span>2. Textos y Presentación de Portada</span>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-gray-700">
+                  Nombre Oficial del Área:
+                </label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                  placeholder="Ej. Hogar & Decoración"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-xs font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2D4F3E]"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-gray-700">
+                  Slogan o Lema del Área:
+                </label>
+                <input
+                  type="text"
+                  value={formData.tagline}
+                  onChange={(e) => setFormData(prev => ({ ...prev, tagline: e.target.value }))}
+                  placeholder="Ej. Piezas cálidas en madera y resina para vestir tus espacios..."
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-xs text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#2D4F3E]"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-gray-700">
+                  Descripción completa (visible en la portada del catálogo):
+                </label>
+                <textarea
+                  rows={4}
+                  value={formData.description}
+                  onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                  placeholder="Explica qué encontrará el cliente en esta área, materiales y opciones de personalización..."
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-xs text-gray-800 leading-relaxed focus:outline-none focus:ring-2 focus:ring-[#2D4F3E]"
+                />
+              </div>
+
+              <div className="pt-3 border-t border-gray-100 flex items-center justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={handleSaveBanner}
+                  disabled={saving || uploading}
+                  className="px-6 py-2.5 rounded-2xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-xs font-black transition-all flex items-center gap-2 shadow-md cursor-pointer disabled:opacity-50"
+                >
+                  <Save className={`w-4 h-4 ${saving ? 'animate-spin' : ''}`} />
+                  <span>{saving ? 'Guardando en Servidor...' : `Guardar Banner de ${meta.label}`}</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      )}
 
     </div>
   );

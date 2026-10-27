@@ -437,8 +437,19 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
 
           {/* Diccionario de Aplicaciones con Códigos de Color Distintivos */}
           {(() => {
-            const customIndImages = settings?.categoryBackgroundPhotos?.industria || {};
-            const showBackgroundPhotos = Boolean(settings?.showCategoryBackgroundPhotos);
+            const parseCardBg = (cardVal, fallbackUrl) => {
+              if (!cardVal) return { url: fallbackUrl, enabled: false };
+              if (typeof cardVal === 'string') return { url: cardVal, enabled: false };
+              return {
+                url: cardVal.url || fallbackUrl,
+                enabled: Boolean(cardVal.enabled)
+              };
+            };
+
+            const protoBg = parseCardBg(settings?.categoryBackgroundPhotos?.industria?.proto, './uploads/catalog-v2-ind1-context-oficial.webp');
+            const jigBg = parseCardBg(settings?.categoryBackgroundPhotos?.industria?.jig, './uploads/catalog-v2-ind2-context-oficial.webp');
+            const spareBg = parseCardBg(settings?.categoryBackgroundPhotos?.industria?.spare, './uploads/industria_portada_oficial_ingenieria.webp');
+            const batchBg = parseCardBg(settings?.categoryBackgroundPhotos?.industria?.batch, './uploads/catalog-v2-ind1-detail-oficial.webp');
 
             const applicationsData = [
               {
@@ -458,7 +469,8 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 btnBg: 'bg-[#5BB8FF]',
                 tag: 'VALIDACIÓN RÁPIDA · DESDE 24 A 72 HRS',
                 badge: 'Formatos .step / .stl',
-                bgImage: customIndImages.proto || './uploads/catalog-v2-ind1-context-oficial.webp',
+                bgImage: protoBg.url,
+                showPhoto: protoBg.enabled,
                 shortDesc: 'Validación rápida de cotas, holguras y ensamble desde archivo 3D.',
                 desc: 'Prueba ajustes, interferencias de ensamble y holguras imprimiendo directamente tu archivo 3D antes de mandar a fabricar en serie o invertir en moldes.',
                 specs: [
@@ -487,7 +499,8 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 btnBg: 'bg-[#8FB99B]',
                 tag: 'LÍNEA DE PRODUCCIÓN & ENSAMBLE',
                 badge: 'Ajuste fiel a cota',
-                bgImage: customIndImages.jig || './uploads/catalog-v2-ind2-context-oficial.webp',
+                bgImage: jigBg.url,
+                showPhoto: jigBg.enabled,
                 shortDesc: 'Galgas de control, nidos Poka-Yoke y mordazas que no rayan piezas.',
                 desc: 'Fabricamos con las medidas exactas de tu archivo nidos de apoyo, plantillas para operarios y mordazas protectoras que no rayan piezas terminadas.',
                 specs: [
@@ -516,7 +529,8 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 btnBg: 'bg-amber-400',
                 tag: 'SUSTITUCIÓN DIRECTA SIN MOLDES',
                 badge: 'Desde 1 sola pieza',
-                bgImage: customIndImages.spare || './uploads/industria_portada_oficial_ingenieria.webp',
+                bgImage: spareBg.url,
+                showPhoto: spareBg.enabled,
                 shortDesc: 'Sustitución de bujes, poleas y piezas descontinuadas desde 1 pieza.',
                 desc: '¿Se rompió una pieza y el fabricante tarda semanas o ya no existe? Con tu archivo 3D (.stl, .step), te la imprimimos en polímero técnico resistente.',
                 specs: [
@@ -545,7 +559,8 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 btnBg: 'bg-purple-400',
                 tag: 'VOLUMEN FLEXIBLE BAJO DEMANDA',
                 badge: 'Escalable 10 a 500+ pzs',
-                bgImage: customIndImages.batch || './uploads/catalog-v2-ind1-detail-oficial.webp',
+                bgImage: batchBg.url,
+                showPhoto: batchBg.enabled,
                 shortDesc: 'Producción continua de 10 a 500 piezas sin costo de apertura de molde.',
                 desc: 'Producción continua de varias piezas bajo demanda para arranques, reemplazos o preseries sin tener que pagar matrices ni herramentales costosos.',
                 specs: [
@@ -578,8 +593,8 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                             : 'border-white/10 bg-[#0B0F13] hover:border-white/25 active:scale-[0.98] shadow-md'
                         }`}
                       >
-                        {/* Foto desenfocada de fondo con opacidad visible (desactivada por defecto, configurable en admin) */}
-                        {showBackgroundPhotos && (
+                        {/* Foto desenfocada de fondo con opacidad visible (individualmente activable o desactivable) */}
+                        {app.showPhoto && (
                           <>
                             <img
                               src={app.bgImage}

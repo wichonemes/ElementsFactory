@@ -653,16 +653,40 @@
   "showCategoryBackgroundPhotos": false,
   "categoryBackgroundPhotos": {
     "diseno": {
-      "branding": "./portafolio/assets/artesano-cover.webp",
-      "publicidad": "./portafolio/assets/civil-shirts.webp",
-      "web": "./interfaces/assets/ui-01.jpg",
-      "editorial": "./portafolio/assets/popol-spread.webp"
+      "branding": {
+        "url": "./portafolio/assets/artesano-cover.webp",
+        "enabled": false
+      },
+      "publicidad": {
+        "url": "./portafolio/assets/civil-shirts.webp",
+        "enabled": false
+      },
+      "web": {
+        "url": "./interfaces/assets/ui-01.jpg",
+        "enabled": false
+      },
+      "editorial": {
+        "url": "./portafolio/assets/popol-spread.webp",
+        "enabled": false
+      }
     },
     "industria": {
-      "proto": "./uploads/catalog-v2-ind1-context-oficial.webp",
-      "jig": "./uploads/catalog-v2-ind2-context-oficial.webp",
-      "spare": "./uploads/industria_portada_oficial_ingenieria.webp",
-      "batch": "./uploads/catalog-v2-ind1-detail-oficial.webp"
+      "proto": {
+        "url": "./uploads/catalog-v2-ind1-context-oficial.webp",
+        "enabled": false
+      },
+      "jig": {
+        "url": "./uploads/catalog-v2-ind2-context-oficial.webp",
+        "enabled": false
+      },
+      "spare": {
+        "url": "./uploads/industria_portada_oficial_ingenieria.webp",
+        "enabled": false
+      },
+      "batch": {
+        "url": "./uploads/catalog-v2-ind1-detail-oficial.webp",
+        "enabled": false
+      }
     }
   }
 }

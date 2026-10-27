@@ -68,10 +68,22 @@ export default function PublicidadDesarrolloView({
     }
   };
 
-  // Paleta oficial de temas y estilos para las 4 áreas principales
-  const customImages = settings?.categoryBackgroundPhotos?.diseno || {};
-  const showBackgroundPhotos = Boolean(settings?.showCategoryBackgroundPhotos);
+  // Helper para leer configuración individual de cada tarjeta (url y si está activada o desactivada)
+  const parseCardBg = (cardVal, fallbackUrl) => {
+    if (!cardVal) return { url: fallbackUrl, enabled: false };
+    if (typeof cardVal === 'string') return { url: cardVal, enabled: false };
+    return {
+      url: cardVal.url || fallbackUrl,
+      enabled: Boolean(cardVal.enabled)
+    };
+  };
 
+  const brandingBg = parseCardBg(settings?.categoryBackgroundPhotos?.diseno?.branding, './portafolio/assets/artesano-cover.webp');
+  const publicidadBg = parseCardBg(settings?.categoryBackgroundPhotos?.diseno?.publicidad, './portafolio/assets/civil-shirts.webp');
+  const webBg = parseCardBg(settings?.categoryBackgroundPhotos?.diseno?.web, './interfaces/assets/ui-01.jpg');
+  const editorialBg = parseCardBg(settings?.categoryBackgroundPhotos?.diseno?.editorial, './portafolio/assets/popol-spread.webp');
+
+  // Paleta oficial de temas y estilos para las 4 áreas principales
   const categoryTheme = {
     branding: {
       id: 'branding',
@@ -79,7 +91,8 @@ export default function PublicidadDesarrolloView({
       code: 'BRAND-01',
       tag: 'Identidad Visual',
       desc: 'Logotipos vectoriales, paleta de color y manual de marca para tu negocio.',
-      bgImage: customImages.branding || './portafolio/assets/artesano-cover.webp',
+      bgImage: brandingBg.url,
+      showPhoto: brandingBg.enabled,
       icon: Palette,
       activeCardClass: 'border-amber-400 bg-amber-500/10 ring-2 ring-amber-400/30 text-white',
       glowBorderClass: 'border-[#e8b84f] ring-2 ring-[#e8b84f]/40 shadow-[0_0_20px_rgba(232,184,79,0.25)]',
@@ -99,7 +112,8 @@ export default function PublicidadDesarrolloView({
       code: 'PRINT-02',
       tag: 'Gran Formato',
       desc: 'Lonas de alta densidad, vinil cortado y microperforado para fachada o cancel.',
-      bgImage: customImages.publicidad || './portafolio/assets/civil-shirts.webp',
+      bgImage: publicidadBg.url,
+      showPhoto: publicidadBg.enabled,
       icon: Printer,
       activeCardClass: 'border-emerald-400 bg-emerald-500/10 ring-2 ring-emerald-400/30 text-white',
       glowBorderClass: 'border-emerald-400 ring-2 ring-emerald-400/40 shadow-[0_0_20px_rgba(16,185,129,0.25)]',
@@ -119,7 +133,8 @@ export default function PublicidadDesarrolloView({
       code: 'DEV-03',
       tag: 'Desarrollo Web',
       desc: 'Sitios web responsivos, catálogos online y tiendas rápidas optimizadas.',
-      bgImage: customImages.web || './interfaces/assets/ui-01.jpg',
+      bgImage: webBg.url,
+      showPhoto: webBg.enabled,
       icon: Globe,
       activeCardClass: 'border-cyan-400 bg-cyan-500/10 ring-2 ring-cyan-400/30 text-white',
       glowBorderClass: 'border-sky-400 ring-2 ring-sky-400/40 shadow-[0_0_20px_rgba(56,189,248,0.25)]',
@@ -139,7 +154,8 @@ export default function PublicidadDesarrolloView({
       code: 'EDIT-04',
       tag: 'Contenido & Impresos',
       desc: 'Menús digitales, catálogos en PDF y contenido gráfico para historias y posts.',
-      bgImage: customImages.editorial || './portafolio/assets/popol-spread.webp',
+      bgImage: editorialBg.url,
+      showPhoto: editorialBg.enabled,
       icon: Film,
       activeCardClass: 'border-purple-400 bg-purple-500/10 ring-2 ring-purple-400/30 text-white',
       glowBorderClass: 'border-purple-400 ring-2 ring-purple-400/40 shadow-[0_0_20px_rgba(192,132,252,0.25)]',
@@ -631,8 +647,8 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                       : 'border-stone-800/90 bg-[#0E1218] hover:border-stone-700/80 shadow-md'
                   }`}
                 >
-                  {/* Foto desenfocada de fondo con opacidad visible (desactivada por defecto, configurable en admin) */}
-                  {showBackgroundPhotos && (
+                  {/* Foto desenfocada de fondo con opacidad visible (individualmente activable o desactivable) */}
+                  {cat.showPhoto && (
                     <>
                       <img
                         src={cat.bgImage}

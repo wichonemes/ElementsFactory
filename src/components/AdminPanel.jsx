@@ -4748,10 +4748,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                 <ArcadeAdminSection token={token} />
               )}
 
-              {/* TAB: BANNERS DE ÁREAS (HOGAR, NEGOCIOS, EVENTOS) */}
+              {/* TAB: BANNERS DE ÁREAS (HOGAR, NEGOCIOS, EVENTOS) Y TARJETAS DE SELECCIÓN */}
               {activeTab === 'area-banners' && (
                 <AreaBannersAdminSection
                   token={token}
+                  businessSettings={businessSettings}
+                  onUpdateSettings={(updated) => setBusinessSettings(updated)}
                   onWorldsUpdated={async () => {
                     await loadAllData();
                     if (onRefreshCatalog) onRefreshCatalog();
