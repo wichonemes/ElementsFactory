@@ -446,11 +446,17 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 accentColor: '#5BB8FF',
                 borderClass: 'border-[#5BB8FF]',
                 ringClass: 'ring-[#5BB8FF]/40',
+                glowBorderClass: 'border-[#5BB8FF] ring-2 ring-[#5BB8FF]/40 shadow-[0_0_20px_rgba(91,184,255,0.25)]',
+                underlineClass: 'bg-[#5BB8FF]',
+                neonPillClass: 'bg-[#5BB8FF] text-[#0A0E11]',
+                badgePillClass: 'bg-[#5BB8FF]/20 text-[#5BB8FF] border-[#5BB8FF]/40',
                 bgActive: 'bg-[#5BB8FF]/10',
                 textAccent: 'text-[#5BB8FF]',
                 btnBg: 'bg-[#5BB8FF]',
                 tag: 'VALIDACIÓN RÁPIDA · DESDE 24 A 72 HRS',
                 badge: 'Formatos .step / .stl',
+                bgImage: './uploads/catalog-v2-ind1-context-oficial.webp',
+                shortDesc: 'Validación rápida de cotas, holguras y ensamble desde archivo 3D.',
                 desc: 'Prueba ajustes, interferencias de ensamble y holguras imprimiendo directamente tu archivo 3D antes de mandar a fabricar en serie o invertir en moldes.',
                 specs: [
                   { label: 'Tolerancia', val: '±0.15 mm en cotas críticas' },
@@ -469,11 +475,17 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 accentColor: '#8FB99B',
                 borderClass: 'border-[#8FB99B]',
                 ringClass: 'ring-[#8FB99B]/40',
+                glowBorderClass: 'border-[#8FB99B] ring-2 ring-[#8FB99B]/40 shadow-[0_0_20px_rgba(143,185,155,0.25)]',
+                underlineClass: 'bg-[#8FB99B]',
+                neonPillClass: 'bg-[#8FB99B] text-[#0A0E11]',
+                badgePillClass: 'bg-[#8FB99B]/20 text-[#8FB99B] border-[#8FB99B]/40',
                 bgActive: 'bg-[#8FB99B]/10',
                 textAccent: 'text-[#8FB99B]',
                 btnBg: 'bg-[#8FB99B]',
                 tag: 'LÍNEA DE PRODUCCIÓN & ENSAMBLE',
                 badge: 'Ajuste fiel a cota',
+                bgImage: './uploads/catalog-v2-ind2-context-oficial.webp',
+                shortDesc: 'Galgas de control, nidos Poka-Yoke y mordazas que no rayan piezas.',
                 desc: 'Fabricamos con las medidas exactas de tu archivo nidos de apoyo, plantillas para operarios y mordazas protectoras que no rayan piezas terminadas.',
                 specs: [
                   { label: 'Aplicación', val: 'Poka-Yoke, guías y mordazas' },
@@ -492,11 +504,17 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 accentColor: '#FBBF24',
                 borderClass: 'border-amber-400',
                 ringClass: 'ring-amber-400/40',
+                glowBorderClass: 'border-amber-400 ring-2 ring-amber-400/40 shadow-[0_0_20px_rgba(251,191,36,0.25)]',
+                underlineClass: 'bg-amber-400',
+                neonPillClass: 'bg-amber-400 text-[#0A0E11]',
+                badgePillClass: 'bg-amber-400/20 text-amber-300 border-amber-400/40',
                 bgActive: 'bg-amber-400/10',
                 textAccent: 'text-amber-400',
                 btnBg: 'bg-amber-400',
                 tag: 'SUSTITUCIÓN DIRECTA SIN MOLDES',
                 badge: 'Desde 1 sola pieza',
+                bgImage: './uploads/industria_portada_oficial_ingenieria.webp',
+                shortDesc: 'Sustitución de bujes, poleas y piezas descontinuadas desde 1 pieza.',
                 desc: '¿Se rompió una pieza y el fabricante tarda semanas o ya no existe? Con tu archivo 3D (.stl, .step), te la imprimimos en polímero técnico resistente.',
                 specs: [
                   { label: 'Piezas', val: 'Engranes, poleas, levas y tapas' },
@@ -515,11 +533,17 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 accentColor: '#C084FC',
                 borderClass: 'border-purple-400',
                 ringClass: 'ring-purple-400/40',
+                glowBorderClass: 'border-purple-400 ring-2 ring-purple-400/40 shadow-[0_0_20px_rgba(192,132,252,0.25)]',
+                underlineClass: 'bg-purple-400',
+                neonPillClass: 'bg-purple-400 text-[#0A0E11]',
+                badgePillClass: 'bg-purple-400/20 text-purple-300 border-purple-400/40',
                 bgActive: 'bg-purple-400/10',
                 textAccent: 'text-purple-400',
                 btnBg: 'bg-purple-400',
                 tag: 'VOLUMEN FLEXIBLE BAJO DEMANDA',
                 badge: 'Escalable 10 a 500+ pzs',
+                bgImage: './uploads/bundle_promo_biz_2.jpg',
+                shortDesc: 'Producción continua de 10 a 500 piezas sin costo de apertura de molde.',
                 desc: 'Producción continua de varias piezas bajo demanda para arranques, reemplazos o preseries sin tener que pagar matrices ni herramentales costosos.',
                 specs: [
                   { label: 'Tirajes', val: 'De 10 a 500 piezas escalables' },
@@ -536,7 +560,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
 
             return (
               <div className="space-y-4">
-                {/* Cuadrícula Adaptativa: 2x2 en Celular, 4 Columnas en PC */}
+                {/* Cuadrícula Adaptativa: 2x2 en Celular, 4 Columnas en PC con foto desenfocada de referencia */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-5">
                   {applicationsData.map(app => {
                     const isSelected = expandedApp === app.id;
@@ -545,44 +569,89 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                       <div
                         key={app.id}
                         onClick={() => setExpandedApp(isSelected ? null : app.id)}
-                        className={`rounded-xl sm:rounded-2xl border transition-all duration-200 p-3 sm:p-5 cursor-pointer select-none flex flex-col justify-between hover:-translate-y-0.5 ${
+                        className={`group relative overflow-hidden rounded-2xl sm:rounded-3xl border transition-all duration-300 p-3 sm:p-5 cursor-pointer select-none flex flex-col justify-between hover:-translate-y-0.5 min-h-[170px] sm:min-h-[195px] ${
                           isSelected
-                            ? `${app.borderClass} ring-2 ${app.ringClass} bg-[#141C22] shadow-xl`
-                            : 'border-white/10 bg-[#12181C] hover:border-white/25 active:scale-[0.98]'
+                            ? `${app.glowBorderClass} bg-[#060A0D]`
+                            : 'border-white/10 bg-[#0B0F13] hover:border-white/25 active:scale-[0.98] shadow-md'
                         }`}
                       >
-                        <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] pb-2 border-b border-white/5">
-                          <span className={`font-bold ${isSelected ? app.textAccent : 'text-gray-400'}`}>
-                            {app.code}
-                          </span>
-                          <span className={`text-[8.5px] sm:text-[9.5px] font-sans font-medium flex items-center gap-0.5 ${
-                            isSelected ? app.textAccent : 'text-gray-400'
-                          }`}>
-                            <span>{isSelected ? 'Cerrar' : 'Ver ficha'}</span>
-                            <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${isSelected ? 'rotate-180' : ''}`} />
+                        {/* Foto desenfocada de fondo con opacidad suave */}
+                        <img
+                          src={app.bgImage}
+                          alt=""
+                          aria-hidden="true"
+                          className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 filter blur-[0.5px] pointer-events-none select-none scale-105 group-hover:scale-110 ${
+                            isSelected ? 'opacity-35' : 'opacity-20 group-hover:opacity-30'
+                          }`}
+                        />
+
+                        {/* Degradados de alto contraste para máxima legibilidad */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-[#060A0D]/90 via-[#060A0D]/60 to-[#060A0D]/95 pointer-events-none" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#060A0D] via-[#060A0D]/80 to-transparent pointer-events-none" />
+
+                        {/* Fila superior: Código con línea decorativa estilo referencia y Estado */}
+                        <div className="relative z-10 flex items-start justify-between w-full">
+                          <div>
+                            <span className="font-heading font-black text-xs sm:text-sm tracking-wider uppercase text-white drop-shadow-sm">
+                              {app.code}
+                            </span>
+                            {/* Línea decorativa estilo referencia */}
+                            <div className={`w-7 h-0.5 mt-1 rounded-full ${app.underlineClass}`} />
+                          </div>
+
+                          <span
+                            className={`text-[8.5px] sm:text-[9.5px] font-heading font-black px-2 sm:px-2.5 py-0.5 rounded-full transition-all tracking-wider uppercase flex items-center gap-1 ${
+                              isSelected
+                                ? `${app.neonPillClass} shadow-md`
+                                : 'text-stone-300 bg-black/60 border border-white/15'
+                            }`}
+                          >
+                            {isSelected ? (
+                              <>
+                                <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
+                                <span>Activa</span>
+                                <ChevronDown className="w-3 h-3 text-black rotate-180" />
+                              </>
+                            ) : (
+                              <>
+                                <span>Ver ficha</span>
+                                <ChevronDown className="w-3 h-3 text-stone-400" />
+                              </>
+                            )}
                           </span>
                         </div>
 
-                        <div className="pt-3 space-y-2.5">
-                          <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0 border transition-transform ${
-                            isSelected
-                              ? `${app.bgActive} ${app.textAccent} ${app.borderClass} scale-105 shadow-md`
-                              : `bg-white/5 ${app.textAccent} border-white/10`
-                          }`}>
-                            <IconComp className="w-5 h-5 sm:w-6 sm:h-6" />
+                        {/* Sección inferior: Icono en caja redondeada, Badge técnico, Título Futura y Descripción */}
+                        <div className="relative z-10 pt-3 space-y-1.5">
+                          <div className="flex items-center gap-2">
+                            <div
+                              className={`w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center shrink-0 border transition-transform ${
+                                isSelected
+                                  ? `${app.bgActive} ${app.textAccent} ${app.borderClass} scale-105 shadow-md`
+                                  : 'bg-black/60 border-white/15 ' + app.textAccent
+                              }`}
+                            >
+                              <IconComp className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                            </div>
+
+                            <span
+                              className={`inline-block text-[7.5px] sm:text-[8.5px] font-heading font-black uppercase tracking-wider px-2 py-0.5 rounded-md border ${
+                                isSelected
+                                  ? app.badgePillClass
+                                  : 'bg-black/50 text-stone-300 border-white/10'
+                              }`}
+                            >
+                              {app.badge}
+                            </span>
                           </div>
 
                           <div>
-                            <span className={`inline-block text-[8.5px] sm:text-[9.5px] font-mono uppercase font-bold tracking-wider px-2 py-0.5 rounded-md border ${
-                              isSelected
-                                ? `${app.bgActive} ${app.textAccent} ${app.borderClass}`
-                                : 'bg-white/5 text-gray-300 border-white/10'
-                            }`}>
-                              {app.badge}
-                            </span>
-                            <h3 className="text-xs sm:text-sm lg:text-base font-bold text-white mt-1 leading-snug">
+                            <h3 className="font-heading font-black text-white text-xs sm:text-sm md:text-base leading-snug tracking-tight">
                               {app.title}
                             </h3>
+                            <p className="text-[9px] sm:text-[10px] text-stone-300/90 leading-tight mt-0.5 line-clamp-2 font-normal">
+                              {app.shortDesc}
+                            </p>
                           </div>
                         </div>
                       </div>

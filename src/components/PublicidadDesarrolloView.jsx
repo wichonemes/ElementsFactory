@@ -75,8 +75,14 @@ export default function PublicidadDesarrolloView({
       label: 'Identidad & Marca',
       code: 'BRAND-01',
       tag: 'Identidad Visual',
+      desc: 'Logotipos vectoriales, paleta de color y manual de marca para tu negocio.',
+      bgImage: './maquetado-inicio-wicho-v2/assets/artesano-cover.webp',
       icon: Palette,
       activeCardClass: 'border-amber-400 bg-amber-500/10 ring-2 ring-amber-400/30 text-white',
+      glowBorderClass: 'border-[#e8b84f] ring-2 ring-[#e8b84f]/40 shadow-[0_0_20px_rgba(232,184,79,0.25)]',
+      underlineClass: 'bg-[#e8b84f]',
+      neonPillClass: 'bg-[#e8b84f] text-[#0B0D11]',
+      iconBoxActive: 'bg-[#e8b84f]/20 border-[#e8b84f]/60 text-[#e8b84f]',
       badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
       dotColor: 'bg-amber-400',
       activeRowClass: 'border-amber-400/90 bg-amber-500/15 ring-1 ring-amber-400/30',
@@ -89,8 +95,14 @@ export default function PublicidadDesarrolloView({
       label: 'Lonas & Gran Formato',
       code: 'PRINT-02',
       tag: 'Gran Formato',
+      desc: 'Lonas de alta densidad, vinil cortado y microperforado para fachada o cancel.',
+      bgImage: './maquetado-inicio-wicho-v2/assets/civil-shirts.webp',
       icon: Printer,
       activeCardClass: 'border-emerald-400 bg-emerald-500/10 ring-2 ring-emerald-400/30 text-white',
+      glowBorderClass: 'border-emerald-400 ring-2 ring-emerald-400/40 shadow-[0_0_20px_rgba(16,185,129,0.25)]',
+      underlineClass: 'bg-emerald-400',
+      neonPillClass: 'bg-emerald-400 text-[#0B0D11]',
+      iconBoxActive: 'bg-emerald-500/20 border-emerald-400/60 text-emerald-300',
       badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
       dotColor: 'bg-emerald-400',
       activeRowClass: 'border-emerald-400/90 bg-emerald-500/15 ring-1 ring-emerald-400/30',
@@ -103,8 +115,14 @@ export default function PublicidadDesarrolloView({
       label: 'Web & Tienda',
       code: 'DEV-03',
       tag: 'Desarrollo Web',
+      desc: 'Sitios web responsivos, catálogos online y tiendas rápidas optimizadas.',
+      bgImage: './interfaces/assets/ui-01.jpg',
       icon: Globe,
       activeCardClass: 'border-cyan-400 bg-cyan-500/10 ring-2 ring-cyan-400/30 text-white',
+      glowBorderClass: 'border-sky-400 ring-2 ring-sky-400/40 shadow-[0_0_20px_rgba(56,189,248,0.25)]',
+      underlineClass: 'bg-sky-400',
+      neonPillClass: 'bg-sky-400 text-[#0B0D11]',
+      iconBoxActive: 'bg-sky-500/20 border-sky-400/60 text-sky-300',
       badgeColor: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
       dotColor: 'bg-cyan-400',
       activeRowClass: 'border-cyan-400/90 bg-cyan-500/15 ring-1 ring-cyan-400/30',
@@ -117,8 +135,14 @@ export default function PublicidadDesarrolloView({
       label: 'Catálogos & Redes',
       code: 'EDIT-04',
       tag: 'Contenido & Impresos',
+      desc: 'Menús digitales, catálogos en PDF y contenido gráfico para historias y posts.',
+      bgImage: './maquetado-inicio-wicho-v2/assets/popol-spread.webp',
       icon: Film,
       activeCardClass: 'border-purple-400 bg-purple-500/10 ring-2 ring-purple-400/30 text-white',
+      glowBorderClass: 'border-purple-400 ring-2 ring-purple-400/40 shadow-[0_0_20px_rgba(192,132,252,0.25)]',
+      underlineClass: 'bg-purple-400',
+      neonPillClass: 'bg-purple-400 text-[#0B0D11]',
+      iconBoxActive: 'bg-purple-500/20 border-purple-400/60 text-purple-300',
       badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
       dotColor: 'bg-purple-400',
       activeRowClass: 'border-purple-400/90 bg-purple-500/15 ring-1 ring-purple-400/30',
@@ -587,8 +611,8 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
             </span>
           </div>
 
-          {/* Selectores de Área (4 Áreas sin barra deslizante: 2x2 en celular, 4 en desktop) */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
+          {/* Selectores de Área (4 Áreas estilo tarjeta con foto desenfocada de referencia) */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5">
             {categoriesList.map(cat => {
               const isSelected = activeCategoryFilter === cat.id;
               const IconComp = cat.icon;
@@ -598,41 +622,85 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                   key={cat.id}
                   type="button"
                   onClick={() => setActiveCategoryFilter(cat.id)}
-                  className={`rounded-2xl border transition-all duration-200 p-2.5 sm:p-3 text-left flex flex-col justify-between cursor-pointer active:scale-[0.97] touch-manipulation select-none ${
+                  className={`group relative overflow-hidden rounded-2xl sm:rounded-3xl border transition-all duration-300 p-3 sm:p-4 text-left flex flex-col justify-between cursor-pointer active:scale-[0.97] touch-manipulation select-none min-h-[165px] sm:min-h-[185px] ${
                     isSelected
-                      ? `${cat.activeCardClass} shadow-xl`
-                      : 'border-stone-800 bg-[#0E1218] hover:border-stone-700'
+                      ? `${cat.glowBorderClass} bg-[#080B10]`
+                      : 'border-stone-800/90 bg-[#0E1218] hover:border-stone-700/80 shadow-md'
                   }`}
                 >
-                  {/* Fila superior: Código y Estado */}
-                  <div className="flex items-center justify-between font-mono text-[8.5px] pb-1 border-b border-white/5 w-full">
-                    <span className={`font-bold ${isSelected ? 'text-white' : 'text-stone-400'}`}>
-                      {cat.code}
-                    </span>
-                    <span className={`text-[8px] font-sans font-bold px-1.5 py-0.2 rounded transition-all ${
-                      isSelected
-                        ? `${cat.badgeColor}`
-                        : 'text-stone-400 bg-white/5'
-                    }`}>
-                      {isSelected ? '● Activa' : 'Elegir'}
+                  {/* Foto desenfocada de fondo con opacidad suave y zoom sutil en hover */}
+                  <img
+                    src={cat.bgImage}
+                    alt=""
+                    aria-hidden="true"
+                    className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 filter blur-[0.5px] pointer-events-none select-none scale-105 group-hover:scale-110 ${
+                      isSelected ? 'opacity-35' : 'opacity-20 group-hover:opacity-30'
+                    }`}
+                  />
+
+                  {/* Degradados de alto contraste para máxima legibilidad */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-[#07090E]/90 via-[#07090E]/60 to-[#07090E]/95 pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#07090E] via-[#07090E]/80 to-transparent pointer-events-none" />
+
+                  {/* Fila superior: Código con línea decorativa estilo referencia y Estado */}
+                  <div className="relative z-10 flex items-start justify-between w-full">
+                    <div>
+                      <span className="font-heading font-black text-xs sm:text-sm tracking-wider uppercase text-white drop-shadow-sm">
+                        {cat.code}
+                      </span>
+                      {/* Línea decorativa como en la imagen de referencia */}
+                      <div className={`w-7 h-0.5 mt-1 rounded-full ${cat.underlineClass}`} />
+                    </div>
+
+                    <span
+                      className={`text-[8.5px] sm:text-[9.5px] font-heading font-black px-2 sm:px-2.5 py-0.5 rounded-full transition-all tracking-wider uppercase flex items-center gap-1 ${
+                        isSelected
+                          ? `${cat.neonPillClass} shadow-md`
+                          : 'text-stone-300 bg-black/60 border border-white/15'
+                      }`}
+                    >
+                      {isSelected ? (
+                        <>
+                          <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
+                          <span>Activa</span>
+                        </>
+                      ) : (
+                        <span>Elegir</span>
+                      )}
                     </span>
                   </div>
 
-                  {/* Icono y Título */}
-                  <div className="pt-2 space-y-1">
-                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-transform ${
-                      isSelected ? 'bg-white/10 text-white scale-105' : 'bg-white/5 text-stone-300'
-                    }`}>
-                      <IconComp className="w-4 h-4" />
+                  {/* Sección inferior: Icono en caja redondeada, Tag neón, Título Futura y Descripción */}
+                  <div className="relative z-10 pt-3 space-y-1.5">
+                    <div className="flex items-center gap-2">
+                      <div
+                        className={`w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center shrink-0 border transition-transform ${
+                          isSelected
+                            ? `${cat.iconBoxActive} scale-105 shadow-md`
+                            : 'bg-black/60 border-white/15 text-stone-300'
+                        }`}
+                      >
+                        <IconComp className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      </div>
+
+                      <span
+                        className={`inline-block text-[7.5px] sm:text-[8.5px] font-heading font-black uppercase tracking-wider px-2 py-0.5 rounded-md border ${
+                          isSelected
+                            ? cat.badgeColor
+                            : 'bg-black/50 text-stone-300 border-white/10'
+                        }`}
+                      >
+                        {cat.tag}
+                      </span>
                     </div>
 
                     <div>
-                      <span className={`inline-block text-[7.5px] sm:text-[8px] font-black uppercase tracking-wider px-1 py-0.2 rounded border ${cat.badgeColor}`}>
-                        {cat.tag}
-                      </span>
-                      <h3 className="text-xs font-bold text-white mt-0.5 leading-tight line-clamp-1">
+                      <h3 className="font-heading font-black text-white text-xs sm:text-sm md:text-base leading-snug tracking-tight">
                         {cat.label}
                       </h3>
+                      <p className="text-[9px] sm:text-[10px] text-stone-300/90 leading-tight mt-0.5 line-clamp-2 font-normal">
+                        {cat.desc}
+                      </p>
                     </div>
                   </div>
                 </button>
