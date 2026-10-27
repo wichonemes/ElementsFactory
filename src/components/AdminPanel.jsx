@@ -12488,10 +12488,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
             <div className="p-3.5 rounded-2xl bg-stone-50 border border-stone-200 flex items-center gap-3">
               <img
-                src={confirmDeleteProduct.primaryImage || '/placeholder.png'}
+                src={confirmDeleteProduct.primaryImage || './brand/artesano_isotipo_transparente.png'}
                 alt={confirmDeleteProduct.name}
                 className="w-14 h-14 object-cover rounded-xl border border-stone-200 shrink-0 bg-white"
-                onError={(e) => { e.target.src = '/placeholder.png'; }}
+                onError={(e) => { e.target.src = './brand/artesano_isotipo_transparente.png'; }}
               />
               <div className="min-w-0 flex-1 text-xs">
                 <h4 className="font-bold text-stone-900 truncate">{confirmDeleteProduct.name}</h4>
