@@ -76,7 +76,7 @@ export default function PublicidadDesarrolloView({
       code: 'BRAND-01',
       tag: 'Identidad Visual',
       desc: 'Logotipos vectoriales, paleta de color y manual de marca para tu negocio.',
-      bgImage: './maquetado-inicio-wicho-v2/assets/artesano-cover.webp',
+      bgImage: './portafolio/assets/artesano-cover.webp',
       icon: Palette,
       activeCardClass: 'border-amber-400 bg-amber-500/10 ring-2 ring-amber-400/30 text-white',
       glowBorderClass: 'border-[#e8b84f] ring-2 ring-[#e8b84f]/40 shadow-[0_0_20px_rgba(232,184,79,0.25)]',
@@ -96,7 +96,7 @@ export default function PublicidadDesarrolloView({
       code: 'PRINT-02',
       tag: 'Gran Formato',
       desc: 'Lonas de alta densidad, vinil cortado y microperforado para fachada o cancel.',
-      bgImage: './maquetado-inicio-wicho-v2/assets/civil-shirts.webp',
+      bgImage: './portafolio/assets/civil-shirts.webp',
       icon: Printer,
       activeCardClass: 'border-emerald-400 bg-emerald-500/10 ring-2 ring-emerald-400/30 text-white',
       glowBorderClass: 'border-emerald-400 ring-2 ring-emerald-400/40 shadow-[0_0_20px_rgba(16,185,129,0.25)]',
@@ -136,7 +136,7 @@ export default function PublicidadDesarrolloView({
       code: 'EDIT-04',
       tag: 'Contenido & Impresos',
       desc: 'Menús digitales, catálogos en PDF y contenido gráfico para historias y posts.',
-      bgImage: './maquetado-inicio-wicho-v2/assets/popol-spread.webp',
+      bgImage: './portafolio/assets/popol-spread.webp',
       icon: Film,
       activeCardClass: 'border-purple-400 bg-purple-500/10 ring-2 ring-purple-400/30 text-white',
       glowBorderClass: 'border-purple-400 ring-2 ring-purple-400/40 shadow-[0_0_20px_rgba(192,132,252,0.25)]',
@@ -628,19 +628,18 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                       : 'border-stone-800/90 bg-[#0E1218] hover:border-stone-700/80 shadow-md'
                   }`}
                 >
-                  {/* Foto desenfocada de fondo con opacidad suave y zoom sutil en hover */}
+                  {/* Foto desenfocada de fondo con opacidad visible y zoom sutil en hover */}
                   <img
                     src={cat.bgImage}
                     alt=""
                     aria-hidden="true"
-                    className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 filter blur-[0.5px] pointer-events-none select-none scale-105 group-hover:scale-110 ${
-                      isSelected ? 'opacity-35' : 'opacity-20 group-hover:opacity-30'
+                    className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 filter blur-[0.6px] pointer-events-none select-none scale-105 group-hover:scale-110 ${
+                      isSelected ? 'opacity-65' : 'opacity-45 group-hover:opacity-60'
                     }`}
                   />
 
-                  {/* Degradados de alto contraste para máxima legibilidad */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-[#07090E]/90 via-[#07090E]/60 to-[#07090E]/95 pointer-events-none" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#07090E] via-[#07090E]/80 to-transparent pointer-events-none" />
+                  {/* Degradado equilibrado: ligero arriba para apreciar la fotografía, oscuro abajo para el texto */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#080B10] via-[#080B10]/70 to-[#080B10]/25 pointer-events-none" />
 
                   {/* Fila superior: Código con línea decorativa estilo referencia y Estado */}
                   <div className="relative z-10 flex items-start justify-between w-full">

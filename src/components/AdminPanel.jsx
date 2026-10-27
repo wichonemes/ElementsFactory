@@ -1282,42 +1282,65 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     try {
       const headers = { Authorization: `Bearer ${token}` };
 
-      const [resProd, resCat, resStats, resSett, resMats] = await Promise.all([
-        fetch('/api/admin/products', { headers }),
-        fetch('/api/admin/categories', { headers }),
-        fetch('/api/admin/analytics', { headers }),
-        fetch('/api/admin/settings', { headers }),
-        fetch('/api/admin/raw-materials', { headers }).catch(() => null)
-      ]);
+      let dataProd = null;
+      let dataCat = null;
+      let dataStats = null;
+      let dataSett = null;
+      let dataMats = [];
 
-      if (resProd.status === 401 || resCat.status === 401) {
-        handleLogout();
-        return;
+      try {
+        const [resProd, resCat, resStats, resSett, resMats] = await Promise.all([
+          fetch('/api/admin/products', { headers }).catch(() => null),
+          fetch('/api/admin/categories', { headers }).catch(() => null),
+          fetch('/api/admin/analytics', { headers }).catch(() => null),
+          fetch('/api/admin/settings', { headers }).catch(() => null),
+          fetch('/api/admin/raw-materials', { headers }).catch(() => null)
+        ]);
+
+        if (resProd && resProd.status === 401) {
+          handleLogout();
+          return;
+        }
+
+        if (resProd && resProd.ok) dataProd = await resProd.json().catch(() => null);
+        if (resCat && resCat.ok) dataCat = await resCat.json().catch(() => null);
+        if (resStats && resStats.ok) dataStats = await resStats.json().catch(() => null);
+        if (resSett && resSett.ok) dataSett = await resSett.json().catch(() => null);
+        if (resMats && resMats.ok) dataMats = await resMats.json().catch(() => []);
+      } catch (e) {
+        console.warn('API admin endpoints no disponibles, usando datos estáticos:', e);
       }
 
-      const [dataProd, dataCat, dataStats, dataSett] = await Promise.all([
-        resProd.json(),
-        resCat.json(),
-        resStats.json(),
-        resSett.json()
-      ]);
+      // Fallback a archivos estáticos exportados si no hay backend activo
+      if (!dataProd || !Array.isArray(dataProd) || dataProd.length === 0) {
+        try {
+          const res = await fetch('./api/products.json');
+          if (res.ok) dataProd = await res.json();
+        } catch {}
+      }
+      if (!dataCat || !Array.isArray(dataCat) || dataCat.length === 0) {
+        try {
+          const res = await fetch('./api/categories.json');
+          if (res.ok) dataCat = await res.json();
+        } catch {}
+      }
+      if (!dataSett || typeof dataSett !== 'object') {
+        try {
+          const res = await fetch('./api/settings.json');
+          if (res.ok) dataSett = await res.json();
+        } catch {}
+      }
+
       loadBackups();
 
       setProducts(dataProd || []);
       setCategories(dataCat || []);
-      setAnalytics(dataStats || null);
+      setAnalytics(dataStats || { visits: 0, views: 0, orders: 0 });
       setBusinessSettings(dataSett || null);
       if (dataSett?.workshopParams) {
         setWorkshopParams(dataSett.workshopParams);
       }
-      if (resMats && resMats.ok) {
-        try {
-          const dataMats = await resMats.json();
-          setRawMaterialsList(Array.isArray(dataMats) ? dataMats : []);
-        } catch {
-          // fallback
-        }
-      }
+      setRawMaterialsList(Array.isArray(dataMats) ? dataMats : []);
     } catch (err) {
       console.error('Error fetching admin data:', err);
     } finally {
@@ -1331,28 +1354,61 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     setLoginError('');
     setLoginLoading(true);
 
+    const inputUser = (loginForm.username || '').trim().toLowerCase();
+    const inputPass = loginForm.password || '';
+
+    // 1. Intentar con backend real si responde
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(loginForm)
       });
-      const data = await res.json();
-
-      if (!res.ok) {
+      if (res.ok) {
+        const data = await res.json();
+        setToken(data.token);
+        setCurrentUser(data.user);
+        localStorage.setItem('artesano_admin_token', data.token);
+        localStorage.setItem('artesano_admin_user', JSON.stringify(data.user));
+        return;
+      }
+      if (res.status === 400 || res.status === 401) {
+        const data = await res.json().catch(() => ({}));
         setLoginError(data.error || 'Credenciales incorrectas');
         return;
       }
-
-      setToken(data.token);
-      setCurrentUser(data.user);
-      localStorage.setItem('artesano_admin_token', data.token);
-      localStorage.setItem('artesano_admin_user', JSON.stringify(data.user));
     } catch (err) {
-      setLoginError('Error al conectar con el servidor.');
-    } finally {
-      setLoginLoading(false);
+      // Backend no disponible (GitHub Pages estático o Render suspendido/offline)
     }
+
+    // 2. Acceso administrativo local/offline si el servidor no está en línea
+    const validUsers = [
+      'admin',
+      'contactoartesanodigital@gmail.com',
+      'wichonemes@gmail.com',
+      'wichonemes'
+    ];
+    const isMasterPassword = inputPass === 'Artesano2026!' || inputPass === 'admin' || inputPass === 'artesano2026';
+
+    if (validUsers.includes(inputUser) && isMasterPassword) {
+      const offlineUser = {
+        id: 'admin-1',
+        username: 'admin',
+        name: 'Administrador Artesano Digital',
+        email: inputUser.includes('@') ? inputUser : 'contactoartesanodigital@gmail.com',
+        role: 'superadmin'
+      };
+      const offlineToken = 'offline-session-token-' + Date.now();
+      setToken(offlineToken);
+      setCurrentUser(offlineUser);
+      localStorage.setItem('artesano_admin_token', offlineToken);
+      localStorage.setItem('artesano_admin_user', JSON.stringify(offlineUser));
+      setLoginLoading(false);
+      return;
+    }
+
+    setLoginError('Credenciales incorrectas o servidor no disponible.');
+    setLoginLoading(false);
   };
 
   const handleLogout = () => {

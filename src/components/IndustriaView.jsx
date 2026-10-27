@@ -575,19 +575,18 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                             : 'border-white/10 bg-[#0B0F13] hover:border-white/25 active:scale-[0.98] shadow-md'
                         }`}
                       >
-                        {/* Foto desenfocada de fondo con opacidad suave */}
+                        {/* Foto desenfocada de fondo con opacidad visible y zoom sutil en hover */}
                         <img
                           src={app.bgImage}
                           alt=""
                           aria-hidden="true"
-                          className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 filter blur-[0.5px] pointer-events-none select-none scale-105 group-hover:scale-110 ${
-                            isSelected ? 'opacity-35' : 'opacity-20 group-hover:opacity-30'
+                          className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 filter blur-[0.6px] pointer-events-none select-none scale-105 group-hover:scale-110 ${
+                            isSelected ? 'opacity-65' : 'opacity-45 group-hover:opacity-60'
                           }`}
                         />
 
-                        {/* Degradados de alto contraste para máxima legibilidad */}
-                        <div className="absolute inset-0 bg-gradient-to-b from-[#060A0D]/90 via-[#060A0D]/60 to-[#060A0D]/95 pointer-events-none" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#060A0D] via-[#060A0D]/80 to-transparent pointer-events-none" />
+                        {/* Degradado equilibrado: ligero arriba para apreciar la fotografía, oscuro abajo para el texto */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#060A0D] via-[#060A0D]/70 to-[#060A0D]/25 pointer-events-none" />
 
                         {/* Fila superior: Código con línea decorativa estilo referencia y Estado */}
                         <div className="relative z-10 flex items-start justify-between w-full">
