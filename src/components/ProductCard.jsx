@@ -38,6 +38,8 @@ export default function ProductCard({
     'laser': { label: 'Láser', color: 'bg-amber-50 text-amber-800 border-amber-200' },
     'sublimation': { label: 'Sublimación', color: 'bg-rose-50 text-rose-800 border-rose-200' },
     'vinyl': { label: 'Vinil', color: 'bg-indigo-50 text-indigo-800 border-indigo-200' },
+    'print': { label: 'Impresión', color: 'bg-cyan-50 text-cyan-800 border-cyan-200' },
+    'impresion_laser': { label: 'Impresión', color: 'bg-cyan-50 text-cyan-800 border-cyan-200' },
     'nfc': { label: 'NFC', color: 'bg-teal-50 text-teal-800 border-teal-200' }
   };
 

@@ -326,7 +326,23 @@ export default function App() {
       if (Array.isArray(dataWorlds) && dataWorlds.length > 0) setWorlds(dataWorlds.map(normalizeWorldItem));
       if (Array.isArray(dataCats) && dataCats.length > 0) setCategories(dataCats);
       if (Array.isArray(dataProds) && dataProds.length > 0) setProducts(dataProds.map(normalizeProductItem));
-      if (dataSettings && typeof dataSettings === 'object') setSettings(normalizeSettingsData(dataSettings));
+      if (dataSettings && typeof dataSettings === 'object') {
+        let mergedSettings = dataSettings;
+        try {
+          const cached = JSON.parse(localStorage.getItem('artesano_settings_cache') || 'null');
+          if (cached && typeof cached === 'object') {
+            mergedSettings = {
+              ...dataSettings,
+              ...cached,
+              categoryBackgroundPhotos: {
+                ...(dataSettings.categoryBackgroundPhotos || {}),
+                ...(cached.categoryBackgroundPhotos || {})
+              }
+            };
+          }
+        } catch {}
+        setSettings(normalizeSettingsData(mergedSettings));
+      }
       if (dataCamp && typeof dataCamp === 'object') setCampaignsConfig(dataCamp);
     } catch (err) {
       console.warn('Catálogo usando datos estáticos:', err);
@@ -356,6 +372,7 @@ export default function App() {
         const matchesTech = p.techniques?.some(t => {
           if (selectedTechnique === 'vinyl') return t === 'vinyl' || t === 'vinil';
           if (selectedTechnique === 'sublimation') return t === 'sublimation' || t === 'sublimacion';
+          if (selectedTechnique === 'print') return t === 'print' || t === 'impresion_laser';
           return t === selectedTechnique;
         });
         if (!matchesTech) return false;
@@ -434,10 +451,11 @@ export default function App() {
         'sublimation': shuffle(baseList.filter(p => (p.techniques?.includes('sublimation') || p.techniques?.includes('sublimacion')))),
         'personalizados': shuffle(baseList.filter(p => p.worlds?.includes('personalizados'))),
         'vinyl': shuffle(baseList.filter(p => (p.techniques?.includes('vinyl') || p.techniques?.includes('vinil')))),
+        'print': shuffle(baseList.filter(p => (p.techniques?.includes('print') || p.techniques?.includes('impresion_laser')))),
         'nfc': shuffle(baseList.filter(p => p.techniques?.includes('nfc')))
       };
 
-      const keys = shuffle(['3d', 'laser', 'sublimation', 'personalizados', 'vinyl', 'nfc']);
+      const keys = shuffle(['3d', 'laser', 'sublimation', 'personalizados', 'vinyl', 'print', 'nfc']);
       const maxLen = Math.max(...Object.values(buckets).map(b => b.length));
       const seen = new Set();
       const interleaved = [];

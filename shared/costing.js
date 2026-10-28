@@ -26,6 +26,8 @@ export const TECHNIQUE_MACHINE_PROFILE = {
   '3d': { watts: 250, minutes: 120, laborMinutes: 8 },
   laser: { watts: 450, minutes: 20, laborMinutes: 12 },
   sublimation: { watts: 1800, minutes: 6, laborMinutes: 6 },
+  impresion_laser: { watts: 900, minutes: 5, laborMinutes: 7 },
+  print: { watts: 900, minutes: 5, laborMinutes: 7 },
   dtf: { watts: 1800, minutes: 12, laborMinutes: 10 },
   vinyl: { watts: 60, minutes: 12, laborMinutes: 12 },
   nfc: { watts: 250, minutes: 30, laborMinutes: 10 },

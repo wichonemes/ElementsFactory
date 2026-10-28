@@ -1459,6 +1459,62 @@ export default function SalesMarketingSection({ token, products = [], settings =
             </button>
           </div>
 
+          {/* Resumen rápido del libro de pedidos */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="bg-white p-4 rounded-2xl border border-[#E8E4DA] shadow-xs">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Pedidos registrados</span>
+                <ShoppingBag className="w-4 h-4 text-[#2D4F3E]" />
+              </div>
+              <div className="text-2xl font-black font-heading text-[#1F2421] mt-1">{orders.length}</div>
+              <div className="text-[10px] text-gray-400 mt-0.5">
+                {orders.filter(o => !['pagado', 'cancelado'].includes(o.status)).length} por atender
+              </div>
+            </div>
+
+            <div className="bg-white p-4 rounded-2xl border border-[#E8E4DA] shadow-xs">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700">Cobrado</span>
+                <DollarSign className="w-4 h-4 text-emerald-600" />
+              </div>
+              <div className="text-2xl font-black font-heading text-emerald-800 mt-1">
+                ${orders.filter(o => o.status === 'pagado').reduce((sum, o) => sum + (Number(o.amount) || 0), 0).toLocaleString('es-MX')}
+              </div>
+              <div className="text-[10px] text-emerald-600/80 mt-0.5">
+                {orders.filter(o => o.status === 'pagado').length} pedido(s) pagado(s)
+              </div>
+            </div>
+
+            <div className="bg-white p-4 rounded-2xl border border-[#E8E4DA] shadow-xs">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700">Por cobrar</span>
+                <Clock className="w-4 h-4 text-amber-600" />
+              </div>
+              <div className="text-2xl font-black font-heading text-amber-800 mt-1">
+                ${orders.filter(o => ['cotizado', 'confirmado'].includes(o.status)).reduce((sum, o) => sum + (Number(o.amount) || 0), 0).toLocaleString('es-MX')}
+              </div>
+              <div className="text-[10px] text-amber-600/80 mt-0.5">
+                Cotizaciones y pedidos confirmados
+              </div>
+            </div>
+
+            <div className="bg-white p-4 rounded-2xl border border-[#E8E4DA] shadow-xs">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#2D4F3E]">Margen estimado</span>
+                <TrendingUp className="w-4 h-4 text-[#2D4F3E]" />
+              </div>
+              <div className="text-2xl font-black font-heading text-[#2D4F3E] mt-1">
+                ${orders.reduce((sum, o) => {
+                  if (!o.hasCosts || o.totalCost === null || o.totalCost === undefined) return sum;
+                  return sum + Math.max(0, (Number(o.amount) || 0) - (Number(o.totalCost) || 0));
+                }, 0).toLocaleString('es-MX')}
+              </div>
+              <div className="text-[10px] text-gray-400 mt-0.5">
+                Solo pedidos con costos de taller
+              </div>
+            </div>
+          </div>
+
           {filteredOrdersList.length === 0 ? (
             <div className="bg-white rounded-2xl border border-[#E8E4DA] p-12 text-center space-y-3">
               <div className="w-12 h-12 rounded-2xl bg-gray-100 text-gray-400 mx-auto flex items-center justify-center">

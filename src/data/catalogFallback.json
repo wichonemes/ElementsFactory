@@ -287,6 +287,14 @@
           "productCount": 1
         }
       ]
+    },
+    {
+      "id": "servicios",
+      "name": "Servicios",
+      "tagline": "Diseño gráfico, desarrollo web, gran formato y manufactura técnica industrial",
+      "image": "./uploads/brand_artesano_digital_og.jpg",
+      "description": "Portafolio integral de soluciones profesionales: identidad de marca, lonas y corte de vinil por Wicho Nemes, y manufactura aditiva técnica, refacciones bajo demanda y utillaje B2B.",
+      "categories": []
     }
   ],
   "categories": [
@@ -4801,15 +4809,15 @@
     {
       "id": "leopardo-bobble-head-j1",
       "code": "J1",
-      "name": "Jaguar Articulado Flexible Print-in-Place",
+      "name": "Leopardo Bobble Head con Movimiento Print-in-Place",
       "priceType": "starting_at",
       "price": 149,
       "priceUnit": "pieza",
       "status": "published",
       "featured": true,
       "worlds": [
-        "juguetes",
-        "hogar"
+        "hogar",
+        "juguetes"
       ],
       "categories": [
         "juguetes-movimiento",
@@ -4825,13 +4833,13 @@
         "./uploads/catalog-v2-j1-detail-oficial.webp",
         "./uploads/catalog-v2-j1-scale-oficial.webp"
       ],
-      "shortDescription": "Figura lúdica articulada de jaguar con cuerpo flexible segmentado print-in-place en una sola pieza sin partes desprendibles.",
-      "fullDescription": "Juguete dinámico y coleccionable diseñado para cautivar tanto a niños como a amantes de los felinos. Su estructura interna articulada print-in-place permite un movimiento flexible ultra fluido y relajante. Fabricado en filamento PLA ecológico no tóxico con esquinas redondeadas para máxima seguridad infantil.",
+      "shortDescription": "Figura lúdica articulada de leopardo con cabeza oscilante sobre péndulo mecánico interno, impresa en una sola pieza sin partes desprendibles.",
+      "fullDescription": "Juguete dinámico y coleccionable diseñado para cautivar tanto a niños como a amantes de los animales. Su estructura interna articulada print-in-place permite que la cabeza oscile de forma fluida y divertida con el más mínimo toque o vibración, sin requerir baterías, resortes metálicos ni pegamento. Fabricado en filamento PLA ecológico no tóxico con esquinas redondeadas para máxima seguridad infantil.",
       "specifications": {
-        "dimensions": "12 cm de largo x 4 cm de alto",
+        "dimensions": "9.5 cm de largo x 6.2 cm de ancho x 7.8 cm de alto",
         "material": "PLA Premium biodegradable no tóxico (apto para niños)",
-        "finish": "Satinado suave al tacto con rosetas y manchas en relieve",
-        "includes": "Figura de jaguar articulado flexible de una sola pieza",
+        "finish": "Mate satinado suave al tacto con rosetas características en relieve",
+        "includes": "Figura de leopardo con mecanismo pendular integrado listo para jugar",
         "minQuantity": 1,
         "estimatedLeadTime": "1 a 2 días hábiles",
         "careNotes": "Limpieza con paño seco o ligeramente húmedo. No sumergir en agua hirviendo ni exponer a fuego directo."
@@ -4876,8 +4884,8 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "juguetes",
-        "hogar"
+        "hogar",
+        "juguetes"
       ],
       "categories": [
         "juguetes-articulados",
@@ -4896,7 +4904,7 @@
       "shortDescription": "Mascota de bolsillo articulada en eslabones continuos con ranura para imán de neodimio y ojillo reforzado para llavero.",
       "fullDescription": "El accesorio infantil y juvenil más popular de manufactura aditiva. Su columna segmentada mediante rótulas integradas de una sola pieza ofrece un movimiento fluido ultra relajante (fidget toy). Diseñado con doble funcionalidad: úsalo como llavero para mochila escolar o coloca su imán en el refrigerador, pizarrón magnético o gaveta metálica.",
       "specifications": {
-        "dimensions": "12 cm de largo x 5 cm de alto",
+        "dimensions": "10.2 cm de largo x 4.5 cm de ancho x 2.2 cm de grosor",
         "material": "PLA de alta tenacidad no tóxico",
         "finish": "Bicolor satinado con detalles definidos en cola y hocico",
         "includes": "Zorrito flexible + argolla metálica reforzada de llavero + imán de neodimio N52 instalado",
@@ -7241,5 +7249,5 @@
       }
     ]
   },
-  "exportedAt": "2026-10-28T21:56:08.110Z"
+  "exportedAt": "2026-10-28T23:15:54.759Z"
 }

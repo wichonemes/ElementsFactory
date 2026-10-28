@@ -251,7 +251,16 @@ export default function AreaBannersAdminSection({
   const [statusMsg, setStatusMsg] = useState({ type: '', text: '' });
 
   // Configuración de tarjetas (sincronizada con businessSettings)
-  const [cardsConfig, setCardsConfig] = useState({
+  const [cardsConfig, setCardsConfig] = useState(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const cached = JSON.parse(localStorage.getItem('artesano_settings_cache') || 'null');
+        if (cached?.categoryBackgroundPhotos?.diseno || cached?.categoryBackgroundPhotos?.industria) {
+          return cached.categoryBackgroundPhotos;
+        }
+      } catch {}
+    }
+    return {
     diseno: {
       branding: { url: './portafolio/assets/artesano-cover.webp', enabled: false },
       publicidad: { url: './portafolio/assets/civil-shirts.webp', enabled: false },
@@ -264,6 +273,7 @@ export default function AreaBannersAdminSection({
       spare: { url: './uploads/industria_portada_oficial_ingenieria.webp', enabled: false },
       batch: { url: './uploads/catalog-v2-ind1-detail-oficial.webp', enabled: false }
     }
+    };
   });
 
   // Inicializar tarjetas desde businessSettings o API
@@ -443,6 +453,20 @@ export default function AreaBannersAdminSection({
   // GESTIÓN DE LAS 8 TARJETAS DE SELECCIÓN
   // ==========================================
 
+  const persistCardsPreview = (updated) => {
+    const draftSettings = {
+      ...(businessSettings || {}),
+      showCategoryBackgroundPhotos: true,
+      categoryBackgroundPhotos: updated
+    };
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('artesano_settings_cache', JSON.stringify(draftSettings));
+      } catch {}
+    }
+    if (onUpdateSettings) onUpdateSettings(draftSettings);
+  };
+
   // Activar o desactivar foto de una tarjeta específica
   const handleToggleCardPhoto = (section, cardKey) => {
     const current = cardsConfig[section]?.[cardKey] || { url: '', enabled: false };
@@ -458,6 +482,9 @@ export default function AreaBannersAdminSection({
       }
     };
     setCardsConfig(updated);
+
+    persistCardsPreview(updated);
+
     setStatusMsg({
       type: 'info',
       text: newEnabled
@@ -521,6 +548,7 @@ export default function AreaBannersAdminSection({
       };
 
       setCardsConfig(updated);
+      persistCardsPreview(updated);
       setStatusMsg({
         type: 'success',
         text: `¡Foto de "${cardKey.toUpperCase()}" subida y activada! Recuerda dar clic en "Guardar Cambios de Tarjetas".`
@@ -550,7 +578,7 @@ export default function AreaBannersAdminSection({
 
   // Restaurar foto original
   const handleResetCard = (section, cardKey, defaultUrl) => {
-    setCardsConfig({
+    const restored = {
       ...cardsConfig,
       [section]: {
         ...cardsConfig[section],
@@ -559,7 +587,9 @@ export default function AreaBannersAdminSection({
           enabled: false
         }
       }
-    });
+    };
+    setCardsConfig(restored);
+    persistCardsPreview(restored);
     setStatusMsg({ type: 'info', text: `Tarjeta "${cardKey.toUpperCase()}" restaurada a foto original (desactivada).` });
   };
 
@@ -570,6 +600,7 @@ export default function AreaBannersAdminSection({
       industria: Object.fromEntries(Object.entries(cardsConfig.industria || {}).map(([k, v]) => [k, { ...v, enabled: false }]))
     };
     setCardsConfig(updated);
+    persistCardsPreview(updated);
     setStatusMsg({ type: 'info', text: 'Todas las fotos de fondo han sido desactivadas (Modo oscuro activo para las 8 tarjetas).' });
   };
 
@@ -580,6 +611,7 @@ export default function AreaBannersAdminSection({
       industria: Object.fromEntries(Object.entries(cardsConfig.industria || {}).map(([k, v]) => [k, { ...v, enabled: true }]))
     };
     setCardsConfig(updated);
+    persistCardsPreview(updated);
     setStatusMsg({ type: 'info', text: 'Todas las fotos de fondo han sido activadas.' });
   };
 
@@ -590,6 +622,7 @@ export default function AreaBannersAdminSection({
 
     const updatedSettings = {
       ...(businessSettings || {}),
+      showCategoryBackgroundPhotos: true,
       categoryBackgroundPhotos: cardsConfig
     };
 
@@ -603,11 +636,14 @@ export default function AreaBannersAdminSection({
         body: JSON.stringify(updatedSettings)
       });
 
-      if (onUpdateSettings) {
-        onUpdateSettings(updatedSettings);
+      if (!res.ok) {
+        throw new Error(`El servidor respondió ${res.status}; se guardó la vista local.`);
       }
 
       localStorage.setItem('artesano_settings_cache', JSON.stringify(updatedSettings));
+      if (onUpdateSettings) {
+        onUpdateSettings(updatedSettings);
+      }
       setStatusMsg({
         type: 'success',
         text: '¡Las 8 tarjetas de Diseño e Industria se guardaron y sincronizaron con éxito en la tienda!'

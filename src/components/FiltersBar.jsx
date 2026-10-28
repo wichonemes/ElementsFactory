@@ -1,5 +1,5 @@
 import React from 'react';
-import { Filter, X, Box, Flame, Layers, Wand2, Sparkles, SlidersHorizontal } from 'lucide-react';
+import { Filter, X, Box, Flame, Layers, Wand2, Sparkles, SlidersHorizontal, Printer } from 'lucide-react';
 
 export default function FiltersBar({
   activeWorld,
@@ -21,6 +21,7 @@ export default function FiltersBar({
     { id: 'laser', label: 'Corte Láser', icon: Flame },
     { id: 'sublimation', label: 'Sublimación', icon: Layers },
     { id: 'vinyl', label: 'Vinil & Textil', icon: Wand2 },
+    { id: 'print', label: 'Impresión & Papelería', icon: Printer },
     { id: 'nfc', label: 'Soluciones NFC', icon: Sparkles }
   ];
 
