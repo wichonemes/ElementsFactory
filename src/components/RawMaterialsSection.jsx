@@ -487,6 +487,26 @@ export default function RawMaterialsSection({
   // Estados de control de navegación horizontal y regreso al inicio (UX optimizada)
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [compactViewMode, setCompactViewMode] = useState(false);
+
+  // Vista del inventario: tarjetas (predeterminada, estilo catálogo) o tabla compacta
+  const [inventoryViewMode, setInventoryViewMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('artesano_inventory_view_mode');
+        if (saved === 'cards' || saved === 'table') return saved;
+      } catch (e) {}
+    }
+    return 'cards';
+  });
+
+  const handleChangeInventoryView = (mode) => {
+    setInventoryViewMode(mode);
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('artesano_inventory_view_mode', mode);
+      }
+    } catch (e) {}
+  };
   const [tableScrollWidth, setTableScrollWidth] = useState(1200);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -2817,7 +2837,37 @@ Artesano Digital — Taller & Manufactura Inteligente`;
                 </span>
               </div>
 
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5 flex-wrap">
+                {/* Selector de vista: Tarjetas / Tabla */}
+                <div className="flex items-center gap-0.5 bg-white p-0.5 rounded-lg border border-gray-200 shadow-2xs">
+                  <button
+                    type="button"
+                    onClick={() => handleChangeInventoryView('cards')}
+                    className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10.5px] font-bold transition-all cursor-pointer ${
+                      inventoryViewMode === 'cards'
+                        ? 'bg-[#2D4F3E] text-white shadow-2xs'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-stone-100'
+                    }`}
+                    title="Ver insumos en tarjetas"
+                  >
+                    <Boxes className="w-3.5 h-3.5" />
+                    <span>Tarjetas</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleChangeInventoryView('table')}
+                    className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10.5px] font-bold transition-all cursor-pointer ${
+                      inventoryViewMode === 'table'
+                        ? 'bg-[#2D4F3E] text-white shadow-2xs'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-stone-100'
+                    }`}
+                    title="Ver insumos en tabla compacta"
+                  >
+                    <Layers className="w-3.5 h-3.5" />
+                    <span>Tabla</span>
+                  </button>
+                </div>
+
                 <button
                   type="button"
                   onClick={handleOpenNewModal}
@@ -2854,7 +2904,295 @@ Artesano Digital — Taller & Manufactura Inteligente`;
               </div>
             </div>
 
-            {/* Contenedor de tabla 100% ajustado a la ventana, sin desborde ni barra desplazadora horizontal */}
+            {inventoryViewMode === 'cards' ? (
+              /* VISTA EN TARJETAS: INSUMOS & STOCK ESTILO CATÁLOGO */
+              <div className="p-3 sm:p-4 bg-[#FAF9F5]/60">
+                {filteredMaterials.length === 0 ? (
+                  <div className="py-12 px-4 text-center text-gray-500 bg-white rounded-2xl border border-dashed border-[#D8D2C4]">
+                    <Boxes className="w-10 h-10 text-gray-300 mx-auto mb-2" />
+                    <p className="font-bold text-sm text-gray-700">No se encontraron materias primas con estos filtros</p>
+                    <p className="text-xs text-gray-400 mt-1 max-w-sm mx-auto">
+                      Prueba seleccionando otra técnica, limpiando la búsqueda o restableciendo los filtros de color y acabado.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFilterCategory('all');
+                        setFilterMaterialType('all');
+                        setFilterColor('all');
+                        setFilterFinish('all');
+                        setFilterStockStatus('all');
+                        setSearchQuery('');
+                      }}
+                      className="mt-3 px-4 py-2 rounded-xl bg-[#2D4F3E] text-white text-xs font-bold hover:bg-[#20392C] cursor-pointer transition-all shadow-xs"
+                    >
+                      Restablecer todos los filtros
+                    </button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3.5 sm:gap-4">
+                    {filteredMaterials.map(mat => {
+                      const st = getStockStatus(mat);
+                      const catBadge = getCategoryBadge(mat.category);
+                      const currentStockInputVal = editingStockMap[mat.id] !== undefined ? editingStockMap[mat.id] : mat.currentStock;
+                      const minAlertInputVal = editingMinAlertMap[mat.id] !== undefined ? editingMinAlertMap[mat.id] : mat.minStockAlert;
+                      const costInputVal = editingCostMap[mat.id] !== undefined ? editingCostMap[mat.id] : mat.costPerUnit;
+                      const filamentColor = getFilamentColor(mat.color && mat.color !== 'N/A' ? mat.color : mat.name);
+                      const parsedPkg = parsePackageInfo(mat);
+                      const pkgQtyInputVal = editingPackageQtyMap[mat.id] !== undefined ? editingPackageQtyMap[mat.id] : (mat.packageQuantity || parsedPkg.packageQuantity);
+                      const pkgMeasInputVal = editingPackageMeasMap[mat.id] !== undefined ? editingPackageMeasMap[mat.id] : (mat.packageMeasurement || parsedPkg.packageMeasurement);
+                      const baseUnitCost = (Number(costInputVal) || 0) / (Number(pkgQtyInputVal) || 1);
+                      const isRedAlert = (Number(currentStockInputVal) || 0) <= (Number(minAlertInputVal) || 1);
+                      const lineVal = (Number(currentStockInputVal) || 0) * (Number(costInputVal) || 0);
+
+                      return (
+                        <div
+                          key={`card-${mat.id}`}
+                          className={`rounded-3xl border bg-white overflow-hidden flex flex-col justify-between shadow-xs hover:shadow-md transition-all ${
+                            isRedAlert ? 'border-rose-300 ring-1 ring-rose-100' : 'border-[#E8E4DA] hover:border-gray-400'
+                          }`}
+                        >
+                          <div className="p-4 space-y-3">
+                            {/* Encabezado: icono de categoría, nombre, clasificación y estado */}
+                            <div className="flex items-start gap-3">
+                              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xl border shrink-0 shadow-2xs ${catBadge.color}`}>
+                                <span>{catBadge.icon}</span>
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <div className="flex flex-wrap items-center gap-1">
+                                  <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-bold border ${catBadge.color}`}>
+                                    <span>{catBadge.label}</span>
+                                  </span>
+                                  {mat.materialType && mat.materialType !== 'General' && mat.materialType !== 'N/A' && (
+                                    <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-stone-100 text-stone-700 border border-stone-200">
+                                      {mat.materialType}
+                                    </span>
+                                  )}
+                                  {mat.finish && mat.finish !== 'Estándar' && (
+                                    <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                                      <Sparkles className="w-2.5 h-2.5 text-amber-500" />
+                                      <span>{mat.finish}</span>
+                                    </span>
+                                  )}
+                                </div>
+                                <h4 className="font-bold text-sm text-[#1F2421] leading-snug mt-1 break-words" title={mat.name}>
+                                  {mat.name}
+                                </h4>
+                                <div className="mt-1 flex flex-wrap items-center gap-1.5 text-[9.5px] text-gray-500">
+                                  {filamentColor && (
+                                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[#FAF7F0] border border-[#E5D7B7] text-[#9E472A] font-bold">
+                                      <span
+                                        className="w-2 h-2 rounded-full border border-black/20"
+                                        style={{ background: filamentColor.css }}
+                                      />
+                                      <span>{filamentColor.name}</span>
+                                    </span>
+                                  )}
+                                  {mat.unit && (
+                                    <span className="px-1.5 py-0.5 rounded bg-gray-100 border border-gray-200 text-gray-600 font-semibold">
+                                      Unidad: {mat.unit}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                              <span className={`shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black border ${st.color}`}>
+                                <span>{st.icon}</span>
+                                <span>{st.key === 'urgent' ? 'Agotado' : st.key === 'warning' ? 'Bajo' : 'Stock OK'}</span>
+                              </span>
+                            </div>
+
+                            {/* Stock actual, alerta mínima y valor en almacén */}
+                            <div className={`rounded-2xl border p-2.5 ${isRedAlert ? 'bg-rose-50/70 border-rose-200' : 'bg-[#FAF9F5] border-[#E8E4DA]'}`}>
+                              <div className="flex items-center justify-between gap-2">
+                                <div className="min-w-0">
+                                  <div className="text-[9px] font-bold uppercase tracking-wider text-gray-500">Stock actual</div>
+                                  <div className="flex items-center gap-1.5 mt-0.5">
+                                    <input
+                                      type="number"
+                                      step="any"
+                                      min="0"
+                                      value={currentStockInputVal}
+                                      onChange={(e) => {
+                                        const val = e.target.value;
+                                        setEditingStockMap(prev => ({ ...prev, [mat.id]: val }));
+                                      }}
+                                      onBlur={(e) => handleSaveStock(mat.id, e.target.value)}
+                                      onKeyDown={(e) => {
+                                        if (e.key === 'Enter') handleSaveStock(mat.id, e.currentTarget.value);
+                                      }}
+                                      className="w-16 text-xl font-black font-mono bg-transparent border-0 py-0 text-[#1F2421] focus:outline-none focus:ring-0"
+                                      title="Escribe la cantidad exacta"
+                                    />
+                                    <span className="text-[10px] text-gray-500 font-semibold truncate max-w-[70px]">{mat.unit || 'pza'}</span>
+                                  </div>
+                                </div>
+                                <div className="inline-flex items-center gap-0.5 bg-white p-0.5 rounded-xl border border-gray-300 shadow-2xs shrink-0">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleAdjustStock(mat, String(mat.unit || '').includes('kg') ? -0.2 : -1)}
+                                    className="w-7 h-7 rounded-lg bg-gray-50 hover:bg-gray-100 text-gray-700 font-black flex items-center justify-center cursor-pointer transition-colors text-sm"
+                                    title="Restar cantidad"
+                                  >
+                                    -
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleAdjustStock(mat, String(mat.unit || '').includes('kg') ? +0.5 : +1)}
+                                    className="w-7 h-7 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-[#2D4F3E] font-black flex items-center justify-center cursor-pointer transition-colors text-sm"
+                                    title="Sumar cantidad"
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                              </div>
+                              <div className="mt-2 pt-1.5 border-t border-gray-200/70 flex items-end justify-between gap-2">
+                                <div className="flex items-center gap-1 text-[9.5px] text-gray-500">
+                                  <span className="font-bold">Mín. alerta</span>
+                                  <input
+                                    type="number"
+                                    step="any"
+                                    min="0"
+                                    value={minAlertInputVal}
+                                    onChange={(e) => {
+                                      const val = e.target.value;
+                                      setEditingMinAlertMap(prev => ({ ...prev, [mat.id]: val }));
+                                    }}
+                                    onBlur={(e) => handleSaveMinAlert(mat.id, e.target.value)}
+                                    onKeyDown={(e) => {
+                                      if (e.key === 'Enter') handleSaveMinAlert(mat.id, e.currentTarget.value);
+                                    }}
+                                    className="w-12 text-center font-mono font-bold text-[10px] bg-white border border-gray-200 rounded py-0.5 text-gray-700 focus:outline-none focus:ring-1 focus:ring-[#2D4F3E]"
+                                    title="Mínimo de alerta editable"
+                                  />
+                                  <span className="text-gray-400">{mat.unit || 'pza'}</span>
+                                </div>
+                                <div className="text-right">
+                                  <div className="text-[8.5px] font-bold uppercase tracking-wider text-gray-400">Valor almacén</div>
+                                  <div className="font-black font-mono text-sm text-[#2D4F3E]">
+                                    ${lineVal.toLocaleString('es-MX', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Contenido del paquete y costo */}
+                            <div className="grid grid-cols-2 gap-2">
+                              <div className="bg-white rounded-xl border border-[#E8E4DA] p-2">
+                                <div className="text-[9px] font-bold uppercase tracking-wider text-gray-500">Contenido paquete</div>
+                                <div className="flex items-center gap-1 mt-1">
+                                  <input
+                                    type="number"
+                                    step="any"
+                                    min="0.001"
+                                    value={pkgQtyInputVal}
+                                    onChange={(e) => {
+                                      const val = e.target.value;
+                                      setEditingPackageQtyMap(prev => ({ ...prev, [mat.id]: val }));
+                                    }}
+                                    onBlur={(e) => handleSavePackageInfo(mat, e.target.value, pkgMeasInputVal)}
+                                    onKeyDown={(e) => {
+                                      if (e.key === 'Enter') handleSavePackageInfo(mat, e.currentTarget.value, pkgMeasInputVal);
+                                    }}
+                                    className="w-12 text-center font-bold font-mono text-xs bg-gray-50 border border-gray-300 rounded py-0.5 text-gray-800 focus:outline-none focus:ring-1 focus:ring-[#2D4F3E]"
+                                    title="Cantidad o piezas por paquete"
+                                  />
+                                  <select
+                                    value={pkgMeasInputVal}
+                                    onChange={(e) => {
+                                      const val = e.target.value;
+                                      setEditingPackageMeasMap(prev => ({ ...prev, [mat.id]: val }));
+                                      handleSavePackageInfo(mat, pkgQtyInputVal, val);
+                                    }}
+                                    className="flex-1 min-w-0 px-1 py-0.5 text-center font-bold text-[10px] bg-gray-50 border border-gray-300 rounded text-[#2D4F3E] focus:outline-none cursor-pointer"
+                                    title="Unidad de medición base"
+                                  >
+                                    <option value="g">g</option>
+                                    <option value="pza">pza</option>
+                                    <option value="ml">ml</option>
+                                    <option value="m">m</option>
+                                    <option value="cm²">cm²</option>
+                                    <option value="hoja">hoja</option>
+                                    <option value="kg">kg</option>
+                                    <option value="L">L</option>
+                                    <option value="par">par</option>
+                                    <option value="pliego">pliego</option>
+                                  </select>
+                                </div>
+                                <div className="text-[8.5px] text-gray-400 mt-1">1 emp = {pkgQtyInputVal} {pkgMeasInputVal}</div>
+                              </div>
+
+                              <div className="bg-white rounded-xl border border-[#E8E4DA] p-2">
+                                <div className="text-[9px] font-bold uppercase tracking-wider text-gray-500">Costo paquete</div>
+                                <div className="flex items-center justify-end gap-1 mt-1">
+                                  <span className="text-gray-400 font-bold text-xs">$</span>
+                                  <input
+                                    type="number"
+                                    step="any"
+                                    min="0"
+                                    value={costInputVal}
+                                    onChange={(e) => {
+                                      const val = e.target.value;
+                                      setEditingCostMap(prev => ({ ...prev, [mat.id]: val }));
+                                    }}
+                                    onBlur={(e) => handleSaveUnitCost(mat.id, e.target.value)}
+                                    onKeyDown={(e) => {
+                                      if (e.key === 'Enter') handleSaveUnitCost(mat.id, e.currentTarget.value);
+                                    }}
+                                    className="w-full text-right font-mono font-bold text-xs bg-gray-50 hover:bg-white focus:bg-white border border-gray-300 rounded py-0.5 px-1 text-gray-800 focus:outline-none focus:ring-1 focus:ring-[#2D4F3E]"
+                                    title="Costo de compra del paquete"
+                                  />
+                                </div>
+                                <div className="text-[8.5px] font-bold text-emerald-800 font-mono mt-1">
+                                  → ${baseUnitCost.toFixed(baseUnitCost < 0.1 ? 3 : 2)}/{pkgMeasInputVal}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Pie: proveedor y acciones */}
+                          <div className="p-3 bg-gray-50 border-t border-gray-100 flex items-center justify-between gap-2">
+                            {mat.supplier ? (
+                              <button
+                                type="button"
+                                onClick={() => handleOpenSupplierModal(mat.supplierId || mat.supplier, mat)}
+                                className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-white text-emerald-800 border border-emerald-200 text-[10.5px] font-bold hover:bg-emerald-50 transition-colors cursor-pointer min-w-0"
+                                title="Ver y editar proveedor"
+                              >
+                                <Building2 className="w-3 h-3 text-emerald-600 shrink-0" />
+                                <span className="truncate">{mat.supplier}</span>
+                                <ExternalLink className="w-2.5 h-2.5 opacity-70 shrink-0" />
+                              </button>
+                            ) : (
+                              <span className="text-[10px] text-gray-400 italic">Sin proveedor asignado</span>
+                            )}
+
+                            <div className="flex items-center gap-1 shrink-0">
+                              <button
+                                type="button"
+                                onClick={() => handleOpenEditModal(mat)}
+                                className="p-1.5 rounded-lg bg-white text-gray-600 border border-gray-200 hover:bg-amber-50 hover:text-amber-800 hover:border-amber-200 transition-colors cursor-pointer"
+                                title="Editar especificaciones completas"
+                              >
+                                <Edit className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteMaterial(mat.id, mat.name)}
+                                className="p-1.5 rounded-lg bg-white text-rose-600 border border-rose-200 hover:bg-rose-50 transition-colors cursor-pointer"
+                                title="Eliminar insumo del taller"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            ) : (
+            /* Contenedor de tabla 100% ajustado a la ventana, sin desborde ni barra desplazadora horizontal */
             <div
               ref={tableContainerRef}
               onScroll={handleTableScroll}
@@ -3465,6 +3803,7 @@ Artesano Digital — Taller & Manufactura Inteligente`;
                 })}
               </div>
             </div>
+            )}
 
             {/* Banner resumen al final de los SKUs con botón de regreso */}
             <div className="bg-stone-50/90 border-t border-gray-200 px-4 py-3 flex flex-wrap items-center justify-between gap-3 text-xs text-gray-600">
@@ -3478,7 +3817,7 @@ Artesano Digital — Taller & Manufactura Inteligente`;
                 <button
                   type="button"
                   onClick={scrollToStart}
-                  className="hidden md:inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white border border-gray-300 text-gray-700 font-bold hover:bg-gray-100 cursor-pointer shadow-2xs text-xs transition-colors"
+                  className={`${inventoryViewMode === 'table' ? 'hidden md:inline-flex' : 'hidden'} items-center gap-1 px-3 py-1.5 rounded-lg bg-white border border-gray-300 text-gray-700 font-bold hover:bg-gray-100 cursor-pointer shadow-2xs text-xs transition-colors`}
                   title="Volver a la primera columna de la izquierda"
                 >
                   <ChevronLeft className="w-3.5 h-3.5" />
