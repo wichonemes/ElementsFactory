@@ -457,6 +457,13 @@
     get state() { return state; },
     save,
     applyAll,
+    applyCopy,
+    applyAreas,
+    applyProjects,
+    applyImage,
+    applyImages,
+    processImageFile,
+    renderAdminFields,
     openAdmin
   };
 })();

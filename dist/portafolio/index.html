@@ -64,6 +64,50 @@ body.admin-open{overflow:hidden}
 .area:hover .area-icon{transform:translateY(-1px);border-color:color-mix(in srgb,var(--tone) 72%,#ffffff22);box-shadow:0 9px 22px #0008,inset 0 1px 0 #ffffff2e}
 @media(max-width:580px){.area-icon{width:29px;height:29px;border-radius:9px}.area-icon svg{width:16px;height:16px}}
 </style>
+
+<style>
+/* ===== Edición visual del inicio (mismo lenguaje que las áreas) ===== */
+:root{--area-tone:var(--gold)}
+body.we-editing #adminToggle{display:none}
+body.we-editing .area,body.we-editing .project{cursor:default}
+.we-target{outline:1px dashed rgba(255,255,255,.22);outline-offset:4px;border-radius:2px;transition:outline-color .15s,outline-style .15s}
+body.we-editing .we-target:hover{outline:1px solid var(--area-tone)}
+[contenteditable="true"].we-editing-text{outline:2px solid var(--area-tone)!important;outline-offset:4px;background:rgba(255,255,255,.05);border-radius:3px;cursor:text}
+.we-pins{position:fixed;inset:0;z-index:220;pointer-events:none}
+.we-pin{position:fixed;transform:translate(-50%,-50%);width:26px;height:26px;border-radius:50%;border:1px solid rgba(0,0,0,.35);background:var(--area-tone);color:#101114;font:700 13px/1 Manrope,sans-serif;display:grid;place-items:center;cursor:pointer;pointer-events:auto;box-shadow:0 4px 16px rgba(0,0,0,.55);transition:transform .15s,box-shadow .15s;padding:0;z-index:1}
+.we-pin:hover{transform:translate(-50%,-50%) scale(1.14);box-shadow:0 6px 22px rgba(0,0,0,.65)}
+.we-pin:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.we-pin-shape{background:#0f1114;color:var(--area-tone);border-color:var(--area-tone)}
+.we-toolbar{position:fixed;left:50%;bottom:18px;transform:translate(-50%,18px);z-index:260;display:flex;align-items:center;gap:4px;padding:7px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(13,15,18,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 18px 50px rgba(0,0,0,.6);opacity:0;pointer-events:none;transition:transform .22s,opacity .22s}
+body.we-editing .we-toolbar{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.we-toolbar button{border:0;background:transparent;color:#d7d9dc;font:700 10px/1 Manrope,sans-serif;letter-spacing:.04em;padding:9px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.we-toolbar button:hover{background:rgba(255,255,255,.08);color:#fff}
+.we-toolbar button.we-primary{background:var(--area-tone);color:#101114}
+.we-toolbar .we-label{display:flex;align-items:center;gap:7px;padding:0 8px 0 10px;font:700 9px/1 Manrope,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--area-tone)}
+.we-toolbar .we-label i{width:7px;height:7px;border-radius:50%;background:var(--area-tone);box-shadow:0 0 0 3px color-mix(in srgb,var(--area-tone),transparent 75%)}
+@media(max-width:720px){.we-toolbar .we-label{display:none}.we-toolbar button{padding:9px 10px;font-size:9px}.we-toolbar{bottom:14px;max-width:calc(100% - 18px)}}
+@media(max-width:380px){.we-toolbar button[data-we="help"]{display:none}}
+body.admin-open .we-pins,body.admin-open .we-toolbar{opacity:0;pointer-events:none}
+.we-modal{position:fixed;inset:0;z-index:400;display:grid;place-items:center;padding:16px;background:rgba(4,5,7,.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.we-modal[hidden]{display:none}
+.we-card{width:min(100%,560px);max-height:90vh;overflow:auto;background:#14161b;border:1px solid rgba(255,255,255,.13);border-radius:18px;padding:18px;color:#f2f1ec;box-shadow:0 30px 90px rgba(0,0,0,.75);font-family:'DM Sans',sans-serif}
+.we-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px}
+.we-card-head h2{font:600 20px/1.15 'DM Sans',sans-serif;letter-spacing:-.02em;margin:4px 0 0}
+.we-kicker{font:700 8px/1 Manrope,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--area-tone)}
+.we-x{width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:transparent;color:#fff;font-size:18px;line-height:1;cursor:pointer;flex:0 0 auto}
+.we-x:hover{background:rgba(255,255,255,.08)}
+.we-note{color:#9aa0a8;font-size:11px;line-height:1.55;margin:10px 0 0;text-align:center}
+.we-card-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.we-card-foot button{border-radius:999px;padding:11px 16px;font:700 10px/1 Manrope,sans-serif;letter-spacing:.06em;cursor:pointer}
+.we-ghost{background:transparent;border:1px solid rgba(255,255,255,.18);color:#d7d9dc}
+.we-apply{background:var(--area-tone);border:1px solid var(--area-tone);color:#101114}
+.we-help{display:grid;gap:10px;margin:14px 0 4px}
+.we-help div{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start}
+.we-help b{width:28px;height:28px;border-radius:50%;background:var(--area-tone);color:#101114;display:grid;place-items:center;font:700 12px/1 Manrope,sans-serif}
+.we-help p{margin:0;color:#b9bec5;font-size:12px;line-height:1.55}
+.we-toast{position:fixed;left:50%;bottom:76px;transform:translate(-50%,12px);z-index:500;max-width:calc(100% - 28px);padding:10px 15px;border-radius:999px;background:#14161b;border:1px solid var(--area-tone);color:#fff;font:600 11px/1.35 Manrope,sans-serif;box-shadow:0 14px 40px rgba(0,0,0,.6);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;text-align:center}
+.we-toast.is-on{opacity:1;transform:translate(-50%,0)}
+</style>
 </head>
 <body id="top">
 <header class="bar"><nav class="wrap nav"><a class="brand" href="#inicio"><span class="brand-mark"><img data-image-slot="logo-site" src="../brand/artesano_isotipo_transparente.png" alt="Artesano Digital"></span><span>ARTESANO DIGITAL</span></a><div class="links"><a href="#inicio">Inicio</a><a href="#areas">Áreas</a><a href="#proyectos">Proyectos</a><a class="store-back-btn" href="../index.html?world=servicios&tab=diseno" title="Volver a Tienda & Taller"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg><span>Tienda &amp; Taller</span></a><button class="admin-toggle" id="adminToggle" type="button" aria-controls="adminPanel" aria-expanded="false" aria-label="Editar portafolio" title="Editar portafolio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button></div></nav></header>
@@ -169,5 +213,6 @@ body.admin-open{overflow:hidden}
   </div>
 </aside>
 <script src="admin.js?v=5"></script>
+<script src="editor-inicio.js?v=1"></script>
 </body></html>
 

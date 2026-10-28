@@ -59,28 +59,8 @@ export default function FloatingSideNav({
           </div>
         </div>
 
-        {/* 2. Logo Artesano Digital -> Lleva al Catálogo de Productos */}
-        <div className="relative group flex items-center justify-center">
-          <button
-            onClick={handleGoToCatalog}
-            aria-label="Ver Catálogo de Productos"
-            className="w-11 h-11 rounded-xl overflow-hidden hover:scale-105 active:scale-95 transition-transform duration-200 cursor-pointer shadow-xs border border-black/10 bg-[#262626] flex items-center justify-center p-1"
-          >
-            <img
-              src="./brand/artesano_isotipo_transparente.png"
-              alt="Artesano Digital - Catálogo"
-              className="w-8 h-8 object-contain"
-            />
-          </button>
-          {/* Tooltip a la izquierda */}
-          <div className="pointer-events-none absolute right-full mr-3 top-1/2 -translate-y-1/2 px-2.5 py-1.5 rounded-lg bg-[#1F2421] text-white text-[11px] font-semibold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-md">
-            Ver Catálogos de Productos
-            <div className="absolute left-full top-1/2 -translate-y-1/2 border-4 border-transparent border-l-[#1F2421]"></div>
-          </div>
-        </div>
-
-        {/* Separador estético sutil */}
-        <div className="w-7 h-px bg-[#E8E4DA] mx-auto my-0.5"></div>
+        {/* 2. Logo Artesano Digital -> Removido en versión escritorio (pedido del usuario) */}
+        {/* El logo duplicaba acceso ya disponible en navbar y confundía junto a la calculadora */}
 
         {/* 3. Botón Calculadora de Cotización */}
         {onOpenCalculator && (

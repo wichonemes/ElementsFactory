@@ -26,7 +26,7 @@ export default function BlitzClockWidget({
 
   const { product, timeFormatted, durationLabel, secondsRemaining, cycleDuration, percentRemaining, blitzPercentRemaining, isUrgentLessThan15m, isOriginalBlitz } = blitzDeal;
   const regularPrice = product.regularPrice || Math.round(product.price * 1.25);
-  const flashPrice = Math.round(product.price * 0.8);
+  const flashPrice = Math.round(product.price * 0.85);
 
   const isFinal15m = isUrgentLessThan15m || (secondsRemaining <= 900 && cycleDuration > 900);
   const badgeTitle = isFinal15m ? '¡ÚLTIMOS 15 MINUTOS!' : 'OFERTA RELÁMPAGO 15 MIN';
@@ -90,7 +90,7 @@ export default function BlitzClockWidget({
               {timeFormatted.minutes}:{timeFormatted.seconds}
             </span>
             <span className="px-1.5 py-0.2 rounded bg-[#9E472A] text-white text-[9.5px] font-black shrink-0">
-              -20%
+              -15%
             </span>
             <span className="font-bold text-gray-200 truncate max-w-[110px] text-[11px]">
               {product.name}
@@ -167,7 +167,7 @@ export default function BlitzClockWidget({
           <div className="text-right">
             <span className="text-[10px] text-gray-400 block font-medium">Ahorras</span>
             <span className="px-2 py-0.5 rounded-md bg-[#9E472A] text-white text-xs font-black">
-              -20% FLASH
+              -15% FLASH
             </span>
           </div>
         </div>

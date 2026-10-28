@@ -247,7 +247,8 @@ export default function ProductDetailModal({
   const productTime = (flashDeal?.getTimeForProduct && product?.id)
     ? flashDeal.getTimeForProduct(product.id)
     : null;
-  const currentDiscount = product.flashDealConfig?.discountPercent || productTime?.discountPercent || flashDeal?.discountPercent || 20;
+  const rawDiscount = product.flashDealConfig?.discountPercent || productTime?.discountPercent || flashDeal?.discountPercent || 15;
+  const currentDiscount = Math.min(15, rawDiscount);
 
   // Soporte de los 3 paquetes / niveles de taller para bundles y promociones
   const bundleTiers = useMemo(() => {
@@ -639,7 +640,7 @@ export default function ProductDetailModal({
 
                     {isFlashDeal ? (
                       <span className="px-2 py-0.5 rounded-full bg-[#FAF7F0] border border-[#E5D7B7] text-[#9E472A] text-[10px] font-black">
-                        -{flashDeal?.discountPercent || 20}% DE DESCUENTO
+                        -{currentDiscount}% DE DESCUENTO
                       </span>
                     ) : product.savings ? (
                       <span className="px-2 py-0.5 rounded-full bg-[#D82B6E] text-white text-[10px] font-black">

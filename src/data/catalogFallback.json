@@ -287,14 +287,6 @@
           "productCount": 1
         }
       ]
-    },
-    {
-      "id": "servicios",
-      "name": "Servicios",
-      "tagline": "Diseño gráfico, desarrollo web, gran formato y manufactura técnica industrial",
-      "image": "./uploads/brand_artesano_digital_og.jpg",
-      "description": "Portafolio integral de soluciones profesionales: identidad de marca, lonas y corte de vinil por Wicho Nemes, y manufactura aditiva técnica, refacciones bajo demanda y utillaje B2B.",
-      "categories": []
     }
   ],
   "categories": [
@@ -5750,10 +5742,10 @@
         "3d",
         "assembly"
       ],
-      "primaryImage": "./uploads/t38_vista3_detalle.webp",
+      "primaryImage": "./uploads/t42_clicker_mecanico_contexto.webp",
       "gallery": [
-        "./uploads/t38_vista3_detalle.webp",
-        "./uploads/t38_vista2_fondo_blanco.webp"
+        "./uploads/t42_clicker_mecanico_contexto.webp",
+        "./uploads/t42_clicker_mecanico_estudio.webp"
       ],
       "shortDescription": "Juguete antiestrés clicker con switch mecánico de 3 pines tipo Outemu Blue con sonido táctil clicky y keycap impreso en 3D.",
       "fullDescription": "El juguete sensorial definitivo para oficina o setup gamer: combina un switch mecánico de teclado de 3 pines de alta durabilidad (más de 50 millones de pulsaciones) con carcasa y keycap impresos en 3D. Incorpora argolla de llavero para llevarlo a todas partes. Alivia la ansiedad y el estrés mientras trabajas o juegas.",
@@ -5787,7 +5779,8 @@
       "stockQuantity": 25,
       "sku": "JUG-3D-SWI-MAT-042",
       "createdAt": "2026-10-25T19:18:35.313Z",
-      "updatedAt": "2026-10-25T19:18:35.313Z"
+      "updatedAt": "2026-10-25T19:18:35.313Z",
+      "whiteBgImage": "./uploads/t42_clicker_mecanico_estudio.webp"
     }
   ],
   "settings": {
@@ -6441,6 +6434,45 @@
           "uploadedAt": "2026-10-16T00:45:54.105Z"
         }
       ]
+    },
+    "showCategoryBackgroundPhotos": false,
+    "categoryBackgroundPhotos": {
+      "diseno": {
+        "branding": {
+          "url": "./portafolio/assets/artesano-cover.webp",
+          "enabled": false
+        },
+        "publicidad": {
+          "url": "./portafolio/assets/civil-shirts.webp",
+          "enabled": false
+        },
+        "web": {
+          "url": "./interfaces/assets/ui-01.jpg",
+          "enabled": false
+        },
+        "editorial": {
+          "url": "./portafolio/assets/popol-spread.webp",
+          "enabled": false
+        }
+      },
+      "industria": {
+        "proto": {
+          "url": "./uploads/catalog-v2-ind1-context-oficial.webp",
+          "enabled": false
+        },
+        "jig": {
+          "url": "./uploads/catalog-v2-ind2-context-oficial.webp",
+          "enabled": false
+        },
+        "spare": {
+          "url": "./uploads/industria_portada_oficial_ingenieria.webp",
+          "enabled": false
+        },
+        "batch": {
+          "url": "./uploads/catalog-v2-ind1-detail-oficial.webp",
+          "enabled": false
+        }
+      }
     }
   },
   "campaigns": {
@@ -7205,5 +7237,5 @@
       }
     ]
   },
-  "exportedAt": "2026-10-27T20:21:32.965Z"
+  "exportedAt": "2026-10-28T02:51:12.432Z"
 }

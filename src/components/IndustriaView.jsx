@@ -288,28 +288,28 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       {/* ========================================================
           1. BANNER HERO INDUSTRIAL CON PLANO VECTORIAL (CONDENSADO MOBILE)
           ======================================================== */}
-      <section className="relative overflow-hidden border-b border-white/10 bg-gradient-to-b from-[#10171D] via-[#0A0E11] to-[#0A0E11] pt-3.5 sm:pt-8 pb-4 sm:pb-12">
+      <section className="relative overflow-hidden border-b border-white/10 bg-gradient-to-b from-[#10171D] via-[#0A0E11] to-[#0A0E11] pt-2.5 sm:pt-8 pb-3 sm:pb-10">
         {/* Rejilla milimétrica sutil de fondo */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 sm:gap-6 lg:gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-2.5 sm:gap-6 lg:gap-12 items-center">
             
             {/* Texto Principal */}
-            <div className="lg:col-span-7 space-y-3 sm:space-y-4">
-              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-[1.08]">
+            <div className="lg:col-span-7 space-y-2 sm:space-y-4">
+              <h1 className="text-xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-[1.1]">
                 Que una refacción no detenga <span className="text-[#5BB8FF] drop-shadow-[0_0_20px_rgba(91,184,255,0.4)]">tu línea.</span>
               </h1>
 
-              <p className="text-xs sm:text-base text-[#C4CCD0] max-w-xl leading-relaxed">
+              <p className="text-[11.5px] sm:text-base text-[#C4CCD0] max-w-xl leading-relaxed">
                 Taller local de manufactura bajo demanda para empresas de SLP. Prototipado funcional rápido, utillaje de ensamble, refacciones descatalogadas y lotes cortos en polímeros técnicos de grado ingeniería.
               </p>
 
-              {/* Botón de Acción Directa Principal */}
-              <div className="pt-1">
+              {/* Botón en Desktop (en móvil se integra directamente bajo el plano para eliminar scroll) */}
+              <div className="hidden lg:block pt-1">
                 <a
                   href="#cotizar-industria"
-                  className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-[#5BB8FF] hover:bg-[#8AD2FF] text-[#0A0E11] font-extrabold text-xs sm:text-sm tracking-wide uppercase transition-all shadow-[0_0_15px_rgba(91,184,255,0.3)] active:scale-95 cursor-pointer inline-flex items-center justify-center gap-2"
+                  className="px-6 py-3 rounded-2xl bg-[#5BB8FF] hover:bg-[#8AD2FF] text-[#0A0E11] font-extrabold text-xs sm:text-sm tracking-wide uppercase transition-all shadow-[0_0_15px_rgba(91,184,255,0.3)] active:scale-95 cursor-pointer inline-flex items-center justify-center gap-2"
                 >
                   <Send className="w-4 h-4" />
                   <span>Cotizar Pieza Industrial</span>
@@ -317,11 +317,11 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
               </div>
             </div>
 
-            {/* Plano Vectorial Técnico Integrado (Sin cuadro contenedor, estilizado) */}
-            <div className="lg:col-span-5 relative mt-1 sm:mt-0 flex flex-col justify-center">
+            {/* Plano Vectorial Técnico Integrado (Compacto en móvil) */}
+            <div className="lg:col-span-5 relative mt-0.5 sm:mt-0 flex flex-col justify-center">
               
               {/* Anotaciones Técnicas Superiores tipo HUD */}
-              <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 pb-1.5">
+              <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-gray-400 pb-1">
                 <span className="flex items-center gap-1.5 tracking-wider">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#5BB8FF] animate-pulse" />
                   <span>DWG-REF // SLP-IND-2026</span>
@@ -338,8 +338,8 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
               </div>
 
               {/* Dibujo Vectorial CAD Integrado directamente */}
-              <div className="relative py-1 flex items-center justify-center">
-                <svg viewBox="20 68 340 165" className="w-full h-auto max-h-48 sm:max-h-56 filter drop-shadow-[0_0_20px_rgba(91,184,255,0.18)]">
+              <div className="relative py-0.5 flex items-center justify-center">
+                <svg viewBox="20 68 340 165" className="w-full h-auto max-h-36 sm:max-h-56 filter drop-shadow-[0_0_20px_rgba(91,184,255,0.18)]">
                   <defs>
                     <pattern id="grid-blueprint" width="20" height="20" patternUnits="userSpaceOnUse">
                       <path d="M20 0H0V20" fill="none" stroke="#FFFFFF" strokeOpacity="0.04" strokeWidth="1" />
@@ -389,8 +389,8 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 </svg>
               </div>
 
-              {/* Indicadores de Taller estilizados (Sin cajas rígidas) */}
-              <div className="flex items-center justify-between text-center font-mono text-[9px] sm:text-[10px] text-gray-400 pt-1.5 border-t border-white/10">
+              {/* Indicadores de Taller estilizados */}
+              <div className="flex items-center justify-between text-center font-mono text-[9px] sm:text-[10px] text-gray-400 pt-1 border-t border-white/10">
                 <div>
                   <span className="block text-[7.5px] uppercase text-gray-500">Materiales</span>
                   <strong className="text-white">PETG / ABS / TPU</strong>
@@ -405,6 +405,17 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                   <span className="block text-[7.5px] uppercase text-gray-500">Capacidad</span>
                   <strong className="text-[#5BB8FF]">1 a 500+ pzs</strong>
                 </div>
+              </div>
+
+              {/* Botón Integrado en Móvil (Ubicación exacta señalada por el usuario para eliminar scroll) */}
+              <div className="block lg:hidden pt-2">
+                <a
+                  href="#cotizar-industria"
+                  className="w-full py-2.5 px-4 rounded-xl bg-[#5BB8FF] hover:bg-[#8AD2FF] text-[#0A0E11] font-black text-xs tracking-wider uppercase transition-all shadow-[0_0_15px_rgba(91,184,255,0.3)] active:scale-95 cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Cotizar Pieza Industrial</span>
+                </a>
               </div>
 
             </div>

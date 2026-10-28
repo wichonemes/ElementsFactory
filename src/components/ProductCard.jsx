@@ -51,7 +51,8 @@ export default function ProductCard({
     }
 
     if ((isFlashDeal || product.flashDealConfig?.discountPercent > 0) && product.price) {
-      const discountPercent = product.flashDealConfig?.discountPercent || productTime?.discountPercent || flashDeal?.discountPercent || 20;
+      const rawDiscount = product.flashDealConfig?.discountPercent || productTime?.discountPercent || flashDeal?.discountPercent || 15;
+      const discountPercent = Math.min(15, rawDiscount);
       const flashPrice = Math.round(product.price * (1 - discountPercent / 100));
       return (
         <div className="flex flex-col min-w-0">

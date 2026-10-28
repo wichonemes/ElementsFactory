@@ -166,7 +166,7 @@ export function useFlashDeal(products = [], settings = null) {
         isOriginalBlitz,
         isUrgentLessThan15m,
         durationLabel,
-        discountPercent: config.discountPercent || 20,
+        discountPercent: Math.min(15, config.discountPercent || 15),
         secondsRemaining,
         percentRemaining: Math.max(4, Math.min(100, Math.round((secondsRemaining / durationSec) * 100))),
         blitzPercentRemaining,
@@ -368,7 +368,8 @@ export function useFlashDeal(products = [], settings = null) {
     };
   };
 
-  const discountPercent = 20;
+  // Descuento automático oficial del taller: tope máximo del 15%
+  const discountPercent = 15;
 
   // Active Blitz deal (if any slot is currently running an occasional <= 15 min deal OR any offer has <= 15 min remaining)
   const activeBlitzDeal = useMemo(() => {

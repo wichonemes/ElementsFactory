@@ -24,7 +24,7 @@ export default function FlashDealsControlSection({
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
   const [quickAddProductId, setQuickAddProductId] = useState('');
   const [quickAddDuration, setQuickAddDuration] = useState(120); // 2h default
-  const [quickAddDiscount, setQuickAddDiscount] = useState(20); // 20% default
+  const [quickAddDiscount, setQuickAddDiscount] = useState(15); // 15% max default
   const [actionLoading, setActionLoading] = useState(false);
   const [notification, setNotification] = useState(null);
 
@@ -180,7 +180,7 @@ export default function FlashDealsControlSection({
           product: p,
           isManual: Boolean(p.flashDealConfig?.enabled),
           durationMinutes: timerInfo?.cycleDuration ? Math.round(timerInfo.cycleDuration / 60) : (p.flashDealConfig?.durationMinutes || 120),
-          discountPercent: p.flashDealConfig?.discountPercent || timerInfo?.discountPercent || 20,
+          discountPercent: Math.min(15, p.flashDealConfig?.discountPercent || timerInfo?.discountPercent || 15),
           timerInfo
         };
       });
@@ -215,7 +215,7 @@ export default function FlashDealsControlSection({
         product: p,
         isManual: true,
         durationMinutes: p.flashDealConfig.durationMinutes || 120,
-        discountPercent: p.flashDealConfig.discountPercent || 20,
+        discountPercent: Math.min(15, p.flashDealConfig.discountPercent || 15),
         timerInfo: null
       });
     });
@@ -394,7 +394,7 @@ export default function FlashDealsControlSection({
   const handleToggleFlash = async (prod, forceEnable = null) => {
     try {
       setActionLoading(true);
-      const currentConfig = prod.flashDealConfig || { enabled: false, durationMinutes: 120, discountPercent: 20 };
+      const currentConfig = prod.flashDealConfig || { enabled: false, durationMinutes: 120, discountPercent: 15 };
       const newEnabled = forceEnable !== null ? forceEnable : !currentConfig.enabled;
       const durationMin = currentConfig.durationMinutes || 120;
 
@@ -402,7 +402,7 @@ export default function FlashDealsControlSection({
         ...currentConfig,
         enabled: newEnabled,
         durationMinutes: durationMin,
-        discountPercent: currentConfig.discountPercent || 20,
+        discountPercent: Math.min(15, currentConfig.discountPercent || 15),
         startedAt: newEnabled ? Date.now() : null,
         expiresAt: newEnabled ? Date.now() + durationMin * 60 * 1000 : null
       };
@@ -1442,20 +1442,16 @@ export default function FlashDealsControlSection({
 
               <div>
                 <label className="block text-[11px] font-bold text-gray-700 mb-1">
-                  % Descuento Flash:
+                  % Descuento Flash (Máx 15%):
                 </label>
                 <select
                   value={quickAddDiscount}
-                  onChange={(e) => setQuickAddDiscount(Number(e.target.value))}
+                  onChange={(e) => setQuickAddDiscount(Math.min(15, Number(e.target.value)))}
                   className="w-full px-3 py-2 rounded-lg border border-gray-300 bg-white font-bold text-[#9E472A] focus:ring-1 focus:ring-[#2D4F3E]"
                 >
+                  <option value={5}>-5% Descuento</option>
                   <option value={10}>-10% Descuento</option>
-                  <option value={15}>-15% Descuento</option>
-                  <option value={20}>-20% Descuento (Estándar)</option>
-                  <option value={25}>-25% Descuento</option>
-                  <option value={30}>-30% Descuento</option>
-                  <option value={40}>-40% Blitz Agresivo</option>
-                  <option value={50}>-50% Mitad de Precio</option>
+                  <option value={15}>-15% Descuento (Tope Máximo Taller)</option>
                 </select>
               </div>
 
@@ -1595,7 +1591,7 @@ export default function FlashDealsControlSection({
                 {filteredFlashList.map(item => {
                   const p = item.product;
                   const originalPrice = p.price || 0;
-                  const flashPrice = Math.round(originalPrice * (1 - (item.discountPercent || 20) / 100));
+                  const flashPrice = Math.round(originalPrice * (1 - Math.min(15, (item.discountPercent || 15)) / 100));
                   const timer = item.timerInfo;
                   const remainingText = timer?.timeFormatted?.fullText || (timer?.secondsRemaining ? `${Math.floor(timer.secondsRemaining / 60)}m` : `${item.durationMinutes}m`);
                   const isUrgent = timer?.isUrgentLessThan15m || (timer?.secondsRemaining && timer.secondsRemaining <= 900);
@@ -1668,19 +1664,15 @@ export default function FlashDealsControlSection({
                             
                             {/* Selector rápido de descuento */}
                             <select
-                              value={item.discountPercent || 20}
-                              onChange={(e) => handleUpdateDurationAndDiscount(p, item.durationMinutes, Number(e.target.value))}
+                              value={Math.min(15, item.discountPercent || 15)}
+                              onChange={(e) => handleUpdateDurationAndDiscount(p, item.durationMinutes, Math.min(15, Number(e.target.value)))}
                               disabled={actionLoading}
                               className="text-[10px] font-black text-[#9E472A] bg-amber-50 border border-amber-300 rounded px-1 py-0.2 cursor-pointer"
-                              title="Cambiar % de descuento al instante"
+                              title="Cambiar % de descuento al instante (tope 15%)"
                             >
+                              <option value={5}>-5%</option>
                               <option value={10}>-10%</option>
-                              <option value={15}>-15%</option>
-                              <option value={20}>-20%</option>
-                              <option value={25}>-25%</option>
-                              <option value={30}>-30%</option>
-                              <option value={40}>-40%</option>
-                              <option value={50}>-50%</option>
+                              <option value={15}>-15% (Tope)</option>
                             </select>
                           </div>
 

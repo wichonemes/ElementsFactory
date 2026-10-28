@@ -9,7 +9,7 @@ import {
   Home, Briefcase, PartyPopper, Printer, Palette, Scissors, Radio, Filter,
   Megaphone, Truck, MapPin, Calendar, Power, AlertCircle, Gift, Building2,
   Database, Save, Download, Gamepad2, Smartphone, Camera, Wrench, Hammer,
-  Link2, HardDrive, Globe
+  Link2, HardDrive, Globe, ShoppingCart
 } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 import SalesMarketingSection from './SalesMarketingSection';
@@ -1539,7 +1539,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       flashDealConfig: {
         enabled: false,
         durationMinutes: 120,
-        discountPercent: 20
+        discountPercent: 15
       },
       shortDescription: '',
       fullDescription: '',
@@ -1762,7 +1762,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       flashDealConfig: prod.flashDealConfig || {
         enabled: false,
         durationMinutes: 120,
-        discountPercent: 20
+        discountPercent: 15
       },
       specifications: prod.specifications || {},
       variants: Array.isArray(prod.variants) ? [...prod.variants] : [],
@@ -2932,7 +2932,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   const handleToggleProductFlash = async (prod, e) => {
     if (e) e.stopPropagation();
     try {
-      const currentConfig = prod.flashDealConfig || { enabled: false, durationMinutes: 120, discountPercent: 20 };
+      const currentConfig = prod.flashDealConfig || { enabled: false, durationMinutes: 120, discountPercent: 15 };
       const newEnabled = !currentConfig.enabled;
       const updatedConfig = {
         ...currentConfig,
@@ -2963,7 +2963,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   };
 
   // Change flash deal duration and settings directly
-  const handleSetFlashDuration = async (prod, durationMinutes, discountPercent = 20) => {
+  const handleSetFlashDuration = async (prod, durationMinutes, discountPercent = 15) => {
     try {
       const currentConfig = prod.flashDealConfig || {};
       const updatedConfig = {
@@ -3010,7 +3010,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
           product: p,
           isManual: true,
           durationMinutes: p.flashDealConfig.durationMinutes || 120,
-          discountPercent: p.flashDealConfig.discountPercent || 20,
+          discountPercent: p.flashDealConfig.discountPercent || 15,
           timerInfo
         });
       }
@@ -3026,7 +3026,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
             product: p,
             isManual: false,
             durationMinutes: timerInfo?.cycleDuration ? Math.round(timerInfo.cycleDuration / 60) : 120,
-            discountPercent: timerInfo?.discountPercent || 20,
+            discountPercent: timerInfo?.discountPercent || 15,
             timerInfo
           });
         }
@@ -4314,9 +4314,11 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     { id: 'categories', label: 'Categorías', icon: '📁', count: categories.length },
                     { id: 'area-banners', label: 'Banners de Áreas', icon: '🖼️', count: 3 }
                   ] : mobileNavGroup === 'workshop' ? [
-                    { id: 'raw-materials-inventory', label: 'Stock Insumos', icon: '🧱' },
-                    { id: 'raw-materials-suppliers', label: 'Proveedores & Fletes', icon: '🏢' },
-                    { id: 'margins', label: 'Costos & Márgenes', icon: '📈', count: `${marginsStats.avgMargin}%` }
+                    { id: 'margins', label: 'Costos & Márgenes', icon: '📈', count: `${marginsStats.avgMargin}%` },
+                    { id: 'raw-materials-inventory', label: 'Stock & Insumos', icon: '🧱' },
+                    { id: 'raw-materials-costs', label: 'Costos Operativos', icon: '⚙️' },
+                    { id: 'raw-materials-pricing', label: 'Tablas de Precios', icon: '📊' },
+                    { id: 'raw-materials-suppliers', label: 'Proveedores & Fletes', icon: '🏢' }
                   ] : mobileNavGroup === 'sales' ? [
                     { id: 'flash-deals', label: 'Ofertas Flash', icon: '⚡', count: activeFlashList.length },
                     { id: 'campaigns', label: 'Temporadas', icon: '✨' },
@@ -4330,6 +4332,8 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   ]
                 ).map(item => {
                   const isCurrent = (item.id === 'raw-materials-inventory' && activeTab === 'raw-materials' && rawMaterialsSubTab === 'inventory')
+                    || (item.id === 'raw-materials-costs' && activeTab === 'raw-materials' && rawMaterialsSubTab === 'operational_costs')
+                    || (item.id === 'raw-materials-pricing' && activeTab === 'raw-materials' && rawMaterialsSubTab === 'pricing_table')
                     || (item.id === 'raw-materials-suppliers' && activeTab === 'raw-materials' && rawMaterialsSubTab === 'suppliers')
                     || (activeTab === item.id);
                   return (
@@ -4339,6 +4343,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       onClick={() => {
                         if (item.id === 'raw-materials-inventory') {
                           setRawMaterialsSubTab('inventory');
+                          setActiveTab('raw-materials');
+                        } else if (item.id === 'raw-materials-costs') {
+                          setRawMaterialsSubTab('operational_costs');
+                          setActiveTab('raw-materials');
+                        } else if (item.id === 'raw-materials-pricing') {
+                          setRawMaterialsSubTab('pricing_table');
                           setActiveTab('raw-materials');
                         } else if (item.id === 'raw-materials-suppliers') {
                           setRawMaterialsSubTab('suppliers');
@@ -4470,6 +4480,23 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     </div>
 
                     <button
+                      onClick={() => setActiveTab('margins')}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
+                        activeTab === 'margins' ? 'bg-[#2D4F3E] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#2D4F3E] font-medium'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <TrendingUp className="w-4 h-4 text-emerald-600" />
+                        <span>Costos &amp; Márgenes</span>
+                      </div>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                        activeTab === 'margins' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
+                      }`}>
+                        {marginsStats.avgMargin}%
+                      </span>
+                    </button>
+
+                    <button
                       onClick={() => {
                         setRawMaterialsSubTab('inventory');
                         setActiveTab('raw-materials');
@@ -4479,13 +4506,53 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <Layers className="w-4 h-4" />
-                        <span>Stock &amp; Recetas BOM</span>
+                        <Layers className="w-4 h-4 text-blue-600" />
+                        <span>Stock &amp; Insumos</span>
                       </div>
                       <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                        activeTab === 'raw-materials' && rawMaterialsSubTab === 'inventory' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
+                        activeTab === 'raw-materials' && rawMaterialsSubTab === 'inventory' ? 'bg-white/20 text-white' : 'bg-blue-50 text-blue-700'
                       }`}>
-                        Insumos
+                        177 mats
+                      </span>
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        setRawMaterialsSubTab('operational_costs');
+                        setActiveTab('raw-materials');
+                      }}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
+                        activeTab === 'raw-materials' && rawMaterialsSubTab === 'operational_costs' ? 'bg-[#2D4F3E] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#2D4F3E] font-medium'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Calculator className="w-4 h-4 text-amber-600" />
+                        <span>Costos Operativos</span>
+                      </div>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                        activeTab === 'raw-materials' && rawMaterialsSubTab === 'operational_costs' ? 'bg-white/20 text-white' : 'bg-amber-50 text-amber-700'
+                      }`}>
+                        CFE &amp; Hrs
+                      </span>
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        setRawMaterialsSubTab('pricing_table');
+                        setActiveTab('raw-materials');
+                      }}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
+                        activeTab === 'raw-materials' && rawMaterialsSubTab === 'pricing_table' ? 'bg-[#2D4F3E] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#2D4F3E] font-medium'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <FileSpreadsheet className="w-4 h-4 text-purple-600" />
+                        <span>Tablas de Precios</span>
+                      </div>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                        activeTab === 'raw-materials' && rawMaterialsSubTab === 'pricing_table' ? 'bg-white/20 text-white' : 'bg-purple-50 text-purple-700'
+                      }`}>
+                        Listas
                       </span>
                     </button>
 
@@ -4499,30 +4566,13 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <Building2 className="w-4 h-4" />
+                        <Building2 className="w-4 h-4 text-cyan-600" />
                         <span>Proveedores &amp; Fletes</span>
                       </div>
                       <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                        activeTab === 'raw-materials' && rawMaterialsSubTab === 'suppliers' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
+                        activeTab === 'raw-materials' && rawMaterialsSubTab === 'suppliers' ? 'bg-white/20 text-white' : 'bg-cyan-50 text-cyan-700'
                       }`}>
-                        Tarifas
-                      </span>
-                    </button>
-
-                    <button
-                      onClick={() => setActiveTab('margins')}
-                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
-                        activeTab === 'margins' ? 'bg-[#2D4F3E] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#2D4F3E] font-medium'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2">
-                        <TrendingUp className="w-4 h-4" />
-                        <span>Costos &amp; Márgenes</span>
-                      </div>
-                      <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                        activeTab === 'margins' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
-                      }`}>
-                        {marginsStats.avgMargin}%
+                        21 prov
                       </span>
                     </button>
                   </div>
@@ -8651,16 +8701,19 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           {/* C: INSUMOS INDIRECTOS & CONSUMIBLES DE CORTE LÁSER */}
                           <div className="space-y-1.5 pt-2 border-t border-amber-100">
                             <span className="text-[10px] font-bold text-amber-900 uppercase tracking-wider flex items-center gap-1.5">
-                              <span>⚙️ 3. Insumos Indirectos &amp; Desgastes de Láser:</span>
-                              <span className="text-gray-400 font-normal">Gotas de ensamble, desgaste CO2 y cintas</span>
+                              <span>⚙️ 3. Insumos Indirectos, Pegamentos &amp; Herrajes:</span>
+                              <span className="text-gray-400 font-normal">Resistol, pegaloca, lija, tornillos e imanes</span>
                             </span>
                             <div className="flex flex-wrap gap-1.5">
                               {[
-                                { id: 'mat-pegamento-resistol-850', label: 'Resistol 850 (10 gotas ensamble)', icon: '💧', qty: 10, unit: 'gotas', name: 'Resistol 850 Extra Fuerte Madera' },
-                                { id: 'mat-desgaste-corte-sierra-laser', label: 'Desgaste Tubo Láser CO2 (1 corte)', icon: '⚡', qty: 1, unit: 'corte', name: 'Desgaste Tubo Láser CO2' },
+                                { id: 'mat-pegamento-resistol-850', label: 'Resistol 850 (10 gotas)', icon: '💧', qty: 10, unit: 'gotas', name: 'Resistol 850 Extra Fuerte Madera' },
+                                { id: 'mat-pegamento-cianocrilato-gotas', label: 'Pegaloca Cianoacrilato (5 gotas)', icon: '⚡', qty: 5, unit: 'gotas', name: 'Pegaloca Instantáneo Taller' },
+                                { id: 'mat-tornillos-chicago', label: 'Tornillos Chicago (2 pzas)', icon: '🔩', qty: 2, unit: 'pieza', name: 'Tornillos Encuadernadores Chicago M5' },
+                                { id: 'mat-imanes-neodimio-n52', label: 'Imán Neodimio N52 (2 pzas)', icon: '🧲', qty: 2, unit: 'pieza', name: 'Imanes de Neodimio N52 10x2 mm' },
+                                { id: 'mat-desgaste-corte-sierra-laser', label: 'Desgaste Láser CO2 (1 corte)', icon: '🔥', qty: 1, unit: 'corte', name: 'Desgaste Tubo Láser CO2' },
                                 { id: 'mat-lija-madera-fina-220', label: 'Lija 220 Cantos & Estopa', icon: '🧽', qty: 0.1, unit: 'pliego', name: 'Lija Fina 220 y Paño de Pulido' },
                                 { id: 'mat-cinta-masking', label: 'Cinta Masking Anti-Ahumado', icon: '🏷️', qty: 1, unit: 'rollo', name: 'Cinta Masking Protección Láser' },
-                                { id: 'mat-estopa-limpieza-taller', label: 'Estopa Limpieza con Solvente', icon: '🧼', qty: 1, unit: 'paño', name: 'Estopa de Algodón Fino' },
+                                { id: 'mat-estopa-limpieza-taller', label: 'Estopa Limpieza', icon: '🧼', qty: 1, unit: 'paño', name: 'Estopa de Algodón Fino' },
                               ].map(ind => (
                                 <button
                                   key={ind.id}
@@ -8755,6 +8808,36 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   <span>{con.icon}</span>
                                   <span>{con.label}</span>
                                   <span className="text-[9.5px] font-bold text-amber-800 bg-amber-200/60 px-1.5 py-0.2 rounded">+ Consumible</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* C: MECANISMOS & INSUMOS PEQUEÑOS DE ENSAMBLE 3D (LUCES, SWITCHES, PEGALOCA, TORNILLOS, LLAVEROS) */}
+                          <div className="space-y-1.5 pt-2 border-t border-emerald-100">
+                            <span className="text-[10px] font-bold text-emerald-950 uppercase tracking-wider flex items-center gap-1.5">
+                              <span>💡 3. Mecanismos &amp; Insumos de Ensamble 3D:</span>
+                              <span className="text-gray-400 font-normal">Luces LED, switches clicker, pegaloca, tornillos y herrajes</span>
+                            </span>
+                            <div className="flex flex-wrap gap-1.5">
+                              {[
+                                { id: 'mat-kit-luz-led-3d', label: 'Kit Luz LED USB 5V (Lámparas)', icon: '💡', qty: 1, unit: 'kit', name: 'Kit Iluminación LED USB 5V Cálida con Interruptor' },
+                                { id: 'mat-switches-clicker-mecanico', label: 'Switch Mecánico Outemu (Fidget)', icon: '🔘', qty: 1, unit: 'pieza', name: 'Switch Mecánico Teclado Clicker 3 Pines' },
+                                { id: 'mat-pegamento-cianocrilato-gotas', label: 'Pegaloca Gotas (5 gotas)', icon: '⚡', qty: 5, unit: 'gotas', name: 'Pegaloca Cianoacrilato Instantáneo' },
+                                { id: 'mat-ens-tornillo-m3-hex', label: 'Tornillos M3 Allen (2 pzas)', icon: '🔩', qty: 2, unit: 'pieza', name: 'Tornillos Allen M3 x 12 mm' },
+                                { id: 'mat-argollas-llavero', label: 'Argolla Metálica Llavero (1 pza)', icon: '🔑', qty: 1, unit: 'pieza', name: 'Argolla Metálica con Cadena Llavero' },
+                                { id: 'mat-chips-nfc', label: 'Chip NFC NTAG213 (1 pza)', icon: '📡', qty: 1, unit: 'pieza', name: 'Chip NFC Inteligente Adhesivo' },
+                              ].map(mech => (
+                                <button
+                                  key={mech.id}
+                                  type="button"
+                                  onClick={() => handleAddDirectMaterialFromPreset(mech.id, mech.qty, 0, mech.unit, 'none')}
+                                  className="px-2.5 py-1.5 rounded-xl border border-emerald-300 bg-emerald-50/80 hover:bg-emerald-100 font-semibold text-xs text-emerald-950 transition-all cursor-pointer shadow-2xs flex items-center gap-1.5"
+                                  title={`Añadir ${mech.label}`}
+                                >
+                                  <span>{mech.icon}</span>
+                                  <span>{mech.label}</span>
+                                  <span className="text-[9.5px] font-bold text-emerald-800 bg-emerald-200/60 px-1.5 py-0.2 rounded">+ Componente</span>
                                 </button>
                               ))}
                             </div>
@@ -10573,7 +10656,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       const floorPrice = Math.round(effectiveCost * 1.05 * 100) / 100;
                       const maxSafeDiscountPercent = Math.max(0, Math.floor(((effectivePrice - floorPrice) / effectivePrice) * 100));
 
-                      const discountLevels = [10, 15, 20, 30, 50];
+                      const discountLevels = [5, 10, 15];
                       if (editorForm.flashDealConfig?.enabled && !discountLevels.includes(editorForm.flashDealConfig.discountPercent)) {
                         discountLevels.push(editorForm.flashDealConfig.discountPercent);
                         discountLevels.sort((a, b) => a - b);
@@ -10986,12 +11069,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               <span>Control de Oferta Flash &amp; Relámpago</span>
                               {editorForm.flashDealConfig?.enabled && (
                                 <span className="px-2 py-0.2 rounded-full bg-amber-400 text-stone-950 text-[9.5px] font-black uppercase">
-                                  ACTIVA (-{editorForm.flashDealConfig.discountPercent || 20}%)
+                                  ACTIVA (-{editorForm.flashDealConfig.discountPercent || 15}%)
                                 </span>
                               )}
                             </h4>
                             <span className="text-[10.5px] text-gray-500">
-                              Descuento con temporizador de cuenta regresiva visible en catálogo
+                              Descuento con temporizador de cuenta regresiva visible en catálogo (tope 15%)
                             </span>
                           </div>
                         </div>
@@ -11008,7 +11091,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   ...(editorForm.flashDealConfig || {}),
                                   enabled: e.target.checked,
                                   durationMinutes: editorForm.flashDealConfig?.durationMinutes || 120,
-                                  discountPercent: editorForm.flashDealConfig?.discountPercent || 20
+                                  discountPercent: Math.min(15, editorForm.flashDealConfig?.discountPercent || 15)
                                 }
                               });
                             }}
@@ -11043,23 +11126,21 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             </div>
 
                             <div>
-                              <label className="text-[11px] font-bold text-gray-700 block mb-1">Porcentaje de Descuento</label>
+                              <label className="text-[11px] font-bold text-gray-700 block mb-1">Porcentaje de Descuento (Máx 15%)</label>
                               <select
-                                value={editorForm.flashDealConfig.discountPercent || 20}
+                                value={editorForm.flashDealConfig.discountPercent || 15}
                                 onChange={e => setEditorForm({
                                   ...editorForm,
                                   flashDealConfig: {
                                     ...editorForm.flashDealConfig,
-                                    discountPercent: Number(e.target.value)
+                                    discountPercent: Math.min(15, Number(e.target.value))
                                   }
                                 })}
                                 className="w-full px-2.5 py-1.5 rounded-xl border border-stone-300 bg-white text-xs font-semibold"
                               >
+                                <option value={5}>5% de descuento</option>
                                 <option value={10}>10% de descuento</option>
-                                <option value={15}>15% de descuento</option>
-                                <option value={20}>20% de descuento (Recomendado)</option>
-                                <option value={30}>30% de descuento</option>
-                                <option value={50}>50% de descuento (Liquidación)</option>
+                                <option value={15}>15% de descuento (Tope Máximo Taller)</option>
                               </select>
                             </div>
                           </div>
@@ -11068,7 +11149,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             <div className="p-2.5 rounded-xl bg-white border border-amber-200 flex items-center justify-between text-xs">
                               <span className="text-gray-500">Precio normal: <strong className="line-through">${editorForm.price}</strong></span>
                               <span className="text-[#2D4F3E] font-black text-sm">
-                                Precio Flash: ${Math.round(editorForm.price * (1 - (editorForm.flashDealConfig.discountPercent || 20) / 100))} MXN
+                                Precio Flash: ${Math.round(editorForm.price * (1 - (editorForm.flashDealConfig.discountPercent || 15) / 100))} MXN
                               </span>
                             </div>
                           )}

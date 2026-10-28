@@ -887,6 +887,23 @@ export default function App() {
         </div>
       ) : null}
 
+      {/* BARRA DE FILTROS SUPERIOR EN PC: queda pegada bajo el navbar, antes del hero y de las áreas */}
+      {!['servicios', 'publicidad-desarrollo', 'industria', 'paquetes-servicios'].includes(activeWorld) && (
+        <div className="hidden md:block">
+          <FiltersBar
+            activeWorld={activeWorld}
+            onSelectWorld={handleSelectWorld}
+            categories={categories}
+            selectedCategory={selectedCategory}
+            onSelectCategory={setSelectedCategory}
+            selectedTechnique={selectedTechnique}
+            onSelectTechnique={setSelectedTechnique}
+            totalResults={searchQuery ? filteredProducts.length : regularProducts.length}
+            onResetFilters={handleGoHome}
+          />
+        </div>
+      )}
+
       {/* VISTA MÓVIL ESTILO MERCADO LIBRE: Banner Compacto + Cortinilla */}
       {activeWorld === 'all' && !searchQuery && (
         <div className="md:hidden">
@@ -974,7 +991,22 @@ export default function App() {
       ) : (
         /* Main Catalog Section */
         <main id="catalogo-section" className="flex-1">
-        
+
+        {/* ─── FILTROS EN MÓVIL ─ la versión de PC vive arriba, debajo del navbar ─── */}
+        <div className="md:hidden">
+          <FiltersBar
+            activeWorld={activeWorld}
+            onSelectWorld={handleSelectWorld}
+            categories={categories}
+            selectedCategory={selectedCategory}
+            onSelectCategory={setSelectedCategory}
+            selectedTechnique={selectedTechnique}
+            onSelectTechnique={setSelectedTechnique}
+            totalResults={searchQuery ? filteredProducts.length : regularProducts.length}
+            onResetFilters={handleGoHome}
+          />
+        </div>
+
         {/* Breadcrumbs Navigation */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-1">
           <nav className="flex items-center gap-1.5 text-xs text-gray-500 font-medium overflow-x-auto scrollbar-none">
@@ -1065,18 +1097,7 @@ export default function App() {
           </div>
         )}
 
-        {/* Dynamic Filters Bar */}
-        <FiltersBar
-          activeWorld={activeWorld}
-          onSelectWorld={handleSelectWorld}
-          categories={categories}
-          selectedCategory={selectedCategory}
-          onSelectCategory={setSelectedCategory}
-          selectedTechnique={selectedTechnique}
-          onSelectTechnique={setSelectedTechnique}
-          totalResults={searchQuery ? filteredProducts.length : regularProducts.length}
-          onResetFilters={handleGoHome}
-        />
+        {/* Dynamic Filters Bar - REMOVIDO: ahora está arriba del breadcrumb */}
 
         {/* Catalog Grid with Interleaved Packages */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
