@@ -441,11 +441,12 @@ export default function FlashDealsControlSection({
     try {
       setActionLoading(true);
       const currentConfig = prod.flashDealConfig || {};
+      const safeDiscount = Math.max(0, Math.min(15, Number(discountPercent) || 0));
       const updatedConfig = {
         ...currentConfig,
         enabled: true,
         durationMinutes: Number(durationMinutes),
-        discountPercent: Number(discountPercent),
+        discountPercent: safeDiscount,
         startedAt: Date.now(),
         expiresAt: Date.now() + Number(durationMinutes) * 60 * 1000
       };
@@ -463,7 +464,7 @@ export default function FlashDealsControlSection({
       });
 
       if (res.ok) {
-        showNotification(`Oferta actualizada: ${durationMinutes} min con -${discountPercent}% de descuento`, 'success');
+        showNotification(`Oferta actualizada: ${durationMinutes} min con -${safeDiscount}% de descuento`, 'success');
         if (onRefreshCatalog) onRefreshCatalog();
       }
     } catch (err) {

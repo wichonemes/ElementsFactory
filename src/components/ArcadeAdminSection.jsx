@@ -45,7 +45,7 @@ export default function ArcadeAdminSection({ token }) {
       { id: 'tier-5', coinsRequired: 50, code: 'TALLER5', label: '5% de Descuento', description: 'Válido en cualquier compra o paquete (Mínimo $100 MXN)', discountPercent: 5, discountAmount: 0, minPurchase: 100 },
       { id: 'tier-10', coinsRequired: 100, code: 'TALLER10', label: '10% de Descuento', description: 'Válido en productos o paquetes coordinados (Mínimo $250 MXN)', discountPercent: 10, discountAmount: 0, minPurchase: 250 },
       { id: 'tier-15', coinsRequired: 250, code: 'TALLER15', label: '15% de Descuento', description: 'Descuento del 15% en tu pedido (Mínimo $350 MXN)', discountPercent: 15, discountAmount: 0, minPurchase: 350 },
-      { id: 'tier-20', coinsRequired: 580, code: 'TALLER20', label: '20% de Descuento VIP', description: 'Descuento VIP máximo del taller (Mínimo $500 MXN)', discountPercent: 20, discountAmount: 0, minPurchase: 500 }
+      { id: 'tier-20', coinsRequired: 580, code: 'TALLER15VIP', label: '15% de Descuento VIP', description: 'Descuento VIP máximo del taller (Mínimo $500 MXN)', discountPercent: 15, discountAmount: 0, minPurchase: 500 }
     ]
   });
 
@@ -858,7 +858,7 @@ export default function ArcadeAdminSection({ token }) {
                   { id: 'tier-5', coinsRequired: 50, code: 'TALLER5', label: '5% de Descuento', description: 'Válido en cualquier compra o paquete (Mínimo $100 MXN)', discountPercent: 5, discountAmount: 0, minPurchase: 100 },
                   { id: 'tier-10', coinsRequired: 100, code: 'TALLER10', label: '10% de Descuento', description: 'Válido en productos o paquetes coordinados (Mínimo $250 MXN)', discountPercent: 10, discountAmount: 0, minPurchase: 250 },
                   { id: 'tier-15', coinsRequired: 250, code: 'TALLER15', label: '15% de Descuento', description: 'Descuento del 15% en tu pedido (Mínimo $350 MXN)', discountPercent: 15, discountAmount: 0, minPurchase: 350 },
-                  { id: 'tier-20', coinsRequired: 580, code: 'TALLER20', label: '20% de Descuento VIP', description: 'Descuento VIP máximo del taller (Mínimo $500 MXN)', discountPercent: 20, discountAmount: 0, minPurchase: 500 }
+                  { id: 'tier-20', coinsRequired: 580, code: 'TALLER15VIP', label: '15% de Descuento VIP', description: 'Descuento VIP máximo del taller (Mínimo $500 MXN)', discountPercent: 15, discountAmount: 0, minPurchase: 500 }
                 ]
               }));
             }}

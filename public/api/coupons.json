@@ -119,17 +119,19 @@
   },
   {
     "id": "cup-store-promo20",
-    "code": "PROMO20",
-    "name": "20% de Descuento en Pedidos Mayores",
+    "code": "PROMO15",
+    "name": "15% de Descuento en Pedidos Mayores",
     "category": "store",
     "type": "percent",
-    "value": 20,
+    "value": 15,
     "minPurchase": 500,
     "maxUses": null,
     "usedCount": 0,
     "expiresAt": "2026-12-31T23:59:59.000Z",
     "active": true,
-    "description": "Descuento del 20% aplicable en compras a partir de $500 MXN."
+    "description": "Descuento del 15% aplicable en compras a partir de $500 MXN.",
+    "discountPercent": 15,
+    "label": "15% de Descuento Especial"
   },
   {
     "id": "cup-store-enviogratis",
@@ -161,16 +163,18 @@
   },
   {
     "id": "cup-store-flashfinde",
-    "code": "FLASHFINDE30",
-    "name": "30% Especial Oferta Relámpago",
+    "code": "FLASHFINDE15",
+    "name": "15% Especial Oferta Relámpago",
     "category": "store",
     "type": "percent",
-    "value": 30,
+    "value": 15,
     "minPurchase": 0,
     "maxUses": null,
     "usedCount": 0,
     "expiresAt": "2026-12-31T23:59:59.000Z",
     "active": true,
-    "description": "Código relámpago exclusivo para fines de semana."
+    "description": "Código relámpago exclusivo para fines de semana.",
+    "discountPercent": 15,
+    "label": "15% Especial Oferta Relámpago de Fin de Semana"
   }
 ]

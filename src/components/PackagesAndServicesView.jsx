@@ -37,7 +37,7 @@ export const getBundleTiers = (promo) => {
         price: 320,
         regularPrice: 395,
         savings: 75,
-        discountPercent: 19,
+        discountPercent: 15,
         summary: 'Lo indispensable para organizar llaves y monedas en la entrada con calidez.',
         includedItems: [
           '1 Colgador de llaves Bienvenidos en madera natural tratada (20 x 8 cm)',
@@ -62,7 +62,7 @@ export const getBundleTiers = (promo) => {
         price: 449,
         regularPrice: 548,
         savings: 99,
-        discountPercent: 18,
+        discountPercent: 15,
         summary: 'El combo completo para recibidor: incluye todo lo del básico más bandeja y segundo llavero.',
         includedItems: [
           '1 Colgador de llaves Bienvenidos ampliado en madera natural (25 x 10 cm)',
@@ -88,7 +88,7 @@ export const getBundleTiers = (promo) => {
         price: 620,
         regularPrice: 775,
         savings: 155,
-        discountPercent: 20,
+        discountPercent: 15,
         summary: 'Máxima capacidad en madera noble de nogal con 4 llaveros y kit de instalación oculta.',
         includedItems: [
           '1 Colgador de llaves Bienvenidos XL en madera de nogal con 5 ganchos metálicos (35 x 12 cm)',
@@ -119,7 +119,7 @@ export const getBundleTiers = (promo) => {
         price: 370,
         regularPrice: 460,
         savings: 90,
-        discountPercent: 20,
+        discountPercent: 15,
         summary: 'Equipamiento básico para tener limpio y despejado el escritorio.',
         includedItems: [
           '1 Soporte vertical para audífonos de diadema',
@@ -144,7 +144,7 @@ export const getBundleTiers = (promo) => {
         price: 520,
         regularPrice: 647,
         savings: 127,
-        discountPercent: 20,
+        discountPercent: 15,
         summary: 'Estación completa: soporte dual audífonos + control, organizador de memorias y portalápices facetado.',
         includedItems: [
           '1 Soporte vertical para celular con ranura para cable de carga',
@@ -170,7 +170,7 @@ export const getBundleTiers = (promo) => {
         price: 720,
         regularPrice: 910,
         savings: 190,
-        discountPercent: 21,
+        discountPercent: 15,
         summary: 'El setup definitivo con acabados grafito texturizado, soporte para tablet y placa con Gamertag.',
         includedItems: [
           '1 Soporte gamer dual premium en acabado grafito/bronce con doble brazo reforzado',
@@ -202,7 +202,7 @@ export const getBundleTiers = (promo) => {
         price: 219,
         regularPrice: 275,
         savings: 56,
-        discountPercent: 20,
+        discountPercent: 15,
         summary: 'Identificación segura para tu consentido y recuerdo imantado para casa.',
         includedItems: [
           '1 Chapita de identificación ligera con nombre al frente y teléfono grabado al reverso',
@@ -227,7 +227,7 @@ export const getBundleTiers = (promo) => {
         price: 299,
         regularPrice: 366,
         savings: 67,
-        discountPercent: 18,
+        discountPercent: 15,
         summary: 'El kit consentido con portabolsas para paseo, chapita y marco con relieve.',
         includedItems: [
           '1 Chapita de identificación ligera con silueta y datos grabados',
@@ -253,7 +253,7 @@ export const getBundleTiers = (promo) => {
         price: 420,
         regularPrice: 530,
         savings: 110,
-        discountPercent: 21,
+        discountPercent: 15,
         summary: 'Edición de lujo con doble chapita de repuesto, gancho de pared para su correa y portabolsas cargado.',
         includedItems: [
           '1 Chapita de identificación en relieve 3D bicapa',
@@ -285,7 +285,7 @@ export const getBundleTiers = (promo) => {
         price: 1350,
         regularPrice: 1690,
         savings: 340,
-        discountPercent: 20,
+        discountPercent: 15,
         summary: 'Ideal para cafeterías pequeñas, food trucks y bistrós que arrancan.',
         includedItems: [
           '6 Números de mesa 3D con base rectangular biselada (del 01 al 06)',
@@ -311,7 +311,7 @@ export const getBundleTiers = (promo) => {
         price: 1890,
         regularPrice: 2364,
         savings: 474,
-        discountPercent: 20,
+        discountPercent: 15,
         summary: 'El pack más completo para restaurantes y bares: 10 mesas, 4 servilleteros y doble QR.',
         includedItems: [
           '6 Números de mesa 3D con base rectangular biselada',
@@ -339,7 +339,7 @@ export const getBundleTiers = (promo) => {
         price: 2590,
         regularPrice: 3280,
         savings: 690,
-        discountPercent: 21,
+        discountPercent: 15,
         summary: 'Capacidad para 15 mesas con logo, letrero de barra, servilleteros ampliados y QR de acrílico doble vista.',
         includedItems: [
           '10 Números de mesa 3D biselados con logotipo grabado',
@@ -372,7 +372,7 @@ export const getBundleTiers = (promo) => {
         price: 560,
         regularPrice: 700,
         savings: 140,
-        discountPercent: 20,
+        discountPercent: 15,
         summary: 'Moderniza tu cobro y redes con chip NFC y soporte QR sin complicaciones.',
         includedItems: [
           '1 Soporte piramidal de contacto inteligente con chip NFC programado',
@@ -398,7 +398,7 @@ export const getBundleTiers = (promo) => {
         price: 780,
         regularPrice: 932,
         savings: 152,
-        discountPercent: 16,
+        discountPercent: 15,
         summary: 'El paquete de mostrador preferido: NFC, soporte QR, 6 posavasos y 2 tazas institucionales.',
         includedItems: [
           '1 Soporte piramidal de contacto inteligente con chip NFC programado',
@@ -425,7 +425,7 @@ export const getBundleTiers = (promo) => {
         price: 1090,
         regularPrice: 1390,
         savings: 300,
-        discountPercent: 22,
+        discountPercent: 15,
         summary: 'Doble estación NFC para caja y recepción, 12 posavasos y vajilla ejecutiva completa.',
         includedItems: [
           '1 Soporte piramidal con chip NFC para mostrador de cobro',
@@ -459,7 +459,7 @@ export const getBundleTiers = (promo) => {
         price: 640,
         regularPrice: 790,
         savings: 150,
-        discountPercent: 19,
+        discountPercent: 15,
         summary: 'Lo necesario para recibir a tus clientes y regalar un detalle con tu marca.',
         includedItems: [
           '1 Tótem QR para citas, catálogo o perfil de Instagram',
@@ -485,7 +485,7 @@ export const getBundleTiers = (promo) => {
         price: 890,
         regularPrice: 1098,
         savings: 208,
-        discountPercent: 19,
+        discountPercent: 15,
         summary: 'El pack más elegido por barberías, estéticas y boutiques: 25 llaveros, tótem y bandeja.',
         includedItems: [
           '1 Tótem QR para citas, catálogo o perfil de Instagram',
@@ -511,7 +511,7 @@ export const getBundleTiers = (promo) => {
         price: 1250,
         regularPrice: 1590,
         savings: 340,
-        discountPercent: 21,
+        discountPercent: 15,
         summary: 'Doble tótem de mostrador, doble bandeja organizadora y 50 llaveros para tus mejores clientes.',
         includedItems: [
           '1 Tótem QR para citas y redes',
@@ -544,7 +544,7 @@ export const getBundleTiers = (promo) => {
         price: 1790,
         regularPrice: 2240,
         savings: 450,
-        discountPercent: 20,
+        discountPercent: 15,
         summary: 'Para bodas civiles o celebraciones íntimas con los detalles más emotivos.',
         includedItems: [
           'Set Suite Nupcial (2 ganchos de madera grabados con nombres + 1 alhajero de madera grabado + 2 termos grabados)',
@@ -569,7 +569,7 @@ export const getBundleTiers = (promo) => {
         price: 2490,
         regularPrice: 3020,
         savings: 530,
-        discountPercent: 18,
+        discountPercent: 15,
         summary: 'El paquete nupcial insignia: Suite nupcial, bienvenida a ceremonia con conos de pétalos y centro presidencial.',
         includedItems: [
           'Set Suite Nupcial (2 ganchos grabados, 1 alhajero con terciopelo, 2 termos con vinil)',
@@ -598,7 +598,7 @@ export const getBundleTiers = (promo) => {
         price: 3490,
         regularPrice: 4350,
         savings: 860,
-        discountPercent: 20,
+        discountPercent: 15,
         summary: 'La suite nupcial más completa con 50 conos, recuerdos de padrinos y centro 3D con luz LED.',
         includedItems: [
           'Set Suite Nupcial VIP (Ganchos, alhajero con terciopelo, 2 cosmetiqueras y termos térmicos de acero)',
@@ -631,7 +631,7 @@ export const getBundleTiers = (promo) => {
         price: 5490,
         regularPrice: 6600,
         savings: 1110,
-        discountPercent: 17,
+        discountPercent: 15,
         summary: 'Estación de Patch Bar en vivo durante 2 horas con 30 prendas y 30 kits anticruda.',
         includedItems: [
           'Servicio Patch Bar en Vivo durante 2 horas continuas con prensa térmica profesional y operador',
@@ -658,7 +658,7 @@ export const getBundleTiers = (promo) => {
         price: 7490,
         regularPrice: 8600,
         savings: 1110,
-        discountPercent: 13,
+        discountPercent: 15,
         summary: 'El combo fiesta más cotizado para bodas y graduaciones: 3 horas, 50 prendas y 50 kits anticruda.',
         includedItems: [
           'Servicio Patch Bar en Vivo con stand de madera y prensa térmica industrial',
@@ -686,7 +686,7 @@ export const getBundleTiers = (promo) => {
         price: 9990,
         regularPrice: 12400,
         savings: 2410,
-        discountPercent: 19,
+        discountPercent: 15,
         summary: 'Doble prensa térmica, 4 horas continuas, 80 prendas con parche conmemorativo exclusivo del evento.',
         includedItems: [
           'Servicio Patch Bar en Vivo',
@@ -720,7 +720,7 @@ export const getBundleTiers = (promo) => {
         price: 1250,
         regularPrice: 1580,
         savings: 330,
-        discountPercent: 21,
+        discountPercent: 15,
         summary: 'Letrero de bienvenida compacto y 20 llaveros botánicos personalizados para familia cercana.',
         includedItems: [
           '1 Letrero de bienvenida silueta arco para caballete (40 x 60 cm) con nombre y fecha',
@@ -746,7 +746,7 @@ export const getBundleTiers = (promo) => {
         price: 1750,
         regularPrice: 2163,
         savings: 413,
-        discountPercent: 19,
+        discountPercent: 15,
         summary: 'El balance ideal para la recepción de tus XV años o graduación con 35 llaveros y letrero de arco.',
         includedItems: [
           '1 Letrero de bienvenida silueta arco ampliado para caballete (50 x 70 cm)',
@@ -772,7 +772,7 @@ export const getBundleTiers = (promo) => {
         price: 2450,
         regularPrice: 3080,
         savings: 630,
-        discountPercent: 20,
+        discountPercent: 15,
         summary: 'Letrero XL de 60x85 cm, 55 llaveros empacados individualmente, doble QR y cuadro de firmas.',
         includedItems: [
           '1 Letrero de bienvenida silueta arco XL para caballete (60 x 85 cm) con soporte reforzado',
@@ -805,7 +805,7 @@ export const getBundleTiers = (promo) => {
         price: 4800,
         regularPrice: 5900,
         savings: 1100,
-        discountPercent: 19,
+        discountPercent: 15,
         summary: 'Estación de 2 horas con operador y prensa térmica para reuniones y fiestas de tamaño íntimo.',
         includedItems: [
           '2 Horas de servicio continuo en vivo con operador calificado',
@@ -832,7 +832,7 @@ export const getBundleTiers = (promo) => {
         price: 6500,
         regularPrice: 7900,
         savings: 1400,
-        discountPercent: 18,
+        discountPercent: 15,
         summary: 'Estación completa de 3 horas para 50 a 100 personas. El servicio estrella para bodas y graduaciones.',
         includedItems: [
           'Servicio en vivo con prensa térmica industrial y operador profesional',
@@ -859,7 +859,7 @@ export const getBundleTiers = (promo) => {
         price: 9500,
         regularPrice: 11800,
         savings: 2300,
-        discountPercent: 19,
+        discountPercent: 15,
         summary: 'Para 100 a 200+ personas. 4 horas, 2 operadores, 2 prensas simultáneas y parche bordado personalizado con el logo de tu evento.',
         includedItems: [
           'Servicio Patch Bar en Vivo para gran evento',
@@ -913,7 +913,7 @@ export const getBundleTiers = (promo) => {
       price: basePrice,
       regularPrice: baseRegular,
       savings: promo.savings || Math.round(baseRegular - basePrice),
-      discountPercent: promo.discountPercent || 20,
+      discountPercent: Math.min(15, promo.discountPercent || 15),
       summary: 'El kit completo coordinado estándar con todas las piezas y el mejor balance de valor.',
       includedItems: (promo.includedItems || ['Kit completo de piezas coordinadas']).map((item, i) => i > 0 ? `+ ${item.replace(/^\+\s*/, '')}` : item),
       extraBenefits: [
@@ -934,7 +934,7 @@ export const getBundleTiers = (promo) => {
       price: Math.round(basePrice * 1.38),
       regularPrice: Math.round(baseRegular * 1.38),
       savings: Math.round((baseRegular - basePrice) * 1.5) || 200,
-      discountPercent: (promo.discountPercent || 20) + 2,
+      discountPercent: Math.min(15, promo.discountPercent || 15),
       summary: 'Máximo volumen, piezas de repuesto, personalización especial y acabados de lujo.',
       includedItems: [
         ...(promo.includedItems || ['Kit completo']),
@@ -1085,7 +1085,7 @@ export default function PackagesAndServicesView({
   const eventDiscountPct = useMemo(() => {
     if (!activeMonthlyEvent?.discountText) return 0;
     const match = activeMonthlyEvent.discountText.match(/(\d+)%/);
-    return match ? parseInt(match[1], 10) : 0;
+    return match ? Math.min(15, parseInt(match[1], 10) || 0) : 0;
   }, [activeMonthlyEvent]);
 
   const handleWhatsAppQuote = (promo, tier = null) => {

@@ -41,6 +41,18 @@ import {
   parseSku,
   suggestSkuForProduct
 } from '../utils/skuHelper';
+import {
+  DEFAULT_WORKSHOP_PARAMS,
+  MAX_DISCOUNT_PERCENT,
+  clampDiscountPercent,
+  computeRecipeCost,
+  applySummaryToRecipe,
+  buildRecipeFromProduct,
+  buildCostBreakdownFromSummary,
+  repairProductCosts,
+  auditProductCost,
+  num
+} from '../../shared/costing.js';
 
 // Helper para generar una receta de manufactura (BOM) inicial realista según la técnica
 // Helper para generar una receta de manufactura (BOM) inicial realista según la técnica
@@ -984,7 +996,14 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
   return [];
 }
 
-export function generateDefaultRecipeForProduct(prod, rawMaterials = []) {
+export function generateDefaultRecipeForProduct(prod, rawMaterials = [], workshopParams = DEFAULT_WORKSHOP_PARAMS) {
+  // Si el producto ya existe y tiene ficha de costos, reconstruimos desde su receta real.
+  if (prod?.id && prod?.costBreakdown) {
+    const recipe = buildRecipeFromProduct(prod, rawMaterials, workshopParams);
+    const summary = computeRecipeCost(recipe, prod, rawMaterials, workshopParams);
+    return applySummaryToRecipe(recipe, summary);
+  }
+
   const techs = Array.isArray(prod?.techniques) ? prod.techniques : ['3d'];
   const code = (prod?.code || '').toUpperCase();
   const name = (prod?.name || '').toLowerCase();
@@ -1273,6 +1292,28 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     onConfirm: null
   });
 
+  // Mantiene la receta y el desglose de costos sincronizados en tiempo real.
+  useEffect(() => {
+    if (!isEditorOpen || !editorForm?.manufacturingRecipe) return;
+    const currentRecipe = editorForm.manufacturingRecipe;
+    const summary = computeRecipeCost(currentRecipe, editorForm, rawMaterialsList, workshopParams);
+    const nextRecipe = applySummaryToRecipe(currentRecipe, summary);
+    const keys = ['totalMaterialCost', 'totalWasteCost', 'wastePercentAverage', 'energyCost', 'wearCost', 'laborCost', 'failureReserveCost', 'fixedOverheadCost'];
+    const totalsChanged = keys.some(key => Math.abs(Number(nextRecipe[key]) - Number(currentRecipe[key])) > 0.009);
+    const itemsChanged = JSON.stringify(nextRecipe.items) !== JSON.stringify(currentRecipe.items);
+    if (!totalsChanged && !itemsChanged) return;
+    setEditorForm(prev => {
+      if (!prev?.manufacturingRecipe) return prev;
+      const prevSummary = computeRecipeCost(prev.manufacturingRecipe, prev, rawMaterialsList, workshopParams);
+      const prevNext = applySummaryToRecipe(prev.manufacturingRecipe, prevSummary);
+      return {
+        ...prev,
+        manufacturingRecipe: prevNext,
+        costBreakdown: buildCostBreakdownFromSummary(prevSummary, prevNext, prev.costBreakdown)
+      };
+    });
+  }, [isEditorOpen, editorForm?.manufacturingRecipe, rawMaterialsList, workshopParams]);
+
   // Load Data when token is present
   useEffect(() => {
     if (token) {
@@ -1314,7 +1355,23 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         console.warn('API admin endpoints no disponibles, usando datos estáticos:', e);
       }
 
-      // Fallback a archivos estáticos exportados si no hay backend activo
+      // Fallback al catálogo administrativo completo (costos, recetas y materias primas)
+      // cuando GitHub Pages no tiene backend /api/* activo.
+      const missingAdminData = !dataProd || !Array.isArray(dataProd) || dataProd.length === 0 || !Array.isArray(dataMats) || dataMats.length === 0 || !dataSett;
+      if (missingAdminData) {
+        try {
+          const res = await fetch('./api/admin-catalog.json');
+          if (res.ok) {
+            const adminCatalog = await res.json();
+            if (Array.isArray(adminCatalog.products) && adminCatalog.products.length) dataProd = adminCatalog.products;
+            if (Array.isArray(adminCatalog.categories) && adminCatalog.categories.length) dataCat = adminCatalog.categories;
+            if (adminCatalog.settings && typeof adminCatalog.settings === 'object') dataSett = adminCatalog.settings;
+            if (Array.isArray(adminCatalog.rawMaterials) && adminCatalog.rawMaterials.length) dataMats = adminCatalog.rawMaterials;
+          }
+        } catch {}
+      }
+
+      // Fallback a archivos estáticos públicos si el catálogo administrativo no existe.
       if (!dataProd || !Array.isArray(dataProd) || dataProd.length === 0) {
         try {
           const res = await fetch('./api/products.json');
@@ -1646,64 +1703,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     const regularPrice = prod.regularPrice || (prod.price ? Math.round(prod.price * 1.25) : 0);
     const savings = prod.savings || (regularPrice && prod.price ? Math.max(0, regularPrice - prod.price) : 0);
 
-    const rawRecipe = prod.manufacturingRecipe;
-    const resolvedRecipe = rawRecipe ? {
-      ...rawRecipe,
-      technique: rawRecipe.technique || prod.techniques?.[0] || '3d',
-      yieldUnits: Math.max(1, Number(rawRecipe.yieldUnits) || 1),
-      items: Array.isArray(rawRecipe.items) ? rawRecipe.items.map(it => ({
-        ...it,
-        supplyType: it.supplyType || (it.category === 'consumables' || (it.name || '').toLowerCase().includes('lija') || (it.name || '').toLowerCase().includes('sierra') || (it.name || '').toLowerCase().includes('estopa') || (it.name || '').toLowerCase().includes('cinta') ? 'indirect' : 'direct')
-      })) : [],
-      totalMaterialCost: Number(rawRecipe.totalMaterialCost) || 0,
-      totalWasteCost: Number(rawRecipe.totalWasteCost) || 0,
-      wastePercentAverage: Number(rawRecipe.wastePercentAverage) || 0,
-      energyCost: Number(rawRecipe.energyCost) || 0,
-      machinePowerWatts: Number(rawRecipe.machinePowerWatts) || 250,
-      manufacturingTimeMinutes: Number(rawRecipe.manufacturingTimeMinutes) || 30,
-      kwhCost: Number(rawRecipe.kwhCost) || 3.50,
-      laborCost: Number(rawRecipe.laborCost) || 0,
-      laborTimeMinutes: Number(rawRecipe.laborTimeMinutes) || 15,
-      laborRatePerHour: Number(rawRecipe.laborRatePerHour) || 75,
-      packagingAndShipping: rawRecipe.packagingAndShipping || {
-        enabled: true,
-        packagingType: 'caja_kraft',
-        packagingCost: 12,
-        packagingDetails: 'Caja microcorrugado + poliburbuja + viruta kraft + etiqueta térmica',
-        shippingNationwideEstimated: 149,
-        shippingIncludedInPrice: false,
-        notes: 'Envío estándar a toda la República Mexicana por FedEx / Estafeta / DHL'
-      }
-    } : (prod.costBreakdown?.recipeItems && prod.costBreakdown.recipeItems.length > 0 ? {
-      technique: prod.techniques?.[0] || '3d',
-      yieldUnits: Math.max(1, Number(prod.costBreakdown.yieldUnits) || 1),
-      items: prod.costBreakdown.recipeItems.map(it => ({
-        id: it.id || `item-${Date.now()}-${Math.random()}`,
-        materialId: it.materialId || '',
-        name: it.name || '',
-        category: it.category || '3d',
-        supplyType: (it.name || '').toLowerCase().includes('lija') || (it.name || '').toLowerCase().includes('sierra') ? 'indirect' : 'direct',
-        netQuantity: Number(it.quantity) || 0,
-        wasteQuantity: 0,
-        wasteType: 'none',
-        totalQuantity: Number(it.quantity) || 0,
-        unit: it.unit || 'g',
-        unitCost: Number(it.unitCost) || 0,
-        totalCost: Number(it.lineTotal) || 0
-      })),
-      totalMaterialCost: Number(prod.costBreakdown?.recipeRawMaterialsCost) || 0,
-      totalWasteCost: 0,
-      wastePercentAverage: 0,
-      packagingAndShipping: {
-        enabled: true,
-        packagingType: 'caja_kraft',
-        packagingCost: 12,
-        packagingDetails: 'Caja microcorrugado + poliburbuja + viruta kraft',
-        shippingNationwideEstimated: 149,
-        shippingIncludedInPrice: false,
-        notes: 'Envío estándar a toda la República Mexicana'
-      }
-    } : generateDefaultRecipeForProduct(prod, rawMaterialsList));
+    const recipeSeed = prod.manufacturingRecipe?.items?.length
+      ? prod.manufacturingRecipe
+      : buildRecipeFromProduct(prod, rawMaterialsList, workshopParams);
+    const recipeSummary = computeRecipeCost(recipeSeed, prod, rawMaterialsList, workshopParams);
+    const resolvedRecipe = applySummaryToRecipe(recipeSeed, recipeSummary);
+
 
     const repo = prod.repository || {};
     const mwUrl = repo.makerworldUrl || prod.makerWorldModel || prod.makerworldUrl || prod.repositoryUrl || '';
@@ -2366,21 +2371,18 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
   const handleSyncRecipeToCostPrice = () => {
     const rec = editorForm.manufacturingRecipe || {};
-    const matCost = Number(rec.totalMaterialCost) || 0;
-    const energyCost = Number(rec.energyCost) || 0;
-    const laborCost = Number(rec.laborCost) || 0;
-    const pkg = rec.packagingAndShipping;
-    const packagingCost = pkg?.enabled ? (Number(pkg.packagingCost) || 0) : 0;
-    const shippingCost = (pkg?.enabled && pkg?.includeShippingInPrice) ? (Number(pkg.shippingCost) || 0) : 0;
-    const totalCost = Math.round((matCost + energyCost + laborCost + packagingCost + shippingCost) * 100) / 100;
-
+    const summary = computeRecipeCost(rec, editorForm, rawMaterialsList, workshopParams);
+    const recipe = applySummaryToRecipe(rec, summary);
+    const totalCost = summary.totalCost;
     if (totalCost > 0) {
       setEditorForm({
         ...editorForm,
-        costPrice: totalCost
+        costPrice: totalCost,
+        manufacturingRecipe: recipe,
+        costBreakdown: buildCostBreakdownFromSummary(summary, recipe, editorForm.costBreakdown)
       });
       setEditorMessage({
-        text: `✓ Costo aterrizado sincronizado a $${totalCost.toFixed(2)} MXN (Insumos: $${matCost.toFixed(1)} + Luz CFE: $${energyCost.toFixed(1)} + Mano de Obra: $${laborCost.toFixed(1)}${packagingCost > 0 ? ` + Embalaje: $${packagingCost.toFixed(1)}` : ''}${shippingCost > 0 ? ` + Envío Nacional: $${shippingCost.toFixed(1)}` : ''}).`,
+        text: `Costo sincronizado a $${totalCost.toFixed(2)} MXN (Insumos: $${summary.materialCost.toFixed(1)} + Luz: $${summary.energyCost.toFixed(1)} + Desgaste: $${summary.wearCost.toFixed(1)} + Mano de obra: $${summary.laborCost.toFixed(1)} + Embalaje: $${summary.packagingCost.toFixed(1)} + Reserva: $${summary.failureReserveCost.toFixed(1)}).`,
         type: 'success'
       });
       setTimeout(() => setEditorMessage({ text: '', type: '' }), 4000);
@@ -2688,15 +2690,81 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     }
   };
 
+  // Convierte la calculadora visual al formato de la receta compartida.
+  const buildCostingRecipeFromBreakdownForm = (product, form) => {
+    if (!product || !form) return null;
+    let items = (Array.isArray(form.recipeItems) ? form.recipeItems : []).map((item, index) => {
+      const materialId = item.rawMaterialId || item.materialId || '';
+      const material = rawMaterialsList.find(m => m.id === materialId);
+      const itemName = item.name || material?.name || 'Insumo';
+      const category = item.category || material?.category || (/empaque|caja|bolsa|etiqueta|viruta|burbuja/i.test(itemName) ? 'packaging' : /lija|cinta|estopa|guante|brocha/i.test(itemName) ? 'consumables' : 'materials');
+      const supplyType = item.supplyType || (category === 'packaging' || category === 'consumables' ? 'indirect' : 'direct');
+      return {
+        id: item.id || `item-${index + 1}`,
+        materialId,
+        name: itemName,
+        category,
+        supplyType,
+        netQuantity: Number(item.quantity ?? item.netQuantity ?? item.totalQuantity) || 0,
+        wasteQuantity: Number(item.wasteQuantity) || 0,
+        unit: item.unit || 'pieza',
+        unitCost: Number(item.unitCost) || 0
+      };
+    });
+    const otherCost = Number(form.otherMaterialsCost) || 0;
+    const hasNonFilamentItem = items.some(item =>
+      item.category !== 'packaging' && !/filamento|\bpla\b|\btpu\b|\bpetg\b/i.test(item.name)
+    );
+    if (otherCost > 0 && !hasNonFilamentItem && !items.some(item => /insumo directo|base|otros materiales/i.test(item.name))) {
+      items.push({ id: 'item-otros-materiales', materialId: '', name: 'Insumos directos y materiales base', category: 'materials', supplyType: 'direct', netQuantity: 1, wasteQuantity: 0, unit: 'lote', unitCost: otherCost });
+    }
+    const packagingCost = Number(form.packagingCost) || 0;
+    const shippingCost = Number(form.shippingCost) || 0;
+    return {
+      ...(product.manufacturingRecipe || {}),
+      items,
+      yieldUnits: Math.max(1, Number(form.yieldUnits) || 1),
+      manufacturingTimeMinutes: (Number(form.machineHours) || 0) * 60,
+      machinePowerWatts: Number(product.manufacturingRecipe?.machinePowerWatts) || 250,
+      laborTimeMinutes: Number(form.manualWorkMin) || 0,
+      laborRatePerHour: Number(workshopParams.laborPerHour) || 60,
+      failureReservePercent: Number(form.additionalFailuresCost) > 0 ? 0 : (Number(workshopParams.failureReservePercent) || 3),
+      failureReserveCost: Number(form.additionalFailuresCost) || 0,
+      fixedOverheadCost: (Number(form.fixedOverheadCost) || 0) + (Number(form.otherEquipCost) || 0) + (Number(form.prepCost) || 0),
+      kwhCost: Number(workshopParams.kwhCost) || 3.5,
+      packagingAndShipping: { enabled: packagingCost > 0, packagingCost, shippingIncludedInPrice: shippingCost > 0, shippingCost }
+    };
+  };
+
   // Open Detailed Cost Breakdown Modal for product
   const handleOpenCostBreakdown = (prod) => {
     setBreakdownModalProduct(prod);
     const cb = prod.costBreakdown || {};
 
-    // Construcción de items iniciales de la receta estilo app móvil
+    // Construcci├│n de items iniciales de la receta estilo app m├│vil
     let initialRecipeItems = [];
     if (cb.recipeItems && Array.isArray(cb.recipeItems) && cb.recipeItems.length > 0) {
-      initialRecipeItems = cb.recipeItems;
+      initialRecipeItems = cb.recipeItems.map(item => ({
+        id: item.id,
+        rawMaterialId: item.rawMaterialId || item.materialId || '',
+        name: item.name,
+        quantity: Number(item.quantity ?? item.netQuantity ?? item.totalQuantity) || 0,
+        wasteQuantity: Number(item.wasteQuantity) || 0,
+        unit: item.unit || 'pieza',
+        unitCost: Number(item.unitCost) || 0,
+        lineTotal: Number(item.lineTotal ?? item.totalCost) || 0
+      }));
+    } else if (Array.isArray(prod.manufacturingRecipe?.items) && prod.manufacturingRecipe.items.length > 0) {
+      initialRecipeItems = prod.manufacturingRecipe.items.map(item => ({
+        id: item.id,
+        rawMaterialId: item.rawMaterialId || item.materialId || '',
+        name: item.name,
+        quantity: Number(item.quantity ?? item.netQuantity ?? item.totalQuantity) || 0,
+        wasteQuantity: Number(item.wasteQuantity) || 0,
+        unit: item.unit || 'pieza',
+        unitCost: Number(item.unitCost) || 0,
+        lineTotal: Number(item.lineTotal ?? item.totalCost) || 0
+      }));
     } else {
       const plaKg = Number(workshopParams.plaPerKg) || 500;
       const plaGrams = Number(cb.plaGrams || (prod.techniques?.includes('3d') ? 12 : 0));
@@ -2750,11 +2818,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
     setBreakdownForm({
       salePrice: prod.price ?? (prod.priceType === 'quote' ? 0 : 199),
-      recipeName: cb.recipeName || prod.name || 'Impresión 3d',
+      recipeName: cb.recipeName || prod.name || 'Impresi├│n 3d',
       recipeItems: initialRecipeItems,
       yieldUnits: Number(cb.yieldUnits) || 1,
-      overheadPercent: cb.overheadPercent !== undefined ? Number(cb.overheadPercent) : 50,
-      targetProfitPercent: cb.targetProfitPercent !== undefined ? Number(cb.targetProfitPercent) : 200,
+      targetMarginPercent: cb.targetMarginPercent !== undefined ? Number(cb.targetMarginPercent) : (Number(workshopParams.targetMarginPercent) || 40),
       recipeNotes: cb.recipeNotes || '',
       plaGrams: cb.plaGrams || 0,
       tpuGrams: cb.tpuGrams || 0,
@@ -2772,7 +2839,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     setShowAddQuantityModal(false);
   };
 
-  // Helper para añadir item de materia prima a la receta
+  // Helper para a├▒adir item de materia prima a la receta
   const handleAddRecipeItemFromModal = (e) => {
     if (e) e.preventDefault();
     if (!breakdownForm) return;
@@ -2846,50 +2913,29 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   const handleSaveCostBreakdown = async () => {
     if (!breakdownModalProduct || !breakdownForm) return;
 
-    const plaKg = Number(workshopParams.plaPerKg) || 500;
-    const tpuKg = Number(workshopParams.tpuPerKg) || 700;
-    const filamentWaste = (Number(workshopParams.filamentWastePercent) || 15) / 100;
-    const electHour = Number(workshopParams.electricityPerHour) || 1.04;
-    const wearHour = Number(workshopParams.wearPerHour) || 3.00;
-    const laborHour = Number(workshopParams.laborPerHour) || 60;
-
-    const recipeItems = Array.isArray(breakdownForm.recipeItems) ? breakdownForm.recipeItems : [];
-    const recipeRawMaterialsCost = recipeItems.reduce((acc, it) => acc + (Number(it.lineTotal) || 0), 0);
+    const recipe = buildCostingRecipeFromBreakdownForm(breakdownModalProduct, breakdownForm);
+    if (!recipe) return;
+    const summary = computeRecipeCost(recipe, breakdownModalProduct, rawMaterialsList, workshopParams);
     const yieldUnits = Math.max(1, Number(breakdownForm.yieldUnits) || 1);
-    const rawMaterialsPerUnit = recipeRawMaterialsCost / yieldUnits;
-    const overheadPercent = breakdownForm.overheadPercent !== undefined ? Number(breakdownForm.overheadPercent) : 50;
-    const overheadCostPerUnit = rawMaterialsPerUnit * (overheadPercent / 100);
-    const recipeTotalUnitCost = Math.round((rawMaterialsPerUnit + overheadCostPerUnit) * 10) / 10;
-    const targetProfitPercent = breakdownForm.targetProfitPercent !== undefined ? Number(breakdownForm.targetProfitPercent) : 200;
-    const recipeSuggestedPrice = Math.round(recipeTotalUnitCost * (1 + targetProfitPercent / 100));
-
-    // Desglose clásico para compatibilidad y fallback
-    const filamentCost = ((Number(breakdownForm.plaGrams || 0) * plaKg) + (Number(breakdownForm.tpuGrams || 0) * tpuKg)) / 1000 * (1 + filamentWaste);
-    const energyWearCost = Number(breakdownForm.machineHours || 0) * (electHour + wearHour);
-    const laborCost = (Number(breakdownForm.manualWorkMin || 0) / 60) * laborHour;
-    const otherCosts = Number(breakdownForm.otherMaterialsCost || 0) + Number(breakdownForm.otherEquipCost || 0) + Number(breakdownForm.prepCost || 0) + Number(breakdownForm.packagingCost || 0) + Number(breakdownForm.additionalFailuresCost || 0) + Number(breakdownForm.fixedOverheadCost || 0) + Number(breakdownForm.shippingCost || 0);
-    const classicTotal = Math.round((filamentCost + energyWearCost + laborCost + otherCosts) * 10) / 10;
-
-    // Si tiene items de receta usamos el costo calculado por receta
-    const totalCalculated = recipeItems.length > 0 ? recipeTotalUnitCost : classicTotal;
-
+    const targetMargin = Math.max(1, Math.min(85, Number(breakdownForm.targetMarginPercent ?? workshopParams.targetMarginPercent) || 40)) / 100;
+    const recipeSuggestedPrice = summary.totalCost > 0 ? Math.round(summary.totalCost / (1 - targetMargin)) : 0;
+    const totalCalculated = summary.totalCost;
     const updatedPrice = breakdownForm.salePrice !== undefined && breakdownForm.salePrice !== '' && !isNaN(Number(breakdownForm.salePrice))
       ? Number(breakdownForm.salePrice)
       : (recipeSuggestedPrice > 0 ? recipeSuggestedPrice : breakdownModalProduct.price);
+    const recipeForSave = applySummaryToRecipe(recipe, summary);
 
     const costBreakdownPayload = {
       ...breakdownForm,
-      recipeName: breakdownForm.recipeName || breakdownModalProduct.name || 'Impresión 3d',
-      recipeItems,
+      ...buildCostBreakdownFromSummary(summary, recipeForSave, breakdownForm),
+      recipeName: breakdownForm.recipeName || breakdownModalProduct.name || 'Impresión 3D',
+      recipeItems: recipeForSave.items,
       yieldUnits,
-      overheadPercent,
-      targetProfitPercent,
-      recipeNotes: breakdownForm.recipeNotes || '',
-      rawMaterialsCost: Math.round(rawMaterialsPerUnit * 100) / 100,
-      overheadCost: Math.round(overheadCostPerUnit * 100) / 100,
-      recipeTotalUnitCost,
+      rawMaterialsCost: summary.materialCost,
+      overheadCost: summary.fixedOverheadCost,
+      recipeTotalUnitCost: summary.totalCost,
       recipeSuggestedPrice,
-      costStatus: breakdownForm.costStatus || 'Verificado'
+      costStatus: 'Calculado de Taller'
     };
 
     try {
@@ -2898,6 +2944,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
           ...prev,
           costPrice: totalCalculated,
           price: updatedPrice,
+          manufacturingRecipe: recipeForSave,
           costBreakdown: costBreakdownPayload
         }));
       }
@@ -2914,6 +2961,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
             costPrice: totalCalculated,
             price: updatedPrice,
             priceType: updatedPrice > 0 ? 'starting_at' : breakdownModalProduct.priceType,
+            manufacturingRecipe: recipeForSave,
             costBreakdown: costBreakdownPayload
           })
         });
@@ -3463,10 +3511,21 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       if (payload.measureImage) gal[3] = payload.measureImage;
       payload.gallery = gal;
 
-      // Sync flash deal config timestamp if enabled
-      if (payload.flashDealConfig?.enabled) {
-        payload.flashDealConfig.startedAt = payload.flashDealConfig.startedAt || Date.now();
-        payload.flashDealConfig.expiresAt = Date.now() + (payload.flashDealConfig.durationMinutes || 120) * 60 * 1000;
+      // Sync flash deal config timestamp if enabled (máximo 15% de descuento)
+      if (payload.flashDealConfig) {
+        payload.flashDealConfig.discountPercent = clampDiscountPercent(payload.flashDealConfig.discountPercent);
+        if (payload.flashDealConfig.enabled) {
+          payload.flashDealConfig.startedAt = payload.flashDealConfig.startedAt || Date.now();
+          payload.flashDealConfig.expiresAt = Date.now() + (payload.flashDealConfig.durationMinutes || 120) * 60 * 1000;
+        }
+      }
+
+      // Recalcular la receta completa antes de guardar para que el costo nunca quede desfasado.
+      if (payload.manufacturingRecipe) {
+        const summary = computeRecipeCost(payload.manufacturingRecipe, payload, rawMaterialsList, workshopParams);
+        payload.manufacturingRecipe = applySummaryToRecipe(payload.manufacturingRecipe, summary);
+        payload.costPrice = summary.totalCost;
+        payload.costBreakdown = buildCostBreakdownFromSummary(summary, payload.manufacturingRecipe, payload.costBreakdown || {});
       }
 
       // Sincronizar repositorio, archivos 3D y tiempos de manufactura
@@ -4512,7 +4571,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
                         activeTab === 'raw-materials' && rawMaterialsSubTab === 'inventory' ? 'bg-white/20 text-white' : 'bg-blue-50 text-blue-700'
                       }`}>
-                        177 mats
+                        {rawMaterialsList.length} mats
                       </span>
                     </button>
 
@@ -4572,7 +4631,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
                         activeTab === 'raw-materials' && rawMaterialsSubTab === 'suppliers' ? 'bg-white/20 text-white' : 'bg-cyan-50 text-cyan-700'
                       }`}>
-                        21 prov
+                        {new Set(rawMaterialsList.map(m => m.supplier).filter(Boolean)).size} prov
                       </span>
                     </button>
                   </div>
@@ -10404,14 +10463,18 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               {/* ======================================================== */}
               {editorActiveTab === 'pricing' && (() => {
                 const rec = editorForm.manufacturingRecipe || {};
-                const matCost = Number(rec.totalMaterialCost) || 0;
-                const energyCost = Number(rec.energyCost) || 0;
-                const laborCost = Number(rec.laborCost) || 0;
-                const pkg = rec.packagingAndShipping;
-                const packagingCost = pkg?.enabled ? (Number(pkg.packagingCost) || 0) : 0;
-                const shippingCost = (pkg?.enabled && pkg?.includeShippingInPrice) ? (Number(pkg.shippingCost) || 0) : 0;
-                const calculatedLandedCost = Math.round((matCost + energyCost + laborCost + packagingCost + shippingCost) * 100) / 100;
-                const currentCost = Number(editorForm.costPrice) || calculatedLandedCost;
+                const costSummary = computeRecipeCost(rec, editorForm, rawMaterialsList, workshopParams);
+                const matCost = costSummary.materialCost;
+                const energyCost = costSummary.energyCost;
+                const wearCost = costSummary.wearCost;
+                const laborCost = costSummary.laborCost;
+                const packagingCost = costSummary.packagingCost;
+                const shippingCost = costSummary.shippingCost;
+                const failureReserveCost = costSummary.failureReserveCost;
+                const overheadCost = costSummary.fixedOverheadCost;
+                const calculatedLandedCost = costSummary.totalCost;
+                const savedCost = Number(editorForm.costPrice) || 0;
+                const currentCost = calculatedLandedCost > 0 ? calculatedLandedCost : savedCost;
                 const currentPrice = Number(editorForm.price) || 0;
                 const profitAmount = currentPrice > 0 ? (currentPrice - currentCost) : 0;
                 const marginPercent = currentPrice > 0 ? Math.round((profitAmount / currentPrice) * 100) : 0;
@@ -10431,8 +10494,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               Escandallo Minucioso &amp; Fórmula de Costo Total Aterrizado
                             </h4>
                             <span className="text-[10.5px] text-gray-500">
-                              Directos + Indirectos + Luz CFE + Labor + Embalaje + Flete = Costo Total sin Fugas
-                            </span>
+                              Insumos + Luz CFE + Desgaste + Mano de obra + Embalaje + Flete + Reserva de fallas + Overhead = Costo Total sin Fugas</span>
                           </div>
                         </div>
 
@@ -10448,32 +10510,52 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </div>
 
                       {/* Desglose visual de la fórmula */}
-                      <div className="grid grid-cols-2 sm:grid-cols-6 gap-2 text-center text-[10px]">
-                        <div className="p-2 rounded-xl bg-white border border-emerald-200">
-                          <span className="text-gray-400 font-bold block uppercase text-[9px]">1. Insumos</span>
-                          <span className="font-mono font-black text-gray-800 text-xs mt-0.5">${matCost.toFixed(1)}</span>
-                        </div>
-                        <div className="p-2 rounded-xl bg-white border border-emerald-200">
-                          <span className="text-gray-400 font-bold block uppercase text-[9px]">2. Luz CFE</span>
-                          <span className="font-mono font-black text-amber-900 text-xs mt-0.5">${energyCost.toFixed(1)}</span>
-                        </div>
-                        <div className="p-2 rounded-xl bg-white border border-emerald-200">
-                          <span className="text-gray-400 font-bold block uppercase text-[9px]">3. Labor</span>
-                          <span className="font-mono font-black text-purple-900 text-xs mt-0.5">${laborCost.toFixed(1)}</span>
-                        </div>
-                        <div className="p-2 rounded-xl bg-white border border-emerald-200">
-                          <span className="text-gray-400 font-bold block uppercase text-[9px]">4. Embalaje</span>
-                          <span className="font-mono font-black text-purple-800 text-xs mt-0.5">${packagingCost.toFixed(1)}</span>
-                        </div>
-                        <div className="p-2 rounded-xl bg-white border border-emerald-200">
-                          <span className="text-gray-400 font-bold block uppercase text-[9px]">5. Flete</span>
-                          <span className="font-mono font-black text-blue-900 text-xs mt-0.5">${shippingCost.toFixed(1)}</span>
-                        </div>
-                        <div className="p-2 rounded-xl bg-emerald-800 text-white font-bold">
-                          <span className="text-emerald-200 block uppercase text-[9px]">Costo Total</span>
-                          <span className="font-mono font-black text-xs mt-0.5">${calculatedLandedCost.toFixed(2)}</span>
-                        </div>
-                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-9 gap-2 text-center text-[10px]">
+  <div className="p-2 rounded-xl bg-white border border-emerald-200">
+    <span className="text-gray-400 font-bold block uppercase text-[9px]">1. Insumos</span>
+    <span className="font-mono font-black text-gray-800 text-xs mt-0.5">$${matCost.toFixed(1)}</span>
+  </div>
+  <div className="p-2 rounded-xl bg-white border border-emerald-200">
+    <span className="text-gray-400 font-bold block uppercase text-[9px]">2. Luz CFE</span>
+    <span className="font-mono font-black text-amber-900 text-xs mt-0.5">$${energyCost.toFixed(1)}</span>
+  </div>
+  <div className="p-2 rounded-xl bg-white border border-emerald-200">
+    <span className="text-gray-400 font-bold block uppercase text-[9px]">3. Desgaste</span>
+    <span className="font-mono font-black text-orange-900 text-xs mt-0.5">$${wearCost.toFixed(1)}</span>
+  </div>
+  <div className="p-2 rounded-xl bg-white border border-emerald-200">
+    <span className="text-gray-400 font-bold block uppercase text-[9px]">4. Mano de obra</span>
+    <span className="font-mono font-black text-purple-900 text-xs mt-0.5">$${laborCost.toFixed(1)}</span>
+  </div>
+  <div className="p-2 rounded-xl bg-white border border-emerald-200">
+    <span className="text-gray-400 font-bold block uppercase text-[9px]">5. Embalaje</span>
+    <span className="font-mono font-black text-purple-800 text-xs mt-0.5">$${packagingCost.toFixed(1)}</span>
+  </div>
+  <div className="p-2 rounded-xl bg-white border border-emerald-200">
+    <span className="text-gray-400 font-bold block uppercase text-[9px]">6. Flete</span>
+    <span className="font-mono font-black text-blue-900 text-xs mt-0.5">$${shippingCost.toFixed(1)}</span>
+  </div>
+  <div className="p-2 rounded-xl bg-white border border-emerald-200">
+    <span className="text-gray-400 font-bold block uppercase text-[9px]">7. Reserva fallas</span>
+    <span className="font-mono font-black text-rose-800 text-xs mt-0.5">$${failureReserveCost.toFixed(1)}</span>
+  </div>
+  <div className="p-2 rounded-xl bg-white border border-emerald-200">
+    <span className="text-gray-400 font-bold block uppercase text-[9px]">8. Overhead</span>
+    <span className="font-mono font-black text-stone-800 text-xs mt-0.5">$${overheadCost.toFixed(1)}</span>
+  </div>
+  <div className="p-2 rounded-xl bg-emerald-800 text-white font-bold">
+    <span className="text-emerald-200 block uppercase text-[9px]">Costo Total</span>
+    <span className="font-mono font-black text-xs mt-0.5">$${calculatedLandedCost.toFixed(2)}</span>
+  </div>
+</div>
+{savedCost > 0 && Math.abs(savedCost - calculatedLandedCost) > 1 && (
+  <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-300 text-amber-950 text-[10.5px] font-semibold flex flex-wrap items-center justify-between gap-2">
+    <span>⚠️ El costo guardado ($${savedCost.toFixed(2)}) no coincide con la receta ($${calculatedLandedCost.toFixed(2)}).</span>
+    <button type="button" onClick={handleSyncRecipeToCostPrice} className="px-2.5 py-1 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-bold text-[10px] cursor-pointer">
+      Sincronizar ahora
+    </button>
+  </div>
+)}
                     </div>
 
                     {/* PRECIO DE VENTA, MARGEN RÁPIDO Y STOCK */}
@@ -10497,7 +10579,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               placeholder="0.00"
                             />
                           </div>
-                          <span className="text-[9.5px] text-gray-400">Directos + Indirectos + Luz + Empaque</span>
+                          <span className="text-[9.5px] text-gray-400">Insumos + Luz + Desgaste + Mano de obra + Empaque + Reserva</span>
                         </div>
 
                         {/* Precio de Venta */}
@@ -12186,36 +12268,26 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
       {/* Detailed Cost Breakdown Modal (Excel Formulas & 3D Workshop Calculation) */}
       {breakdownModalProduct && breakdownForm && (() => {
-        const plaKg = Number(workshopParams.plaPerKg) || 500;
-        const tpuKg = Number(workshopParams.tpuPerKg) || 700;
-        const filamentWaste = (Number(workshopParams.filamentWastePercent) || 15) / 100;
-        const electHour = Number(workshopParams.electricityPerHour) || 1.04;
-        const wearHour = Number(workshopParams.wearPerHour) || 3.00;
-        const laborHour = Number(workshopParams.laborPerHour) || 60;
+        const costingRecipe = buildCostingRecipeFromBreakdownForm(breakdownModalProduct, breakdownForm);
+        const costSummary = costingRecipe
+          ? computeRecipeCost(costingRecipe, breakdownModalProduct, rawMaterialsList, workshopParams)
+          : null;
 
-        // Fórmulas de la Calculadora de Costos Recetas (Estilo App Móvil)
         const recipeItems = Array.isArray(breakdownForm.recipeItems) ? breakdownForm.recipeItems : [];
-        const recipeRawMaterialsCost = recipeItems.reduce((acc, it) => acc + (Number(it.lineTotal) || 0), 0);
         const yieldUnits = Math.max(1, Number(breakdownForm.yieldUnits) || 1);
-        const rawMaterialsPerUnit = recipeRawMaterialsCost / yieldUnits;
-        const overheadPercent = breakdownForm.overheadPercent !== undefined ? Number(breakdownForm.overheadPercent) : 50;
-        const overheadCostPerUnit = rawMaterialsPerUnit * (overheadPercent / 100);
-        const recipeTotalUnitCost = Math.round((rawMaterialsPerUnit + overheadCostPerUnit) * 10) / 10;
-        const targetProfitPercent = breakdownForm.targetProfitPercent !== undefined ? Number(breakdownForm.targetProfitPercent) : 200;
-        const suggestedPriceFromRecipe = Math.round(recipeTotalUnitCost * (1 + targetProfitPercent / 100));
+        const targetMarginPercent = Math.max(1, Math.min(85, Number(breakdownForm.targetMarginPercent ?? workshopParams.targetMarginPercent) || 40));
+        const targetMargin = targetMarginPercent / 100;
+        const rawMaterialsPerUnit = costSummary?.materialCost || 0;
+        const recipeRawMaterialsCost = rawMaterialsPerUnit * yieldUnits;
+        const overheadCostPerUnit = costSummary?.fixedOverheadCost || 0;
+        const recipeTotalUnitCost = costSummary?.totalCost || 0;
+        const suggestedPriceFromRecipe = recipeTotalUnitCost > 0 ? Math.round(recipeTotalUnitCost / (1 - targetMargin)) : 0;
         const profitFromRecipe = Math.max(0, suggestedPriceFromRecipe - recipeTotalUnitCost);
 
-        // Fórmulas clásicas de taller de respaldo
-        const plaSubtotal = ((Number(breakdownForm.plaGrams || 0) * plaKg) / 1000) * (1 + filamentWaste);
-        const tpuSubtotal = ((Number(breakdownForm.tpuGrams || 0) * tpuKg) / 1000) * (1 + filamentWaste);
-        const filamentSubtotal = plaSubtotal + tpuSubtotal;
-        const machineSubtotal = Number(breakdownForm.machineHours || 0) * (electHour + wearHour);
-        const laborSubtotal = (Number(breakdownForm.manualWorkMin || 0) / 60) * laborHour;
-        const otherSubtotal = Number(breakdownForm.otherMaterialsCost || 0) + Number(breakdownForm.packagingCost || 0) + Number(breakdownForm.prepCost || 0) + Number(breakdownForm.shippingCost || 0) + Number(breakdownForm.additionalFailuresCost || 0) + Number(breakdownForm.fixedOverheadCost || 0);
-        const classicTotal = Math.round((filamentSubtotal + machineSubtotal + laborSubtotal + otherSubtotal) * 10) / 10;
-
-        // Si tiene items de receta, el costo vivo de fabricación unitario es recipeTotalUnitCost
-        const liveTotalCost = recipeItems.length > 0 ? recipeTotalUnitCost : classicTotal;
+        // Componentes reales del motor compartido de costos.
+        const machineSubtotal = (costSummary?.energyCost || 0) + (costSummary?.wearCost || 0);
+        const laborSubtotal = costSummary?.laborCost || 0;
+        const liveTotalCost = recipeTotalUnitCost;
 
         const salePrice = breakdownForm.salePrice !== undefined && breakdownForm.salePrice !== '' && !isNaN(Number(breakdownForm.salePrice))
           ? Number(breakdownForm.salePrice)
@@ -12224,8 +12296,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         const liveProfit = salePrice > 0 ? Math.round((salePrice - liveTotalCost) * 10) / 10 : 0;
         const liveMargin = salePrice > 0 ? Math.round((liveProfit / salePrice) * 1000) / 10 : 0;
         const liveMarkup = liveTotalCost > 0 ? Math.round((liveProfit / liveTotalCost) * 1000) / 10 : 0;
-        const liveTargetPrice = suggestedPriceFromRecipe > 0 ? suggestedPriceFromRecipe : Math.round((liveTotalCost / 0.6) * 10) / 10;
-        const liveReserve = liveProfit > 0 ? Math.round((liveProfit * 0.10) * 10) / 10 : 0;
+        const liveTargetPrice = suggestedPriceFromRecipe > 0 ? suggestedPriceFromRecipe : Math.round((liveTotalCost / (1 - targetMargin)) * 10) / 10;
+        const reservePercent = Math.max(0, Number(workshopParams.reservePercent) || 10) / 100;
+        const liveReserve = liveProfit > 0 ? Math.round((liveProfit * reservePercent) * 10) / 10 : 0;
         const liveFreeProfit = Math.round((liveProfit - liveReserve) * 10) / 10;
 
         // Filtrado de materiales para el selector
@@ -12389,7 +12462,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   {item.quantity} {item.unit} - {item.name}
                                 </div>
                                 <div className="text-[11px] font-bold text-gray-300">
-                                  Precio: <span className="font-mono text-amber-300">${item.lineTotal.toFixed(2)}</span>
+                                  Precio: <span className="font-mono text-amber-300">${Number(item.lineTotal || 0).toFixed(2)}</span>
                                 </div>
                               </div>
                               <button
@@ -12423,39 +12496,39 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           />
                         </div>
 
-                        {/* Porcentaje Adicional sobre Costos */}
+                        {/* Overhead fijo por pieza */}
                         <div className="space-y-1">
                           <label className="block text-xs font-bold text-gray-200 leading-tight">
-                            Porcentaje adicional sobre costos (mano de obra, agua, electricidad, etc.)
+                            Overhead fijo por pieza (agua, renta, consumibles indirectos)
                           </label>
                           <div className="flex items-center gap-2">
                             <input
                               type="number"
                               step="any"
                               min="0"
-                              value={breakdownForm.overheadPercent ?? 50}
-                              onChange={e => setBreakdownForm({ ...breakdownForm, overheadPercent: parseFloat(e.target.value) || 0 })}
+                              value={breakdownForm.fixedOverheadCost ?? 0}
+                              onChange={e => setBreakdownForm({ ...breakdownForm, fixedOverheadCost: Math.max(0, parseFloat(e.target.value) || 0) })}
                               className="w-24 px-3 py-1.5 rounded-lg bg-[#141615] border border-gray-700 text-white font-mono font-bold text-xs focus:border-[#EA580C] focus:outline-none"
-                              placeholder="50"
+                              placeholder="0.00"
                             />
-                            <span className="text-sm font-black text-[#FF7A00]">%</span>
+                            <span className="text-[10px] font-bold text-[#FF7A00]">MXN</span>
                           </div>
                         </div>
 
-                        {/* Porcentaje de Beneficio Esperado */}
+                        {/* Margen objetivo sobre precio de venta */}
                         <div className="space-y-1">
                           <label className="block text-xs font-bold text-gray-200">
-                            Porcentaje de beneficio esperado
+                            Margen objetivo sobre precio de venta
                           </label>
                           <div className="flex items-center gap-2">
                             <input
                               type="number"
                               step="any"
                               min="0"
-                              value={breakdownForm.targetProfitPercent ?? 200}
-                              onChange={e => setBreakdownForm({ ...breakdownForm, targetProfitPercent: parseFloat(e.target.value) || 0 })}
+                              value={breakdownForm.targetMarginPercent ?? workshopParams.targetMarginPercent ?? 40}
+                              onChange={e => setBreakdownForm({ ...breakdownForm, targetMarginPercent: Math.max(1, Math.min(85, parseFloat(e.target.value) || 40)) })}
                               className="w-24 px-3 py-1.5 rounded-lg bg-[#141615] border border-gray-700 text-white font-mono font-bold text-xs focus:border-[#EA580C] focus:outline-none"
-                              placeholder="200"
+                              placeholder="40"
                             />
                             <span className="text-sm font-black text-[#FF7A00]">%</span>
                           </div>
@@ -12485,7 +12558,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           <strong className="font-mono text-white">${rawMaterialsPerUnit.toFixed(2)}</strong>
                         </div>
                         <div className="flex justify-between">
-                          <span>Adicional operativo ({overheadPercent}%):</span>
+                          <span>Overhead fijo por pieza:</span>
                           <strong className="font-mono text-amber-300">+${overheadCostPerUnit.toFixed(2)}</strong>
                         </div>
                         <div className="flex justify-between font-bold text-white border-t border-gray-800 pt-1">
@@ -12493,7 +12566,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           <span className="font-mono text-emerald-400">${recipeTotalUnitCost.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between text-[#FF7A00] font-bold">
-                          <span>Beneficio esperado ({targetProfitPercent}%):</span>
+                          <span>Margen objetivo ({targetMarginPercent}%):</span>
                           <span className="font-mono">+${profitFromRecipe.toFixed(2)}</span>
                         </div>
                       </div>
@@ -12679,11 +12752,11 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                   <div className="pt-2 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs text-gray-300">
                     <div className="flex items-center gap-4">
-                      <span>Reserva taller (10%): <strong className="text-amber-300 font-mono">${liveReserve.toFixed(1)} MXN</strong></span>
+                      <span>Reserva taller ({Math.round(reservePercent * 100)}%): <strong className="text-amber-300 font-mono">${liveReserve.toFixed(1)} MXN</strong></span>
                       <span>Utilidad de bolsillo: <strong className="text-emerald-300 font-mono">${liveFreeProfit.toFixed(1)} MXN</strong></span>
                     </div>
                     <div>
-                      <span>Precio sugerido (para 40% margen): <strong className="text-white font-mono bg-white/10 px-2 py-0.5 rounded">${liveTargetPrice.toFixed(1)} MXN</strong></span>
+                      <span>Precio sugerido (para {targetMarginPercent}% margen): <strong className="text-white font-mono bg-white/10 px-2 py-0.5 rounded">${liveTargetPrice.toFixed(1)} MXN</strong></span>
                     </div>
                   </div>
                 </div>

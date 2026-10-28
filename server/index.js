@@ -12,6 +12,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import multer from 'multer';
 import { db } from './db.js';
+import { repairProductCosts } from '../shared/costing.js';
 import {
   processCatalogStudioPackage,
   processManualSlotImage,
@@ -185,17 +186,28 @@ async function syncCloudDbState() {
         });
       }
 
-      // 3. Sincronizar Lámpara de mesa moderna T38 y Fidget Clicker T42
+      // 3. Reparar costos desde la receta real (sin sobrescribir con valores fijos)
+      if (Array.isArray(state.products)) {
+        const mats = Array.isArray(state.rawMaterials) ? state.rawMaterials : [];
+        const params = state.settings?.workshopParams || {};
+        state.products = state.products.map(product => {
+          const repaired = repairProductCosts(product, mats, params);
+          const costChanged = Math.abs(Number(product.costPrice || 0) - Number(repaired.costPrice || 0)) > 0.01;
+          const recipeMissing = !Array.isArray(product.manufacturingRecipe?.items) || product.manufacturingRecipe.items.length === 0;
+          const recipeHasGeneric = (product.manufacturingRecipe?.items || []).some(item => /insumos especificos|materiales especificos|consumibles menores/i.test(item?.name || ''));
+          if (costChanged || recipeMissing || recipeHasGeneric) {
+            changed = true;
+            return repaired;
+          }
+          return product;
+        });
+      }
+
+      // 4. Sincronizar ficha comercial de Lámpara de mesa moderna T38 y Fidget Clicker T42
       if (Array.isArray(state.products)) {
         const t38 = state.products.find(p => p.id === 'lampara-mesa-t38');
-        if (t38 && (t38.price !== 449 || t38.costPrice !== 245)) {
+        if (t38 && t38.price !== 449) {
           t38.price = 449;
-          t38.costPrice = 245;
-          if (t38.costBreakdown) {
-            t38.costBreakdown.otherMaterialsCost = 85;
-            t38.costBreakdown.packagingCost = 15;
-            t38.costBreakdown.costStatus = 'Verificado Taller';
-          }
           t38.specifications = {
             ...t38.specifications,
             material: 'Polímero biodegradable PLA Plus ($500/kg) y pantalla difusora translúcida',

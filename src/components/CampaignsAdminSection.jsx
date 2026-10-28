@@ -28,7 +28,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     label: 'Enero: Arranque & Reyes',
     major: {
       title: 'Mega Arranque de Año Artesanal',
-      subtitle: 'Inicia el año equipando tu casa o negocio con paquetes en madera noble y piezas 3D con hasta 20% de ahorro.',
+      subtitle: 'Inicia el año equipando tu casa o negocio con paquetes en madera noble y piezas 3D con hasta 15% de ahorro.',
       badge: '🔥 MEGA ARRANQUE DE AÑO',
       discountText: '15% OFF',
       couponCode: 'ARRANQUE15',
@@ -110,8 +110,8 @@ export const MONTHLY_EVENT_TEMPLATES = [
       title: 'Gran Homenaje a Mamá: Recuerdos Inolvidables',
       subtitle: 'Llaveros familiares con fotos, tazas mágicas botánicas y letreros en relieve con amor.',
       badge: '💐 ESPECIAL DÍA DE LAS MADRES',
-      discountText: '20% OFF',
-      couponCode: 'MAMA20',
+      discountText: '15% OFF',
+      couponCode: 'MAMA15',
       benefitText: 'Caja decorada kraft + Tarjeta floral personalizada'
     },
     mid: {
@@ -210,8 +210,8 @@ export const MONTHLY_EVENT_TEMPLATES = [
       title: 'Buen Fin Artesanal de Fábrica',
       subtitle: 'Los mayores descuentos del año directamente desde nuestro taller de manufactura.',
       badge: '🔥 EL BUEN FIN ARTESANAL',
-      discountText: '20% OFF',
-      couponCode: 'BUENFIN20',
+      discountText: '15% OFF',
+      couponCode: 'BUENFIN15',
       benefitText: 'Envío Gratis a todo México + Grabado sin costo'
     },
     mid: {
@@ -230,8 +230,8 @@ export const MONTHLY_EVENT_TEMPLATES = [
       title: 'Gran Bazar Navideño & Fin de Año',
       subtitle: 'Regalos corporativos y familiares coordinados con envoltura de gala y entrega prioritaria garantizada.',
       badge: '🎄 GRAN BAZAR NAVIDEÑO',
-      discountText: '20% OFF',
-      couponCode: 'NAVIDAD20',
+      discountText: '15% OFF',
+      couponCode: 'NAVIDAD15',
       benefitText: 'Envoltura de regalo de gala + Grabado láser de cortesía'
     },
     mid: {
@@ -571,8 +571,8 @@ export default function CampaignsAdminSection({
         title: 'Venta Relámpago de Fin de Semana & Liquidación',
         subtitle: '¡Especial de Fin de Semana! Promociones relámpago, últimas piezas y liquidaciones de taller con cupón exclusivo.',
         badge: '⚡ OFERTA RELÁMPAGO DE FIN DE SEMANA',
-        discountText: '30% OFF',
-        couponCode: 'FLASHFINDE30',
+        discountText: '15% OFF',
+        couponCode: 'FLASHFINDE15',
         startDate: '2026-10-17',
         endDate: '2026-10-19',
         progressPercent: 92,
@@ -691,6 +691,9 @@ export default function CampaignsAdminSection({
   };
 
   const updateMonthlyEvent = (eventType, field, value) => {
+    const safeValue = field === 'discountText' && typeof value === 'string'
+      ? value.replace(/(\d+)%/, (match, pct) => Math.min(15, Number(pct)) + '%')
+      : value;
     setCampaignConfig(prev => {
       const currentEvents = prev.monthlyEvents || {};
       const targetEvent = currentEvents[eventType] || {};
@@ -701,7 +704,7 @@ export default function CampaignsAdminSection({
           ...currentEvents,
           [eventType]: {
             ...targetEvent,
-            [field]: value
+            [field]: safeValue
           }
         }
       };
@@ -1652,7 +1655,7 @@ export default function CampaignsAdminSection({
                     rows={2}
                     value={campaignConfig.subtitle || ''}
                     onChange={e => updateField('subtitle', e.target.value)}
-                    placeholder="Ej: Kits coordinados en madera, grabado láser y piezas 3D con hasta 25% de ahorro."
+                    placeholder="Ej: Kits coordinados en madera, grabado láser y piezas 3D con hasta 15% de ahorro."
                     className="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs focus:ring-1 focus:ring-[#2D4F3E]"
                   />
                 </div>
@@ -2081,7 +2084,7 @@ export default function CampaignsAdminSection({
                     type="text"
                     value={campaignConfig.monthlyEvents?.flashSpecial?.discountText || ''}
                     onChange={e => updateMonthlyEvent('flashSpecial', 'discountText', e.target.value)}
-                    placeholder="30% OFF"
+                    placeholder="15% OFF"
                     className="w-full px-3 py-1.5 rounded-xl border border-gray-300 text-xs font-black text-orange-600"
                   />
                 </div>
@@ -2091,7 +2094,7 @@ export default function CampaignsAdminSection({
                     type="text"
                     value={campaignConfig.monthlyEvents?.flashSpecial?.couponCode || ''}
                     onChange={e => updateMonthlyEvent('flashSpecial', 'couponCode', e.target.value.toUpperCase())}
-                    placeholder="FLASHFINDE30"
+                    placeholder="FLASHFINDE15"
                     className="w-full px-3 py-1.5 rounded-xl border border-gray-300 text-xs font-mono font-bold text-orange-700 uppercase"
                   />
                 </div>

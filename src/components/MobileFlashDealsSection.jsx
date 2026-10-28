@@ -16,7 +16,7 @@ export default function MobileFlashDealsSection({
 
   const getDiscountedPrice = (prod) => {
     const original = prod.price || 150;
-    const discount = prod.flashDealConfig?.discountPercent || 25;
+    const discount = Math.min(15, prod.flashDealConfig?.discountPercent || 15);
     return Math.round(original * (1 - discount / 100));
   };
 
@@ -52,7 +52,7 @@ export default function MobileFlashDealsSection({
           <div className="space-y-2 flex-1 flex flex-col justify-around">
             {sideProducts.map(p => {
               const discPrice = getDiscountedPrice(p);
-              const discPercent = p.flashDealConfig?.discountPercent || 25;
+              const discPercent = Math.min(15, p.flashDealConfig?.discountPercent || 15);
               return (
                 <div
                   key={p.id}
@@ -110,7 +110,7 @@ export default function MobileFlashDealsSection({
               
               <div className="flex items-center gap-1 mt-1">
                 <span className="px-1 py-0.2 bg-emerald-100 text-emerald-800 font-black text-[9px] rounded">
-                  {featured.flashDealConfig?.discountPercent || 25}% OFF
+                  {Math.min(15, featured.flashDealConfig?.discountPercent || 15)}% OFF
                 </span>
                 <span className="text-[10px] text-gray-400 line-through">
                   ${featured.price}

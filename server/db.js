@@ -9,6 +9,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs';
+import { MAX_DISCOUNT_PERCENT } from '../shared/costing.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -896,7 +897,7 @@ const initialProducts = [
     "flashDealConfig": {
       "enabled": false,
       "durationMinutes": 120,
-      "discountPercent": 20,
+      "discountPercent": 15,
       "startedAt": null,
       "expiresAt": null
     },
@@ -1191,7 +1192,7 @@ const initialProducts = [
     "flashDealConfig": {
       "enabled": false,
       "durationMinutes": 120,
-      "discountPercent": 20,
+      "discountPercent": 15,
       "startedAt": null,
       "expiresAt": null
     },
@@ -4031,7 +4032,7 @@ const initialProducts = [
       "enabled": true,
       "isBlitz": true,
       "durationMinutes": 15,
-      "discountPercent": 20,
+      "discountPercent": 15,
       "startedAt": 1792123047288,
       "expiresAt": 1792123887288
     },
@@ -5469,7 +5470,7 @@ const initialProducts = [
     "flashDealConfig": {
       "enabled": true,
       "durationMinutes": 120,
-      "discountPercent": 20,
+      "discountPercent": 15,
       "startedAt": 1792031887134,
       "expiresAt": 1792039087134
     },
@@ -6110,7 +6111,7 @@ const initialProducts = [
     "price": 449,
     "regularPrice": 548,
     "savings": 99,
-    "discountPercent": 18,
+    "discountPercent": 15,
     "priceUnit": "combo completo",
     "isBundle": true,
     "status": "published",
@@ -6264,7 +6265,7 @@ const initialProducts = [
     "price": 520,
     "regularPrice": 647,
     "savings": 127,
-    "discountPercent": 20,
+    "discountPercent": 15,
     "priceUnit": "kit completo",
     "isBundle": true,
     "status": "published",
@@ -6412,7 +6413,7 @@ const initialProducts = [
     "price": 299,
     "regularPrice": 366,
     "savings": 67,
-    "discountPercent": 18,
+    "discountPercent": 15,
     "priceUnit": "pack completo",
     "isBundle": true,
     "status": "published",
@@ -6571,7 +6572,7 @@ const initialProducts = [
     "price": 1890,
     "regularPrice": 2364,
     "savings": 474,
-    "discountPercent": 20,
+    "discountPercent": 15,
     "priceUnit": "pack comercial",
     "isBundle": true,
     "status": "published",
@@ -6724,7 +6725,7 @@ const initialProducts = [
     "price": 780,
     "regularPrice": 932,
     "savings": 152,
-    "discountPercent": 16,
+    "discountPercent": 15,
     "priceUnit": "kit comercial",
     "isBundle": true,
     "status": "published",
@@ -6882,7 +6883,7 @@ const initialProducts = [
     "price": 890,
     "regularPrice": 1098,
     "savings": 208,
-    "discountPercent": 19,
+    "discountPercent": 15,
     "priceUnit": "pack comercial",
     "isBundle": true,
     "status": "published",
@@ -7028,7 +7029,7 @@ const initialProducts = [
     "price": 2490,
     "regularPrice": 3020,
     "savings": 530,
-    "discountPercent": 18,
+    "discountPercent": 15,
     "priceUnit": "paquete nupcial",
     "isBundle": true,
     "status": "published",
@@ -7346,7 +7347,7 @@ const initialProducts = [
     "price": 1750,
     "regularPrice": 2163,
     "savings": 413,
-    "discountPercent": 19,
+    "discountPercent": 15,
     "priceUnit": "set celebración",
     "isBundle": true,
     "status": "published",
@@ -8082,7 +8083,7 @@ const initialProducts = [
     "flashDealConfig": {
       "enabled": false,
       "durationMinutes": 60,
-      "discountPercent": 20,
+      "discountPercent": 15,
       "startedAt": null,
       "expiresAt": null
     },
@@ -11575,7 +11576,7 @@ const initialWorkshopWorkers = [
 const defaultCampaignsConfig = {
   activeSeasonId: 'invierno',
   title: 'Especial Navideño & Fin de Año: Paquetes y Regalos Corporativos',
-  subtitle: 'Ahorra hasta un 25% llevando kits coordinados en ensamble artesanal, listos para obsequiar con grabado láser personalizado sin costo.',
+  subtitle: 'Ahorra hasta un 15% llevando kits coordinados en ensamble artesanal, listos para obsequiar con grabado láser personalizado sin costo.',
   bannerBadge: '🎄 Temporada Navideña Activa',
   bannerImage: '/uploads/bundle_promo_hogar_1.jpg',
   promoNotice: '🎁 Envío gratis a todo México en paquetes superiores a $800 + grabado láser de cortesía.',
@@ -11619,8 +11620,8 @@ const defaultCampaignsConfig = {
       title: 'Venta Relámpago de Fin de Semana & Liquidación',
       subtitle: '¡Especial de Fin de Semana! Promociones relámpago, últimas piezas y liquidaciones de taller con cupón exclusivo.',
       badge: '⚡ OFERTA RELÁMPAGO DE FIN DE SEMANA',
-      discountText: '30% OFF',
-      couponCode: 'FLASHFINDE30',
+      discountText: '15% OFF',
+      couponCode: 'FLASHFINDE15',
       startDate: '2026-10-17',
       endDate: '2026-10-19',
       progressPercent: 92,
@@ -11635,7 +11636,7 @@ const defaultCampaignsConfig = {
       icon: '❄️',
       badge: '🎄 Edición Especial Navideña',
       title: 'Especial de Navidad & Año Nuevo: Regalos y Paquetes Corporativos',
-      subtitle: 'Kits coordinados en madera, grabado láser y piezas 3D con hasta 25% de ahorro para empresas y familias.',
+      subtitle: 'Kits coordinados en madera, grabado láser y piezas 3D con hasta 15% de ahorro para empresas y familias.',
       bannerImage: '/uploads/bundle_promo_hogar_1.jpg',
       promoNotice: '🎁 Envoltura de regalo de cortesía y grabado de nombres sin costo en pedidos de temporada.',
       themeColor: 'rose',
@@ -11879,10 +11880,10 @@ const defaultArcadeConfig = {
     {
       id: 'tier-20',
       coinsRequired: 580,
-      code: 'TALLER20',
-      label: '20% de Descuento VIP',
+      code: 'TALLER15VIP',
+      label: '15% de Descuento VIP',
       description: 'Descuento VIP máximo del taller (Mínimo $500 MXN)',
-      discountPercent: 20,
+      discountPercent: 15,
       discountAmount: 0,
       minPurchase: 500
     }
@@ -12120,17 +12121,17 @@ const initialCoupons = [
   },
   {
     id: 'cup-store-promo20',
-    code: 'PROMO20',
-    name: '20% de Descuento en Pedidos Mayores',
+    code: 'PROMO15',
+    name: '15% de Descuento en Pedidos Mayores',
     category: 'store',
     type: 'percent',
-    value: 20,
+    value: 15,
     minPurchase: 500,
     maxUses: null,
     usedCount: 0,
     expiresAt: '2026-12-31T23:59:59.000Z',
     active: true,
-    description: 'Descuento del 20% aplicable en compras a partir de $500 MXN.'
+    description: 'Descuento del 15% aplicable en compras a partir de $500 MXN.'
   },
   {
     id: 'cup-store-enviogratis',
@@ -12162,11 +12163,11 @@ const initialCoupons = [
   },
   {
     id: 'cup-store-flashfinde',
-    code: 'FLASHFINDE30',
-    name: '30% Especial Oferta Relámpago',
+    code: 'FLASHFINDE15',
+    name: '15% Especial Oferta Relámpago',
     category: 'store',
     type: 'percent',
-    value: 30,
+    value: 15,
     minPurchase: 0,
     maxUses: null,
     usedCount: 0,
@@ -15142,6 +15143,57 @@ const initialRawMaterials = [
     "supplierId": "sup-sublimax",
     "supplier": "Sublimax Mayorista Cerámica & Textil",
     "notes": "Se aplica con calor sobre tóner láser negro para crear letras doradas metalizadas en invitaciones."
+  },
+  {
+    "id": "mat-clavos-acero",
+    "name": "Clavos de Acero Galvanizado 1\" para Madera (100 pzas)",
+    "category": "assembly",
+    "materialType": "Fijación & Pegamento",
+    "color": "Acero Galvanizado",
+    "finish": "Natural",
+    "unit": "paquete (100 pzas)",
+    "packageQuantity": 100,
+    "packageMeasurement": "pza",
+    "currentStock": 8,
+    "minStockAlert": 2,
+    "costPerUnit": 35,
+    "supplierId": "sup-empaques-slp",
+    "supplier": "Herrajes & Ensamble San Luis",
+    "notes": "Clavos pequeños para fijar bases, respaldos y ensambles de madera. Se cobran por pieza en la receta."
+  },
+  {
+    "id": "mat-tornillos-madera",
+    "name": "Tornillos para Madera 8x1\" Cabeza Plana (100 pzas)",
+    "category": "assembly",
+    "materialType": "Fijación & Pegamento",
+    "color": "Acero Negro",
+    "finish": "Fosfatado",
+    "unit": "paquete (100 pzas)",
+    "packageQuantity": 100,
+    "packageMeasurement": "pza",
+    "currentStock": 6,
+    "minStockAlert": 2,
+    "costPerUnit": 55,
+    "supplierId": "sup-empaques-slp",
+    "supplier": "Herrajes & Ensamble San Luis",
+    "notes": "Tornillo para madera con punta y rosca gruesa. Para soportes, placas y ensambles que requieren desmontaje."
+  },
+  {
+    "id": "mat-bolsas-kraft-ventana",
+    "name": "Bolsas Kraft con Ventana y Etiqueta para Producto (100 pzas)",
+    "category": "packaging",
+    "materialType": "Empaque & Presentación",
+    "color": "Kraft Natural",
+    "finish": "Ventana Transparente",
+    "unit": "paquete (100 pzas)",
+    "packageQuantity": 100,
+    "packageMeasurement": "pza",
+    "currentStock": 4,
+    "minStockAlert": 2,
+    "costPerUnit": 350,
+    "supplierId": "sup-empaques-slp",
+    "supplier": "Empaques y Embalajes SLP",
+    "notes": "Bolsa kraft con ventana para llaveros, clickers y piezas pequeñas. Incluye etiqueta térmica con SKU."
   }
 ];
 
@@ -15257,7 +15309,8 @@ class Database {
                 p.skuBreakdown.instructionsForStaff.acabadoTaller = '✨ Barniz Transparente Protector Satinado & Pulido 220';
               }
             }
-            p.manufacturingRecipe = {
+            if (!Array.isArray(p.manufacturingRecipe?.items) || p.manufacturingRecipe.items.length === 0) {
+              p.manufacturingRecipe = {
               yieldUnits: 1,
               technique: 'laser',
               notes: 'Placa de pino estufado 5.5mm pulida con lija 220, cortada a láser con 3 percheros torneados fijados con Resistol 850 y barniz sellador.',
@@ -15396,7 +15449,8 @@ class Database {
                 notes: 'Envío estándar a cualquier parte de la República Mexicana por FedEx / Estafeta / DHL'
               }
             };
-            p.costPrice = 85.5;
+              p.costPrice = 85.5;
+            }
             changedProducts = true;
           }
           if (p.id === 'fotoiman-madera-l8' || p.code === 'L8') {
@@ -17620,7 +17674,7 @@ class Database {
       name: data.name?.trim() || `Cupón ${cleanCode}`,
       category: data.category === 'arcade' ? 'arcade' : 'store',
       type: data.type === 'fixed' ? 'fixed' : 'percent',
-      value: Math.max(1, Number(data.value) || 10),
+      value: (data.type === 'fixed' ? Math.max(1, Number(data.value) || 10) : Math.min(MAX_DISCOUNT_PERCENT, Math.max(1, Number(data.value) || 10))),
       minPurchase: Math.max(0, Number(data.minPurchase) || 0),
       maxUses: (data.maxUses !== undefined && data.maxUses !== null && data.maxUses !== '') ? Number(data.maxUses) : null,
       usedCount: 0,
@@ -17661,7 +17715,9 @@ class Database {
       name: data.name !== undefined ? data.name.trim() : current.name,
       category: data.category !== undefined ? data.category : current.category,
       type: data.type !== undefined ? data.type : current.type,
-      value: data.value !== undefined ? Number(data.value) : current.value,
+      value: data.value !== undefined
+        ? ((data.type || current.type) === 'fixed' ? Math.max(1, Number(data.value) || 1) : Math.min(MAX_DISCOUNT_PERCENT, Math.max(1, Number(data.value) || 1)))
+        : current.value,
       minPurchase: data.minPurchase !== undefined ? Number(data.minPurchase) : current.minPurchase,
       maxUses: (data.maxUses !== undefined && data.maxUses !== null && data.maxUses !== '') ? Number(data.maxUses) : (data.maxUses === null ? null : current.maxUses),
       expiresAt: data.expiresAt !== undefined ? data.expiresAt : current.expiresAt,

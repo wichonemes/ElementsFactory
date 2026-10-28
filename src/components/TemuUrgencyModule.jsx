@@ -28,7 +28,7 @@ export default function TemuUrgencyModule({
         unitsLeft: 3
       });
 
-  const discountPercent = flashDeal?.discountPercent || 20;
+  const discountPercent = Math.min(15, flashDeal?.discountPercent || 15);
 
   // Minimalist version for ProductCard with refined UX design
   if (variant === 'card') {
@@ -46,7 +46,7 @@ export default function TemuUrgencyModule({
 
         {/* Right: Clean, stylized flash discount pill */}
         <span className="text-[10.5px] font-black text-[#E5C378] bg-black/35 border border-[#E5C378]/25 px-2 py-0.5 rounded-full shrink-0 tracking-wide font-mono">
-          -20% FLASH
+          -{discountPercent}% FLASH
         </span>
       </div>
     );

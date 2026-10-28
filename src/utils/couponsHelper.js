@@ -5,7 +5,7 @@ export const DEFAULT_COUPONS = [
   { code: 'TALLER5', category: 'arcade', type: 'percent', value: 5, label: '5% de Descuento Arcade', minPurchase: 100 },
   { code: 'TALLER10', category: 'arcade', type: 'percent', value: 10, label: '10% de Descuento Arcade', minPurchase: 250 },
   { code: 'TALLER15', category: 'arcade', type: 'percent', value: 15, label: '15% de Descuento Arcade', minPurchase: 350 },
-  { code: 'TALLER20', category: 'arcade', type: 'percent', value: 20, label: '20% de Descuento VIP Arcade', minPurchase: 500 },
+  { code: 'TALLER15VIP', category: 'arcade', type: 'percent', value: 15, label: '15% de Descuento VIP Arcade', minPurchase: 500 },
   { code: 'MAESTRO50', category: 'arcade', type: 'fixed', value: 50, label: '$50 MXN de Descuento Taller', minPurchase: 200 },
   { code: 'VIPARTESANO', category: 'arcade', type: 'percent', value: 15, label: '15% de Descuento VIP + Sorpresa', minPurchase: 300 },
 
@@ -13,25 +13,25 @@ export const DEFAULT_COUPONS = [
   { code: 'BIENVENIDO', category: 'store', type: 'percent', value: 10, label: '10% de Bienvenida al Taller', minPurchase: 0 },
   { code: 'ARTESANO10', category: 'store', type: 'percent', value: 10, label: '10% de Descuento Especial', minPurchase: 0 },
   { code: 'CLIENTEFRECUENTE', category: 'store', type: 'percent', value: 15, label: '15% de Cliente Frecuente', minPurchase: 0 },
-  { code: 'PROMO20', category: 'store', type: 'percent', value: 20, label: '20% de Descuento Especial', minPurchase: 500 },
+  { code: 'PROMO15', category: 'store', type: 'percent', value: 15, label: '15% de Descuento Especial', minPurchase: 500 },
   { code: 'ENVIOGRATIS', category: 'store', type: 'fixed', value: 150, label: 'Bono de $150 MXN para Envío', minPurchase: 400 },
   { code: 'BUENFIN', category: 'store', type: 'percent', value: 15, label: '15% de Descuento de Temporada', minPurchase: 0 },
   { code: 'NAVIDAD', category: 'store', type: 'percent', value: 15, label: '15% de Temporada Navideña', minPurchase: 0 },
 
   // Cupones de Eventos Mensuales de Taller (Eventos Grandes y Quincenas)
   { code: 'GRANMES15', category: 'store', type: 'percent', value: 15, label: '15% de Evento Grande del Mes', minPurchase: 0 },
-  { code: 'GRANMES20', category: 'store', type: 'percent', value: 20, label: '20% de Gran Bazar del Mes', minPurchase: 400 },
+  { code: 'GRANMES15', category: 'store', type: 'percent', value: 15, label: '15% de Gran Bazar del Mes', minPurchase: 400 },
   { code: 'QUINCENA10', category: 'store', type: 'percent', value: 10, label: '10% de Quincena Relámpago Flash', minPurchase: 0 },
   { code: 'MUERTOS15', category: 'store', type: 'percent', value: 15, label: '15% Festival Día de Muertos', minPurchase: 0 },
   { code: 'CATRINA10', category: 'store', type: 'percent', value: 10, label: '10% Quincena Catrinas', minPurchase: 0 },
   { code: 'AMOR15', category: 'store', type: 'percent', value: 15, label: '15% Gran Bazar del Amor', minPurchase: 0 },
-  { code: 'MAMA20', category: 'store', type: 'percent', value: 20, label: '20% Especial Día de las Madres', minPurchase: 0 },
+  { code: 'MAMA15', category: 'store', type: 'percent', value: 15, label: '15% Especial Día de las Madres', minPurchase: 0 },
 
   // Cupones de Oferta Relámpago Especial (Fines de Semana & Liquidaciones)
-  { code: 'FLASHFINDE30', category: 'store', type: 'percent', value: 30, label: '30% Especial Oferta Relámpago de Fin de Semana', minPurchase: 0 },
-  { code: 'FLASHFINDE', category: 'store', type: 'percent', value: 30, label: '30% Venta Flash de Fin de Semana', minPurchase: 0 },
-  { code: 'LIQUIDACION', category: 'store', type: 'percent', value: 35, label: '35% Liquidación de Taller', minPurchase: 0 },
-  { code: 'FINDE30', category: 'store', type: 'percent', value: 30, label: '30% Flash Fin de Semana', minPurchase: 0 }
+  { code: 'FLASHFINDE15', category: 'store', type: 'percent', value: 15, label: '15% Especial Oferta Relámpago de Fin de Semana', minPurchase: 0 },
+  { code: 'FLASHFINDE', category: 'store', type: 'percent', value: 15, label: '15% Venta Flash de Fin de Semana', minPurchase: 0 },
+  { code: 'LIQUIDACION', category: 'store', type: 'percent', value: 15, label: '15% Liquidación de Taller', minPurchase: 0 },
+  { code: 'FINDE15', category: 'store', type: 'percent', value: 15, label: '15% Flash Fin de Semana', minPurchase: 0 }
 ];
 
 /**
@@ -152,10 +152,10 @@ export function getDailyArcadeCoupons(date = new Date()) {
       coinsRequired: 580,
       code: `VIP20-${suffix}`,
       type: 'percent',
-      value: 20,
-      discountPercent: 20,
-      label: '20% de Descuento VIP Diario',
-      description: 'Descuento VIP máximo de hoy (Mínimo $500 MXN)',
+      value: 15,
+      discountPercent: 15,
+      label: '15% de Descuento VIP Diario',
+      description: 'Descuento VIP máximo de hoy, limitado al 15% (Mínimo $500 MXN)',
       minPurchase: 500
     }
   ];
@@ -237,7 +237,7 @@ export function calculateCouponDiscount(coupon, subtotal = 0) {
 
   let discountAmount = 0;
   if (coupon.type === 'percent') {
-    const percent = coupon.value || coupon.discountPercent || 0;
+    const percent = Math.min(15, coupon.value || coupon.discountPercent || 0);
     discountAmount = Math.round((subtotal * percent) / 100);
   } else if (coupon.type === 'fixed') {
     const fixedVal = coupon.value || coupon.discountAmount || 0;
@@ -245,9 +245,9 @@ export function calculateCouponDiscount(coupon, subtotal = 0) {
   }
 
   // Regla comercial de protección de taller:
-  // 1. El descuento no puede superar el 35% del subtotal en pedidos regulares
-  const maxAllowedDiscount = Math.round(subtotal * 0.35);
-  if (coupon.type === 'fixed' && discountAmount > maxAllowedDiscount && subtotal < ((coupon.value || 50) * 3)) {
+  // 1. El descuento nunca puede superar el 15% del subtotal, ni siquiera en cupones fijos o promociones.
+  const maxAllowedDiscount = Math.round(subtotal * 0.15);
+  if (discountAmount > maxAllowedDiscount) {
     discountAmount = maxAllowedDiscount;
   }
 

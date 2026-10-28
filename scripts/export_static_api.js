@@ -95,7 +95,22 @@ async function exportStaticApi() {
   const settings = normalizeSettingsUrls(publicSettings(db.getSettings()));
   const campaigns = normalizeSettingsUrls({ campaignsConfig: db.getCampaignsConfig() }).campaignsConfig;
   const { coupons } = db.getCoupons({ status: 'active' });
+  const allCoupons = db.getCoupons({}).coupons || coupons;
   const arcade = db.getArcadeConfig();
+
+  // Catálogo administrativo completo (incluye costos, recetas y materias primas).
+  // Se usa como respaldo cuando GitHub Pages no tiene backend /api/*.
+  const adminCatalog = {
+    products: db.getProducts({}).map(normalizeProductUrls),
+    categories: db.getCategories(false),
+    settings: normalizeSettingsUrls(db.getSettings()),
+    rawMaterials: db.getRawMaterials(),
+    suppliers: db.getSuppliers(),
+    coupons: allCoupons,
+    arcade,
+    exportedAt: new Date().toISOString()
+  };
+  fs.writeFileSync(path.join(publicApiDir, 'admin-catalog.json'), JSON.stringify(adminCatalog, null, 2), 'utf-8');
 
   // 1. Write individual JSON files for public/api/
   fs.writeFileSync(path.join(publicApiDir, 'products.json'), JSON.stringify(products, null, 2), 'utf-8');

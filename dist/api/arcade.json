@@ -39,10 +39,10 @@
     {
       "id": "tier-20",
       "coinsRequired": 580,
-      "code": "TALLER20",
-      "label": "20% de Descuento VIP",
-      "description": "Descuento VIP máximo del taller (Mínimo $500 MXN)",
-      "discountPercent": 20,
+      "code": "TALLER15VIP",
+      "label": "15% de Descuento VIP",
+      "description": "Descuento VIP máximo del taller, limitado al 15% (Mínimo $500 MXN)",
+      "discountPercent": 15,
       "discountAmount": 0,
       "minPurchase": 500
     }

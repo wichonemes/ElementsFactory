@@ -859,7 +859,7 @@ export default function CouponsAdminSection({ token }) {
                   </label>
                   <select
                     value={form.type}
-                    onChange={e => setForm(prev => ({ ...prev, type: e.target.value }))}
+                    onChange={e => setForm(prev => ({ ...prev, type: e.target.value, value: e.target.value === 'percent' ? Math.min(15, Number(prev.value) || 10) : prev.value }))}
                     className="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs text-gray-900 focus:outline-none focus:border-[#2D4F3E]"
                   >
                     <option value="percent">Porcentaje (% OFF)</option>
@@ -874,9 +874,9 @@ export default function CouponsAdminSection({ token }) {
                   <input
                     type="number"
                     min="1"
-                    max={form.type === 'percent' ? 70 : 5000}
+                    max={form.type === 'percent' ? 15 : 5000}
                     value={form.value}
-                    onChange={e => setForm(prev => ({ ...prev, value: e.target.value }))}
+                    onChange={e => setForm(prev => ({ ...prev, value: prev.type === 'percent' ? Math.min(15, Math.max(1, Number(e.target.value) || 1)) : e.target.value }))}
                     className="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs font-bold text-gray-900 focus:outline-none focus:border-[#2D4F3E]"
                   />
                 </div>

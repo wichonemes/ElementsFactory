@@ -971,7 +971,7 @@ export default function MonthlyEventBanner({
                 }`}>
                   {flashTiming.isUpcoming
                     ? (flashTiming.days > 0 ? `Faltan ${flashTiming.days}d` : 'Inicia hoy')
-                    : (flash.discountText || '30% OFF')}
+                    : (flash.discountText || '15% OFF')}
                 </span>
               </button>
             )}

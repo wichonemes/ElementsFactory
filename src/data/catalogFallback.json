@@ -670,7 +670,7 @@
       "flashDealConfig": {
         "enabled": false,
         "durationMinutes": 120,
-        "discountPercent": 20,
+        "discountPercent": 15,
         "startedAt": null,
         "expiresAt": null
       },
@@ -749,7 +749,7 @@
       "flashDealConfig": {
         "enabled": false,
         "durationMinutes": 120,
-        "discountPercent": 20,
+        "discountPercent": 15,
         "startedAt": null,
         "expiresAt": null
       },
@@ -2086,7 +2086,7 @@
         "enabled": true,
         "isBlitz": true,
         "durationMinutes": 15,
-        "discountPercent": 20,
+        "discountPercent": 15,
         "startedAt": 1792123047288,
         "expiresAt": 1792123887288
       },
@@ -2767,7 +2767,7 @@
       "flashDealConfig": {
         "enabled": true,
         "durationMinutes": 120,
-        "discountPercent": 20,
+        "discountPercent": 15,
         "startedAt": 1792031887134,
         "expiresAt": 1792039087134
       },
@@ -3082,7 +3082,7 @@
       "price": 449,
       "regularPrice": 548,
       "savings": 99,
-      "discountPercent": 18,
+      "discountPercent": 15,
       "priceUnit": "combo completo",
       "isBundle": true,
       "status": "published",
@@ -3162,7 +3162,7 @@
       "price": 520,
       "regularPrice": 647,
       "savings": 127,
-      "discountPercent": 20,
+      "discountPercent": 15,
       "priceUnit": "kit completo",
       "isBundle": true,
       "status": "published",
@@ -3236,7 +3236,7 @@
       "price": 299,
       "regularPrice": 366,
       "savings": 67,
-      "discountPercent": 18,
+      "discountPercent": 15,
       "priceUnit": "pack completo",
       "isBundle": true,
       "status": "published",
@@ -3321,7 +3321,7 @@
       "price": 1890,
       "regularPrice": 2364,
       "savings": 474,
-      "discountPercent": 20,
+      "discountPercent": 15,
       "priceUnit": "pack comercial",
       "isBundle": true,
       "status": "published",
@@ -3400,7 +3400,7 @@
       "price": 780,
       "regularPrice": 932,
       "savings": 152,
-      "discountPercent": 16,
+      "discountPercent": 15,
       "priceUnit": "kit comercial",
       "isBundle": true,
       "status": "published",
@@ -3484,7 +3484,7 @@
       "price": 890,
       "regularPrice": 1098,
       "savings": 208,
-      "discountPercent": 19,
+      "discountPercent": 15,
       "priceUnit": "pack comercial",
       "isBundle": true,
       "status": "published",
@@ -3556,7 +3556,7 @@
       "price": 2490,
       "regularPrice": 3020,
       "savings": 530,
-      "discountPercent": 18,
+      "discountPercent": 15,
       "priceUnit": "paquete nupcial",
       "isBundle": true,
       "status": "published",
@@ -3726,7 +3726,7 @@
       "price": 1750,
       "regularPrice": 2163,
       "savings": 413,
-      "discountPercent": 19,
+      "discountPercent": 15,
       "priceUnit": "set celebración",
       "isBundle": true,
       "status": "published",
@@ -4128,7 +4128,7 @@
       "flashDealConfig": {
         "enabled": false,
         "durationMinutes": 60,
-        "discountPercent": 20,
+        "discountPercent": 15,
         "startedAt": null,
         "expiresAt": null
       },
@@ -5835,7 +5835,7 @@
           "icon": "❄️",
           "badge": "🎄 Edición Especial Navideña",
           "title": "Especial de Navidad & Año Nuevo: Regalos y Paquetes Corporativos",
-          "subtitle": "Kits coordinados en madera, grabado láser y piezas 3D con hasta 25% de ahorro para empresas y familias.",
+          "subtitle": "Kits coordinados en madera, grabado láser y piezas 3D con hasta 15% de ahorro para empresas y familias.",
           "bannerImage": "./uploads/bundle_promo_hogar_1.jpg",
           "promoNotice": "🎁 Envoltura de regalo de cortesía y grabado de nombres sin costo en pedidos de temporada.",
           "themeColor": "rose",
@@ -6012,8 +6012,8 @@
           "title": "Venta Relámpago de Fin de Semana & Liquidación",
           "subtitle": "¡Especial de Fin de Semana! Promociones relámpago, últimas piezas y liquidaciones de taller con cupón exclusivo.",
           "badge": "⚡ OFERTA RELÁMPAGO DE FIN DE SEMANA",
-          "discountText": "30% OFF",
-          "couponCode": "FLASHFINDE30",
+          "discountText": "15% OFF",
+          "couponCode": "FLASHFINDE15",
           "startDate": "2026-10-17",
           "endDate": "2026-10-19",
           "progressPercent": 92,
@@ -6396,10 +6396,10 @@
         {
           "id": "tier-20",
           "coinsRequired": 580,
-          "code": "TALLER20",
-          "label": "20% de Descuento VIP",
-          "description": "Descuento VIP máximo del taller (Mínimo $500 MXN)",
-          "discountPercent": 20,
+          "code": "TALLER15VIP",
+          "label": "15% de Descuento VIP",
+          "description": "Descuento VIP máximo del taller, limitado al 15% (Mínimo $500 MXN)",
+          "discountPercent": 15,
           "discountAmount": 0,
           "minPurchase": 500
         }
@@ -6491,7 +6491,7 @@
         "icon": "❄️",
         "badge": "🎄 Edición Especial Navideña",
         "title": "Especial de Navidad & Año Nuevo: Regalos y Paquetes Corporativos",
-        "subtitle": "Kits coordinados en madera, grabado láser y piezas 3D con hasta 25% de ahorro para empresas y familias.",
+        "subtitle": "Kits coordinados en madera, grabado láser y piezas 3D con hasta 15% de ahorro para empresas y familias.",
         "bannerImage": "./uploads/bundle_promo_hogar_1.jpg",
         "promoNotice": "🎁 Envoltura de regalo de cortesía y grabado de nombres sin costo en pedidos de temporada.",
         "themeColor": "rose",
@@ -6668,8 +6668,8 @@
         "title": "Venta Relámpago de Fin de Semana & Liquidación",
         "subtitle": "¡Especial de Fin de Semana! Promociones relámpago, últimas piezas y liquidaciones de taller con cupón exclusivo.",
         "badge": "⚡ OFERTA RELÁMPAGO DE FIN DE SEMANA",
-        "discountText": "30% OFF",
-        "couponCode": "FLASHFINDE30",
+        "discountText": "15% OFF",
+        "couponCode": "FLASHFINDE15",
         "startDate": "2026-10-17",
         "endDate": "2026-10-19",
         "progressPercent": 92,
@@ -6802,17 +6802,19 @@
     },
     {
       "id": "cup-store-promo20",
-      "code": "PROMO20",
-      "name": "20% de Descuento en Pedidos Mayores",
+      "code": "PROMO15",
+      "name": "15% de Descuento en Pedidos Mayores",
       "category": "store",
       "type": "percent",
-      "value": 20,
+      "value": 15,
       "minPurchase": 500,
       "maxUses": null,
       "usedCount": 0,
       "expiresAt": "2026-12-31T23:59:59.000Z",
       "active": true,
-      "description": "Descuento del 20% aplicable en compras a partir de $500 MXN."
+      "description": "Descuento del 15% aplicable en compras a partir de $500 MXN.",
+      "discountPercent": 15,
+      "label": "15% de Descuento Especial"
     },
     {
       "id": "cup-store-enviogratis",
@@ -6844,17 +6846,19 @@
     },
     {
       "id": "cup-store-flashfinde",
-      "code": "FLASHFINDE30",
-      "name": "30% Especial Oferta Relámpago",
+      "code": "FLASHFINDE15",
+      "name": "15% Especial Oferta Relámpago",
       "category": "store",
       "type": "percent",
-      "value": 30,
+      "value": 15,
       "minPurchase": 0,
       "maxUses": null,
       "usedCount": 0,
       "expiresAt": "2026-12-31T23:59:59.000Z",
       "active": true,
-      "description": "Código relámpago exclusivo para fines de semana."
+      "description": "Código relámpago exclusivo para fines de semana.",
+      "discountPercent": 15,
+      "label": "15% Especial Oferta Relámpago de Fin de Semana"
     }
   ],
   "arcade": {
@@ -6898,10 +6902,10 @@
       {
         "id": "tier-20",
         "coinsRequired": 580,
-        "code": "TALLER20",
-        "label": "20% de Descuento VIP",
-        "description": "Descuento VIP máximo del taller (Mínimo $500 MXN)",
-        "discountPercent": 20,
+        "code": "TALLER15VIP",
+        "label": "15% de Descuento VIP",
+        "description": "Descuento VIP máximo del taller, limitado al 15% (Mínimo $500 MXN)",
+        "discountPercent": 15,
         "discountAmount": 0,
         "minPurchase": 500
       }
@@ -7237,5 +7241,5 @@
       }
     ]
   },
-  "exportedAt": "2026-10-28T02:51:12.432Z"
+  "exportedAt": "2026-10-28T21:56:08.110Z"
 }
