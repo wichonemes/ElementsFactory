@@ -22,14 +22,19 @@ export class CloudDatabase {
   read() { return structuredClone(this.current().data); }
   save(data) { this.current().data = structuredClone(data); }
 
-  async transaction(action, shouldCommit = () => true) {
+  async transaction(action, shouldCommit = () => true, options = {}) {
     if (!this.enabled) return action();
+    const { lock = true } = options;
     const client = await this.pool.connect();
     try {
       await client.query('BEGIN');
-      await client.query("SET LOCAL lock_timeout = '15s'");
+      await client.query("SET LOCAL lock_timeout = '8s'");
       await client.query("SET LOCAL statement_timeout = '20s'");
-      const locked = await client.query('SELECT revision FROM artisan_private.revision WHERE id = 1 FOR UPDATE');
+      await client.query("SET LOCAL idle_in_transaction_session_timeout = '15s'");
+      const revisionQuery = lock
+        ? 'SELECT revision FROM artisan_private.revision WHERE id = 1 FOR UPDATE'
+        : 'SELECT revision FROM artisan_private.revision WHERE id = 1';
+      const locked = await client.query(revisionQuery);
       if (!locked.rows.length) throw new Error('Falta importar el catálogo en Supabase.');
       const revision = String(locked.rows[0].revision);
       let initial = this.cachedData;
@@ -122,11 +127,12 @@ export function durableHandler(store, handler) {
     const originalEnd = res.end;
     let pending;
     res.end = function (...args) { pending = args; return this; };
+    const readOnly = req.method === 'GET' || req.method === 'HEAD' || req.method === 'OPTIONS';
     try {
       await store.transaction(async () => {
         await handler(req, res, next);
         if (!pending) throw new Error('La ruta no produjo una respuesta.');
-      }, () => res.statusCode < 400);
+      }, () => !readOnly && res.statusCode < 400, { lock: !readOnly });
       res.end = originalEnd;
       originalEnd.apply(res, pending);
     } catch {

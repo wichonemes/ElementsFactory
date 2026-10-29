@@ -7,7 +7,9 @@ import { storeImage } from './cloud-files.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const uploadsDir = path.join(__dirname, '..', 'public', 'uploads');
+const uploadsDir = process.env.VERCEL
+  ? path.join('/tmp', 'artesano-uploads')
+  : path.join(__dirname, '..', 'public', 'uploads');
 
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });

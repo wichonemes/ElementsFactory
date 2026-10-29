@@ -1,15 +1,87 @@
 {
   "version": 2,
-  "buildCommand": "npm run build:vite",
+  "buildCommand": "npm install && npx vite build",
   "outputDirectory": "dist",
   "cleanUrls": true,
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api/index.js"
+      "destination": "/api/router?__path=$1"
     },
     {
-      "source": "/((?!api/|portafolio|mi-portafolio|identidad-corporativa|audiovisual|animacion|ilustracion|modelado-3d|impresos|editorial|interfaces|brand|uploads|assets).*)*",
+      "source": "/uploads/(.*)",
+      "destination": "https://wichonemes.github.io/artesano/uploads/$1"
+    },
+    {
+      "source": "/brand/(.*)",
+      "destination": "https://wichonemes.github.io/artesano/brand/$1"
+    },
+    {
+      "source": "/portafolio/(.*)",
+      "destination": "https://wichonemes.github.io/artesano/portafolio/$1"
+    },
+    {
+      "source": "/portfolio/(.*)",
+      "destination": "https://wichonemes.github.io/artesano/portfolio/$1"
+    },
+    {
+      "source": "/interfaces/(.*)",
+      "destination": "https://wichonemes.github.io/artesano/interfaces/$1"
+    },
+    {
+      "source": "/products/(.*)",
+      "destination": "https://wichonemes.github.io/artesano/products/$1"
+    },
+    {
+      "source": "/downloads/(.*)",
+      "destination": "https://wichonemes.github.io/artesano/downloads/$1"
+    },
+    {
+      "source": "/animacion/(.*)",
+      "destination": "https://wichonemes.github.io/artesano/animacion/$1"
+    },
+    {
+      "source": "/audiovisual/(.*)",
+      "destination": "https://wichonemes.github.io/artesano/audiovisual/$1"
+    },
+    {
+      "source": "/editorial/(.*)",
+      "destination": "https://wichonemes.github.io/artesano/editorial/$1"
+    },
+    {
+      "source": "/fotografia/(.*)",
+      "destination": "https://wichonemes.github.io/artesano/fotografia/$1"
+    },
+    {
+      "source": "/identidad-corporativa/(.*)",
+      "destination": "https://wichonemes.github.io/artesano/identidad-corporativa/$1"
+    },
+    {
+      "source": "/ilustracion/(.*)",
+      "destination": "https://wichonemes.github.io/artesano/ilustracion/$1"
+    },
+    {
+      "source": "/impresos/(.*)",
+      "destination": "https://wichonemes.github.io/artesano/impresos/$1"
+    },
+    {
+      "source": "/maquetado-inicio-wicho-v2/(.*)",
+      "destination": "https://wichonemes.github.io/artesano/maquetado-inicio-wicho-v2/$1"
+    },
+    {
+      "source": "/mi-portafolio/(.*)",
+      "destination": "https://wichonemes.github.io/artesano/mi-portafolio/$1"
+    },
+    {
+      "source": "/modelado-3d/(.*)",
+      "destination": "https://wichonemes.github.io/artesano/modelado-3d/$1"
+    },
+    {
+      "source": "/optimized/(.*)",
+      "destination": "https://wichonemes.github.io/artesano/optimized/$1"
+    },
+    {
+      "source": "/((?!api/|uploads/|brand/|portafolio/|portfolio/|interfaces/|products/|downloads/|animacion/|audiovisual/|editorial/|fotografia/|identidad-corporativa/|ilustracion/|impresos/|maquetado-inicio-wicho-v2/|mi-portafolio/|modelado-3d/|optimized/|assets/).*)*",
       "destination": "/index.html"
     }
   ]

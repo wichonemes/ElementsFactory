@@ -79,14 +79,18 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Public static uploads
-const uploadsDir = path.join(__dirname, '..', 'public', 'uploads');
+const uploadsDir = process.env.VERCEL
+  ? path.join('/tmp', 'artesano-uploads')
+  : path.join(__dirname, '..', 'public', 'uploads');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 app.use('/uploads', express.static(uploadsDir));
 
 // Public static downloads (Catálogo PDF Móvil, etc.)
-const downloadsDir = path.join(__dirname, '..', 'public', 'downloads');
+const downloadsDir = process.env.VERCEL
+  ? path.join('/tmp', 'artesano-downloads')
+  : path.join(__dirname, '..', 'public', 'downloads');
 if (!fs.existsSync(downloadsDir)) {
   fs.mkdirSync(downloadsDir, { recursive: true });
 }
@@ -143,7 +147,7 @@ async function initCatalogFilesStorage() {
     console.warn('[STORAGE] Nota sobre inicialización de catalog_files:', err.message);
   }
 }
-initCatalogFilesStorage().catch(() => {});
+if (!process.env.VERCEL) initCatalogFilesStorage().catch(() => {});
 
 // Sincronización automática de proveedores reales, costos de taller y productos clave en PostgreSQL
 async function syncCloudDbState() {
@@ -254,7 +258,7 @@ async function syncCloudDbState() {
     console.warn('[SYNC] Nota sobre sincronización de estado en la nube:', err.message);
   }
 }
-syncCloudDbState().catch(() => {});
+if (!process.env.VERCEL) syncCloudDbState().catch(() => {});
 
 // Handler inteligente y robusto para servir y descargar archivos de /downloads/
 app.get('/downloads/:filename', async (req, res, next) => {
