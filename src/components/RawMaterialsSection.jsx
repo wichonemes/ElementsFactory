@@ -492,7 +492,7 @@ export default function RawMaterialsSection({
   const [inventoryViewMode, setInventoryViewMode] = useState(() => {
     if (typeof window !== 'undefined') {
       try {
-        const saved = localStorage.getItem('artesano_inventory_view_mode');
+        const saved = localStorage.getItem('artesano_inventory_view_mode_v2');
         if (saved === 'cards' || saved === 'table') return saved;
       } catch (e) {}
     }
@@ -503,7 +503,7 @@ export default function RawMaterialsSection({
     setInventoryViewMode(mode);
     try {
       if (typeof window !== 'undefined') {
-        localStorage.setItem('artesano_inventory_view_mode', mode);
+        localStorage.setItem('artesano_inventory_view_mode_v2', mode);
       }
     } catch (e) {}
   };
