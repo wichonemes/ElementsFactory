@@ -3,7 +3,7 @@ import {
   Boxes, Sparkle, CheckSquare, Truck, Hammer, Calendar, Users, AlertTriangle, AlertCircle, CheckCircle2, Plus, Edit, Trash2,
   RefreshCw, Search, Filter, Save, Calculator, DollarSign, TrendingUp,
   Download, FileSpreadsheet, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Layers, Tag,
-  Clock, Zap, Sliders, Check, X, ShieldAlert, PackageCheck, Sparkles,
+  Clock, Zap, Sliders, Check, X, ShieldAlert, Package, PackageCheck, Sparkles,
   ArrowRight, ArrowUpRight, ArrowUp, ArrowLeft, Building2, Phone, Mail, Globe, MapPin,
   MessageCircle, User, ExternalLink, Copy, Cpu, Wrench, FileText, Eye, Upload,
   Printer, Scissors, Paintbrush, Cog, TreePine, Shirt, Factory
