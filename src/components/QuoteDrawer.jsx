@@ -2,11 +2,12 @@
 import {
   X, Trash2, MessageCircle, Copy, Check, ShoppingBag, ArrowRight,
   Info, Calendar, MapPin, User, Truck, AlertTriangle, Zap, Tag, Sparkles, RotateCcw,
-  Paintbrush, FileText, Gift, Ticket, Coins
+  Paintbrush, FileText, Gift, Ticket, Coins, Download, Loader2, Mail, Phone
 } from 'lucide-react';
 import { formatServiceDate } from '../utils/serviceStatus';
 import { findCoupon, calculateCouponDiscount, getCouponCategory, getCouponCategoryLabel, isCouponExpired } from '../utils/couponsHelper';
 import { playCoinSound, playRandomOrderCelebrationSound, playMarioPowerDownSound } from '../utils/soundEffects';
+import { buildQuoteFolio, downloadQuotePdf, formatQuoteMoney } from '../utils/quotePdf';
 
 export default function QuoteDrawer({
   isOpen,
@@ -24,8 +25,15 @@ export default function QuoteDrawer({
   // Modo de Compra: 'direct' (Compra Directa Inmediata) | 'quote' (Cotización Personalizada)
   const [checkoutMode, setCheckoutMode] = useState('direct');
   const [customerName, setCustomerName] = useState('');
+  const [customerPhone, setCustomerPhone] = useState('');
+  const [customerEmail, setCustomerEmail] = useState('');
   const [cityZip, setCityZip] = useState('');
   const [deliveryNotes, setDeliveryNotes] = useState('');
+  const [quoteNotes, setQuoteNotes] = useState('');
+  const [taxMode, setTaxMode] = useState('included');
+  const [quoteFolio] = useState(() => buildQuoteFolio());
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+  const [pdfError, setPdfError] = useState('');
   const [copied, setCopied] = useState(false);
 
   // Cupones activos cargados desde el servidor con fallback estático
@@ -150,6 +158,23 @@ export default function QuoteDrawer({
     ? (couponCalculation?.isValid ? couponCalculation.finalTotal : subtotal)
     : 0;
 
+  // Desglose fiscal para la cotización. Por defecto los precios del catálogo ya incluyen IVA.
+  const roundMoney = (value) => Math.round((Number(value) || 0) * 100) / 100;
+  const netBeforeDiscount = taxMode === 'included'
+    ? roundMoney(subtotal / 1.16)
+    : roundMoney(subtotal);
+  const netDiscount = taxMode === 'included'
+    ? roundMoney(discountAmount / 1.16)
+    : roundMoney(discountAmount);
+  const baseSubtotal = roundMoney(netBeforeDiscount - netDiscount);
+  const ivaAmount = taxMode === 'included'
+    ? roundMoney(finalTotal - baseSubtotal)
+    : roundMoney(baseSubtotal * 0.16);
+  const billableTotal = taxMode === 'included'
+    ? roundMoney(finalTotal)
+    : roundMoney(baseSubtotal + ivaAmount);
+  const advanceAmount = roundMoney(billableTotal * 0.5);
+
   // Manejador para aplicar un nuevo código de descuento
   const handleApplyCoupon = (e) => {
     e?.preventDefault();
@@ -216,9 +241,16 @@ export default function QuoteDrawer({
     if (customerName.trim()) {
       msg += `• *Cliente:* ${customerName.trim()}\n`;
     }
+    if (customerPhone.trim()) {
+      msg += `• *Teléfono / WhatsApp:* ${customerPhone.trim()}\n`;
+    }
+    if (customerEmail.trim()) {
+      msg += `• *Correo:* ${customerEmail.trim()}\n`;
+    }
     if (cityZip.trim()) {
       msg += `• *Ciudad / C.P. para entrega:* ${cityZip.trim()}\n`;
     }
+    msg += `• *Folio de cotización:* ${quoteFolio}\n`;
     if (campaignRef.trim()) {
       msg += `• *Referencia:* ${campaignRef.trim()}\n`;
     }
@@ -269,7 +301,7 @@ export default function QuoteDrawer({
     });
 
     msg += `--------------------------------------\n`;
-    msg += `*Subtotal de productos:* $${subtotal} MXN\n`;
+    msg += `*Subtotal (sin IVA):* ${formatQuoteMoney(netBeforeDiscount)} MXN\n`;
 
     if (appliedCouponCode && discountAmount > 0) {
       const categoryLabel = activeCouponObj ? getCouponCategoryLabel(activeCouponObj) : 'Código Especial de Tienda';
@@ -277,11 +309,14 @@ export default function QuoteDrawer({
       msg += `*CUPÓN APLICADO:* ${appliedCouponCode}\n`;
       msg += `   • *Tipo:* ${categoryLabel}\n`;
       msg += `   • *Beneficio:* ${benefitLabel}\n`;
-      msg += `   • *Ahorro otorgado:* -$${discountAmount} MXN\n`;
-      msg += `*TOTAL FINAL CON CUPÓN:* $${finalTotal} MXN\n`;
-    } else {
-      msg += `*Total a pagar:* $${subtotal} MXN\n`;
+      msg += `   • *Ahorro otorgado:* -${formatQuoteMoney(discountAmount)} MXN\n`;
+      msg += `*Subtotal con descuento:* ${formatQuoteMoney(baseSubtotal)} MXN\n`;
     }
+
+    msg += `*${taxMode === 'included' ? 'IVA 16% incluido' : 'IVA 16%'}:* ${formatQuoteMoney(ivaAmount)} MXN\n`;
+    msg += `*TOTAL:* ${formatQuoteMoney(billableTotal)} MXN\n`;
+    msg += `*Anticipo 50%:* ${formatQuoteMoney(advanceAmount)} MXN\n`;
+    msg += `*Saldo al entregar:* ${formatQuoteMoney(billableTotal - advanceAmount)} MXN\n`;
 
     if (hasPendingQuotes) {
       msg += `*(Piezas sin precio fijo se confirmarán en este chat)*\n`;
@@ -289,6 +324,9 @@ export default function QuoteDrawer({
 
     if (deliveryNotes.trim()) {
       msg += `\n*Notas de entrega:* ${deliveryNotes.trim()}\n`;
+    }
+    if (quoteNotes.trim()) {
+      msg += `*Notas del proyecto:* ${quoteNotes.trim()}\n`;
     }
 
     if (isDirect) {
@@ -313,7 +351,7 @@ export default function QuoteDrawer({
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             code: appliedCouponCode,
-            orderTotal: finalTotal,
+            orderTotal: billableTotal,
             discountAmount,
             customerName: customerName.trim()
           })
@@ -328,13 +366,15 @@ export default function QuoteDrawer({
     if (onTrackWhatsApp) {
       onTrackWhatsApp({
         itemCount: items.length,
-        subtotal: finalTotal,
+        subtotal: billableTotal,
         hasPendingQuotes,
         customerName: customerName.trim(),
         mode: checkoutMode,
         coupon: appliedCouponCode || null,
         couponCategory: activeCouponObj ? getCouponCategory(activeCouponObj) : 'store',
-        discountAmount
+        discountAmount,
+        taxMode,
+        folio: quoteFolio
       });
     }
 
@@ -346,6 +386,57 @@ export default function QuoteDrawer({
     navigator.clipboard?.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
+  };
+
+  const handleDownloadQuote = async () => {
+    if (items.length === 0) return;
+    setIsGeneratingPdf(true);
+    setPdfError('');
+    playCoinSound();
+    try {
+      await downloadQuotePdf({
+        items,
+        customer: {
+          name: customerName,
+          phone: customerPhone,
+          email: customerEmail,
+          city: cityZip,
+          notes: quoteNotes,
+          deliveryNotes
+        },
+        settings,
+        folio: quoteFolio,
+        date: new Date(),
+        taxMode,
+        subtotal,
+        baseSubtotal,
+        discount: discountAmount,
+        discountCode: appliedCouponCode,
+        iva: ivaAmount,
+        total: billableTotal,
+        advance: advanceAmount,
+        notes: quoteNotes
+      });
+
+      fetch('/api/analytics/event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'quote_pdf_downloaded',
+          payload: {
+            folio: quoteFolio,
+            itemCount: items.length,
+            total: billableTotal,
+            taxMode
+          }
+        })
+      }).catch(() => {});
+    } catch (error) {
+      console.error('No se pudo generar la cotización PDF', error);
+      setPdfError('No se pudo generar el PDF. Revisa tu conexión e inténtalo de nuevo.');
+    } finally {
+      setIsGeneratingPdf(false);
+    }
   };
 
   return (
@@ -782,17 +873,22 @@ export default function QuoteDrawer({
                 )}
               </div>
 
-              {/* Formulario Rápido de Entrega */}
-              <div className="p-3.5 rounded-2xl bg-[#FAF9F5] border border-[#E8E4DA] space-y-2.5 text-xs">
-                <div className="font-bold text-gray-700 flex items-center gap-1.5 text-xs">
-                  <User className="w-3.5 h-3.5 text-[#2D4F3E]" />
-                  <span>Datos rápidos para tu entrega:</span>
+              {/* Datos para la cotización automática */}
+              <div className="p-3.5 rounded-2xl bg-white border border-[#E8E4DA] space-y-3 text-xs shadow-2xs">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="font-bold text-gray-700 flex items-center gap-1.5 text-xs">
+                    <FileText className="w-3.5 h-3.5 text-[#2D4F3E]" />
+                    <span>Datos para tu cotización</span>
+                  </div>
+                  <span className="text-[9px] font-mono font-bold text-[#2D4F3E] bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded-md">
+                    {quoteFolio}
+                  </span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <div>
                     <label className="text-[11px] font-semibold text-gray-600 block mb-0.5">
-                      Tu nombre o contacto:
+                      Nombre o razón social:
                     </label>
                     <input
                       type="text"
@@ -805,16 +901,99 @@ export default function QuoteDrawer({
 
                   <div>
                     <label className="text-[11px] font-semibold text-gray-600 block mb-0.5">
+                      Teléfono / WhatsApp:
+                    </label>
+                    <div className="relative">
+                      <Phone className="w-3 h-3 text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="tel"
+                        placeholder="Ej: 444 123 4567"
+                        value={customerPhone}
+                        onChange={e => setCustomerPhone(e.target.value)}
+                        className="w-full pl-7 pr-2 py-1.5 rounded-xl border border-gray-300 focus:border-[#2D4F3E] focus:outline-none bg-white text-base sm:text-xs"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-semibold text-gray-600 block mb-0.5">
+                      Correo electrónico:
+                    </label>
+                    <div className="relative">
+                      <Mail className="w-3 h-3 text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="email"
+                        placeholder="Ej: cliente@correo.com"
+                        value={customerEmail}
+                        onChange={e => setCustomerEmail(e.target.value)}
+                        className="w-full pl-7 pr-2 py-1.5 rounded-xl border border-gray-300 focus:border-[#2D4F3E] focus:outline-none bg-white text-base sm:text-xs"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-semibold text-gray-600 block mb-0.5">
                       Ciudad o C.P.:
                     </label>
-                    <input
-                      type="text"
-                      placeholder="Ej: SLP / CDMX"
-                      value={cityZip}
-                      onChange={e => setCityZip(e.target.value)}
-                      className="w-full px-3 py-1.5 rounded-xl border border-gray-300 focus:border-[#2D4F3E] focus:outline-none bg-white text-base sm:text-xs"
-                    />
+                    <div className="relative">
+                      <MapPin className="w-3 h-3 text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="text"
+                        placeholder="Ej: SLP / CDMX"
+                        value={cityZip}
+                        onChange={e => setCityZip(e.target.value)}
+                        className="w-full pl-7 pr-2 py-1.5 rounded-xl border border-gray-300 focus:border-[#2D4F3E] focus:outline-none bg-white text-base sm:text-xs"
+                      />
+                    </div>
                   </div>
+                </div>
+
+                <div>
+                  <div className="text-[11px] font-semibold text-gray-600 mb-1">
+                    Tratamiento del IVA en el documento:
+                  </div>
+                  <div className="grid grid-cols-2 p-1 bg-gray-100 rounded-xl gap-1">
+                    <button
+                      type="button"
+                      onClick={() => setTaxMode('included')}
+                      className={`py-1.5 px-2 rounded-lg text-[10.5px] font-bold transition-all cursor-pointer ${
+                        taxMode === 'included'
+                          ? 'bg-white text-[#2D4F3E] shadow-xs'
+                          : 'text-gray-500 hover:text-gray-800'
+                      }`}
+                    >
+                      Precios ya incluyen IVA
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setTaxMode('added')}
+                      className={`py-1.5 px-2 rounded-lg text-[10.5px] font-bold transition-all cursor-pointer ${
+                        taxMode === 'added'
+                          ? 'bg-white text-[#2D4F3E] shadow-xs'
+                          : 'text-gray-500 hover:text-gray-800'
+                      }`}
+                    >
+                      Agregar IVA 16%
+                    </button>
+                  </div>
+                  <p className="text-[9.5px] text-gray-500 mt-1 leading-snug">
+                    {taxMode === 'included'
+                      ? `El total de ${formatQuoteMoney(billableTotal)} ya incluye ${formatQuoteMoney(ivaAmount)} de IVA.`
+                      : `Se agregarán ${formatQuoteMoney(ivaAmount)} de IVA al subtotal.`}
+                  </p>
+                </div>
+
+                <div>
+                  <label className="text-[11px] font-semibold text-gray-600 block mb-0.5">
+                    Notas para la cotización:
+                  </label>
+                  <textarea
+                    rows={2}
+                    placeholder="Ej: entrega en San Luis Potosí, fecha requerida, referencias del proyecto..."
+                    value={quoteNotes}
+                    onChange={e => setQuoteNotes(e.target.value)}
+                    className="w-full px-3 py-1.5 rounded-xl border border-gray-300 focus:border-[#2D4F3E] focus:outline-none bg-white text-base sm:text-xs"
+                  />
                 </div>
 
                 {checkoutMode === 'quote' && (
@@ -831,6 +1010,14 @@ export default function QuoteDrawer({
                     />
                   </div>
                 )}
+
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[9px] text-gray-500 bg-[#FAF9F5] border border-[#E8E4DA] rounded-lg px-2 py-1.5">
+                  <span className="font-bold text-gray-600">Vigencia 15 días</span>
+                  <span>·</span>
+                  <span>Anticipo 50%</span>
+                  <span>·</span>
+                  <span>PDF con desglose de IVA</span>
+                </div>
               </div>
             </>
           )}
@@ -842,29 +1029,61 @@ export default function QuoteDrawer({
             {/* Resumen de Total */}
             <div className="space-y-1">
               <div className="flex items-center justify-between text-xs text-gray-600">
-                <span>Subtotal ({items.length} productos):</span>
-                <span className="font-bold text-gray-900">${subtotal} MXN</span>
+                <span>Subtotal sin IVA:</span>
+                <span className="font-bold text-gray-900">{formatQuoteMoney(netBeforeDiscount)} MXN</span>
               </div>
 
               {discountAmount > 0 && (
-                <div className="flex items-center justify-between text-xs text-emerald-700 font-bold">
-                  <span>Descuento ({appliedCouponCode}):</span>
-                  <span>-${discountAmount} MXN</span>
-                </div>
+                <>
+                  <div className="flex items-center justify-between text-xs text-emerald-700 font-bold">
+                    <span>Descuento ({appliedCouponCode}):</span>
+                    <span>-{formatQuoteMoney(netDiscount)} MXN</span>
+                  </div>
+                  <div className="flex items-center justify-between text-[11px] text-gray-500">
+                    <span>Subtotal con descuento:</span>
+                    <span>{formatQuoteMoney(baseSubtotal)} MXN</span>
+                  </div>
+                </>
               )}
 
+              <div className="flex items-center justify-between text-xs text-gray-600">
+                <span>{taxMode === 'included' ? 'IVA 16% incluido:' : 'IVA 16%:'}</span>
+                <span className="font-bold text-gray-900">{formatQuoteMoney(ivaAmount)} MXN</span>
+              </div>
+
               <div className="flex items-center justify-between text-base font-extrabold text-[#1F2421] pt-1 border-t border-gray-200/60 font-heading">
-                <span>Total estimado:</span>
-                <span className="text-lg font-black text-[#2D4F3E]">${finalTotal} MXN</span>
+                <span>Total:</span>
+                <span className="text-lg font-black text-[#2D4F3E]">{formatQuoteMoney(billableTotal)} MXN</span>
+              </div>
+
+              <div className="flex items-center justify-between text-[11px] text-[#8A6A2F] font-bold">
+                <span>Anticipo 50% para iniciar:</span>
+                <span>{formatQuoteMoney(advanceAmount)} MXN</span>
               </div>
 
               <div className="text-[10px] text-gray-400">
-                * Confirmas dirección exacta y método de pago (transferencia/tarjeta) por WhatsApp.
+                * Folio {quoteFolio}. Confirmas dirección exacta y método de pago por WhatsApp.
               </div>
             </div>
 
-            {/* Botón Principal Grande y Rápido */}
+            {/* Acciones del documento y del pedido */}
             <div className="space-y-2">
+              <button
+                type="button"
+                onClick={handleDownloadQuote}
+                disabled={isGeneratingPdf}
+                className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-full bg-[#2D4F3E] hover:bg-[#20392C] disabled:opacity-70 disabled:cursor-wait text-white text-sm font-black transition-all shadow-md cursor-pointer active:scale-98"
+              >
+                {isGeneratingPdf ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
+                <span>{isGeneratingPdf ? 'Generando PDF…' : checkoutMode === 'direct' ? 'Descargar resumen PDF' : 'Descargar cotización PDF'}</span>
+              </button>
+
+              {pdfError && (
+                <p className="text-[10px] text-red-600 font-medium flex items-center gap-1">
+                  <AlertTriangle className="w-3 h-3 shrink-0" /> {pdfError}
+                </p>
+              )}
+
               <button
                 type="button"
                 onClick={handleSendWhatsApp}
@@ -877,7 +1096,7 @@ export default function QuoteDrawer({
                 {checkoutMode === 'direct' ? <Zap className="w-5 h-5 fill-white" /> : <MessageCircle className="w-5 h-5" />}
                 <span>
                   {checkoutMode === 'direct'
-                    ? `Hacer Pedido Directo ($${finalTotal} MXN)`
+                    ? `Hacer Pedido Directo (${formatQuoteMoney(billableTotal)} MXN)`
                     : 'Enviar Cotización por WhatsApp'}
                 </span>
               </button>

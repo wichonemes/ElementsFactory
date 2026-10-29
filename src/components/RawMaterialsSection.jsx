@@ -1517,9 +1517,9 @@ Ganancia Neta Estimada: $${calcResults.profit.toFixed(2)} MXN`;
     });
 
     return MATERIAL_AREAS
-      .filter(area => areaMap.has(area.id))
+      .filter(area => area.id !== 'other' || areaMap.has(area.id))
       .map(area => {
-        const areaData = areaMap.get(area.id);
+        const areaData = areaMap.get(area.id) || { items: [], groups: new Map() };
         const value = areaData.items.reduce((sum, mat) => sum + (Number(mat.currentStock) || 0) * (Number(mat.costPerUnit) || 0), 0);
         const alerts = areaData.items.filter(mat => getStockStatus(mat).key !== 'ok').length;
         return {

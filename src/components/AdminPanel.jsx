@@ -1126,12 +1126,14 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   const [loginLoading, setLoginLoading] = useState(false);
 
   // Navigation Tab State
-  const [activeTab, setActiveTab] = useState('products'); // 'stats' | 'products' | 'categories' | 'settings'
+  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'stats' | 'products' | 'categories' | 'settings'
   const [rawMaterialsSubTab, setRawMaterialsSubTab] = useState('inventory');
   const [mobileNavGroup, setMobileNavGroup] = useState('catalog'); // 'catalog' | 'workshop' | 'sales' | 'business'
 
   useEffect(() => {
-    if (['products', 'packages', 'categories', 'area-banners'].includes(activeTab)) {
+    if (activeTab === 'dashboard') {
+      setMobileNavGroup('dashboard');
+    } else if (['products', 'packages', 'categories', 'area-banners'].includes(activeTab)) {
       setMobileNavGroup('catalog');
     } else if (['raw-materials', 'margins'].includes(activeTab)) {
       setMobileNavGroup('workshop');
@@ -4054,6 +4056,44 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     };
   }, [products, workshopParams, marginSalesChannel, customCommission, customFixedFee]);
 
+  // Panel de control: diagnóstico rápido del taller y tareas pendientes
+  const adminHealth = useMemo(() => {
+    const total = products.length || 0;
+    const published = products.filter(p => p.status === 'published').length;
+    const drafts = products.filter(p => p.status === 'draft').length;
+    const noImage = products.filter(p => !p.primaryImage).length;
+    const noRecipe = products.filter(p => !Array.isArray(p.manufacturingRecipe?.items) || p.manufacturingRecipe.items.length === 0).length;
+    const noCost = products.filter(p => !Number(p.costPrice)).length;
+    const noDescription = products.filter(p => !p.shortDescription).length;
+    const noSku = products.filter(p => !(p.sku || p.code)).length;
+    const lowStock = rawMaterialsList.filter(m => (Number(m.currentStock) || 0) <= (Number(m.minStockAlert) || 1)).length;
+    const urgentStock = rawMaterialsList.filter(m => (Number(m.currentStock) || 0) <= (Number(m.minStockAlert) || 1) * 0.5).length;
+    const noSupplier = rawMaterialsList.filter(m => !m.supplier).length;
+    const bundles = products.filter(p => p.isBundle).length;
+
+    const checks = [
+      { id: 'image', label: 'Con foto principal', missing: noImage, done: total - noImage, weight: 20 },
+      { id: 'recipe', label: 'Con receta de taller', missing: noRecipe, done: total - noRecipe, weight: 25 },
+      { id: 'cost', label: 'Con costo calculado', missing: noCost, done: total - noCost, weight: 25 },
+      { id: 'description', label: 'Con descripción corta', missing: noDescription, done: total - noDescription, weight: 15 },
+      { id: 'sku', label: 'Con SKU / código', missing: noSku, done: total - noSku, weight: 15 }
+    ];
+    const completeness = total > 0
+      ? Math.round(checks.reduce((sum, check) => sum + (check.done / total) * check.weight, 0))
+      : 0;
+
+    const tasks = [
+      { id: 'no-recipe', label: 'Productos sin receta', detail: 'No tienen insumos ni costo de taller', count: noRecipe, tab: 'products', tone: 'rose' },
+      { id: 'no-cost', label: 'Productos sin costo', detail: 'No se puede calcular su margen real', count: noCost, tab: 'margins', tone: 'amber' },
+      { id: 'no-image', label: 'Productos sin foto', detail: 'No tienen imagen principal', count: noImage, tab: 'products', tone: 'sky' },
+      { id: 'drafts', label: 'Borradores sin publicar', detail: 'Están listos pero no visibles en la tienda', count: drafts, tab: 'products', tone: 'stone' },
+      { id: 'low-stock', label: 'Insumos bajos o agotados', detail: 'Requieren resurtido para seguir produciendo', count: lowStock, tab: 'raw-materials', subTab: 'inventory', tone: 'orange' },
+      { id: 'no-supplier', label: 'Insumos sin proveedor', detail: 'No tienen proveedor asignado', count: noSupplier, tab: 'raw-materials', subTab: 'suppliers', tone: 'violet' }
+    ].filter(task => task.count > 0);
+
+    return { total, published, drafts, noImage, noRecipe, noCost, noDescription, noSku, lowStock, urgentStock, noSupplier, bundles, checks, completeness, tasks };
+  }, [products, rawMaterialsList]);
+
   // Technique List & Definitions for Filtering and Audits
   const techniqueList = [
     { id: 'all', label: 'Todas las Técnicas', shortLabel: 'Todas', icon: '⚡' },
@@ -4515,8 +4555,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
             {/* Navegación Móvil Táctil Dedicada: selector superior segmentado con sub-chips (Estilo FiltersBar) */}
             <div className="md:hidden bg-white border-b border-[#E8E4DA] p-2.5 shrink-0 shadow-2xs space-y-2">
               {/* Selector de Pilares Principales: 4 Secciones Limpias */}
-              <div className="grid grid-cols-4 gap-1 p-1 bg-[#F4F0E8] rounded-xl border border-[#E8E4DA]">
+              <div className="grid grid-cols-5 gap-0.5 p-1 bg-[#F4F0E8] rounded-xl border border-[#E8E4DA]">
                 {[
+                  { id: 'dashboard', label: 'Inicio', icon: '🏠' },
                   { id: 'catalog', label: 'Catálogo', icon: '📦' },
                   { id: 'workshop', label: 'Taller', icon: '🧱' },
                   { id: 'sales', label: 'Ventas', icon: '⚡' },
@@ -4529,7 +4570,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       type="button"
                       onClick={() => {
                         setMobileNavGroup(group.id);
-                        if (group.id === 'catalog' && !['products', 'packages', 'categories', 'area-banners'].includes(activeTab)) {
+                        if (group.id === 'dashboard') {
+                          setActiveTab('dashboard');
+                        } else if (group.id === 'catalog' && !['products', 'packages', 'categories', 'area-banners'].includes(activeTab)) {
                           setActiveTab('products');
                         } else if (group.id === 'workshop' && !['raw-materials', 'margins'].includes(activeTab)) {
                           setActiveTab('raw-materials');
@@ -4555,7 +4598,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               {/* Sub-chips táctiles para la sección activa (limpio, scroll suave horizontal) */}
               <div className="flex flex-wrap gap-1.5">
                 {(
-                  mobileNavGroup === 'catalog' ? [
+                  mobileNavGroup === 'dashboard' ? [] : mobileNavGroup === 'catalog' ? [
                     { id: 'products', label: 'Productos & SKUs', icon: '📦', count: products.length },
                     { id: 'packages', label: 'Paquetes & Kits', icon: '🎁', count: products.filter(p => p.isBundle).length },
                     { id: 'categories', label: 'Categorías', icon: '📁', count: categories.length },
@@ -4645,6 +4688,23 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                 </div>
 
                 <nav className="flex flex-col gap-3 w-full">
+                  <button
+                    onClick={() => setActiveTab('dashboard')}
+                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs transition-all ${
+                      activeTab === 'dashboard' ? 'bg-[#2D4F3E] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#2D4F3E] font-medium'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Home className="w-4 h-4" />
+                      <span>Panel de Control</span>
+                    </div>
+                    <span className={`text-[9px] px-1.5 py-0.5 rounded-md font-bold ${
+                      activeTab === 'dashboard' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
+                    }`}>
+                      Hoy
+                    </span>
+                  </button>
+
                   {/* GRUPO 1: CATÁLOGO & PRODUCTOS */}
                   <div className="space-y-1">
                     <div className="px-3 text-[10px] font-black uppercase tracking-wider text-gray-400">
@@ -4987,6 +5047,169 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
             {/* Main Content Area */}
             <main className="flex-1 min-w-0 overflow-y-auto p-3 sm:p-5 lg:p-6 space-y-6">
               
+              {/* TAB: PANEL DE CONTROL / INICIO */}
+              {activeTab === 'dashboard' && (
+                <div className="space-y-4">
+                  <section className="rounded-3xl bg-gradient-to-br from-[#1F3A2C] via-[#2D4F3E] to-[#456B55] text-white p-5 sm:p-6 shadow-lg overflow-hidden relative">
+                    <div className="absolute -right-20 -top-24 w-64 h-64 rounded-full bg-white/5 blur-2xl pointer-events-none" />
+                    <div className="relative">
+                      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                        <div>
+                          <span className="text-[9px] uppercase tracking-[0.22em] text-emerald-200 font-black">Centro de control</span>
+                          <h2 className="text-xl sm:text-2xl font-black font-heading mt-1">Hola, {currentUser?.name?.split(' ')[0] || 'Artesano'}</h2>
+                          <p className="text-[11px] sm:text-xs text-white/70 mt-1 max-w-xl">Empieza por lo pendiente. Desde aquí ves qué falta, qué está agotado y cuál es el siguiente paso.</p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={handleOpenNewProduct}
+                          className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-white text-[#20392C] hover:bg-amber-50 text-[11px] font-black shadow-sm shrink-0 cursor-pointer active:scale-95"
+                        >
+                          <Plus className="w-3.5 h-3.5" /> Nuevo producto
+                        </button>
+                      </div>
+                      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 mt-4">
+                        {[
+                          ['Productos', adminHealth.total, `${adminHealth.published} publicados · ${adminHealth.drafts} borradores`],
+                          ['Stock crítico', adminHealth.urgentStock, `${adminHealth.lowStock} insumos por resurtir`],
+                          ['Sin receta', adminHealth.noRecipe, 'Productos por costear'],
+                          ['Salud catálogo', `${adminHealth.completeness}%`, 'Fotos, receta, costo y SKU']
+                        ].map(([label, value, sub]) => (
+                          <div key={label} className="rounded-xl bg-white/10 border border-white/15 px-3 py-2">
+                            <span className="text-[8px] uppercase tracking-wider text-white/60 font-bold">{label}</span>
+                            <div className="text-lg font-black font-mono leading-tight">{value}</div>
+                            <span className="text-[8.5px] text-white/55">{sub}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </section>
+
+                  <div className="grid lg:grid-cols-[1.35fr_1fr] gap-3">
+                    <section className="rounded-2xl border border-[#E8E4DA] bg-white p-3.5 sm:p-4 shadow-xs">
+                      <div className="flex items-center justify-between gap-2">
+                        <div>
+                          <h3 className="text-sm font-black text-[#1F2421]">Tu flujo de trabajo</h3>
+                          <p className="text-[10px] text-gray-500">Sigue este orden para no perderte.</p>
+                        </div>
+                        <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">4 pasos</span>
+                      </div>
+                      <div className="grid sm:grid-cols-2 gap-2 mt-3">
+                        {[
+                          { n: '1', title: 'Catálogo y fotos', desc: 'Crea o revisa productos, imágenes, precios y publicación.', tab: 'products', icon: Package, metric: `${adminHealth.published} publicados` },
+                          { n: '2', title: 'Costos y recetas', desc: 'Completa la receta y verifica que el margen sea rentable.', tab: 'margins', icon: TrendingUp, metric: `${adminHealth.noRecipe} sin receta` },
+                          { n: '3', title: 'Stock e insumos', desc: 'Revisa existencias, resurtidos, proveedores y almacén.', tab: 'raw-materials', subTab: 'inventory', icon: Layers, metric: `${adminHealth.lowStock} por resurtir` },
+                          { n: '4', title: 'Ventas y pedidos', desc: 'Consulta pedidos, cobros, cupones y campañas activas.', tab: 'sales', icon: Megaphone, metric: 'Libro de pedidos' }
+                        ].map(step => {
+                          const StepIcon = step.icon;
+                          return (
+                            <button
+                              key={step.n}
+                              type="button"
+                              onClick={() => {
+                                if (step.subTab) setRawMaterialsSubTab(step.subTab);
+                                setActiveTab(step.tab);
+                              }}
+                              className="group text-left rounded-xl border border-[#E8E4DA] bg-[#FAF9F5]/50 p-2.5 hover:border-[#2D4F3E]/40 hover:bg-white transition-all cursor-pointer"
+                            >
+                              <div className="flex items-center gap-1.5">
+                                <span className="w-5 h-5 rounded-lg bg-[#2D4F3E] text-white text-[9px] font-black flex items-center justify-center shrink-0">{step.n}</span>
+                                <StepIcon className="w-3.5 h-3.5 text-[#2D4F3E]" />
+                                <ArrowRight className="w-3 h-3 ml-auto text-gray-300 group-hover:text-[#2D4F3E] transition-colors" />
+                              </div>
+                              <div className="text-[11px] font-black text-gray-900 mt-1.5">{step.title}</div>
+                              <p className="text-[9.5px] text-gray-500 leading-snug mt-0.5">{step.desc}</p>
+                              <span className="inline-block mt-1.5 text-[8.5px] font-bold px-1.5 py-0.5 rounded bg-white border border-[#E8E4DA] text-gray-600">{step.metric}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </section>
+
+                    <section className="rounded-2xl border border-[#E8E4DA] bg-white p-3.5 sm:p-4 shadow-xs">
+                      <div className="flex items-center justify-between gap-2">
+                        <div>
+                          <h3 className="text-sm font-black text-[#1F2421]">Requiere atención</h3>
+                          <p className="text-[10px] text-gray-500">Lo que conviene resolver primero.</p>
+                        </div>
+                        <span className={`text-[9px] font-black px-2 py-0.5 rounded-full border ${adminHealth.tasks.length ? 'bg-amber-50 text-amber-800 border-amber-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'}`}>
+                          {adminHealth.tasks.length ? `${adminHealth.tasks.length} pendientes` : 'Todo al día'}
+                        </span>
+                      </div>
+                      <div className="mt-2 space-y-1.5">
+                        {adminHealth.tasks.length === 0 ? (
+                          <div className="rounded-xl border border-dashed border-emerald-200 bg-emerald-50/50 p-4 text-center">
+                            <CheckCircle2 className="w-5 h-5 text-emerald-600 mx-auto mb-1" />
+                            <p className="text-[10.5px] font-bold text-emerald-800">No hay pendientes críticos.</p>
+                          </div>
+                        ) : adminHealth.tasks.map(task => (
+                          <button
+                            key={task.id}
+                            type="button"
+                            onClick={() => {
+                              if (task.subTab) setRawMaterialsSubTab(task.subTab);
+                              setActiveTab(task.tab);
+                            }}
+                            className="w-full flex items-center gap-2 text-left rounded-xl border border-[#E8E4DA] bg-[#FAF9F5]/50 px-2.5 py-2 hover:bg-white hover:border-[#2D4F3E]/30 transition-colors cursor-pointer"
+                          >
+                            <span className={`w-1.5 h-7 rounded-full shrink-0 ${
+                              task.tone === 'rose' ? 'bg-rose-500' : task.tone === 'amber' ? 'bg-amber-500' : task.tone === 'sky' ? 'bg-sky-500' : task.tone === 'orange' ? 'bg-orange-500' : task.tone === 'violet' ? 'bg-violet-500' : 'bg-stone-400'
+                            }`} />
+                            <div className="min-w-0 flex-1">
+                              <div className="text-[10px] font-bold text-gray-900 truncate">{task.label}</div>
+                              <div className="text-[8.5px] text-gray-500 truncate">{task.detail}</div>
+                            </div>
+                            <span className="text-[10px] font-black font-mono text-gray-800">{task.count}</span>
+                            <ArrowRight className="w-3 h-3 text-gray-300 shrink-0" />
+                          </button>
+                        ))}
+                      </div>
+                    </section>
+                  </div>
+
+                  <section className="rounded-2xl border border-[#E8E4DA] bg-white p-3.5 sm:p-4 shadow-xs">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div>
+                        <h3 className="text-sm font-black text-[#1F2421]">Salud del catálogo</h3>
+                        <p className="text-[10px] text-gray-500">Qué tan completos están tus productos para vender.</p>
+                      </div>
+                      <span className={`text-lg font-black font-mono ${adminHealth.completeness >= 80 ? 'text-emerald-700' : adminHealth.completeness >= 50 ? 'text-amber-700' : 'text-rose-700'}`}>{adminHealth.completeness}%</span>
+                    </div>
+                    <div className="mt-2 h-2 rounded-full bg-stone-100 overflow-hidden">
+                      <div className="h-full rounded-full bg-gradient-to-r from-emerald-500 via-amber-400 to-rose-500 transition-all" style={{ width: `${Math.max(4, adminHealth.completeness)}%` }} />
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-3">
+                      {adminHealth.checks.map(check => (
+                        <div key={check.id} className="rounded-xl border border-[#E8E4DA] bg-[#FAF9F5]/60 p-2">
+                          <div className="text-[8.5px] font-bold text-gray-500 uppercase tracking-wider">{check.label}</div>
+                          <div className="text-[12px] font-black font-mono text-gray-900">{check.done}<span className="text-[8px] text-gray-400">/{adminHealth.total}</span></div>
+                          <div className="h-1 rounded-full bg-stone-200 mt-1 overflow-hidden">
+                            <div className={`h-full rounded-full ${check.missing === 0 ? 'bg-emerald-500' : 'bg-amber-500'}`} style={{ width: `${adminHealth.total ? (check.done / adminHealth.total) * 100 : 0}%` }} />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+
+                  <section className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+                    {[
+                      { label: 'Nuevo producto', desc: 'Agregar al catálogo', icon: Plus, action: () => handleOpenNewProduct(), tone: 'bg-emerald-50 text-emerald-800 border-emerald-200' },
+                      { label: 'Stock e insumos', desc: 'Revisar almacén', icon: Layers, action: () => { setRawMaterialsSubTab('inventory'); setActiveTab('raw-materials'); }, tone: 'bg-sky-50 text-sky-800 border-sky-200' },
+                      { label: 'Costos y recetas', desc: 'Revisar márgenes', icon: TrendingUp, action: () => setActiveTab('margins'), tone: 'bg-amber-50 text-amber-800 border-amber-200' },
+                      { label: 'Datos del taller', desc: 'Configuración', icon: Settings, action: () => setActiveTab('settings'), tone: 'bg-stone-50 text-stone-700 border-stone-200' }
+                    ].map(item => {
+                      const ItemIcon = item.icon;
+                      return (
+                        <button key={item.label} type="button" onClick={item.action} className={`text-left rounded-xl border p-2.5 hover:shadow-xs transition-all cursor-pointer ${item.tone}`}>
+                          <ItemIcon className="w-4 h-4 mb-1" />
+                          <div className="text-[10.5px] font-black">{item.label}</div>
+                          <div className="text-[8.5px] opacity-70">{item.desc}</div>
+                        </button>
+                      );
+                    })}
+                  </section>
+                </div>
+              )}
+
               {/* TAB: CATÁLOGO MÓVIL & ARCHIVO DE DESCARGAS */}
               {activeTab === 'catalog-mobile' && (
                 <MobileCatalogAdminSection
