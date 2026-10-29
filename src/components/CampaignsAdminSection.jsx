@@ -1,6 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
 import {
-import ImageOptimized from './ImageOptimized';
   Gift, Sparkles, Upload, Image as ImageIcon, Check,
   AlertTriangle, Star, Flame, Eye, Edit, Plus, Calendar,
   Tag, ArrowRight, Layers, DollarSign, Award, ChevronRight,
@@ -13,13 +12,13 @@ import MonthlyEventBanner, { EVENT_THEMES, DEFAULT_SEASONAL_SLIDES } from './Mon
 import AdminConfirmSaveModal from './AdminConfirmSaveModal';
 
 const SUGGESTED_BANNER_IMAGES = [
-  { label: 'Navidad / Hogar CÃ¡lido', url: '/uploads/bundle_promo_hogar_1.jpg' },
+  { label: 'Navidad / Hogar Cálido', url: '/uploads/bundle_promo_hogar_1.jpg' },
   { label: 'Branding / Negocios', url: '/uploads/bundle_promo_biz_1.jpg' },
   { label: 'Bodas / Ceremonias', url: '/uploads/bienvenida_ceremonia_boda.jpg' },
   { label: 'Eventos / Fiestas', url: '/uploads/bundle_promo_ev_1.jpg' },
   { label: 'Gamer / Home Office', url: '/uploads/kit_home_office_gamer_contexto.jpg' },
-  { label: 'SublimaciÃ³n / Tazas', url: '/uploads/sublimacion_taza_tarro_contexto.jpg' },
-  { label: 'BarberÃ­a / SalÃ³n', url: '/uploads/pack_barberia_boutique_contexto.jpg' },
+  { label: 'Sublimación / Tazas', url: '/uploads/sublimacion_taza_tarro_contexto.jpg' },
+  { label: 'Barbería / Salón', url: '/uploads/pack_barberia_boutique_contexto.jpg' },
   { label: 'Mascotas / Familia', url: '/uploads/bundle_promo_hogar_2.jpg' }
 ];
 
@@ -28,15 +27,15 @@ export const MONTHLY_EVENT_TEMPLATES = [
     monthName: 'Enero',
     label: 'Enero: Arranque & Reyes',
     major: {
-      title: 'Mega Arranque de AÃ±o Artesanal',
-      subtitle: 'Inicia el aÃ±o equipando tu casa o negocio con paquetes en madera noble y piezas 3D con hasta 15% de ahorro.',
+      title: 'Mega Arranque de Año Artesanal',
+      subtitle: 'Inicia el año equipando tu casa o negocio con paquetes en madera noble y piezas 3D con hasta 15% de ahorro.',
       badge: 'ðŸ”¥ MEGA ARRANQUE DE AÃ‘O',
       discountText: '15% OFF',
       couponCode: 'ARRANQUE15',
-      benefitText: 'EnvÃ­o prioritario + Grabado de nombres gratis'
+      benefitText: 'Envío prioritario + Grabado de nombres gratis'
     },
     mid: {
-      title: 'Quincena de Reyes & PropÃ³sitos',
+      title: 'Quincena de Reyes & Propósitos',
       subtitle: 'Detalles coordinados para regalar en Reyes con entrega express y 2X monedas para arcade.',
       badge: 'âš¡ QUINCENA DE REYES',
       discountText: '10% OFF',
@@ -46,18 +45,18 @@ export const MONTHLY_EVENT_TEMPLATES = [
   },
   {
     monthName: 'Febrero',
-    label: 'Febrero: San ValentÃ­n & Amor',
+    label: 'Febrero: San Valentín & Amor',
     major: {
       title: 'Gran Bazar del Amor & la Amistad',
-      subtitle: 'Paquetes coordinados para parejas y amigos: llaveros Polaroid, tazas mÃ¡gicas y lÃ¡mparas en madera cÃ¡lida.',
-      badge: 'ðŸ’– ESPECIAL SAN VALENTÃN',
+      subtitle: 'Paquetes coordinados para parejas y amigos: llaveros Polaroid, tazas mágicas y lámparas en madera cálida.',
+      badge: 'ðŸ’– ESPECIAL SAN VALENTÍN',
       discountText: '15% OFF',
       couponCode: 'AMOR15',
       benefitText: 'Caja de regalo kraft + Tarjeta con dedicatoria'
     },
     mid: {
       title: 'Quincena Love Drop Sorpresa',
-      subtitle: 'Kits express listos para regalar el 14 de febrero con grabado lÃ¡ser personalizado incluido.',
+      subtitle: 'Kits express listos para regalar el 14 de febrero con grabado láser personalizado incluido.',
       badge: 'âš¡ QUINCENA FLASH LOVE',
       discountText: '10% OFF',
       couponCode: 'LOVE10',
@@ -69,11 +68,11 @@ export const MONTHLY_EVENT_TEMPLATES = [
     label: 'Marzo: Expo Primavera',
     major: {
       title: 'Gran Expo Artesanal de Primavera',
-      subtitle: 'Renueva tus espacios con organizadores botÃ¡nicos, macetas estriadas en 3D y bandejas de taller.',
+      subtitle: 'Renueva tus espacios con organizadores botánicos, macetas estriadas en 3D y bandejas de taller.',
       badge: 'ðŸŒ¸ EXPO PRIMAVERA',
       discountText: '15% OFF',
       couponCode: 'PRIMAVERA15',
-      benefitText: 'Detalle botÃ¡nico de taller incluido'
+      benefitText: 'Detalle botánico de taller incluido'
     },
     mid: {
       title: 'Quincena de Espacios Frescos',
@@ -86,18 +85,18 @@ export const MONTHLY_EVENT_TEMPLATES = [
   },
   {
     monthName: 'Abril',
-    label: 'Abril: DÃ­a del NiÃ±o & Creatividad',
+    label: 'Abril: Día del Niño & Creatividad',
     major: {
-      title: 'Festival del DÃ­a del NiÃ±o & Creatividad',
-      subtitle: 'Kits familiares y figuras geomÃ©tricas coleccionables en impresiÃ³n 3D para consentir a los pequeÃ±os.',
-      badge: 'ðŸš€ DÃA DEL NIÃ‘O ARTESANO',
+      title: 'Festival del Día del Niño & Creatividad',
+      subtitle: 'Kits familiares y figuras geométricas coleccionables en impresión 3D para consentir a los pequeños.',
+      badge: 'ðŸš€ DÍA DEL NIÃ‘O ARTESANO',
       discountText: '15% OFF',
       couponCode: 'KIDS15',
       benefitText: 'Figura miniatura 3D sorpresa de regalo'
     },
     mid: {
       title: 'Quincena Juguetes & Colecciones',
-      subtitle: 'Zorros low-poly, portalÃ¡pices temÃ¡ticos y 2X crÃ©ditos para el Arcade del Taller.',
+      subtitle: 'Zorros low-poly, portalápices temáticos y 2X créditos para el Arcade del Taller.',
       badge: 'âš¡ QUINCENA CREATIVA',
       discountText: '10% OFF',
       couponCode: 'CREA10',
@@ -106,39 +105,39 @@ export const MONTHLY_EVENT_TEMPLATES = [
   },
   {
     monthName: 'Mayo',
-    label: 'Mayo: DÃ­a de las Madres',
+    label: 'Mayo: Día de las Madres',
     major: {
-      title: 'Gran Homenaje a MamÃ¡: Recuerdos Inolvidables',
-      subtitle: 'Llaveros familiares con fotos, tazas mÃ¡gicas botÃ¡nicas y letreros en relieve con amor.',
-      badge: 'ðŸ’ ESPECIAL DÃA DE LAS MADRES',
+      title: 'Gran Homenaje a Mamá: Recuerdos Inolvidables',
+      subtitle: 'Llaveros familiares con fotos, tazas mágicas botánicas y letreros en relieve con amor.',
+      badge: 'ðŸ’ ESPECIAL DÍA DE LAS MADRES',
       discountText: '15% OFF',
       couponCode: 'MAMA15',
       benefitText: 'Caja decorada kraft + Tarjeta floral personalizada'
     },
     mid: {
-      title: 'Quincena Exclusiva para MamÃ¡',
-      subtitle: 'AnticÃ­pate y asegura el regalo perfecto de taller con entrega prioritaria garantizada.',
-      badge: 'âš¡ QUINCENA MAMÃ EXPRESS',
+      title: 'Quincena Exclusiva para Mamá',
+      subtitle: 'Anticípate y asegura el regalo perfecto de taller con entrega prioritaria garantizada.',
+      badge: 'âš¡ QUINCENA MAMÁ EXPRESS',
       discountText: '10% OFF',
       couponCode: 'MAMA10',
-      benefitText: 'Grabado de dedicatoria de cortesÃ­a'
+      benefitText: 'Grabado de dedicatoria de cortesía'
     }
   },
   {
     monthName: 'Junio',
-    label: 'Junio: DÃ­a del Padre & Maestros',
+    label: 'Junio: Día del Padre & Maestros',
     major: {
-      title: 'Especial PapÃ¡ & Maestros Artesanos',
+      title: 'Especial Papá & Maestros Artesanos',
       subtitle: 'Kits para asador, destapadores grabados, organizadores de escritorio y soportes gamer.',
-      badge: 'ðŸ‘” ESPECIAL DÃA DEL PADRE',
+      badge: 'ðŸ‘” ESPECIAL DÍA DEL PADRE',
       discountText: '15% OFF',
       couponCode: 'PAPA15',
       benefitText: 'Llavero destapador grabado de regalo'
     },
     mid: {
-      title: 'Quincena del Taller de PapÃ¡',
-      subtitle: 'Detalles Ãºtiles para su oficina, setup o taller con descuento directo de quincena.',
-      badge: 'âš¡ QUINCENA PAPÃ FLASH',
+      title: 'Quincena del Taller de Papá',
+      subtitle: 'Detalles útiles para su oficina, setup o taller con descuento directo de quincena.',
+      badge: 'âš¡ QUINCENA PAPÁ FLASH',
       discountText: '10% OFF',
       couponCode: 'PAPA10',
       benefitText: '10% Directo en accesorios de escritorio'
@@ -149,11 +148,11 @@ export const MONTHLY_EVENT_TEMPLATES = [
     label: 'Julio/Agosto: Vacaciones & Graduaciones',
     major: {
       title: 'Festival de Verano, Viajes & Graduaciones',
-      subtitle: 'Termos tÃ©rmicos grabados, gorras con parche de vinil y placas conmemorativas.',
+      subtitle: 'Termos térmicos grabados, gorras con parche de vinil y placas conmemorativas.',
       badge: 'â˜€ï¸ ESPECIAL VERANO & GRADUACIONES',
       discountText: '15% OFF',
       couponCode: 'VERANO15',
-      benefitText: '2 Llaveros acrÃ­licos o madera de regalo en cada paquete'
+      benefitText: '2 Llaveros acrílicos o madera de regalo en cada paquete'
     },
     mid: {
       title: 'Quincena Playera & Accesorios',
@@ -161,7 +160,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
       badge: 'âš¡ QUINCENA PLAYERA FLASH',
       discountText: '10% OFF',
       couponCode: 'PLAYA10',
-      benefitText: 'EnvÃ­o express prioritario nacional'
+      benefitText: 'Envío express prioritario nacional'
     }
   },
   {
@@ -169,15 +168,15 @@ export const MONTHLY_EVENT_TEMPLATES = [
     label: 'Septiembre: Fiestas Patrias',
     major: {
       title: 'Gran Fiesta Mexicana de Manufactura Artesanal',
-      subtitle: 'Celebra lo hecho en MÃ©xico con piezas autÃ©nticas creadas en nuestro taller con manos mexicanas.',
+      subtitle: 'Celebra lo hecho en México con piezas auténticas creadas en nuestro taller con manos mexicanas.',
       badge: 'ðŸ‡²ðŸ‡½ GRAN BAZAR PATRIO',
       discountText: '15% OFF',
       couponCode: 'VIVAMEXICO15',
       benefitText: 'Detalle patrio artesanal sorpresa incluido'
     },
     mid: {
-      title: 'Quincena Viva MÃ©xico en Taller',
-      subtitle: 'Descuento patriÃ³tico en paquetes decorativos y combos para eventos familiares.',
+      title: 'Quincena Viva México en Taller',
+      subtitle: 'Descuento patriótico en paquetes decorativos y combos para eventos familiares.',
       badge: 'âš¡ QUINCENA TRADICIÃ“N FLASH',
       discountText: '10% OFF',
       couponCode: 'PATRIA10',
@@ -186,19 +185,19 @@ export const MONTHLY_EVENT_TEMPLATES = [
   },
   {
     monthName: 'Octubre / Noviembre',
-    label: 'Octubre/Noviembre: Halloween & DÃ­a de Muertos',
+    label: 'Octubre/Noviembre: Halloween & Día de Muertos',
     major: {
-      title: 'Festival de TradiciÃ³n: DÃ­a de Muertos & OtoÃ±o',
-      subtitle: 'Porta-velas con calado botÃ¡nico, lÃ¡mparas cÃ¡lidas, catrinas geomÃ©tricas y bandejas de taller.',
-      badge: 'ðŸ’€ FESTIVAL DÃA DE MUERTOS',
+      title: 'Festival de Tradición: Día de Muertos & Otoño',
+      subtitle: 'Porta-velas con calado botánico, lámparas cálidas, catrinas geométricas y bandejas de taller.',
+      badge: 'ðŸ’€ FESTIVAL DÍA DE MUERTOS',
       discountText: '15% OFF',
       couponCode: 'TRADICION15',
-      benefitText: 'Mini calaverita geomÃ©trica 3D de cortesÃ­a'
+      benefitText: 'Mini calaverita geométrica 3D de cortesía'
     },
     mid: {
-      title: 'Quincena MÃ¡gica de OtoÃ±o',
+      title: 'Quincena Mágica de Otoño',
       subtitle: 'Ediciones limitadas de temporada listas para decorar tu hogar y altar.',
-      badge: 'âš¡ QUINCENA OTOÃ‘O MÃGICO',
+      badge: 'âš¡ QUINCENA OTOÃ‘O MÁGICO',
       discountText: '10% OFF',
       couponCode: 'CATRINA10',
       benefitText: '2X Monedas para el Arcade + 10% Directo'
@@ -208,16 +207,16 @@ export const MONTHLY_EVENT_TEMPLATES = [
     monthName: 'Noviembre (Fin)',
     label: 'Noviembre: Buen Fin',
     major: {
-      title: 'Buen Fin Artesanal de FÃ¡brica',
-      subtitle: 'Los mayores descuentos del aÃ±o directamente desde nuestro taller de manufactura.',
+      title: 'Buen Fin Artesanal de Fábrica',
+      subtitle: 'Los mayores descuentos del año directamente desde nuestro taller de manufactura.',
       badge: 'ðŸ”¥ EL BUEN FIN ARTESANAL',
       discountText: '15% OFF',
       couponCode: 'BUENFIN15',
-      benefitText: 'EnvÃ­o Gratis a todo MÃ©xico + Grabado sin costo'
+      benefitText: 'Envío Gratis a todo México + Grabado sin costo'
     },
     mid: {
       title: 'Quincena Anticipada del Buen Fin',
-      subtitle: 'AdelÃ¡ntate a las aglomeraciones y asegura tus paquetes con precio promocional.',
+      subtitle: 'Adelántate a las aglomeraciones y asegura tus paquetes con precio promocional.',
       badge: 'âš¡ ANTICIPO BUEN FIN',
       discountText: '10% OFF',
       couponCode: 'ANTICIPO10',
@@ -226,18 +225,18 @@ export const MONTHLY_EVENT_TEMPLATES = [
   },
   {
     monthName: 'Diciembre',
-    label: 'Diciembre: Navidad & Fin de AÃ±o',
+    label: 'Diciembre: Navidad & Fin de Año',
     major: {
-      title: 'Gran Bazar NavideÃ±o & Fin de AÃ±o',
+      title: 'Gran Bazar Navideño & Fin de Año',
       subtitle: 'Regalos corporativos y familiares coordinados con envoltura de gala y entrega prioritaria garantizada.',
       badge: 'ðŸŽ„ GRAN BAZAR NAVIDEÃ‘O',
       discountText: '15% OFF',
       couponCode: 'NAVIDAD15',
-      benefitText: 'Envoltura de regalo de gala + Grabado lÃ¡ser de cortesÃ­a'
+      benefitText: 'Envoltura de regalo de gala + Grabado láser de cortesía'
     },
     mid: {
       title: 'Quincena Santa Express de Regalos',
-      subtitle: 'Â¡No te quedes sin regalos! Kits express listos para entregar en Navidad.',
+      subtitle: '¡No te quedes sin regalos! Kits express listos para entregar en Navidad.',
       badge: 'âš¡ QUINCENA SANTA EXPRESS',
       discountText: '10% OFF',
       couponCode: 'SANTA10',
@@ -253,7 +252,7 @@ export const COLOR_PALETTES = [
     id: 'arena_lino',
     group: 'light',
     name: 'Arena Dorada & Lino',
-    desc: 'Ocre tostado, cÃ¡lida y artesanal',
+    desc: 'Ocre tostado, cálida y artesanal',
     previewBg: 'bg-[#C99447]',
     previewBorder: 'border-amber-700',
     accentBg: 'bg-[#A8722B]',
@@ -263,7 +262,7 @@ export const COLOR_PALETTES = [
     id: 'salvia_menta',
     group: 'light',
     name: 'Verde Salvia Matcha & Menta',
-    desc: 'BotÃ¡nica viva, fresca y vegetal',
+    desc: 'Botánica viva, fresca y vegetal',
     previewBg: 'bg-[#54A576]',
     previewBorder: 'border-emerald-700',
     accentBg: 'bg-[#135431]',
@@ -273,7 +272,7 @@ export const COLOR_PALETTES = [
     id: 'terracota_claro',
     group: 'light',
     name: 'Terracota Vivo & Arcilla',
-    desc: 'CÃ¡lida, arcillosa y vibrante',
+    desc: 'Cálida, arcillosa y vibrante',
     previewBg: 'bg-[#C86445]',
     previewBorder: 'border-orange-800',
     accentBg: 'bg-[#8C3317]',
@@ -293,7 +292,7 @@ export const COLOR_PALETTES = [
     id: 'cielo_verano',
     group: 'light',
     name: 'Azul Brisa Marina',
-    desc: 'Celeste oceÃ¡nico saturado y vivo',
+    desc: 'Celeste oceánico saturado y vivo',
     previewBg: 'bg-[#3594D1]',
     previewBorder: 'border-sky-700',
     accentBg: 'bg-[#0369A1]',
@@ -302,7 +301,7 @@ export const COLOR_PALETTES = [
   {
     id: 'cempasuchil_sol',
     group: 'light',
-    name: 'CempasÃºchil & Sol de Taller',
+    name: 'Cempasúchil & Sol de Taller',
     desc: 'Amarillo flor brillante y mandarina',
     previewBg: 'bg-[#D97706]',
     previewBorder: 'border-amber-800',
@@ -312,7 +311,7 @@ export const COLOR_PALETTES = [
   {
     id: 'lavanda_lila',
     group: 'light',
-    name: 'Lavanda AromÃ¡tica & Amatista',
+    name: 'Lavanda Aromática & Amatista',
     desc: 'Floral violeta rico y primaveral',
     previewBg: 'bg-[#8B5CF6]',
     previewBorder: 'border-purple-800',
@@ -323,7 +322,7 @@ export const COLOR_PALETTES = [
     id: 'durazno_coral',
     group: 'light',
     name: 'Durazno Dulce & Coral Floral',
-    desc: 'Frutal cÃ¡lido y acogedor',
+    desc: 'Frutal cálido y acogedor',
     previewBg: 'bg-[#EA580C]',
     previewBorder: 'border-orange-800',
     accentBg: 'bg-[#7C2D12]',
@@ -333,7 +332,7 @@ export const COLOR_PALETTES = [
     id: 'menta_glaciar',
     group: 'light',
     name: 'Menta Glaciar & Turquesa',
-    desc: 'AromÃ¡tica, energizante y fresca',
+    desc: 'Aromática, energizante y fresca',
     previewBg: 'bg-[#0D9488]',
     previewBorder: 'border-teal-800',
     accentBg: 'bg-[#042F2E]',
@@ -343,18 +342,18 @@ export const COLOR_PALETTES = [
     id: 'canela_caramelo',
     group: 'light',
     name: 'Canela Tostada & Miel',
-    desc: 'CÃ¡lida, maderosa y hogareÃ±a',
+    desc: 'Cálida, maderosa y hogareña',
     previewBg: 'bg-[#A66735]',
     previewBorder: 'border-amber-900',
     accentBg: 'bg-[#3D1E0B]',
     primaryColor: '#3D1E0B'
   },
 
-  // PALETAS OSCURAS, NOCTURNAS Y TEMÃTICAS
+  // PALETAS OSCURAS, NOCTURNAS Y TEMÁTICAS
   {
     id: 'clasico',
     group: 'dark',
-    name: 'Verde Bosque & Oro ClÃ¡sico',
+    name: 'Verde Bosque & Oro Clásico',
     desc: 'Taller noble tradicional',
     previewBg: 'bg-[#17251E]',
     previewBorder: 'border-[#D4A359]',
@@ -365,7 +364,7 @@ export const COLOR_PALETTES = [
     id: 'navidad',
     group: 'dark',
     name: 'Navidad Festiva',
-    desc: 'Rojo borgoÃ±a & verde pino',
+    desc: 'Rojo borgoña & verde pino',
     previewBg: 'bg-[#2B0E14]',
     previewBorder: 'border-red-500',
     accentBg: 'bg-red-500',
@@ -374,7 +373,7 @@ export const COLOR_PALETTES = [
   {
     id: 'otono',
     group: 'dark',
-    name: 'OtoÃ±o Cosecha & Ãmbar',
+    name: 'Otoño Cosecha & Ámbar',
     desc: 'Naranja tostado & madera',
     previewBg: 'bg-[#2D1608]',
     previewBorder: 'border-orange-500',
@@ -384,7 +383,7 @@ export const COLOR_PALETTES = [
   {
     id: 'sanvalentin',
     group: 'dark',
-    name: 'San ValentÃ­n RubÃ­',
+    name: 'San Valentín Rubí',
     desc: 'Rosa profundo & romance',
     previewBg: 'bg-[#2D0F1B]',
     previewBorder: 'border-rose-400',
@@ -404,7 +403,7 @@ export const COLOR_PALETTES = [
   {
     id: 'verano',
     group: 'dark',
-    name: 'Verano CÃ¡lido & OcÃ©ano',
+    name: 'Verano Cálido & Océano',
     desc: 'Azul abisal & cian brillante',
     previewBg: 'bg-[#0F2834]',
     previewBorder: 'border-cyan-400',
@@ -424,8 +423,8 @@ export const COLOR_PALETTES = [
   {
     id: 'cyber_neon',
     group: 'dark',
-    name: 'Cyber Taller & NeÃ³n',
-    desc: 'Ciberpunk turquesa sobre Ã³nix',
+    name: 'Cyber Taller & Neón',
+    desc: 'Ciberpunk turquesa sobre ónix',
     previewBg: 'bg-[#0B132B]',
     previewBorder: 'border-cyan-400',
     accentBg: 'bg-cyan-400',
@@ -434,8 +433,8 @@ export const COLOR_PALETTES = [
   {
     id: 'retro_arcade',
     group: 'dark',
-    name: 'Retro Arcade NeÃ³n 80s',
-    desc: 'PÃºrpura elÃ©ctrico & fucsia arcade',
+    name: 'Retro Arcade Neón 80s',
+    desc: 'Púrpura eléctrico & fucsia arcade',
     previewBg: 'bg-[#1E0528]',
     previewBorder: 'border-fuchsia-500',
     accentBg: 'bg-fuchsia-500',
@@ -445,7 +444,7 @@ export const COLOR_PALETTES = [
     id: 'chocolate_cafe',
     group: 'dark',
     name: 'Espresso & Madera Nogal',
-    desc: 'CÃ¡lida, robusta y artesanal',
+    desc: 'Cálida, robusta y artesanal',
     previewBg: 'bg-[#1F130E]',
     previewBorder: 'border-amber-600',
     accentBg: 'bg-amber-600',
@@ -455,7 +454,7 @@ export const COLOR_PALETTES = [
     id: 'medianoche_zafiro',
     group: 'dark',
     name: 'Zafiro Real & Medianoche',
-    desc: 'Azul marino galÃ¡ctico profundo',
+    desc: 'Azul marino galáctico profundo',
     previewBg: 'bg-[#061226]',
     previewBorder: 'border-blue-400',
     accentBg: 'bg-blue-500',
@@ -464,7 +463,7 @@ export const COLOR_PALETTES = [
   {
     id: 'carbon_minimal',
     group: 'dark',
-    name: 'Grafito TitÃ¡n & Cobre',
+    name: 'Grafito Titán & Cobre',
     desc: 'Industrial minimalista & cobre',
     previewBg: 'bg-[#121417]',
     previewBorder: 'border-stone-400',
@@ -474,7 +473,7 @@ export const COLOR_PALETTES = [
   {
     id: 'vino_borgona',
     group: 'dark',
-    name: 'Vino BorgoÃ±a & Oro Real',
+    name: 'Vino Borgoña & Oro Real',
     desc: 'Elegancia nocturna solemne',
     previewBg: 'bg-[#26050C]',
     previewBorder: 'border-rose-500',
@@ -483,7 +482,7 @@ export const COLOR_PALETTES = [
   }
 ];
 
-// Sugerencias de paletas automÃ¡ticas segÃºn estaciÃ³n
+// Sugerencias de paletas automáticas según estación
 const SEASON_PALETTE_MAP = {
   invierno: 'navidad',
   otono: 'terracota_claro',
@@ -521,7 +520,7 @@ export default function CampaignsAdminSection({
     action: null
   });
 
-  // Estado del formulario de campaÃ±as
+  // Estado del formulario de campañas
   const [campaignConfig, setCampaignConfig] = useState({
     activeSeasonId: 'invierno',
     title: '',
@@ -542,7 +541,7 @@ export default function CampaignsAdminSection({
         id: 'major-event',
         active: true,
         title: 'Gran Bazar Artesanal de Fin de Mes',
-        subtitle: 'Descuento especial en paquetes de taller + envoltura de cortesÃ­a y grabado lÃ¡ser de nombres sin costo.',
+        subtitle: 'Descuento especial en paquetes de taller + envoltura de cortesía y grabado láser de nombres sin costo.',
         badge: 'ðŸ”¥ EVENTO GRANDE DEL MES',
         discountText: '15% OFF',
         couponCode: 'GRANMES15',
@@ -550,13 +549,13 @@ export default function CampaignsAdminSection({
         endDate: '2026-10-31',
         progressPercent: 84,
         benefitType: 'free_gift',
-        benefitText: 'EnvÃ­o Prioritario + Detalle Grabado de CortesÃ­a'
+        benefitText: 'Envío Prioritario + Detalle Grabado de Cortesía'
       },
       midMonthEvent: {
         id: 'mid-month-event',
         active: false,
-        title: 'Quincena RelÃ¡mpago Artesanal',
-        subtitle: 'Â¡LlegÃ³ la quincena! LlÃ©vate kits coordinados para hogar o negocio con precio de taller y 2X monedas arcade.',
+        title: 'Quincena Relámpago Artesanal',
+        subtitle: '¡Llegó la quincena! Llévate kits coordinados para hogar o negocio con precio de taller y 2X monedas arcade.',
         badge: 'âš¡ QUINCENA ARTESANAL FLASH',
         discountText: '10% OFF',
         couponCode: 'QUINCENA10',
@@ -569,22 +568,22 @@ export default function CampaignsAdminSection({
       flashSpecial: {
         id: 'flash-special-event',
         active: false,
-        title: 'Venta RelÃ¡mpago de Fin de Semana & LiquidaciÃ³n',
-        subtitle: 'Â¡Especial de Fin de Semana! Promociones relÃ¡mpago, Ãºltimas piezas y liquidaciones de taller con cupÃ³n exclusivo.',
-        badge: 'âš¡ OFERTA RELÃMPAGO DE FIN DE SEMANA',
+        title: 'Venta Relámpago de Fin de Semana & Liquidación',
+        subtitle: '¡Especial de Fin de Semana! Promociones relámpago, últimas piezas y liquidaciones de taller con cupón exclusivo.',
+        badge: 'âš¡ OFERTA RELÁMPAGO DE FIN DE SEMANA',
         discountText: '15% OFF',
         couponCode: 'FLASHFINDE15',
         startDate: '2026-10-17',
         endDate: '2026-10-19',
         progressPercent: 92,
         benefitType: 'liquidation',
-        benefitText: 'Promociones RelÃ¡mpago + LiquidaciÃ³n de Taller + EnvÃ­o Express'
+        benefitText: 'Promociones Relámpago + Liquidación de Taller + Envío Express'
       }
     },
     seasons: []
   });
 
-  // Filtro de efectos de partÃ­culas
+  // Filtro de efectos de partículas
   const filteredSeasonalEffects = React.useMemo(() => {
     const all = Object.entries(SEASONAL_EFFECTS_META);
     if (effectFilterQuarter === 'all') return all;
@@ -601,12 +600,12 @@ export default function CampaignsAdminSection({
     if (effectFilterQuarter === 'q4') targetMonths = q4Months;
 
     return all.filter(([key, meta]) => {
-      if (key === 'none' || meta.month === 'Todos' || meta.month === 'Todo el aÃ±o') return true;
+      if (key === 'none' || meta.month === 'Todos' || meta.month === 'Todo el año') return true;
       return targetMonths.includes(meta.month);
     });
   }, [effectFilterQuarter]);
 
-  // Cargar configuraciÃ³n de campaÃ±as
+  // Cargar configuración de campañas
   const loadCampaigns = async () => {
     setLoading(true);
     try {
@@ -631,7 +630,7 @@ export default function CampaignsAdminSection({
         }));
       }
     } catch (err) {
-      console.error('Error cargando campaÃ±as:', err);
+      console.error('Error cargando campañas:', err);
     } finally {
       setLoading(false);
     }
@@ -641,7 +640,7 @@ export default function CampaignsAdminSection({
     if (token) loadCampaigns();
   }, [token]);
 
-  // SelecciÃ³n de Temporada: actualiza textos, animaciÃ³n y asigna la paleta de color recomendada
+  // Selección de Temporada: actualiza textos, animación y asigna la paleta de color recomendada
   const handleSelectSeason = (seasonId) => {
     const season = campaignConfig.seasons?.find(s => s.id === seasonId);
     if (!season) return;
@@ -665,7 +664,7 @@ export default function CampaignsAdminSection({
     }));
 
     setMessage({
-      text: `Se aplicÃ³ la temporada "${season.name}" con la paleta "${suggestedPalette}". Puedes cambiar colores o efectos libremente antes de publicar.`,
+      text: `Se aplicó la temporada "${season.name}" con la paleta "${suggestedPalette}". Puedes cambiar colores o efectos libremente antes de publicar.`,
       type: 'info'
     });
   };
@@ -686,7 +685,7 @@ export default function CampaignsAdminSection({
         ...prev,
         [field]: value,
         seasons: updatedSeasons,
-        isDraft: true // ModificaciÃ³n activa en borrador
+        isDraft: true // Modificación activa en borrador
       };
     });
   };
@@ -712,7 +711,7 @@ export default function CampaignsAdminSection({
     });
   };
 
-  // Alternar el evento base activo (O Evento Grande O Quincena RelÃ¡mpago)
+  // Alternar el evento base activo (O Evento Grande O Quincena Relámpago)
   const handleSelectBaseEventMode = (mode) => {
     setCampaignConfig(prev => {
       const currentEvents = prev.monthlyEvents || {};
@@ -815,7 +814,7 @@ export default function CampaignsAdminSection({
       if (res.ok) {
         const data = await res.json();
         updateField('bannerImage', data.url);
-        setMessage({ text: 'Imagen de portada subida con Ã©xito', type: 'success' });
+        setMessage({ text: 'Imagen de portada subida con éxito', type: 'success' });
       } else {
         const err = await res.json();
         setMessage({ text: err.error || 'Error al subir imagen', type: 'error' });
@@ -828,7 +827,7 @@ export default function CampaignsAdminSection({
     }
   };
 
-  // Helper para actualizar campos de una diapositiva especÃ­fica de la carÃ¡tula de novedades
+  // Helper para actualizar campos de una diapositiva específica de la carátula de novedades
   const updateShowcaseSlide = (index, field, value) => {
     setCampaignConfig(prev => {
       const currentEvents = prev.monthlyEvents || {};
@@ -850,7 +849,7 @@ export default function CampaignsAdminSection({
     });
   };
 
-  // Helper para subir imagen especÃ­fica para una diapositiva de la carÃ¡tula
+  // Helper para subir imagen específica para una diapositiva de la carátula
   const handleSlideImageUpload = async (index, file) => {
     if (!file) return;
     setUploadingSlideIdx(index);
@@ -867,7 +866,7 @@ export default function CampaignsAdminSection({
       if (res.ok) {
         const data = await res.json();
         updateShowcaseSlide(index, 'image', data.url);
-        setMessage({ text: `FotografÃ­a actualizada para la diapositiva ${index + 1} de la carÃ¡tula`, type: 'success' });
+        setMessage({ text: `Fotografía actualizada para la diapositiva ${index + 1} de la carátula`, type: 'success' });
       } else {
         const err = await res.json();
         setMessage({ text: err.error || 'Error al subir imagen', type: 'error' });
@@ -884,7 +883,7 @@ export default function CampaignsAdminSection({
     const events = campaignConfig.monthlyEvents || {};
     const baseMode = events.baseEventMode || 'major';
     const activeEventDesc = baseMode === 'mid'
-      ? `Quincena RelÃ¡mpago (${events.midMonthEvent?.title || 'Quincena Flash'})`
+      ? `Quincena Relámpago (${events.midMonthEvent?.title || 'Quincena Flash'})`
       : `Evento Grande del Mes (${events.majorEvent?.title || 'Gran Evento'})`;
 
     const seasonName = campaignConfig.seasons?.find(s => s.id === campaignConfig.activeSeasonId)?.name || campaignConfig.activeSeasonId || 'Personalizada';
@@ -892,7 +891,7 @@ export default function CampaignsAdminSection({
     const changes = [
       {
         icon: 'ðŸ—“ï¸',
-        label: 'CampaÃ±a / Temporada Activa',
+        label: 'Campaña / Temporada Activa',
         detail: `Temporada activa: ${seasonName}. Efecto ambiental: ${campaignConfig.seasonalEffect || 'snow'}.`,
         badge: seasonName
       },
@@ -905,13 +904,13 @@ export default function CampaignsAdminSection({
       {
         icon: 'ðŸ“¢',
         label: 'Banner Principal de Tienda',
-        detail: `TÃ­tulo: "${campaignConfig.title || 'Sin tÃ­tulo'}". Insignia: ${campaignConfig.bannerBadge || 'PromociÃ³n Especial'}.`,
+        detail: `Título: "${campaignConfig.title || 'Sin título'}". Insignia: ${campaignConfig.bannerBadge || 'Promoción Especial'}.`,
         badge: isPublish ? 'Publicado en Vivo' : 'Borrador Guardado'
       },
       {
         icon: 'âš¡',
-        label: 'Eventos del Mes & Ofertas RelÃ¡mpago',
-        detail: `Modo Base: ${activeEventDesc}. Oferta RelÃ¡mpago de Fin de Semana: ${events.flashSpecial?.active ? 'ðŸŸ¢ Activa' : 'Pausada'}.`,
+        label: 'Eventos del Mes & Ofertas Relámpago',
+        detail: `Modo Base: ${activeEventDesc}. Oferta Relámpago de Fin de Semana: ${events.flashSpecial?.active ? 'ðŸŸ¢ Activa' : 'Pausada'}.`,
         badge: events.flashSpecial?.active ? 'Flash Activo' : 'Base Activo'
       }
     ];
@@ -927,28 +926,28 @@ export default function CampaignsAdminSection({
     return changes;
   };
 
-  // Solicitar confirmaciÃ³n antes de guardar borrador
+  // Solicitar confirmación antes de guardar borrador
   const handleSaveDraft = () => {
     const changes = buildCampaignChanges(false);
     setConfirmModalConfig({
       title: 'Confirmar Guardar Borrador',
-      subtitle: 'Tus modificaciones se guardarÃ¡n como borrador sin alterar la tienda pÃºblica de inmediato.',
+      subtitle: 'Tus modificaciones se guardarán como borrador sin alterar la tienda pública de inmediato.',
       badge: 'Borrador',
-      confirmText: 'SÃ­, Guardar Borrador',
+      confirmText: 'Sí, Guardar Borrador',
       changes,
       action: executeSaveDraft
     });
     setShowConfirmModal(true);
   };
 
-  // Solicitar confirmaciÃ³n antes de publicar en vivo
+  // Solicitar confirmación antes de publicar en vivo
   const handlePublishLive = () => {
     const changes = buildCampaignChanges(true);
     setConfirmModalConfig({
-      title: 'Confirmar PublicaciÃ³n en Tienda en Vivo',
-      subtitle: 'Â¡AtenciÃ³n! Estos cambios se publicarÃ¡n inmediatamente en vivo para todos los clientes.',
-      badge: 'PublicaciÃ³n en Vivo',
-      confirmText: 'SÃ­, Publicar en Tienda',
+      title: 'Confirmar Publicación en Tienda en Vivo',
+      subtitle: '¡Atención! Estos cambios se publicarán inmediatamente en vivo para todos los clientes.',
+      badge: 'Publicación en Vivo',
+      confirmText: 'Sí, Publicar en Tienda',
       changes,
       action: executePublishLive
     });
@@ -979,7 +978,7 @@ export default function CampaignsAdminSection({
         const data = await res.json();
         setCampaignConfig(data);
         setMessage({
-          text: 'ðŸ’¾ Borrador guardado exitosamente. Tus cambios estÃ¡n protegidos y listos para cuando decidas publicarlos.',
+          text: 'ðŸ’¾ Borrador guardado exitosamente. Tus cambios están protegidos y listos para cuando decidas publicarlos.',
           type: 'info'
         });
       } else {
@@ -1018,7 +1017,7 @@ export default function CampaignsAdminSection({
         const data = await res.json();
         setCampaignConfig(data);
         setMessage({
-          text: 'ðŸš€ Â¡CampaÃ±a y Temporada PUBLICADAS EN VIVO en la tienda! Los clientes ya pueden ver los nuevos colores, banner y promociones.',
+          text: 'ðŸš€ ¡Campaña y Temporada PUBLICADAS EN VIVO en la tienda! Los clientes ya pueden ver los nuevos colores, banner y promociones.',
           type: 'success'
         });
         if (onRefreshCatalog) onRefreshCatalog();
@@ -1026,7 +1025,7 @@ export default function CampaignsAdminSection({
         setMessage({ text: 'Error al publicar en la tienda', type: 'error' });
       }
     } catch (err) {
-      console.error('Error publicando campaÃ±a:', err);
+      console.error('Error publicando campaña:', err);
       setMessage({ text: 'Error de red al publicar', type: 'error' });
     } finally {
       setSaving(false);
@@ -1046,7 +1045,7 @@ export default function CampaignsAdminSection({
   if (loading) {
     return (
       <div className="p-12 text-center text-gray-400 text-xs">
-        Cargando configuraciÃ³n de temporadas y efectos...
+        Cargando configuración de temporadas y efectos...
       </div>
     );
   }
@@ -1061,7 +1060,7 @@ export default function CampaignsAdminSection({
   return (
     <div className="space-y-6 animate-fade-in text-xs max-w-6xl mx-auto">
 
-      {/* Encabezado y Barra de AcciÃ³n con Guardar Borrador vs Publicar en Tienda */}
+      {/* Encabezado y Barra de Acción con Guardar Borrador vs Publicar en Tienda */}
       <div className="bg-white p-6 rounded-3xl border border-[#E8E4DA] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="space-y-1">
           <div className="flex items-center gap-2.5">
@@ -1084,20 +1083,20 @@ export default function CampaignsAdminSection({
                 )}
               </div>
               <p className="text-gray-500 text-xs max-w-2xl leading-relaxed mt-0.5">
-                Configura la temporada activa, elige entre paletas claras/cÃ¡lidas u oscuras, partÃ­culas estacionales y programa tus eventos base y relÃ¡mpago con opciÃ³n de guardar cambios antes de publicarlos.
+                Configura la temporada activa, elige entre paletas claras/cálidas u oscuras, partículas estacionales y programa tus eventos base y relámpago con opción de guardar cambios antes de publicarlos.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Botones de Doble AcciÃ³n: Guardar Borrador vs Publicar en Tienda */}
+        {/* Botones de Doble Acción: Guardar Borrador vs Publicar en Tienda */}
         <div className="flex items-center gap-2.5 shrink-0 self-start md:self-auto">
           <button
             type="button"
             onClick={handleSaveDraft}
             disabled={saving}
             className="px-4 py-2.5 rounded-2xl bg-[#FAF9F5] hover:bg-stone-100 text-[#1F2421] border border-stone-300 font-bold transition-all shadow-xs flex items-center gap-2 cursor-pointer disabled:opacity-50"
-            title="Guarda tus cambios como borrador sin alterar la tienda pÃºblica"
+            title="Guarda tus cambios como borrador sin alterar la tienda pública"
           >
             <Save className="w-4 h-4 text-stone-600" />
             <span>Guardar Borrador</span>
@@ -1136,16 +1135,16 @@ export default function CampaignsAdminSection({
         </div>
       )}
 
-      {/* 1. PREVISUALIZACIÃ“N EN VIVO DEL BANNER DE EVENTOS Y CARÃTULA (HASTA ARRIBA DEL TODO) */}
+      {/* 1. PREVISUALIZACIÃ“N EN VIVO DEL BANNER DE EVENTOS Y CARÁTULA (HASTA ARRIBA DEL TODO) */}
       <div className="bg-white p-6 rounded-3xl border border-[#E8E4DA] shadow-xs space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-3">
           <div>
             <label className="text-xs sm:text-sm font-black font-heading text-[#1F2421] flex items-center gap-2">
               <Eye className="w-4 h-4 text-[#D4A359]" />
-              <span>PrevisualizaciÃ³n en vivo del banner de eventos y carÃ¡tula para tus clientes:</span>
+              <span>Previsualización en vivo del banner de eventos y carátula para tus clientes:</span>
             </label>
             <p className="text-gray-500 text-[11px] mt-0.5">
-              AsÃ­ verÃ¡n tus clientes el banner animado en la tienda principal segÃºn tu configuraciÃ³n activa. Los cambios que hagas abajo se reflejan aquÃ­ al instante.
+              Así verán tus clientes el banner animado en la tienda principal según tu configuración activa. Los cambios que hagas abajo se reflejan aquí al instante.
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -1166,14 +1165,14 @@ export default function CampaignsAdminSection({
         />
       </div>
 
-      {/* 2. SELECTOR DE SECCIONES EN PESTAÃ‘AS MINIMALISTAS (ESTILO ÃREAS) */}
+      {/* 2. SELECTOR DE SECCIONES EN PESTAÃ‘AS MINIMALISTAS (ESTILO ÁREAS) */}
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
         {[
-          { id: 'themes', label: 'Colores & Letra', icon: Palette, desc: 'Paletas, letra y partÃ­culas' },
+          { id: 'themes', label: 'Colores & Letra', icon: Palette, desc: 'Paletas, letra y partículas' },
           { id: 'major', label: 'Evento Grande', icon: Calendar, desc: 'Evento mensual principal' },
-          { id: 'mid', label: 'Quincena RelÃ¡mpago', icon: Zap, desc: '2X arcade y combos' },
-          { id: 'flash', label: 'Finde Flash', icon: Flame, desc: 'Ofertas relÃ¡mpago de fin' },
-          { id: 'showcase', label: 'CarÃ¡tula & Fotos', icon: ImageIcon, desc: '5 fotos de novedades' }
+          { id: 'mid', label: 'Quincena Relámpago', icon: Zap, desc: '2X arcade y combos' },
+          { id: 'flash', label: 'Finde Flash', icon: Flame, desc: 'Ofertas relámpago de fin' },
+          { id: 'showcase', label: 'Carátula & Fotos', icon: ImageIcon, desc: '5 fotos de novedades' }
         ].map(tab => {
           const isSelected = activeBannerTab === tab.id;
           const Icon = tab.icon;
@@ -1218,7 +1217,7 @@ export default function CampaignsAdminSection({
 
       {/* 3. CONTENIDO DE LA PESTAÃ‘A SELECCIONADA */}
 
-      {/* PESTAÃ‘A 1: COLORES, LETRA, ESTACIONES Y PARTÃCULAS */}
+      {/* PESTAÃ‘A 1: COLORES, LETRA, ESTACIONES Y PARTÍCULAS */}
       {activeBannerTab === 'themes' && (
         <div className="space-y-5 animate-fade-in">
           {/* Selector de Letra Blanca o Negra para Tienda y Banners */}
@@ -1230,7 +1229,7 @@ export default function CampaignsAdminSection({
                   <span>Color de Letra para la Tienda y Banners</span>
                 </h4>
                 <p className="text-gray-500 text-[11.5px]">
-                  Elige si prefieres que los textos y tÃ­tulos de la tienda y de los banners se muestren en color blanco, negro o ajustados automÃ¡ticamente segÃºn la paleta activa.
+                  Elige si prefieres que los textos y títulos de la tienda y de los banners se muestren en color blanco, negro o ajustados automáticamente según la paleta activa.
                 </p>
               </div>
               <div className="inline-flex p-1 rounded-xl bg-stone-100 border border-stone-200 shadow-2xs shrink-0">
@@ -1273,21 +1272,21 @@ export default function CampaignsAdminSection({
             </div>
           </div>
 
-          {/* Selector de EstaciÃ³n del AÃ±o & Paletas */}
+          {/* Selector de Estación del Año & Paletas */}
           <div className="bg-white p-5 rounded-3xl border border-[#E8E4DA] shadow-xs space-y-5">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-3">
               <div>
                 <h4 className="font-heading font-bold text-sm text-[#1F2421] flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-[#D4A359]" />
-                  <span>1. Seleccionar EstaciÃ³n del AÃ±o &amp; Paleta de Colores de Tienda</span>
+                  <span>1. Seleccionar Estación del Año &amp; Paleta de Colores de Tienda</span>
                 </h4>
                 <p className="text-gray-500 text-[11.5px]">
-                  Al elegir una estaciÃ³n se cargan sus textos y paleta sugerida. Puedes cambiar la combinaciÃ³n de colores libremente entre tonos claros y oscuros.
+                  Al elegir una estación se cargan sus textos y paleta sugerida. Puedes cambiar la combinación de colores libremente entre tonos claros y oscuros.
                 </p>
               </div>
               <div className="flex items-center gap-2">
                 <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 font-extrabold text-[11px] border border-emerald-200">
-                  EstaciÃ³n: {activeSeason.icon} {activeSeason.name}
+                  Estación: {activeSeason.icon} {activeSeason.name}
                 </span>
                 <button
                   type="button"
@@ -1303,7 +1302,7 @@ export default function CampaignsAdminSection({
             {!isSeasonsCollapsed && (
               <div>
                 <label className="text-[11px] font-bold text-gray-700 block mb-2 uppercase tracking-wider">
-                  A) Elige la EstaciÃ³n del AÃ±o o CampaÃ±a TemÃ¡tica:
+                  A) Elige la Estación del Año o Campaña Temática:
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
                   {(campaignConfig.seasons || []).map(s => {
@@ -1351,7 +1350,7 @@ export default function CampaignsAdminSection({
                     <span>B) Personalizar Paleta de Colores de la Tienda &amp; Banners:</span>
                   </label>
                   <p className="text-[11px] text-gray-500">
-                    Selecciona si prefieres una paleta <strong>Clara y CÃ¡lida</strong> (ideal para dÃ­a, arena, salvia o marfil) o una <strong>Profunda y Nocturna</strong> (verde bosque, navidad o noche).
+                    Selecciona si prefieres una paleta <strong>Clara y Cálida</strong> (ideal para día, arena, salvia o marfil) o una <strong>Profunda y Nocturna</strong> (verde bosque, navidad o noche).
                   </p>
                 </div>
 
@@ -1379,7 +1378,7 @@ export default function CampaignsAdminSection({
                       }`}
                     >
                       <Moon className="w-3.5 h-3.5 text-indigo-400" />
-                      <span>ðŸŒ™ Oscuras &amp; TemÃ¡ticas (12)</span>
+                      <span>ðŸŒ™ Oscuras &amp; Temáticas (12)</span>
                     </button>
                   </div>
 
@@ -1388,7 +1387,7 @@ export default function CampaignsAdminSection({
                     onClick={() => setIsPalettesCollapsed(prev => !prev)}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-[#2D4F3E] bg-[#E8EFEA] hover:bg-[#D5E3DA] transition-colors cursor-pointer border border-[#2D4F3E]/20"
                   >
-                    <span>{isPalettesCollapsed ? 'â–¼ Mostrar paletas' : 'â–² Contraer secciÃ³n'}</span>
+                    <span>{isPalettesCollapsed ? 'â–¼ Mostrar paletas' : 'â–² Contraer sección'}</span>
                   </button>
                 </div>
               </div>
@@ -1454,16 +1453,16 @@ export default function CampaignsAdminSection({
             </div>
           </div>
 
-          {/* AtmÃ³sfera y PartÃ­culas Estacionales */}
+          {/* Atmósfera y Partículas Estacionales */}
           <div className="bg-white p-5 rounded-3xl border border-[#E8E4DA] shadow-xs space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-3">
               <div>
                 <h4 className="font-heading font-bold text-sm text-[#1F2421] flex items-center gap-2">
                   <Sparkle className="w-4 h-4 text-amber-500" />
-                  <span>2. AnimaciÃ³n y AtmÃ³sfera de Temporada en Tienda (24+ Efectos)</span>
+                  <span>2. Animación y Atmósfera de Temporada en Tienda (24+ Efectos)</span>
                 </h4>
                 <p className="text-gray-500 text-[11.5px]">
-                  Selecciona el efecto visual flotante (nieve, hojas de otoÃ±o, flores de sakura, destellos dorados o burbujas) para envolver tu tienda.
+                  Selecciona el efecto visual flotante (nieve, hojas de otoño, flores de sakura, destellos dorados o burbujas) para envolver tu tienda.
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -1540,11 +1539,11 @@ export default function CampaignsAdminSection({
             )}
           </div>
 
-          {/* Portada Principal, Textos de CampaÃ±a & Paquete Estrella */}
+          {/* Portada Principal, Textos de Campaña & Paquete Estrella */}
           <div className="bg-white p-5 rounded-3xl border border-[#E8E4DA] shadow-xs space-y-5">
             <h4 className="font-heading font-bold text-sm text-[#1F2421] flex items-center gap-2 border-b border-gray-100 pb-3">
               <Edit className="w-4 h-4 text-[#2D4F3E]" />
-              <span>3. Portada Principal, Textos de CampaÃ±a &amp; Paquete Estrella</span>
+              <span>3. Portada Principal, Textos de Campaña &amp; Paquete Estrella</span>
             </h4>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -1577,7 +1576,7 @@ export default function CampaignsAdminSection({
 
                 <div className="space-y-2 pt-2 border-t border-gray-100">
                   <label className="text-[11px] font-bold text-gray-600 block">
-                    GalerÃ­a sugerida de portadas de taller (haz clic para aplicar):
+                    Galería sugerida de portadas de taller (haz clic para aplicar):
                   </label>
                   <div className="grid grid-cols-4 gap-2">
                     {SUGGESTED_BANNER_IMAGES.map((img, idx) => (
@@ -1592,7 +1591,7 @@ export default function CampaignsAdminSection({
                         }`}
                         title={img.label}
                       >
-                        <ImageOptimized loading="lazy" src={img.url} alt="" className="w-full h-full object-cover" />
+                        <img loading="lazy" src={img.url} alt="" className="w-full h-full object-cover" />
                         <span className="absolute inset-0 bg-black/40 group-hover:bg-black/20 flex items-end p-1 text-[8.5px] font-bold text-white line-clamp-1">
                           {img.label}
                         </span>
@@ -1637,7 +1636,7 @@ export default function CampaignsAdminSection({
 
                 <div>
                   <label className="font-bold text-gray-700 block mb-1">
-                    TÃ­tulo Principal de la CampaÃ±a:
+                    Título Principal de la Campaña:
                   </label>
                   <input
                     type="text"
@@ -1650,13 +1649,13 @@ export default function CampaignsAdminSection({
 
                 <div>
                   <label className="font-bold text-gray-700 block mb-1">
-                    SubtÃ­tulo / Gancho Comercial:
+                    Subtítulo / Gancho Comercial:
                   </label>
                   <textarea
                     rows={2}
                     value={campaignConfig.subtitle || ''}
                     onChange={e => updateField('subtitle', e.target.value)}
-                    placeholder="Ej: Kits coordinados en madera, grabado lÃ¡ser y piezas 3D con hasta 15% de ahorro."
+                    placeholder="Ej: Kits coordinados en madera, grabado láser y piezas 3D con hasta 15% de ahorro."
                     className="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs focus:ring-1 focus:ring-[#2D4F3E]"
                   />
                 </div>
@@ -1669,7 +1668,7 @@ export default function CampaignsAdminSection({
                     type="text"
                     value={campaignConfig.promoNotice || ''}
                     onChange={e => updateField('promoNotice', e.target.value)}
-                    placeholder="Ej: ðŸŽ EnvÃ­o gratis a todo MÃ©xico en compras mayores a $800 + grabado de cortesÃ­a"
+                    placeholder="Ej: ðŸŽ Envío gratis a todo México en compras mayores a $800 + grabado de cortesía"
                     className="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs text-emerald-800 font-semibold bg-emerald-50/50 focus:ring-1 focus:ring-[#2D4F3E]"
                   />
                 </div>
@@ -1689,7 +1688,7 @@ export default function CampaignsAdminSection({
                 <span>Eventos Promocionales del Mes (Estilo Temu / Mercado Libre / AliExpress)</span>
               </h4>
               <p className="text-gray-500 text-[11.5px] max-w-3xl leading-relaxed">
-                Configura el evento comercial base del mes (regla: <strong>o es uno o es otro</strong> entre Evento Grande y Quincena RelÃ¡mpago).
+                Configura el evento comercial base del mes (regla: <strong>o es uno o es otro</strong> entre Evento Grande y Quincena Relámpago).
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -1703,12 +1702,12 @@ export default function CampaignsAdminSection({
             </div>
           </div>
 
-          {/* Plantillas RÃ¡pidas de Eventos por Mes */}
+          {/* Plantillas Rápidas de Eventos por Mes */}
           <div className="space-y-2 p-4 rounded-2xl bg-[#FAF9F5] border border-[#E8E4DA]">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-bold text-gray-700 flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                <span>Plantillas RÃ¡pidas del Calendario Comercial (1 Clic para autocompletar):</span>
+                <span>Plantillas Rápidas del Calendario Comercial (1 Clic para autocompletar):</span>
               </span>
             </div>
             <div className="flex flex-wrap gap-1.5">
@@ -1760,7 +1759,7 @@ export default function CampaignsAdminSection({
                   }`}
                 >
                   <Zap className="w-3.5 h-3.5" />
-                  <span>2. Quincena RelÃ¡mpago</span>
+                  <span>2. Quincena Relámpago</span>
                 </button>
               </div>
             </div>
@@ -1795,7 +1794,7 @@ export default function CampaignsAdminSection({
 
             <div className="space-y-3">
               <div>
-                <label className="font-bold text-gray-700 block mb-1">Nombre / TÃ­tulo del Evento:</label>
+                <label className="font-bold text-gray-700 block mb-1">Nombre / Título del Evento:</label>
                 <input
                   type="text"
                   value={campaignConfig.monthlyEvents?.majorEvent?.title || ''}
@@ -1806,12 +1805,12 @@ export default function CampaignsAdminSection({
               </div>
 
               <div>
-                <label className="font-bold text-gray-700 block mb-1">Slogan / SubtÃ­tulo:</label>
+                <label className="font-bold text-gray-700 block mb-1">Slogan / Subtítulo:</label>
                 <textarea
                   rows={2}
                   value={campaignConfig.monthlyEvents?.majorEvent?.subtitle || ''}
                   onChange={e => updateMonthlyEvent('majorEvent', 'subtitle', e.target.value)}
-                  placeholder="Ej: Descuento especial en paquetes de taller + envoltura de cortesÃ­a."
+                  placeholder="Ej: Descuento especial en paquetes de taller + envoltura de cortesía."
                   className="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs focus:ring-1 focus:ring-amber-500"
                 />
               </div>
@@ -1828,7 +1827,7 @@ export default function CampaignsAdminSection({
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-gray-700 block mb-1">CÃ³digo de CupÃ³n:</label>
+                  <label className="font-bold text-gray-700 block mb-1">Código de Cupón:</label>
                   <input
                     type="text"
                     value={campaignConfig.monthlyEvents?.majorEvent?.couponCode || ''}
@@ -1866,7 +1865,7 @@ export default function CampaignsAdminSection({
                 return (
                   <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs font-bold flex items-center gap-2">
                     <span className="text-sm">â³</span>
-                    <span>PRÃ“XIMAMENTE (Faltan {days} {days === 1 ? 'dÃ­a' : 'dÃ­as'} para su inicio oficial)</span>
+                    <span>PRÃ“XIMAMENTE (Faltan {days} {days === 1 ? 'día' : 'días'} para su inicio oficial)</span>
                   </div>
                 );
               })()}
@@ -1875,17 +1874,17 @@ export default function CampaignsAdminSection({
         </div>
       )}
 
-      {/* PESTAÃ‘A 3: QUINCENA RELÃMPAGO */}
+      {/* PESTAÃ‘A 3: QUINCENA RELÁMPAGO */}
       {activeBannerTab === 'mid' && (
         <div className="bg-white p-6 rounded-3xl border border-[#E8E4DA] shadow-xs space-y-6 animate-fade-in">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-3">
             <div className="space-y-1">
               <h4 className="font-heading font-bold text-sm text-[#1F2421] flex items-center gap-2">
                 <Zap className="w-4 h-4 text-cyan-600" />
-                <span>Quincena RelÃ¡mpago Artesanal (Evento Quincenal)</span>
+                <span>Quincena Relámpago Artesanal (Evento Quincenal)</span>
               </h4>
               <p className="text-gray-500 text-[11.5px] max-w-3xl leading-relaxed">
-                DiseÃ±ado para mitades de mes. Ofrece 2X monedas para el Arcade del Taller y descuentos en paquetes clave.
+                Diseñado para mitades de mes. Ofrece 2X monedas para el Arcade del Taller y descuentos en paquetes clave.
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -1911,7 +1910,7 @@ export default function CampaignsAdminSection({
                 </span>
                 <div>
                   <h5 className="font-heading font-black text-xs text-cyan-950 uppercase tracking-wider">
-                    Detalles de la Quincena RelÃ¡mpago
+                    Detalles de la Quincena Relámpago
                   </h5>
                   <span className="text-[10px] text-gray-500">Mitad de mes / Salto de quincena</span>
                 </div>
@@ -1931,23 +1930,23 @@ export default function CampaignsAdminSection({
 
             <div className="space-y-3">
               <div>
-                <label className="font-bold text-gray-700 block mb-1">Nombre / TÃ­tulo de la Quincena:</label>
+                <label className="font-bold text-gray-700 block mb-1">Nombre / Título de la Quincena:</label>
                 <input
                   type="text"
                   value={campaignConfig.monthlyEvents?.midMonthEvent?.title || ''}
                   onChange={e => updateMonthlyEvent('midMonthEvent', 'title', e.target.value)}
-                  placeholder="Ej: Quincena RelÃ¡mpago Artesanal"
+                  placeholder="Ej: Quincena Relámpago Artesanal"
                   className="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs font-bold focus:ring-1 focus:ring-cyan-500"
                 />
               </div>
 
               <div>
-                <label className="font-bold text-gray-700 block mb-1">Slogan / SubtÃ­tulo:</label>
+                <label className="font-bold text-gray-700 block mb-1">Slogan / Subtítulo:</label>
                 <textarea
                   rows={2}
                   value={campaignConfig.monthlyEvents?.midMonthEvent?.subtitle || ''}
                   onChange={e => updateMonthlyEvent('midMonthEvent', 'subtitle', e.target.value)}
-                  placeholder="Ej: Â¡LlegÃ³ la quincena! Kits coordinados con precio directo de taller."
+                  placeholder="Ej: ¡Llegó la quincena! Kits coordinados con precio directo de taller."
                   className="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs focus:ring-1 focus:ring-cyan-500"
                 />
               </div>
@@ -1964,7 +1963,7 @@ export default function CampaignsAdminSection({
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-gray-700 block mb-1">CÃ³digo de CupÃ³n:</label>
+                  <label className="font-bold text-gray-700 block mb-1">Código de Cupón:</label>
                   <input
                     type="text"
                     value={campaignConfig.monthlyEvents?.midMonthEvent?.couponCode || ''}
@@ -2013,7 +2012,7 @@ export default function CampaignsAdminSection({
                 return (
                   <div className="p-2.5 rounded-xl bg-cyan-50 border border-cyan-300 text-cyan-900 text-xs font-bold flex items-center gap-2">
                     <span className="text-sm">â³</span>
-                    <span>PRÃ“XIMAMENTE (Faltan {days} {days === 1 ? 'dÃ­a' : 'dÃ­as'} para su inicio oficial)</span>
+                    <span>PRÃ“XIMAMENTE (Faltan {days} {days === 1 ? 'día' : 'días'} para su inicio oficial)</span>
                   </div>
                 );
               })()}
@@ -2029,10 +2028,10 @@ export default function CampaignsAdminSection({
             <div className="space-y-1">
               <h4 className="font-heading font-bold text-sm text-[#1F2421] flex items-center gap-2">
                 <Flame className="w-4 h-4 text-orange-500" />
-                <span>Especial: Oferta RelÃ¡mpago de Fin de Semana &amp; Liquidaciones</span>
+                <span>Especial: Oferta Relámpago de Fin de Semana &amp; Liquidaciones</span>
               </h4>
               <p className="text-gray-500 text-[11.5px] max-w-3xl leading-relaxed">
-                PestaÃ±a especial flash de fin de semana con reloj de urgencia y cupÃ³n de liquidaciÃ³n agresiva.
+                Pestaña especial flash de fin de semana con reloj de urgencia y cupón de liquidación agresiva.
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -2057,23 +2056,23 @@ export default function CampaignsAdminSection({
           }`}>
             <div className="space-y-3">
               <div>
-                <label className="font-bold text-gray-700 block mb-1">Nombre / TÃ­tulo de la Oferta RelÃ¡mpago:</label>
+                <label className="font-bold text-gray-700 block mb-1">Nombre / Título de la Oferta Relámpago:</label>
                 <input
                   type="text"
                   value={campaignConfig.monthlyEvents?.flashSpecial?.title || ''}
                   onChange={e => updateMonthlyEvent('flashSpecial', 'title', e.target.value)}
-                  placeholder="Venta RelÃ¡mpago de Fin de Semana & LiquidaciÃ³n"
+                  placeholder="Venta Relámpago de Fin de Semana & Liquidación"
                   className="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs font-bold text-orange-950 focus:ring-1 focus:ring-orange-500"
                 />
               </div>
 
               <div>
-                <label className="font-bold text-gray-700 block mb-1">Slogan / SubtÃ­tulo Flash:</label>
+                <label className="font-bold text-gray-700 block mb-1">Slogan / Subtítulo Flash:</label>
                 <textarea
                   rows={2}
                   value={campaignConfig.monthlyEvents?.flashSpecial?.subtitle || ''}
                   onChange={e => updateMonthlyEvent('flashSpecial', 'subtitle', e.target.value)}
-                  placeholder="Â¡Especial de Fin de Semana! Promociones relÃ¡mpago, Ãºltimas piezas y liquidaciones de taller con cupÃ³n exclusivo."
+                  placeholder="¡Especial de Fin de Semana! Promociones relámpago, últimas piezas y liquidaciones de taller con cupón exclusivo."
                   className="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs focus:ring-1 focus:ring-orange-500"
                 />
               </div>
@@ -2090,7 +2089,7 @@ export default function CampaignsAdminSection({
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-gray-700 block mb-1 text-xs">CÃ³digo de CupÃ³n RelÃ¡mpago:</label>
+                  <label className="font-bold text-gray-700 block mb-1 text-xs">Código de Cupón Relámpago:</label>
                   <input
                     type="text"
                     value={campaignConfig.monthlyEvents?.flashSpecial?.couponCode || ''}
@@ -2102,12 +2101,12 @@ export default function CampaignsAdminSection({
               </div>
 
               <div>
-                <label className="font-bold text-gray-700 block mb-1 text-xs">Beneficio / Texto de LiquidaciÃ³n:</label>
+                <label className="font-bold text-gray-700 block mb-1 text-xs">Beneficio / Texto de Liquidación:</label>
                 <input
                   type="text"
                   value={campaignConfig.monthlyEvents?.flashSpecial?.benefitText || ''}
                   onChange={e => updateMonthlyEvent('flashSpecial', 'benefitText', e.target.value)}
-                  placeholder="Promociones RelÃ¡mpago + LiquidaciÃ³n de Taller + EnvÃ­o Express"
+                  placeholder="Promociones Relámpago + Liquidación de Taller + Envío Express"
                   className="w-full px-3 py-1.5 rounded-xl border border-gray-300 text-xs font-medium"
                 />
               </div>
@@ -2139,7 +2138,7 @@ export default function CampaignsAdminSection({
                 return (
                   <div className="p-2.5 rounded-xl bg-orange-50 border border-orange-300 text-orange-900 text-xs font-bold flex items-center gap-2">
                     <span className="text-sm">â³</span>
-                    <span>PRÃ“XIMAMENTE (Faltan {days} {days === 1 ? 'dÃ­a' : 'dÃ­as'} para su inicio oficial)</span>
+                    <span>PRÃ“XIMAMENTE (Faltan {days} {days === 1 ? 'día' : 'días'} para su inicio oficial)</span>
                   </div>
                 );
               })()}
@@ -2148,17 +2147,17 @@ export default function CampaignsAdminSection({
         </div>
       )}
 
-      {/* PESTAÃ‘A 5: CARÃTULA DE NOVEDADES & FOTOS */}
+      {/* PESTAÃ‘A 5: CARÁTULA DE NOVEDADES & FOTOS */}
       {activeBannerTab === 'showcase' && (
         <div className="bg-white p-6 rounded-3xl border border-[#E8E4DA] shadow-xs space-y-6 animate-fade-in">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-3">
             <div className="space-y-1">
               <h4 className="font-heading font-bold text-sm text-[#1F2421] flex items-center gap-2">
                 <ImageIcon className="w-4 h-4 text-[#D4A359]" />
-                <span>CarÃ¡tula de Novedades de Vitrina &amp; GalerÃ­a de Fotos</span>
+                <span>Carátula de Novedades de Vitrina &amp; Galería de Fotos</span>
               </h4>
               <p className="text-gray-500 text-[11.5px] max-w-3xl leading-relaxed">
-                Edita las 5 fotografÃ­as principales, tÃ­tulos, lemas y etiquetas que rotan automÃ¡ticamente en la carÃ¡tula de novedades de la tienda.
+                Edita las 5 fotografías principales, títulos, lemas y etiquetas que rotan automáticamente en la carátula de novedades de la tienda.
               </p>
             </div>
             <span className="px-3 py-1 rounded-full bg-amber-50 text-amber-900 font-bold text-xs border border-amber-200 shrink-0 self-start sm:self-auto">
@@ -2179,11 +2178,11 @@ export default function CampaignsAdminSection({
                       {idx + 1}
                     </span>
                     <h5 className="font-heading font-black text-xs text-stone-900 uppercase tracking-wider">
-                      Diapositiva {idx + 1}: {slide.title || 'Sin tÃ­tulo'}
+                      Diapositiva {idx + 1}: {slide.title || 'Sin título'}
                     </h5>
                   </div>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-stone-200 text-stone-700">
-                    {slide.categoryTag || 'ColecciÃ³n'}
+                    {slide.categoryTag || 'Colección'}
                   </span>
                 </div>
 
@@ -2192,7 +2191,7 @@ export default function CampaignsAdminSection({
                   <div className="lg:col-span-4 space-y-2">
                     <div className="relative rounded-xl overflow-hidden border border-gray-300 bg-white aspect-video shadow-xs group flex items-center justify-center">
                       {slide.image ? (
-                        <ImageOptimized loading="lazy"
+                        <img loading="lazy"
                           src={slide.image}
                           alt={slide.title}
                           className="w-full h-full object-cover"
@@ -2226,7 +2225,7 @@ export default function CampaignsAdminSection({
                       />
                     </div>
 
-                    {/* Miniaturas RÃ¡pidas Sugeridas */}
+                    {/* Miniaturas Rápidas Sugeridas */}
                     <div className="space-y-1 pt-1">
                       <span className="text-[9.5px] font-bold text-gray-500 uppercase tracking-wider block">
                         Fotos sugeridas para esta diapositiva:
@@ -2242,7 +2241,7 @@ export default function CampaignsAdminSection({
                             }`}
                             title={sug.label}
                           >
-                            <ImageOptimized loading="lazy" src={sug.url} alt="" className="w-full h-full object-cover" />
+                            <img loading="lazy" src={sug.url} alt="" className="w-full h-full object-cover" />
                           </button>
                         ))}
                       </div>
@@ -2253,12 +2252,12 @@ export default function CampaignsAdminSection({
                   <div className="lg:col-span-8 space-y-3">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
-                        <label className="font-bold text-gray-700 block mb-1 text-xs">TÃ­tulo de la ColecciÃ³n:</label>
+                        <label className="font-bold text-gray-700 block mb-1 text-xs">Título de la Colección:</label>
                         <input
                           type="text"
                           value={slide.title || ''}
                           onChange={e => updateShowcaseSlide(idx, 'title', e.target.value)}
-                          placeholder="ColecciÃ³n Hogar y Estilo"
+                          placeholder="Colección Hogar y Estilo"
                           className="w-full px-3 py-1.5 rounded-xl border border-gray-300 text-xs font-bold"
                         />
                       </div>
@@ -2275,19 +2274,19 @@ export default function CampaignsAdminSection({
                     </div>
 
                     <div>
-                      <label className="font-bold text-gray-700 block mb-1 text-xs">DescripciÃ³n / Productos que incluye:</label>
+                      <label className="font-bold text-gray-700 block mb-1 text-xs">Descripción / Productos que incluye:</label>
                       <textarea
                         rows={2}
                         value={slide.description || ''}
                         onChange={e => updateShowcaseSlide(idx, 'description', e.target.value)}
-                        placeholder="LÃ¡mpara moderna T38 Â· Maceta espiral T6 Â· Colgador Bienvenidos L14"
+                        placeholder="Lámpara moderna T38 Â· Maceta espiral T6 Â· Colgador Bienvenidos L14"
                         className="w-full px-3 py-1.5 rounded-xl border border-gray-300 text-xs"
                       />
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
-                        <label className="font-bold text-gray-700 block mb-1 text-xs">Etiqueta de CategorÃ­a (Tag):</label>
+                        <label className="font-bold text-gray-700 block mb-1 text-xs">Etiqueta de Categoría (Tag):</label>
                         <input
                           type="text"
                           value={slide.categoryTag || ''}
@@ -2297,7 +2296,7 @@ export default function CampaignsAdminSection({
                         />
                       </div>
                       <div>
-                        <label className="font-bold text-gray-700 block mb-1 text-xs">ID de Ãrea / Mundo:</label>
+                        <label className="font-bold text-gray-700 block mb-1 text-xs">ID de Área / Mundo:</label>
                         <select
                           value={slide.worldId || 'hogar'}
                           onChange={e => updateShowcaseSlide(idx, 'worldId', e.target.value)}
@@ -2318,7 +2317,7 @@ export default function CampaignsAdminSection({
         </div>
       )}
 
-      {/* Modal de ConfirmaciÃ³n y Desglose de Cambios */}
+      {/* Modal de Confirmación y Desglose de Cambios */}
       <AdminConfirmSaveModal
         isOpen={showConfirmModal}
         title={confirmModalConfig.title}

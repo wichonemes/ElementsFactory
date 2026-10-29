@@ -1,6 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
 import {
-import ImageOptimized from './ImageOptimized';
   Image as ImageIcon, Upload, Check, AlertTriangle, RefreshCw,
   Eye, Sparkles, Home, Briefcase, CalendarHeart, ExternalLink,
   Layers, ArrowRight, Save, Gift, Wrench, Palette, Gamepad2,
@@ -10,10 +9,10 @@ import ImageOptimized from './ImageOptimized';
 
 const SUGGESTED_AREA_IMAGES = {
   hogar: [
-    { label: 'Hogar CÃ¡lido & Madera', url: '/uploads/bundle_promo_hogar_1.jpg' },
-    { label: 'LÃ¡mparas & DecoraciÃ³n NÃ³rdica', url: '/uploads/t38_lampara_madera_minimalista.png' },
+    { label: 'Hogar Cálido & Madera', url: '/uploads/bundle_promo_hogar_1.jpg' },
+    { label: 'Lámparas & Decoración Nórdica', url: '/uploads/t38_lampara_madera_minimalista.png' },
     { label: 'Recibidor & Colgadores', url: '/uploads/l14_colgador_llaves_bienvenidos.png' },
-    { label: 'Macetas & GeometrÃ­a 3D', url: '/uploads/t6_maceta_geometrica_espiral_olivo.png' }
+    { label: 'Macetas & Geometría 3D', url: '/uploads/t6_maceta_geometrica_espiral_olivo.png' }
   ],
   negocios: [
     { label: 'Identidad Corporativa & Mostrador', url: '/uploads/bundle_promo_biz_1.jpg' },
@@ -32,10 +31,10 @@ const SUGGESTED_AREA_IMAGES = {
     { label: 'Figura Personalizada Funko', url: '/uploads/catalog-v2-cust-dibujo-1.webp' }
   ],
   eventos: [
-    { label: 'Bodas & Ceremonias RÃºsticas', url: '/uploads/bienvenida_ceremonia_boda.jpg' },
+    { label: 'Bodas & Ceremonias Rústicas', url: '/uploads/bienvenida_ceremonia_boda.jpg' },
     { label: 'Letrero de Arco Nupcial', url: '/uploads/l2_letrero_bienvenida_arco_boda.png' },
     { label: 'Recuerdos & Fiestas Todo Incluido', url: '/uploads/bundle_promo_ev_1.jpg' },
-    { label: 'NÃºmeros de Mesa 3D de Alta Presencia', url: '/uploads/t25_numero_mesa_07_volumen.png' }
+    { label: 'Números de Mesa 3D de Alta Presencia', url: '/uploads/t25_numero_mesa_07_volumen.png' }
   ],
   'paquetes-servicios': [
     { label: 'Combo Hogar Inteligente', url: '/uploads/bundle_promo_hogar_1.jpg' },
@@ -45,14 +44,14 @@ const SUGGESTED_AREA_IMAGES = {
   industria: [
     { label: 'Tobera Automotriz Taller', url: '/uploads/catalog-v2-ind1-context-oficial.webp' },
     { label: 'Galga Calibradora de Taller', url: '/uploads/catalog-v2-ind2-context-oficial.webp' },
-    { label: 'Prototipado en PolÃ­meros TÃ©cnicos', url: '/uploads/catalog-v2-ind1-detail-oficial.webp' }
+    { label: 'Prototipado en Polímeros Técnicos', url: '/uploads/catalog-v2-ind1-detail-oficial.webp' }
   ],
   'publicidad-desarrollo': [
     { label: 'Branding y Publicidad', url: '/uploads/bundle_promo_biz_1.jpg' },
-    { label: 'DiseÃ±o GrÃ¡fico & Digital', url: '/uploads/t39_smart_deck_streamer_workspace.png' }
+    { label: 'Diseño Gráfico & Digital', url: '/uploads/t39_smart_deck_streamer_workspace.png' }
   ],
   servicios: [
-    { label: 'Branding, DiseÃ±o & Lonas', url: '/uploads/brand_artesano_digital_og.jpg' },
+    { label: 'Branding, Diseño & Lonas', url: '/uploads/brand_artesano_digital_og.jpg' },
     { label: 'Manufactura Aditiva e Industria', url: '/uploads/industria_portada_oficial_ingenieria.webp' }
   ]
 };
@@ -62,60 +61,60 @@ const AREA_METADATA = {
     label: 'Hogar & Espacios',
     icon: Home,
     color: 'emerald',
-    badgeText: 'ColecciÃ³n Oficial Hogar',
+    badgeText: 'Colección Oficial Hogar',
     gradient: 'from-[#17251E] via-[#22382B] to-[#121A15]'
   },
   negocios: {
     label: 'Negocios & Marcas',
     icon: Briefcase,
     color: 'amber',
-    badgeText: 'ColecciÃ³n Oficial Negocios',
+    badgeText: 'Colección Oficial Negocios',
     gradient: 'from-[#251A10] via-[#352516] to-[#19130D]'
   },
   juguetes: {
-    label: 'Juguetes & NiÃ±os',
+    label: 'Juguetes & Niños',
     icon: Gamepad2,
     color: 'pink',
-    badgeText: 'ColecciÃ³n Oficial Juguetes',
+    badgeText: 'Colección Oficial Juguetes',
     gradient: 'from-[#2D1225] via-[#3D1A33] to-[#1F0C19]'
   },
   personalizados: {
     label: 'Personalizados & Figuras',
     icon: Sparkles,
     color: 'purple',
-    badgeText: 'ColecciÃ³n Oficial Personalizados',
+    badgeText: 'Colección Oficial Personalizados',
     gradient: 'from-[#22102E] via-[#311842] to-[#160B1E]'
   },
   eventos: {
     label: 'Eventos Especiales',
     icon: CalendarHeart,
     color: 'rose',
-    badgeText: 'ColecciÃ³n Oficial Eventos',
+    badgeText: 'Colección Oficial Eventos',
     gradient: 'from-[#2D0F1B] via-[#3B1524] to-[#1A0B12]'
   },
   'paquetes-servicios': {
     label: 'Paquetes & Servicios',
     icon: Gift,
     color: 'teal',
-    badgeText: 'ColecciÃ³n Oficial Paquetes',
+    badgeText: 'Colección Oficial Paquetes',
     gradient: 'from-[#0F2826] via-[#173B38] to-[#0A1C1A]'
   },
   industria: {
-    label: 'Industria TÃ©cnica',
+    label: 'Industria Técnica',
     icon: Wrench,
     color: 'slate',
-    badgeText: 'ColecciÃ³n Oficial Industria',
+    badgeText: 'Colección Oficial Industria',
     gradient: 'from-[#1A202C] via-[#2D3748] to-[#171923]'
   },
   'publicidad-desarrollo': {
-    label: 'DiseÃ±o & Publicidad',
+    label: 'Diseño & Publicidad',
     icon: Palette,
     color: 'indigo',
-    badgeText: 'ColecciÃ³n Oficial DiseÃ±o & Publicidad',
+    badgeText: 'Colección Oficial Diseño & Publicidad',
     gradient: 'from-[#181B34] via-[#242A52] to-[#101224]'
   },
   servicios: {
-    label: 'Servicios (DiseÃ±o & Industria)',
+    label: 'Servicios (Diseño & Industria)',
     icon: Layers,
     color: 'amber',
     badgeText: 'Centro Oficial de Servicios',
@@ -123,7 +122,7 @@ const AREA_METADATA = {
   }
 };
 
-// DefiniciÃ³n oficial de las 8 Tarjetas Selectoras (DiseÃ±o e Industria)
+// Definición oficial de las 8 Tarjetas Selectoras (Diseño e Industria)
 const SELECTION_CARDS_CATALOG = {
   diseno: [
     {
@@ -154,7 +153,7 @@ const SELECTION_CARDS_CATALOG = {
       key: 'web',
       code: 'DEV-03',
       title: 'Web & Tienda',
-      desc: 'Sitios web responsivos, catÃ¡logos online y tiendas rÃ¡pidas optimizadas.',
+      desc: 'Sitios web responsivos, catálogos online y tiendas rápidas optimizadas.',
       defaultUrl: './interfaces/assets/ui-01.jpg',
       badge: 'Desarrollo Web',
       icon: Globe,
@@ -165,8 +164,8 @@ const SELECTION_CARDS_CATALOG = {
     {
       key: 'editorial',
       code: 'EDIT-04',
-      title: 'CatÃ¡logo & Redes',
-      desc: 'MenÃºs digitales, catÃ¡logos en PDF y contenido grÃ¡fico para historias y posts.',
+      title: 'Catálogo & Redes',
+      desc: 'Menús digitales, catálogos en PDF y contenido gráfico para historias y posts.',
       defaultUrl: './portafolio/assets/popol-spread.webp',
       badge: 'Contenido & Impresos',
       icon: Film,
@@ -180,9 +179,9 @@ const SELECTION_CARDS_CATALOG = {
       key: 'proto',
       code: 'PROTO-01',
       title: 'Prototipos Funcionales',
-      desc: 'ValidaciÃ³n rÃ¡pida de cotas, holguras y ensamble desde archivo 3D.',
+      desc: 'Validación rápida de cotas, holguras y ensamble desde archivo 3D.',
       defaultUrl: './uploads/catalog-v2-ind1-context-oficial.webp',
-      badge: 'ValidaciÃ³n RÃ¡pida',
+      badge: 'Validación Rápida',
       icon: Layers,
       accentColor: '#5BB8FF',
       borderClass: 'border-[#5BB8FF]',
@@ -194,7 +193,7 @@ const SELECTION_CARDS_CATALOG = {
       title: 'Utillaje y Herramientas',
       desc: 'Galgas de control, nidos Poka-Yoke y mordazas que no rayan piezas.',
       defaultUrl: './uploads/catalog-v2-ind2-context-oficial.webp',
-      badge: 'LÃ­nea de ProducciÃ³n',
+      badge: 'Línea de Producción',
       icon: Wrench,
       accentColor: '#8FB99B',
       borderClass: 'border-[#8FB99B]',
@@ -204,9 +203,9 @@ const SELECTION_CARDS_CATALOG = {
       key: 'spare',
       code: 'SPARE-03',
       title: 'Refacciones y Obsoletos',
-      desc: 'SustituciÃ³n de bujes, poleas y piezas descontinuadas desde 1 pieza.',
+      desc: 'Sustitución de bujes, poleas y piezas descontinuadas desde 1 pieza.',
       defaultUrl: './uploads/industria_portada_oficial_ingenieria.webp',
-      badge: 'SustituciÃ³n Directa',
+      badge: 'Sustitución Directa',
       icon: RotateCcw,
       accentColor: '#fbbf24',
       borderClass: 'border-amber-400',
@@ -216,7 +215,7 @@ const SELECTION_CARDS_CATALOG = {
       key: 'batch',
       code: 'BATCH-04',
       title: 'Lotes Cortos y Preseries',
-      desc: 'ProducciÃ³n continua de 10 a 500 piezas sin costo de apertura de molde.',
+      desc: 'Producción continua de 10 a 500 piezas sin costo de apertura de molde.',
       defaultUrl: './uploads/catalog-v2-ind1-detail-oficial.webp',
       badge: 'Volumen Flexible',
       icon: Boxes,
@@ -233,7 +232,7 @@ export default function AreaBannersAdminSection({
   onUpdateSettings = null,
   onWorldsUpdated = null
 }) {
-  // PestaÃ±a principal: 'cards' (Tarjetas de selecciÃ³n) o 'banners' (Banners de portada)
+  // Pestaña principal: 'cards' (Tarjetas de selección) o 'banners' (Banners de portada)
   const [activeSectionTab, setActiveSectionTab] = useState('cards');
 
   const [worlds, setWorlds] = useState([]);
@@ -251,7 +250,7 @@ export default function AreaBannersAdminSection({
   const [savingCards, setSavingCards] = useState(false);
   const [statusMsg, setStatusMsg] = useState({ type: '', text: '' });
 
-  // ConfiguraciÃ³n de tarjetas (sincronizada con businessSettings)
+  // Configuración de tarjetas (sincronizada con businessSettings)
   const [cardsConfig, setCardsConfig] = useState(() => {
     if (typeof window !== 'undefined') {
       try {
@@ -299,7 +298,7 @@ export default function AreaBannersAdminSection({
     }
   }, [businessSettings]);
 
-  // Cargar Ã¡reas desde la API
+  // Cargar áreas desde la API
   const loadWorlds = async () => {
     setLoading(true);
     try {
@@ -329,8 +328,8 @@ export default function AreaBannersAdminSection({
         }
       }
     } catch (err) {
-      console.error('Error cargando Ã¡reas:', err);
-      setStatusMsg({ type: 'error', text: 'No se pudieron cargar las Ã¡reas del taller.' });
+      console.error('Error cargando áreas:', err);
+      setStatusMsg({ type: 'error', text: 'No se pudieron cargar las áreas del taller.' });
     } finally {
       setLoading(false);
     }
@@ -340,7 +339,7 @@ export default function AreaBannersAdminSection({
     loadWorlds();
   }, []);
 
-  // Al cambiar de Ã¡rea seleccionada, actualizar el formulario
+  // Al cambiar de área seleccionada, actualizar el formulario
   const handleSelectArea = (areaId) => {
     setActiveAreaId(areaId);
     setStatusMsg({ type: '', text: '' });
@@ -361,12 +360,12 @@ export default function AreaBannersAdminSection({
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      setStatusMsg({ type: 'error', text: 'Por favor selecciona un archivo de imagen vÃ¡lido (JPG, PNG, WEBP).' });
+      setStatusMsg({ type: 'error', text: 'Por favor selecciona un archivo de imagen válido (JPG, PNG, WEBP).' });
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      setStatusMsg({ type: 'error', text: 'La imagen excede el lÃ­mite de 5MB.' });
+      setStatusMsg({ type: 'error', text: 'La imagen excede el límite de 5MB.' });
       return;
     }
 
@@ -402,7 +401,7 @@ export default function AreaBannersAdminSection({
       }
 
       setFormData(prev => ({ ...prev, image: imageUrl }));
-      setStatusMsg({ type: 'success', text: 'Â¡FotografÃ­a subida exitosamente! Haz clic en "Guardar Banner" para aplicar los cambios.' });
+      setStatusMsg({ type: 'success', text: '¡Fotografía subida exitosamente! Haz clic en "Guardar Banner" para aplicar los cambios.' });
     } catch (err) {
       console.error('Error subiendo imagen:', err);
       setStatusMsg({ type: 'error', text: `No se pudo subir la imagen: ${err.message}` });
@@ -436,7 +435,7 @@ export default function AreaBannersAdminSection({
       setWorlds(prev => prev.map(w => w.id === activeAreaId ? updatedWorld : w));
       setStatusMsg({
         type: 'success',
-        text: `Â¡Banner de "${updatedWorld.name}" guardado y publicado en la tienda con Ã©xito!`
+        text: `¡Banner de "${updatedWorld.name}" guardado y publicado en la tienda con éxito!`
       });
 
       if (onWorldsUpdated) {
@@ -468,7 +467,7 @@ export default function AreaBannersAdminSection({
     if (onUpdateSettings) onUpdateSettings(draftSettings);
   };
 
-  // Activar o desactivar foto de una tarjeta especÃ­fica
+  // Activar o desactivar foto de una tarjeta específica
   const handleToggleCardPhoto = (section, cardKey) => {
     const current = cardsConfig[section]?.[cardKey] || { url: '', enabled: false };
     const newEnabled = !current.enabled;
@@ -494,12 +493,12 @@ export default function AreaBannersAdminSection({
     });
   };
 
-  // Subir imagen para una tarjeta especÃ­fica (desde celular o computadora)
+  // Subir imagen para una tarjeta específica (desde celular o computadora)
   const handleUploadCardPhoto = async (section, cardKey, file) => {
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      setStatusMsg({ type: 'error', text: 'Por favor selecciona un archivo de imagen vÃ¡lido.' });
+      setStatusMsg({ type: 'error', text: 'Por favor selecciona un archivo de imagen válido.' });
       return;
     }
 
@@ -526,7 +525,7 @@ export default function AreaBannersAdminSection({
         }
       } catch (err) {}
 
-      // Fallback a Data URL si el backend estÃ¡ en modo estÃ¡tico/offline
+      // Fallback a Data URL si el backend está en modo estático/offline
       if (!imageUrl) {
         imageUrl = await new Promise((resolve) => {
           const reader = new FileReader();
@@ -543,7 +542,7 @@ export default function AreaBannersAdminSection({
           [cardKey]: {
             ...current,
             url: imageUrl,
-            enabled: true // Se activa automÃ¡ticamente al subir la foto
+            enabled: true // Se activa automáticamente al subir la foto
           }
         }
       };
@@ -552,7 +551,7 @@ export default function AreaBannersAdminSection({
       persistCardsPreview(updated);
       setStatusMsg({
         type: 'success',
-        text: `Â¡Foto de "${cardKey.toUpperCase()}" subida y activada! Recuerda dar clic en "Guardar Cambios de Tarjetas".`
+        text: `¡Foto de "${cardKey.toUpperCase()}" subida y activada! Recuerda dar clic en "Guardar Cambios de Tarjetas".`
       });
     } catch (err) {
       console.error('Error subiendo foto de tarjeta:', err);
@@ -594,7 +593,7 @@ export default function AreaBannersAdminSection({
     setStatusMsg({ type: 'info', text: `Tarjeta "${cardKey.toUpperCase()}" restaurada a foto original (desactivada).` });
   };
 
-  // Desactivar todas las fotos de un jalÃ³n (Modo oscuro total)
+  // Desactivar todas las fotos de un jalón (Modo oscuro total)
   const handleDisableAllCards = () => {
     const updated = {
       diseno: Object.fromEntries(Object.entries(cardsConfig.diseno || {}).map(([k, v]) => [k, { ...v, enabled: false }])),
@@ -605,7 +604,7 @@ export default function AreaBannersAdminSection({
     setStatusMsg({ type: 'info', text: 'Todas las fotos de fondo han sido desactivadas (Modo oscuro activo para las 8 tarjetas).' });
   };
 
-  // Activar todas las fotos de un jalÃ³n
+  // Activar todas las fotos de un jalón
   const handleEnableAllCards = () => {
     const updated = {
       diseno: Object.fromEntries(Object.entries(cardsConfig.diseno || {}).map(([k, v]) => [k, { ...v, enabled: true }])),
@@ -616,7 +615,7 @@ export default function AreaBannersAdminSection({
     setStatusMsg({ type: 'info', text: 'Todas las fotos de fondo han sido activadas.' });
   };
 
-  // Guardar todas las tarjetas en la configuraciÃ³n general
+  // Guardar todas las tarjetas en la configuración general
   const handleSaveAllCards = async () => {
     setSavingCards(true);
     setStatusMsg({ type: '', text: '' });
@@ -638,7 +637,7 @@ export default function AreaBannersAdminSection({
       });
 
       if (!res.ok) {
-        throw new Error(`El servidor respondiÃ³ ${res.status}; se guardÃ³ la vista local.`);
+        throw new Error(`El servidor respondió ${res.status}; se guardó la vista local.`);
       }
 
       localStorage.setItem('artesano_settings_cache', JSON.stringify(updatedSettings));
@@ -647,7 +646,7 @@ export default function AreaBannersAdminSection({
       }
       setStatusMsg({
         type: 'success',
-        text: 'Â¡Las 8 tarjetas de DiseÃ±o e Industria se guardaron y sincronizaron con Ã©xito en la tienda!'
+        text: '¡Las 8 tarjetas de Diseño e Industria se guardaron y sincronizaron con éxito en la tienda!'
       });
 
       if (onWorldsUpdated) {
@@ -659,7 +658,7 @@ export default function AreaBannersAdminSection({
       if (onUpdateSettings) onUpdateSettings(updatedSettings);
       setStatusMsg({
         type: 'success',
-        text: 'Â¡Tarjetas guardadas y actualizadas localmente en tu navegador!'
+        text: '¡Tarjetas guardadas y actualizadas localmente en tu navegador!'
       });
     } finally {
       setSavingCards(false);
@@ -686,9 +685,9 @@ export default function AreaBannersAdminSection({
             }`}
           >
             <Sparkles className="w-4 h-4 text-amber-400" />
-            <span>Tarjetas de DiseÃ±o & Industria (8 Tarjetas)</span>
+            <span>Tarjetas de Diseño & Industria (8 Tarjetas)</span>
             <span className="px-1.5 py-0.5 rounded text-[9.5px] bg-amber-400 text-stone-950 font-black">
-              Tu PeticiÃ³n
+              Tu Petición
             </span>
           </button>
 
@@ -702,7 +701,7 @@ export default function AreaBannersAdminSection({
             }`}
           >
             <ImageIcon className="w-4 h-4" />
-            <span>Banners de Portada de Ãrea</span>
+            <span>Banners de Portada de Área</span>
           </button>
         </div>
 
@@ -742,7 +741,7 @@ export default function AreaBannersAdminSection({
       {activeSectionTab === 'cards' && (
         <div className="space-y-6">
           
-          {/* Header de la secciÃ³n de tarjetas */}
+          {/* Header de la sección de tarjetas */}
           <div className="bg-white p-6 rounded-3xl border border-[#E8E4DA] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#2D4F3E]">
@@ -750,14 +749,14 @@ export default function AreaBannersAdminSection({
                 <span>Control Individual de Tarjetas</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-black font-heading text-[#1F2421]">
-                Tarjetas de SelecciÃ³n: DiseÃ±o & Industria
+                Tarjetas de Selección: Diseño & Industria
               </h2>
               <p className="text-xs sm:text-sm text-gray-600 max-w-2xl leading-relaxed">
-                AquÃ­ puedes <strong>activar o desactivar la foto</strong> de cada una de las 8 tarjetas de forma independiente, o <strong>subir tu propia imagen</strong> desde tu celular o computadora. Si la desactivas, la tarjeta lucirÃ¡ con su modo oscuro minimalista y nÃ­tido.
+                Aquí puedes <strong>activar o desactivar la foto</strong> de cada una de las 8 tarjetas de forma independiente, o <strong>subir tu propia imagen</strong> desde tu celular o computadora. Si la desactivas, la tarjeta lucirá con su modo oscuro minimalista y nítido.
               </p>
             </div>
 
-            {/* Botones de acciÃ³n rÃ¡pida global */}
+            {/* Botones de acción rápida global */}
             <div className="flex flex-wrap items-center gap-2 self-start md:self-auto">
               <button
                 type="button"
@@ -796,10 +795,10 @@ export default function AreaBannersAdminSection({
                 </div>
                 <div>
                   <h3 className="text-sm sm:text-base font-extrabold text-[#1F2421]">
-                    Tarjetas de DiseÃ±o & Publicidad
+                    Tarjetas de Diseño & Publicidad
                   </h3>
                   <p className="text-[11px] text-gray-500">
-                    Secciones: Identidad de Marca, Lonas & Gran Formato, Web & Tienda, CatÃ¡logo & Redes
+                    Secciones: Identidad de Marca, Lonas & Gran Formato, Web & Tienda, Catálogo & Redes
                   </p>
                 </div>
               </div>
@@ -838,7 +837,7 @@ export default function AreaBannersAdminSection({
                       </span>
                     </div>
 
-                    {/* PrevisualizaciÃ³n idÃ©ntica a cÃ³mo se verÃ¡ en la tienda */}
+                    {/* Previsualización idéntica a cómo se verá en la tienda */}
                     <div className="relative rounded-xl overflow-hidden bg-[#0B0D11] border border-white/10 p-3 h-32 flex flex-col justify-between text-white select-none">
                       {/* Imagen con desenfoque condicional */}
                       {isPhotoActive && (
@@ -874,7 +873,7 @@ export default function AreaBannersAdminSection({
 
                     {/* Controles para activar, subir foto o restaurar */}
                     <div className="space-y-2 pt-1">
-                      {/* BotÃ³n de Activar / Desactivar */}
+                      {/* Botón de Activar / Desactivar */}
                       <button
                         type="button"
                         onClick={() => handleToggleCardPhoto('diseno', card.key)}
@@ -888,7 +887,7 @@ export default function AreaBannersAdminSection({
                         <span>{isPhotoActive ? 'Desactivar Foto' : 'Activar Foto'}</span>
                       </button>
 
-                      {/* BotÃ³n Subir Foto desde Celular/PC */}
+                      {/* Botón Subir Foto desde Celular/PC */}
                       <div className="relative">
                         <input
                           type="file"
@@ -915,11 +914,11 @@ export default function AreaBannersAdminSection({
                           onChange={(e) => handleCardUrlChange('diseno', card.key, e.target.value)}
                           placeholder="./uploads/tu_foto.jpg"
                           className="w-full px-2.5 py-1 text-[10.5px] rounded-lg border border-gray-200 bg-gray-50/70 focus:bg-white focus:outline-none focus:border-[#2D4F3E]"
-                          title="Ruta o URL de la fotografÃ­a"
+                          title="Ruta o URL de la fotografía"
                         />
                       </div>
 
-                      {/* BotÃ³n Restaurar original */}
+                      {/* Botón Restaurar original */}
                       <button
                         type="button"
                         onClick={() => handleResetCard('diseno', card.key, card.defaultUrl)}
@@ -943,7 +942,7 @@ export default function AreaBannersAdminSection({
                 </div>
                 <div>
                   <h3 className="text-sm sm:text-base font-extrabold text-[#1F2421]">
-                    Tarjetas de Industria TÃ©cnica & Manufactura
+                    Tarjetas de Industria Técnica & Manufactura
                   </h3>
                   <p className="text-[11px] text-gray-500">
                     Secciones: Prototipos Funcionales, Utillaje y Herramientas, Refacciones y Obsoletos, Lotes Cortos y Preseries
@@ -985,7 +984,7 @@ export default function AreaBannersAdminSection({
                       </span>
                     </div>
 
-                    {/* PrevisualizaciÃ³n idÃ©ntica a cÃ³mo se verÃ¡ en la tienda */}
+                    {/* Previsualización idéntica a cómo se verá en la tienda */}
                     <div className="relative rounded-xl overflow-hidden bg-[#0A0E11] border border-white/10 p-3 h-32 flex flex-col justify-between text-white select-none">
                       {/* Imagen con desenfoque condicional */}
                       {isPhotoActive && (
@@ -1021,7 +1020,7 @@ export default function AreaBannersAdminSection({
 
                     {/* Controles para activar, subir foto o restaurar */}
                     <div className="space-y-2 pt-1">
-                      {/* BotÃ³n de Activar / Desactivar */}
+                      {/* Botón de Activar / Desactivar */}
                       <button
                         type="button"
                         onClick={() => handleToggleCardPhoto('industria', card.key)}
@@ -1035,7 +1034,7 @@ export default function AreaBannersAdminSection({
                         <span>{isPhotoActive ? 'Desactivar Foto' : 'Activar Foto'}</span>
                       </button>
 
-                      {/* BotÃ³n Subir Foto desde Celular/PC */}
+                      {/* Botón Subir Foto desde Celular/PC */}
                       <div className="relative">
                         <input
                           type="file"
@@ -1062,11 +1061,11 @@ export default function AreaBannersAdminSection({
                           onChange={(e) => handleCardUrlChange('industria', card.key, e.target.value)}
                           placeholder="./uploads/tu_foto.jpg"
                           className="w-full px-2.5 py-1 text-[10.5px] rounded-lg border border-gray-200 bg-gray-50/70 focus:bg-white focus:outline-none focus:border-[#2D4F3E]"
-                          title="Ruta o URL de la fotografÃ­a"
+                          title="Ruta o URL de la fotografía"
                         />
                       </div>
 
-                      {/* BotÃ³n Restaurar original */}
+                      {/* Botón Restaurar original */}
                       <button
                         type="button"
                         onClick={() => handleResetCard('industria', card.key, card.defaultUrl)}
@@ -1084,7 +1083,7 @@ export default function AreaBannersAdminSection({
           {/* Barra inferior de guardado */}
           <div className="bg-white p-4 rounded-2xl border border-[#E8E4DA] shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
             <span className="text-xs text-gray-500 font-medium text-center sm:text-left">
-              Los cambios que actives o desactives se reflejarÃ¡n de inmediato para todos los clientes en la tienda oficial.
+              Los cambios que actives o desactives se reflejarán de inmediato para todos los clientes en la tienda oficial.
             </span>
             <button
               type="button"
@@ -1101,7 +1100,7 @@ export default function AreaBannersAdminSection({
       )}
 
       {/* ========================================================================= */}
-      {/* VISTA 2: BANNERS DE PORTADA DE ÃREA                                      */}
+      {/* VISTA 2: BANNERS DE PORTADA DE ÁREA                                      */}
       {/* ========================================================================= */}
       {activeSectionTab === 'banners' && (
         <div className="space-y-6">
@@ -1113,24 +1112,24 @@ export default function AreaBannersAdminSection({
               <span>Banners de Cabecera Superior</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-black font-heading text-[#1F2421]">
-              Banners de Portada por Ãrea
+              Banners de Portada por Área
             </h2>
             <p className="text-xs sm:text-sm text-gray-600 max-w-3xl">
-              Sube o cambia la imagen principal panorÃ¡mica, tÃ­tulo, lema y descripciÃ³n de cada una de las Ã¡reas maestras del taller.
+              Sube o cambia la imagen principal panorámica, título, lema y descripción de cada una de las áreas maestras del taller.
             </p>
           </div>
 
-          {/* Selector de Ãreas del CatÃ¡logo */}
+          {/* Selector de Áreas del Catálogo */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
             {[
-              { id: 'hogar', label: 'Hogar & Deco', icon: Home, desc: 'LÃ¡mparas, percheros y macetas' },
+              { id: 'hogar', label: 'Hogar & Deco', icon: Home, desc: 'Lámparas, percheros y macetas' },
               { id: 'negocios', label: 'Negocios & Marcas', icon: Briefcase, desc: 'Smart Decks, QR y branding' },
-              { id: 'juguetes', label: 'Juguetes & NiÃ±os', icon: Gamepad2, desc: 'Articulados y dinÃ¡micos' },
+              { id: 'juguetes', label: 'Juguetes & Niños', icon: Gamepad2, desc: 'Articulados y dinámicos' },
               { id: 'personalizados', label: 'Personalizados', icon: Sparkles, desc: 'Dibujos 3D y creaciones' },
               { id: 'eventos', label: 'Eventos Especiales', icon: CalendarHeart, desc: 'Bodas, fiestas y recuerdos' },
               { id: 'paquetes-servicios', label: 'Paquetes & Kits', icon: Gift, desc: 'Combos promocionales' },
-              { id: 'industria', label: 'Industria TÃ©cnica', icon: Wrench, desc: 'Piezas mecÃ¡nicas y utillaje' },
-              { id: 'publicidad-desarrollo', label: 'DiseÃ±o & Publicidad', icon: Palette, desc: 'Branding y diseÃ±o web' }
+              { id: 'industria', label: 'Industria Técnica', icon: Wrench, desc: 'Piezas mecánicas y utillaje' },
+              { id: 'publicidad-desarrollo', label: 'Diseño & Publicidad', icon: Palette, desc: 'Branding y diseño web' }
             ].map(area => {
               const isSelected = activeAreaId === area.id;
               const Icon = area.icon;
@@ -1161,13 +1160,13 @@ export default function AreaBannersAdminSection({
             })}
           </div>
 
-          {/* CALLOUT: Acceso rÃ¡pido a las tarjetas selectoras si estÃ¡ en diseÃ±o o industria */}
+          {/* CALLOUT: Acceso rápido a las tarjetas selectoras si está en diseño o industria */}
           {(activeAreaId === 'publicidad-desarrollo' || activeAreaId === 'industria') && (
             <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-in fade-in">
               <div className="flex items-center gap-2.5 text-xs text-amber-950">
                 <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
                 <span>
-                  Â¿Quieres <strong>activar/desactivar o cambiar las fotos</strong> de las tarjetas selectoras de esta secciÃ³n ({activeAreaId === 'publicidad-desarrollo' ? 'Identidad de Marca, Lonas, Web, Redes' : 'Prototipos, Utillaje, Refacciones, Lotes'})?
+                  ¿Quieres <strong>activar/desactivar o cambiar las fotos</strong> de las tarjetas selectoras de esta sección ({activeAreaId === 'publicidad-desarrollo' ? 'Identidad de Marca, Lonas, Web, Redes' : 'Prototipos, Utillaje, Refacciones, Lotes'})?
                 </span>
               </div>
               <button
@@ -1181,21 +1180,21 @@ export default function AreaBannersAdminSection({
             </div>
           )}
 
-          {/* PrevisualizaciÃ³n en Vivo del Banner */}
+          {/* Previsualización en Vivo del Banner */}
           <div className="space-y-2">
             <div className="flex items-center justify-between px-1">
               <div className="flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-gray-600">
                 <Eye className="w-3.5 h-3.5 text-[#2D4F3E]" />
-                <span>PrevisualizaciÃ³n en Vivo del Banner ({meta.label})</span>
+                <span>Previsualización en Vivo del Banner ({meta.label})</span>
               </div>
               <span className="text-[11px] text-gray-400">
-                Aspecto idÃ©ntico al catÃ¡logo de la tienda
+                Aspecto idéntico al catálogo de la tienda
               </span>
             </div>
 
             <div className="relative rounded-3xl overflow-hidden bg-[#1F2421] text-white shadow-xl border-2 border-white/10 min-h-[190px] sm:min-h-[220px] flex items-center">
               {formData.image ? (
-                <ImageOptimized loading="lazy"
+                <img loading="lazy"
                   src={formData.image}
                   alt={formData.name}
                   className="absolute inset-0 w-full h-full object-cover opacity-35"
@@ -1211,10 +1210,10 @@ export default function AreaBannersAdminSection({
                   {meta.badgeText}
                 </span>
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold font-heading text-white tracking-tight">
-                  {formData.name || 'Nombre del Ãrea'}
+                  {formData.name || 'Nombre del Área'}
                 </h1>
                 <p className="text-xs sm:text-sm text-gray-200 leading-relaxed font-normal">
-                  {formData.description || 'DescripciÃ³n del Ã¡rea y tipos de manufactura artesanal disponibles...'}
+                  {formData.description || 'Descripción del área y tipos de manufactura artesanal disponibles...'}
                 </p>
                 {formData.tagline && (
                   <p className="text-[11px] font-medium text-amber-300/90 italic">
@@ -1225,7 +1224,7 @@ export default function AreaBannersAdminSection({
             </div>
           </div>
 
-          {/* Formulario de EdiciÃ³n del Banner de Portada */}
+          {/* Formulario de Edición del Banner de Portada */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-white p-6 rounded-3xl border border-[#E8E4DA] shadow-xs">
             
             {/* LADO IZQUIERDO: Subir o Elegir Imagen */}
@@ -1255,7 +1254,7 @@ export default function AreaBannersAdminSection({
                     {uploading ? 'Subiendo imagen...' : 'Subir imagen desde tu computadora'}
                   </div>
                   <p className="text-[11px] text-gray-500">
-                    Formato JPG, PNG o WEBP (mÃ¡x. 5MB)
+                    Formato JPG, PNG o WEBP (máx. 5MB)
                   </p>
                 </label>
               </div>
@@ -1273,11 +1272,11 @@ export default function AreaBannersAdminSection({
                 />
               </div>
 
-              {/* ImÃ¡genes Sugeridas del Taller */}
+              {/* Imágenes Sugeridas del Taller */}
               {suggestedList.length > 0 && (
                 <div className="space-y-2 pt-2 border-t border-gray-100">
                   <div className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">
-                    FotografÃ­as recomendadas para {meta.label}:
+                    Fotografías recomendadas para {meta.label}:
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     {suggestedList.map((item, idx) => (
@@ -1291,7 +1290,7 @@ export default function AreaBannersAdminSection({
                             : 'bg-gray-50 hover:bg-gray-100 text-gray-700 border-gray-200'
                         }`}
                       >
-                        <ImageOptimized loading="lazy"
+                        <img loading="lazy"
                           src={item.url}
                           alt={item.label}
                           className="w-full h-14 rounded-lg object-cover bg-gray-200"
@@ -1308,44 +1307,44 @@ export default function AreaBannersAdminSection({
             <div className="lg:col-span-7 space-y-4">
               <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#1F2421]">
                 <Palette className="w-4 h-4 text-[#D4A359]" />
-                <span>2. Textos y PresentaciÃ³n de Portada</span>
+                <span>2. Textos y Presentación de Portada</span>
               </div>
 
               <div className="space-y-1">
                 <label className="text-xs font-bold text-gray-700">
-                  Nombre Oficial del Ãrea:
+                  Nombre Oficial del Área:
                 </label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                  placeholder="Ej. Hogar & DecoraciÃ³n"
+                  placeholder="Ej. Hogar & Decoración"
                   className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-xs font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2D4F3E]"
                 />
               </div>
 
               <div className="space-y-1">
                 <label className="text-xs font-bold text-gray-700">
-                  Slogan o Lema del Ãrea:
+                  Slogan o Lema del Área:
                 </label>
                 <input
                   type="text"
                   value={formData.tagline}
                   onChange={(e) => setFormData(prev => ({ ...prev, tagline: e.target.value }))}
-                  placeholder="Ej. Piezas cÃ¡lidas en madera y resina para vestir tus espacios..."
+                  placeholder="Ej. Piezas cálidas en madera y resina para vestir tus espacios..."
                   className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-xs text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#2D4F3E]"
                 />
               </div>
 
               <div className="space-y-1">
                 <label className="text-xs font-bold text-gray-700">
-                  DescripciÃ³n completa (visible en la portada del catÃ¡logo):
+                  Descripción completa (visible en la portada del catálogo):
                 </label>
                 <textarea
                   rows={4}
                   value={formData.description}
                   onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                  placeholder="Explica quÃ© encontrarÃ¡ el cliente en esta Ã¡rea, materiales y opciones de personalizaciÃ³n..."
+                  placeholder="Explica qué encontrará el cliente en esta área, materiales y opciones de personalización..."
                   className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-xs text-gray-800 leading-relaxed focus:outline-none focus:ring-2 focus:ring-[#2D4F3E]"
                 />
               </div>

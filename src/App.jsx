@@ -30,7 +30,6 @@ import { Home, Briefcase, CalendarHeart, Sparkles, ChevronRight, ShoppingBag, La
 import { formatServiceDate } from './utils/serviceStatus';
 import { playCoinSound, playSoftAreaSwitchSound, playMarioPowerDownSound } from './utils/soundEffects';
 import catalogFallbackData from './data/catalogFallback.json';
-import ImageOptimized from './ImageOptimized';
 
 const normalizeAssetUrl = (url) => {
   if (!url || typeof url !== 'string') return url;
@@ -86,7 +85,7 @@ const normalizeSettingsData = (s) => {
 };
 
 export default function App() {
-  // Server Data (con inicio instantÃ¡neo desde respaldo estÃ¡tico)
+  // Server Data (con inicio instantáneo desde respaldo estático)
   const [worlds, setWorlds] = useState(() => (catalogFallbackData.worlds || []).map(normalizeWorldItem));
   const [categories, setCategories] = useState(() => catalogFallbackData.categories || []);
   const [products, setProducts] = useState(() => (catalogFallbackData.products || []).map(normalizeProductItem));
@@ -126,19 +125,19 @@ export default function App() {
   const [catalogSeed, setCatalogSeed] = useState(() => Math.floor(Math.random() * 1000000) + Date.now());
   const [packagesInitialArea, setPackagesInitialArea] = useState('all');
 
-  // Aleatoriedad dinÃ¡mica: cada vez que el usuario cambie de pantalla, categorÃ­a o tÃ©cnica, se baraja una nueva posiciÃ³n
+  // Aleatoriedad dinámica: cada vez que el usuario cambie de pantalla, categoría o técnica, se baraja una nueva posición
   useEffect(() => {
     setCatalogSeed(Math.floor(Math.random() * 1000000) + Date.now());
   }, [activeWorld, selectedCategory, selectedTechnique]);
 
-  // Asegurar que al cambiar de Ã¡rea, categorÃ­a o vista el usuario SIEMPRE vea el inicio superior de la pÃ¡gina
+  // Asegurar que al cambiar de área, categoría o vista el usuario SIEMPRE vea el inicio superior de la página
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
       try {
         window.history.scrollRestoration = 'manual';
       } catch (e) {}
     }
-    // Salto instantÃ¡neo hacia la cima (top: 0) sin demoras de animaciÃ³n
+    // Salto instantáneo hacia la cima (top: 0) sin demoras de animación
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     const frameId = requestAnimationFrame(() => {
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -250,7 +249,7 @@ export default function App() {
     }).catch(() => {});
   }, []);
 
-  // Apertura automÃ¡tica de producto cuando viene ?prod=... en la URL
+  // Apertura automática de producto cuando viene ?prod=... en la URL
   useEffect(() => {
     if (products && products.length > 0) {
       try {
@@ -274,7 +273,7 @@ export default function App() {
     }
   }, [products]);
 
-  // SincronizaciÃ³n de restablecimiento inmediato de monedas de Arcade desde el servidor
+  // Sincronización de restablecimiento inmediato de monedas de Arcade desde el servidor
   useEffect(() => {
     if (settings?.arcadeConfig?.lastResetTimestamp) {
       const serverReset = settings.arcadeConfig.lastResetTimestamp;
@@ -346,7 +345,7 @@ export default function App() {
       }
       if (dataCamp && typeof dataCamp === 'object') setCampaignsConfig(dataCamp);
     } catch (err) {
-      console.warn('CatÃ¡logo usando datos estÃ¡ticos:', err);
+      console.warn('Catálogo usando datos estáticos:', err);
     } finally {
       setLoading(false);
     }
@@ -391,7 +390,7 @@ export default function App() {
     });
   }, [products, activeWorld, selectedCategory, selectedTechnique, searchQuery]);
 
-  // Paquetes para la vista actual (Inicio o Ãrea seleccionada) â€” rotados dinÃ¡micamente
+  // Paquetes para la vista actual (Inicio o Área seleccionada) â€” rotados dinámicamente
   const currentAreaPackages = useMemo(() => {
     const list = products.filter(p => p.isBundle && (activeWorld === 'all' || p.worlds?.includes(activeWorld)));
     if (!list || list.length === 0) return [];
@@ -480,7 +479,7 @@ export default function App() {
 
       list = interleaved;
     } else {
-      // En categorÃ­as, Ã¡reas especÃ­ficas o filtros: barajado completo para que los productos siempre cambien de lugar
+      // En categorías, áreas específicas o filtros: barajado completo para que los productos siempre cambien de lugar
       list = shuffle(baseList);
     }
 
@@ -503,16 +502,16 @@ export default function App() {
     return result;
   }, [filteredProducts, flashDeal?.activeFlashProductIds, catalogSeed, activeWorld, selectedCategory, selectedTechnique, searchQuery]);
 
-  // Bucle infinito estilo Marketplace en la pantalla principal (scrolleo continuo de catÃ¡logo)
+  // Bucle infinito estilo Marketplace en la pantalla principal (scrolleo continuo de catálogo)
   const [infiniteLoopBatches, setInfiniteLoopBatches] = useState(1);
   const infiniteSentinelRef = useRef(null);
 
-  // Reiniciar tandas al cambiar de Ã¡rea, categorÃ­a, tÃ©cnica o bÃºsqueda
+  // Reiniciar tandas al cambiar de área, categoría, técnica o búsqueda
   useEffect(() => {
     setInfiniteLoopBatches(1);
   }, [activeWorld, selectedCategory, selectedTechnique, searchQuery]);
 
-  // Observador de intersecciÃ³n para aÃ±adir mÃ¡s tandas de productos al llegar al final
+  // Observador de intersección para añadir más tandas de productos al llegar al final
   useEffect(() => {
     const sentinel = infiniteSentinelRef.current;
     if (!sentinel) return;
@@ -530,7 +529,7 @@ export default function App() {
     return () => observer.disconnect();
   }, [searchQuery, filteredProducts.length, regularProducts.length]);
 
-  // CatÃ¡logo continuo en bucle para sensaciÃ³n de abundancia infinita
+  // Catálogo continuo en bucle para sensación de abundancia infinita
   const loopedCatalogProducts = useMemo(() => {
     const baseList = searchQuery ? filteredProducts : regularProducts;
     if (!baseList || baseList.length === 0) return [];
@@ -565,7 +564,7 @@ export default function App() {
   // World / Area selector handler
   const handleSelectWorld = (worldId, tab, initialCategory = null) => {
     playSoftAreaSwitchSound();
-    setSearchQuery(''); // Limpia la bÃºsqueda para que el catÃ¡logo abra inmediatamente
+    setSearchQuery(''); // Limpia la búsqueda para que el catálogo abra inmediatamente
     if (worldId === 'industria') {
       setActiveWorld('servicios');
       setServicesInitialTab('industria');
@@ -587,7 +586,7 @@ export default function App() {
     }
     setSelectedTechnique('all');
     setCatalogSeed(Date.now());
-    // Posicionar limpiamente arriba de la pantalla para evitar saltos errÃ¡ticos hacia abajo
+    // Posicionar limpiamente arriba de la pantalla para evitar saltos erráticos hacia abajo
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   };
 
@@ -682,25 +681,25 @@ export default function App() {
     }
 
     if (customText && customText.trim()) {
-      msg += `â€¢ PersonalizaciÃ³n deseada: "${customText.trim()}"\n`;
+      msg += `â€¢ Personalización deseada: "${customText.trim()}"\n`;
     }
 
     if (product.priceType === 'quote' || product.price === null) {
-      msg += `â€¢ Precio: A cotizar por diseÃ±o\n`;
+      msg += `â€¢ Precio: A cotizar por diseño\n`;
     } else {
       msg += `â€¢ Precio de referencia: $${product.price} MXN\n`;
     }
 
     if (activePub) {
-      msg += `\n*Ref. PublicaciÃ³n:* [${activePub}]\n`;
+      msg += `\n*Ref. Publicación:* [${activePub}]\n`;
     }
 
     if (settings?.serviceStatus?.isPaused) {
-      const resumeStr = formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'prÃ³ximo aviso';
+      const resumeStr = formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'próximo aviso';
       msg += `\n*Nota de taller:* Taller reanuda actividades el ${resumeStr}.\n`;
     }
 
-    msg += `\n_Â¿PodrÃ­an indicarme tiempos de entrega y costo con envÃ­o?_`;
+    msg += `\n_¿Podrían indicarme tiempos de entrega y costo con envío?_`;
 
     const phone = (settings?.whatsappNumber || '5215500000000').replace(/[^0-9]/g, '');
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
@@ -766,9 +765,9 @@ export default function App() {
       {
         id: 'hogar-estilo',
         image: './uploads/img_001.jpg',
-        badge: 'Hogar & DecoraciÃ³n',
-        title: 'ColecciÃ³n Hogar & DecoraciÃ³n',
-        description: 'LÃ¡mparas 3D, maceteros geomÃ©tricos y percheros de pared',
+        badge: 'Hogar & Decoración',
+        title: 'Colección Hogar & Decoración',
+        description: 'Lámparas 3D, maceteros geométricos y percheros de pared',
         worldId: 'hogar'
       },
       {
@@ -776,14 +775,14 @@ export default function App() {
         image: './uploads/pack_barberia_boutique_contexto.jpg',
         badge: 'Negocios & Marcas',
         title: 'Branding Comercial & Mostrador',
-        description: 'SeÃ±alÃ©tica inteligente, QR y enlaces NFC para negocios',
+        description: 'Señalética inteligente, QR y enlaces NFC para negocios',
         worldId: 'negocios'
       },
       {
         id: 'bodas-eventos',
         image: './uploads/bienvenida_ceremonia_boda.jpg',
         badge: 'Eventos Especiales',
-        title: 'Bodas, XV AÃ±os & Recuerdos',
+        title: 'Bodas, XV Años & Recuerdos',
         description: 'Letreros de bienvenida, copas grabadas y souvenirs de taller',
         worldId: 'eventos'
       },
@@ -792,7 +791,7 @@ export default function App() {
         image: './uploads/kit_home_office_gamer_contexto.jpg',
         badge: 'Setup & Gaming',
         title: 'Setup Gamer & Home Office',
-        description: 'Soportes de audÃ­fonos, bandejas y organizadores 3D',
+        description: 'Soportes de audífonos, bandejas y organizadores 3D',
         worldId: 'hogar'
       }
     ];
@@ -845,7 +844,7 @@ export default function App() {
         />
       </div>
 
-      {/* Top Navigation para MÃ³viles estilo Mercado Libre */}
+      {/* Top Navigation para Móviles estilo Mercado Libre */}
       {activeWorld !== 'industria' && activeWorld !== 'servicios' && activeWorld !== 'publicidad-desarrollo' && (
         <MobileMercadoLibreHeader
           searchQuery={searchQuery}
@@ -870,13 +869,13 @@ export default function App() {
               </span>
               <div>
                 <div className="font-extrabold text-sm sm:text-base flex items-center gap-2 flex-wrap">
-                  <span>â¸ï¸ Aviso de Taller: No hay servicio hasta el {formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'prÃ³ximo aviso'}</span>
+                  <span>â¸ï¸ Aviso de Taller: No hay servicio hasta el {formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'próximo aviso'}</span>
                   <span className="px-2 py-0.2 rounded-full bg-black/25 text-amber-200 text-[10px] font-bold uppercase tracking-wider">
                     {settings.serviceStatus.pausedReason || 'Receso de taller'}
                   </span>
                 </div>
                 <p className="text-white/90 text-[11px] mt-0.5 leading-relaxed">
-                  {settings.serviceStatus.pausedCustomMessage || 'Estamos en periodo de receso. Reanudamos producciÃ³n de pedidos en esa fecha. Puedes seguir explorando y enviar tu cotizaciÃ³n para ser agendada en orden.'}
+                  {settings.serviceStatus.pausedCustomMessage || 'Estamos en periodo de receso. Reanudamos producción de pedidos en esa fecha. Puedes seguir explorando y enviar tu cotización para ser agendada en orden.'}
                 </p>
               </div>
             </div>
@@ -894,11 +893,11 @@ export default function App() {
               </span>
               <span className="text-[11.5px]">
                 {settings.serviceStatus.localService && settings.serviceStatus.nationalService === false ? (
-                  <span><strong>Aviso de Cobertura:</strong> Servicio activo Ãºnicamente para entregas locales y recolecciÃ³n en taller. Los envÃ­os nacionales se encuentran temporalmente en pausa.</span>
+                  <span><strong>Aviso de Cobertura:</strong> Servicio activo únicamente para entregas locales y recolección en taller. Los envíos nacionales se encuentran temporalmente en pausa.</span>
                 ) : settings.serviceStatus.localService === false && settings.serviceStatus.nationalService ? (
-                  <span><strong>Aviso de Cobertura:</strong> EnvÃ­os nacionales activos a toda la RepÃºblica. Las entregas locales en taller estÃ¡n temporalmente pausadas.</span>
+                  <span><strong>Aviso de Cobertura:</strong> Envíos nacionales activos a toda la República. Las entregas locales en taller están temporalmente pausadas.</span>
                 ) : (
-                  <span><strong>Aviso de Taller:</strong> Los servicios de entrega se encuentran en pausa temporal. Puedes dejar tu cotizaciÃ³n en espera.</span>
+                  <span><strong>Aviso de Taller:</strong> Los servicios de entrega se encuentran en pausa temporal. Puedes dejar tu cotización en espera.</span>
                 )}
               </span>
             </div>
@@ -906,7 +905,7 @@ export default function App() {
         </div>
       ) : null}
 
-      {/* BARRA DE FILTROS SUPERIOR EN PC: queda pegada bajo el navbar, antes del hero y de las Ã¡reas */}
+      {/* BARRA DE FILTROS SUPERIOR EN PC: queda pegada bajo el navbar, antes del hero y de las áreas */}
       {!['servicios', 'publicidad-desarrollo', 'industria', 'paquetes-servicios'].includes(activeWorld) && (
         <div className="hidden md:block">
           <FiltersBar
@@ -934,7 +933,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Hero Section para Escritorio (Oculto en MÃ³viles para dar paso a la vista compacta) */}
+      {/* Hero Section para Escritorio (Oculto en Móviles para dar paso a la vista compacta) */}
       {activeWorld === 'all' && !searchQuery && (
         <div className="hidden md:block">
           <Hero
@@ -949,7 +948,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Categories & Areas Overview para Escritorio (Oculto en MÃ³viles) */}
+      {/* Categories & Areas Overview para Escritorio (Oculto en Móviles) */}
       {activeWorld === 'all' && !searchQuery && (
         <div className="hidden md:block">
           <WorldSelector
@@ -965,7 +964,7 @@ export default function App() {
       {activeWorld !== 'all' && activeWorld !== 'paquetes-servicios' && activeWorld !== 'publicidad-desarrollo' && activeWorld !== 'industria' && activeWorld !== 'servicios' && currentWorldObj && (
         <div className="relative bg-[#1F2421] text-white overflow-hidden py-10 sm:py-14 border-b border-black/20">
           <div className="absolute inset-0 opacity-20">
-            <ImageOptimized loading="lazy" src={currentWorldObj.image} alt="" className="w-full h-full object-cover" />
+            <img loading="lazy" src={currentWorldObj.image} alt="" className="w-full h-full object-cover" />
           </div>
           <div className="absolute inset-0 bg-gradient-to-r from-[#1F2421] via-[#1F2421]/90 to-transparent"></div>
           
@@ -973,7 +972,7 @@ export default function App() {
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="space-y-1">
                 <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
-                  ColecciÃ³n Oficial
+                  Colección Oficial
                 </span>
                 <h1 className="text-3xl sm:text-4xl font-extrabold font-heading">
                   {currentWorldObj.name}
@@ -987,7 +986,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Vista Unificada de Servicios Especializados (DiseÃ±o, Publicidad & Manufactura Industrial) */}
+      {/* Vista Unificada de Servicios Especializados (Diseño, Publicidad & Manufactura Industrial) */}
       {(activeWorld === 'servicios' || activeWorld === 'publicidad-desarrollo' || activeWorld === 'industria') ? (
         <ServiciosView
           settings={settings}
@@ -1011,7 +1010,7 @@ export default function App() {
         /* Main Catalog Section */
         <main id="catalogo-section" className="flex-1">
 
-        {/* â”€â”€â”€ FILTROS EN MÃ“VIL â”€ la versiÃ³n de PC vive arriba, debajo del navbar â”€â”€â”€ */}
+        {/* â”€â”€â”€ FILTROS EN MÃ“VIL â”€ la versión de PC vive arriba, debajo del navbar â”€â”€â”€ */}
         <div className="md:hidden">
           <FiltersBar
             activeWorld={activeWorld}
@@ -1064,14 +1063,14 @@ export default function App() {
               <>
                 <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />
                 <span className="font-bold text-gray-700 shrink-0">
-                  BÃºsqueda: "{searchQuery}"
+                  Búsqueda: "{searchQuery}"
                 </span>
               </>
             )}
           </nav>
         </div>
 
-        {/* Banner Destacado MÃ³vil: Productos Personalizados */}
+        {/* Banner Destacado Móvil: Productos Personalizados */}
         {activeWorld === 'all' && !searchQuery && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-2">
             <div
@@ -1081,14 +1080,14 @@ export default function App() {
               <div className="flex items-center gap-3 min-w-0">
                 <div className="flex -space-x-3 shrink-0">
                   <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden border-2 border-white/20 bg-black/40 shadow-xs">
-                    <ImageOptimized loading="lazy"
+                    <img loading="lazy"
                       src="./uploads/personalizados-figuras-funko.jpg"
                       alt="Funko Custom"
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden border-2 border-sky-400/50 bg-black/40 shadow-xs">
-                    <ImageOptimized loading="lazy"
+                    <img loading="lazy"
                       src="./uploads/personalizados-dibujo-figura-3d.jpg"
                       alt="De Dibujo a 3D"
                       className="w-full h-full object-cover"
@@ -1097,7 +1096,7 @@ export default function App() {
                 </div>
                 <div className="min-w-0">
                   <div className="text-[10px] font-black uppercase tracking-wider text-amber-300">
-                    Nuevo Â· 6 CategorÃ­as
+                    Nuevo Â· 6 Categorías
                   </div>
                   <div className="font-heading font-black text-xs sm:text-sm text-white truncate">
                     Productos Personalizados
@@ -1116,19 +1115,19 @@ export default function App() {
           </div>
         )}
 
-        {/* Dynamic Filters Bar - REMOVIDO: ahora estÃ¡ arriba del breadcrumb */}
+        {/* Dynamic Filters Bar - REMOVIDO: ahora está arriba del breadcrumb */}
 
         {/* Catalog Grid with Interleaved Packages */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
             
             {loading ? (
               <div className="py-24 text-center space-y-3">
-                <ImageOptimized loading="lazy"
+                <img loading="lazy"
                   src="./brand/artesano_isotipo_transparente.png"
                   alt="Cargando"
                   className="w-10 h-10 object-contain mx-auto animate-bounce"
                 />
-                <p className="text-xs text-gray-500 font-medium">Cargando catÃ¡logo Artesano Digital...</p>
+                <p className="text-xs text-gray-500 font-medium">Cargando catálogo Artesano Digital...</p>
               </div>
             ) : (searchQuery ? filteredProducts : regularProducts).length === 0 ? (
               <div className="py-20 text-center space-y-4 bg-white rounded-3xl border border-[#E8E4DA] p-8 max-w-lg mx-auto">
@@ -1138,20 +1137,20 @@ export default function App() {
                 <div className="space-y-1">
                   <h3 className="text-base font-bold text-[#1F2421]">No se encontraron productos</h3>
                   <p className="text-xs text-gray-500">
-                    Prueba cambiando los filtros de tÃ©cnica o buscando por otro tÃ©rmino.
+                    Prueba cambiando los filtros de técnica o buscando por otro término.
                   </p>
                 </div>
                 <button
                   onClick={handleGoHome}
                   className="px-5 py-2.5 rounded-full bg-[#2D4F3E] text-white text-xs font-semibold hover:bg-[#20392C] cursor-pointer"
                 >
-                  Ver todo el catÃ¡logo
+                  Ver todo el catálogo
                 </button>
               </div>
             ) : (
               <div className="space-y-10">
                 {!searchQuery && currentAreaPackages.length > 0 ? (
-                  /* Flujo intercalado en Inicio o en cada Ãrea: tandas de productos seguidas de un bloque designado de paquetes */
+                  /* Flujo intercalado en Inicio o en cada Área: tandas de productos seguidas de un bloque designado de paquetes */
                   <div className="space-y-8 sm:space-y-12">
                     {Array.from({ length: Math.ceil(loopedCatalogProducts.length / 8) }).map((_, chunkIdx) => {
                       const chunkProds = loopedCatalogProducts.slice(chunkIdx * 8, (chunkIdx + 1) * 8);
@@ -1163,7 +1162,7 @@ export default function App() {
 
                       return (
                         <React.Fragment key={`catalog-chunk-${activeWorld}-${chunkIdx}`}>
-                          {/* CuadrÃ­cula de 8 productos regulares */}
+                          {/* Cuadrícula de 8 productos regulares */}
                           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
                             {chunkProds.map(product => (
                               <ProductCard
@@ -1180,7 +1179,7 @@ export default function App() {
                             ))}
                           </div>
 
-                          {/* Bloque designado de paquetes intercalados para esta Ã¡rea */}
+                          {/* Bloque designado de paquetes intercalados para esta área */}
                           {packagePair.length > 0 && (
                             <div className="my-6 sm:my-8 p-3.5 sm:p-6 rounded-3xl bg-gradient-to-br from-[#FAF8F5] via-[#F4EFE6] to-[#ECE5D8] border border-[#E8E4DA] shadow-xs">
                               <div className="flex items-center justify-between pb-2.5 sm:pb-3 mb-3 sm:mb-4 border-b border-[#E8E4DA]/80">
@@ -1216,7 +1215,7 @@ export default function App() {
                     })}
                   </div>
                 ) : (
-                  /* CuadrÃ­cula estÃ¡ndar para bÃºsquedas o Ã¡reas sin paquetes */
+                  /* Cuadrícula estándar para búsquedas o áreas sin paquetes */
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
                     {loopedCatalogProducts.map(product => (
                       <ProductCard
@@ -1238,11 +1237,11 @@ export default function App() {
                 <div ref={infiniteSentinelRef} className="py-6 flex flex-col items-center justify-center">
                   <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/95 border border-[#E8E4DA] text-xs font-semibold text-gray-600 shadow-2xs">
                     <span className="w-2 h-2 rounded-full bg-[#2D4F3E] animate-ping" />
-                    <span>CatÃ¡logo continuo Â· Desliza para seguir explorando</span>
+                    <span>Catálogo continuo Â· Desliza para seguir explorando</span>
                   </div>
                 </div>
 
-                {/* Servicio Patch Bar en Vivo en Eventos (al final de los productos, justo antes de los paquetes combo de cada Ã¡rea) */}
+                {/* Servicio Patch Bar en Vivo en Eventos (al final de los productos, justo antes de los paquetes combo de cada área) */}
                 {activeWorld === 'eventos' && !searchQuery && selectedCategory === 'all' && (
                   <div className="pt-2">
                     <PatchBarShowcase
@@ -1255,7 +1254,7 @@ export default function App() {
                   </div>
                 )}
 
-                {/* NavegaciÃ³n al final del catÃ¡logo: Otros apartados y Paquetes de cada Ã¡rea */}
+                {/* Navegación al final del catálogo: Otros apartados y Paquetes de cada área */}
                 {regularProducts.length > 0 && !searchQuery && (
                   <CatalogBottomNav
                     activeWorld={activeWorld}
@@ -1329,14 +1328,14 @@ export default function App() {
         settings={settings}
       />
 
-      {/* Reloj en pantalla para ofertas relÃ¡mpago de 15 minutos (ubicado a la derecha) */}
+      {/* Reloj en pantalla para ofertas relámpago de 15 minutos (ubicado a la derecha) */}
       <BlitzClockWidget
         blitzDeal={flashDeal.activeBlitzDeal}
         onSelectProduct={(prod) => setSelectedProduct(prod)}
         isArcadeOpen={isArcadeOpen}
       />
 
-      {/* BotÃ³n Flotante Sutil: Easter Egg Arcade del Taller (sÃ³lo escritorio, en mÃ³vil estÃ¡ en el Bottom Nav) */}
+      {/* Botón Flotante Sutil: Easter Egg Arcade del Taller (sólo escritorio, en móvil está en el Bottom Nav) */}
       {settings?.arcadeConfig?.enabled !== false && settings?.arcadeConfig?.showFloatingEasterEgg !== false && !isArcadeOpen && (
         <div className="hidden md:block fixed bottom-5 left-4 z-40">
           <button
@@ -1365,7 +1364,7 @@ export default function App() {
         />
       )}
 
-      {/* Floating Right Side Navigation (Home, Logo de CatÃ¡logo, Calculadora & Carrito) */}
+      {/* Floating Right Side Navigation (Home, Logo de Catálogo, Calculadora & Carrito) */}
       <FloatingSideNav
         onGoToAreas={() => {
           setActiveWorld('all');
@@ -1418,7 +1417,7 @@ export default function App() {
         />
       )}
 
-      {/* Vista de CategorÃ­as Master-Detail para Celular estilo Mercado Libre */}
+      {/* Vista de Categorías Master-Detail para Celular estilo Mercado Libre */}
       <MobileCategoriesModal
         isOpen={isCategoriesModalOpen}
         onClose={() => {
@@ -1432,7 +1431,7 @@ export default function App() {
         onSelectTechnique={setSelectedTechnique}
       />
 
-      {/* Barra Lateral Deslizable para MÃ³viles (Drawer con Cotizador, Arcade, CatÃ¡logo, WhatsApp y Admin) */}
+      {/* Barra Lateral Deslizable para Móviles (Drawer con Cotizador, Arcade, Catálogo, WhatsApp y Admin) */}
       <MobileSidebarDrawer
         isOpen={isMoreMenuOpen}
         onClose={() => {
@@ -1454,7 +1453,7 @@ export default function App() {
         settings={settings}
       />
 
-      {/* Selector Interactivo de CatÃ¡logos de Temporada en PDF */}
+      {/* Selector Interactivo de Catálogos de Temporada en PDF */}
       <CatalogSelectorModal
         isOpen={isCatalogSelectorOpen}
         onClose={() => setIsCatalogSelectorOpen(false)}

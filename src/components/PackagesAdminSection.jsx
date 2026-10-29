@@ -1,6 +1,5 @@
 ﻿import React, { useState, useMemo, useEffect } from 'react';
 import {
-import ImageOptimized from './ImageOptimized';
   Package, Boxes, Plus, Edit, Star, Search, Filter,
   Layers, Check, DollarSign, Sparkles, Tag, ArrowRight,
   RefreshCw, Crown, AlertTriangle, ExternalLink
@@ -21,7 +20,7 @@ export default function PackagesAdminSection({
   const [savingStar, setSavingStar] = useState(false);
   const [statusMsg, setStatusMsg] = useState({ type: '', text: '' });
 
-  // Cargar configuraciÃ³n de campaÃ±a para saber quÃ© paquete estÃ¡ fijado como estrella
+  // Cargar configuración de campaña para saber qué paquete está fijado como estrella
   const loadCampaignConfig = async () => {
     setLoadingConfig(true);
     try {
@@ -31,7 +30,7 @@ export default function PackagesAdminSection({
         setCampaignConfig(data || {});
       }
     } catch (e) {
-      console.warn('Error cargando config de campaÃ±as:', e);
+      console.warn('Error cargando config de campañas:', e);
     } finally {
       setLoadingConfig(false);
     }
@@ -46,7 +45,7 @@ export default function PackagesAdminSection({
     return products.filter(p => p.isBundle);
   }, [products]);
 
-  // Filtrar segÃºn bÃºsqueda y Ã¡rea
+  // Filtrar según búsqueda y área
   const filteredBundles = useMemo(() => {
     return allBundles.filter(p => {
       if (areaFilter !== 'all' && !p.worlds?.includes(areaFilter)) {
@@ -89,7 +88,7 @@ export default function PackagesAdminSection({
           type: 'success',
           text: isAlreadyStarred
             ? 'Paquete estrella removido de la cabecera.'
-            : 'Â¡Paquete estrella del mes fijado exitosamente!'
+            : '¡Paquete estrella del mes fijado exitosamente!'
         });
       } else {
         throw new Error('Error al guardar en servidor');
@@ -110,13 +109,13 @@ export default function PackagesAdminSection({
         <div className="space-y-1">
           <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#2D4F3E]">
             <Package className="w-4 h-4 text-[#D4A359]" />
-            <span>CatÃ¡logo Especializado</span>
+            <span>Catálogo Especializado</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-black font-heading text-[#1F2421]">
             Paquetes & Combos de Taller ({allBundles.length})
           </h2>
           <p className="text-xs sm:text-sm text-gray-600 max-w-3xl">
-            Administra los kits coordinados, define el Paquete Estrella del Mes y ajusta los 3 niveles de personalizaciÃ³n (Esencial, Pro, VIP) con precios y componentes de taller.
+            Administra los kits coordinados, define el Paquete Estrella del Mes y ajusta los 3 niveles de personalización (Esencial, Pro, VIP) con precios y componentes de taller.
           </p>
         </div>
 
@@ -137,7 +136,7 @@ export default function PackagesAdminSection({
               type="button"
               onClick={onRefreshCatalog}
               className="p-2.5 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all cursor-pointer shadow-2xs"
-              title="Refrescar catÃ¡logo"
+              title="Refrescar catálogo"
             >
               <RefreshCw className="w-4 h-4" />
             </button>
@@ -145,7 +144,7 @@ export default function PackagesAdminSection({
         </div>
       </div>
 
-      {/* NotificaciÃ³n de estado */}
+      {/* Notificación de estado */}
       {statusMsg.text && (
         <div className={`p-4 rounded-2xl text-xs font-bold flex items-center gap-2 border animate-in fade-in ${
           statusMsg.type === 'success'
@@ -161,10 +160,10 @@ export default function PackagesAdminSection({
         </div>
       )}
 
-      {/* Barra de Filtros por Ãrea y Buscador */}
+      {/* Barra de Filtros por Área y Buscador */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-[#E8E4DA] shadow-xs">
         
-        {/* Selector de Ãrea */}
+        {/* Selector de Área */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
           {[
             { id: 'all', label: 'Todos los Paquetes', count: allBundles.length },
@@ -213,7 +212,7 @@ export default function PackagesAdminSection({
             No se encontraron paquetes con los filtros aplicados
           </h3>
           <p className="text-xs text-gray-500 max-w-md mx-auto">
-            Intenta cambiar los tÃ©rminos de bÃºsqueda o crear un nuevo paquete para tu catÃ¡logo.
+            Intenta cambiar los términos de búsqueda o crear un nuevo paquete para tu catálogo.
           </p>
         </div>
       ) : (
@@ -251,7 +250,7 @@ export default function PackagesAdminSection({
                   
                   {/* Encabezado: Foto, SKU y Nombre */}
                   <div className="flex items-start gap-3">
-                    <ImageOptimized loading="lazy"
+                    <img loading="lazy"
                       src={p.primaryImage || p.gallery?.[0] || p.whiteBgImage}
                       alt={p.name}
                       className="w-16 h-16 rounded-2xl object-cover bg-gray-100 border border-gray-200 shrink-0"
@@ -275,7 +274,7 @@ export default function PackagesAdminSection({
                         {p.name}
                       </h4>
                       <p className="text-[11px] text-gray-500 line-clamp-1 mt-0.5">
-                        {p.shortDescription || 'Sin descripciÃ³n corta.'}
+                        {p.shortDescription || 'Sin descripción corta.'}
                       </p>
                     </div>
                   </div>

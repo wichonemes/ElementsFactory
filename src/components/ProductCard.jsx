@@ -1,6 +1,5 @@
 ﻿import React, { useState } from 'react';
 import { Eye, Plus, MessageCircle, Sparkles, Layers, Image as ImageIcon, Calculator, ShoppingBag, Flame, Clock, Zap } from 'lucide-react';
-import ImageOptimized from './ImageOptimized';
 
 export default function ProductCard({
   product,
@@ -35,12 +34,12 @@ export default function ProductCard({
       };
 
   const techniqueLabels = {
-    '3d': { label: 'ImpresiÃ³n 3D', color: 'bg-emerald-50 text-emerald-800 border-emerald-200' },
-    'laser': { label: 'LÃ¡ser', color: 'bg-amber-50 text-amber-800 border-amber-200' },
-    'sublimation': { label: 'SublimaciÃ³n', color: 'bg-rose-50 text-rose-800 border-rose-200' },
+    '3d': { label: 'Impresión 3D', color: 'bg-emerald-50 text-emerald-800 border-emerald-200' },
+    'laser': { label: 'Láser', color: 'bg-amber-50 text-amber-800 border-amber-200' },
+    'sublimation': { label: 'Sublimación', color: 'bg-rose-50 text-rose-800 border-rose-200' },
     'vinyl': { label: 'Vinil', color: 'bg-indigo-50 text-indigo-800 border-indigo-200' },
-    'print': { label: 'ImpresiÃ³n', color: 'bg-cyan-50 text-cyan-800 border-cyan-200' },
-    'impresion_laser': { label: 'ImpresiÃ³n', color: 'bg-cyan-50 text-cyan-800 border-cyan-200' },
+    'print': { label: 'Impresión', color: 'bg-cyan-50 text-cyan-800 border-cyan-200' },
+    'impresion_laser': { label: 'Impresión', color: 'bg-cyan-50 text-cyan-800 border-cyan-200' },
     'nfc': { label: 'NFC', color: 'bg-teal-50 text-teal-800 border-teal-200' }
   };
 
@@ -130,7 +129,7 @@ export default function ProductCard({
       }`}
     >
       
-      {/* Photo Container con ProtecciÃ³n Anti-PiraterÃ­a (Bloqueo de Arrastre, Clic Derecho y Marca de Agua) */}
+      {/* Photo Container con Protección Anti-Piratería (Bloqueo de Arrastre, Clic Derecho y Marca de Agua) */}
       <div
         onClick={handleOpenDetailModal}
         onContextMenu={(e) => e.preventDefault()}
@@ -170,7 +169,7 @@ export default function ProductCard({
             ) : null}
           </div>
 
-          {/* Right: Technique Badge (3D, LÃ¡ser, SublimaciÃ³n, Vinil, NFC) */}
+          {/* Right: Technique Badge (3D, Láser, Sublimación, Vinil, NFC) */}
           <span className={`px-1.5 py-0.5 sm:px-2 rounded-md text-[8.5px] sm:text-[9.5px] font-bold border backdrop-blur-md shadow-xs ${techBadge.color}`}>
             {techBadge.label}
           </span>
@@ -199,7 +198,7 @@ export default function ProductCard({
 
           {/* Marca de Agua Sutil de Taller */}
           <div className="flex items-center gap-1 px-1.5 py-[2px] rounded-full bg-black/20 backdrop-blur-2xs text-[7px] font-medium text-white/80 select-none tracking-tight border border-white/5 shadow-2xs">
-            <ImageOptimized loading="lazy"
+            <img loading="lazy"
               src="./brand/artesano_isotipo_transparente.png"
               alt=""
               className="w-2 h-2 object-contain shrink-0 opacity-80"
@@ -249,10 +248,10 @@ export default function ProductCard({
             </button>
           </div>
 
-          {/* Sello de Taller & EnvÃ­o Seguro estilo Mercado Libre */}
+          {/* Sello de Taller & Envío Seguro estilo Mercado Libre */}
           <div className="text-[10px] text-emerald-700 font-bold flex items-center gap-1 pt-0.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
-            <span className="truncate">Taller SLP Â· EnvÃ­o Seguro</span>
+            <span className="truncate">Taller SLP Â· Envío Seguro</span>
           </div>
         </div>
       </div>

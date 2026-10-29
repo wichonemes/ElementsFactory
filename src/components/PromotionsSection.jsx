@@ -1,6 +1,5 @@
 ﻿import React, { useState } from 'react';
 import { Tag, Sparkles, CheckCircle2, MessageCircle, ArrowRight, Layers, Percent, Gift, ShoppingBag, Calculator } from 'lucide-react';
-import ImageOptimized from './ImageOptimized';
 
 export default function PromotionsSection({
   promotions = [],
@@ -31,7 +30,7 @@ export default function PromotionsSection({
     all: {
       tag: "Paquetes Coordinados & Descuentos",
       title: "Paquetes y Promociones Especiales",
-      desc: "Ahorra adquiriendo kits completos diseÃ±ados para armonizar tus espacios, equipar tu negocio o celebrar en grande."
+      desc: "Ahorra adquiriendo kits completos diseñados para armonizar tus espacios, equipar tu negocio o celebrar en grande."
     },
     hogar: {
       tag: "Combos de Ahorro para el Hogar",
@@ -41,12 +40,12 @@ export default function PromotionsSection({
     negocios: {
       tag: "Paquetes Comerciales por Giro",
       title: "Promociones y Starter Packs para Negocios",
-      desc: "Equipa tu cafeterÃ­a, restaurante, barberÃ­a o mostrador con seÃ±alÃ©tica, cÃ³digos QR, NFC y regalos con tu logotipo incluido."
+      desc: "Equipa tu cafetería, restaurante, barbería o mostrador con señalética, códigos QR, NFC y regalos con tu logotipo incluido."
     },
     eventos: {
       tag: "Combos Todo Incluido para Celebraciones",
       title: "Paquetes Nupciales, Fiesta y Graduaciones",
-      desc: "Coordina la suite de preparaciÃ³n, la bienvenida, el brindis, kits anticruda y la experiencia del Patch Bar en vivo con precio especial."
+      desc: "Coordina la suite de preparación, la bienvenida, el brindis, kits anticruda y la experiencia del Patch Bar en vivo con precio especial."
     }
   };
 
@@ -55,13 +54,13 @@ export default function PromotionsSection({
   const handleWhatsAppQuote = (promo) => {
     let msg = `*COTIZACIÃ“N DE PAQUETE PROMOCIONAL â€” ARTESANO DIGITAL*\n`;
     msg += `--------------------------------------------------\n`;
-    msg += `Â¡Hola! Me interesa aprovechar la siguiente promociÃ³n:\n\n`;
+    msg += `¡Hola! Me interesa aprovechar la siguiente promoción:\n\n`;
     msg += `â€¢ *[${promo.code}] ${promo.name}*\n`;
     msg += `â€¢ Precio especial: *$${promo.price} MXN* (Ahorro de $${promo.savings} MXN)\n`;
     if (promo.includedItems && promo.includedItems.length > 0) {
-      msg += `â€¢ Piezas de interÃ©s:\n  - ${promo.includedItems.join('\n  - ')}\n`;
+      msg += `â€¢ Piezas de interés:\n  - ${promo.includedItems.join('\n  - ')}\n`;
     }
-    msg += `\n_Â¿Tienen disponibilidad y tiempos de entrega para este combo?_`;
+    msg += `\n_¿Tienen disponibilidad y tiempos de entrega para este combo?_`;
 
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`;
     window.open(url, '_blank');
@@ -130,7 +129,7 @@ export default function PromotionsSection({
                   onClick={() => onSelectProduct(promo)}
                   className="relative h-60 sm:h-64 overflow-hidden bg-gray-50 cursor-pointer select-none"
                 >
-                  <ImageOptimized loading="lazy"
+                  <img loading="lazy"
                     src={promo.whiteBgImage || promo.primaryImage}
                     alt={promo.name}
                     className="w-full h-full object-contain p-4 group-hover:scale-104 transition-transform duration-500 bg-white"
@@ -225,7 +224,7 @@ export default function PromotionsSection({
                     </button>
                   </div>
 
-                  {/* Dual Action Buttons: Agregar al carrito & Hacer cotizaciÃ³n */}
+                  {/* Dual Action Buttons: Agregar al carrito & Hacer cotización */}
                   <div className="grid grid-cols-2 gap-2 pt-2">
                     <button
                       onClick={() => onAddToCart ? onAddToCart({ product: promo, quantity: 1, selectedVariants: {}, customText: '' }) : onSelectProduct(promo)}
@@ -239,10 +238,10 @@ export default function PromotionsSection({
                     <button
                       onClick={() => onOpenCalculator ? onOpenCalculator(promo) : handleWhatsAppQuote(promo)}
                       className="py-2.5 px-3 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-2xs active:scale-95"
-                      title="Calcular cotizaciÃ³n personalizada"
+                      title="Calcular cotización personalizada"
                     >
                       <Calculator className="w-3.5 h-3.5 text-emerald-300" />
-                      <span>Hacer cotizaciÃ³n</span>
+                      <span>Hacer cotización</span>
                     </button>
                   </div>
 

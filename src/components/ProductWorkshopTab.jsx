@@ -1,6 +1,5 @@
 ﻿import React, { useMemo, useState } from 'react';
 import {
-import ImageOptimized from './ImageOptimized';
   Wrench, Boxes, Plus, Trash2, ChevronDown, ChevronRight, Link2,
   Calculator, Zap, Clock, DollarSign, Package, Layers, Paintbrush,
   Sparkles, Printer, Scissors, Box, Shirt, Check, AlertCircle, Save,
@@ -16,7 +15,7 @@ import { parsePackageInfo } from './RawMaterialsSection';
 const SUPPLY_GROUPS = [
   {
     id: 'direct', label: 'Materias primas directas', short: 'Directos',
-    desc: 'Madera, acrÃ­lico, filamento, tela, tazas y piezas que sÃ­ forman el producto.',
+    desc: 'Madera, acrílico, filamento, tela, tazas y piezas que sí forman el producto.',
     icon: Box, tone: 'emerald'
   },
   {
@@ -26,12 +25,12 @@ const SUPPLY_GROUPS = [
   },
   {
     id: 'intangible', label: 'Intangibles y licencias', short: 'Intangibles',
-    desc: 'DiseÃ±o, licencias, modelos, archivos y servicios digitales.',
+    desc: 'Diseño, licencias, modelos, archivos y servicios digitales.',
     icon: Sparkles, tone: 'violet'
   },
   {
     id: 'micro', label: 'Micro insumos', short: 'Micro insumos',
-    desc: 'TornillerÃ­a, gotas de pegamento, lijas, cintas y consumibles mÃ­nimos.',
+    desc: 'Tornillería, gotas de pegamento, lijas, cintas y consumibles mínimos.',
     icon: Hammer, tone: 'orange'
   },
   {
@@ -41,12 +40,12 @@ const SUPPLY_GROUPS = [
   },
   {
     id: 'indirect', label: 'Insumos indirectos', short: 'Indirectos',
-    desc: 'Guantes, protecciÃ³n, limpieza, empaque y consumibles de operaciÃ³n.',
+    desc: 'Guantes, protección, limpieza, empaque y consumibles de operación.',
     icon: Leaf, tone: 'stone'
   },
   {
-    id: 'production', label: 'ProducciÃ³n y servicios', short: 'ProducciÃ³n',
-    desc: 'Maquila, corte externo, grabado, impresiÃ³n o servicios subcontratados.',
+    id: 'production', label: 'Producción y servicios', short: 'Producción',
+    desc: 'Maquila, corte externo, grabado, impresión o servicios subcontratados.',
     icon: Factory, tone: 'amber'
   },
   {
@@ -60,18 +59,18 @@ const GROUP_MAP = Object.fromEntries(SUPPLY_GROUPS.map(group => [group.id, group
 
 const AREAS = [
   {
-    id: 'laser', name: 'Corte & Grabado LÃ¡ser', short: 'LÃ¡ser',
-    desc: 'Maderas, MDF, acrÃ­lico y grabado de precisiÃ³n.',
+    id: 'laser', name: 'Corte & Grabado Láser', short: 'Láser',
+    desc: 'Maderas, MDF, acrílico y grabado de precisión.',
     power: '450 W', icon: Scissors, tone: 'amber'
   },
   {
-    id: '3d', name: 'ImpresiÃ³n 3D FDM', short: '3D',
+    id: '3d', name: 'Impresión 3D FDM', short: '3D',
     desc: 'PLA, PETG, TPU, soportes y prototipos.',
     power: '250 W', icon: Boxes, tone: 'emerald'
   },
   {
-    id: 'sublimation', name: 'SublimaciÃ³n', short: 'SublimaciÃ³n',
-    desc: 'Tazas, termos, fotobotones y rÃ­gidos full color.',
+    id: 'sublimation', name: 'Sublimación', short: 'Sublimación',
+    desc: 'Tazas, termos, fotobotones y rígidos full color.',
     power: '1,800 W', icon: Layers, tone: 'blue'
   },
   {
@@ -80,8 +79,8 @@ const AREAS = [
     power: '50 W', icon: Wand2, tone: 'purple'
   },
   {
-    id: 'print', name: 'ImpresiÃ³n LÃ¡ser / Tinta', short: 'ImpresiÃ³n',
-    desc: 'Invitaciones, tarjetas, papelerÃ­a y artes impresas.',
+    id: 'print', name: 'Impresión Láser / Tinta', short: 'Impresión',
+    desc: 'Invitaciones, tarjetas, papelería y artes impresas.',
     power: '900 W', icon: Printer, tone: 'cyan'
   }
 ];
@@ -112,10 +111,10 @@ function areaNamesForTechniques(techniques = []) {
   (Array.isArray(techniques) ? techniques : []).forEach(value => {
     const technique = String(value || '');
     if (!technique) return;
-    if (isPrintTechnique(technique)) names.add('ImpresiÃ³n LÃ¡ser / Tinta');
-    else if (technique.startsWith('laser')) names.add('Corte & Grabado LÃ¡ser');
-    else if (technique.startsWith('3d')) names.add('ImpresiÃ³n 3D');
-    else if (technique === 'sublimation' || technique === 'sublimacion') names.add('SublimaciÃ³n');
+    if (isPrintTechnique(technique)) names.add('Impresión Láser / Tinta');
+    else if (technique.startsWith('laser')) names.add('Corte & Grabado Láser');
+    else if (technique.startsWith('3d')) names.add('Impresión 3D');
+    else if (technique === 'sublimation' || technique === 'sublimacion') names.add('Sublimación');
     else if (technique === 'vinyl' || technique === 'vinil') names.add('Corte Cameo & Vinil');
     else if (technique === 'nfc') names.add('NFC / Smart');
     else names.add(technique);
@@ -272,7 +271,7 @@ export default function ProductWorkshopTab({
     const mat = selectedMaterial;
     const name = customName.trim() || mat?.name || '';
     if (!name) {
-      notify('Escribe un nombre o elige un insumo del almacÃ©n.', 'error');
+      notify('Escribe un nombre o elige un insumo del almacén.', 'error');
       return;
     }
     const qty = number(netQty, 0);
@@ -310,7 +309,7 @@ export default function ProductWorkshopTab({
       setOpenGroups(prev => new Set([...prev, addGroup]));
     }
     resetAddForm();
-    notify(`${group.short}: â€œ${name}â€ agregado a la receta.`);
+    notify(`${group.short}: “${name}” agregado a la receta.`);
   };
 
   const removeItem = (itemId) => {
@@ -345,7 +344,7 @@ export default function ProductWorkshopTab({
         };
       });
       updateRecipe(updatedItems);
-      notify(`Se sumaron ${qty} pieza(s) de â€œ${selectedComponent.name}â€.`);
+      notify(`Se sumaron ${qty} pieza(s) de “${selectedComponent.name}”.`);
       return;
     }
 
@@ -378,7 +377,7 @@ export default function ProductWorkshopTab({
     setSelectedComponentId('');
     setComponentQty(1);
     setExpandedComponents(prev => new Set([...prev, selectedComponent.id]));
-    notify(`â€œ${componentName}â€ vinculado. Sus insumos se consultan sin duplicarse.`);
+    notify(`“${componentName}” vinculado. Sus insumos se consultan sin duplicarse.`);
   };
 
   const updateComponentQty = (itemId, qty) => {
@@ -439,7 +438,7 @@ export default function ProductWorkshopTab({
           <div className="flex items-start gap-4 min-w-0">
             <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/20 overflow-hidden flex items-center justify-center shrink-0">
               {editorForm.primaryImage ? (
-                <ImageOptimized loading="lazy" src={editorForm.primaryImage} alt={editorForm.name || 'Producto'} className="w-full h-full object-cover" />
+                <img loading="lazy" src={editorForm.primaryImage} alt={editorForm.name || 'Producto'} className="w-full h-full object-cover" />
               ) : (
                 <Wrench className="w-6 h-6 text-white/70" />
               )}
@@ -459,7 +458,7 @@ export default function ProductWorkshopTab({
                 )}
               </div>
               <p className="text-xs text-white/65 mt-1 max-w-2xl">
-                Todo lo que cuesta fabricar esta pieza en un solo lugar: Ã¡reas activas, insumos por grupo, productos vinculados y costos de taller.
+                Todo lo que cuesta fabricar esta pieza en un solo lugar: áreas activas, insumos por grupo, productos vinculados y costos de taller.
               </p>
               <div className="flex flex-wrap gap-1.5 mt-3">
                 {activeAreas.length > 0 ? activeAreas.map(area => (
@@ -468,7 +467,7 @@ export default function ProductWorkshopTab({
                   </span>
                 )) : (
                   <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-300/15 border border-amber-200/30 text-amber-100 text-[10px] font-bold">
-                    <AlertCircle className="w-3 h-3" /> Sin Ã¡rea activa
+                    <AlertCircle className="w-3 h-3" /> Sin área activa
                   </span>
                 )}
               </div>
@@ -497,7 +496,7 @@ export default function ProductWorkshopTab({
 
         <div className="relative flex flex-wrap items-center justify-between gap-3 mt-4 pt-4 border-t border-white/15">
           <div className="flex flex-wrap items-center gap-2 text-[11px] text-white/70">
-            <span className="inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {number(recipe.manufacturingTimeMinutes)} min mÃ¡quina</span>
+            <span className="inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {number(recipe.manufacturingTimeMinutes)} min máquina</span>
             <span className="inline-flex items-center gap-1"><Zap className="w-3.5 h-3.5" /> {number(recipe.machinePowerWatts)} W</span>
             <span className="inline-flex items-center gap-1"><PackageCheck className="w-3.5 h-3.5" /> {items.length} renglones de receta</span>
           </div>
@@ -539,7 +538,7 @@ export default function ProductWorkshopTab({
           <span className="text-[10px] text-rose-700/70">{componentGroup?.items.length || 0} producto(s)</span>
         </div>
         <div className="rounded-2xl border border-amber-200 bg-amber-50/60 p-3">
-          <span className="text-[9.5px] font-bold uppercase tracking-wider text-amber-700">EnergÃ­a y desgaste</span>
+          <span className="text-[9.5px] font-bold uppercase tracking-wider text-amber-700">Energía y desgaste</span>
           <div className="text-lg font-black font-mono text-amber-950">{money(summary.energyCost + summary.wearCost)}</div>
           <span className="text-[10px] text-amber-700/70">{number(recipe.manufacturingTimeMinutes)} min</span>
         </div>
@@ -570,7 +569,7 @@ export default function ProductWorkshopTab({
             <div>
               <h4 className="font-heading font-black text-sm text-gray-900">Productos vinculados del combo</h4>
               <p className="text-[11px] text-gray-500">
-                Vincula productos ya costeados. No se copian sus suministros: se consultan aquÃ­ al desplegar cada producto.
+                Vincula productos ya costeados. No se copian sus suministros: se consultan aquí al desplegar cada producto.
               </p>
             </div>
           </div>
@@ -585,7 +584,7 @@ export default function ProductWorkshopTab({
             onChange={event => setSelectedComponentId(event.target.value)}
             className="flex-1 min-w-0 px-3 py-2 rounded-xl border border-rose-200 bg-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-rose-300"
           >
-            <option value="">Elegir producto costeadoâ€¦</option>
+            <option value="">Elegir producto costeado…</option>
             {linkedProducts.map(product => (
               <option key={product.id} value={product.id}>
                 {product.name} â€” {money(product.costPrice)} {product.isBundle ? '(combo)' : ''}
@@ -670,7 +669,7 @@ export default function ProductWorkshopTab({
                       <div className="flex flex-wrap gap-1.5">
                         <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-[10px] font-bold text-emerald-800">
                           <Factory className="w-3 h-3" />
-                          {linkedAreas.length > 0 ? linkedAreas.join(' Â· ') : 'Sin Ã¡rea activa'}
+                          {linkedAreas.length > 0 ? linkedAreas.join(' Â· ') : 'Sin área activa'}
                         </span>
                         {SUPPLY_GROUPS.filter(group => group.id !== 'component').map(group => {
                           const groupCount = linkedItems.filter(it => groupIdFor(it) === group.id).length;
@@ -689,7 +688,7 @@ export default function ProductWorkshopTab({
                         })}
                         {linkedItems.length === 0 && (
                           <span className="text-[11px] text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-2 py-1">
-                            Este producto aÃºn no tiene receta propia. AsÃ­gnale insumos en su editor.
+                            Este producto aún no tiene receta propia. Asígnale insumos en su editor.
                           </span>
                         )}
                       </div>
@@ -721,20 +720,20 @@ export default function ProductWorkshopTab({
         ) : (
           <div className="rounded-2xl border border-dashed border-rose-200 bg-rose-50/30 p-4 text-center">
             <Link2 className="w-6 h-6 text-rose-300 mx-auto mb-1.5" />
-            <p className="text-xs font-bold text-rose-800">Este producto todavÃ­a no tiene componentes vinculados.</p>
+            <p className="text-xs font-bold text-rose-800">Este producto todavía no tiene componentes vinculados.</p>
             <p className="text-[10.5px] text-rose-600 mt-0.5">Si es un combo o pack, elige arriba los productos ya costeados que lo integran.</p>
           </div>
         )}
       </div>
 
-      {/* Ãreas y maquinaria */}
+      {/* Áreas y maquinaria */}
       <div className="rounded-3xl border border-stone-200 bg-white p-4 sm:p-5 shadow-xs space-y-3">
         <div className="flex items-center justify-between gap-3">
           <div>
             <h4 className="font-heading font-black text-sm text-gray-900 flex items-center gap-2">
-              <Factory className="w-4 h-4 text-emerald-700" /> Ãreas y maquinaria activa
+              <Factory className="w-4 h-4 text-emerald-700" /> Áreas y maquinaria activa
             </h4>
-            <p className="text-[11px] text-gray-500">Activa las Ã¡reas que participan en esta pieza. La impresiÃ³n lÃ¡ser/tinta es para invitaciones y tarjetas.</p>
+            <p className="text-[11px] text-gray-500">Activa las áreas que participan en esta pieza. La impresión láser/tinta es para invitaciones y tarjetas.</p>
           </div>
           <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 whitespace-nowrap">
             {activeAreas.length} activa(s)
@@ -821,14 +820,14 @@ export default function ProductWorkshopTab({
 
           <div className="grid sm:grid-cols-12 gap-2">
             <div className="sm:col-span-4 relative">
-              <label className="text-[9.5px] font-bold text-gray-500 uppercase">Insumo de almacÃ©n</label>
+              <label className="text-[9.5px] font-bold text-gray-500 uppercase">Insumo de almacén</label>
               <div className="relative mt-0.5">
                 <Search className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   value={materialSearch}
                   onChange={event => setMaterialSearch(event.target.value)}
-                  placeholder="Buscar madera, filamento, tintaâ€¦"
+                  placeholder="Buscar madera, filamento, tinta…"
                   className="w-full pl-8 pr-2 py-2 rounded-xl border border-stone-300 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-emerald-300"
                 />
               </div>
@@ -837,7 +836,7 @@ export default function ProductWorkshopTab({
                 onChange={event => chooseMaterial(event.target.value)}
                 className="w-full mt-1.5 px-2.5 py-2 rounded-xl border border-stone-300 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-emerald-300"
               >
-                <option value="">â€” Elegir insumo del almacÃ©n â€”</option>
+                <option value="">â€” Elegir insumo del almacén â€”</option>
                 {materialsByCategory.map(([category, materials]) => (
                   <optgroup key={category} label={category}>
                     {materials.map(mat => (
@@ -850,7 +849,7 @@ export default function ProductWorkshopTab({
                 type="text"
                 value={customName}
                 onChange={event => setCustomName(event.target.value)}
-                placeholder="O escribe un insumo manualâ€¦"
+                placeholder="O escribe un insumo manual…"
                 className="w-full mt-1.5 px-2.5 py-2 rounded-xl border border-stone-300 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-emerald-300"
               />
             </div>
@@ -902,7 +901,7 @@ export default function ProductWorkshopTab({
             <p className="text-[10px] text-emerald-800/80">
               <Info className="w-3 h-3 inline mr-1" />
               {selectedMaterial.name}: paquete de {parsePackageInfo(selectedMaterial).packageQuantity} {parsePackageInfo(selectedMaterial).packageMeasurement} Â· costo ${number(selectedMaterial.costPerUnit).toFixed(2)}.
-              El costo unitario se calcula automÃ¡ticamente.
+              El costo unitario se calcula automáticamente.
             </p>
           )}
         </div>
@@ -1046,8 +1045,8 @@ export default function ProductWorkshopTab({
               <Calculator className="w-4 h-4" />
             </div>
             <div>
-              <h4 className="font-heading font-black text-sm text-gray-900">Tiempos y energÃ­a del taller</h4>
-              <p className="text-[11px] text-gray-500">Ajusta la mÃ¡quina y la mano de obra para recalcular el costo.</p>
+              <h4 className="font-heading font-black text-sm text-gray-900">Tiempos y energía del taller</h4>
+              <p className="text-[11px] text-gray-500">Ajusta la máquina y la mano de obra para recalcular el costo.</p>
             </div>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -1060,7 +1059,7 @@ export default function ProductWorkshopTab({
               />
             </label>
             <label className="block">
-              <span className="text-[9.5px] font-bold text-gray-500 uppercase">Min. mÃ¡quina</span>
+              <span className="text-[9.5px] font-bold text-gray-500 uppercase">Min. máquina</span>
               <input
                 type="number" min="0" step="1" value={number(recipe.manufacturingTimeMinutes)}
                 onChange={event => onUpdateRecipeField('manufacturingTimeMinutes', Number(event.target.value))}
@@ -1105,8 +1104,8 @@ export default function ProductWorkshopTab({
             {[
               ['Insumos propios', ownCost],
               ['Productos vinculados', componentCost],
-              ['EnergÃ­a elÃ©ctrica', summary.energyCost],
-              ['Desgaste de mÃ¡quina', summary.wearCost],
+              ['Energía eléctrica', summary.energyCost],
+              ['Desgaste de máquina', summary.wearCost],
               ['Mano de obra', summary.laborCost],
               ['Empaque', summary.packagingCost],
               ['Reserva de fallas', summary.failureReserveCost],
@@ -1130,7 +1129,7 @@ export default function ProductWorkshopTab({
               <PackageCheck className="w-4 h-4" />
             </div>
             <div>
-              <h4 className="font-heading font-black text-sm text-gray-900">ProducciÃ³n y almacÃ©n</h4>
+              <h4 className="font-heading font-black text-sm text-gray-900">Producción y almacén</h4>
               <p className="text-[11px] text-gray-500">Simula el consumo o descuenta los insumos reales de esta receta.</p>
             </div>
           </div>

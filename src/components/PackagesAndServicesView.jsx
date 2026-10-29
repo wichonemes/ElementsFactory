@@ -1,6 +1,5 @@
 ﻿import React, { useState, useMemo, useEffect } from 'react';
 import {
-import ImageOptimized from './ImageOptimized';
   Gift, Home, Briefcase, CalendarHeart, Sparkles, Percent,
   CheckCircle2, ArrowRight, ShoppingBag, Calculator, MessageCircle,
   Layers, Package, Flame, Clock, Star, ShieldCheck, Plus,
@@ -15,9 +14,9 @@ import { formatServiceDate } from '../utils/serviceStatus';
 
 /**
  * Generador de las 3 opciones de nivel para cada paquete de taller:
- * - Nivel Esencial (EconÃ³mico / Inicio)
- * - Nivel Artesano Pro (Balanceado / Recomendado / MÃ¡s Vendido)
- * - Nivel EdiciÃ³n Maestra (Completo / VIP / Acabados de Lujo)
+ * - Nivel Esencial (Económico / Inicio)
+ * - Nivel Artesano Pro (Balanceado / Recomendado / Más Vendido)
+ * - Nivel Edición Maestra (Completo / VIP / Acabados de Lujo)
  */
 export const getBundleTiers = (promo) => {
   if (!promo) return [];
@@ -32,7 +31,7 @@ export const getBundleTiers = (promo) => {
         tierType: 'basic',
         name: 'Nivel Esencial',
         badge: 'Kit Base',
-        tag: 'BÃ¡sico Individual',
+        tag: 'Básico Individual',
         tierBadge: 'Kit Base',
         accentColor: 'stone',
         price: 320,
@@ -42,66 +41,66 @@ export const getBundleTiers = (promo) => {
         summary: 'Lo indispensable para organizar llaves y monedas en la entrada con calidez.',
         includedItems: [
           '1 Colgador de llaves Bienvenidos en madera natural tratada (20 x 8 cm)',
-          '1 Llavero familiar Polaroid con foto grabada a lÃ¡ser y borla'
+          '1 Llavero familiar Polaroid con foto grabada a láser y borla'
         ],
         extraBenefits: [
           'Madera natural de pino sellada',
           'Listo para colocar en pared',
-          'Grabado lÃ¡ser de alta resoluciÃ³n'
+          'Grabado láser de alta resolución'
         ]
       },
       {
         id: 'pro',
         tierType: 'recommended',
         name: 'Nivel Artesano Pro',
-        badge: 'MÃ¡s Conveniente',
+        badge: 'Más Conveniente',
         tag: 'Recomendado del Taller',
-        tierBadge: 'MÃ¡s Conveniente',
+        tierBadge: 'Más Conveniente',
         accentColor: 'emerald',
-        valueCallout: 'Â¡Te conviene mÃ¡s! (+2 piezas extra por solo +$129 MXN)',
+        valueCallout: '¡Te conviene más! (+2 piezas extra por solo +$129 MXN)',
         isPopular: true,
         price: 449,
         regularPrice: 548,
         savings: 99,
         discountPercent: 15,
-        summary: 'El combo completo para recibidor: incluye todo lo del bÃ¡sico mÃ¡s bandeja y segundo llavero.',
+        summary: 'El combo completo para recibidor: incluye todo lo del básico más bandeja y segundo llavero.',
         includedItems: [
           '1 Colgador de llaves Bienvenidos ampliado en madera natural (25 x 10 cm)',
-          '1 Llavero familiar Polaroid con foto grabada a lÃ¡ser',
-          '+ 1 Bandeja vaciabolsillos curva ergonÃ³mica (18 x 12 cm)',
+          '1 Llavero familiar Polaroid con foto grabada a láser',
+          '+ 1 Bandeja vaciabolsillos curva ergonómica (18 x 12 cm)',
           '+ 1 Llavero familiar adicional (2 en total con borla de gamuza)'
         ],
         extraBenefits: [
           'Acabado en laca poliuretano satinada',
-          'Colores y tipografÃ­a a elegir',
+          'Colores y tipografía a elegir',
           'Empaque protegido listo para regalo'
         ]
       },
       {
         id: 'maestra',
         tierType: 'deluxe',
-        name: 'Nivel EdiciÃ³n Maestra',
+        name: 'Nivel Edición Maestra',
         badge: 'â­ Todo Incluido VIP',
-        tag: 'Kit VIP de ColecciÃ³n',
+        tag: 'Kit VIP de Colección',
         tierBadge: 'â­ Todo Incluido',
         accentColor: 'amber',
-        valueCallout: 'MÃ¡xima capacidad, madera de nogal y llaveros para toda la familia',
+        valueCallout: 'Máxima capacidad, madera de nogal y llaveros para toda la familia',
         price: 620,
         regularPrice: 775,
         savings: 155,
         discountPercent: 15,
-        summary: 'MÃ¡xima capacidad en madera noble de nogal con 4 llaveros y kit de instalaciÃ³n oculta.',
+        summary: 'Máxima capacidad en madera noble de nogal con 4 llaveros y kit de instalación oculta.',
         includedItems: [
-          '1 Colgador de llaves Bienvenidos XL en madera de nogal con 5 ganchos metÃ¡licos (35 x 12 cm)',
-          '1 Bandeja vaciabolsillos curva ergonÃ³mica',
+          '1 Colgador de llaves Bienvenidos XL en madera de nogal con 5 ganchos metálicos (35 x 12 cm)',
+          '1 Bandeja vaciabolsillos curva ergonómica',
           '+ Inserto en piel vegetal grabada para la bandeja',
           '+ 2 Llaveros familiares Polaroid extra (4 llaveros en total para toda la familia)',
-          '+ Kit de instalaciÃ³n oculta con taquetes y nivelador de burbuja'
+          '+ Kit de instalación oculta con taquetes y nivelador de burbuja'
         ],
         extraBenefits: [
           'Madera noble de nogal con veta destacada',
-          'PersonalizaciÃ³n de apellido familiar en relieve',
-          'GarantÃ­a extendida de taller'
+          'Personalización de apellido familiar en relieve',
+          'Garantía extendida de taller'
         ]
       }
     ];
@@ -114,21 +113,21 @@ export const getBundleTiers = (promo) => {
         tierType: 'basic',
         name: 'Nivel Esencial',
         badge: 'Kit Base',
-        tag: 'BÃ¡sico Funcional',
+        tag: 'Básico Funcional',
         tierBadge: 'Kit Base',
         accentColor: 'stone',
         price: 370,
         regularPrice: 460,
         savings: 90,
         discountPercent: 15,
-        summary: 'Equipamiento bÃ¡sico para tener limpio y despejado el escritorio.',
+        summary: 'Equipamiento básico para tener limpio y despejado el escritorio.',
         includedItems: [
-          '1 Soporte vertical para audÃ­fonos de diadema',
+          '1 Soporte vertical para audífonos de diadema',
           '1 Soporte vertical para celular con ranura para cable de carga'
         ],
         extraBenefits: [
-          'ImpresiÃ³n 3D de alta densidad',
-          'DiseÃ±o ergonÃ³mico compacto',
+          'Impresión 3D de alta densidad',
+          'Diseño ergonómico compacto',
           'Color a elegir'
         ]
       },
@@ -136,35 +135,35 @@ export const getBundleTiers = (promo) => {
         id: 'pro',
         tierType: 'recommended',
         name: 'Nivel Artesano Pro',
-        badge: 'MÃ¡s Conveniente',
+        badge: 'Más Conveniente',
         tag: 'Recomendado Pro',
-        tierBadge: 'MÃ¡s Conveniente',
+        tierBadge: 'Más Conveniente',
         accentColor: 'emerald',
-        valueCallout: 'Â¡Te conviene mÃ¡s! (+3 organizadores adicionales por solo +$150 MXN)',
+        valueCallout: '¡Te conviene más! (+3 organizadores adicionales por solo +$150 MXN)',
         isPopular: true,
         price: 520,
         regularPrice: 647,
         savings: 127,
         discountPercent: 15,
-        summary: 'EstaciÃ³n completa: soporte dual audÃ­fonos + control, organizador de memorias y portalÃ¡pices facetado.',
+        summary: 'Estación completa: soporte dual audífonos + control, organizador de memorias y portalápices facetado.',
         includedItems: [
           '1 Soporte vertical para celular con ranura para cable de carga',
-          '+ 1 Soporte gamer dual mejorado para audÃ­fonos y mando de videojuegos',
+          '+ 1 Soporte gamer dual mejorado para audífonos y mando de videojuegos',
           '+ 1 Organizador modular de accesorios y memorias USB',
-          '+ 1 PortalÃ¡pices geomÃ©trico facetado de alta estabilidad'
+          '+ 1 Portalápices geométrico facetado de alta estabilidad'
         ],
         extraBenefits: [
           'Bases con pads antideslizantes',
           'Filamento mate anti-huellas',
-          'GestiÃ³n integrada de cables'
+          'Gestión integrada de cables'
         ]
       },
       {
         id: 'maestra',
         tierType: 'deluxe',
-        name: 'Nivel EdiciÃ³n Maestra',
+        name: 'Nivel Edición Maestra',
         badge: 'â­ Todo Incluido VIP',
-        tag: 'MÃ¡ximo Rendimiento',
+        tag: 'Máximo Rendimiento',
         tierBadge: 'â­ Todo Incluido',
         accentColor: 'amber',
         valueCallout: 'Setup definitivo con acabados grafito texturizado, soporte tablet y placa personalizada',
@@ -175,16 +174,16 @@ export const getBundleTiers = (promo) => {
         summary: 'El setup definitivo con acabados grafito texturizado, soporte para tablet y placa con Gamertag.',
         includedItems: [
           '1 Soporte gamer dual premium en acabado grafito/bronce con doble brazo reforzado',
-          '1 Organizador modular XL con bahÃ­as para cables magnÃ©ticos y tarjetas SD',
-          '1 PortalÃ¡pices geomÃ©trico facetado',
-          '+ 1 Soporte articulado multi-Ã¡ngulo para tablet o iPad',
-          '+ 1 Maceta geomÃ©trica para suculenta a juego',
-          '+ 1 Placa personalizada con tu Gamertag / Nombre grabada al lÃ¡ser'
+          '1 Organizador modular XL con bahías para cables magnéticos y tarjetas SD',
+          '1 Portalápices geométrico facetado',
+          '+ 1 Soporte articulado multi-ángulo para tablet o iPad',
+          '+ 1 Maceta geométrica para suculenta a juego',
+          '+ 1 Placa personalizada con tu Gamertag / Nombre grabada al láser'
         ],
         extraBenefits: [
           'Acabados de filamento con fibra texturizada',
-          'Grip de silicÃ³n en puntos de apoyo',
-          'PersonalizaciÃ³n total de Gamertag'
+          'Grip de silicón en puntos de apoyo',
+          'Personalización total de Gamertag'
         ]
       }
     ];
@@ -197,17 +196,17 @@ export const getBundleTiers = (promo) => {
         tierType: 'basic',
         name: 'Nivel Esencial',
         badge: 'Kit Base',
-        tag: 'BÃ¡sico Diario',
+        tag: 'Básico Diario',
         tierBadge: 'Kit Base',
         accentColor: 'stone',
         price: 219,
         regularPrice: 275,
         savings: 56,
         discountPercent: 15,
-        summary: 'IdentificaciÃ³n segura para tu consentido y recuerdo imantado para casa.',
+        summary: 'Identificación segura para tu consentido y recuerdo imantado para casa.',
         includedItems: [
-          '1 Chapita de identificaciÃ³n ligera con nombre al frente y telÃ©fono grabado al reverso',
-          '1 FotoimÃ¡n de madera natural con grabado lÃ¡ser de su retrato'
+          '1 Chapita de identificación ligera con nombre al frente y teléfono grabado al reverso',
+          '1 Fotoimán de madera natural con grabado láser de su retrato'
         ],
         extraBenefits: [
           'Placa ultraligera que no pesa al cuello',
@@ -219,11 +218,11 @@ export const getBundleTiers = (promo) => {
         id: 'pro',
         tierType: 'recommended',
         name: 'Nivel Artesano Pro',
-        badge: 'MÃ¡s Conveniente',
+        badge: 'Más Conveniente',
         tag: 'Favorito de Mascotas',
-        tierBadge: 'MÃ¡s Conveniente',
+        tierBadge: 'Más Conveniente',
         accentColor: 'emerald',
-        valueCallout: 'Â¡Te conviene mÃ¡s! (+Portabolsas de paseo y marco 3D por solo +$80 MXN)',
+        valueCallout: '¡Te conviene más! (+Portabolsas de paseo y marco 3D por solo +$80 MXN)',
         isPopular: true,
         price: 299,
         regularPrice: 366,
@@ -231,9 +230,9 @@ export const getBundleTiers = (promo) => {
         discountPercent: 15,
         summary: 'El kit consentido con portabolsas para paseo, chapita y marco con relieve.',
         includedItems: [
-          '1 Chapita de identificaciÃ³n ligera con silueta y datos grabados',
-          '1 FotoimÃ¡n de madera con grabado lÃ¡ser',
-          '+ 1 Portabolsas sanitario cilÃ­ndrico con mosquetÃ³n para correa de paseo',
+          '1 Chapita de identificación ligera con silueta y datos grabados',
+          '1 Fotoimán de madera con grabado láser',
+          '+ 1 Portabolsas sanitario cilíndrico con mosquetón para correa de paseo',
           '+ 1 Marco imantado 3D para foto en refrigerador (6 x 6 cm)'
         ],
         extraBenefits: [
@@ -245,7 +244,7 @@ export const getBundleTiers = (promo) => {
       {
         id: 'maestra',
         tierType: 'deluxe',
-        name: 'Nivel EdiciÃ³n Maestra',
+        name: 'Nivel Edición Maestra',
         badge: 'â­ Todo Incluido VIP',
         tag: 'Kit Consentido Total',
         tierBadge: 'â­ Todo Incluido',
@@ -255,10 +254,10 @@ export const getBundleTiers = (promo) => {
         regularPrice: 530,
         savings: 110,
         discountPercent: 15,
-        summary: 'EdiciÃ³n de lujo con doble chapita de repuesto, gancho de pared para su correa y portabolsas cargado.',
+        summary: 'Edición de lujo con doble chapita de repuesto, gancho de pared para su correa y portabolsas cargado.',
         includedItems: [
-          '1 Chapita de identificaciÃ³n en relieve 3D bicapa',
-          '1 Portabolsas sanitario cilÃ­ndrico con mosquetÃ³n',
+          '1 Chapita de identificación en relieve 3D bicapa',
+          '1 Portabolsas sanitario cilíndrico con mosquetón',
           '+ 1 Chapita grabada de repuesto en madera natural',
           '+ 2 Rollos de bolsas biodegradables de regalo',
           '+ 2 Marcos imantados 3D personalizados con foto de tu peludo',
@@ -280,50 +279,50 @@ export const getBundleTiers = (promo) => {
         tierType: 'basic',
         name: 'Nivel Esencial',
         badge: 'Kit 6 Mesas',
-        tag: 'BÃ¡sico Restaurante',
+        tag: 'Básico Restaurante',
         tierBadge: 'Kit 6 Mesas',
         accentColor: 'stone',
         price: 1350,
         regularPrice: 1690,
         savings: 340,
         discountPercent: 15,
-        summary: 'Ideal para cafeterÃ­as pequeÃ±as, food trucks y bistrÃ³s que arrancan.',
+        summary: 'Ideal para cafeterías pequeñas, food trucks y bistrós que arrancan.',
         includedItems: [
-          '6 NÃºmeros de mesa 3D con base rectangular biselada (del 01 al 06)',
-          '2 Servilleteros de mesa modernos con diseÃ±o calado',
-          '1 Soporte de mostrador con placa grabada para cÃ³digo QR (menÃº digital o cobro)'
+          '6 Números de mesa 3D con base rectangular biselada (del 01 al 06)',
+          '2 Servilleteros de mesa modernos con diseño calado',
+          '1 Soporte de mostrador con placa grabada para código QR (menú digital o cobro)'
         ],
         extraBenefits: [
-          'DiseÃ±o lavable y resistente a manchas',
+          'Diseño lavable y resistente a manchas',
           'Colores a tono con la paleta de tu local',
-          'Estabilidad anti-caÃ­das'
+          'Estabilidad anti-caídas'
         ]
       },
       {
         id: 'pro',
         tierType: 'recommended',
         name: 'Nivel Artesano Pro',
-        badge: 'MÃ¡s Conveniente',
+        badge: 'Más Conveniente',
         tag: 'Recomendado Comercial',
-        tierBadge: 'MÃ¡s Conveniente',
+        tierBadge: 'Más Conveniente',
         accentColor: 'emerald',
-        valueCallout: 'Â¡Te conviene mÃ¡s! (+4 nÃºmeros de mesa, +2 servilleteros y +1 QR por solo +$540 MXN)',
+        valueCallout: '¡Te conviene más! (+4 números de mesa, +2 servilleteros y +1 QR por solo +$540 MXN)',
         isPopular: true,
         price: 1890,
         regularPrice: 2364,
         savings: 474,
         discountPercent: 15,
-        summary: 'El pack mÃ¡s completo para restaurantes y bares: 10 mesas, 4 servilleteros y doble QR.',
+        summary: 'El pack más completo para restaurantes y bares: 10 mesas, 4 servilleteros y doble QR.',
         includedItems: [
-          '6 NÃºmeros de mesa 3D con base rectangular biselada',
-          '2 Servilleteros de mesa modernos con diseÃ±o calado',
-          '1 Soporte de mostrador con placa grabada para cÃ³digo QR',
-          '+ 4 NÃºmeros de mesa 3D adicionales (10 mesas en total, del 01 al 10)',
+          '6 Números de mesa 3D con base rectangular biselada',
+          '2 Servilleteros de mesa modernos con diseño calado',
+          '1 Soporte de mostrador con placa grabada para código QR',
+          '+ 4 Números de mesa 3D adicionales (10 mesas en total, del 01 al 10)',
           '+ 2 Servilleteros de mesa extra de alta capacidad (4 en total)',
           '+ 1 Soporte de mostrador QR adicional para barra o propinas (2 en total)'
         ],
         extraBenefits: [
-          'TipografÃ­a en relieve de alta visibilidad',
+          'Tipografía en relieve de alta visibilidad',
           'Grabado de logotipo en soportes QR',
           'Entrega con archivo digital de QR respaldado'
         ]
@@ -331,7 +330,7 @@ export const getBundleTiers = (promo) => {
       {
         id: 'maestra',
         tierType: 'deluxe',
-        name: 'Nivel EdiciÃ³n Maestra',
+        name: 'Nivel Edición Maestra',
         badge: 'â­ Todo Incluido VIP',
         tag: 'Pack Restaurante Integral',
         tierBadge: 'â­ Todo Incluido',
@@ -341,20 +340,20 @@ export const getBundleTiers = (promo) => {
         regularPrice: 3280,
         savings: 690,
         discountPercent: 15,
-        summary: 'Capacidad para 15 mesas con logo, letrero de barra, servilleteros ampliados y QR de acrÃ­lico doble vista.',
+        summary: 'Capacidad para 15 mesas con logo, letrero de barra, servilleteros ampliados y QR de acrílico doble vista.',
         includedItems: [
-          '10 NÃºmeros de mesa 3D biselados con logotipo grabado',
+          '10 Números de mesa 3D biselados con logotipo grabado',
           '4 Servilleteros de mesa modernos de alta capacidad',
           '2 Soportes QR de mostrador',
-          '+ 5 NÃºmeros de mesa 3D extra con logo (15 mesas en total, del 01 al 15)',
-          '+ 2 Servilleteros XL extra con ranura para salero y azÃºcar (6 en total)',
-          '+ 1 Soporte QR adicional en acrÃ­lico cristal de lujo (3 en total)',
-          '+ 1 Letrero de barra personalizado "Bienvenidos / MenÃº Digital" (20 x 15 cm)'
+          '+ 5 Números de mesa 3D extra con logo (15 mesas en total, del 01 al 15)',
+          '+ 2 Servilleteros XL extra con ranura para salero y azúcar (6 en total)',
+          '+ 1 Soporte QR adicional en acrílico cristal de lujo (3 en total)',
+          '+ 1 Letrero de barra personalizado "Bienvenidos / Menú Digital" (20 x 15 cm)'
         ],
         extraBenefits: [
           'Logotipo calado en cada servilletero',
           'Bases con peso extra para terrazas con viento',
-          'ReposiciÃ³n de piezas individuales con descuento'
+          'Reposición de piezas individuales con descuento'
         ]
       }
     ];
@@ -367,7 +366,7 @@ export const getBundleTiers = (promo) => {
         tierType: 'basic',
         name: 'Nivel Esencial',
         badge: 'Kit Base',
-        tag: 'BÃ¡sico Digital',
+        tag: 'Básico Digital',
         tierBadge: 'Kit Base',
         accentColor: 'stone',
         price: 560,
@@ -377,8 +376,8 @@ export const getBundleTiers = (promo) => {
         summary: 'Moderniza tu cobro y redes con chip NFC y soporte QR sin complicaciones.',
         includedItems: [
           '1 Soporte piramidal de contacto inteligente con chip NFC programado',
-          '1 Soporte QR de acrÃ­lico y madera para mostrador de caja',
-          '2 Posavasos de madera natural de haya grabados al lÃ¡ser con tu logo'
+          '1 Soporte QR de acrílico y madera para mostrador de caja',
+          '2 Posavasos de madera natural de haya grabados al láser con tu logo'
         ],
         extraBenefits: [
           'NFC preprogramado listo para usar',
@@ -390,11 +389,11 @@ export const getBundleTiers = (promo) => {
         id: 'pro',
         tierType: 'recommended',
         name: 'Nivel Artesano Pro',
-        badge: 'MÃ¡s Conveniente',
+        badge: 'Más Conveniente',
         tag: 'Identidad Completa',
-        tierBadge: 'MÃ¡s Conveniente',
+        tierBadge: 'Más Conveniente',
         accentColor: 'emerald',
-        valueCallout: 'Â¡Te conviene mÃ¡s! (+4 posavasos con logo y +2 tazas full color por solo +$220 MXN)',
+        valueCallout: '¡Te conviene más! (+4 posavasos con logo y +2 tazas full color por solo +$220 MXN)',
         isPopular: true,
         price: 780,
         regularPrice: 932,
@@ -403,45 +402,45 @@ export const getBundleTiers = (promo) => {
         summary: 'El paquete de mostrador preferido: NFC, soporte QR, 6 posavasos y 2 tazas institucionales.',
         includedItems: [
           '1 Soporte piramidal de contacto inteligente con chip NFC programado',
-          '1 Soporte QR de acrÃ­lico y madera para mostrador de caja',
+          '1 Soporte QR de acrílico y madera para mostrador de caja',
           '2 Posavasos de madera natural de haya grabados con tu logo',
           '+ 4 Posavasos de madera de haya adicionales (6 en total con tu logo)',
-          '+ 2 Tazas de cerÃ¡mica brillante con logotipo empresarial full color'
+          '+ 2 Tazas de cerámica brillante con logotipo empresarial full color'
         ],
         extraBenefits: [
-          'Tazas de cerÃ¡mica sublimadas calidad AA+',
-          'Posavasos con barniz hidrÃ³fugo',
+          'Tazas de cerámica sublimadas calidad AA+',
+          'Posavasos con barniz hidrófugo',
           'NFC reescribible si cambias de enlace'
         ]
       },
       {
         id: 'maestra',
         tierType: 'deluxe',
-        name: 'Nivel EdiciÃ³n Maestra',
+        name: 'Nivel Edición Maestra',
         badge: 'â­ Todo Incluido VIP',
         tag: 'Kit Ejecutivo Doble',
         tierBadge: 'â­ Todo Incluido',
         accentColor: 'amber',
-        valueCallout: 'Doble estaciÃ³n NFC para caja y recepciÃ³n, 12 posavasos y vajilla ejecutiva completa',
+        valueCallout: 'Doble estación NFC para caja y recepción, 12 posavasos y vajilla ejecutiva completa',
         price: 1090,
         regularPrice: 1390,
         savings: 300,
         discountPercent: 15,
-        summary: 'Doble estaciÃ³n NFC para caja y recepciÃ³n, 12 posavasos y vajilla ejecutiva completa.',
+        summary: 'Doble estación NFC para caja y recepción, 12 posavasos y vajilla ejecutiva completa.',
         includedItems: [
           '1 Soporte piramidal con chip NFC para mostrador de cobro',
-          '1 Soporte QR premium en acrÃ­lico cristal y madera',
-          '6 Posavasos de madera de haya con grabado lÃ¡ser',
-          '2 Tazas ejecutivas de cerÃ¡mica con logotipo empresarial',
-          '+ 1 Segundo soporte piramidal con chip NFC para recepciÃ³n o redes (2 en total)',
+          '1 Soporte QR premium en acrílico cristal y madera',
+          '6 Posavasos de madera de haya con grabado láser',
+          '2 Tazas ejecutivas de cerámica con logotipo empresarial',
+          '+ 1 Segundo soporte piramidal con chip NFC para recepción o redes (2 en total)',
           '+ 1 Segundo soporte QR con doble placa intercambiable (2 en total)',
           '+ 6 Posavasos extra (12 en total) + 1 Base organizadora de madera para posavasos',
           '+ 2 Tazas ejecutivas adicionales a todo color (4 en total)'
         ],
         extraBenefits: [
           'Base organizadora de madera para posavasos incluida',
-          'ProgramaciÃ³n de chips NFC con enlaces dinÃ¡micos',
-          'Acabado en caja rÃ­gida de presentaciÃ³n'
+          'Programación de chips NFC con enlaces dinámicos',
+          'Acabado en caja rígida de presentación'
         ]
       }
     ];
@@ -454,7 +453,7 @@ export const getBundleTiers = (promo) => {
         tierType: 'basic',
         name: 'Nivel Esencial',
         badge: 'Kit Base',
-        tag: 'BÃ¡sico Local',
+        tag: 'Básico Local',
         tierBadge: 'Kit Base',
         accentColor: 'stone',
         price: 640,
@@ -463,33 +462,33 @@ export const getBundleTiers = (promo) => {
         discountPercent: 15,
         summary: 'Lo necesario para recibir a tus clientes y regalar un detalle con tu marca.',
         includedItems: [
-          '1 TÃ³tem QR para citas, catÃ¡logo o perfil de Instagram',
-          '1 Bandeja organizadora para peines, tijeras o tarjetas de presentaciÃ³n',
-          '12 Llaveros promocionales de madera con grabado lÃ¡ser de tu marca'
+          '1 Tótem QR para citas, catálogo o perfil de Instagram',
+          '1 Bandeja organizadora para peines, tijeras o tarjetas de presentación',
+          '12 Llaveros promocionales de madera con grabado láser de tu marca'
         ],
         extraBenefits: [
           'Madera natural con acabado cera protectora',
-          'Grabado de logotipo nÃ­tido',
-          'Argollas metÃ¡licas reforzadas'
+          'Grabado de logotipo nítido',
+          'Argollas metálicas reforzadas'
         ]
       },
       {
         id: 'pro',
         tierType: 'recommended',
         name: 'Nivel Artesano Pro',
-        badge: 'MÃ¡s Conveniente',
+        badge: 'Más Conveniente',
         tag: 'Recomendado Comercial',
-        tierBadge: 'MÃ¡s Conveniente',
+        tierBadge: 'Más Conveniente',
         accentColor: 'emerald',
-        valueCallout: 'Â¡Te conviene mÃ¡s! (+13 llaveros promocionales extra por solo +$250 MXN)',
+        valueCallout: '¡Te conviene más! (+13 llaveros promocionales extra por solo +$250 MXN)',
         isPopular: true,
         price: 890,
         regularPrice: 1098,
         savings: 208,
         discountPercent: 15,
-        summary: 'El pack mÃ¡s elegido por barberÃ­as, estÃ©ticas y boutiques: 25 llaveros, tÃ³tem y bandeja.',
+        summary: 'El pack más elegido por barberías, estéticas y boutiques: 25 llaveros, tótem y bandeja.',
         includedItems: [
-          '1 TÃ³tem QR para citas, catÃ¡logo o perfil de Instagram',
+          '1 Tótem QR para citas, catálogo o perfil de Instagram',
           '1 Bandeja organizadora para peines, tijeras, tarjetas o accesorios',
           '12 Llaveros promocionales de madera con grabado de tu marca',
           '+ 13 Llaveros promocionales de madera adicionales (25 llaveros en total)'
@@ -497,29 +496,29 @@ export const getBundleTiers = (promo) => {
         extraBenefits: [
           'Bandeja con divisiones a la medida',
           'Llaveros listos en bolsita individual',
-          'TÃ³tem con base estable antideslizante'
+          'Tótem con base estable antideslizante'
         ]
       },
       {
         id: 'maestra',
         tierType: 'deluxe',
-        name: 'Nivel EdiciÃ³n Maestra',
+        name: 'Nivel Edición Maestra',
         badge: 'â­ Todo Incluido VIP',
         tag: 'Boutique Pro 50 Pzas',
         tierBadge: 'â­ Todo Incluido',
         accentColor: 'amber',
-        valueCallout: 'Doble tÃ³tem, doble bandeja organizadora, 50 llaveros grabados a doble cara y placa 3D',
+        valueCallout: 'Doble tótem, doble bandeja organizadora, 50 llaveros grabados a doble cara y placa 3D',
         price: 1250,
         regularPrice: 1590,
         savings: 340,
         discountPercent: 15,
-        summary: 'Doble tÃ³tem de mostrador, doble bandeja organizadora y 50 llaveros para tus mejores clientes.',
+        summary: 'Doble tótem de mostrador, doble bandeja organizadora y 50 llaveros para tus mejores clientes.',
         includedItems: [
-          '1 TÃ³tem QR para citas y redes',
+          '1 Tótem QR para citas y redes',
           '1 Bandeja organizadora de mostrador',
           '25 Llaveros promocionales de madera',
-          '+ 1 Segundo tÃ³tem QR para cobro con transferencia/tarjeta (2 en total)',
-          '+ 1 Segunda bandeja organizadora para estaciÃ³n de trabajo (2 en total)',
+          '+ 1 Segundo tótem QR para cobro con transferencia/tarjeta (2 en total)',
+          '+ 1 Segunda bandeja organizadora para estación de trabajo (2 en total)',
           '+ 25 Llaveros promocionales adicionales (50 en total con grabado a doble cara)',
           '+ 1 Placa de mostrador con horarios y redes en relieve 3D'
         ],
@@ -538,51 +537,51 @@ export const getBundleTiers = (promo) => {
         id: 'esencial',
         tierType: 'basic',
         name: 'Nivel Esencial',
-        badge: 'Kit Nupcial Ãntimo',
-        tag: 'BÃ¡sico Bodas',
-        tierBadge: 'Kit Nupcial Ãntimo',
+        badge: 'Kit Nupcial Íntimo',
+        tag: 'Básico Bodas',
+        tierBadge: 'Kit Nupcial Íntimo',
         accentColor: 'stone',
         price: 1790,
         regularPrice: 2240,
         savings: 450,
         discountPercent: 15,
-        summary: 'Para bodas civiles o celebraciones Ã­ntimas con los detalles mÃ¡s emotivos.',
+        summary: 'Para bodas civiles o celebraciones íntimas con los detalles más emotivos.',
         includedItems: [
           'Set Suite Nupcial (2 ganchos de madera grabados con nombres + 1 alhajero de madera grabado + 2 termos grabados)',
           'Letrero de bienvenida en arco de madera natural para caballete (50 x 70 cm) con nombres y fecha'
         ],
         extraBenefits: [
           'Madera natural lijada a mano',
-          'TipografÃ­a caligrÃ¡fica personalizada',
-          'Listo para sesiÃ³n fotogrÃ¡fica matutina'
+          'Tipografía caligráfica personalizada',
+          'Listo para sesión fotográfica matutina'
         ]
       },
       {
         id: 'pro',
         tierType: 'recommended',
         name: 'Nivel Artesano Pro',
-        badge: 'MÃ¡s Conveniente',
+        badge: 'Más Conveniente',
         tag: 'El Favorito de Novios',
-        tierBadge: 'MÃ¡s Conveniente',
+        tierBadge: 'Más Conveniente',
         accentColor: 'emerald',
-        valueCallout: 'Â¡Te conviene mÃ¡s! (+RecepciÃ³n de ceremonia, 25 conos de pÃ©talos y centro presidencial por solo +$700 MXN)',
+        valueCallout: '¡Te conviene más! (+Recepción de ceremonia, 25 conos de pétalos y centro presidencial por solo +$700 MXN)',
         isPopular: true,
         price: 2490,
         regularPrice: 3020,
         savings: 530,
         discountPercent: 15,
-        summary: 'El paquete nupcial insignia: Suite nupcial, bienvenida a ceremonia con conos de pÃ©talos y centro presidencial.',
+        summary: 'El paquete nupcial insignia: Suite nupcial, bienvenida a ceremonia con conos de pétalos y centro presidencial.',
         includedItems: [
           'Set Suite Nupcial (2 ganchos grabados, 1 alhajero con terciopelo, 2 termos con vinil)',
           'Letrero de bienvenida en arco de madera natural para caballete (60 x 80 cm)',
           '+ 1 Cosmetiquera nupcial para retoque',
-          '+ 25 Conos armados para pÃ©talos + Canastilla de madera artesanal',
+          '+ 25 Conos armados para pétalos + Canastilla de madera artesanal',
           '+ 2 Letreros de madera para sillas de los novios ("El Novio" / "La Novia")',
-          '+ 1 TÃ³tem QR para compartir fotos del evento',
+          '+ 1 Tótem QR para compartir fotos del evento',
           '+ 1 Centro Presidencial 3D sobre madera de nogal con nombres y fecha + 2 Portavasos'
         ],
         extraBenefits: [
-          'CoordinaciÃ³n exacta de paleta de colores del evento',
+          'Coordinación exacta de paleta de colores del evento',
           'Acabado en madera curada y barnizada',
           'Conos armados listos para rellenar'
         ]
@@ -590,30 +589,30 @@ export const getBundleTiers = (promo) => {
       {
         id: 'maestra',
         tierType: 'deluxe',
-        name: 'Nivel EdiciÃ³n Maestra',
+        name: 'Nivel Edición Maestra',
         badge: 'â­ Todo Incluido VIP',
         tag: 'Experiencia Total Todo Incluido',
         tierBadge: 'â­ Todo Incluido',
         accentColor: 'amber',
-        valueCallout: 'La suite mÃ¡s completa: 50 conos, centro 3D con luz LED y 20 recuerdos para padrinos',
+        valueCallout: 'La suite más completa: 50 conos, centro 3D con luz LED y 20 recuerdos para padrinos',
         price: 3490,
         regularPrice: 4350,
         savings: 860,
         discountPercent: 15,
-        summary: 'La suite nupcial mÃ¡s completa con 50 conos, recuerdos de padrinos y centro 3D con luz LED.',
+        summary: 'La suite nupcial más completa con 50 conos, recuerdos de padrinos y centro 3D con luz LED.',
         includedItems: [
-          'Set Suite Nupcial VIP (Ganchos, alhajero con terciopelo, 2 cosmetiqueras y termos tÃ©rmicos de acero)',
+          'Set Suite Nupcial VIP (Ganchos, alhajero con terciopelo, 2 cosmetiqueras y termos térmicos de acero)',
           'Letrero de bienvenida XL (60 x 90 cm)',
           'Centro Presidencial 3D en madera noble con relieve bicapa',
-          '+ IluminaciÃ³n LED cÃ¡lida autÃ³noma integrada para el centro de mesa',
-          '+ 25 Conos de pÃ©talos extra (50 en total) + 2da Canastilla de madera',
+          '+ Iluminación LED cálida autónoma integrada para el centro de mesa',
+          '+ 25 Conos de pétalos extra (50 en total) + 2da Canastilla de madera',
           '+ 4 Letreros para sillas (Novios + Padrinos)',
-          '+ 20 Recuerdos de madera botÃ¡nicos grabados para padrinos y cortejo'
+          '+ 20 Recuerdos de madera botánicos grabados para padrinos y cortejo'
         ],
         extraBenefits: [
-          'IluminaciÃ³n LED autÃ³noma con pilas ocultas',
+          'Iluminación LED autónoma con pilas ocultas',
           '20 recuerdos exclusivos para familiares clave',
-          'AsesorÃ­a de diseÃ±o previa con muestras'
+          'Asesoría de diseño previa con muestras'
         ]
       }
     ];
@@ -626,18 +625,18 @@ export const getBundleTiers = (promo) => {
         tierType: 'basic',
         name: 'Nivel Esencial',
         badge: '30 Invitados (2 Horas)',
-        tag: 'Fiesta Ãntima',
+        tag: 'Fiesta Íntima',
         tierBadge: '30 Invitados',
         accentColor: 'stone',
         price: 5490,
         regularPrice: 6600,
         savings: 1110,
         discountPercent: 15,
-        summary: 'EstaciÃ³n de Patch Bar en vivo durante 2 horas con 30 prendas y 30 kits anticruda.',
+        summary: 'Estación de Patch Bar en vivo durante 2 horas con 30 prendas y 30 kits anticruda.',
         includedItems: [
-          'Servicio Patch Bar en Vivo durante 2 horas continuas con prensa tÃ©rmica profesional y operador',
-          '30 Prendas a elegir (Gorras trucker transpirables o Tote bags de manta 100% algodÃ³n)',
-          'Muestrarios con mÃ¡s de 30 diseÃ±os de parches bordados con aplicaciÃ³n ilimitada al momento',
+          'Servicio Patch Bar en Vivo durante 2 horas continuas con prensa térmica profesional y operador',
+          '30 Prendas a elegir (Gorras trucker transpirables o Tote bags de manta 100% algodón)',
+          'Muestrarios con más de 30 diseños de parches bordados con aplicación ilimitada al momento',
           '30 Morralitos Kit Anticruda en manta serigrafiados + 30 llaveros de madera grabados'
         ],
         extraBenefits: [
@@ -650,19 +649,19 @@ export const getBundleTiers = (promo) => {
         id: 'pro',
         tierType: 'recommended',
         name: 'Nivel Artesano Pro',
-        badge: 'MÃ¡s Conveniente',
+        badge: 'Más Conveniente',
         tag: 'Combo Fiesta Favorito',
-        tierBadge: 'MÃ¡s Conveniente',
+        tierBadge: 'Más Conveniente',
         accentColor: 'emerald',
-        valueCallout: 'Â¡Te conviene mÃ¡s! (+1 hora extra, +20 prendas y +20 kits anticruda por solo +$2,000 MXN)',
+        valueCallout: '¡Te conviene más! (+1 hora extra, +20 prendas y +20 kits anticruda por solo +$2,000 MXN)',
         isPopular: true,
         price: 7490,
         regularPrice: 8600,
         savings: 1110,
         discountPercent: 15,
-        summary: 'El combo fiesta mÃ¡s cotizado para bodas y graduaciones: 3 horas, 50 prendas y 50 kits anticruda.',
+        summary: 'El combo fiesta más cotizado para bodas y graduaciones: 3 horas, 50 prendas y 50 kits anticruda.',
         includedItems: [
-          'Servicio Patch Bar en Vivo con stand de madera y prensa tÃ©rmica industrial',
+          'Servicio Patch Bar en Vivo con stand de madera y prensa térmica industrial',
           '30 Prendas base + 30 Morralitos Kit Anticruda',
           '+ 1 Hora de servicio en vivo adicional (3 horas en total)',
           '+ 20 Prendas a elegir adicionales (50 prendas en total: gorras trucker o tote bags)',
@@ -670,7 +669,7 @@ export const getBundleTiers = (promo) => {
           '+ 20 Llaveros de madera grabados adicionales (50 en total)'
         ],
         extraBenefits: [
-          'Charolas de exhibiciÃ³n de madera artesanal',
+          'Charolas de exhibición de madera artesanal',
           'Variedad de parches divertidos, florales y coquetos',
           'Entrega inmediata en mano a cada invitado'
         ]
@@ -678,9 +677,9 @@ export const getBundleTiers = (promo) => {
       {
         id: 'maestra',
         tierType: 'deluxe',
-        name: 'Nivel EdiciÃ³n Maestra',
+        name: 'Nivel Edición Maestra',
         badge: 'â­ Todo Incluido VIP',
-        tag: 'MÃ¡xima Experiencia VIP (80 Invitados)',
+        tag: 'Máxima Experiencia VIP (80 Invitados)',
         tierBadge: 'â­ Todo Incluido',
         accentColor: 'amber',
         valueCallout: 'Doble prensa, 4 horas continuas, 80 prendas con parche conmemorativo exclusivo del evento',
@@ -688,20 +687,20 @@ export const getBundleTiers = (promo) => {
         regularPrice: 12400,
         savings: 2410,
         discountPercent: 15,
-        summary: 'Doble prensa tÃ©rmica, 4 horas continuas, 80 prendas con parche conmemorativo exclusivo del evento.',
+        summary: 'Doble prensa térmica, 4 horas continuas, 80 prendas con parche conmemorativo exclusivo del evento.',
         includedItems: [
           'Servicio Patch Bar en Vivo',
           '50 Prendas y 50 Morralitos Kit Anticruda',
-          '+ Doble prensa tÃ©rmica simultÃ¡nea y 2 operadores (cero filas)',
+          '+ Doble prensa térmica simultánea y 2 operadores (cero filas)',
           '+ 4 Horas de servicio continuo en vivo (1 hora extra)',
           '+ 30 Prendas adicionales (80 en total: Gorras, Totes y Bucket hats)',
-          '+ 1 DiseÃ±o de parche bordado exclusivo personalizado con el monograma o logo del evento',
+          '+ 1 Diseño de parche bordado exclusivo personalizado con el monograma o logo del evento',
           '+ 30 Morralitos Kit Anticruda extra (80 en total) + 30 llaveros extra (80 en total)',
-          '+ Bolsa kraft individual de cortesÃ­a para cada invitado'
+          '+ Bolsa kraft individual de cortesía para cada invitado'
         ],
         extraBenefits: [
           '2 Operadores para evitar filas y agilizar la fiesta',
-          'DiseÃ±o de parche bordado exclusivo sin costo de matriz',
+          'Diseño de parche bordado exclusivo sin costo de matriz',
           'Bolsa kraft individual para llevar a casa'
         ]
       }
@@ -715,58 +714,58 @@ export const getBundleTiers = (promo) => {
         tierType: 'basic',
         name: 'Nivel Esencial',
         badge: 'Para 20 Invitados',
-        tag: 'BÃ¡sico XV / GraduaciÃ³n',
+        tag: 'Básico XV / Graduación',
         tierBadge: 'Para 20 Invitados',
         accentColor: 'stone',
         price: 1250,
         regularPrice: 1580,
         savings: 330,
         discountPercent: 15,
-        summary: 'Letrero de bienvenida compacto y 20 llaveros botÃ¡nicos personalizados para familia cercana.',
+        summary: 'Letrero de bienvenida compacto y 20 llaveros botánicos personalizados para familia cercana.',
         includedItems: [
           '1 Letrero de bienvenida silueta arco para caballete (40 x 60 cm) con nombre y fecha',
-          '20 Llaveros en relieve 3D botÃ¡nico personalizados con nombre individual de cada invitado',
-          '1 TÃ³tem QR para compartir enlace de fotos del evento'
+          '20 Llaveros en relieve 3D botánico personalizados con nombre individual de cada invitado',
+          '1 Tótem QR para compartir enlace de fotos del evento'
         ],
         extraBenefits: [
           'Llaveros con nombres personalizados sin costo adicional',
           'Madera ligera y resistente',
-          'Colores temÃ¡ticos a tono con el vestido/fiesta'
+          'Colores temáticos a tono con el vestido/fiesta'
         ]
       },
       {
         id: 'pro',
         tierType: 'recommended',
         name: 'Nivel Artesano Pro',
-        badge: 'MÃ¡s Conveniente',
-        tag: 'El Set MÃ¡s Pedido',
-        tierBadge: 'MÃ¡s Conveniente',
+        badge: 'Más Conveniente',
+        tag: 'El Set Más Pedido',
+        tierBadge: 'Más Conveniente',
         accentColor: 'emerald',
-        valueCallout: 'Â¡Te conviene mÃ¡s! (+15 llaveros con nombre y letrero ampliado por solo +$500 MXN)',
+        valueCallout: '¡Te conviene más! (+15 llaveros con nombre y letrero ampliado por solo +$500 MXN)',
         isPopular: true,
         price: 1750,
         regularPrice: 2163,
         savings: 413,
         discountPercent: 15,
-        summary: 'El balance ideal para la recepciÃ³n de tus XV aÃ±os o graduaciÃ³n con 35 llaveros y letrero de arco.',
+        summary: 'El balance ideal para la recepción de tus XV años o graduación con 35 llaveros y letrero de arco.',
         includedItems: [
           '1 Letrero de bienvenida silueta arco ampliado para caballete (50 x 70 cm)',
-          '20 Llaveros en relieve 3D botÃ¡nico personalizados',
-          '1 TÃ³tem QR para compartir Ã¡lbum de Google Fotos o Instagram',
-          '+ 15 Llaveros en relieve 3D botÃ¡nicos adicionales (35 llaveros en total con nombres individuales)'
+          '20 Llaveros en relieve 3D botánico personalizados',
+          '1 Tótem QR para compartir álbum de Google Fotos o Instagram',
+          '+ 15 Llaveros en relieve 3D botánicos adicionales (35 llaveros en total con nombres individuales)'
         ],
         extraBenefits: [
           'Letrero con base de ranura para caballete o mesa',
-          'Argollas metÃ¡licas de alta resistencia',
-          'Empaque clasificado en orden alfabÃ©tico'
+          'Argollas metálicas de alta resistencia',
+          'Empaque clasificado en orden alfabético'
         ]
       },
       {
         id: 'maestra',
         tierType: 'deluxe',
-        name: 'Nivel EdiciÃ³n Maestra',
+        name: 'Nivel Edición Maestra',
         badge: 'â­ Todo Incluido VIP',
-        tag: 'Set de Gran CelebraciÃ³n',
+        tag: 'Set de Gran Celebración',
         tierBadge: 'â­ Todo Incluido',
         accentColor: 'amber',
         valueCallout: '55 llaveros con bolsita de organza, letrero XL, doble QR y cuadro de firmas de madera',
@@ -777,15 +776,15 @@ export const getBundleTiers = (promo) => {
         summary: 'Letrero XL de 60x85 cm, 55 llaveros empacados individualmente, doble QR y cuadro de firmas.',
         includedItems: [
           '1 Letrero de bienvenida silueta arco XL para caballete (60 x 85 cm) con soporte reforzado',
-          '35 Llaveros en relieve 3D botÃ¡nicos',
-          '1 TÃ³tem QR para Ã¡lbum de fotos',
-          '+ 20 Llaveros en relieve 3D botÃ¡nicos extra (55 llaveros en total con nombres)',
+          '35 Llaveros en relieve 3D botánicos',
+          '1 Tótem QR para álbum de fotos',
+          '+ 20 Llaveros en relieve 3D botánicos extra (55 llaveros en total con nombres)',
           '+ Bolsitas de organza individuales para los 55 llaveros',
-          '+ 1 Segundo tÃ³tem QR para playlist o dedicatorias de invitados (2 en total)',
-          '+ 1 Cuadro conmemorativo de firmas en madera grabada con base de exhibiciÃ³n'
+          '+ 1 Segundo tótem QR para playlist o dedicatorias de invitados (2 en total)',
+          '+ 1 Cuadro conmemorativo de firmas en madera grabada con base de exhibición'
         ],
         extraBenefits: [
-          'Cuadro de firmas listo para colgar de recuerdo en recÃ¡mara',
+          'Cuadro de firmas listo para colgar de recuerdo en recámara',
           'Bolsita de organza individual en cada llavero',
           'Acabado en laca satinada anti-manchas'
         ]
@@ -800,23 +799,23 @@ export const getBundleTiers = (promo) => {
         tierType: 'basic',
         name: 'Nivel Esencial',
         badge: 'Hasta 50 Personas',
-        tag: 'EstaciÃ³n Compacta',
+        tag: 'Estación Compacta',
         tierBadge: 'Hasta 50 Personas',
         accentColor: 'stone',
         price: 4800,
         regularPrice: 5900,
         savings: 1100,
         discountPercent: 15,
-        summary: 'EstaciÃ³n de 2 horas con operador y prensa tÃ©rmica para reuniones y fiestas de tamaÃ±o Ã­ntimo.',
+        summary: 'Estación de 2 horas con operador y prensa térmica para reuniones y fiestas de tamaño íntimo.',
         includedItems: [
           '2 Horas de servicio continuo en vivo con operador calificado',
-          '1 Prensa tÃ©rmica industrial de apertura rÃ¡pida (45 segundos por prenda)',
-          'Stand compacto de madera artesanal con charolas de exhibiciÃ³n',
-          'Gorras o totes bÃ¡sicas con muestrario clÃ¡sico de 30+ parches bordados'
+          '1 Prensa térmica industrial de apertura rápida (45 segundos por prenda)',
+          'Stand compacto de madera artesanal con charolas de exhibición',
+          'Gorras o totes básicas con muestrario clásico de 30+ parches bordados'
         ],
         extraBenefits: [
           'Planchado al instante para los invitados',
-          'Ideal para cumpleaÃ±os y aniversarios',
+          'Ideal para cumpleaños y aniversarios',
           'Montaje y desmontaje incluido'
         ]
       },
@@ -824,128 +823,128 @@ export const getBundleTiers = (promo) => {
         id: 'pro',
         tierType: 'recommended',
         name: 'Nivel Artesano Pro',
-        badge: 'MÃ¡s Conveniente',
-        tag: 'EstaciÃ³n EstÃ¡ndar Bodas',
-        tierBadge: 'MÃ¡s Conveniente',
+        badge: 'Más Conveniente',
+        tag: 'Estación Estándar Bodas',
+        tierBadge: 'Más Conveniente',
         accentColor: 'emerald',
-        valueCallout: 'Â¡Te conviene mÃ¡s! (+1 hora extra, percheros rÃºsticos y 50+ diseÃ±os por solo +$1,700 MXN)',
+        valueCallout: '¡Te conviene más! (+1 hora extra, percheros rústicos y 50+ diseños por solo +$1,700 MXN)',
         isPopular: true,
         price: 6500,
         regularPrice: 7900,
         savings: 1400,
         discountPercent: 15,
-        summary: 'EstaciÃ³n completa de 3 horas para 50 a 100 personas. El servicio estrella para bodas y graduaciones.',
+        summary: 'Estación completa de 3 horas para 50 a 100 personas. El servicio estrella para bodas y graduaciones.',
         includedItems: [
-          'Servicio en vivo con prensa tÃ©rmica industrial y operador profesional',
-          'Gorras trucker transpirables y Tote bags 100% algodÃ³n',
+          'Servicio en vivo con prensa térmica industrial y operador profesional',
+          'Gorras trucker transpirables y Tote bags 100% algodón',
           '+ 1 Hora de servicio en vivo adicional (3 horas en total)',
-          '+ Mobiliario rÃºstico de madera completo, percheros y charolas organizadoras',
-          '+ CatÃ¡logo ampliado de mÃ¡s de 50 diseÃ±os de parches bordados, transfers y chenille'
+          '+ Mobiliario rústico de madera completo, percheros y charolas organizadoras',
+          '+ Catálogo ampliado de más de 50 diseños de parches bordados, transfers y chenille'
         ],
         extraBenefits: [
-          'DiseÃ±os florales, divertidos y conmemorativos',
-          'AsesorÃ­a para los invitados al crear su combinaciÃ³n',
-          'Transporte y viÃ¡ticos en zona conurbada incluidos'
+          'Diseños florales, divertidos y conmemorativos',
+          'Asesoría para los invitados al crear su combinación',
+          'Transporte y viáticos en zona conurbada incluidos'
         ]
       },
       {
         id: 'maestra',
         tierType: 'deluxe',
-        name: 'Nivel EdiciÃ³n Maestra',
+        name: 'Nivel Edición Maestra',
         badge: 'â­ Todo Incluido VIP',
         tag: 'Doble Prensa & Parche Exclusivo',
         tierBadge: 'â­ Todo Incluido',
         accentColor: 'amber',
-        valueCallout: 'Doble prensa simultÃ¡nea (cero filas), 4 horas, 2 operadores y parche personalizado exclusivo',
+        valueCallout: 'Doble prensa simultánea (cero filas), 4 horas, 2 operadores y parche personalizado exclusivo',
         price: 9500,
         regularPrice: 11800,
         savings: 2300,
         discountPercent: 15,
-        summary: 'Para 100 a 200+ personas. 4 horas, 2 operadores, 2 prensas simultÃ¡neas y parche bordado personalizado con el logo de tu evento.',
+        summary: 'Para 100 a 200+ personas. 4 horas, 2 operadores, 2 prensas simultáneas y parche bordado personalizado con el logo de tu evento.',
         includedItems: [
           'Servicio Patch Bar en Vivo para gran evento',
           'Prendas premium: Gorras trucker, Tote bags gruesas y Bucket hats',
-          '+ Doble prensa tÃ©rmica simultÃ¡nea y 2 operadores profesionales (cero filas)',
+          '+ Doble prensa térmica simultánea y 2 operadores profesionales (cero filas)',
           '+ 4 Horas de servicio continuo en vivo (1 hora extra)',
-          '+ Stand extendido con doble mostrador de selecciÃ³n para flujo rÃ¡pido',
-          '+ 1 DiseÃ±o de parche bordado personalizado exclusivo con el monograma o escudo del evento',
+          '+ Stand extendido con doble mostrador de selección para flujo rápido',
+          '+ 1 Diseño de parche bordado personalizado exclusivo con el monograma o escudo del evento',
           '+ Empaque individual de regalo en bolsa kraft con sello para cada invitado'
         ],
         extraBenefits: [
           'Cero filas gracias al flujo doble de planchado',
-          'DiseÃ±o de parche de recuerdo Ãºnico que nadie mÃ¡s tendrÃ¡',
-          'Ãlbum fotogrÃ¡fico digital de los invitados con sus prendas'
+          'Diseño de parche de recuerdo único que nadie más tendrá',
+          'Álbum fotográfico digital de los invitados con sus prendas'
         ]
       }
     ];
   }
 
-  // GeneraciÃ³n estÃ¡ndar para cualquier otro combo futuro
+  // Generación estándar para cualquier otro combo futuro
   return [
     {
       id: 'esencial',
       tierType: 'basic',
       name: 'Nivel Esencial',
       badge: 'Kit Base',
-      tag: 'BÃ¡sico Accesible',
+      tag: 'Básico Accesible',
       tierBadge: 'Kit Base',
       accentColor: 'stone',
       price: Math.round(basePrice * 0.72),
       regularPrice: Math.round(baseRegular * 0.72),
       savings: Math.round((baseRegular - basePrice) * 0.72) || 80,
       discountPercent: promo.discountPercent || 15,
-      summary: 'ConfiguraciÃ³n esencial y accesible con las piezas clave para arrancar con excelente costo.',
+      summary: 'Configuración esencial y accesible con las piezas clave para arrancar con excelente costo.',
       includedItems: promo.includedItems?.slice(0, Math.max(1, Math.ceil((promo.includedItems?.length || 2) / 2))) || ['Piezas clave del paquete'],
       extraBenefits: [
-        'FabricaciÃ³n artesanal con materiales de primera calidad',
-        'Empaque seguro y garantÃ­a de satisfacciÃ³n'
+        'Fabricación artesanal con materiales de primera calidad',
+        'Empaque seguro y garantía de satisfacción'
       ]
     },
     {
       id: 'pro',
       tierType: 'recommended',
       name: 'Nivel Artesano Pro',
-      badge: 'MÃ¡s Conveniente',
+      badge: 'Más Conveniente',
       tag: 'Recomendado del Taller',
-      tierBadge: 'MÃ¡s Conveniente',
+      tierBadge: 'Más Conveniente',
       accentColor: 'emerald',
-      valueCallout: 'Â¡Te conviene mÃ¡s! (+Todas las piezas completas y acabados coordinados)',
+      valueCallout: '¡Te conviene más! (+Todas las piezas completas y acabados coordinados)',
       isPopular: true,
       price: basePrice,
       regularPrice: baseRegular,
       savings: promo.savings || Math.round(baseRegular - basePrice),
       discountPercent: Math.min(15, promo.discountPercent || 15),
-      summary: 'El kit completo coordinado estÃ¡ndar con todas las piezas y el mejor balance de valor.',
+      summary: 'El kit completo coordinado estándar con todas las piezas y el mejor balance de valor.',
       includedItems: (promo.includedItems || ['Kit completo de piezas coordinadas']).map((item, i) => i > 0 ? `+ ${item.replace(/^\+\s*/, '')}` : item),
       extraBenefits: [
-        'PersonalizaciÃ³n estÃ¡ndar incluida',
+        'Personalización estándar incluida',
         'Acabado en laca protectora',
-        'AsesorÃ­a directa del artesano'
+        'Asesoría directa del artesano'
       ]
     },
     {
       id: 'maestra',
       tierType: 'deluxe',
-      name: 'Nivel EdiciÃ³n Maestra',
+      name: 'Nivel Edición Maestra',
       badge: 'â­ Todo Incluido VIP',
       tag: 'Kit Premium VIP',
       tierBadge: 'â­ Todo Incluido',
       accentColor: 'amber',
-      valueCallout: 'MÃ¡ximo volumen, piezas de repuesto, empaque de regalo y acabados de lujo',
+      valueCallout: 'Máximo volumen, piezas de repuesto, empaque de regalo y acabados de lujo',
       price: Math.round(basePrice * 1.38),
       regularPrice: Math.round(baseRegular * 1.38),
       savings: Math.round((baseRegular - basePrice) * 1.5) || 200,
       discountPercent: Math.min(15, promo.discountPercent || 15),
-      summary: 'MÃ¡ximo volumen, piezas de repuesto, personalizaciÃ³n especial y acabados de lujo.',
+      summary: 'Máximo volumen, piezas de repuesto, personalización especial y acabados de lujo.',
       includedItems: [
         ...(promo.includedItems || ['Kit completo']),
         '+ Piezas ampliadas o de repuesto para mayor durabilidad',
         '+ Empaque de regalo premium con dedicatoria artesanal'
       ],
       extraBenefits: [
-        'PersonalizaciÃ³n avanzada sin costo extra',
-        'Tratamiento hidrÃ³fugo y sellado reforzado',
-        'GarantÃ­a prioritaria de reposiciÃ³n'
+        'Personalización avanzada sin costo extra',
+        'Tratamiento hidrófugo y sellado reforzado',
+        'Garantía prioritaria de reposición'
       ]
     }
   ];
@@ -964,7 +963,7 @@ export default function PackagesAndServicesView({
   const [activeAreaFilter, setActiveAreaFilter] = useState(initialAreaFilter || 'all');
   const [packagesSeed, setPackagesSeed] = useState(() => Date.now());
 
-  // ConfiguraciÃ³n de CampaÃ±as & Especial de Temporada
+  // Configuración de Campañas & Especial de Temporada
   const [campaignConfig, setCampaignConfig] = useState(() => settings?.campaignsConfig || null);
 
   useEffect(() => {
@@ -1024,7 +1023,7 @@ export default function PackagesAndServicesView({
     );
   };
 
-  // SeparaciÃ³n de paquetes por Ãrea con rotaciÃ³n dinÃ¡mica al navegar
+  // Separación de paquetes por Área con rotación dinámica al navegar
   const allBundles = useMemo(() => {
     const list = filterBySearch(products.filter(p => p.isBundle));
     return shuffleArray(list, 101);
@@ -1045,7 +1044,7 @@ export default function PackagesAndServicesView({
     return shuffleArray(list, 404);
   }, [products, packagesSeed, searchQuery]);
 
-  // Temporada Activa de CampaÃ±a
+  // Temporada Activa de Campaña
   const activeSeason = useMemo(() => {
     if (!campaignConfig) return null;
     const seasons = campaignConfig.seasons || [];
@@ -1093,7 +1092,7 @@ export default function PackagesAndServicesView({
     const chosenTier = tier || (selectedTierByPackage[promo.id] ? getBundleTiers(promo).find(t => t.id === selectedTierByPackage[promo.id]) : null);
     const basePrice = chosenTier ? chosenTier.price : promo.price;
     const savings = chosenTier ? chosenTier.savings : (promo.savings || 100);
-    const tierName = chosenTier ? chosenTier.name : 'Paquete EstÃ¡ndar';
+    const tierName = chosenTier ? chosenTier.name : 'Paquete Estándar';
     const items = chosenTier ? chosenTier.includedItems : promo.includedItems;
 
     const hasCoupon = Boolean(activeMonthlyEvent && eventDiscountPct > 0);
@@ -1103,22 +1102,22 @@ export default function PackagesAndServicesView({
     msg += `==================================================\n`;
     msg += `Hola Artesano Digital, me interesa contratar el siguiente paquete:\n\n`;
     msg += `â€¢ *[${promo.code}] ${promo.name}*\n`;
-    msg += `â€¢ ConfiguraciÃ³n elegida: *${tierName}*\n`;
-    msg += `â€¢ InversiÃ³n regular del paquete: *$${basePrice} MXN* (Ahorro regular de $${savings} MXN)\n`;
+    msg += `â€¢ Configuración elegida: *${tierName}*\n`;
+    msg += `â€¢ Inversión regular del paquete: *$${basePrice} MXN* (Ahorro regular de $${savings} MXN)\n`;
 
     if (hasCoupon) {
-      msg += `â€¢ *CupÃ³n de Evento:* [${activeMonthlyEvent.couponCode}] (${activeMonthlyEvent.discountText || `${eventDiscountPct}% OFF`})\n`;
-      msg += `â€¢ *Precio Especial con CupÃ³n:* *$${discountedPrice} MXN* (Ahorro extra de $${basePrice - discountedPrice} MXN)\n`;
+      msg += `â€¢ *Cupón de Evento:* [${activeMonthlyEvent.couponCode}] (${activeMonthlyEvent.discountText || `${eventDiscountPct}% OFF`})\n`;
+      msg += `â€¢ *Precio Especial con Cupón:* *$${discountedPrice} MXN* (Ahorro extra de $${basePrice - discountedPrice} MXN)\n`;
     }
 
     if (items && items.length > 0) {
       msg += `â€¢ Piezas y detalles incluidos:\n  - ${items.join('\n  - ')}\n`;
     }
     if (settings?.serviceStatus?.isPaused) {
-      const resumeStr = formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'prÃ³ximo aviso';
+      const resumeStr = formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'próximo aviso';
       msg += `\n*Nota de taller:* Taller reanuda servicio el ${resumeStr}.\n`;
     }
-    msg += `\n_Â¿Tienen disponibilidad de taller para producciÃ³n y tiempos de entrega?_`;
+    msg += `\n_¿Tienen disponibilidad de taller para producción y tiempos de entrega?_`;
 
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`;
     window.open(url, '_blank');
@@ -1126,28 +1125,28 @@ export default function PackagesAndServicesView({
 
   /**
    * Renderiza una tarjeta de paquete en formato HORIZONTAL con despliegue VERTICAL:
-   * 1. Fila horizontal apaisada (foto a la izquierda, detalles y botÃ³n "Abrir y Ver 3 Opciones" a la derecha).
-   * 2. Al hacer clic en "Abrir", se despliega verticalmente el panel con las 3 opciones (Nivel Esencial, Artesano Pro, EdiciÃ³n Maestra).
-   * 3. Al hacer clic en uno de los 3 paquetes, aparece la tarjeta completa del producto con su descripciÃ³n y todo lo que incluye.
+   * 1. Fila horizontal apaisada (foto a la izquierda, detalles y botón "Abrir y Ver 3 Opciones" a la derecha).
+   * 2. Al hacer clic en "Abrir", se despliega verticalmente el panel con las 3 opciones (Nivel Esencial, Artesano Pro, Edición Maestra).
+   * 3. Al hacer clic en uno de los 3 paquetes, aparece la tarjeta completa del producto con su descripción y todo lo que incluye.
    */
   /**
-   * Paletas de color distintivas por mÃ³dulo / Ã¡rea de catÃ¡logo:
+   * Paletas de color distintivas por módulo / área de catálogo:
    * - Hogar: Verde Esmeralda / Taller (#2D4F3E, emerald)
-   * - Negocios: Ãmbar CÃ¡lido / Dorado Comercial (#8F6517, #B47820, amber)
-   * - Eventos: Rosa Festejo / Bugambilia / RubÃ­ (#D82B6E, #C23363, rose)
+   * - Negocios: Ámbar Cálido / Dorado Comercial (#8F6517, #B47820, amber)
+   * - Eventos: Rosa Festejo / Bugambilia / Rubí (#D82B6E, #C23363, rose)
    * - Especial: Dorado Corona de Temporada (#D4A359, amber-400 ring)
    */
   /**
-   * Paletas de color distintivas por mÃ³dulo / Ã¡rea de catÃ¡logo con alto contraste en fondo oscuro:
-   * - Patch Bar: NeÃ³n Magenta / Rosa Festejo vibrante (#D82B6E, #FF2D78)
-   * - Negocios: Esmeralda ElÃ©ctrico & Cian (#10B981, #06B6D4)
-   * - Eventos: Fucsia & PÃºrpura Vibrante (#D946EF, #A855F7)
-   * - Hogar: Ãmbar CÃ¡lido & Naranja Sunset (#F59E0B, #F97316)
-   * - Especial: Oro CibernÃ©tico / Corona (#FACC15, #EAB308)
+   * Paletas de color distintivas por módulo / área de catálogo con alto contraste en fondo oscuro:
+   * - Patch Bar: Neón Magenta / Rosa Festejo vibrante (#D82B6E, #FF2D78)
+   * - Negocios: Esmeralda Eléctrico & Cian (#10B981, #06B6D4)
+   * - Eventos: Fucsia & Púrpura Vibrante (#D946EF, #A855F7)
+   * - Hogar: Ámbar Cálido & Naranja Sunset (#F59E0B, #F97316)
+   * - Especial: Oro Cibernético / Corona (#FACC15, #EAB308)
    */
   /**
    * Paletas de color limpias y armoniosas para fondo blanco / crema:
-   * El producto y la fotografÃ­a son los protagonistas absolutos.
+   * El producto y la fotografía son los protagonistas absolutos.
    */
   const getModuleTheme = (promo, explicitArea) => {
     const isPatchBar = promo.code === 'EV-PATCHBAR' || promo.code?.includes('PATCH');
@@ -1220,10 +1219,10 @@ export default function PackagesAndServicesView({
   };
 
   /**
-   * Tarjetas de Paquetes enfocadas en la FOTOGRAFÃA del producto:
-   * 1. Al inicio: Solo imagen grande en alta calidad + tÃ­tulo + precio.
-   * 2. Botoncito "Ver quÃ© incluye el paquete" para desplegar limpiamente detalles y los 3 niveles.
-   * 3. NavegaciÃ³n rÃ¡pida, limpia y sin saturaciÃ³n visual.
+   * Tarjetas de Paquetes enfocadas en la FOTOGRAFÍA del producto:
+   * 1. Al inicio: Solo imagen grande en alta calidad + título + precio.
+   * 2. Botoncito "Ver qué incluye el paquete" para desplegar limpiamente detalles y los 3 niveles.
+   * 3. Navegación rápida, limpia y sin saturación visual.
    */
   const renderBundleCard = (promo, explicitArea = null) => {
     const tiers = getBundleTiers(promo);
@@ -1242,7 +1241,7 @@ export default function PackagesAndServicesView({
     const regularPrice = promo.regularPrice || Math.round(promo.price * 1.25);
     const discountPercent = promo.discountPercent || Math.round((savings / regularPrice) * 100);
 
-    // CÃ¡lculos de beneficio de Evento Comercial del Mes (Temu / ML / AliExpress)
+    // Cálculos de beneficio de Evento Comercial del Mes (Temu / ML / AliExpress)
     const hasEventCoupon = Boolean(activeMonthlyEvent && eventDiscountPct > 0);
     const eventPrice = hasEventCoupon ? Math.round(promo.price * (1 - eventDiscountPct / 100)) : promo.price;
     const eventExtraSavings = promo.price - eventPrice;
@@ -1260,7 +1259,7 @@ export default function PackagesAndServicesView({
           onClick={() => onSelectProduct(promo)}
           onContextMenu={(e) => e.preventDefault()}
           className="relative w-full aspect-[4/3] bg-[#FAF8F5] overflow-hidden cursor-pointer group/thumb select-none"
-          title="Clic para ver fotos en alta resoluciÃ³n del paquete"
+          title="Clic para ver fotos en alta resolución del paquete"
         >
           <img loading="lazy"
             src={promo.primaryImage || promo.gallery?.[0] || promo.whiteBgImage}
@@ -1274,7 +1273,7 @@ export default function PackagesAndServicesView({
             <Layers className="w-6 h-6 text-white opacity-0 group-hover/thumb:opacity-100 transition-opacity drop-shadow-md" />
           </div>
 
-          {/* Pastilla de CategorÃ­a */}
+          {/* Pastilla de Categoría */}
           <div className="absolute top-3 left-3">
             <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold border shadow-xs flex items-center gap-1.5 ${theme.badgeBg}`}>
               {theme.icon && <theme.icon className="w-3 h-3" />}
@@ -1289,9 +1288,9 @@ export default function PackagesAndServicesView({
             </span>
           </div>
 
-          {/* Marca de Agua Sutil de Taller para ProtecciÃ³n de Imagen con Logotipo Oficial */}
+          {/* Marca de Agua Sutil de Taller para Protección de Imagen con Logotipo Oficial */}
           <div className="absolute bottom-2 right-2 z-10 flex items-center gap-1 px-1.5 py-[2px] rounded-full bg-black/15 backdrop-blur-2xs text-[7px] font-medium text-white/60 pointer-events-none select-none tracking-tight border border-white/5 shadow-2xs">
-            <ImageOptimized loading="lazy"
+            <img loading="lazy"
               src="./brand/artesano_isotipo_transparente.png"
               alt=""
               className="w-2 h-2 object-contain shrink-0 opacity-75"
@@ -1338,7 +1337,7 @@ export default function PackagesAndServicesView({
             {hasEventCoupon && (
               <div className="text-[10.5px] text-amber-900 font-bold bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200 inline-flex items-center gap-1">
                 <Sparkles className="w-3 h-3 text-amber-600 fill-amber-600" />
-                <span>CupÃ³n {activeMonthlyEvent.couponCode}: -${eventExtraSavings} MXN extra</span>
+                <span>Cupón {activeMonthlyEvent.couponCode}: -${eventExtraSavings} MXN extra</span>
               </div>
             )}
           </div>
@@ -1354,7 +1353,7 @@ export default function PackagesAndServicesView({
                   : 'bg-stone-100 hover:bg-stone-200 text-stone-800'
               }`}
             >
-              <span>{isExpanded ? 'Ocultar detalles' : 'Ver quÃ© incluye y opciones'}</span>
+              <span>{isExpanded ? 'Ocultar detalles' : 'Ver qué incluye y opciones'}</span>
               {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5 text-stone-500" />}
             </button>
 
@@ -1415,7 +1414,7 @@ export default function PackagesAndServicesView({
               {/* Selector de los 3 Niveles */}
               <div className="space-y-2">
                 <span className="text-[11px] font-bold text-stone-800 block">
-                  ConfiguraciÃ³n del paquete:
+                  Configuración del paquete:
                 </span>
                 <div className="grid grid-cols-3 gap-1 p-1 bg-stone-100 rounded-xl">
                   {tiers.map(tier => {
@@ -1517,18 +1516,18 @@ export default function PackagesAndServicesView({
               type="button"
               onClick={() => setPackagesSeed(Date.now())}
               className="md:hidden text-xs text-[#2D4F3E] font-bold flex items-center gap-1 bg-stone-100 px-2.5 py-1 rounded-lg border border-stone-200 cursor-pointer"
-              title="Girar rotaciÃ³n de paquetes"
+              title="Girar rotación de paquetes"
             >
               <Sparkles className="w-3.5 h-3.5" />
               <span>Girar</span>
             </button>
           </div>
 
-          {/* Chips de CategorÃ­as RÃ¡pidas Deslizables */}
+          {/* Chips de Categorías Rápidas Deslizables */}
           <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pb-0.5 select-none">
             {[
               { id: 'all', label: 'Todos los Paquetes', count: allBundles.length },
-              { id: 'especial', label: 'â­ SelecciÃ³n Especial', count: especialBundles.length },
+              { id: 'especial', label: 'â­ Selección Especial', count: especialBundles.length },
               { id: 'hogar', label: 'Hogar', count: hogarBundles.length },
               { id: 'negocios', label: 'Negocios', count: negociosBundles.length },
               { id: 'eventos', label: 'Eventos', count: eventosBundles.length },
@@ -1572,21 +1571,21 @@ export default function PackagesAndServicesView({
       {/* Main Body */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-8">
 
-        {/* VISTA 1: TODOS LOS PAQUETES CON ROTACIÃ“N DINÃMICA (INCLUYE PATCH BAR) */}
+        {/* VISTA 1: TODOS LOS PAQUETES CON ROTACIÃ“N DINÁMICA (INCLUYE PATCH BAR) */}
         {activeAreaFilter === 'all' && (
           <section className="space-y-6">
             <div className="flex items-center justify-between pb-2 border-b border-[#E8DFC8]">
               <p className="text-xs sm:text-sm text-stone-600">
-                Elige tu paquete favorito. Haz clic en <strong>Ver quÃ© incluye y opciones</strong> para desplegar sus componentes.
+                Elige tu paquete favorito. Haz clic en <strong>Ver qué incluye y opciones</strong> para desplegar sus componentes.
               </p>
               <button
                 type="button"
                 onClick={() => setPackagesSeed(Date.now())}
                 className="hidden md:flex text-xs text-[#2D4F3E] hover:text-[#20392C] font-bold items-center gap-1.5 cursor-pointer bg-white hover:bg-stone-50 px-3 py-1.5 rounded-xl border border-stone-200 shadow-2xs"
-                title="Girar ruleta de rotaciÃ³n de paquetes"
+                title="Girar ruleta de rotación de paquetes"
               >
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Girar rotaciÃ³n</span>
+                <span>Girar rotación</span>
               </button>
             </div>
 
@@ -1603,7 +1602,7 @@ export default function PackagesAndServicesView({
               <div className="space-y-1">
                 <div className="flex items-center gap-2 text-xs font-bold text-amber-700 uppercase tracking-wider">
                   <Crown className="w-4 h-4" />
-                  <span>SelecciÃ³n Especial de Temporada</span>
+                  <span>Selección Especial de Temporada</span>
                 </div>
                 <h2 className="text-xl sm:text-2xl font-extrabold text-stone-900 font-heading">
                   Paquetes Destacados del Mes
@@ -1627,7 +1626,7 @@ export default function PackagesAndServicesView({
               <div className="space-y-1">
                 <div className="flex items-center gap-2 text-xs font-bold text-emerald-800 uppercase tracking-wider">
                   <Home className="w-4 h-4" />
-                  <span>Ãrea Hogar &amp; DecoraciÃ³n</span>
+                  <span>Área Hogar &amp; Decoración</span>
                 </div>
                 <h2 className="text-xl sm:text-2xl font-extrabold text-stone-900 font-heading">
                   Paquetes para el Hogar
@@ -1655,13 +1654,13 @@ export default function PackagesAndServicesView({
               <div className="space-y-1">
                 <div className="flex items-center gap-2 text-xs font-bold text-amber-800 uppercase tracking-wider">
                   <Briefcase className="w-4 h-4" />
-                  <span>Ãrea Negocios &amp; Marcas</span>
+                  <span>Área Negocios &amp; Marcas</span>
                 </div>
                 <h2 className="text-xl sm:text-2xl font-extrabold text-stone-900 font-heading">
                   Paquetes para Negocios &amp; Comercios
                 </h2>
                 <p className="text-xs sm:text-sm text-stone-600">
-                  Starter packs de seÃ±alÃ©tica, soportes QR para menÃº o cobro, placas inteligentes NFC y merchandising grabado a lÃ¡ser.
+                  Starter packs de señalética, soportes QR para menú o cobro, placas inteligentes NFC y merchandising grabado a láser.
                 </p>
               </div>
 
@@ -1683,13 +1682,13 @@ export default function PackagesAndServicesView({
               <div className="space-y-1">
                 <div className="flex items-center gap-2 text-xs font-bold text-pink-800 uppercase tracking-wider">
                   <CalendarHeart className="w-4 h-4" />
-                  <span>Ãrea Eventos Especiales</span>
+                  <span>Área Eventos Especiales</span>
                 </div>
                 <h2 className="text-xl sm:text-2xl font-extrabold text-stone-900 font-heading">
                   Paquetes de Eventos &amp; Fiestas
                 </h2>
                 <p className="text-xs sm:text-sm text-stone-600">
-                  Kits nupciales, bodas, quince aÃ±os, graduaciones y recuerdos coordinados todo incluido.
+                  Kits nupciales, bodas, quince años, graduaciones y recuerdos coordinados todo incluido.
                 </p>
               </div>
 
@@ -1717,7 +1716,7 @@ export default function PackagesAndServicesView({
                   Servicio Patch Bar en Vivo (Gorras &amp; Totes)
                 </h2>
                 <p className="text-xs sm:text-sm text-stone-600">
-                  Llevamos nuestro stand de madera artesanal y prensa tÃ©rmica a tu evento para que tus invitados personalicen su recuerdo al momento.
+                  Llevamos nuestro stand de madera artesanal y prensa térmica a tu evento para que tus invitados personalicen su recuerdo al momento.
                 </p>
               </div>
             </div>
@@ -1747,7 +1746,7 @@ export default function PackagesAndServicesView({
                   <span>Experiencia en Vivo para Fiestas &amp; Bodas</span>
                 </div>
                 <h3 className="text-lg sm:text-xl font-extrabold text-stone-900 font-heading">
-                  Â¿CÃ³mo funciona el servicio de Patch Bar?
+                  ¿Cómo funciona el servicio de Patch Bar?
                 </h3>
               </div>
               <button
@@ -1755,7 +1754,7 @@ export default function PackagesAndServicesView({
                 onClick={() => setActiveAreaFilter('servicios')}
                 className="text-xs text-[#D82B6E] hover:text-[#b01e54] font-bold flex items-center gap-1 cursor-pointer"
               >
-                <span>Ver mÃ³dulo completo</span>
+                <span>Ver módulo completo</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>

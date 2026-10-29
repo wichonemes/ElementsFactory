@@ -1,6 +1,5 @@
 ﻿import React, { useState, useMemo, useEffect } from 'react';
 import {
-import ImageOptimized from './ImageOptimized';
   Flame, Clock, Zap, Percent, Search, RefreshCw, AlertTriangle,
   CheckCircle2, Sparkles, Filter, ChevronRight, Edit, X, ArrowUpRight,
   TrendingUp, BarChart3, Package, ShieldAlert, Sliders, Check,
@@ -16,12 +15,12 @@ export default function FlashDealsControlSection({
   onRefreshCatalog,
   onEditProduct
 }) {
-  // Filtro por Ã¡rea: 'all' | 'hogar' | 'negocios' | 'eventos' | 'paquetes'
+  // Filtro por área: 'all' | 'hogar' | 'negocios' | 'eventos' | 'paquetes'
   const [selectedArea, setSelectedArea] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [filterDuration, setFilterDuration] = useState('all'); // 'all' | 'blitz' | 'short' | 'long'
   
-  // Estado para modal / panel de activaciÃ³n rÃ¡pida de producto
+  // Estado para modal / panel de activación rápida de producto
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
   const [quickAddProductId, setQuickAddProductId] = useState('');
   const [quickAddDuration, setQuickAddDuration] = useState(120); // 2h default
@@ -62,7 +61,7 @@ export default function FlashDealsControlSection({
     return localPausedAreas || flashDealsStatus.pausedAreas || {};
   }, [localPausedAreas, flashDealsStatus]);
 
-  // Topes configurados por Ã¡rea (provenientes de settings o defaults autorizados)
+  // Topes configurados por área (provenientes de settings o defaults autorizados)
   const flashDealsLimits = useMemo(() => {
     return settings?.flashDealsLimits || {
       hogar: 3,
@@ -98,7 +97,7 @@ export default function FlashDealsControlSection({
     setTimeout(() => setNotification(null), 4000);
   };
 
-  // Guardar topes mÃ¡ximos por Ã¡rea en el servidor
+  // Guardar topes máximos por área en el servidor
   const handleSaveLimits = async (customToSave = limitsForm) => {
     try {
       setSavingLimits(true);
@@ -114,22 +113,22 @@ export default function FlashDealsControlSection({
         const data = await res.json();
         const tot = Number(data.limits.hogar) + Number(data.limits.negocios) + Number(data.limits.eventos) + Number(data.limits.paquetes);
         showNotification(
-          `Topes guardados con Ã©xito: Hogar (${data.limits.hogar}), Negocios (${data.limits.negocios}), Eventos (${data.limits.eventos}), Paquetes (${data.limits.paquetes}). Total autorizado: ${tot}`,
+          `Topes guardados con éxito: Hogar (${data.limits.hogar}), Negocios (${data.limits.negocios}), Eventos (${data.limits.eventos}), Paquetes (${data.limits.paquetes}). Total autorizado: ${tot}`,
           'success'
         );
         if (onRefreshCatalog) await onRefreshCatalog();
       } else {
-        showNotification('No se pudo guardar la configuraciÃ³n de topes', 'error');
+        showNotification('No se pudo guardar la configuración de topes', 'error');
       }
     } catch (err) {
       console.error('Error saving limits:', err);
-      showNotification('Error de conexiÃ³n al guardar topes', 'error');
+      showNotification('Error de conexión al guardar topes', 'error');
     } finally {
       setSavingLimits(false);
     }
   };
 
-  // Ajuste rÃ¡pido con botones +/- en cada Ã¡rea
+  // Ajuste rápido con botones +/- en cada área
   const handleQuickAdjustLimit = async (areaKey, delta) => {
     const currentVal = Number(limitsForm[areaKey]) || 1;
     const newVal = Math.max(1, Math.min(30, currentVal + delta));
@@ -138,7 +137,7 @@ export default function FlashDealsControlSection({
     await handleSaveLimits(nextForm);
   };
 
-  // Helper para clasificar productos por Ã¡rea
+  // Helper para clasificar productos por área
   const isProductInArea = (prod, areaKey) => {
     if (!prod) return false;
     if (areaKey === 'all') return true;
@@ -187,7 +186,7 @@ export default function FlashDealsControlSection({
       });
     }
 
-    // Fallback reactivo si el hook no estÃ¡ listo:
+    // Fallback reactivo si el hook no está listo:
     const list = [];
     const seenIds = new Set();
     const areaCounts = { hogar: 0, negocios: 0, eventos: 0, paquetes: 0 };
@@ -224,7 +223,7 @@ export default function FlashDealsControlSection({
     return list;
   }, [products, flashDeal, flashDealsLimits, isGloballyPaused, pausedAreas]);
 
-  // EstadÃ­sticas y delimitadores de cupos estrictos por Ã¡rea
+  // Estadísticas y delimitadores de cupos estrictos por área
   const areaLimitsStats = useMemo(() => {
     const hogarProds = products.filter(p => p.status === 'published' && !p.isBundle && p.worlds?.includes('hogar'));
     const negociosProds = products.filter(p => p.status === 'published' && !p.isBundle && p.worlds?.includes('negocios'));
@@ -238,7 +237,7 @@ export default function FlashDealsControlSection({
     const isEventosPaused = Boolean(isGloballyPaused || pausedAreas.eventos);
     const isPaquetesPaused = Boolean(isGloballyPaused || pausedAreas.paquetes);
 
-    // Contar productos activos asegurando que nunca excedan su target ni cuenten en Ã¡reas pausadas
+    // Contar productos activos asegurando que nunca excedan su target ni cuenten en áreas pausadas
     const rawHogar = activeFlashList.filter(item => item.product.worlds?.includes('hogar')).length;
     const rawNegocios = activeFlashList.filter(item => item.product.worlds?.includes('negocios')).length;
     const rawEventos = activeFlashList.filter(item => item.product.worlds?.includes('eventos')).length;
@@ -247,7 +246,7 @@ export default function FlashDealsControlSection({
       return p.isBundle || p.category === 'paquetes' || p.category === 'servicios' || p.code?.startsWith('PROMO') || p.code?.includes('PATCH') || p.worlds?.includes('paquetes');
     }).length;
 
-    // Topes dinÃ¡micos configurables por el usuario (o sugeridos por defecto)
+    // Topes dinámicos configurables por el usuario (o sugeridos por defecto)
     const hogarTarget = Math.max(1, Number(flashDealsLimits.hogar) || 3);
     const negociosTarget = Math.max(1, Number(flashDealsLimits.negocios) || 3);
     const eventosTarget = Math.max(1, Number(flashDealsLimits.eventos) || 5);
@@ -261,9 +260,9 @@ export default function FlashDealsControlSection({
     return {
       hogar: {
         id: 'hogar',
-        name: 'Hogar & DecoraciÃ³n',
+        name: 'Hogar & Decoración',
         icon: 'ðŸ ',
-        rule: `Tope configurable: mÃ¡ximo ${hogarTarget} ofertas flash activas`,
+        rule: `Tope configurable: máximo ${hogarTarget} ofertas flash activas`,
         shortRule: `Tope: ${hogarTarget} ofertas`,
         min: 1,
         max: hogarTarget,
@@ -279,7 +278,7 @@ export default function FlashDealsControlSection({
         id: 'negocios',
         name: 'Negocios & Marca',
         icon: 'ðŸ’¼',
-        rule: `Tope configurable: mÃ¡ximo ${negociosTarget} ofertas flash activas`,
+        rule: `Tope configurable: máximo ${negociosTarget} ofertas flash activas`,
         shortRule: `Tope: ${negociosTarget} ofertas`,
         min: 1,
         max: negociosTarget,
@@ -295,7 +294,7 @@ export default function FlashDealsControlSection({
         id: 'eventos',
         name: 'Eventos Especiales',
         icon: 'ðŸŽ‰',
-        rule: `Tope configurable: mÃ¡ximo ${eventosTarget} ofertas flash activas`,
+        rule: `Tope configurable: máximo ${eventosTarget} ofertas flash activas`,
         shortRule: `Tope: ${eventosTarget} ofertas`,
         min: 1,
         max: eventosTarget,
@@ -311,7 +310,7 @@ export default function FlashDealsControlSection({
         id: 'paquetes',
         name: 'Paquetes & Servicios',
         icon: 'ðŸŽ',
-        rule: `Tope configurable: mÃ¡ximo ${paquetesTarget} ofertas promocionales`,
+        rule: `Tope configurable: máximo ${paquetesTarget} ofertas promocionales`,
         shortRule: `Tope: ${paquetesTarget} ofertas`,
         min: 1,
         max: paquetesTarget,
@@ -326,7 +325,7 @@ export default function FlashDealsControlSection({
     };
   }, [products, activeFlashList, isGloballyPaused, pausedAreas, flashDealsLimits]);
 
-  // AnÃ¡lisis comparativo: Identificar en dÃ³nde hay mÃ¡s ofertas
+  // Análisis comparativo: Identificar en dónde hay más ofertas
   const areasVolumeAnalysis = useMemo(() => {
     const list = [
       areaLimitsStats.hogar,
@@ -355,12 +354,12 @@ export default function FlashDealsControlSection({
     return activeFlashList.filter(item => {
       const p = item.product;
 
-      // Filtro por Ã¡rea
+      // Filtro por área
       if (selectedArea !== 'all' && !isProductInArea(p, selectedArea)) {
         return false;
       }
 
-      // Filtro por texto de bÃºsqueda
+      // Filtro por texto de búsqueda
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         const matchesName = p.name?.toLowerCase().includes(q);
@@ -369,7 +368,7 @@ export default function FlashDealsControlSection({
         if (!matchesName && !matchesCode && !matchesCat) return false;
       }
 
-      // Filtro por duraciÃ³n
+      // Filtro por duración
       if (filterDuration === 'blitz' && item.durationMinutes > 15) return false;
       if (filterDuration === 'short' && (item.durationMinutes <= 15 || item.durationMinutes > 180)) return false;
       if (filterDuration === 'long' && item.durationMinutes <= 180) return false;
@@ -378,7 +377,7 @@ export default function FlashDealsControlSection({
     });
   }, [activeFlashList, selectedArea, searchQuery, filterDuration]);
 
-  // Productos disponibles en el Ã¡rea seleccionada que NO tienen oferta flash activa
+  // Productos disponibles en el área seleccionada que NO tienen oferta flash activa
   const eligibleProductsForQuickAdd = useMemo(() => {
     const targetArea = selectedArea === 'all' ? null : selectedArea;
     const activeIds = new Set(activeFlashList.map(item => item.product.id));
@@ -437,7 +436,7 @@ export default function FlashDealsControlSection({
     }
   };
 
-  // Handler: Cambiar duraciÃ³n y descuento de un producto
+  // Handler: Cambiar duración y descuento de un producto
   const handleUpdateDurationAndDiscount = async (prod, durationMinutes, discountPercent) => {
     try {
       setActionLoading(true);
@@ -476,7 +475,7 @@ export default function FlashDealsControlSection({
     }
   };
 
-  // Handler: ActivaciÃ³n rÃ¡pida de producto seleccionado
+  // Handler: Activación rápida de producto seleccionado
   const handleQuickAddSubmit = async (e) => {
     e.preventDefault();
     if (!quickAddProductId) return;
@@ -484,7 +483,7 @@ export default function FlashDealsControlSection({
     const prod = products.find(p => p.id === quickAddProductId);
     if (!prod) return;
 
-    // Verificar si sobrepasarÃ¡ el cupo de alguna de sus Ã¡reas
+    // Verificar si sobrepasará el cupo de alguna de sus áreas
     const targetAreas = prod.worlds || [];
     const willExceed = targetAreas.some(w => {
       const stats = areaLimitsStats[w];
@@ -493,7 +492,7 @@ export default function FlashDealsControlSection({
 
     if (willExceed) {
       const proceed = window.confirm(
-        `AtenciÃ³n: Este producto pertenece a un Ã¡rea que ya estÃ¡ en su cupo mÃ¡ximo estricto. Â¿Deseas activarlo de todas formas en oferta flash?`
+        `Atención: Este producto pertenece a un área que ya está en su cupo máximo estricto. ¿Deseas activarlo de todas formas en oferta flash?`
       );
       if (!proceed) return;
     }
@@ -503,15 +502,15 @@ export default function FlashDealsControlSection({
     setIsQuickAddOpen(false);
   };
 
-  // Handler maestro: Pausar, Reanudar / Despausar o Reestablecer ofertas flash por Ã¡rea o global
+  // Handler maestro: Pausar, Reanudar / Despausar o Reestablecer ofertas flash por área o global
   const handleControlFlash = async (action, areaKey = 'all') => {
-    const areaName = areaKey === 'all' ? 'todas las Ã¡reas' : (areaLimitsStats[areaKey]?.name || areaKey);
+    const areaName = areaKey === 'all' ? 'todas las áreas' : (areaLimitsStats[areaKey]?.name || areaKey);
 
     // Estado optimista previo para revertir en caso de error
     const prevPaused = localPausedAreas || pausedAreas;
     const prevGloballyPaused = isGloballyPaused;
 
-    // ActualizaciÃ³n inmediata en UI sin esperar round-trip de red
+    // Actualización inmediata en UI sin esperar round-trip de red
     if (action === 'pause_area' && areaKey !== 'all') {
       setLocalPausedAreas({ ...prevPaused, [areaKey]: true });
     } else if ((action === 'resume_area' || action === 'unpause_area') && areaKey !== 'all') {
@@ -544,7 +543,7 @@ export default function FlashDealsControlSection({
         if (data.flashDealsStatus?.isGloballyPaused !== undefined) {
           setLocalIsGloballyPaused(data.flashDealsStatus.isGloballyPaused);
         }
-        showNotification(data.message || `OperaciÃ³n completada en ${areaName}`, 'success');
+        showNotification(data.message || `Operación completada en ${areaName}`, 'success');
         if (onRefreshCatalog) await onRefreshCatalog();
       } else {
         if (action === 'pause_area' || action === 'pause_all') {
@@ -562,7 +561,7 @@ export default function FlashDealsControlSection({
       if (action === 'pause_area' || action === 'pause_all') {
         await fallbackPause(areaKey);
       } else {
-        showNotification('Error de conexiÃ³n al gestionar ofertas flash', 'error');
+        showNotification('Error de conexión al gestionar ofertas flash', 'error');
       }
     } finally {
       setActionLoading(false);
@@ -591,11 +590,11 @@ export default function FlashDealsControlSection({
         })
       });
     }
-    showNotification(`Se pausaron las ofertas en ${areaKey === 'all' ? 'todas las Ã¡reas' : areaKey}`, 'success');
+    showNotification(`Se pausaron las ofertas en ${areaKey === 'all' ? 'todas las áreas' : areaKey}`, 'success');
     if (onRefreshCatalog) onRefreshCatalog();
   };
 
-  // Handler: Pausar todas las ofertas de un Ã¡rea especÃ­fica (compatibilidad)
+  // Handler: Pausar todas las ofertas de un área específica (compatibilidad)
   const handlePauseAllInArea = async (areaKey) => {
     return handleControlFlash('pause_area', areaKey);
   };
@@ -632,14 +631,14 @@ export default function FlashDealsControlSection({
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-base sm:text-lg font-extrabold text-[#1F2421] font-heading">
-                  Control &amp; Delimitadores de Ofertas Flash por Ãrea
+                  Control &amp; Delimitadores de Ofertas Flash por Área
                 </h3>
                 <span className="hidden sm:inline-flex px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold">
-                  GestiÃ³n Estricta de Cupos
+                  Gestión Estricta de Cupos
                 </span>
               </div>
               <p className="text-xs text-gray-500 mt-0.5">
-                Monitor en tiempo real de productos en oferta, delimitadores por Ã¡rea y control de cupos en vivo.
+                Monitor en tiempo real de productos en oferta, delimitadores por área y control de cupos en vivo.
               </p>
             </div>
           </div>
@@ -663,7 +662,7 @@ export default function FlashDealsControlSection({
                 onClick={() => handleControlFlash('resume_all', 'all')}
                 disabled={actionLoading}
                 className="px-3 py-1.5 rounded-xl bg-emerald-700 text-white hover:bg-emerald-800 text-xs font-black transition-all flex items-center gap-1.5 shadow-xs cursor-pointer disabled:opacity-50"
-                title="Reanudar y despausar ofertas flash en todas las Ã¡reas"
+                title="Reanudar y despausar ofertas flash en todas las áreas"
               >
                 <Play className="w-3.5 h-3.5 fill-white" />
                 <span>Reanudar Todas</span>
@@ -684,7 +683,7 @@ export default function FlashDealsControlSection({
               onClick={() => handleControlFlash('reset_cycle', 'all')}
               disabled={actionLoading}
               className="px-3 py-1.5 rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-100 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
-              title="Reestablecer y reiniciar ciclo de ofertas flash y cronÃ³metros"
+              title="Reestablecer y reiniciar ciclo de ofertas flash y cronómetros"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Reestablecer Ciclo</span>
@@ -694,7 +693,7 @@ export default function FlashDealsControlSection({
               <button
                 onClick={onRefreshCatalog}
                 className="p-2 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-[#2D4F3E] transition-colors cursor-pointer"
-                title="Actualizar catÃ¡logo en tiempo real"
+                title="Actualizar catálogo en tiempo real"
               >
                 <RefreshCw className="w-4 h-4" />
               </button>
@@ -702,7 +701,7 @@ export default function FlashDealsControlSection({
           </div>
         </div>
 
-        {/* BANNER DE PAUSA GLOBAL O POR ÃREA */}
+        {/* BANNER DE PAUSA GLOBAL O POR ÁREA */}
         {isGloballyPaused ? (
           <div className="p-4 rounded-xl bg-amber-50 border border-amber-300 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 shadow-xs">
             <div className="flex items-center gap-3">
@@ -711,11 +710,11 @@ export default function FlashDealsControlSection({
               </div>
               <div>
                 <h4 className="text-sm font-extrabold text-amber-900 flex items-center gap-2">
-                  <span>Ofertas Flash Pausadas en Todas las Ãreas</span>
+                  <span>Ofertas Flash Pausadas en Todas las Áreas</span>
                   <span className="px-2 py-0.5 rounded-full bg-red-100 text-red-700 text-[10px] font-black uppercase">Taller en Pausa</span>
                 </h4>
                 <p className="text-xs text-amber-800 mt-0.5">
-                  La tienda no estÃ¡ mostrando ofertas flash temporales en ninguna secciÃ³n. Puedes reanudarlas o reiniciar el ciclo cuando desees para restaurar los cupos automÃ¡ticamente.
+                  La tienda no está mostrando ofertas flash temporales en ninguna sección. Puedes reanudarlas o reiniciar el ciclo cuando desees para restaurar los cupos automáticamente.
                 </p>
               </div>
             </div>
@@ -743,7 +742,7 @@ export default function FlashDealsControlSection({
             <div className="flex items-center gap-2 text-amber-900 font-bold">
               <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
               <span>
-                Ãreas actualmente pausadas: {Object.keys(pausedAreas).filter(k => pausedAreas[k]).map(k => areaLimitsStats[k]?.name || k).join(', ')}
+                Áreas actualmente pausadas: {Object.keys(pausedAreas).filter(k => pausedAreas[k]).map(k => areaLimitsStats[k]?.name || k).join(', ')}
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -753,21 +752,21 @@ export default function FlashDealsControlSection({
                 className="text-xs font-bold text-emerald-800 hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <Play className="w-3 h-3 fill-emerald-800" />
-                <span>Despausar Todas las Ãreas</span>
+                <span>Despausar Todas las Áreas</span>
               </button>
             </div>
           </div>
         ) : null}
 
-        {/* ANÃLISIS DINÃMICO: Â¿EN DÃ“NDE HAY MÃS OFERTAS? */}
+        {/* ANÁLISIS DINÁMICO: ¿EN DÃ“NDE HAY MÁS OFERTAS? */}
         <div className="p-4 rounded-xl bg-gradient-to-r from-[#FAF7F0] via-[#F4EDE0] to-[#FAF7F0] border border-[#E5D7B7] space-y-3">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
             <div className="flex items-center gap-2 text-xs font-bold text-[#1F2421]">
               <TrendingUp className="w-4 h-4 text-[#C28E38]" />
-              <span>DiagnÃ³stico de Volumen: Â¿En dÃ³nde hay mÃ¡s ofertas activas?</span>
+              <span>Diagnóstico de Volumen: ¿En dónde hay más ofertas activas?</span>
             </div>
 
-            {/* Badge de Ã¡rea lÃ­der */}
+            {/* Badge de área líder */}
             <div>
               {areasVolumeAnalysis.isEmpty ? (
                 <span className="px-2.5 py-1 rounded-full bg-gray-100 text-gray-600 text-xs font-medium">
@@ -776,7 +775,7 @@ export default function FlashDealsControlSection({
               ) : areasVolumeAnalysis.hasLeader ? (
                 <span className="px-3 py-1 rounded-full bg-[#9E472A] text-white text-xs font-black shadow-xs flex items-center gap-1.5 animate-pulse">
                   <Flame className="w-3.5 h-3.5 fill-white" />
-                  <span>Ãrea lÃ­der: {areasVolumeAnalysis.leaders[0].icon} {areasVolumeAnalysis.leaders[0].name} ({areasVolumeAnalysis.leaders[0].active} ofertas)</span>
+                  <span>Área líder: {areasVolumeAnalysis.leaders[0].icon} {areasVolumeAnalysis.leaders[0].name} ({areasVolumeAnalysis.leaders[0].active} ofertas)</span>
                 </span>
               ) : (
                 <span className="px-3 py-1 rounded-full bg-[#C28E38] text-white text-xs font-black shadow-xs flex items-center gap-1.5">
@@ -787,7 +786,7 @@ export default function FlashDealsControlSection({
             </div>
           </div>
 
-          {/* Barras comparativas de distribuciÃ³n por Ã¡rea */}
+          {/* Barras comparativas de distribución por área */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 pt-1">
             {areasVolumeAnalysis.list.map(area => {
               const isLeader = areasVolumeAnalysis.maxActive > 0 && area.active === areasVolumeAnalysis.maxActive;
@@ -837,7 +836,7 @@ export default function FlashDealsControlSection({
           </div>
         </div>
 
-        {/* MODIFICADOR DE TOPE MÃXIMO POR ÃREA (REGULADOR DE CUPOS EN VIVO) */}
+        {/* MODIFICADOR DE TOPE MÁXIMO POR ÁREA (REGULADOR DE CUPOS EN VIVO) */}
         <div className="p-5 rounded-2xl bg-white border border-[#E8E4DA] shadow-xs space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-3">
             <div className="flex items-start sm:items-center gap-2.5">
@@ -847,14 +846,14 @@ export default function FlashDealsControlSection({
               <div>
                 <div className="flex items-center gap-2 flex-wrap">
                   <h4 className="text-sm font-extrabold text-[#1F2421] font-heading">
-                    Modificador de Tope MÃ¡ximo por Ãrea
+                    Modificador de Tope Máximo por Área
                   </h4>
                   <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">
                     Regulador de Cupos Flash
                   </span>
                 </div>
                 <p className="text-xs text-gray-500">
-                  Ajusta libremente cuÃ¡ntas ofertas flash simultÃ¡neas se permiten como tope mÃ¡ximo en cada Ã¡rea del taller.
+                  Ajusta libremente cuántas ofertas flash simultáneas se permiten como tope máximo en cada área del taller.
                 </p>
               </div>
             </div>
@@ -867,10 +866,10 @@ export default function FlashDealsControlSection({
             </div>
           </div>
 
-          {/* Steppers por Ãrea */}
+          {/* Steppers por Área */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {[
-              { id: 'hogar', name: 'Hogar & DecoraciÃ³n', icon: 'ðŸ ', baseDefault: 3 },
+              { id: 'hogar', name: 'Hogar & Decoración', icon: 'ðŸ ', baseDefault: 3 },
               { id: 'negocios', name: 'Negocios & Marca', icon: 'ðŸ’¼', baseDefault: 3 },
               { id: 'eventos', name: 'Eventos Especiales', icon: 'ðŸŽ‰', baseDefault: 5 },
               { id: 'paquetes', name: 'Paquetes & Servicios', icon: 'ðŸŽ', baseDefault: 1 }
@@ -900,9 +899,9 @@ export default function FlashDealsControlSection({
 
                   <div className="mt-2.5 flex items-center justify-between gap-2">
                     <span className="text-[11px] text-gray-600 font-medium">
-                      Tope mÃ¡ximo:
+                      Tope máximo:
                     </span>
-                    {/* Stepper numÃ©rico */}
+                    {/* Stepper numérico */}
                     <div className="flex items-center bg-white border border-gray-300 rounded-lg shadow-2xs overflow-hidden">
                       <button
                         type="button"
@@ -936,7 +935,7 @@ export default function FlashDealsControlSection({
                     </div>
                   </div>
 
-                  {/* Micro estatus de ocupaciÃ³n vs tope */}
+                  {/* Micro estatus de ocupación vs tope */}
                   <div className="mt-2 flex items-center justify-between text-[10px] text-gray-500 font-mono">
                     <span>Activas ahora: {stats ? stats.active : 0}</span>
                     <span className={isOver ? 'text-red-700 font-bold' : 'text-emerald-700 font-bold'}>
@@ -948,11 +947,11 @@ export default function FlashDealsControlSection({
             })}
           </div>
 
-          {/* Botones de acciÃ³n del modificador */}
+          {/* Botones de acción del modificador */}
           <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 border-t border-gray-100">
             <div className="text-[11px] text-gray-500 flex items-center gap-1.5">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-              <span>Los topes se sincronizan al instante en el backend y respetan la rotaciÃ³n de 2 horas.</span>
+              <span>Los topes se sincronizan al instante en el backend y respetan la rotación de 2 horas.</span>
             </div>
 
             <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
@@ -976,7 +975,7 @@ export default function FlashDealsControlSection({
                 onClick={() => handleControlFlash('trim_to_limits', 'all')}
                 disabled={actionLoading || savingLimits}
                 className="px-3 py-1.5 rounded-xl border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5"
-                title="Apagar automÃ¡ticamente ofertas manuales sobrantes que excedan el tope"
+                title="Apagar automáticamente ofertas manuales sobrantes que excedan el tope"
               >
                 <Sparkles className="w-3 h-3 text-amber-600" />
                 <span>Ajustar al Tope (Limpiar Excedentes)</span>
@@ -1020,11 +1019,11 @@ export default function FlashDealsControlSection({
                     : 'bg-gray-50/70 border-gray-200 hover:border-gray-300'
                 }`}
               >
-                {/* Badge de mÃ¡s ofertas */}
+                {/* Badge de más ofertas */}
                 {isLeader && (
                   <div className="absolute -top-2.5 right-3 px-2 py-0.5 rounded-full bg-[#9E472A] text-white text-[9.5px] font-black uppercase tracking-wider shadow-2xs flex items-center gap-1">
                     <Flame className="w-2.5 h-2.5 fill-white" />
-                    <span>MÃ¡s Ofertas</span>
+                    <span>Más Ofertas</span>
                   </div>
                 )}
 
@@ -1035,7 +1034,7 @@ export default function FlashDealsControlSection({
                   </span>
 
                   <div className="flex items-center gap-1.5">
-                    {/* Mini Stepper de ajuste rÃ¡pido */}
+                    {/* Mini Stepper de ajuste rápido */}
                     <div
                       onClick={(e) => e.stopPropagation()}
                       className="flex items-center bg-white border border-gray-200 rounded-md shadow-2xs overflow-hidden"
@@ -1094,13 +1093,13 @@ export default function FlashDealsControlSection({
                 </div>
 
                 <div className="mt-2 text-[10.5px] text-gray-400">
-                  {area.total} productos totales en catÃ¡logo
+                  {area.total} productos totales en catálogo
                 </div>
 
                 {/* Barra de progreso de cupo */}
                 <div className="mt-3 space-y-1">
                   <div className="flex items-center justify-between text-[10px] text-gray-500 font-mono">
-                    <span>OcupaciÃ³n de cupo</span>
+                    <span>Ocupación de cupo</span>
                     <span className="font-bold">{area.isPaused ? '0%' : `${pct}%`}</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden">
@@ -1119,7 +1118,7 @@ export default function FlashDealsControlSection({
                   </div>
                 </div>
 
-                {/* Estatus semÃ¡foro y controles por Ã¡rea */}
+                {/* Estatus semáforo y controles por área */}
                 <div className="mt-3 pt-2.5 border-t border-gray-100 flex items-center justify-between gap-1 flex-wrap">
                   <span className="text-[10px] font-bold text-gray-500">
                     {area.isPaused ? (
@@ -1136,14 +1135,14 @@ export default function FlashDealsControlSection({
                       </span>
                     ) : area.isOptimal ? (
                       <span className="text-emerald-700 flex items-center gap-1 font-bold">
-                        <CheckCircle2 className="w-3 h-3" /> Cupo Ã³ptimo
+                        <CheckCircle2 className="w-3 h-3" /> Cupo óptimo
                       </span>
                     ) : (
                       <span className="text-gray-400">Cupo disponible</span>
                     )}
                   </span>
 
-                  {/* Acciones directas por cada Ã¡rea */}
+                  {/* Acciones directas por cada área */}
                   <div className="flex items-center gap-1">
                     {area.isPaused ? (
                       <button
@@ -1183,7 +1182,7 @@ export default function FlashDealsControlSection({
                       }}
                       disabled={actionLoading}
                       className="p-1 rounded-lg border border-gray-200 text-gray-500 hover:text-[#2D4F3E] hover:bg-gray-100 transition-all cursor-pointer"
-                      title={`Reestablecer cronÃ³metros y cupo de ${area.name}`}
+                      title={`Reestablecer cronómetros y cupo de ${area.name}`}
                     >
                       <RotateCcw className="w-2.5 h-2.5" />
                     </button>
@@ -1195,14 +1194,14 @@ export default function FlashDealsControlSection({
         </div>
       </div>
 
-      {/* BARRA DE FILTROS POR ÃREA & HERRAMIENTAS DE CONTROL */}
+      {/* BARRA DE FILTROS POR ÁREA & HERRAMIENTAS DE CONTROL */}
       <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#E8E4DA] shadow-xs space-y-4">
-        {/* PestaÃ±as de filtro por Ã¡rea */}
+        {/* Pestañas de filtro por área */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-gray-100 pb-3">
           <div className="flex items-center gap-1.5 flex-wrap">
             <span className="text-xs font-bold text-gray-500 mr-1 flex items-center gap-1">
               <Filter className="w-3.5 h-3.5 text-[#2D4F3E]" />
-              <span>Filtrar por Ãrea:</span>
+              <span>Filtrar por Área:</span>
             </span>
 
             {/* Todas */}
@@ -1214,7 +1213,7 @@ export default function FlashDealsControlSection({
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              <span>ðŸŒ Todas las Ãreas</span>
+              <span>ðŸŒ Todas las Áreas</span>
               <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
                 selectedArea === 'all' ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-700'
               }`}>
@@ -1241,7 +1240,7 @@ export default function FlashDealsControlSection({
                 <span className="text-[9px] bg-red-100 text-red-800 border border-red-300 px-1 rounded font-black">PAUSA</span>
               )}
               {areasVolumeAnalysis.maxActive > 0 && areaLimitsStats.hogar.active === areasVolumeAnalysis.maxActive && !areaLimitsStats.hogar.isPaused && (
-                <span className="text-[9px] bg-[#9E472A] text-white px-1 rounded font-black">LÃDER</span>
+                <span className="text-[9px] bg-[#9E472A] text-white px-1 rounded font-black">LÍDER</span>
               )}
             </button>
 
@@ -1264,7 +1263,7 @@ export default function FlashDealsControlSection({
                 <span className="text-[9px] bg-red-100 text-red-800 border border-red-300 px-1 rounded font-black">PAUSA</span>
               )}
               {areasVolumeAnalysis.maxActive > 0 && areaLimitsStats.negocios.active === areasVolumeAnalysis.maxActive && !areaLimitsStats.negocios.isPaused && (
-                <span className="text-[9px] bg-[#9E472A] text-white px-1 rounded font-black">LÃDER</span>
+                <span className="text-[9px] bg-[#9E472A] text-white px-1 rounded font-black">LÍDER</span>
               )}
             </button>
 
@@ -1287,7 +1286,7 @@ export default function FlashDealsControlSection({
                 <span className="text-[9px] bg-red-100 text-red-800 border border-red-300 px-1 rounded font-black">PAUSA</span>
               )}
               {areasVolumeAnalysis.maxActive > 0 && areaLimitsStats.eventos.active === areasVolumeAnalysis.maxActive && !areaLimitsStats.eventos.isPaused && (
-                <span className="text-[9px] bg-[#9E472A] text-white px-1 rounded font-black">LÃDER</span>
+                <span className="text-[9px] bg-[#9E472A] text-white px-1 rounded font-black">LÍDER</span>
               )}
             </button>
 
@@ -1310,12 +1309,12 @@ export default function FlashDealsControlSection({
                 <span className="text-[9px] bg-red-100 text-red-800 border border-red-300 px-1 rounded font-black">PAUSA</span>
               )}
               {areasVolumeAnalysis.maxActive > 0 && areaLimitsStats.paquetes.active === areasVolumeAnalysis.maxActive && !areaLimitsStats.paquetes.isPaused && (
-                <span className="text-[9px] bg-[#9E472A] text-white px-1 rounded font-black">LÃDER</span>
+                <span className="text-[9px] bg-[#9E472A] text-white px-1 rounded font-black">LÍDER</span>
               )}
             </button>
           </div>
 
-          {/* Botones de acciÃ³n rÃ¡pida: Activar producto, Pausar/Reanudar Ã¡rea & Reestablecer */}
+          {/* Botones de acción rápida: Activar producto, Pausar/Reanudar área & Reestablecer */}
           <div className="flex items-center gap-2 flex-wrap">
             {selectedArea === 'all' ? (
               <>
@@ -1345,7 +1344,7 @@ export default function FlashDealsControlSection({
                   onClick={() => handleControlFlash('reset_cycle', 'all')}
                   disabled={actionLoading}
                   className="px-3 py-1.5 rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-100 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
-                  title="Reestablecer ciclo de ofertas y cronÃ³metros de todas las Ã¡reas"
+                  title="Reestablecer ciclo de ofertas y cronómetros de todas las áreas"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                   <span>Reestablecer Ciclo</span>
@@ -1358,10 +1357,10 @@ export default function FlashDealsControlSection({
                     onClick={() => handleControlFlash('resume_area', selectedArea)}
                     disabled={actionLoading}
                     className="px-3 py-1.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-black transition-all flex items-center gap-1.5 shadow-xs cursor-pointer disabled:opacity-50"
-                    title={`Reanudar y despausar Ã¡rea de ${areaLimitsStats[selectedArea]?.name}`}
+                    title={`Reanudar y despausar área de ${areaLimitsStats[selectedArea]?.name}`}
                   >
                     <Play className="w-3.5 h-3.5 fill-white" />
-                    <span>â–¶ï¸ Reanudar Ãrea</span>
+                    <span>â–¶ï¸ Reanudar Área</span>
                   </button>
                 ) : (
                   <button
@@ -1371,7 +1370,7 @@ export default function FlashDealsControlSection({
                     title={`Pausar ofertas de ${areaLimitsStats[selectedArea]?.name}`}
                   >
                     <Pause className="w-3.5 h-3.5" />
-                    <span>â¸ï¸ Pausar Ãrea</span>
+                    <span>â¸ï¸ Pausar Área</span>
                   </button>
                 )}
 
@@ -1379,7 +1378,7 @@ export default function FlashDealsControlSection({
                   onClick={() => handleControlFlash('reset_cycle', selectedArea)}
                   disabled={actionLoading}
                   className="px-3 py-1.5 rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-100 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
-                  title={`Reestablecer cronÃ³metros y cupo de ${areaLimitsStats[selectedArea]?.name}`}
+                  title={`Reestablecer cronómetros y cupo de ${areaLimitsStats[selectedArea]?.name}`}
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                   <span>Reestablecer</span>
@@ -1401,7 +1400,7 @@ export default function FlashDealsControlSection({
           </div>
         </div>
 
-        {/* PANEL DESPLEGABLE: ACTIVAR NUEVA OFERTA FLASH EN PRODUCTO DEL ÃREA */}
+        {/* PANEL DESPLEGABLE: ACTIVAR NUEVA OFERTA FLASH EN PRODUCTO DEL ÁREA */}
         {isQuickAddOpen && (
           <div className="p-4 rounded-xl bg-[#FAF7F0] border border-[#E5D7B7] space-y-3 animate-in fade-in duration-200">
             <div className="flex items-center justify-between border-b border-[#E5D7B7]/60 pb-2">
@@ -1444,7 +1443,7 @@ export default function FlashDealsControlSection({
 
               <div>
                 <label className="block text-[11px] font-bold text-gray-700 mb-1">
-                  % Descuento Flash (MÃ¡x 15%):
+                  % Descuento Flash (Máx 15%):
                 </label>
                 <select
                   value={quickAddDiscount}
@@ -1453,27 +1452,27 @@ export default function FlashDealsControlSection({
                 >
                   <option value={5}>-5% Descuento</option>
                   <option value={10}>-10% Descuento</option>
-                  <option value={15}>-15% Descuento (Tope MÃ¡ximo Taller)</option>
+                  <option value={15}>-15% Descuento (Tope Máximo Taller)</option>
                 </select>
               </div>
 
               <div>
                 <label className="block text-[11px] font-bold text-gray-700 mb-1">
-                  DuraciÃ³n de la Oferta:
+                  Duración de la Oferta:
                 </label>
                 <select
                   value={quickAddDuration}
                   onChange={(e) => setQuickAddDuration(Number(e.target.value))}
                   className="w-full px-3 py-2 rounded-lg border border-gray-300 bg-white font-medium focus:ring-1 focus:ring-[#2D4F3E]"
                 >
-                  <option value={15}>âš¡ 15 minutos (Blitz RelÃ¡mpago)</option>
+                  <option value={15}>âš¡ 15 minutos (Blitz Relámpago)</option>
                   <option value={30}>30 minutos</option>
                   <option value={60}>1 hora</option>
                   <option value={120}>2 horas (Recomendado)</option>
                   <option value={180}>3 horas</option>
                   <option value={360}>6 horas</option>
                   <option value={720}>12 horas</option>
-                  <option value={1440}>24 horas (DÃ­a Completo)</option>
+                  <option value={1440}>24 horas (Día Completo)</option>
                 </select>
               </div>
 
@@ -1482,7 +1481,7 @@ export default function FlashDealsControlSection({
                   {selectedArea !== 'all' && areaLimitsStats[selectedArea]?.isAtLimit && (
                     <span className="text-amber-700 font-bold flex items-center gap-1">
                       <AlertTriangle className="w-3.5 h-3.5" />
-                      Aviso: El Ã¡rea {areaLimitsStats[selectedArea]?.name} ya alcanzÃ³ su cupo de {areaLimitsStats[selectedArea]?.target} ofertas.
+                      Aviso: El área {areaLimitsStats[selectedArea]?.name} ya alcanzó su cupo de {areaLimitsStats[selectedArea]?.target} ofertas.
                     </span>
                   )}
                 </span>
@@ -1517,7 +1516,7 @@ export default function FlashDealsControlSection({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Buscar por cÃ³digo, nombre o categorÃ­a en oferta..."
+              placeholder="Buscar por código, nombre o categoría en oferta..."
               className="w-full pl-9 pr-8 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:ring-1 focus:ring-[#2D4F3E]"
             />
             {searchQuery && (
@@ -1531,13 +1530,13 @@ export default function FlashDealsControlSection({
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-[11px] text-gray-500 font-medium">DuraciÃ³n:</span>
+            <span className="text-[11px] text-gray-500 font-medium">Duración:</span>
             <select
               value={filterDuration}
               onChange={(e) => setFilterDuration(e.target.value)}
               className="text-xs px-2.5 py-1.5 rounded-xl border border-gray-200 bg-white font-medium"
             >
-              <option value="all">Cualquier duraciÃ³n</option>
+              <option value="all">Cualquier duración</option>
               <option value="blitz">Solo Blitz (â‰¤ 15 min)</option>
               <option value="short">Cortas (15m a 3h)</option>
               <option value="long">Largas (&gt; 3h)</option>
@@ -1556,13 +1555,13 @@ export default function FlashDealsControlSection({
             </h4>
             {selectedArea !== 'all' && (
               <span className="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold">
-                Ãrea: {areaLimitsStats[selectedArea]?.name}
+                Área: {areaLimitsStats[selectedArea]?.name}
               </span>
             )}
           </div>
 
           <span className="text-[11px] text-gray-400 font-medium">
-            EspecificaciÃ³n en vivo: porcentaje de descuento, cronÃ³metro y control por producto
+            Especificación en vivo: porcentaje de descuento, cronómetro y control por producto
           </span>
         </div>
 
@@ -1573,7 +1572,7 @@ export default function FlashDealsControlSection({
               No hay ofertas flash activas que coincidan con los filtros seleccionados.
             </p>
             <p className="text-[11px] text-gray-400 max-w-md mx-auto">
-              Puedes cambiar el Ã¡rea seleccionada, limpiar la bÃºsqueda o usar el botÃ³n &ldquo;âš¡ Poner Producto en Flash&rdquo; para activar una oferta de inmediato.
+              Puedes cambiar el área seleccionada, limpiar la búsqueda o usar el botón &ldquo;âš¡ Poner Producto en Flash&rdquo; para activar una oferta de inmediato.
             </p>
           </div>
         ) : (
@@ -1581,12 +1580,12 @@ export default function FlashDealsControlSection({
             <table className="w-full text-left text-xs">
               <thead className="bg-[#F8F7F2] border-b border-[#E8E4DA] text-gray-600 uppercase font-bold text-[10px]">
                 <tr>
-                  <th className="py-2.5 px-3">Foto &amp; CÃ³digo</th>
+                  <th className="py-2.5 px-3">Foto &amp; Código</th>
                   <th className="py-2.5 px-3">Producto</th>
-                  <th className="py-2.5 px-3">Ãreas Asignadas</th>
+                  <th className="py-2.5 px-3">Áreas Asignadas</th>
                   <th className="py-2.5 px-3">Descuento &amp; Precios</th>
                   <th className="py-2.5 px-3">Tiempo en Oferta / Restante</th>
-                  <th className="py-2.5 px-3 text-right">Control RÃ¡pido de Oferta</th>
+                  <th className="py-2.5 px-3 text-right">Control Rápido de Oferta</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -1601,10 +1600,10 @@ export default function FlashDealsControlSection({
 
                   return (
                     <tr key={p.id} className="hover:bg-gray-50/80 transition-colors">
-                      {/* Foto y CÃ³digo */}
+                      {/* Foto y Código */}
                       <td className="py-2.5 px-3">
                         <div className="flex items-center gap-2">
-                          <ImageOptimized loading="lazy"
+                          <img loading="lazy"
                             src={p.primaryImage || p.whiteBgImage || '/placeholder.png'}
                             alt=""
                             className="w-10 h-10 rounded-lg object-cover bg-white border border-gray-200 shrink-0"
@@ -1622,13 +1621,13 @@ export default function FlashDealsControlSection({
                           {item.isManual ? (
                             <span className="text-emerald-700 font-semibold">â— Manual (Admin)</span>
                           ) : (
-                            <span className="text-amber-700 font-semibold">â— RotaciÃ³n AutomÃ¡tica</span>
+                            <span className="text-amber-700 font-semibold">â— Rotación Automática</span>
                           )}
                           <span>â€¢ {p.category || 'General'}</span>
                         </div>
                       </td>
 
-                      {/* Ãreas Asignadas */}
+                      {/* Áreas Asignadas */}
                       <td className="py-2.5 px-3">
                         <div className="flex flex-wrap gap-1">
                           {p.worlds && p.worlds.length > 0 ? (
@@ -1646,7 +1645,7 @@ export default function FlashDealsControlSection({
                               </span>
                             ))
                           ) : (
-                            <span className="text-[10px] text-gray-400">Sin Ã¡rea asignada</span>
+                            <span className="text-[10px] text-gray-400">Sin área asignada</span>
                           )}
 
                           {(p.isBundle || p.category === 'paquetes' || p.category === 'servicios') && (
@@ -1664,7 +1663,7 @@ export default function FlashDealsControlSection({
                           <div className="flex items-center gap-1.5">
                             <span className="text-[10px] text-gray-400 line-through font-semibold">${originalPrice}</span>
                             
-                            {/* Selector rÃ¡pido de descuento */}
+                            {/* Selector rápido de descuento */}
                             <select
                               value={Math.min(15, item.discountPercent || 15)}
                               onChange={(e) => handleUpdateDurationAndDiscount(p, item.durationMinutes, Math.min(15, Number(e.target.value)))}
@@ -1707,16 +1706,16 @@ export default function FlashDealsControlSection({
                           {isUrgent && (
                             <span className="text-[10px] font-bold text-red-600 flex items-center gap-0.5">
                               <Zap className="w-3 h-3 fill-red-600" />
-                              <span>Â¡Activa en reloj flotante de tienda!</span>
+                              <span>¡Activa en reloj flotante de tienda!</span>
                             </span>
                           )}
                         </div>
                       </td>
 
-                      {/* Control RÃ¡pido de Oferta: DuraciÃ³n, Apagar, Editar */}
+                      {/* Control Rápido de Oferta: Duración, Apagar, Editar */}
                       <td className="py-2.5 px-3 text-right">
                         <div className="flex items-center justify-end gap-1.5">
-                          {/* Selector directo de duraciÃ³n */}
+                          {/* Selector directo de duración */}
                           <select
                             value={item.durationMinutes}
                             onChange={(e) => handleUpdateDurationAndDiscount(p, Number(e.target.value), item.discountPercent)}
@@ -1734,7 +1733,7 @@ export default function FlashDealsControlSection({
                             <option value={1440}>24h</option>
                           </select>
 
-                          {/* BotÃ³n Apagar Oferta */}
+                          {/* Botón Apagar Oferta */}
                           <button
                             onClick={() => handleToggleFlash(p, false)}
                             disabled={actionLoading}
@@ -1744,12 +1743,12 @@ export default function FlashDealsControlSection({
                             Apagar
                           </button>
 
-                          {/* BotÃ³n Editar Producto */}
+                          {/* Botón Editar Producto */}
                           {onEditProduct && (
                             <button
                               onClick={() => onEditProduct(p)}
                               className="p-1 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100"
-                              title="Editar producto y Ã¡reas completas"
+                              title="Editar producto y áreas completas"
                             >
                               <Edit className="w-3.5 h-3.5" />
                             </button>
@@ -1764,15 +1763,15 @@ export default function FlashDealsControlSection({
           </div>
         )}
 
-        {/* BANNER INFORMATIVO: COMPARTICIÃ“N ENTRE ÃREAS */}
+        {/* BANNER INFORMATIVO: COMPARTICIÃ“N ENTRE ÁREAS */}
         <div className="p-3.5 rounded-xl bg-[#FAF7F0] border border-[#E5D7B7] text-xs text-[#2D4F3E] flex items-start gap-2.5">
           <Sparkles className="w-4 h-4 text-[#C28E38] shrink-0 mt-0.5" />
           <div className="space-y-0.5">
             <span className="font-bold text-[#1F2421] block">
-              ðŸ”„ ComparticiÃ³n AutomÃ¡tica entre Ãreas &amp; PreservaciÃ³n de MÃ¡rgenes
+              ðŸ”„ Compartición Automática entre Áreas &amp; Preservación de Márgenes
             </span>
             <p className="text-[11px] text-gray-600 leading-relaxed">
-              Cuando un producto pertenece a mÃºltiples Ã¡reas (ej. Hogar + Eventos), su oferta flash, descuento y temporizador se reflejan de forma sincronizada en ambas Ã¡reas de la tienda sin alterar los costos base de taller ni duplicar inventario.
+              Cuando un producto pertenece a múltiples áreas (ej. Hogar + Eventos), su oferta flash, descuento y temporizador se reflejan de forma sincronizada en ambas áreas de la tienda sin alterar los costos base de taller ni duplicar inventario.
             </p>
           </div>
         </div>

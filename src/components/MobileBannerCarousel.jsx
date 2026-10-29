@@ -1,6 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Sparkles, ChevronDown, ChevronUp, ArrowRight, Printer, Flame, Layers, Wand2 } from 'lucide-react';
-import ImageOptimized from './ImageOptimized';
 
 export default function MobileBannerCarousel({
   slides = [],
@@ -14,8 +13,8 @@ export default function MobileBannerCarousel({
   const defaultSlides = [
     {
       id: 'slide-1',
-      title: 'ColecciÃ³n Hogar & DecoraciÃ³n',
-      subtitle: 'LÃ¡mparas 3D, maceteros geomÃ©tricos y percheros',
+      title: 'Colección Hogar & Decoración',
+      subtitle: 'Lámparas 3D, maceteros geométricos y percheros',
       badge: 'Novedades de Taller',
       image: './uploads/img_001.jpg',
       worldId: 'hogar'
@@ -23,14 +22,14 @@ export default function MobileBannerCarousel({
     {
       id: 'slide-2',
       title: 'Branding Comercial & Mostrador',
-      subtitle: 'SeÃ±alÃ©tica inteligente, QR y enlaces NFC para negocios',
+      subtitle: 'Señalética inteligente, QR y enlaces NFC para negocios',
       badge: 'Soluciones para Negocios',
       image: './uploads/pack_barberia_boutique_contexto.jpg',
       worldId: 'negocios'
     },
     {
       id: 'slide-3',
-      title: 'Bodas, XV AÃ±os & Recuerdos',
+      title: 'Bodas, XV Años & Recuerdos',
       subtitle: 'Letreros de bienvenida, copas grabadas y souvenirs',
       badge: 'Eventos Especiales',
       image: './uploads/bienvenida_ceremonia_boda.jpg',
@@ -39,8 +38,8 @@ export default function MobileBannerCarousel({
     {
       id: 'slide-4',
       title: 'Setup Gamer & Home Office',
-      subtitle: 'Soportes de audÃ­fonos, bandejas y organizadores modulares',
-      badge: 'ImpresiÃ³n 3D Pro',
+      subtitle: 'Soportes de audífonos, bandejas y organizadores modulares',
+      badge: 'Impresión 3D Pro',
       image: './uploads/kit_home_office_gamer_contexto.jpg',
       worldId: 'hogar'
     }
@@ -48,7 +47,7 @@ export default function MobileBannerCarousel({
 
   const activeSlides = (slides && slides.length > 0) ? slides : defaultSlides;
 
-  // Auto-rotaciÃ³n cada 4.5 segundos
+  // Auto-rotación cada 4.5 segundos
   useEffect(() => {
     if (activeSlides.length <= 1) return;
     const interval = setInterval(() => {
@@ -60,9 +59,9 @@ export default function MobileBannerCarousel({
   const activeSlide = activeSlides[currentIdx] || activeSlides[0];
 
   const techniques = [
-    { name: 'ImpresiÃ³n 3D', icon: Printer },
-    { name: 'Corte LÃ¡ser', icon: Flame },
-    { name: 'SublimaciÃ³n', icon: Layers },
+    { name: 'Impresión 3D', icon: Printer },
+    { name: 'Corte Láser', icon: Flame },
+    { name: 'Sublimación', icon: Layers },
     { name: 'Vinil Textil', icon: Wand2 }
   ];
 
@@ -78,7 +77,7 @@ export default function MobileBannerCarousel({
         }}
       >
         {/* Imagen de fondo */}
-        <ImageOptimized loading="lazy"
+        <img loading="lazy"
           src={activeSlide.image || './uploads/img_001.jpg'}
           alt={activeSlide.title || 'Artesano Digital'}
           className="w-full h-full object-cover object-center transition-all duration-700 brightness-85"
@@ -136,7 +135,7 @@ export default function MobileBannerCarousel({
             <span>Si lo piensas, se hace Â· Taller de Manufactura SLP</span>
           </span>
           <span className="flex items-center gap-1 text-[11px] text-gray-400 font-semibold">
-            <span>{isCurtainOpen ? 'Ocultar' : 'Ver mÃ¡s'}</span>
+            <span>{isCurtainOpen ? 'Ocultar' : 'Ver más'}</span>
             {isCurtainOpen ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
           </span>
         </button>
@@ -145,7 +144,7 @@ export default function MobileBannerCarousel({
         {isCurtainOpen && (
           <div className="p-3 bg-[#FAF9F5] border-t border-[#E8E4DA] text-xs space-y-2.5 animate-fadeIn">
             <p className="text-gray-600 leading-relaxed text-[11px]">
-              DiseÃ±o, personalizaciÃ³n y manufactura de piezas Ãºnicas en <strong>San Luis PotosÃ­</strong> con envÃ­os a todo MÃ©xico. Sin mÃ­nimos forzados y con atenciÃ³n directa de taller.
+              Diseño, personalización y manufactura de piezas únicas en <strong>San Luis Potosí</strong> con envíos a todo México. Sin mínimos forzados y con atención directa de taller.
             </p>
             <div className="grid grid-cols-2 gap-1.5 pt-1">
               {techniques.map(t => {

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Layers, Sparkles, Cpu, Hammer, ArrowRight, MessageSquare } from 'lucide-react';
-import ImageOptimized from './ImageOptimized';
 
 /**
  * CraftShowcase — Muestra fotográfica del taller, materiales y calidad de fabricación
@@ -35,7 +34,7 @@ export default function CraftShowcase({ settings }) {
           
           {/* Card 1: Madera y Grabado Láser */}
           <div className="group relative rounded-3xl overflow-hidden bg-black/40 border border-white/10 flex flex-col justify-end min-h-[380px] sm:min-h-[440px] shadow-2xl transition-all duration-300 hover:border-emerald-500/40">
-            <ImageOptimized 
+            <img 
               src="./brand/mockup_madera.jpg" 
               alt="Grabado y Corte Láser en Madera — Artesano Digital" 
               className="absolute inset-0 w-full h-full object-cover object-center brightness-90 group-hover:scale-105 transition-transform duration-700"
@@ -59,7 +58,7 @@ export default function CraftShowcase({ settings }) {
 
           {/* Card 2: Identidad y Relieve */}
           <div className="group relative rounded-3xl overflow-hidden bg-black/40 border border-white/10 flex flex-col justify-end min-h-[380px] sm:min-h-[440px] shadow-2xl transition-all duration-300 hover:border-pink-500/40">
-            <ImageOptimized 
+            <img 
               src="./brand/mockup_tarjeta.jpg" 
               alt="Identidad de Marca y Personalización Premium — Artesano Digital" 
               className="absolute inset-0 w-full h-full object-cover object-center brightness-90 group-hover:scale-105 transition-transform duration-700"

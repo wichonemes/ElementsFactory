@@ -1,6 +1,5 @@
 ﻿import React from 'react';
 import { 
-import ImageOptimized from './ImageOptimized';
   ArrowLeft, 
   MessageCircle, 
   FileText, 
@@ -47,7 +46,7 @@ export default function MobileMoreMenuModal({
           </button>
           <div className="flex items-center gap-2.5">
             <div className="w-10 h-10 rounded-full bg-white/10 border border-white/20 p-1 flex items-center justify-center">
-              <ImageOptimized loading="lazy"
+              <img loading="lazy"
                 src="./brand/artesano_isotipo_transparente.png"
                 alt="Artesano Digital"
                 className="w-full h-full object-contain"
@@ -69,19 +68,19 @@ export default function MobileMoreMenuModal({
           <div className="flex items-center justify-between text-xs font-bold text-gray-900">
             <span className="flex items-center gap-1.5">
               <MapPin className="w-3.5 h-3.5 text-[#2D4F3E]" />
-              <span>Taller Activo en San Luis PotosÃ­</span>
+              <span>Taller Activo en San Luis Potosí</span>
             </span>
             <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">
-              EnvÃ­os Nacionales
+              Envíos Nacionales
             </span>
           </div>
           <p className="text-[11px] text-gray-500 leading-snug">
-            Cotizamos y fabricamos piezas personalizadas sin mÃ­nimos forzados.
+            Cotizamos y fabricamos piezas personalizadas sin mínimos forzados.
           </p>
         </div>
       </div>
 
-      {/* 3. Lista de Accesos estilo MenÃº MÃ¡s de Mercado Libre (Captura 2) */}
+      {/* 3. Lista de Accesos estilo Menú Más de Mercado Libre (Captura 2) */}
       <div className="flex-1 overflow-y-auto divide-y divide-gray-100">
         {/* WhatsApp Directo */}
         <button
@@ -98,13 +97,13 @@ export default function MobileMoreMenuModal({
             </div>
             <div>
               <div className="text-xs font-bold text-gray-900">WhatsApp de Taller</div>
-              <div className="text-[10px] text-gray-500">AsesorÃ­a directa y resoluciÃ³n de dudas</div>
+              <div className="text-[10px] text-gray-500">Asesoría directa y resolución de dudas</div>
             </div>
           </div>
           <ChevronRight className="w-4 h-4 text-gray-400" />
         </button>
 
-        {/* CatÃ¡logo MÃ³vil PDF */}
+        {/* Catálogo Móvil PDF */}
         {isCatalogEnabled && (
           <a
             href={catalogPdfUrl}
@@ -118,7 +117,7 @@ export default function MobileMoreMenuModal({
               </div>
               <div>
                 <div className="text-xs font-bold text-gray-900">
-                  {settings?.mobileCatalogConfig?.buttonText || 'CatÃ¡logo MÃ³vil PDF (9:16)'}
+                  {settings?.mobileCatalogConfig?.buttonText || 'Catálogo Móvil PDF (9:16)'}
                 </div>
                 <div className="text-[10px] text-gray-500">Formato vertical para celular con enlaces MakerWorld</div>
               </div>
@@ -142,7 +141,7 @@ export default function MobileMoreMenuModal({
             </div>
             <div>
               <div className="text-xs font-bold text-gray-900">Calculadora de Cotizaciones</div>
-              <div className="text-[10px] text-gray-500">Estima costos segÃºn tÃ©cnica y medidas</div>
+              <div className="text-[10px] text-gray-500">Estima costos según técnica y medidas</div>
             </div>
           </div>
           <ChevronRight className="w-4 h-4 text-gray-400" />
@@ -163,7 +162,7 @@ export default function MobileMoreMenuModal({
             </div>
             <div>
               <div className="text-xs font-bold text-gray-900">Arcade &amp; Canje de Cupones</div>
-              <div className="text-[10px] text-gray-500">Juega y obtÃ©n descuentos para tus pedidos</div>
+              <div className="text-[10px] text-gray-500">Juega y obtén descuentos para tus pedidos</div>
             </div>
           </div>
           <ChevronRight className="w-4 h-4 text-gray-400" />

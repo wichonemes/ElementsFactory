@@ -1,6 +1,5 @@
 ﻿import React, { useState, useEffect, useMemo } from 'react';
 import {
-import ImageOptimized from './ImageOptimized';
   X, Shield, Lock, LogOut, Plus, Edit, Copy, Trash2, Eye,
   BarChart3, Package, FolderTree, Settings, Upload, Check, AlertTriangle,
   ExternalLink, Search, RefreshCw, KeyRound, Sparkles,
@@ -56,8 +55,8 @@ import {
   num
 } from '../../shared/costing.js';
 
-// Helper para generar una receta de manufactura (BOM) inicial realista segÃºn la tÃ©cnica
-// Helper para generar una receta de manufactura (BOM) inicial realista segÃºn la tÃ©cnica
+// Helper para generar una receta de manufactura (BOM) inicial realista según la técnica
+// Helper para generar una receta de manufactura (BOM) inicial realista según la técnica
 export function getPresetItemsForTechnique(tech, rawMaterials = []) {
   const findMat = (id, fallbackQ) => {
     const byId = rawMaterials.find(m => m.id === id);
@@ -106,10 +105,10 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
 
   if (tech === '3d_resina') {
     const resinaMat = findMat('mat-resina-uv-405nm', 'resina') || {
-      id: 'mat-resina-uv-405nm', name: 'Resina FotopolÃ­mero UV 405nm Gris/Negro (1000g)', costPerUnit: 650, packageQuantity: 1000, packageMeasurement: 'g', unit: 'botella (1 kg)'
+      id: 'mat-resina-uv-405nm', name: 'Resina Fotopolímero UV 405nm Gris/Negro (1000g)', costPerUnit: 650, packageQuantity: 1000, packageMeasurement: 'g', unit: 'botella (1 kg)'
     };
     const alcoholMat = findMat('mat-alcohol-isopropilico', 'isopropilico') || {
-      id: 'mat-alcohol-isopropilico', name: 'Alcohol IsopropÃ­lico 99.9% para Lavado de Piezas (1000 ml)', costPerUnit: 120, packageQuantity: 1000, packageMeasurement: 'ml', unit: 'litro'
+      id: 'mat-alcohol-isopropilico', name: 'Alcohol Isopropílico 99.9% para Lavado de Piezas (1000 ml)', costPerUnit: 120, packageQuantity: 1000, packageMeasurement: 'ml', unit: 'litro'
     };
     const lacaMat = findMat('mat-laca-spray', 'laca') || {
       id: 'mat-laca-spray', name: 'Laca Protectora Selladora Mate UV en Spray (400 ml)', costPerUnit: 120, packageQuantity: 400, packageMeasurement: 'ml', unit: 'lata (400 ml)'
@@ -162,7 +161,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
 
   if (tech === 'laser' || tech === 'laser_madera') {
     const maderaMat = findMat('mat-madera-abedul-3mm', 'abedul') || findMat('mat-madera-triplay-3mm', 'triplay') || {
-      id: 'mat-madera-triplay-3mm', name: 'Madera Triplay / Contrachapada Pino 3mm Calidad LÃ¡ser (60x40 cm)', costPerUnit: 45, packageQuantity: 2400, packageMeasurement: 'cmÂ²', unit: 'placa (60x40 cm)'
+      id: 'mat-madera-triplay-3mm', name: 'Madera Triplay / Contrachapada Pino 3mm Calidad Láser (60x40 cm)', costPerUnit: 45, packageQuantity: 2400, packageMeasurement: 'cmÂ²', unit: 'placa (60x40 cm)'
     };
     const barnizMat = findMat('mat-barniz-poliuretano-transparente', 'barniz poliuretano') || findMat('mat-barniz-poliuretano-spray', 'barniz spray') || findMat('mat-laca-spray', 'laca') || {
       id: 'mat-barniz-poliuretano-spray', name: 'Barniz Poliuretano Transparente Satinado en Spray (400 ml)', costPerUnit: 135, packageQuantity: 400, packageMeasurement: 'ml', unit: 'lata (400 ml)'
@@ -174,10 +173,10 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
       id: 'mat-lija-madera-fina-220', name: 'Lija de Madera Fina Grano 220 para Pulido y Cantos Suaves (Pliego)', costPerUnit: 14, packageQuantity: 1, packageMeasurement: 'pliego', unit: 'pliego'
     };
     const sierraMat = findMat('mat-desgaste-corte-sierra-laser', 'desgaste corte') || {
-      id: 'mat-desgaste-corte-sierra-laser', name: 'Consumible Indirecto de Corte (Desgaste Hoja Sierra / Tubo LÃ¡ser CO2)', costPerUnit: 1.5, packageQuantity: 1, packageMeasurement: 'corte', unit: 'corte'
+      id: 'mat-desgaste-corte-sierra-laser', name: 'Consumible Indirecto de Corte (Desgaste Hoja Sierra / Tubo Láser CO2)', costPerUnit: 1.5, packageQuantity: 1, packageMeasurement: 'corte', unit: 'corte'
     };
     const estopaMat = findMat('mat-estopa-limpieza-taller', 'estopa') || {
-      id: 'mat-estopa-limpieza-taller', name: 'Estopa de AlgodÃ³n Fino y PaÃ±os para Barnizado y Limpieza (1 kg)', costPerUnit: 45, packageQuantity: 50, packageMeasurement: 'paÃ±o', unit: 'paquete'
+      id: 'mat-estopa-limpieza-taller', name: 'Estopa de Algodón Fino y Paños para Barnizado y Limpieza (1 kg)', costPerUnit: 45, packageQuantity: 50, packageMeasurement: 'paño', unit: 'paquete'
     };
     return [
       {
@@ -260,7 +259,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
         wasteQuantity: 0,
         wasteType: 'none',
         totalQuantity: 1,
-        unit: 'paÃ±o',
+        unit: 'paño',
         unitCost: 0.8,
         totalCost: 0.80
       }
@@ -269,13 +268,13 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
 
   if (tech === 'laser_llavero') {
     const maderaMat = findMat('mat-madera-abedul-3mm', 'abedul') || findMat('mat-madera-triplay-3mm', 'triplay') || {
-      id: 'mat-madera-triplay-3mm', name: 'Madera Triplay / Contrachapada Pino 3mm Calidad LÃ¡ser (60x40 cm)', costPerUnit: 45, packageQuantity: 2400, packageMeasurement: 'cmÂ²', unit: 'placa (60x40 cm)'
+      id: 'mat-madera-triplay-3mm', name: 'Madera Triplay / Contrachapada Pino 3mm Calidad Láser (60x40 cm)', costPerUnit: 45, packageQuantity: 2400, packageMeasurement: 'cmÂ²', unit: 'placa (60x40 cm)'
     };
     const barnizMat = findMat('mat-barniz-poliuretano-transparente', 'barniz poliuretano') || findMat('mat-barniz-poliuretano-spray', 'barniz') || {
       id: 'mat-barniz-poliuretano-spray', name: 'Barniz Poliuretano Transparente Satinado en Spray (400 ml)', costPerUnit: 135, packageQuantity: 400, packageMeasurement: 'ml', unit: 'lata (400 ml)'
     };
     const argollaMat = findMat('mat-argollas-llavero', 'argollas') || {
-      id: 'mat-argollas-llavero', name: 'Argollas MetÃ¡licas Niqueladas con Cadena y EslabÃ³n (100 pzas)', costPerUnit: 120, packageQuantity: 100, packageMeasurement: 'pza', unit: 'paquete (100 pzas)'
+      id: 'mat-argollas-llavero', name: 'Argollas Metálicas Niqueladas con Cadena y Eslabón (100 pzas)', costPerUnit: 120, packageQuantity: 100, packageMeasurement: 'pza', unit: 'paquete (100 pzas)'
     };
     const pegamentoMat = findMat('mat-pegamento-resistol-850', 'resistol') || {
       id: 'mat-pegamento-resistol-850', name: 'Resistol 850 Pegamento Blanco para Madera Extra Fuerte (Bote 500g)', costPerUnit: 85, packageQuantity: 500, packageMeasurement: 'ml', unit: 'bote (500 ml)'
@@ -284,7 +283,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
       id: 'mat-lija-madera-fina-220', name: 'Lija de Madera Fina Grano 220 para Pulido y Cantos Suaves (Pliego)', costPerUnit: 14, packageQuantity: 1, packageMeasurement: 'pliego', unit: 'pliego'
     };
     const sierraMat = findMat('mat-desgaste-corte-sierra-laser', 'desgaste corte') || {
-      id: 'mat-desgaste-corte-sierra-laser', name: 'Consumible Indirecto de Corte (Desgaste Hoja Sierra / Tubo LÃ¡ser CO2)', costPerUnit: 1.5, packageQuantity: 1, packageMeasurement: 'corte', unit: 'corte'
+      id: 'mat-desgaste-corte-sierra-laser', name: 'Consumible Indirecto de Corte (Desgaste Hoja Sierra / Tubo Láser CO2)', costPerUnit: 1.5, packageQuantity: 1, packageMeasurement: 'corte', unit: 'corte'
     };
     return [
       {
@@ -382,7 +381,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
       id: 'mat-laca-spray', name: 'Laca Protectora Selladora Mate Spray (400 ml)', costPerUnit: 120, packageQuantity: 400, packageMeasurement: 'ml', unit: 'lata (400 ml)'
     };
     const sierraMat = findMat('mat-desgaste-corte-sierra-laser', 'desgaste corte') || {
-      id: 'mat-desgaste-corte-sierra-laser', name: 'Consumible Indirecto de Corte (Desgaste Hoja Sierra / Tubo LÃ¡ser CO2)', costPerUnit: 1.5, packageQuantity: 1, packageMeasurement: 'corte', unit: 'corte'
+      id: 'mat-desgaste-corte-sierra-laser', name: 'Consumible Indirecto de Corte (Desgaste Hoja Sierra / Tubo Láser CO2)', costPerUnit: 1.5, packageQuantity: 1, packageMeasurement: 'corte', unit: 'corte'
     };
     return [
       {
@@ -432,16 +431,16 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
 
   if (tech === 'sublimation') {
     const tazaMat = findMat('mat-tazas-blancas-11oz', 'taza blanca') || {
-      id: 'mat-tazas-blancas-11oz', name: 'Tazas CerÃ¡mica Blanco Puro Grado A+ (11 oz)', costPerUnit: 28, packageQuantity: 1, packageMeasurement: 'pza', unit: 'pieza'
+      id: 'mat-tazas-blancas-11oz', name: 'Tazas Cerámica Blanco Puro Grado A+ (11 oz)', costPerUnit: 28, packageQuantity: 1, packageMeasurement: 'pza', unit: 'pieza'
     };
     const papelSubMat = findMat('mat-papel-sublimacion', 'papel sublimacion') || {
-      id: 'mat-papel-sublimacion', name: 'Papel SublimaciÃ³n Secado RÃ¡pido A4 (100 hojas)', costPerUnit: 180, packageQuantity: 100, packageMeasurement: 'hoja', unit: 'paquete (100 hojas)'
+      id: 'mat-papel-sublimacion', name: 'Papel Sublimación Secado Rápido A4 (100 hojas)', costPerUnit: 180, packageQuantity: 100, packageMeasurement: 'hoja', unit: 'paquete (100 hojas)'
     };
     const kaptonMat = findMat('mat-cinta-termica-kapton', 'cinta termica') || {
-      id: 'mat-cinta-termica-kapton', name: 'Cinta TÃ©rmica Kapton 10mm x 33m (3 rollos)', costPerUnit: 90, packageQuantity: 9900, packageMeasurement: 'cm', unit: 'paquete (3 rollos)'
+      id: 'mat-cinta-termica-kapton', name: 'Cinta Térmica Kapton 10mm x 33m (3 rollos)', costPerUnit: 90, packageQuantity: 9900, packageMeasurement: 'cm', unit: 'paquete (3 rollos)'
     };
     const tintaMat = findMat('mat-tintas-sublimacion-cmyk', 'tintas sublimacion') || {
-      id: 'mat-tintas-sublimacion-cmyk', name: 'Tintas de SublimaciÃ³n CMYK (Set 4x100ml)', costPerUnit: 480, packageQuantity: 400, packageMeasurement: 'ml', unit: 'set (4 botellas)'
+      id: 'mat-tintas-sublimacion-cmyk', name: 'Tintas de Sublimación CMYK (Set 4x100ml)', costPerUnit: 480, packageQuantity: 400, packageMeasurement: 'ml', unit: 'set (4 botellas)'
     };
     return [
       {
@@ -505,7 +504,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
 
   if (tech === 'dtf') {
     const playeraMat = findMat('mat-playera-poliester-blanca', 'playera') || {
-      id: 'mat-playera-poliester-blanca', name: 'Playera Blanca Spun PoliÃ©ster / Tacto AlgodÃ³n', costPerUnit: 65, packageQuantity: 1, packageMeasurement: 'pza', unit: 'pieza'
+      id: 'mat-playera-poliester-blanca', name: 'Playera Blanca Spun Poliéster / Tacto Algodón', costPerUnit: 65, packageQuantity: 1, packageMeasurement: 'pza', unit: 'pieza'
     };
     const dtfFilm = findMat('mat-dtf-film-pet', 'dtf film') || {
       id: 'mat-dtf-film-pet', name: 'Film PET Transfer DTF Rollo 30cm x 100m', costPerUnit: 1650, packageQuantity: 10000, packageMeasurement: 'cm', unit: 'rollo (30cm x 100m)'
@@ -668,13 +667,13 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
 
   if (tech === 'impresion_laser') {
     const papelMat = findMat('mat-papel-couche-300g', 'couche') || findMat('mat-cartulina-opalina', 'opalina') || {
-      id: 'mat-papel-couche-300g', name: 'Papel CouchÃ© Brillante 300g A4 (100 hojas)', costPerUnit: 160, packageQuantity: 100, packageMeasurement: 'hoja', unit: 'paquete (100 hojas)'
+      id: 'mat-papel-couche-300g', name: 'Papel Couché Brillante 300g A4 (100 hojas)', costPerUnit: 160, packageQuantity: 100, packageMeasurement: 'hoja', unit: 'paquete (100 hojas)'
     };
     const tonerMat = findMat('mat-toner-click-laser', 'toner') || {
-      id: 'mat-toner-click-laser', name: 'TÃ³ner LÃ¡ser Digital Color A4 (500 impresiones)', costPerUnit: 450, packageQuantity: 500, packageMeasurement: 'pza', unit: 'paquete (500 pzas)'
+      id: 'mat-toner-click-laser', name: 'Tóner Láser Digital Color A4 (500 impresiones)', costPerUnit: 450, packageQuantity: 500, packageMeasurement: 'pza', unit: 'paquete (500 pzas)'
     };
     const foilMat = findMat('mat-foil-reactivo-oro', 'foil') || {
-      id: 'mat-foil-reactivo-oro', name: 'Foil Reactivo al TÃ³ner LÃ¡ser Oro (Rollo 30cm x 15m)', costPerUnit: 220, packageQuantity: 1500, packageMeasurement: 'cm', unit: 'rollo (30cm x 15m)'
+      id: 'mat-foil-reactivo-oro', name: 'Foil Reactivo al Tóner Láser Oro (Rollo 30cm x 15m)', costPerUnit: 220, packageQuantity: 1500, packageMeasurement: 'cm', unit: 'rollo (30cm x 15m)'
     };
     return [
       {
@@ -724,10 +723,10 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
 
   if (tech === 'vinyl') {
     const vinilMat = findMat('mat-vinil-textil-blanco', 'vinil textil') || findMat('mat-vinil-negro', 'vinil adhesivo') || {
-      id: 'mat-vinil-textil-blanco', name: 'Vinil Textil TÃ©rmico HTV BÃ¡sico Blanco (Metro lineal)', costPerUnit: 130, packageQuantity: 100, packageMeasurement: 'cm', unit: 'metro lineal (50 cm ancho)'
+      id: 'mat-vinil-textil-blanco', name: 'Vinil Textil Térmico HTV Básico Blanco (Metro lineal)', costPerUnit: 130, packageQuantity: 100, packageMeasurement: 'cm', unit: 'metro lineal (50 cm ancho)'
     };
     const transferMat = findMat('mat-papel-transfer', 'transfer') || {
-      id: 'mat-papel-transfer', name: 'Cinta Transportadora Transfer con CuadrÃ­cula (10m)', costPerUnit: 160, packageQuantity: 1000, packageMeasurement: 'cm', unit: 'rollo (30 cm x 10 m)'
+      id: 'mat-papel-transfer', name: 'Cinta Transportadora Transfer con Cuadrícula (10m)', costPerUnit: 160, packageQuantity: 1000, packageMeasurement: 'cm', unit: 'rollo (30 cm x 10 m)'
     };
     return [
       {
@@ -841,7 +840,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
 
   if (tech === 'finish_verde') {
     const tinteVerde = findMat('mat-tinte-verde-bosque', 'verde') || {
-      id: 'mat-tinte-verde-bosque', name: 'Tinte para Madera Verde Bosque / Olivo RÃºstico (250 ml)', costPerUnit: 115, packageQuantity: 250, packageMeasurement: 'ml', unit: 'bote (250 ml)'
+      id: 'mat-tinte-verde-bosque', name: 'Tinte para Madera Verde Bosque / Olivo Rústico (250 ml)', costPerUnit: 115, packageQuantity: 250, packageMeasurement: 'ml', unit: 'bote (250 ml)'
     };
     const lijaMat = findMat('mat-lija-madera-fina-220', 'lija') || {
       id: 'mat-lija-madera-fina-220', name: 'Lija de Madera Fina Grano 220 para Pulido y Cantos Suaves (Pliego)', costPerUnit: 14, packageQuantity: 1, packageMeasurement: 'pliego', unit: 'pliego'
@@ -919,7 +918,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
 
   if (tech === 'finish_caoba') {
     const tinteCaoba = findMat('mat-tinte-caoba-clasico', 'caoba') || {
-      id: 'mat-tinte-caoba-clasico', name: 'Tinte para Madera Caoba ClÃ¡sico Rojizo (250 ml)', costPerUnit: 115, packageQuantity: 250, packageMeasurement: 'ml', unit: 'bote (250 ml)'
+      id: 'mat-tinte-caoba-clasico', name: 'Tinte para Madera Caoba Clásico Rojizo (250 ml)', costPerUnit: 115, packageQuantity: 250, packageMeasurement: 'ml', unit: 'bote (250 ml)'
     };
     const lijaMat = findMat('mat-lija-madera-fina-220', 'lija') || {
       id: 'mat-lija-madera-fina-220', name: 'Lija de Madera Fina Grano 220 para Pulido y Cantos Suaves (Pliego)', costPerUnit: 14, packageQuantity: 1, packageMeasurement: 'pliego', unit: 'pliego'
@@ -961,7 +960,7 @@ export function getPresetItemsForTechnique(tech, rawMaterials = []) {
       id: 'mat-pegamento-resistol-850', name: 'Resistol 850 Pegamento Blanco para Madera Extra Fuerte (500 ml)', costPerUnit: 85, packageQuantity: 500, packageMeasurement: 'ml', unit: 'bote (500 ml)'
     };
     const cianoMat = findMat('mat-pegamento-cianocrilato-gotas', 'cianoacrilato') || {
-      id: 'mat-pegamento-cianocrilato-gotas', name: 'Pegamento InstantÃ¡neo Cianocrilato Grado Taller (50g)', costPerUnit: 110, packageQuantity: 50, packageMeasurement: 'g', unit: 'frasco (50g)'
+      id: 'mat-pegamento-cianocrilato-gotas', name: 'Pegamento Instantáneo Cianocrilato Grado Taller (50g)', costPerUnit: 110, packageQuantity: 50, packageMeasurement: 'g', unit: 'frasco (50g)'
     };
     return [
       {
@@ -1018,7 +1017,7 @@ export function generateDefaultRecipeForProduct(prod, rawMaterials = [], worksho
   else if (techs.includes('vinyl') || name.includes('vinil')) mainTech = 'vinyl';
   else if (techs.includes('ensamble')) mainTech = 'ensamble';
 
-  // Si tiene mÃºltiples tÃ©cnicas, recopilar los insumos de todas las tÃ©cnicas seleccionadas
+  // Si tiene múltiples técnicas, recopilar los insumos de todas las técnicas seleccionadas
   let items = [];
   techs.forEach(t => {
     const presetItems = getPresetItemsForTechnique(t, rawMaterials);
@@ -1029,7 +1028,7 @@ export function generateDefaultRecipeForProduct(prod, rawMaterials = [], worksho
     items = getPresetItemsForTechnique(mainTech, rawMaterials);
   }
 
-  // Tiempos y potencias de taller segÃºn tÃ©cnica principal
+  // Tiempos y potencias de taller según técnica principal
   let manufacturingTimeMinutes = 60;
   let machinePowerWatts = 250;
   let laborTimeMinutes = 10;
@@ -1061,7 +1060,7 @@ export function generateDefaultRecipeForProduct(prod, rawMaterials = [], worksho
     laborTimeMinutes = 15;
   }
 
-  const kwhCost = 3.50; // $3.50 MXN estÃ¡ndar comercial CFE
+  const kwhCost = 3.50; // $3.50 MXN estándar comercial CFE
   const energyCost = Math.round(((machinePowerWatts / 1000) * (manufacturingTimeMinutes / 60) * kwhCost) * 100) / 100;
   const laborCost = Math.round(((laborTimeMinutes / 60) * laborRatePerHour) * 100) / 100;
 
@@ -1215,7 +1214,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   const [editorSpecialSuppliesAccordion, setEditorSpecialSuppliesAccordion] = useState(false);
   const [editorSpecialSearch, setEditorSpecialSearch] = useState('');
 
-  // Photo Studio Modal State (Estudio FotogrÃ¡fico IA / 4 Fotos)
+  // Photo Studio Modal State (Estudio Fotográfico IA / 4 Fotos)
   const [isPhotoStudioOpen, setIsPhotoStudioOpen] = useState(false);
   const [photoStudioProductId, setPhotoStudioProductId] = useState(null);
 
@@ -1241,7 +1240,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         const newGal = Array.isArray(updatedProduct.gallery) ? [...updatedProduct.gallery] : prev.gallery;
         return {
           ...prev,
-          name: updatedProduct.name && (!prev.name || prev.name === 'Nuevo Producto de CatÃ¡logo') ? updatedProduct.name : prev.name,
+          name: updatedProduct.name && (!prev.name || prev.name === 'Nuevo Producto de Catálogo') ? updatedProduct.name : prev.name,
           sku: updatedProduct.sku || prev.sku,
           code: updatedProduct.sku || prev.code,
           primaryImage: newGal[0] || prev.primaryImage,
@@ -1283,7 +1282,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   const [backupLoading, setBackupLoading] = useState(false);
   const [backupMsg, setBackupMsg] = useState({ text: '', type: '' });
 
-  // Modal de ConfirmaciÃ³n y Desglose de Cambios
+  // Modal de Confirmación y Desglose de Cambios
   const [adminConfirmModal, setAdminConfirmModal] = useState({
     isOpen: false,
     title: '',
@@ -1354,10 +1353,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         if (resSett && resSett.ok) dataSett = await resSett.json().catch(() => null);
         if (resMats && resMats.ok) dataMats = await resMats.json().catch(() => []);
       } catch (e) {
-        console.warn('API admin endpoints no disponibles, usando datos estÃ¡ticos:', e);
+        console.warn('API admin endpoints no disponibles, usando datos estáticos:', e);
       }
 
-      // Fallback al catÃ¡logo administrativo completo (costos, recetas y materias primas)
+      // Fallback al catálogo administrativo completo (costos, recetas y materias primas)
       // cuando GitHub Pages no tiene backend /api/* activo.
       const missingAdminData = !dataProd || !Array.isArray(dataProd) || dataProd.length === 0 || !Array.isArray(dataMats) || dataMats.length === 0 || !dataSett;
       if (missingAdminData) {
@@ -1373,7 +1372,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         } catch {}
       }
 
-      // Fallback a archivos estÃ¡ticos pÃºblicos si el catÃ¡logo administrativo no existe.
+      // Fallback a archivos estáticos públicos si el catálogo administrativo no existe.
       if (!dataProd || !Array.isArray(dataProd) || dataProd.length === 0) {
         try {
           const res = await fetch('./api/products.json');
@@ -1395,8 +1394,8 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
       loadBackups();
 
-      // Persistencia local del modo estÃ¡tico (GitHub Pages): si el usuario
-      // activÃ³ fotos o guardÃ³ ajustes en este dispositivo, no los perdemos al
+      // Persistencia local del modo estático (GitHub Pages): si el usuario
+      // activó fotos o guardó ajustes en este dispositivo, no los perdemos al
       // recargar aunque /api/admin/settings no exista.
       try {
         const cachedSettings = JSON.parse(localStorage.getItem('artesano_settings_cache') || 'null');
@@ -1461,10 +1460,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         return;
       }
     } catch (err) {
-      // Backend no disponible (GitHub Pages estÃ¡tico o Render suspendido/offline)
+      // Backend no disponible (GitHub Pages estático o Render suspendido/offline)
     }
 
-    // 2. Acceso administrativo local/offline si el servidor no estÃ¡ en lÃ­nea
+    // 2. Acceso administrativo local/offline si el servidor no está en línea
     const validUsers = [
       'admin',
       'contactoartesanodigital@gmail.com',
@@ -1530,7 +1529,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       });
       if (res.ok) {
         const data = await res.json();
-        setBackupMsg({ text: `âœ“ Respaldo generado con Ã©xito (${data.sizeKb} KB)`, type: 'success' });
+        setBackupMsg({ text: `âœ“ Respaldo generado con éxito (${data.sizeKb} KB)`, type: 'success' });
         loadBackups();
       } else {
         setBackupMsg({ text: 'Error al generar respaldo', type: 'error' });
@@ -1543,7 +1542,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   };
 
   const handleRestoreBackup = async (filename) => {
-    if (!window.confirm(`Â¿EstÃ¡s seguro de restaurar el respaldo "${filename}"? Los datos actuales se reemplazarÃ¡n por esta copia.`)) {
+    if (!window.confirm(`¿Estás seguro de restaurar el respaldo "${filename}"? Los datos actuales se reemplazarán por esta copia.`)) {
       return;
     }
     setBackupLoading(true);
@@ -1625,12 +1624,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       fullDescription: '',
       specifications: {
         dimensions: '',
-        material: 'PolÃ­mero PLA / Madera / AcrÃ­lico',
+        material: 'Polímero PLA / Madera / Acrílico',
         finish: 'Satinado mate',
         includes: isBundle ? 'Set coordinado de taller' : 'Pieza terminada en taller',
         minQuantity: 1,
-        estimatedLeadTime: '2 a 4 dÃ­as hÃ¡biles',
-        careNotes: 'Limpieza con paÃ±o seco y suave.'
+        estimatedLeadTime: '2 a 4 días hábiles',
+        careNotes: 'Limpieza con paño seco y suave.'
       },
       variants: [],
       customizationOptions: ['Grabado personalizado'],
@@ -1672,7 +1671,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         machineHours: 1,
         machineMinutes: 30,
         postProcessingMinutes: 10,
-        leadTimeDays: '2 a 4 dÃ­as hÃ¡biles'
+        leadTimeDays: '2 a 4 días hábiles'
       }
     });
     setNewIncludedItemInput('');
@@ -1749,7 +1748,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     const postProcMin = Number(prod.postProcessingTimeMinutes) || 
                         Number(prod.costBreakdown?.manualWorkMin) || 
                         Number(resolvedRecipe?.laborTimeMinutes) || 15;
-    const leadTime = prod.specifications?.estimatedLeadTime || '2 a 4 dÃ­as hÃ¡biles';
+    const leadTime = prod.specifications?.estimatedLeadTime || '2 a 4 días hábiles';
 
     setEditorForm({
       ...prod,
@@ -1820,7 +1819,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
   const handleEditProduct = handleOpenEditProduct;
 
-  // Handlers para administraciÃ³n de componentes de paquetes y combos
+  // Handlers para administración de componentes de paquetes y combos
   const handleAddIncludedItem = () => {
     if (!newIncludedItemInput.trim()) return;
     setEditorForm(prev => ({
@@ -1845,7 +1844,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     });
   };
 
-  // Handlers para administraciÃ³n de Recetas de Manufactura (BOM) e Insumos
+  // Handlers para administración de Recetas de Manufactura (BOM) e Insumos
   const handleAddEditorRecipeItem = () => {
     if (!editorRecipeSelectedMatId && !editorRecipeCustomName.trim()) return;
 
@@ -2073,7 +2072,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     const existingIndex = (currentRecipe.items || []).findIndex(it => it.materialId === matId || (mat && it.materialId === mat.id));
 
     if (existingIndex >= 0) {
-      setEditorMessage({ text: `â„¹ï¸ El insumo "${mat?.name || matId}" ya estÃ¡ en la receta. Puedes editar sus cantidades abajo.`, type: 'info' });
+      setEditorMessage({ text: `â„¹ï¸ El insumo "${mat?.name || matId}" ya está en la receta. Puedes editar sus cantidades abajo.`, type: 'info' });
       setTimeout(() => setEditorMessage({ text: '', type: '' }), 3000);
       return;
     }
@@ -2246,7 +2245,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       ? currentTechs
       : (currentTechs.includes(presetType) ? currentTechs : [...currentTechs, presetType]);
 
-    // ParÃ¡metros de mÃ¡quina predefinidos por tÃ©cnica
+    // Parámetros de máquina predefinidos por técnica
     const techMachineProfiles = {
       '3d': { watts: 250, mins: 180, laborMins: 8 },
       '3d_resina': { watts: 60, mins: 90, laborMins: 12 },
@@ -2296,7 +2295,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     });
 
     setEditorMessage({
-      text: append ? `âœ“ Insumos agregados a la receta.` : `âœ“ Receta inicializada con tÃ©cnica de ${presetType.toUpperCase()} (${newMins} min mÃ¡quina / ${newWatts}W).`,
+      text: append ? `âœ“ Insumos agregados a la receta.` : `âœ“ Receta inicializada con técnica de ${presetType.toUpperCase()} (${newMins} min máquina / ${newWatts}W).`,
       type: 'success'
     });
     setTimeout(() => setEditorMessage({ text: '', type: '' }), 3000);
@@ -2339,7 +2338,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
     const updatedPkg = { ...currentPkg, [field]: value };
 
-    // Si cambiÃ³ el tipo de caja predefinida, sugerir su costo
+    // Si cambió el tipo de caja predefinida, sugerir su costo
     if (field === 'boxType') {
       if (value === 'caja_chica') updatedPkg.boxCost = 8;
       else if (value === 'caja_mediana') updatedPkg.boxCost = 12;
@@ -2350,7 +2349,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       else if (value === 'bolsa_celofan') updatedPkg.boxCost = 3.5;
     }
 
-    // Si cambiÃ³ la paqueterÃ­a predefinida, sugerir su costo de flete
+    // Si cambió la paquetería predefinida, sugerir su costo de flete
     if (field === 'shippingCarrier') {
       if (value === 'nacional_estandar') updatedPkg.shippingCost = 149;
       else if (value === 'nacional_express') updatedPkg.shippingCost = 220;
@@ -2377,7 +2376,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   const handleApplyTargetMargin = (marginPercent) => {
     const cost = Number(editorForm.costPrice) || 0;
     if (cost <= 0) {
-      setEditorMessage({ text: 'âš ï¸ Primero sincroniza o ingresa el costo de producciÃ³n para calcular el precio.', type: 'error' });
+      setEditorMessage({ text: 'âš ï¸ Primero sincroniza o ingresa el costo de producción para calcular el precio.', type: 'error' });
       setTimeout(() => setEditorMessage({ text: '', type: '' }), 3000);
       return;
     }
@@ -2436,7 +2435,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   };
 
   const handleDeductStockNow = async (units = 1) => {
-    if (!window.confirm(`Â¿Confirmas que deseas descontar del almacÃ©n de taller los insumos para fabricar ${units} pieza(s)?`)) return;
+    if (!window.confirm(`¿Confirmas que deseas descontar del almacén de taller los insumos para fabricar ${units} pieza(s)?`)) return;
     setRecipeDeductLoading(true);
     try {
       const res = await fetch('/api/admin/production/deduct', {
@@ -2450,14 +2449,14 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
           units,
           productName: editorForm.name || 'Producto',
           productCode: editorForm.code || '',
-          reason: `FabricaciÃ³n directa de stock desde el editor (${units} pzas)`,
+          reason: `Fabricación directa de stock desde el editor (${units} pzas)`,
           customRecipe: editorForm.manufacturingRecipe
         })
       });
       const data = await res.json();
       if (res.ok) {
         setEditorMessage({
-          text: `âœ“ Â¡Insumos descontados de almacÃ©n exitosamente para ${units} unidad(es)!`,
+          text: `âœ“ ¡Insumos descontados de almacén exitosamente para ${units} unidad(es)!`,
           type: 'success'
         });
         await loadAllData();
@@ -2586,13 +2585,13 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       },
       {
         icon: 'âš¡',
-        label: 'Tarifa ElÃ©ctrica del Taller',
+        label: 'Tarifa Eléctrica del Taller',
         detail: `$${workshopParams.electricityKwhRate || 3.5} MXN por kWh (${workshopParams.printerKw || 0.15} kW de impresora)`
       },
       {
         icon: 'â±ï¸',
         label: 'Mano de Obra & Desgaste',
-        detail: `$${workshopParams.hourlyLaborCost || 80} MXN/h labor humana Â· $${workshopParams.wearRatePerHour || 1.8} MXN/h depreciaciÃ³n mÃ¡quina`
+        detail: `$${workshopParams.hourlyLaborCost || 80} MXN/h labor humana Â· $${workshopParams.wearRatePerHour || 1.8} MXN/h depreciación máquina`
       },
       {
         icon: 'ðŸ“ˆ',
@@ -2603,10 +2602,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
     setAdminConfirmModal({
       isOpen: true,
-      title: 'Confirmar ParÃ¡metros de Costo de Taller',
-      subtitle: 'Â¿Deseas aplicar estos nuevos costos y parÃ¡metros a todas las estimaciones y cÃ¡lculos automÃ¡ticos del taller?',
+      title: 'Confirmar Parámetros de Costo de Taller',
+      subtitle: '¿Deseas aplicar estos nuevos costos y parámetros a todas las estimaciones y cálculos automáticos del taller?',
       badge: 'Costos de Taller',
-      confirmText: 'SÃ­, Guardar ParÃ¡metros',
+      confirmText: 'Sí, Guardar Parámetros',
       changes,
       onConfirm: async () => {
         setAdminConfirmModal(prev => ({ ...prev, isOpen: false }));
@@ -2628,7 +2627,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         body: JSON.stringify(workshopParams)
       });
       if (res.ok) {
-        setParamsSaveMsg('âœ“ ParÃ¡metros guardados y sincronizados');
+        setParamsSaveMsg('âœ“ Parámetros guardados y sincronizados');
         setTimeout(() => setParamsSaveMsg(''), 3000);
         await loadAllData();
       }
@@ -2953,7 +2952,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     const costBreakdownPayload = {
       ...breakdownForm,
       ...buildCostBreakdownFromSummary(summary, recipeForSave, breakdownForm),
-      recipeName: breakdownForm.recipeName || breakdownModalProduct.name || 'ImpresiÃ³n 3D',
+      recipeName: breakdownForm.recipeName || breakdownModalProduct.name || 'Impresión 3D',
       recipeItems: recipeForSave.items,
       yieldUnits,
       rawMaterialsCost: summary.materialCost,
@@ -3137,7 +3136,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     const hogarTarget = Math.min(hogarProds.length, Math.max(2, Math.round(hogarProds.length * (2.5 / 13))));
     // Negocios: Solo 2 y 3 oferta flash activa cada 10 productos
     const negociosTarget = Math.min(negociosProds.length, Math.max(2, Math.round(negociosProds.length * (2.5 / 10))));
-    // Eventos Especiales: MÃ¡ximo 4 a 5 ofertas flash activas cada 13 productos
+    // Eventos Especiales: Máximo 4 a 5 ofertas flash activas cada 13 productos
     const eventosTarget = Math.min(5, Math.max(4, Math.round(eventosProds.length * (4.5 / 13))));
     // Paquetes & Servicios: 1 a 2 ofertas promocionales activas
     const paquetesTarget = Math.min(3, Math.max(1, Math.round(paquetesProds.length * (2 / 10))));
@@ -3145,7 +3144,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     return {
       hogar: {
         id: 'hogar',
-        name: 'Hogar & DecoraciÃ³n',
+        name: 'Hogar & Decoración',
         icon: 'ðŸ ',
         rule: 'Solo entre 2 y 3 oferta flash activa cada 13 productos',
         shortRule: '2 a 3 por cada 13 productos',
@@ -3167,8 +3166,8 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         id: 'eventos',
         name: 'Eventos Especiales',
         icon: 'ðŸŽ‰',
-        rule: 'MÃ¡ximo 4 a 5 ofertas flash activas cada 13 productos',
-        shortRule: 'MÃ¡ximo 4 a 5 por cada 13 productos',
+        rule: 'Máximo 4 a 5 ofertas flash activas cada 13 productos',
+        shortRule: 'Máximo 4 a 5 por cada 13 productos',
         total: eventosProds.length,
         active: eventosActive,
         target: eventosTarget
@@ -3231,11 +3230,11 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         if (onRefreshCatalog) onRefreshCatalog();
       } else {
         const errData = await res.json().catch(() => ({}));
-        alert(errData.error || 'No se pudo eliminar el producto del catÃ¡logo.');
+        alert(errData.error || 'No se pudo eliminar el producto del catálogo.');
       }
     } catch (err) {
       console.error('Error deleting product:', err);
-      alert('Error de conexiÃ³n al eliminar el producto.');
+      alert('Error de conexión al eliminar el producto.');
     }
   };
 
@@ -3354,13 +3353,13 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
   // Material and Color customization helpers
   const WORKSHOP_MATERIALS = [
-    'PLA Biodegradable (ImpresiÃ³n 3D)',
-    'PETG / TPU Flexible (ImpresiÃ³n 3D)',
-    'Madera Natural / Triplay / MDF (Corte LÃ¡ser)',
-    'AcrÃ­lico Ã“ptico (Cristalino / Negro / Humo)',
+    'PLA Biodegradable (Impresión 3D)',
+    'PETG / TPU Flexible (Impresión 3D)',
+    'Madera Natural / Triplay / MDF (Corte Láser)',
+    'Acrílico Ã“ptico (Cristalino / Negro / Humo)',
     'Cuero y Curpiel Genuino',
     'Vinil Adhesivo Permanente (Cameo)',
-    'Vinil Textil TÃ©rmico (Cameo)',
+    'Vinil Textil Térmico (Cameo)',
     'Papel y Cartulina Especial',
     'A convenir / Especial'
   ];
@@ -3368,15 +3367,15 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   const STANDARD_WOOD_VARNISHES = [
     'Barniz Natural Transparente',
     'Nogal Americano',
-    'Verde Bosque RÃºstico',
+    'Verde Bosque Rústico',
     'Azul Colonial Vintage',
-    'Caoba ClÃ¡sico',
-    'Roble Claro NÃ³rdico'
+    'Caoba Clásico',
+    'Roble Claro Nórdico'
   ];
 
   const STANDARD_PALETTE_COLORS = [
-    'Blanco Marfil / Ãrtico',
-    'Negro CarbÃ³n / Grafito',
+    'Blanco Marfil / Ártico',
+    'Negro Carbón / Grafito',
     'Verde Olivo / Bosque',
     'Terracota / Ladrillo',
     'Arena / Crema / Beige',
@@ -3511,7 +3510,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         payload.includedItems = payload.includedItems.filter(item => typeof item === 'string' && item.trim().length > 0);
       }
       
-      // Sincronizar SKU estructurado y ficha tÃ©cnica de taller para personal interno
+      // Sincronizar SKU estructurado y ficha técnica de taller para personal interno
       const finalSku = payload.sku || payload.code || (isEdit ? editingProduct.code : 'HOG-3D-PLA-MAT-001');
       const parsed = parseSku(finalSku);
       payload.sku = finalSku;
@@ -3536,7 +3535,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       if (payload.measureImage) gal[3] = payload.measureImage;
       payload.gallery = gal;
 
-      // Sync flash deal config timestamp if enabled (mÃ¡ximo 15% de descuento)
+      // Sync flash deal config timestamp if enabled (máximo 15% de descuento)
       if (payload.flashDealConfig) {
         payload.flashDealConfig.discountPercent = clampDiscountPercent(payload.flashDealConfig.discountPercent);
         if (payload.flashDealConfig.enabled) {
@@ -3576,7 +3575,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
           payload.manufacturingRecipe.laborTimeMinutes = postProcMins;
         }
         if (!payload.specifications) payload.specifications = {};
-        payload.specifications.estimatedLeadTime = editorForm.manufacturingTimes.leadTimeDays || payload.specifications.estimatedLeadTime || '2 a 4 dÃ­as hÃ¡biles';
+        payload.specifications.estimatedLeadTime = editorForm.manufacturingTimes.leadTimeDays || payload.specifications.estimatedLeadTime || '2 a 4 días hábiles';
       }
 
       const res = await fetch(url, {
@@ -3589,7 +3588,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       });
 
       if (res.status === 401) {
-        setEditorMessage({ text: 'Tu sesiÃ³n expirÃ³. Por favor cierra sesiÃ³n y vuelve a ingresar.', type: 'error' });
+        setEditorMessage({ text: 'Tu sesión expiró. Por favor cierra sesión y vuelve a ingresar.', type: 'error' });
         return;
       }
 
@@ -3599,13 +3598,13 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         return;
       }
 
-      setEditorMessage({ text: 'Â¡Cambios guardados y sincronizados exitosamente!', type: 'success' });
+      setEditorMessage({ text: '¡Cambios guardados y sincronizados exitosamente!', type: 'success' });
       await loadAllData();
       if (onRefreshCatalog) onRefreshCatalog();
       setTimeout(() => setIsEditorOpen(false), 800);
     } catch (err) {
       console.error('Error saving product:', err);
-      setEditorMessage({ text: 'Error de conexiÃ³n con el servidor de taller', type: 'error' });
+      setEditorMessage({ text: 'Error de conexión con el servidor de taller', type: 'error' });
     }
   };
 
@@ -3620,22 +3619,22 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       },
       {
         icon: 'ðŸ“',
-        label: 'UbicaciÃ³n y Entregas',
-        detail: `${businessSettings?.address || 'DirecciÃ³n de taller registrada'}`
+        label: 'Ubicación y Entregas',
+        detail: `${businessSettings?.address || 'Dirección de taller registrada'}`
       },
       {
         icon: 'ðŸšš',
-        label: 'Tarifas de EnvÃ­o',
-        detail: `Local: $${businessSettings?.shipping?.localPrice || 0} MXN Â· Nacional: $${businessSettings?.shipping?.nationalPrice || 0} MXN Â· EnvÃ­o gratis desde: $${businessSettings?.shipping?.freeShippingMinOrder || 0} MXN`
+        label: 'Tarifas de Envío',
+        detail: `Local: $${businessSettings?.shipping?.localPrice || 0} MXN Â· Nacional: $${businessSettings?.shipping?.nationalPrice || 0} MXN Â· Envío gratis desde: $${businessSettings?.shipping?.freeShippingMinOrder || 0} MXN`
       }
     ];
 
     setAdminConfirmModal({
       isOpen: true,
       title: 'Confirmar Ajustes del Negocio',
-      subtitle: 'Â¿Deseas guardar las modificaciones en la informaciÃ³n de contacto y envÃ­os de la tienda?',
+      subtitle: '¿Deseas guardar las modificaciones en la información de contacto y envíos de la tienda?',
       badge: 'Ajustes Tienda',
-      confirmText: 'SÃ­, Guardar Ajustes',
+      confirmText: 'Sí, Guardar Ajustes',
       changes,
       onConfirm: async () => {
         setAdminConfirmModal(prev => ({ ...prev, isOpen: false }));
@@ -3655,7 +3654,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         body: JSON.stringify(businessSettings)
       });
       if (res.ok) {
-        setServiceStatusMsg({ text: 'ConfiguraciÃ³n guardada exitosamente.', type: 'success' });
+        setServiceStatusMsg({ text: 'Configuración guardada exitosamente.', type: 'success' });
         setTimeout(() => setServiceStatusMsg({ text: '', type: '' }), 4000);
         if (onRefreshCatalog) onRefreshCatalog();
       }
@@ -3711,10 +3710,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       });
       const data = await res.json();
       if (res.ok) {
-        setPasswordMsg({ text: 'ContraseÃ±a cambiada con Ã©xito.', type: 'success' });
+        setPasswordMsg({ text: 'Contraseña cambiada con éxito.', type: 'success' });
         setPasswordForm({ currentPassword: '', newPassword: '' });
       } else {
-        setPasswordMsg({ text: data.error || 'Error al cambiar contraseÃ±a', type: 'error' });
+        setPasswordMsg({ text: data.error || 'Error al cambiar contraseña', type: 'error' });
       }
     } catch (err) {
       setPasswordMsg({ text: 'Error de servidor', type: 'error' });
@@ -3805,7 +3804,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       let commission = 0;
       let fixedFee = 0;
       if (marginSalesChannel === 'mercadolibre') {
-        commission = 0.16; // 16% promedio de comisiÃ³n ML por categorÃ­a
+        commission = 0.16; // 16% promedio de comisión ML por categoría
         fixedFee = price < 299 && price > 0 ? 25 : 0; // Cargo fijo por unidad en ventas < $299 MXN
       } else if (marginSalesChannel === 'custom') {
         commission = (Number(customCommission) || 0) / 100;
@@ -3850,7 +3849,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         itemsCounted++;
 
         if (profit < 0) {
-          statusLabel = 'En pÃ©rdida';
+          statusLabel = 'En pérdida';
           statusColor = 'rose';
           lossCount++;
         } else if (margin < targetMargin) {
@@ -3858,7 +3857,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
           statusColor = 'amber';
           lowMarginCount++;
         } else {
-          statusLabel = 'Margen Ã³ptimo (â‰¥40%)';
+          statusLabel = 'Margen óptimo (â‰¥40%)';
           statusColor = 'emerald';
           optimalCount++;
         }
@@ -3907,10 +3906,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
   // Technique List & Definitions for Filtering and Audits
   const techniqueList = [
-    { id: 'all', label: 'Todas las TÃ©cnicas', shortLabel: 'Todas', icon: 'âš¡' },
-    { id: '3d', label: 'ImpresiÃ³n 3D', shortLabel: '3D (PLA/TPU)', icon: 'ðŸ–¨ï¸' },
-    { id: 'laser', label: 'Corte & Grabado LÃ¡ser', shortLabel: 'LÃ¡ser', icon: 'ðŸ”¥' },
-    { id: 'sublimation', label: 'SublimaciÃ³n', shortLabel: 'SublimaciÃ³n', icon: 'ðŸŽ¨' },
+    { id: 'all', label: 'Todas las Técnicas', shortLabel: 'Todas', icon: 'âš¡' },
+    { id: '3d', label: 'Impresión 3D', shortLabel: '3D (PLA/TPU)', icon: 'ðŸ–¨ï¸' },
+    { id: 'laser', label: 'Corte & Grabado Láser', shortLabel: 'Láser', icon: 'ðŸ”¥' },
+    { id: 'sublimation', label: 'Sublimación', shortLabel: 'Sublimación', icon: 'ðŸŽ¨' },
     { id: 'print', label: 'Impresi\u00f3n L\u00e1ser / Tinta', shortLabel: 'Impresi\u00f3n', icon: '\u{1F5A8}\uFE0F' },
     { id: 'vinyl', label: 'Corte de Vinil', shortLabel: 'Vinil', icon: 'âœ‚ï¸' },
     { id: 'nfc', label: 'Enlace NFC / Smart', shortLabel: 'NFC', icon: 'ðŸ“¡' }
@@ -3981,7 +3980,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         const t = new Date(p.updatedAt).getTime();
         if (!isNaN(t) && t > 0) return t;
       }
-      // DetecciÃ³n automÃ¡tica por prefijo de adiciÃ³n de catÃ¡logo
+      // Detección automática por prefijo de adición de catálogo
       if (p.code && p.code.startsWith('CUST-DIBUJO')) {
         return new Date('2026-10-24T19:35:00Z').getTime();
       }
@@ -4113,12 +4112,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     };
   }, [filteredMarginsRows]);
 
-  // Technique Overview for Categories Tab ("CuÃ¡nto estoy haciendo de cada cosa")
+  // Technique Overview for Categories Tab ("Cuánto estoy haciendo de cada cosa")
   const techniqueOverview = useMemo(() => {
     const map = {
-      '3d': { id: '3d', label: 'ImpresiÃ³n 3D', shortLabel: '3D', icon: 'ðŸ–¨ï¸', count: 0, catalogValue: 0, categoriesCount: new Set(), color: 'emerald' },
-      laser: { id: 'laser', label: 'Corte & Grabado LÃ¡ser', shortLabel: 'LÃ¡ser', icon: 'ðŸ”¥', count: 0, catalogValue: 0, categoriesCount: new Set(), color: 'amber' },
-      sublimation: { id: 'sublimation', label: 'SublimaciÃ³n', shortLabel: 'SublimaciÃ³n', icon: 'ðŸŽ¨', count: 0, catalogValue: 0, categoriesCount: new Set(), color: 'blue' },
+      '3d': { id: '3d', label: 'Impresión 3D', shortLabel: '3D', icon: 'ðŸ–¨ï¸', count: 0, catalogValue: 0, categoriesCount: new Set(), color: 'emerald' },
+      laser: { id: 'laser', label: 'Corte & Grabado Láser', shortLabel: 'Láser', icon: 'ðŸ”¥', count: 0, catalogValue: 0, categoriesCount: new Set(), color: 'amber' },
+      sublimation: { id: 'sublimation', label: 'Sublimación', shortLabel: 'Sublimación', icon: 'ðŸŽ¨', count: 0, catalogValue: 0, categoriesCount: new Set(), color: 'blue' },
       print: { id: 'print', label: 'Impresi\u00f3n L\u00e1ser / Tinta', shortLabel: 'Impresi\u00f3n', icon: '\u{1F5A8}\uFE0F', count: 0, catalogValue: 0, categoriesCount: new Set(), color: 'cyan' },
       vinyl: { id: 'vinyl', label: 'Corte de Vinil', shortLabel: 'Vinil', icon: 'âœ‚ï¸', count: 0, catalogValue: 0, categoriesCount: new Set(), color: 'purple' },
       nfc: { id: 'nfc', label: 'Enlace NFC / Smart', shortLabel: 'NFC', icon: 'ðŸ“¡', count: 0, catalogValue: 0, categoriesCount: new Set(), color: 'rose' }
@@ -4268,10 +4267,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               <button
                 onClick={handleLogout}
                 className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-rose-900/60 text-gray-300 hover:text-white text-xs font-semibold transition-colors cursor-pointer"
-                title="Cerrar sesiÃ³n"
+                title="Cerrar sesión"
               >
                 <LogOut className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Cerrar sesiÃ³n</span>
+                <span className="hidden sm:inline">Cerrar sesión</span>
               </button>
             )}
             <button
@@ -4296,13 +4295,13 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                 </div>
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2D4F3E]/10 text-[#2D4F3E] text-xs font-semibold">
                   <Lock className="w-3.5 h-3.5" />
-                  <span>Acceso de AdministraciÃ³n</span>
+                  <span>Acceso de Administración</span>
                 </div>
                 <h3 className="text-lg font-extrabold text-[#1F2421] font-heading">
-                  Iniciar SesiÃ³n de Administrador
+                  Iniciar Sesión de Administrador
                 </h3>
                 <p className="text-xs text-gray-500">
-                  Ingresa las credenciales autorizadas para gestionar el catÃ¡logo, precios y fotos.
+                  Ingresa las credenciales autorizadas para gestionar el catálogo, precios y fotos.
                 </p>
               </div>
 
@@ -4330,7 +4329,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                 <div>
                   <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block mb-1.5">
-                    ContraseÃ±a
+                    Contraseña
                   </label>
                   <input
                     type="password"
@@ -4352,7 +4351,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               </form>
 
               <div className="text-[11px] text-gray-500 text-center bg-gray-50 p-3 rounded-xl border border-gray-100">
-                Acceso exclusivo para la administraciÃ³n de Artesano Digital.
+                Acceso exclusivo para la administración de Artesano Digital.
               </div>
             </div>
           </div>
@@ -4360,12 +4359,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
           /* Logged In Dashboard & Tabs */
           <div className="flex-1 flex flex-col md:flex-row overflow-hidden min-w-0 min-h-0">
             
-            {/* NavegaciÃ³n MÃ³vil TÃ¡ctil Dedicada: selector superior segmentado con sub-chips (Estilo FiltersBar) */}
+            {/* Navegación Móvil Táctil Dedicada: selector superior segmentado con sub-chips (Estilo FiltersBar) */}
             <div className="md:hidden bg-white border-b border-[#E8E4DA] p-2.5 shrink-0 shadow-2xs space-y-2">
               {/* Selector de Pilares Principales: 4 Secciones Limpias */}
               <div className="grid grid-cols-4 gap-1 p-1 bg-[#F4F0E8] rounded-xl border border-[#E8E4DA]">
                 {[
-                  { id: 'catalog', label: 'CatÃ¡logo', icon: 'ðŸ“¦' },
+                  { id: 'catalog', label: 'Catálogo', icon: 'ðŸ“¦' },
                   { id: 'workshop', label: 'Taller', icon: 'ðŸ§±' },
                   { id: 'sales', label: 'Ventas', icon: 'âš¡' },
                   { id: 'business', label: 'Negocio', icon: 'âš™ï¸' }
@@ -4400,16 +4399,16 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                 })}
               </div>
 
-              {/* Sub-chips tÃ¡ctiles para la secciÃ³n activa (limpio, scroll suave horizontal) */}
+              {/* Sub-chips táctiles para la sección activa (limpio, scroll suave horizontal) */}
               <div className="flex gap-1.5 overflow-x-auto pb-0.5 scrollbar-none no-scrollbar">
                 {(
                   mobileNavGroup === 'catalog' ? [
                     { id: 'products', label: 'Productos & SKUs', icon: 'ðŸ“¦', count: products.length },
                     { id: 'packages', label: 'Paquetes & Kits', icon: 'ðŸŽ', count: products.filter(p => p.isBundle).length },
-                    { id: 'categories', label: 'CategorÃ­as', icon: 'ðŸ“', count: categories.length },
-                    { id: 'area-banners', label: 'Banners de Ãreas', icon: 'ðŸ–¼ï¸', count: 3 }
+                    { id: 'categories', label: 'Categorías', icon: 'ðŸ“', count: categories.length },
+                    { id: 'area-banners', label: 'Banners de Áreas', icon: 'ðŸ–¼ï¸', count: 3 }
                   ] : mobileNavGroup === 'workshop' ? [
-                    { id: 'margins', label: 'Costos & MÃ¡rgenes', icon: 'ðŸ“ˆ', count: `${marginsStats.avgMargin}%` },
+                    { id: 'margins', label: 'Costos & Márgenes', icon: 'ðŸ“ˆ', count: `${marginsStats.avgMargin}%` },
                     { id: 'raw-materials-inventory', label: 'Stock & Insumos', icon: 'ðŸ§±' },
                     { id: 'raw-materials-costs', label: 'Costos Operativos', icon: 'âš™ï¸' },
                     { id: 'raw-materials-pricing', label: 'Tablas de Precios', icon: 'ðŸ“Š' },
@@ -4419,9 +4418,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     { id: 'campaigns', label: 'Temporadas', icon: 'âœ¨' },
                     { id: 'coupons', label: 'Cupones', icon: 'ðŸŽŸï¸' },
                     { id: 'sales', label: 'Ventas & ROI', icon: 'ðŸ“¢' },
-                    { id: 'catalog-mobile', label: 'CatÃ¡logos PDF', icon: 'ðŸ“±' }
+                    { id: 'catalog-mobile', label: 'Catálogos PDF', icon: 'ðŸ“±' }
                   ] : [
-                    { id: 'stats', label: 'MÃ©tricas', icon: 'ðŸ“Š' },
+                    { id: 'stats', label: 'Métricas', icon: 'ðŸ“Š' },
                     { id: 'settings', label: 'Ajustes & Taller', icon: 'âš™ï¸' },
                     { id: 'arcade', label: 'Arcade', icon: 'ðŸŽ®' }
                   ]
@@ -4473,7 +4472,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               </div>
             </div>
 
-            {/* Sidebar Navigation para Escritorio: DiseÃ±o Moderno y Limpio estilo Studio */}
+            {/* Sidebar Navigation para Escritorio: Diseño Moderno y Limpio estilo Studio */}
             <aside className="hidden md:flex md:w-64 bg-white border-r border-[#E8E4DA] p-3 flex-col justify-between shrink-0 overflow-y-auto scrollbar-thin">
               <div className="space-y-4">
                 {/* Cabecera del Taller */}
@@ -4488,15 +4487,15 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     </div>
                   </div>
                   <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
-                    En LÃ­nea
+                    En Línea
                   </span>
                 </div>
 
                 <nav className="flex flex-col gap-3 w-full">
-                  {/* GRUPO 1: CATÃLOGO & PRODUCTOS */}
+                  {/* GRUPO 1: CATÁLOGO & PRODUCTOS */}
                   <div className="space-y-1">
                     <div className="px-3 text-[10px] font-black uppercase tracking-wider text-gray-400">
-                      CatÃ¡logo &amp; Productos
+                      Catálogo &amp; Productos
                     </div>
 
                     <button
@@ -4541,7 +4540,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     >
                       <div className="flex items-center gap-2">
                         <FolderTree className="w-4 h-4" />
-                        <span>CategorÃ­as</span>
+                        <span>Categorías</span>
                       </div>
                       <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
                         activeTab === 'categories' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-600'
@@ -4558,12 +4557,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     >
                       <div className="flex items-center gap-2">
                         <ImageIcon className="w-4 h-4 text-emerald-600" />
-                        <span>Banners de Ãreas</span>
+                        <span>Banners de Áreas</span>
                       </div>
                       <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
                         activeTab === 'area-banners' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
                       }`}>
-                        3 Ãreas
+                        3 Áreas
                       </span>
                     </button>
                   </div>
@@ -4582,7 +4581,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     >
                       <div className="flex items-center gap-2">
                         <TrendingUp className="w-4 h-4 text-emerald-600" />
-                        <span>Costos &amp; MÃ¡rgenes</span>
+                        <span>Costos &amp; Márgenes</span>
                       </div>
                       <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
                         activeTab === 'margins' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
@@ -4754,7 +4753,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     >
                       <div className="flex items-center gap-2">
                         <Smartphone className="w-4 h-4" />
-                        <span>CatÃ¡logos MÃ³viles PDF</span>
+                        <span>Catálogos Móviles PDF</span>
                       </div>
                       <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
                         activeTab === 'catalog-mobile'
@@ -4780,7 +4779,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     >
                       <div className="flex items-center gap-2">
                         <BarChart3 className="w-4 h-4" />
-                        <span>MÃ©tricas &amp; TrÃ¡fico</span>
+                        <span>Métricas &amp; Tráfico</span>
                       </div>
                     </button>
 
@@ -4809,7 +4808,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     >
                       <div className="flex items-center gap-2">
                         <Gamepad2 className="w-4 h-4 text-amber-500" />
-                        <span>Arcade FidelizaciÃ³n</span>
+                        <span>Arcade Fidelización</span>
                       </div>
                       <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
                         activeTab === 'arcade' ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-800'
@@ -4824,7 +4823,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               <div className="p-3 rounded-2xl bg-[#F7F5EE] border border-[#E8E4DA] text-[11px] text-gray-600 mt-4">
                 <div className="flex items-center gap-1.5 font-bold text-[#2D4F3E]">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>SincronizaciÃ³n activa</span>
+                  <span>Sincronización activa</span>
                 </div>
                 <p className="text-[10px] text-gray-500 mt-0.5 leading-snug">
                   Los cambios se guardan y reflejan inmediatamente en la tienda.
@@ -4835,7 +4834,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
             {/* Main Content Area */}
             <main className="flex-1 min-w-0 overflow-y-auto p-3 sm:p-5 lg:p-6 space-y-6">
               
-              {/* TAB: CATÃLOGO MÃ“VIL & ARCHIVO DE DESCARGAS */}
+              {/* TAB: CATÁLOGO MÃ“VIL & ARCHIVO DE DESCARGAS */}
               {activeTab === 'catalog-mobile' && (
                 <MobileCatalogAdminSection
                   token={token}
@@ -4873,7 +4872,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                 />
               )}
 
-              {/* TAB: OFERTAS FLASH & CUPOS POR ÃREA */}
+              {/* TAB: OFERTAS FLASH & CUPOS POR ÁREA */}
               {activeTab === 'flash-deals' && (
                 <FlashDealsControlSection
                   products={products}
@@ -4907,7 +4906,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                 <ArcadeAdminSection token={token} />
               )}
 
-              {/* TAB: BANNERS DE ÃREAS (HOGAR, NEGOCIOS, EVENTOS) Y TARJETAS DE SELECCIÃ“N */}
+              {/* TAB: BANNERS DE ÁREAS (HOGAR, NEGOCIOS, EVENTOS) Y TARJETAS DE SELECCIÃ“N */}
               {activeTab === 'area-banners' && (
                 <AreaBannersAdminSection
                   token={token}
@@ -4940,30 +4939,30 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               )}
 
               {/* TAB 1: PRODUCTOS */}
-              {/* TAB 1: PRODUCTOS CON DIVISIÃ“N POR ÃREAS Y SWITCH DE STOCK */}
+              {/* TAB 1: PRODUCTOS CON DIVISIÃ“N POR ÁREAS Y SWITCH DE STOCK */}
               {activeTab === 'products' && (
                 <div className="space-y-4">
-                  {/* BARRA DE ÃREAS Y AUDITORÃA: DISEÃ‘O LIMPIO ESTILO CATÃLOGO */}
+                  {/* BARRA DE ÁREAS Y AUDITORÍA: DISEÃ‘O LIMPIO ESTILO CATÁLOGO */}
                   <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-[#E8E4DA] shadow-xs space-y-3">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
                       <div className="flex items-center gap-2">
                         <Boxes className="w-4 h-4 text-[#2D4F3E]" />
                         <h4 className="text-xs font-bold uppercase tracking-wider text-gray-700 font-heading">
-                          Ãreas del CatÃ¡logo
+                          Áreas del Catálogo
                         </h4>
                         <span className="text-[10px] font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
-                          8 Ã¡reas oficiales
+                          8 áreas oficiales
                         </span>
                       </div>
                       <span className="text-[11px] text-gray-500 font-medium">
-                        {filterWorld === 'all' ? `Mostrando ${products.length} productos en total` : `${stockAreaStats[filterWorld]?.total || 0} piezas en esta Ã¡rea`}
+                        {filterWorld === 'all' ? `Mostrando ${products.length} productos en total` : `${stockAreaStats[filterWorld]?.total || 0} piezas en esta área`}
                       </span>
                     </div>
 
-                    {/* Selector de Ãreas: Pills limpios y espaciados sin amontonar */}
+                    {/* Selector de Áreas: Pills limpios y espaciados sin amontonar */}
                     <div className="flex items-center gap-2 overflow-x-auto pb-1.5 pt-0.5 scrollbar-thin scrollbar-thumb-stone-300 no-scrollbar">
                       {[
-                        { id: 'all', label: 'Todas las Ãreas', icon: 'ðŸŒ', stats: stockAreaStats.all },
+                        { id: 'all', label: 'Todas las Áreas', icon: 'ðŸŒ', stats: stockAreaStats.all },
                         { id: 'hogar', label: 'Hogar', icon: 'ðŸ ', stats: stockAreaStats.hogar },
                         { id: 'negocios', label: 'Negocios', icon: 'ðŸ’¼', stats: stockAreaStats.negocios },
                         { id: 'juguetes', label: 'Juguetes', icon: 'ðŸ§¸', stats: stockAreaStats.juguetes },
@@ -5035,7 +5034,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         <div className="min-w-0">
                           <div className="text-[10px] font-bold uppercase text-[#2D4F3E] leading-tight">Bodega Taller</div>
                           <div className="text-xs font-black text-[#1F2421] font-mono">
-                            {stockAreaStats[filterWorld]?.totalUnits || 0} pzs fÃ­sicas
+                            {stockAreaStats[filterWorld]?.totalUnits || 0} pzs físicas
                           </div>
                         </div>
                       </div>
@@ -5049,7 +5048,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                         <input
                           type="text"
-                          placeholder="Buscar cÃ³digo o nombre..."
+                          placeholder="Buscar código o nombre..."
                           value={productSearch}
                           onChange={e => setProductSearch(e.target.value)}
                           className="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl border border-gray-200 focus:outline-none focus:border-[#2D4F3E]"
@@ -5062,10 +5061,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         onChange={e => setFilterTechnique(e.target.value)}
                         className="px-3 py-1.5 text-xs rounded-xl border border-gray-200 bg-white font-medium"
                       >
-                        <option value="all">âš¡ Todas las tÃ©cnicas</option>
-                        <option value="3d">ðŸ–¨ï¸ ImpresiÃ³n 3D ({techniqueCounts['3d'] || 0})</option>
-                        <option value="laser">ðŸ”¥ Corte & Grabado LÃ¡ser ({techniqueCounts.laser || 0})</option>
-                        <option value="sublimation">ðŸŽ¨ SublimaciÃ³n ({techniqueCounts.sublimation || 0})</option>
+                        <option value="all">âš¡ Todas las técnicas</option>
+                        <option value="3d">ðŸ–¨ï¸ Impresión 3D ({techniqueCounts['3d'] || 0})</option>
+                        <option value="laser">ðŸ”¥ Corte & Grabado Láser ({techniqueCounts.laser || 0})</option>
+                        <option value="sublimation">ðŸŽ¨ Sublimación ({techniqueCounts.sublimation || 0})</option>
                         <option value="print">{'\u{1F5A8}\uFE0F Impresi\u00f3n L\u00e1ser / Tinta'} ({techniqueCounts.print || 0})</option>
                         <option value="vinyl">âœ‚ï¸ Corte de Vinil ({techniqueCounts.vinyl || 0})</option>
                         <option value="nfc">ðŸ“¡ Enlace NFC ({techniqueCounts.nfc || 0})</option>
@@ -5094,17 +5093,17 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         <option value="archived">Archivados</option>
                       </select>
 
-                      {/* Criterio de ordenamiento: Ãšltimo artÃ­culo subido al mÃ¡s viejo */}
+                      {/* Criterio de ordenamiento: Ãšltimo artículo subido al más viejo */}
                       <select
                         value={productSort}
                         onChange={e => setProductSort(e.target.value)}
                         className="px-3 py-1.5 text-xs rounded-xl border border-emerald-300 bg-emerald-50/50 font-bold text-[#2D4F3E] cursor-pointer"
-                        title="Ordenar lista de productos y SKUs (Por defecto: del Ãºltimo artÃ­culo subido al mÃ¡s viejo)"
+                        title="Ordenar lista de productos y SKUs (Por defecto: del último artículo subido al más viejo)"
                       >
-                        <option value="newest">ðŸ•’ Ãšltimos subidos (mÃ¡s recientes primero)</option>
-                        <option value="oldest">ðŸ“… Primeros subidos (mÃ¡s antiguos)</option>
-                        <option value="sku_asc">ðŸ”¤ SKU / CÃ³digo (A â†’ Z)</option>
-                        <option value="sku_desc">ðŸ”¤ SKU / CÃ³digo (Z â†’ A)</option>
+                        <option value="newest">ðŸ•’ Ãšltimos subidos (más recientes primero)</option>
+                        <option value="oldest">ðŸ“… Primeros subidos (más antiguos)</option>
+                        <option value="sku_asc">ðŸ”¤ SKU / Código (A â†’ Z)</option>
+                        <option value="sku_desc">ðŸ”¤ SKU / Código (Z â†’ A)</option>
                         <option value="name_asc">ðŸ·ï¸ Nombre (A â†’ Z)</option>
                         <option value="price_desc">ðŸ’° Mayor precio</option>
                         <option value="price_asc">ðŸª™ Menor precio</option>
@@ -5120,7 +5119,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               ? 'bg-[#2D4F3E] text-white shadow-xs'
                               : 'text-gray-600 hover:text-gray-900'
                           }`}
-                          title="Vista de cuadrÃ­cula en tarjetas (estilo Paquetes)"
+                          title="Vista de cuadrícula en tarjetas (estilo Paquetes)"
                         >
                           <Boxes className="w-3.5 h-3.5" />
                           <span className="hidden sm:inline">Tarjetas</span>
@@ -5146,7 +5145,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         type="button"
                         onClick={() => handleOpenPhotoStudio()}
                         className="flex items-center gap-1.5 px-3 sm:px-4 py-2 min-h-[40px] rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white text-xs font-bold active:scale-95 transition-all shadow-sm cursor-pointer touch-manipulation"
-                        title="Abrir Estudio FotogrÃ¡fico para generar las 4 tomas de catÃ¡logo con IA"
+                        title="Abrir Estudio Fotográfico para generar las 4 tomas de catálogo con IA"
                       >
                         <Camera className="w-4 h-4 text-amber-200" />
                         <span>Estudio 4 Fotos IA</span>
@@ -5162,7 +5161,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     </div>
                   </div>
 
-                  {/* BARRA MÃ“VIL DE ACCIONES RÃPIDAS (BOTONES GRANDES PARA DEDO) */}
+                  {/* BARRA MÃ“VIL DE ACCIONES RÁPIDAS (BOTONES GRANDES PARA DEDO) */}
                   <div className="md:hidden grid grid-cols-2 gap-2.5 p-2 bg-[#F4F0E8] rounded-2xl border border-[#E8E4DA]">
                     <button
                       type="button"
@@ -5183,7 +5182,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   </div>
 
                   {productViewMode === 'grid' ? (
-                    /* VISTA EN CUADRÃCULA DE TARJETAS (ESTILO PAQUETES - FÃCIL EDICIÃ“N) */
+                    /* VISTA EN CUADRÍCULA DE TARJETAS (ESTILO PAQUETES - FÁCIL EDICIÃ“N) */
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                       {filteredProducts.map(p => (
                         <div
@@ -5193,7 +5192,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           <div className="p-4 sm:p-5 space-y-3.5">
                             {/* Encabezado: Foto, SKU y Nombre */}
                             <div className="flex items-start gap-3">
-                              <ImageOptimized loading="lazy"
+                              <img loading="lazy"
                                 src={p.primaryImage || p.gallery?.[0] || p.whiteBgImage}
                                 alt={p.name}
                                 className="w-16 h-16 rounded-2xl object-cover bg-gray-100 border border-gray-200 shrink-0"
@@ -5236,10 +5235,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   {p.name}
                                 </h4>
                                 <p className="text-[11px] text-gray-500 line-clamp-1 mt-0.5">
-                                  {p.shortDescription || 'Sin descripciÃ³n corta.'}
+                                  {p.shortDescription || 'Sin descripción corta.'}
                                 </p>
 
-                                {/* Badges Grid de Tiempo de FabricaciÃ³n & Repositorio */}
+                                {/* Badges Grid de Tiempo de Fabricación & Repositorio */}
                                 {(() => {
                                   const mHoursVal = Number(p.costBreakdown?.machineHours) || 
                                                     (Number(p.manufacturingRecipe?.manufacturingTimeMinutes) ? (Number(p.manufacturingRecipe.manufacturingTimeMinutes) / 60) : 0);
@@ -5302,7 +5301,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 </div>
                               </div>
 
-                              {/* Switch de Stock & Ajuste RÃ¡pido */}
+                              {/* Switch de Stock & Ajuste Rápido */}
                               <div className="flex items-center gap-1.5 bg-white px-2.5 py-1.5 rounded-xl border border-gray-200 shadow-2xs">
                                 <button
                                   type="button"
@@ -5346,7 +5345,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               </div>
                             </div>
 
-                            {/* TÃ©cnicas y Oferta Flash */}
+                            {/* Técnicas y Oferta Flash */}
                             <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-[10.5px]">
                               <div className="flex items-center gap-1 flex-wrap">
                                 {p.techniques?.map(t => (
@@ -5400,7 +5399,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   handleOpenPhotoStudio(p.id);
                                 }}
                                 className="py-1.5 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs"
-                                title="Generar 4 tomas de catÃ¡logo con IA"
+                                title="Generar 4 tomas de catálogo con IA"
                               >
                                 <Camera className="w-3.5 h-3.5 text-amber-700" />
                                 <span>4 Fotos IA</span>
@@ -5426,7 +5425,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   ) : (
                     /* VISTA EN TABLA (MODO COMPACTO) */
                     <>
-{/* VISTA MÃ“VIL: Tarjetas de Producto TÃ¡ctiles y Adaptadas */}
+{/* VISTA MÃ“VIL: Tarjetas de Producto Táctiles y Adaptadas */}
                   <div className="md:hidden space-y-3">
                     {filteredProducts.map(p => (
                       <div
@@ -5441,7 +5440,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           className="flex items-start gap-3 cursor-pointer group active:opacity-75 transition-opacity touch-manipulation"
                           title="Toca para editar este producto"
                         >
-                          <ImageOptimized loading="lazy"
+                          <img loading="lazy"
                             src={p.primaryImage}
                             alt=""
                             className="w-16 h-16 rounded-xl object-cover bg-gray-100 border border-gray-200 shrink-0 shadow-2xs group-hover:scale-105 transition-transform"
@@ -5486,7 +5485,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 </span>
                               )}
                               {p.skuBreakdown && (
-                                <span className="text-[10px] text-gray-500 font-sans tracking-tight bg-stone-100 px-1.5 py-0.5 rounded border border-stone-200 inline-flex items-center gap-1 shrink-0" title={`Ãrea: ${p.skuBreakdown.area} | TÃ©cnica: ${p.skuBreakdown.technique}`}>
+                                <span className="text-[10px] text-gray-500 font-sans tracking-tight bg-stone-100 px-1.5 py-0.5 rounded border border-stone-200 inline-flex items-center gap-1 shrink-0" title={`Área: ${p.skuBreakdown.area} | Técnica: ${p.skuBreakdown.technique}`}>
                                   <span>{SKU_AREAS[p.skuBreakdown.area]?.icon || 'ðŸ“¦'}</span>
                                   <span className="font-semibold">{SKU_AREAS[p.skuBreakdown.area]?.label || p.skuBreakdown.area}</span>
                                   <span className="text-gray-300">â€¢</span>
@@ -5495,7 +5494,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               )}
                             </div>
 
-                            {/* Badges MÃ³vil de Tiempo de FabricaciÃ³n & Repositorio */}
+                            {/* Badges Móvil de Tiempo de Fabricación & Repositorio */}
                             {(() => {
                               const mHoursVal = Number(p.costBreakdown?.machineHours) || 
                                                 (Number(p.manufacturingRecipe?.manufacturingTimeMinutes) ? (Number(p.manufacturingRecipe.manufacturingTimeMinutes) / 60) : 0);
@@ -5546,7 +5545,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           </div>
                         </div>
 
-                        {/* Fila de Controles RÃ¡pidos: Switch de Stock y Oferta Flash */}
+                        {/* Fila de Controles Rápidos: Switch de Stock y Oferta Flash */}
                         <div className="flex items-center justify-between gap-2 pt-2 border-t border-gray-100">
                           {/* Control de Stock */}
                           <div className="flex items-center gap-2 bg-gray-50 px-2.5 py-1.5 rounded-xl border border-gray-200">
@@ -5603,7 +5602,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           </button>
                         </div>
 
-                        {/* Fila de Botones de AcciÃ³n TÃ¡ctiles y Accesibles */}
+                        {/* Fila de Botones de Acción Táctiles y Accesibles */}
                         <div className="flex items-center justify-between gap-2 pt-2 border-t border-gray-100">
                           <div className="flex items-center gap-1.5">
                             <button
@@ -5634,7 +5633,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 handleOpenPhotoStudio(p.id);
                               }}
                               className="min-h-[42px] flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-bold border border-amber-300 transition-colors cursor-pointer active:scale-95 touch-manipulation"
-                              title="Generar 4 tomas de catÃ¡logo con IA"
+                              title="Generar 4 tomas de catálogo con IA"
                             >
                               <Camera className="w-4 h-4 text-amber-700" />
                               <span>4 Fotos IA</span>
@@ -5663,9 +5662,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       <table className="w-full text-left text-xs">
                         <thead className="bg-[#F8F7F2] border-b border-[#E8E4DA] text-gray-600 uppercase font-bold text-[9.5px]">
                           <tr>
-                            <th className="py-1.5 px-2">Foto &amp; CÃ³digo</th>
+                            <th className="py-1.5 px-2">Foto &amp; Código</th>
                             <th className="py-1.5 px-2">Producto</th>
-                            <th className="py-1.5 px-1.5">Ãreas / TÃ©cnicas</th>
+                            <th className="py-1.5 px-1.5">Áreas / Técnicas</th>
                             <th className="py-1.5 px-1.5">Precio &amp; Unidad</th>
                             <th className="py-1.5 px-1.5 text-center">Existencia / Stock</th>
                             <th className="py-1.5 px-1.5 text-center">Oferta Flash</th>
@@ -5678,7 +5677,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             <tr key={p.id} className="hover:bg-gray-50/80 transition-colors">
                               <td className="py-1 px-2">
                                 <div className="flex items-center gap-1.5">
-                                  <ImageOptimized loading="lazy"
+                                  <img loading="lazy"
                                     src={p.primaryImage}
                                     alt=""
                                     className="w-7 h-7 rounded-md object-cover bg-gray-100 border border-gray-200 shrink-0 shadow-2xs"
@@ -5693,7 +5692,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                       )}
                                     </span>
                                     {p.skuBreakdown && (
-                                      <span className="text-[9px] text-gray-500 font-sans tracking-tight bg-stone-50 px-1.5 py-0.5 rounded border border-stone-200/80 inline-flex items-center gap-1 w-fit mt-0.5" title={`Ãrea: ${p.skuBreakdown.area} | TÃ©cnica: ${p.skuBreakdown.technique} | Material: ${p.skuBreakdown.material}`}>
+                                      <span className="text-[9px] text-gray-500 font-sans tracking-tight bg-stone-50 px-1.5 py-0.5 rounded border border-stone-200/80 inline-flex items-center gap-1 w-fit mt-0.5" title={`Área: ${p.skuBreakdown.area} | Técnica: ${p.skuBreakdown.technique} | Material: ${p.skuBreakdown.material}`}>
                                         <span>{SKU_AREAS[p.skuBreakdown.area]?.icon || 'ðŸ“¦'}</span>
                                         <span className="font-semibold">{SKU_AREAS[p.skuBreakdown.area]?.label || p.skuBreakdown.area}</span>
                                         <span className="text-gray-300">â€¢</span>
@@ -5739,7 +5738,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   );
                                 })()}
 
-                                {/* Badges de Tiempo de FabricaciÃ³n & Repositorio */}
+                                {/* Badges de Tiempo de Fabricación & Repositorio */}
                                 {(() => {
                                   const mHoursVal = Number(p.costBreakdown?.machineHours) || 
                                                     (Number(p.manufacturingRecipe?.manufacturingTimeMinutes) ? (Number(p.manufacturingRecipe.manufacturingTimeMinutes) / 60) : 0);
@@ -5759,7 +5758,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                       {timeStr && (
                                         <span
                                           className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-md bg-amber-50 text-amber-800 border border-amber-200/80 font-mono font-bold"
-                                          title={`Tiempo total de taller: ${timeStr} (${mHoursVal.toFixed(1)}h mÃ¡quina + ${pMinsVal}m acabado)`}
+                                          title={`Tiempo total de taller: ${timeStr} (${mHoursVal.toFixed(1)}h máquina + ${pMinsVal}m acabado)`}
                                         >
                                           <span>â±ï¸</span>
                                           <span>{timeStr}</span>
@@ -5946,7 +5945,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                       handleOpenPhotoStudio(p.id);
                                     }}
                                     className="p-1 text-amber-600 hover:text-amber-800 hover:bg-amber-50 rounded cursor-pointer"
-                                    title="Estudio FotogrÃ¡fico (4 Fotos IA)"
+                                    title="Estudio Fotográfico (4 Fotos IA)"
                                   >
                                     <Camera className="w-3.5 h-3.5" />
                                   </button>
@@ -5988,10 +5987,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                 </div>
               )}
 
-              {/* TAB: COSTOS DE PRODUCCIÃ“N & MÃRGENES DE GANANCIA (EXCEL MODEL) */}
+              {/* TAB: COSTOS DE PRODUCCIÃ“N & MÁRGENES DE GANANCIA (EXCEL MODEL) */}
               {activeTab === 'margins' && (
                 <div className="space-y-5 min-w-0">
-                  {/* CABECERA & GUÃA FINANCIERA */}
+                  {/* CABECERA & GUÍA FINANCIERA */}
                   <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#E8E4DA] shadow-xs space-y-3 min-w-0">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-gray-100 pb-3">
                       <div className="flex items-center gap-3">
@@ -6000,10 +5999,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         </div>
                         <div>
                           <h4 className="text-base font-extrabold text-[#1F2421] font-heading">
-                            Costos de ProducciÃ³n, MÃ¡rgenes & Ganancias
+                            Costos de Producción, Márgenes & Ganancias
                           </h4>
                           <p className="text-xs text-gray-500">
-                            FÃ³rmulas financieras en vivo: Ganancia = Venta âˆ’ Costo Â· Margen % = Ganancia / Venta Â· Objetivo: {workshopParams.targetMarginPercent}%.
+                            Fórmulas financieras en vivo: Ganancia = Venta âˆ’ Costo Â· Margen % = Ganancia / Venta Â· Objetivo: {workshopParams.targetMarginPercent}%.
                           </p>
                         </div>
                       </div>
@@ -6028,13 +6027,13 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 hover:border-[#2D4F3E] bg-gray-50 hover:bg-white text-xs font-bold text-gray-700 transition-all cursor-pointer"
                         >
                           <Sliders className="w-3.5 h-3.5 text-[#2D4F3E]" />
-                          <span>Tarifas RÃ¡pidas</span>
+                          <span>Tarifas Rápidas</span>
                           {showWorkshopParams ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                         </button>
                       </div>
                     </div>
 
-                    {/* ACORDEÃ“N DE PARÃMETROS DEL TALLER (CONFIGURACIÃ“N EXCEL) */}
+                    {/* ACORDEÃ“N DE PARÁMETROS DEL TALLER (CONFIGURACIÃ“N EXCEL) */}
                     {showWorkshopParams && (
                       <form onSubmit={handleSaveWorkshopParams} className="p-4 rounded-xl bg-[#F8F7F2] border border-[#E8E4DA] space-y-4 animate-fade-in min-w-0">
                         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-gray-200/80 pb-2">
@@ -6043,7 +6042,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             <span>Tarifas Base de Taller &amp; Materias Primas</span>
                           </div>
                           <span className="text-[11px] text-gray-500">
-                            Modifica cualquier tarifa y se recalcularÃ¡n los mÃ¡rgenes de todo el catÃ¡logo
+                            Modifica cualquier tarifa y se recalcularán los márgenes de todo el catálogo
                           </span>
                         </div>
 
@@ -6073,7 +6072,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           </div>
 
                           <div>
-                            <label className="font-bold text-gray-700 block mb-1">EnergÃ­a 3D ($/hora)</label>
+                            <label className="font-bold text-gray-700 block mb-1">Energía 3D ($/hora)</label>
                             <input
                               type="number"
                               step="any"
@@ -6081,7 +6080,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               onChange={e => setWorkshopParams({ ...workshopParams, electricityPerHour: Number(e.target.value) })}
                               className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 bg-white font-semibold"
                             />
-                            <span className="text-[10px] text-gray-400 mt-0.5 block">Consumo elÃ©ctrico CFE</span>
+                            <span className="text-[10px] text-gray-400 mt-0.5 block">Consumo eléctrico CFE</span>
                           </div>
 
                           <div>
@@ -6129,7 +6128,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               onChange={e => setWorkshopParams({ ...workshopParams, targetMarginPercent: Number(e.target.value) })}
                               className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 bg-white font-semibold"
                             />
-                            <span className="text-[10px] text-gray-400 mt-0.5 block">Meta de rentabilidad mÃ­nima</span>
+                            <span className="text-[10px] text-gray-400 mt-0.5 block">Meta de rentabilidad mínima</span>
                           </div>
 
                           <div>
@@ -6150,7 +6149,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               disabled={savingParams}
                               className="px-4 py-2 rounded-xl bg-[#2D4F3E] text-white text-xs font-bold hover:bg-[#20392C] transition-all disabled:opacity-50 cursor-pointer"
                             >
-                              {savingParams ? 'Guardando...' : 'Guardar ParÃ¡metros de Taller'}
+                              {savingParams ? 'Guardando...' : 'Guardar Parámetros de Taller'}
                             </button>
                             {paramsSaveMsg && (
                               <span className="text-xs font-bold text-emerald-700">
@@ -6162,7 +6161,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </form>
                     )}
 
-                    {/* 4 KPIS SUPERIORES DE SALUD FINANCIERA (CALCULADOS EN TIEMPO REAL SEGÃšN ÃREA Y TÃ‰CNICA) */}
+                    {/* 4 KPIS SUPERIORES DE SALUD FINANCIERA (CALCULADOS EN TIEMPO REAL SEGÃšN ÁREA Y TÃ‰CNICA) */}
                     <div className="space-y-2">
                       {/* BARRA DE CANAL DE VENTA / GASTOS DE MERCADO LIBRE */}
                       <div className="bg-[#FAF8F5] p-3 sm:p-3.5 rounded-xl border border-[#E8E4DA] flex flex-wrap items-center justify-between gap-2.5">
@@ -6191,10 +6190,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   ? 'bg-amber-400 text-amber-950 font-black shadow-xs'
                                   : 'text-gray-600 hover:text-gray-900'
                               }`}
-                              title="Mercado Libre MÃ©xico: 16% comisiÃ³n de categorÃ­a + $25 cargo fijo en productos menores a $299 MXN"
+                              title="Mercado Libre México: 16% comisión de categoría + $25 cargo fijo en productos menores a $299 MXN"
                             >
                               <span>ðŸ’›</span>
-                              <span>Mercado Libre MÃ©xico (16% + $25 fijo)</span>
+                              <span>Mercado Libre México (16% + $25 fijo)</span>
                             </button>
                             <button
                               type="button"
@@ -6213,14 +6212,14 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         {marginSalesChannel === 'mercadolibre' && (
                           <div className="text-[11px] text-amber-900 font-semibold bg-amber-100/70 px-2.5 py-1 rounded-lg border border-amber-300 flex items-center gap-1.5 animate-fade-in">
                             <span className="text-sm">âš ï¸</span>
-                            <span>Comisiones ML aplicadas: <strong>16% comisiÃ³n</strong> + <strong>$25 MXN fijos</strong> por unidad vendida (&lt;$299 MXN).</span>
+                            <span>Comisiones ML aplicadas: <strong>16% comisión</strong> + <strong>$25 MXN fijos</strong> por unidad vendida (&lt;$299 MXN).</span>
                           </div>
                         )}
 
                         {marginSalesChannel === 'custom' && (
                           <div className="flex items-center gap-2.5 text-xs animate-fade-in">
                             <div className="flex items-center gap-1">
-                              <label className="font-bold text-gray-600 text-[11px]">ComisiÃ³n %:</label>
+                              <label className="font-bold text-gray-600 text-[11px]">Comisión %:</label>
                               <input
                                 type="number"
                                 value={customCommission}
@@ -6245,10 +6244,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         <div className="flex items-center justify-between px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900">
                           <div className="flex items-center gap-1.5 font-medium">
                             <span className="font-bold text-amber-800">Filtrado activo:</span>
-                            <span>{marginsWorld === 'all' ? 'Todas las Ã¡reas' : `Ãrea: ${marginsWorld}`}</span>
+                            <span>{marginsWorld === 'all' ? 'Todas las áreas' : `Área: ${marginsWorld}`}</span>
                             <span>â€¢</span>
-                            <span>{techniqueList.find(t => t.id === marginsTechnique)?.label || 'Todas las tÃ©cnicas'}</span>
-                            {marginsSearch.trim() && <span>â€¢ BÃºsqueda: "{marginsSearch}"</span>}
+                            <span>{techniqueList.find(t => t.id === marginsTechnique)?.label || 'Todas las técnicas'}</span>
+                            {marginsSearch.trim() && <span>â€¢ Búsqueda: "{marginsSearch}"</span>}
                           </div>
                           <button
                             type="button"
@@ -6268,7 +6267,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 pt-1 min-w-0">
                         <div className="p-4 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200">
                           <div className="text-[10.5px] font-bold uppercase tracking-wider text-emerald-800">
-                            Margen Promedio {marginsTechnique !== 'all' ? `(${techniqueList.find(t => t.id === marginsTechnique)?.shortLabel})` : 'del CatÃ¡logo'}
+                            Margen Promedio {marginsTechnique !== 'all' ? `(${techniqueList.find(t => t.id === marginsTechnique)?.shortLabel})` : 'del Catálogo'}
                           </div>
                           <div className="text-2xl font-black text-emerald-900 mt-1">
                             {activeMarginsSummary.avgMargin}%
@@ -6295,7 +6294,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                         <div className="p-4 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200">
                           <div className="text-[10.5px] font-bold uppercase tracking-wider text-amber-800">
-                            Costo vs Venta {marginsTechnique !== 'all' ? `(${techniqueList.find(t => t.id === marginsTechnique)?.shortLabel})` : 'de SelecciÃ³n'}
+                            Costo vs Venta {marginsTechnique !== 'all' ? `(${techniqueList.find(t => t.id === marginsTechnique)?.shortLabel})` : 'de Selección'}
                           </div>
                           <div className="text-lg font-black text-amber-900 mt-1">
                             ${activeMarginsSummary.cost.toLocaleString('es-MX')} / ${activeMarginsSummary.revenue.toLocaleString('es-MX')}
@@ -6319,7 +6318,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </div>
                     </div>
 
-                    {/* SEMÃFORO DE SALUD DE RENTABILIDAD DINÃMICO */}
+                    {/* SEMÁFORO DE SALUD DE RENTABILIDAD DINÁMICO */}
                     <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-gray-100 text-xs">
                       <span className="text-gray-500 font-semibold text-[11px]">Filtrar por rentabilidad:</span>
                       <button
@@ -6348,7 +6347,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             marginsStatus === 'loss' ? 'bg-rose-600 text-white' : 'bg-rose-100 text-rose-800 hover:bg-rose-200'
                           }`}
                         >
-                          âœ• {activeMarginsSummary.lossCount} En PÃ©rdida
+                          âœ• {activeMarginsSummary.lossCount} En Pérdida
                         </button>
                       )}
                       {activeMarginsSummary.missingCostCount > 0 && (
@@ -6363,18 +6362,18 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         </button>
                       )}
                       <span className="text-[11px] text-gray-400 ml-auto">
-                        âš™ï¸ {activeMarginsSummary.quoteCount} CotizaciÃ³n abierta
+                        âš™ï¸ {activeMarginsSummary.quoteCount} Cotización abierta
                       </span>
                     </div>
                   </div>
 
-                  {/* FILTROS DE ÃREA, TÃ‰CNICA Y BÃšSQUEDA */}
+                  {/* FILTROS DE ÁREA, TÃ‰CNICA Y BÃšSQUEDA */}
                   <div className="space-y-2.5 bg-white p-3.5 rounded-2xl border border-[#E8E4DA] min-w-0">
-                    {/* Fila 1: Filtro por Ãrea y Buscador */}
+                    {/* Fila 1: Filtro por Área y Buscador */}
                     <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
                       <div className="flex flex-wrap items-center gap-2 flex-1">
                         <div className="flex flex-wrap items-center gap-1 bg-gray-100 p-1 rounded-xl">
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 px-2 py-0.5">Ãrea:</span>
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 px-2 py-0.5">Área:</span>
                           {[
                             { id: 'all', label: 'Todas', icon: 'ðŸŒ' },
                             { id: 'hogar', label: 'Hogar', icon: 'ðŸ ' },
@@ -6384,7 +6383,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             { id: 'eventos', label: 'Eventos', icon: 'ðŸŽ‰' },
                             { id: 'paquetes', label: 'Paquetes', icon: 'ðŸŽ' },
                             { id: 'industria', label: 'Industria', icon: 'âš™ï¸' },
-                            { id: 'publicidad-desarrollo', label: 'DiseÃ±o & Pub.', icon: 'ðŸŽ¨' }
+                            { id: 'publicidad-desarrollo', label: 'Diseño & Pub.', icon: 'ðŸŽ¨' }
                           ].map(area => (
                             <button
                               key={area.id}
@@ -6419,11 +6418,11 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </div>
                     </div>
 
-                    {/* Fila 2: Filtro por Servicio / TÃ©cnica de FabricaciÃ³n */}
+                    {/* Fila 2: Filtro por Servicio / Técnica de Fabricación */}
                     <div className="flex flex-wrap items-center gap-1.5 pt-2 border-t border-gray-100">
                       <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 mr-1 flex items-center gap-1">
                         <Filter className="w-3 h-3 text-[#2D4F3E]" />
-                        <span>TÃ©cnica / Servicio:</span>
+                        <span>Técnica / Servicio:</span>
                       </span>
                       {techniqueList.map(tech => {
                         const isSelected = marginsTechnique === tech.id;
@@ -6451,7 +6450,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     </div>
                   </div>
 
-                  {/* TABLA DE COSTOS, MÃRGENES Y GANANCIAS (100% AJUSTADA A LA VENTANA) */}
+                  {/* TABLA DE COSTOS, MÁRGENES Y GANANCIAS (100% AJUSTADA A LA VENTANA) */}
                   <div className="bg-white rounded-2xl border border-[#E8E4DA] overflow-hidden shadow-xs">
                     <div className="w-full">
                       <table className="w-full text-left text-xs">
@@ -6472,7 +6471,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               <tr key={p.id} className="hover:bg-gray-50/80 transition-colors">
                                 <td className="py-1 px-2">
                                   <div className="flex items-center gap-1.5">
-                                    <ImageOptimized loading="lazy"
+                                    <img loading="lazy"
                                       src={p.primaryImage}
                                       alt=""
                                       className="w-7 h-7 rounded-md object-cover bg-gray-100 border border-gray-200 shrink-0 shadow-2xs"
@@ -6525,7 +6524,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                         onChange={(e) => handleUpdateProductPrice(p, e.target.value)}
                                         placeholder="0.00"
                                         className="w-14 text-right text-xs font-mono font-black text-gray-900 bg-transparent focus:outline-none py-0"
-                                        title="Haz clic para editar el precio de venta en catÃ¡logo"
+                                        title="Haz clic para editar el precio de venta en catálogo"
                                       />
                                     </div>
                                     <div className="inline-flex items-center gap-1">
@@ -6548,7 +6547,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                         <option value="servicio">/ servicio</option>
                                       </select>
                                       {row.platformFee > 0 && (
-                                        <span className="text-[8.5px] font-bold text-amber-900 bg-amber-100/90 px-1 py-0 rounded border border-amber-300 whitespace-nowrap" title={`DeducciÃ³n de plataforma: $${row.platformFee} ($${(row.price * row.commission).toFixed(1)} com. + $${row.fixedFee} fijo)`}>
+                                        <span className="text-[8.5px] font-bold text-amber-900 bg-amber-100/90 px-1 py-0 rounded border border-amber-300 whitespace-nowrap" title={`Deducción de plataforma: $${row.platformFee} ($${(row.price * row.commission).toFixed(1)} com. + $${row.fixedFee} fijo)`}>
                                           -${row.platformFee} ML
                                         </span>
                                       )}
@@ -6556,7 +6555,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   </div>
                                 </td>
 
-                                {/* Costo Unitario de ProducciÃ³n (Editable en Vivo) */}
+                                {/* Costo Unitario de Producción (Editable en Vivo) */}
                                 <td className="py-1 px-2 text-right">
                                   <div className="inline-flex flex-col items-end gap-0.5">
                                     <div className="inline-flex items-center justify-end gap-0.5 bg-amber-50/70 border border-amber-300 rounded px-1 py-0 focus-within:ring-1 focus-within:ring-[#2D4F3E]">
@@ -6569,10 +6568,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                         onChange={(e) => handleUpdateProductCost(p, e.target.value)}
                                         placeholder="0.00"
                                         className="w-14 text-right text-xs font-mono font-bold text-gray-900 bg-transparent focus:outline-none py-0"
-                                        title="Haz clic para editar el costo de producciÃ³n"
+                                        title="Haz clic para editar el costo de producción"
                                       />
                                     </div>
-                                    <span className="text-[9px] text-gray-400 font-mono" title={`Costo mÃ¡ximo sugerido para 40% margen: $${row.maxCost}`}>
+                                    <span className="text-[9px] text-gray-400 font-mono" title={`Costo máximo sugerido para 40% margen: $${row.maxCost}`}>
                                       {row.hasCost ? `Obj: $${row.maxCost}` : 'Sin costear'}
                                     </span>
                                   </div>
@@ -6619,7 +6618,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   )}
                                 </td>
 
-                                {/* Estado & BotÃ³n Desglose */}
+                                {/* Estado & Botón Desglose */}
                                 <td className="py-1 px-2 text-center">
                                   <div className="inline-flex flex-col items-center gap-1">
                                     <span className={`inline-block px-1.5 py-0.2 rounded-full text-[9px] font-bold ${
@@ -6635,7 +6634,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                       type="button"
                                       onClick={() => handleOpenCostBreakdown(p)}
                                       className="px-1.5 py-0 rounded border border-gray-200 text-gray-600 hover:text-[#2D4F3E] hover:border-[#2D4F3E] hover:bg-emerald-50/50 transition-all text-[9.5px] font-bold inline-flex items-center gap-0.5 cursor-pointer"
-                                      title="Abrir calculadora detallada de filamento, mÃ¡quina y mano de obra"
+                                      title="Abrir calculadora detallada de filamento, máquina y mano de obra"
                                     >
                                       <Calculator className="w-2.5 h-2.5 text-[#2D4F3E]" />
                                       <span>Desglose</span>
@@ -6652,24 +6651,24 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                 </div>
               )}
 
-              {/* TAB 2: CATEGORÃAS & AUDITORÃA DE PRODUCCIÃ“N POR TÃ‰CNICA */}
+              {/* TAB 2: CATEGORÍAS & AUDITORÍA DE PRODUCCIÃ“N POR TÃ‰CNICA */}
               {activeTab === 'categories' && (
                 <div className="space-y-5">
-                  {/* PANEL DE AUDITORÃA: Â¿CUÃNTO ESTOY HACIENDO DE CADA COSA? */}
+                  {/* PANEL DE AUDITORÍA: ¿CUÁNTO ESTOY HACIENDO DE CADA COSA? */}
                   <div className="bg-white p-4 rounded-2xl border border-[#E8E4DA] shadow-2xs space-y-3">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
                       <div className="flex items-center gap-2">
                         <Boxes className="w-4 h-4 text-[#2D4F3E]" />
                         <h4 className="text-xs font-bold uppercase tracking-wider text-gray-700 font-heading">
-                          AuditorÃ­a de FabricaciÃ³n por TÃ©cnica ("Â¿CuÃ¡nto estoy haciendo de cada cosa?")
+                          Auditoría de Fabricación por Técnica ("¿Cuánto estoy haciendo de cada cosa?")
                         </h4>
                       </div>
                       <span className="text-[11px] text-gray-500">
-                        Haz clic en una tarjeta para filtrar automÃ¡ticamente las ramas de esa tecnologÃ­a
+                        Haz clic en una tarjeta para filtrar automáticamente las ramas de esa tecnología
                       </span>
                     </div>
 
-                    {/* 5 Tarjetas Resumen por TÃ©cnica */}
+                    {/* 5 Tarjetas Resumen por Técnica */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
                       {techniqueOverview.map(tInfo => {
                         const isSelected = categoryTechnique === tInfo.id;
@@ -6703,7 +6702,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               <div className={`text-[10px] flex items-center justify-between ${
                                 isSelected ? 'text-emerald-200' : 'text-gray-500'
                               }`}>
-                                <span>{tInfo.percentOfCatalog}% catÃ¡logo</span>
+                                <span>{tInfo.percentOfCatalog}% catálogo</span>
                                 <span>{tInfo.categoriesCount} ramas</span>
                               </div>
                             </div>
@@ -6713,14 +6712,14 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     </div>
                   </div>
 
-                  {/* BARRA DE FILTROS PARA CATEGORÃAS */}
+                  {/* BARRA DE FILTROS PARA CATEGORÍAS */}
                   <div className="space-y-2.5 bg-white p-3.5 rounded-2xl border border-[#E8E4DA] min-w-0">
                     <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-                      {/* Filtro por TÃ©cnica */}
+                      {/* Filtro por Técnica */}
                       <div className="flex flex-wrap items-center gap-1.5 flex-1">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 flex items-center gap-1 mr-1">
                           <Filter className="w-3 h-3 text-[#2D4F3E]" />
-                          <span>TÃ©cnica:</span>
+                          <span>Técnica:</span>
                         </span>
                         {techniqueList.map(tech => {
                           const isSelected = categoryTechnique === tech.id;
@@ -6747,12 +6746,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         })}
                       </div>
 
-                      {/* Buscador de SubcategorÃ­as */}
+                      {/* Buscador de Subcategorías */}
                       <div className="relative min-w-[200px] max-w-xs">
                         <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                         <input
                           type="text"
-                          placeholder="Buscar categorÃ­a..."
+                          placeholder="Buscar categoría..."
                           value={categorySearch}
                           onChange={e => setCategorySearch(e.target.value)}
                           className="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl border border-gray-200 focus:outline-none focus:border-[#2D4F3E]"
@@ -6760,12 +6759,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </div>
                     </div>
 
-                    {/* Fila secundaria: Selector de Ãrea y Contador */}
+                    {/* Fila secundaria: Selector de Área y Contador */}
                     <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-gray-100">
                       <div className="flex flex-wrap items-center gap-1">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 px-1">Ãrea:</span>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 px-1">Área:</span>
                         {[
-                          { id: 'all', label: 'Todas las Ã¡reas', icon: 'ðŸŒ' },
+                          { id: 'all', label: 'Todas las áreas', icon: 'ðŸŒ' },
                           { id: 'hogar', label: 'Hogar', icon: 'ðŸ ' },
                           { id: 'negocios', label: 'Negocios', icon: 'ðŸ’¼' },
                           { id: 'juguetes', label: 'Juguetes', icon: 'ðŸ§¸' },
@@ -6773,7 +6772,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           { id: 'eventos', label: 'Eventos', icon: 'ðŸŽ‰' },
                           { id: 'paquetes', label: 'Paquetes', icon: 'ðŸŽ' },
                           { id: 'industria', label: 'Industria', icon: 'âš™ï¸' },
-                          { id: 'publicidad-desarrollo', label: 'DiseÃ±o & Publicidad', icon: 'ðŸŽ¨' }
+                          { id: 'publicidad-desarrollo', label: 'Diseño & Publicidad', icon: 'ðŸŽ¨' }
                         ].map(area => (
                           <button
                             key={area.id}
@@ -6792,7 +6791,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </div>
 
                       <div className="text-xs text-gray-500 font-medium">
-                        Mostrando <strong>{filteredCategories.length}</strong> de {categories.length} categorÃ­as
+                        Mostrando <strong>{filteredCategories.length}</strong> de {categories.length} categorías
                         {categoryTechnique !== 'all' && (
                           <span className="ml-1 text-[#2D4F3E] font-bold">
                             (con {techniqueList.find(t => t.id === categoryTechnique)?.shortLabel})
@@ -6802,26 +6801,26 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     </div>
                   </div>
 
-                  {/* TABLA DETALLADA DE CATEGORÃAS CON DESGLOSE DE TÃ‰CNICAS */}
+                  {/* TABLA DETALLADA DE CATEGORÍAS CON DESGLOSE DE TÃ‰CNICAS */}
                   <div className="bg-white rounded-2xl border border-[#E8E4DA] overflow-hidden shadow-xs">
                     <div className="overflow-x-auto w-full">
                       <table className="w-full text-left text-xs">
                         <thead className="bg-[#F8F7F2] border-b border-[#E8E4DA] text-gray-600 uppercase font-bold text-[9.5px]">
                           <tr>
-                            <th className="py-1.5 px-3">SubcategorÃ­a &amp; Clave</th>
-                            <th className="py-1.5 px-2">Ãrea</th>
-                            <th className="py-1.5 px-2">TÃ©cnicas que se fabrican</th>
-                            <th className="py-1.5 px-2 text-center">Piezas en CatÃ¡logo</th>
+                            <th className="py-1.5 px-3">Subcategoría &amp; Clave</th>
+                            <th className="py-1.5 px-2">Área</th>
+                            <th className="py-1.5 px-2">Técnicas que se fabrican</th>
+                            <th className="py-1.5 px-2 text-center">Piezas en Catálogo</th>
                             <th className="py-1.5 px-2 text-right">Valor Acumulado</th>
                             <th className="py-1.5 px-2">Visibilidad</th>
-                            <th className="py-1.5 px-3 text-right">AcciÃ³n</th>
+                            <th className="py-1.5 px-3 text-right">Acción</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
                           {filteredCategories.length === 0 ? (
                             <tr>
                               <td colSpan={7} className="py-6 text-center text-gray-400">
-                                No se encontraron categorÃ­as con los filtros seleccionados.
+                                No se encontraron categorías con los filtros seleccionados.
                               </td>
                             </tr>
                           ) : (
@@ -6850,7 +6849,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                     </span>
                                   </td>
 
-                                  {/* Badges de TÃ©cnicas de FabricaciÃ³n presentes */}
+                                  {/* Badges de Técnicas de Fabricación presentes */}
                                   <td className="py-1.5 px-2">
                                     <div className="flex flex-wrap items-center gap-1">
                                       {cat.techCounts['3d'] > 0 && (
@@ -6860,12 +6859,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                       )}
                                       {cat.techCounts.laser > 0 && (
                                         <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 text-[9.5px] font-bold">
-                                          <span>ðŸ”¥</span> <span>LÃ¡ser: {cat.techCounts.laser}</span>
+                                          <span>ðŸ”¥</span> <span>Láser: {cat.techCounts.laser}</span>
                                         </span>
                                       )}
                                       {cat.techCounts.sublimation > 0 && (
                                         <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded bg-blue-100 text-blue-800 text-[9.5px] font-bold">
-                                          <span>ðŸŽ¨</span> <span>SublimaciÃ³n: {cat.techCounts.sublimation}</span>
+                                          <span>ðŸŽ¨</span> <span>Sublimación: {cat.techCounts.sublimation}</span>
                                         </span>
                                       )}
                                       {cat.techCounts.vinyl > 0 && (
@@ -6904,7 +6903,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                     )}
                                   </td>
 
-                                  {/* Valor en CatÃ¡logo */}
+                                  {/* Valor en Catálogo */}
                                   <td className="py-1.5 px-2 text-right font-mono font-bold text-[#1F2421]">
                                     ${(categoryTechnique !== 'all' ? cat.matchingValue : cat.categoryTotalValue).toLocaleString('es-MX')}
                                   </td>
@@ -6914,7 +6913,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                     {cat.isHidden ? (
                                       <span className="text-gray-400 font-medium text-[10px]">Oculta manualmente</span>
                                     ) : cat.actualProductCount === 0 ? (
-                                      <span className="text-amber-600 font-medium text-[10px]">Oculta (vacÃ­a)</span>
+                                      <span className="text-amber-600 font-medium text-[10px]">Oculta (vacía)</span>
                                     ) : (
                                       <span className="text-emerald-700 font-medium text-[10px] flex items-center gap-1">
                                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
@@ -6944,7 +6943,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   <div className="p-3.5 bg-amber-50/80 border border-amber-200 rounded-2xl text-xs text-amber-800 flex items-start gap-2">
                     <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5 text-amber-600" />
                     <div>
-                      <strong>Regla de catÃ¡logo automÃ¡tico:</strong> Las subcategorÃ­as sin productos publicados permanecen ocultas en la navegaciÃ³n pÃºblica de la tienda. Al asignarles un producto y publicarlo, se activarÃ¡n de inmediato.
+                      <strong>Regla de catálogo automático:</strong> Las subcategorías sin productos publicados permanecen ocultas en la navegación pública de la tienda. Al asignarles un producto y publicarlo, se activarán de inmediato.
                     </div>
                   </div>
                 </div>
@@ -6969,20 +6968,20 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     <div className="p-5 rounded-2xl bg-white border border-[#E8E4DA] shadow-xs">
                       <div className="text-xs font-bold uppercase text-gray-400">Clics a WhatsApp</div>
                       <div className="text-2xl font-black text-emerald-600 mt-1">{analytics?.whatsappClicks || 0}</div>
-                      <div className="text-[11px] text-gray-500 mt-1">Solicitudes de cotizaciÃ³n abiertas</div>
+                      <div className="text-[11px] text-gray-500 mt-1">Solicitudes de cotización abiertas</div>
                     </div>
 
                     <div className="p-5 rounded-2xl bg-white border border-[#E8E4DA] shadow-xs">
                       <div className="text-xs font-bold uppercase text-gray-400">Carritos Iniciados</div>
                       <div className="text-2xl font-black text-[#D82B6E] mt-1">{analytics?.quotesStarted || 0}</div>
-                      <div className="text-[11px] text-gray-500 mt-1">Productos aÃ±adidos a cotizaciÃ³n</div>
+                      <div className="text-[11px] text-gray-500 mt-1">Productos añadidos a cotización</div>
                     </div>
                   </div>
 
                   {/* Top viewed products */}
                   <div className="bg-white p-5 rounded-2xl border border-[#E8E4DA] space-y-3">
                     <h4 className="text-sm font-bold text-[#1F2421]">
-                      Productos mÃ¡s consultados
+                      Productos más consultados
                     </h4>
                     <div className="space-y-2">
                       {analytics?.productViews && Object.entries(analytics.productViews).map(([id, views]) => {
@@ -7001,7 +7000,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     </div>
                   </div>
 
-                  {/* APARTADO: DELIMITADORES Y CONTROL DE OFERTAS FLASH POR ÃREA */}
+                  {/* APARTADO: DELIMITADORES Y CONTROL DE OFERTAS FLASH POR ÁREA */}
                   <FlashDealsControlSection
                     products={products}
                     settings={businessSettings}
@@ -7038,7 +7037,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             </span>
                           </div>
                           <p className="text-[11px] text-gray-500 mt-0.5">
-                            Controla si aceptas entregas locales, envÃ­os nacionales a toda la RepÃºblica o si el taller estÃ¡ en pausa temporal hasta cierta fecha.
+                            Controla si aceptas entregas locales, envíos nacionales a toda la República o si el taller está en pausa temporal hasta cierta fecha.
                           </p>
                         </div>
                       </div>
@@ -7073,7 +7072,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 Servicio &amp; Entregas Locales
                               </div>
                               <div className="text-[10.5px] text-gray-500">
-                                Entregas y recolecciÃ³n en taller / zona metropolitana
+                                Entregas y recolección en taller / zona metropolitana
                               </div>
                             </div>
                           </div>
@@ -7142,10 +7141,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             </div>
                             <div>
                               <div className="text-xs font-bold text-gray-900">
-                                Servicio &amp; EnvÃ­os Nacionales
+                                Servicio &amp; Envíos Nacionales
                               </div>
                               <div className="text-[10.5px] text-gray-500">
-                                EnvÃ­os por paqueterÃ­a a toda la RepÃºblica Mexicana
+                                Envíos por paquetería a toda la República Mexicana
                               </div>
                             </div>
                           </div>
@@ -7179,7 +7178,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                           <div>
                             <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">
-                              Detalles de envÃ­o forÃ¡neo (opcional):
+                              Detalles de envío foráneo (opcional):
                             </label>
                             <input
                               type="text"
@@ -7192,7 +7191,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 }
                               })}
                               onBlur={(e) => handleUpdateServiceStatus({ nationalDetails: e.target.value })}
-                              placeholder="Ej. EnvÃ­os con guÃ­a rastreable vÃ­a DHL, FedEx o Estafeta"
+                              placeholder="Ej. Envíos con guía rastreable vía DHL, FedEx o Estafeta"
                               className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-gray-300 bg-white focus:outline-none focus:border-[#2D4F3E]"
                             />
                           </div>
@@ -7200,7 +7199,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </div>
                     </div>
 
-                    {/* 3. MODO PAUSA TEMPORAL / NO HAY SERVICIO HASTA X DÃA */}
+                    {/* 3. MODO PAUSA TEMPORAL / NO HAY SERVICIO HASTA X DÍA */}
                     <div className={`p-4 sm:p-5 rounded-2xl border transition-all ${
                       activeServiceStatus.isPaused
                         ? 'bg-amber-50/80 border-amber-300 ring-2 ring-amber-400/20 shadow-xs'
@@ -7215,7 +7214,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           </div>
                           <div>
                             <div className="text-xs font-bold text-gray-900 flex items-center gap-2 flex-wrap">
-                              <span>Modo SuspensiÃ³n Temporal de Taller</span>
+                              <span>Modo Suspensión Temporal de Taller</span>
                               <span className={`px-2 py-0.5 rounded text-[10px] font-black ${
                                 activeServiceStatus.isPaused ? 'bg-amber-600 text-white' : 'bg-gray-200 text-gray-600'
                               }`}>
@@ -7223,7 +7222,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               </span>
                             </div>
                             <div className="text-[11px] text-gray-500 mt-0.5">
-                              Activa este interruptor cuando no haya servicio hasta cierta fecha (vacaciones, mantenimiento o saturaciÃ³n de pedidos).
+                              Activa este interruptor cuando no haya servicio hasta cierta fecha (vacaciones, mantenimiento o saturación de pedidos).
                             </div>
                           </div>
                         </div>
@@ -7250,14 +7249,14 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         </div>
                       </div>
 
-                      {/* Campos condicionales cuando la pausa estÃ¡ activa */}
+                      {/* Campos condicionales cuando la pausa está activa */}
                       <div className={`mt-4 space-y-4 text-xs ${!activeServiceStatus.isPaused ? 'opacity-60 pointer-events-none' : ''}`}>
                         
                         {/* Selector de Fecha */}
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                           <div className="sm:col-span-1">
                             <label className="block text-[11px] font-bold text-gray-700 mb-1">
-                              ðŸ“… No hay servicio hasta el dÃ­a:
+                              ðŸ“… No hay servicio hasta el día:
                             </label>
                             <input
                               type="date"
@@ -7267,23 +7266,23 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             />
                             {activeServiceStatus.pausedUntilDate && (
                               <p className="text-[11px] font-bold text-[#9E472A] mt-1">
-                                ReanudaciÃ³n: {formatServiceDate(activeServiceStatus.pausedUntilDate)}
+                                Reanudación: {formatServiceDate(activeServiceStatus.pausedUntilDate)}
                               </p>
                             )}
                           </div>
 
-                          {/* Accesos RÃ¡pidos de Fecha */}
+                          {/* Accesos Rápidos de Fecha */}
                           <div className="sm:col-span-2 space-y-1">
                             <label className="block text-[11px] font-bold text-gray-600 mb-1">
-                              Atajos rÃ¡pidos de fecha:
+                              Atajos rápidos de fecha:
                             </label>
                             <div className="flex flex-wrap items-center gap-1.5">
                               {[
-                                { label: '+2 dÃ­as', fn: () => getDatePlusDays(2) },
-                                { label: '+3 dÃ­as', fn: () => getDatePlusDays(3) },
+                                { label: '+2 días', fn: () => getDatePlusDays(2) },
+                                { label: '+3 días', fn: () => getDatePlusDays(3) },
                                 { label: '+1 semana', fn: () => getDatePlusDays(7) },
-                                { label: 'PrÃ³ximo lunes', fn: () => getNextMondayDate() },
-                                { label: 'Primer dÃ­a prÃ³ximo mes', fn: () => getNextMonthFirstDay() }
+                                { label: 'Próximo lunes', fn: () => getNextMondayDate() },
+                                { label: 'Primer día próximo mes', fn: () => getNextMonthFirstDay() }
                               ].map((btn, idx) => (
                                 <button
                                   key={idx}
@@ -7298,7 +7297,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           </div>
                         </div>
 
-                        {/* Motivo de la Pausa con botones rÃ¡pidos */}
+                        {/* Motivo de la Pausa con botones rápidos */}
                         <div className="space-y-1.5">
                           <label className="block text-[11px] font-bold text-gray-700">
                             Motivo principal del receso:
@@ -7308,7 +7307,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               { id: 'vacaciones', label: 'ðŸ–ï¸ Vacaciones de taller' },
                               { id: 'mantenimiento', label: 'ðŸ”§ Mantenimiento preventivo de maquinaria' },
                               { id: 'surtido', label: 'ðŸ“¦ Resurtido de filamentos y materias primas' },
-                              { id: 'saturacion', label: 'âš¡ SaturaciÃ³n de pedidos / Cupo completo' }
+                              { id: 'saturacion', label: 'âš¡ Saturación de pedidos / Cupo completo' }
                             ].map(preset => (
                               <button
                                 key={preset.id}
@@ -7317,8 +7316,8 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   const reasonText = preset.label;
                                   const dateText = activeServiceStatus.pausedUntilDate
                                     ? `el ${formatServiceDate(activeServiceStatus.pausedUntilDate)}`
-                                    : 'prÃ³ximamente';
-                                  const customMsg = `Aviso de taller: Estamos en periodo de ${preset.label.slice(2).toLowerCase()}. No hay servicio de producciÃ³n ni entregas hasta ${dateText}. Puedes dejar tu cotizaciÃ³n y se agendarÃ¡ por orden de llegada.`;
+                                    : 'próximamente';
+                                  const customMsg = `Aviso de taller: Estamos en periodo de ${preset.label.slice(2).toLowerCase()}. No hay servicio de producción ni entregas hasta ${dateText}. Puedes dejar tu cotización y se agendará por orden de llegada.`;
                                   handleUpdateServiceStatus({
                                     pausedReason: reasonText,
                                     pausedCustomMessage: customMsg
@@ -7336,10 +7335,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           </div>
                         </div>
 
-                        {/* Mensaje pÃºblico personalizado para clientes */}
+                        {/* Mensaje público personalizado para clientes */}
                         <div>
                           <label className="block text-[11px] font-bold text-gray-700 mb-1">
-                            Mensaje pÃºblico visible en el banner de la tienda y cotizador:
+                            Mensaje público visible en el banner de la tienda y cotizador:
                           </label>
                           <textarea
                             rows={2}
@@ -7353,7 +7352,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             })}
                             onBlur={(e) => handleUpdateServiceStatus({ pausedCustomMessage: e.target.value })}
                             className="w-full px-3 py-2 text-xs rounded-xl border border-gray-300 bg-white focus:outline-none focus:border-[#2D4F3E]"
-                            placeholder="Describe el aviso que verÃ¡n los clientes en la tienda..."
+                            placeholder="Describe el aviso que verán los clientes en la tienda..."
                           />
                         </div>
 
@@ -7361,7 +7360,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         {activeServiceStatus.isPaused && (
                           <div className="p-3.5 rounded-xl bg-amber-100/70 border border-amber-300 text-amber-950 text-xs space-y-1">
                             <span className="text-[10px] uppercase tracking-wider font-black text-amber-800 block">
-                              Vista Previa de cÃ³mo lo verÃ¡n tus clientes en la tienda:
+                              Vista Previa de cómo lo verán tus clientes en la tienda:
                             </span>
                             <div className="font-bold flex items-center gap-1.5">
                               <Calendar className="w-4 h-4 text-amber-700 shrink-0" />
@@ -7381,13 +7380,13 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   {/* Business info form */}
                   <div className="bg-white p-6 rounded-2xl border border-[#E8E4DA] space-y-4">
                     <h4 className="text-sm font-bold text-[#1F2421] font-heading">
-                      ConfiguraciÃ³n de Contacto & CotizaciÃ³n
+                      Configuración de Contacto & Cotización
                     </h4>
                     {businessSettings && (
                       <form onSubmit={handleSaveSettings} className="space-y-3 text-xs">
                         <div>
                           <label className="font-semibold text-gray-700 block mb-1">
-                            WhatsApp del Negocio (con lada de paÃ­s) *
+                            WhatsApp del Negocio (con lada de país) *
                           </label>
                           <input
                             type="text"
@@ -7397,13 +7396,13 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             placeholder="5215500000000"
                           />
                           <p className="text-[10px] text-gray-400 mt-0.5">
-                            A este nÃºmero llegarÃ¡n todos los mensajes automÃ¡ticos preparados por los clientes.
+                            A este número llegarán todos los mensajes automáticos preparados por los clientes.
                           </p>
                         </div>
 
                         <div>
                           <label className="font-semibold text-gray-700 block mb-1">
-                            Correo ElectrÃ³nico
+                            Correo Electrónico
                           </label>
                           <input
                             type="email"
@@ -7427,7 +7426,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                         <div>
                           <label className="font-semibold text-gray-700 block mb-1">
-                            Horario de AtenciÃ³n
+                            Horario de Atención
                           </label>
                           <input
                             type="text"
@@ -7439,7 +7438,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                         <div>
                           <label className="font-semibold text-gray-700 block mb-1">
-                            Nota fija de cotizaciÃ³n
+                            Nota fija de cotización
                           </label>
                           <textarea
                             rows={2}
@@ -7453,7 +7452,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           type="submit"
                           className="px-5 py-2.5 rounded-xl bg-[#2D4F3E] text-white font-bold hover:bg-[#20392C]"
                         >
-                          Guardar ConfiguraciÃ³n
+                          Guardar Configuración
                         </button>
                       </form>
                     )}
@@ -7463,7 +7462,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   <div className="bg-white p-6 rounded-2xl border border-[#E8E4DA] space-y-4">
                     <h4 className="text-sm font-bold text-[#1F2421] font-heading flex items-center gap-1.5">
                       <KeyRound className="w-4 h-4 text-amber-600" />
-                      <span>Cambio de ContraseÃ±a de Administrador</span>
+                      <span>Cambio de Contraseña de Administrador</span>
                     </h4>
 
                     {passwordMsg.text && (
@@ -7477,7 +7476,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     <form onSubmit={handleChangePassword} className="space-y-3 text-xs">
                       <div>
                         <label className="font-semibold text-gray-700 block mb-1">
-                          ContraseÃ±a Actual
+                          Contraseña Actual
                         </label>
                         <input
                           type="password"
@@ -7490,7 +7489,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                       <div>
                         <label className="font-semibold text-gray-700 block mb-1">
-                          Nueva ContraseÃ±a (mÃ­nimo 12 caracteres)
+                          Nueva Contraseña (mínimo 12 caracteres)
                         </label>
                         <input
                           type="password"
@@ -7506,12 +7505,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         type="submit"
                         className="px-5 py-2.5 rounded-xl bg-gray-900 text-white font-bold hover:bg-black"
                       >
-                        Actualizar ContraseÃ±a
+                        Actualizar Contraseña
                       </button>
                     </form>
                   </div>
 
-                  {/* CARD DE GESTIÃ“N: FOTOGRAFÃAS DE FONDO EN TARJETAS DE DISEÃ‘O E INDUSTRIA */}
+                  {/* CARD DE GESTIÃ“N: FOTOGRAFÍAS DE FONDO EN TARJETAS DE DISEÃ‘O E INDUSTRIA */}
                   <div className="lg:col-span-2 bg-white p-5 sm:p-6 rounded-2xl border border-[#E8E4DA] shadow-xs space-y-6">
                     {/* Header */}
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
@@ -7522,7 +7521,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         <div>
                           <div className="flex items-center gap-2">
                             <h4 className="text-sm sm:text-base font-bold text-[#1F2421] font-heading">
-                              Fotos de Fondo en Tarjetas (DiseÃ±o e Industria)
+                              Fotos de Fondo en Tarjetas (Diseño e Industria)
                             </h4>
                             <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black border ${
                               businessSettings?.showCategoryBackgroundPhotos
@@ -7533,7 +7532,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             </span>
                           </div>
                           <p className="text-[11px] text-gray-500 mt-0.5">
-                            Decide si deseas mostrar imÃ¡genes con desenfoque detrÃ¡s de las tarjetas o mantener el estilo oscuro minimalista de alta definiciÃ³n. TambiÃ©n puedes personalizar o sustituir las fotos de cada tarjeta.
+                            Decide si deseas mostrar imágenes con desenfoque detrás de las tarjetas o mantener el estilo oscuro minimalista de alta definición. También puedes personalizar o sustituir las fotos de cada tarjeta.
                           </p>
                         </div>
                       </div>
@@ -7577,14 +7576,14 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </div>
                     </div>
 
-                    {/* Editor de FotografÃ­as (Tarjetas de DiseÃ±o e Industria) */}
+                    {/* Editor de Fotografías (Tarjetas de Diseño e Industria) */}
                     <div className="space-y-6">
                       {/* 1. SECTOR DISEÃ‘O & PUBLICIDAD */}
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2 text-xs font-bold text-gray-800">
                             <Palette className="w-4 h-4 text-amber-600" />
-                            <span>Tarjetas de DiseÃ±o & Publicidad (4 Secciones)</span>
+                            <span>Tarjetas de Diseño & Publicidad (4 Secciones)</span>
                           </div>
                           <span className="text-[10px] text-gray-400 font-mono">BRAND-01, PRINT-02, DEV-03, EDIT-04</span>
                         </div>
@@ -7594,7 +7593,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             { key: 'branding', label: 'BRAND-01: Identidad & Marca', defaultUrl: './portafolio/assets/artesano-cover.webp' },
                             { key: 'publicidad', label: 'PRINT-02: Lonas & Gran Formato', defaultUrl: './portafolio/assets/civil-shirts.webp' },
                             { key: 'web', label: 'DEV-03: Web & Tienda', defaultUrl: './interfaces/assets/ui-01.jpg' },
-                            { key: 'editorial', label: 'EDIT-04: CatÃ¡logos & Redes', defaultUrl: './portafolio/assets/popol-spread.webp' }
+                            { key: 'editorial', label: 'EDIT-04: Catálogos & Redes', defaultUrl: './portafolio/assets/popol-spread.webp' }
                           ].map(card => {
                             const currentVal = businessSettings?.categoryBackgroundPhotos?.diseno?.[card.key] ?? card.defaultUrl;
                             return (
@@ -7703,7 +7702,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         </div>
                       </div>
 
-                      {/* Botones de acciÃ³n */}
+                      {/* Botones de acción */}
                       <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-gray-100">
                         <button
                           type="button"
@@ -7745,7 +7744,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               });
                             } catch (e) {}
                             localStorage.setItem('artesano_settings_cache', JSON.stringify(businessSettings));
-                            setServiceStatusMsg({ text: 'ConfiguraciÃ³n y fotos guardadas exitosamente.', type: 'success' });
+                            setServiceStatusMsg({ text: 'Configuración y fotos guardadas exitosamente.', type: 'success' });
                             setTimeout(() => setServiceStatusMsg({ text: '', type: '' }), 4000);
                           }}
                           className="px-5 py-2 rounded-xl bg-[#2D4F3E] text-white text-xs font-bold hover:bg-[#20392C] flex items-center gap-1.5"
@@ -7791,7 +7790,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     </span>
                   </div>
                   <p className="text-[11px] text-gray-500 truncate">
-                    {editorForm.name || 'Sin tÃ­tulo especificado'}
+                    {editorForm.name || 'Sin título especificado'}
                   </p>
                 </div>
               </div>
@@ -7815,7 +7814,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               </div>
             </div>
 
-            {/* TABS DE NAVEGACIÃ“N UX ERGONÃ“MICOS (MÃ³vil y Escritorio) */}
+            {/* TABS DE NAVEGACIÃ“N UX ERGONÃ“MICOS (Móvil y Escritorio) */}
             <div className="bg-[#FAF9F5] border-b border-[#E8E4DA] px-3 sm:px-5 py-2.5 flex items-center gap-1.5 sm:gap-2 overflow-x-auto scrollbar-none shrink-0">
               <button
                 type="button"
@@ -7827,7 +7826,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                 }`}
               >
                 <span>ðŸ“‹</span>
-                <span>1. Datos &amp; GalerÃ­a</span>
+                <span>1. Datos &amp; Galería</span>
               </button>
 
               <button
@@ -7894,14 +7893,14 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                 }`}
               >
                 <Link2 className="w-3.5 h-3.5" />
-                <span>5. Repositorio &amp; FabricaciÃ³n</span>
+                <span>5. Repositorio &amp; Fabricación</span>
                 {(editorForm.repository?.makerworldUrl || editorForm.makerWorldModel || editorForm.repository?.localPath) && (
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                 )}
               </button>
             </div>
 
-            {/* Formulario ErgonÃ³mico por PestaÃ±as */}
+            {/* Formulario Ergonómico por Pestañas */}
             <form onSubmit={handleSaveProduct} noValidate className="flex-1 overflow-y-auto flex flex-col">
               
               {editorMessage.text && (
@@ -7918,10 +7917,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               {editorActiveTab === 'general' && (
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 p-4 sm:p-6">
                   
-                  {/* COLUMNA IZQUIERDA: VISOR FOTOGRÃFICO Y MINIATURAS (5 col) */}
+                  {/* COLUMNA IZQUIERDA: VISOR FOTOGRÁFICO Y MINIATURAS (5 col) */}
                   <div className="lg:col-span-5 flex flex-col gap-4">
                     
-                    {/* Visor Grande de la FotografÃ­a Activa */}
+                    {/* Visor Grande de la Fotografía Activa */}
                     {(() => {
                       let activeImgUrl = '';
                       let slotName = 'ðŸŒ¿ Toma 1 â€¢ Portada en Ambiente Real';
@@ -7954,9 +7953,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       return (
                         <div className="space-y-3">
                           <div className="relative rounded-3xl overflow-hidden border-2 border-stone-200 bg-stone-100 aspect-square shadow-md group flex items-center justify-center">
-                            <ImageOptimized loading="lazy"
+                            <img loading="lazy"
                               src={activeImgUrl || fallbackImg}
-                              alt="FotografÃ­a activa del producto"
+                              alt="Fotografía activa del producto"
                               className="w-full h-full object-contain p-2 bg-white"
                             />
 
@@ -8003,7 +8002,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       );
                     })()}
 
-                    {/* BotÃ³n para abrir Estudio FotogrÃ¡fico IA */}
+                    {/* Botón para abrir Estudio Fotográfico IA */}
                     <button
                       type="button"
                       onClick={() => handleOpenPhotoStudio(editingProduct?.id || 'new')}
@@ -8013,10 +8012,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       <span>ðŸ“¸ Generar las 4 Fotos con IA (Frente, Arriba, Costado, Detalle)</span>
                     </button>
 
-                    {/* 4 Miniaturas TÃ¡ctiles del EstÃ¡ndar Oficial */}
+                    {/* 4 Miniaturas Táctiles del Estándar Oficial */}
                     <div className="space-y-1.5">
                       <div className="flex items-center justify-between text-xs font-bold text-gray-700">
-                        <span>EstÃ¡ndar Oficial de 4 FotografÃ­as:</span>
+                        <span>Estándar Oficial de 4 Fotografías:</span>
                         <span className="text-[10px] text-gray-400">Toca para ver</span>
                       </div>
 
@@ -8042,7 +8041,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               >
                                 <div className="w-full aspect-square rounded-xl overflow-hidden bg-stone-100 flex items-center justify-center border border-stone-100">
                                   {hasImg ? (
-                                    <ImageOptimized loading="lazy" src={slot.src} alt={slot.label} className="w-full h-full object-cover" />
+                                    <img loading="lazy" src={slot.src} alt={slot.label} className="w-full h-full object-cover" />
                                   ) : (
                                     <span className="text-sm opacity-50">{slot.icon}</span>
                                   )}
@@ -8073,7 +8072,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </div>
                     </div>
 
-                    {/* FotografÃ­as adicionales ilimitadas */}
+                    {/* Fotografías adicionales ilimitadas */}
                     <div className="p-3.5 rounded-2xl bg-stone-50 border border-stone-200 space-y-2">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-stone-800">
@@ -8100,7 +8099,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   editorActiveSlot === actualIndex ? 'border-[#2D4F3E] ring-2 ring-[#2D4F3E]/20' : 'border-stone-200'
                                 }`}
                               >
-                                <ImageOptimized loading="lazy" src={extraUrl || '/uploads/bandeja_vaciabolsillos_ovalada_white.jpg'} alt="" className="w-full h-full object-cover" />
+                                <img loading="lazy" src={extraUrl || '/uploads/bandeja_vaciabolsillos_ovalada_white.jpg'} alt="" className="w-full h-full object-cover" />
                                 <button
                                   type="button"
                                   onClick={(e) => { e.stopPropagation(); handleRemoveExtraImage(actualIndex); }}
@@ -8115,7 +8114,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         </div>
                       ) : (
                         <p className="text-[11px] text-gray-400 italic">
-                          Solo tiene las 4 fotos base. Pulsa "+ Agregar foto" para sumar mÃ¡s tomas de este paquete o servicio.
+                          Solo tiene las 4 fotos base. Pulsa "+ Agregar foto" para sumar más tomas de este paquete o servicio.
                         </p>
                       )}
                     </div>
@@ -8124,7 +8123,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   {/* COLUMNA DERECHA: CAMPOS ESENCIALES DEL PRODUCTO (7 col) */}
                   <div className="lg:col-span-7 flex flex-col gap-4 text-xs">
                     
-                    {/* Nombre y PublicaciÃ³n */}
+                    {/* Nombre y Publicación */}
                     <div className="p-4 rounded-2xl bg-[#FAF9F5] border border-stone-200 space-y-3">
                       <div>
                         <label className="font-bold text-gray-800 block mb-1 text-xs">Nombre del Producto o Paquete *</label>
@@ -8140,7 +8139,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                         <div>
-                          <label className="font-bold text-gray-700 block mb-1 text-[11px]">Estado de PublicaciÃ³n en Tienda</label>
+                          <label className="font-bold text-gray-700 block mb-1 text-[11px]">Estado de Publicación en Tienda</label>
                           <select
                             value={editorForm.status}
                             onChange={e => setEditorForm({ ...editorForm, status: e.target.value })}
@@ -8160,7 +8159,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               onChange={e => setEditorForm({ ...editorForm, featured: e.target.checked })}
                               className="w-4 h-4 rounded text-[#2D4F3E] focus:ring-0 cursor-pointer"
                             />
-                            <span>â­ Destacar en Inicio &amp; CatÃ¡logo Principal</span>
+                            <span>â­ Destacar en Inicio &amp; Catálogo Principal</span>
                           </label>
 
                           <label className="flex items-center gap-2 cursor-pointer font-bold text-purple-900 select-none bg-purple-50 px-2.5 py-1 rounded-xl border border-purple-200">
@@ -8188,15 +8187,15 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </div>
                     </div>
 
-                    {/* Delimitador de Ãreas de ActivaciÃ³n y TÃ©cnicas */}
+                    {/* Delimitador de Áreas de Activación y Técnicas */}
                     <div className="p-3.5 bg-[#FAF9F5] rounded-2xl border border-stone-200 space-y-2.5">
                       <div className="flex items-center justify-between">
                         <label className="font-bold text-[#1F2421] text-xs uppercase tracking-wider font-heading flex items-center gap-1.5">
                           <span>ðŸ·ï¸</span>
-                          <span>Ãreas del CatÃ¡logo donde se exhibirÃ¡ *</span>
+                          <span>Áreas del Catálogo donde se exhibirá *</span>
                         </label>
                         <span className="text-[10.5px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.2 rounded-full">
-                          {(editorForm.worlds?.length || 0)} de 8 Ã¡reas activadas
+                          {(editorForm.worlds?.length || 0)} de 8 áreas activadas
                         </span>
                       </div>
 
@@ -8209,7 +8208,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           { id: 'eventos', label: 'Eventos', icon: 'ðŸŽ‰' },
                           { id: 'paquetes', label: 'Paquetes', icon: 'ðŸŽ' },
                           { id: 'industria', label: 'Industria', icon: 'âš™ï¸' },
-                          { id: 'publicidad-desarrollo', label: 'DiseÃ±o & Pub.', icon: 'ðŸŽ¨' }
+                          { id: 'publicidad-desarrollo', label: 'Diseño & Pub.', icon: 'ðŸŽ¨' }
                         ].map(w => {
                           const isChecked = editorForm.worlds?.includes(w.id);
                           return (
@@ -8245,13 +8244,13 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         })}
                       </div>
 
-                      {/* TÃ©cnicas de FabricaciÃ³n Combinables */}
+                      {/* Técnicas de Fabricación Combinables */}
                       <div className="pt-2 border-t border-stone-200 flex flex-wrap items-center gap-1.5">
-                        <span className="text-[10px] font-bold text-gray-500 uppercase mr-1">TÃ©cnicas:</span>
+                        <span className="text-[10px] font-bold text-gray-500 uppercase mr-1">Técnicas:</span>
                         {[
-                          { id: '3d', label: 'ImpresiÃ³n 3D' },
-                          { id: 'laser', label: 'Corte/Grabado LÃ¡ser' },
-                          { id: 'sublimation', label: 'SublimaciÃ³n' },
+                          { id: '3d', label: 'Impresión 3D' },
+                          { id: 'laser', label: 'Corte/Grabado Láser' },
+                          { id: 'sublimation', label: 'Sublimación' },
                           { id: 'vinyl', label: 'Vinil Textil/Corte' },
                           { id: 'impresion_laser', label: 'Impresi?n L?ser / Tinta (Invitaciones)' },
                           { id: 'dtf', label: 'DTF Textil' },
@@ -8285,24 +8284,24 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     {/* Descripciones Breve y Completa */}
                     <div className="space-y-2">
                       <div>
-                        <label className="font-bold text-gray-700 block mb-1 text-[11px]">DescripciÃ³n Breve (1 lÃ­nea para catÃ¡logo)</label>
+                        <label className="font-bold text-gray-700 block mb-1 text-[11px]">Descripción Breve (1 línea para catálogo)</label>
                         <input
                           type="text"
                           value={editorForm.shortDescription || ''}
                           onChange={e => setEditorForm({ ...editorForm, shortDescription: e.target.value })}
                           className="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white"
-                          placeholder="Resumen atractivo en una lÃ­nea..."
+                          placeholder="Resumen atractivo en una línea..."
                         />
                       </div>
 
                       <div>
-                        <label className="font-bold text-gray-700 block mb-1 text-[11px]">DescripciÃ³n Completa (para la ficha tÃ©cnica del producto)</label>
+                        <label className="font-bold text-gray-700 block mb-1 text-[11px]">Descripción Completa (para la ficha técnica del producto)</label>
                         <textarea
                           rows={2}
                           value={editorForm.fullDescription || ''}
                           onChange={e => setEditorForm({ ...editorForm, fullDescription: e.target.value })}
                           className="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white"
-                          placeholder="Detalles sobre maderas, acabados, resistencia y personalizaciÃ³n..."
+                          placeholder="Detalles sobre maderas, acabados, resistencia y personalización..."
                         />
                       </div>
                     </div>
@@ -8324,7 +8323,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </div>
 
                       <div>
-                        <label className="font-semibold text-gray-700 block mb-1 text-[11px]">Tiempo de FabricaciÃ³n Estimado</label>
+                        <label className="font-semibold text-gray-700 block mb-1 text-[11px]">Tiempo de Fabricación Estimado</label>
                         <input
                           type="text"
                           value={editorForm.specifications?.estimatedLeadTime || ''}
@@ -8332,7 +8331,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             ...editorForm,
                             specifications: { ...editorForm.specifications, estimatedLeadTime: e.target.value }
                           })}
-                          placeholder="Ej: 2 a 3 dÃ­as hÃ¡biles"
+                          placeholder="Ej: 2 a 3 días hábiles"
                           className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 bg-white text-xs"
                         />
                       </div>
@@ -8399,11 +8398,11 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             );
                           })()}
 
-                          {/* Paleta RÃ¡pida de Tintes y Barnices para Madera */}
+                          {/* Paleta Rápida de Tintes y Barnices para Madera */}
                           <div className="space-y-1">
                             <span className="text-[10px] font-bold text-amber-900 uppercase flex items-center gap-1">
                               <span>ðŸªµ</span>
-                              <span>Tintes &amp; Barnices para Madera (LÃ¡ser y CarpinterÃ­a):</span>
+                              <span>Tintes &amp; Barnices para Madera (Láser y Carpintería):</span>
                             </span>
                             <div className="flex flex-wrap items-center gap-1.5 p-2 bg-amber-50/60 rounded-xl border border-amber-200/70">
                               {STANDARD_WOOD_VARNISHES.map(varnish => {
@@ -8434,7 +8433,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             </div>
                           </div>
 
-                          {/* Paleta RÃ¡pida de Filamentos PLA y PolÃ­meros */}
+                          {/* Paleta Rápida de Filamentos PLA y Polímeros */}
                           <div className="space-y-1">
                             <span className="text-[10px] font-bold text-gray-500 uppercase block">ðŸ–¨ï¸ Paleta de filamentos 3D (PLA / PETG):</span>
                             <div className="flex flex-wrap items-center gap-1.5 p-2 bg-stone-50 rounded-xl border border-stone-200">
@@ -8490,7 +8489,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     {/* NAVEGACIÃ“N UX INFERIOR PESTAÃ‘A 1 */}
                     <div className="pt-4 border-t border-stone-200 flex flex-wrap items-center justify-between gap-2.5">
                       <span className="text-[11px] text-gray-500">
-                        Paso 1 de 4: InformaciÃ³n comercial y fotos de catÃ¡logo
+                        Paso 1 de 4: Información comercial y fotos de catálogo
                       </span>
                       <div className="flex items-center gap-2">
                         <button
@@ -8565,7 +8564,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                 return (
                   <div className="p-4 sm:p-6 space-y-5 text-xs">
                     
-                    {/* Header de Resumen LogÃ­stico */}
+                    {/* Header de Resumen Logístico */}
                     <div className="p-3.5 bg-gradient-to-r from-purple-900 via-[#1C2721] to-[#141615] rounded-2xl text-white shadow-md border border-purple-800/50 flex flex-wrap items-center justify-between gap-3">
                       <div className="flex items-center gap-2.5">
                         <span className="p-2 rounded-xl bg-purple-500/20 text-purple-300">
@@ -8573,10 +8572,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         </span>
                         <div>
                           <h4 className="font-heading font-black text-sm text-white">
-                            Embalaje &amp; EnvÃ­o a Toda la RepÃºblica Mexicana
+                            Embalaje &amp; Envío a Toda la República Mexicana
                           </h4>
                           <span className="text-[10.5px] text-gray-300">
-                            CotizaciÃ³n exacta de cajas microcorrugadas, protecciones internas y flete nacional
+                            Cotización exacta de cajas microcorrugadas, protecciones internas y flete nacional
                           </span>
                         </div>
                       </div>
@@ -8612,7 +8611,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               Embalaje &amp; Protecciones de Taller
                             </h4>
                             <p className="text-[10.5px] text-gray-500">
-                              Cajas de cartÃ³n microcorrugado, plÃ¡stico burbuja de alta densidad y relleno de viruta kraft.
+                              Cajas de cartón microcorrugado, plástico burbuja de alta densidad y relleno de viruta kraft.
                             </p>
                           </div>
                         </div>
@@ -8634,7 +8633,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             {/* Selector de Caja */}
                             <div>
                               <label className="font-bold text-gray-700 block mb-1 text-[11px]">
-                                Caja o PresentaciÃ³n de Empaque:
+                                Caja o Presentación de Empaque:
                               </label>
                               <select
                                 value={pkg.boxType || 'caja_mediana'}
@@ -8645,9 +8644,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 <option value="caja_mediana">ðŸ“¦ Caja Microcorrugado Mediana (25x20x10 cm) â€” $12.00</option>
                                 <option value="caja_grande">ðŸ“¦ Caja Microcorrugado Grande (35x28x15 cm) â€” $18.00</option>
                                 <option value="taza">â˜• Caja Especial para Taza con Ventana â€” $9.00</option>
-                                <option value="luxury">ðŸŽ Caja RÃ­gida Luxury con MoÃ±o Satinado â€” $25.00</option>
-                                <option value="sobre_rigido">âœ‰ï¸ Sobre RÃ­gido Antidoblado PapelerÃ­a Fina â€” $6.00</option>
-                                <option value="bolsa_celofan">ðŸ›ï¸ Bolsa CelofÃ¡n con Cenefa y Sticker â€” $3.50</option>
+                                <option value="luxury">ðŸŽ Caja Rígida Luxury con Moño Satinado â€” $25.00</option>
+                                <option value="sobre_rigido">âœ‰ï¸ Sobre Rígido Antidoblado Papelería Fina â€” $6.00</option>
+                                <option value="bolsa_celofan">ðŸ›ï¸ Bolsa Celofán con Cenefa y Sticker â€” $3.50</option>
                                 <option value="custom">âœï¸ Empaque a Convenir / Personalizado</option>
                               </select>
                             </div>
@@ -8671,13 +8670,13 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           {/* Protecciones Internas */}
                           <div className="p-3 bg-stone-50 rounded-xl border border-stone-200 space-y-2">
                             <span className="font-bold text-gray-700 block text-[10.5px] uppercase">
-                              Insumos de ProtecciÃ³n Interna para EnvÃ­os:
+                              Insumos de Protección Interna para Envíos:
                             </span>
 
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                               <div>
                                 <label className="text-[10px] text-gray-500 font-bold block mb-0.5">
-                                  PlÃ¡stico Burbuja Alta Densidad:
+                                  Plástico Burbuja Alta Densidad:
                                 </label>
                                 <div className="flex items-center gap-1">
                                   <span className="text-gray-400 font-bold">$</span>
@@ -8690,12 +8689,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                     className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-mono font-bold text-xs"
                                   />
                                 </div>
-                                <span className="text-[9px] text-gray-400">ProtecciÃ³n antigolpes</span>
+                                <span className="text-[9px] text-gray-400">Protección antigolpes</span>
                               </div>
 
                               <div>
                                 <label className="text-[10px] text-gray-500 font-bold block mb-0.5">
-                                  Relleno Viruta Kraft / CojÃ­n:
+                                  Relleno Viruta Kraft / Cojín:
                                 </label>
                                 <div className="flex items-center gap-1">
                                   <span className="text-gray-400 font-bold">$</span>
@@ -8708,12 +8707,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                     className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-mono font-bold text-xs"
                                   />
                                 </div>
-                                <span className="text-[9px] text-gray-400">Amortiguador ecolÃ³gico</span>
+                                <span className="text-[9px] text-gray-400">Amortiguador ecológico</span>
                               </div>
 
                               <div>
                                 <label className="text-[10px] text-gray-500 font-bold block mb-0.5">
-                                  Etiqueta TÃ©rmica &amp; Cinta FrÃ¡gil:
+                                  Etiqueta Térmica &amp; Cinta Frágil:
                                 </label>
                                 <div className="flex items-center gap-1">
                                   <span className="text-gray-400 font-bold">$</span>
@@ -8726,7 +8725,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                     className="w-full px-2 py-1.5 rounded-lg border border-gray-300 bg-white font-mono font-bold text-xs"
                                   />
                                 </div>
-                                <span className="text-[9px] text-gray-400">GuÃ­a y sellado de seguridad</span>
+                                <span className="text-[9px] text-gray-400">Guía y sellado de seguridad</span>
                               </div>
                             </div>
 
@@ -8741,7 +8740,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       )}
                     </div>
 
-                    {/* CARD 2: COTIZADOR DE ENVÃO A TODA LA REPÃšBLICA */}
+                    {/* CARD 2: COTIZADOR DE ENVÍO A TODA LA REPÃšBLICA */}
                     <div className="p-4 rounded-2xl bg-white border border-stone-200 space-y-3.5 shadow-xs">
                       <div className="flex items-center justify-between border-b border-stone-200 pb-2.5">
                         <div className="flex items-center gap-2">
@@ -8750,10 +8749,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           </span>
                           <div>
                             <h4 className="font-heading font-black text-xs text-gray-900">
-                              Cotizador de EnvÃ­o a Toda la RepÃºblica Mexicana
+                              Cotizador de Envío a Toda la República Mexicana
                             </h4>
                             <p className="text-[10.5px] text-gray-500">
-                              Tarifas estÃ¡ndar FedEx, Estafeta, DHL Express o entrega local en San Luis PotosÃ­.
+                              Tarifas estándar FedEx, Estafeta, DHL Express o entrega local en San Luis Potosí.
                             </p>
                           </div>
                         </div>
@@ -8766,15 +8765,15 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                           <label className="font-bold text-gray-700 block mb-1 text-[11px]">
-                            PaqueterÃ­a / Modalidad de EnvÃ­o:
+                            Paquetería / Modalidad de Envío:
                           </label>
                           <select
                             value={pkg.shippingCarrier || 'nacional_estandar'}
                             onChange={e => handleUpdatePackagingField('shippingCarrier', e.target.value)}
                             className="w-full px-3 py-2 rounded-xl border border-gray-300 bg-white font-semibold text-xs"
                           >
-                            <option value="nacional_estandar">ðŸšš EnvÃ­o Nacional EstÃ¡ndar (FedEx / Estafeta / DHL, 3-5 dÃ­as) â€” $149.00</option>
-                            <option value="nacional_express">âš¡ EnvÃ­o Nacional Express AÃ©reo (DÃ­a Siguiente a todo MÃ©xico) â€” $220.00</option>
+                            <option value="nacional_estandar">ðŸšš Envío Nacional Estándar (FedEx / Estafeta / DHL, 3-5 días) â€” $149.00</option>
+                            <option value="nacional_express">âš¡ Envío Nacional Express Aéreo (Día Siguiente a todo México) â€” $220.00</option>
                             <option value="local_slp">ðŸ“ Entrega Local en SLP (Punto de Entrega Taller) â€” $0.00</option>
                             <option value="local_domicilio">ðŸ›µ Entrega Local en SLP a Domicilio â€” $45.00</option>
                             <option value="custom">âœï¸ Tarifa Personalizada</option>
@@ -8796,7 +8795,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         </div>
                       </div>
 
-                      {/* SWITCH INTELIGENTE: Â¿INCLUIR FLETE EN EL PRECIO DE VENTA? */}
+                      {/* SWITCH INTELIGENTE: ¿INCLUIR FLETE EN EL PRECIO DE VENTA? */}
                       <div className={`p-3.5 rounded-xl border transition-all ${
                         pkg.includeShippingInPrice ? 'bg-emerald-50 border-emerald-300 shadow-2xs' : 'bg-stone-50 border-stone-200'
                       }`}>
@@ -8809,37 +8808,37 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           />
                           <div>
                             <span className="font-bold text-gray-900 block text-xs">
-                              Â¿Incluir costo de envÃ­o en el precio de venta (Ofrecer "EnvÃ­o Gratis a todo MÃ©xico" al cliente)?
+                              ¿Incluir costo de envío en el precio de venta (Ofrecer "Envío Gratis a todo México" al cliente)?
                             </span>
                             <span className="text-[10.5px] text-gray-500 leading-tight block mt-0.5">
                               {pkg.includeShippingInPrice ? (
                                 <strong className="text-emerald-800">
-                                  âœ“ Activado: Los ${shippingTotal} MXN del envÃ­o se suman al costo base del producto para que el margen de ganancia cubra el flete sin pÃ©rdidas ni dÃ©ficit de costos.
+                                  âœ“ Activado: Los ${shippingTotal} MXN del envío se suman al costo base del producto para que el margen de ganancia cubra el flete sin pérdidas ni déficit de costos.
                                 </strong>
                               ) : (
-                                'El producto se venderÃ¡ sin envÃ­o incluido. La paqueterÃ­a se cobrarÃ¡ aparte en la orden al momento de la compra.'
+                                'El producto se venderá sin envío incluido. La paquetería se cobrará aparte en la orden al momento de la compra.'
                               )}
                             </span>
                           </div>
                         </label>
                       </div>
 
-                      {/* Notas de Empaque y LogÃ­stica */}
+                      {/* Notas de Empaque y Logística */}
                       <div>
                         <label className="font-bold text-gray-700 block mb-1 text-[11px]">
-                          Instrucciones y Notas de LogÃ­stica para el Personal:
+                          Instrucciones y Notas de Logística para el Personal:
                         </label>
                         <input
                           type="text"
                           value={pkg.notes || ''}
                           onChange={e => handleUpdatePackagingField('notes', e.target.value)}
-                          placeholder="Ej: Envolver percheros de madera en plÃ¡stico burbuja individual para evitar fricciÃ³n..."
+                          placeholder="Ej: Envolver percheros de madera en plástico burbuja individual para evitar fricción..."
                           className="w-full px-3 py-2 rounded-xl border border-gray-300 bg-white text-xs"
                         />
                       </div>
                     </div>
 
-                    {/* CARD 3: DELIMITACIÃ“N DE ENVÃOS (1 PIEZA VS PAQUETE CONSOLIDADO) */}
+                    {/* CARD 3: DELIMITACIÃ“N DE ENVÍOS (1 PIEZA VS PAQUETE CONSOLIDADO) */}
                     <div className="p-4 rounded-2xl bg-gradient-to-br from-blue-50/80 via-white to-purple-50/50 border-2 border-blue-200 space-y-3.5 shadow-xs">
                       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-blue-100 pb-2.5">
                         <div className="flex items-center gap-2">
@@ -8848,10 +8847,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           </span>
                           <div>
                             <h4 className="font-heading font-black text-xs text-blue-950">
-                              DelimitaciÃ³n de EnvÃ­os: 1 Pieza ($169) vs. Paquete Consolidado ($18-$20 marginal)
+                              Delimitación de Envíos: 1 Pieza ($169) vs. Paquete Consolidado ($18-$20 marginal)
                             </h4>
                             <p className="text-[10.5px] text-gray-600">
-                              En MÃ©xico la guÃ­a nacional cubre hasta 1 a 5 kg. Al comprar 2 o mÃ¡s piezas no se duplica la guÃ­a, solo se agrega el empaque individual.
+                              En México la guía nacional cubre hasta 1 a 5 kg. Al comprar 2 o más piezas no se duplica la guía, solo se agrega el empaque individual.
                             </p>
                           </div>
                         </div>
@@ -8863,7 +8862,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                       <div className="p-3 bg-white rounded-xl border border-blue-100 space-y-2 text-[11px]">
                         <p className="text-gray-700 leading-relaxed">
-                          ðŸ’¡ <strong>Regla logÃ­stica de Artesano Digital:</strong> Si un cliente compra <strong>1 sola pieza</strong>, el costo logÃ­stico absorbe la guÃ­a completa (${shippingTotal} MXN flete + ${packagingTotal} MXN empaque = <strong>${shippingTotal + packagingTotal} MXN</strong>). Pero si compra <strong>2, 3 o 5 piezas</strong> en el mismo carrito, la guÃ­a nacional es fija y cada pieza extra solo aÃ±ade ~${marginalExtraCost} MXN de volumen/burbuja.
+                          ðŸ’¡ <strong>Regla logística de Artesano Digital:</strong> Si un cliente compra <strong>1 sola pieza</strong>, el costo logístico absorbe la guía completa (${shippingTotal} MXN flete + ${packagingTotal} MXN empaque = <strong>${shippingTotal + packagingTotal} MXN</strong>). Pero si compra <strong>2, 3 o 5 piezas</strong> en el mismo carrito, la guía nacional es fija y cada pieza extra solo añade ~${marginalExtraCost} MXN de volumen/burbuja.
                         </p>
 
                         {/* Tabla comparativa de piezas y ahorro */}
@@ -8872,16 +8871,16 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             <thead>
                               <tr className="bg-blue-50/70 border-b border-blue-200 text-blue-900 font-bold">
                                 <th className="p-2 rounded-l-lg">Piezas en el Pedido</th>
-                                <th className="p-2">Flete GuÃ­a</th>
+                                <th className="p-2">Flete Guía</th>
                                 <th className="p-2">Embalaje Total</th>
                                 <th className="p-2 font-mono">Total Paquete</th>
                                 <th className="p-2 font-mono text-emerald-800">Costo / Pieza</th>
-                                <th className="p-2 rounded-r-lg text-right">Ahorro LogÃ­stico</th>
+                                <th className="p-2 rounded-r-lg text-right">Ahorro Logístico</th>
                               </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100 font-medium">
                               {[
-                                { qty: 1, label: '1 pieza (EnvÃ­o unitario)', extra: 0 },
+                                { qty: 1, label: '1 pieza (Envío unitario)', extra: 0 },
                                 { qty: 2, label: '2 piezas (Doble pedido)', extra: 1 },
                                 { qty: 3, label: '3 piezas (Trio / Mayoreo)', extra: 2 },
                                 { qty: 5, label: '5 piezas (Pack Familiar)', extra: 4 },
@@ -8907,7 +8906,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                         <span className="text-gray-400 font-semibold">Base (100%)</span>
                                       ) : (
                                         <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[9.5px] border border-emerald-300">
-                                          Â¡Ahorra {savingsPercent}%!
+                                          ¡Ahorra {savingsPercent}%!
                                         </span>
                                       )}
                                     </td>
@@ -8982,7 +8981,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           </span>
                           <div>
                             <h4 className="font-heading font-black text-xs text-emerald-950">
-                              Escandallo Minucioso &amp; FÃ³rmula de Costo Total Aterrizado
+                              Escandallo Minucioso &amp; Fórmula de Costo Total Aterrizado
                             </h4>
                             <span className="text-[10.5px] text-gray-500">
                               Insumos + Luz CFE + Desgaste + Mano de obra + Embalaje + Flete + Reserva de fallas + Overhead = Costo Total sin Fugas</span>
@@ -8993,14 +8992,14 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           type="button"
                           onClick={handleSyncRecipeToCostPrice}
                           className="px-3 py-1.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-sm active:scale-95"
-                          title="Sincronizar la suma exacta al campo Costo de ProducciÃ³n"
+                          title="Sincronizar la suma exacta al campo Costo de Producción"
                         >
                           <Zap className="w-3.5 h-3.5 text-amber-300" />
                           <span>Sincronizar Costo (${calculatedLandedCost.toFixed(2)})</span>
                         </button>
                       </div>
 
-                      {/* Desglose visual de la fÃ³rmula */}
+                      {/* Desglose visual de la fórmula */}
                       <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-9 gap-2 text-center text-[10px]">
   <div className="p-2 rounded-xl bg-white border border-emerald-200">
     <span className="text-gray-400 font-bold block uppercase text-[9px]">1. Insumos</span>
@@ -9049,14 +9048,14 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 )}
                     </div>
 
-                    {/* PRECIO DE VENTA, MARGEN RÃPIDO Y STOCK */}
+                    {/* PRECIO DE VENTA, MARGEN RÁPIDO Y STOCK */}
                     <div className="p-4 rounded-2xl bg-white border border-stone-200 space-y-4 shadow-xs">
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         
-                        {/* Costo de ProducciÃ³n */}
+                        {/* Costo de Producción */}
                         <div>
                           <label className="font-bold text-gray-800 block mb-1 text-[11px]">
-                            Costo de ProducciÃ³n / Aterrizado ($ MXN)
+                            Costo de Producción / Aterrizado ($ MXN)
                           </label>
                           <div className="relative">
                             <span className="absolute left-3 top-2 text-xs font-bold text-gray-400">$</span>
@@ -9076,7 +9075,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         {/* Precio de Venta */}
                         <div>
                           <label className="font-bold text-gray-800 block mb-1 text-[11px]">
-                            Precio de Venta al PÃºblico (PVP $ MXN) *
+                            Precio de Venta al Público (PVP $ MXN) *
                           </label>
                           <div className="flex items-center gap-1.5">
                             <input
@@ -9104,10 +9103,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           </div>
                         </div>
 
-                        {/* Stock FÃ­sico */}
+                        {/* Stock Físico */}
                         <div>
                           <label className="font-bold text-gray-800 block mb-1 text-[11px] flex items-center justify-between">
-                            <span>Piezas FÃ­sicas (Stock)</span>
+                            <span>Piezas Físicas (Stock)</span>
                             <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded ${
                               editorForm.availability === 'in_stock' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
                             }`}>
@@ -9162,21 +9161,21 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                       </div>
 
-                      {/* BOTONES DE MARGEN RÃPIDO */}
+                      {/* BOTONES DE MARGEN RÁPIDO */}
                       <div className="space-y-1.5 pt-2 border-t border-stone-100">
                         <div className="flex items-center justify-between">
                           <span className="font-bold text-gray-700 text-[10.5px] uppercase">
-                            Calcular Precio de Venta Sugerido segÃºn Margen Objetivo:
+                            Calcular Precio de Venta Sugerido según Margen Objetivo:
                           </span>
-                          <span className="text-[10px] text-gray-400">FÃ³rmula: PVP = Costo / (1 - Margen%)</span>
+                          <span className="text-[10px] text-gray-400">Fórmula: PVP = Costo / (1 - Margen%)</span>
                         </div>
 
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                           {[
-                            { percent: 30, label: '30% Margen', sub: 'Mayoreo / EconÃ³mico' },
-                            { percent: 40, label: '40% Margen', sub: 'EstÃ¡ndar de Taller' },
+                            { percent: 30, label: '30% Margen', sub: 'Mayoreo / Económico' },
+                            { percent: 40, label: '40% Margen', sub: 'Estándar de Taller' },
                             { percent: 50, label: '50% Margen', sub: 'Recomendado Artesanal' },
-                            { percent: 60, label: '60% Margen', sub: 'Alta PersonalizaciÃ³n' }
+                            { percent: 60, label: '60% Margen', sub: 'Alta Personalización' }
                           ].map(m => {
                             const suggested = currentCost > 0 ? Math.ceil(currentCost / (1 - m.percent / 100)) : 0;
                             return (
@@ -9250,11 +9249,11 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   <h4 className="font-heading font-black text-xs text-gray-900 flex items-center gap-1.5">
                                     <span>Simulador de Descuentos &amp; Control de Margen de Taller</span>
                                     <span className="px-2 py-0.2 rounded-full bg-emerald-100 text-emerald-900 text-[10px] font-bold border border-emerald-300">
-                                      AnÃ¡lisis Financiero
+                                      Análisis Financiero
                                     </span>
                                   </h4>
                                   <p className="text-[10.5px] text-gray-500">
-                                    Conoce con exactitud quÃ© ganancia en pesos y quÃ© porcentaje de margen neto te deja cada nivel de oferta antes de aplicarla.
+                                    Conoce con exactitud qué ganancia en pesos y qué porcentaje de margen neto te deja cada nivel de oferta antes de aplicarla.
                                   </p>
                                 </div>
                               </div>
@@ -9262,7 +9261,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               <div className="flex items-center gap-2">
                                 {isSimulatedPreview && (
                                   <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-bold border border-amber-300">
-                                    SimulaciÃ³n Estimada
+                                    Simulación Estimada
                                   </span>
                                 )}
                                 <span className="text-[11px] font-bold text-gray-500">
@@ -9300,7 +9299,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                       badgeText = 'ðŸ”´ DÃ‰FICIT / PÃ‰RDIDA';
                                     } else if (netMargin < 20) {
                                       badgeColor = 'bg-orange-100 text-orange-900 border-orange-300 font-bold';
-                                      badgeText = 'ðŸŸ  MÃ­nimo';
+                                      badgeText = 'ðŸŸ  Mínimo';
                                     } else if (netMargin < 35) {
                                       badgeColor = 'bg-amber-50 text-amber-800 border-amber-200';
                                       badgeText = 'ðŸŸ¡ Moderado';
@@ -9339,7 +9338,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             </div>
                           </div>
 
-                          {/* CARD: UMBRAL DE LIQUIDACIÃ“N MÃXIMA & PRECIO PISO */}
+                          {/* CARD: UMBRAL DE LIQUIDACIÃ“N MÁXIMA & PRECIO PISO */}
                           <div className={`p-4 rounded-2xl border-2 space-y-3 transition-all ${
                             hasDeficitAt50 
                               ? 'bg-gradient-to-r from-amber-50 via-white to-rose-50 border-amber-300' 
@@ -9352,10 +9351,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 </span>
                                 <div>
                                   <h5 className="font-heading font-black text-xs text-gray-900">
-                                    Umbral de LiquidaciÃ³n MÃ¡xima &amp; Precio de Piso de Seguridad
+                                    Umbral de Liquidación Máxima &amp; Precio de Piso de Seguridad
                                   </h5>
                                   <span className="text-[10px] text-gray-500">
-                                    LÃ­mite estricto de taller para no subsidiar piezas con dinero propio
+                                    Límite estricto de taller para no subsidiar piezas con dinero propio
                                   </span>
                                 </div>
                               </div>
@@ -9371,25 +9370,25 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px]">
                               <div className="p-3 bg-white rounded-xl border border-stone-200 space-y-1">
                                 <span className="text-gray-500 font-bold block text-[10px] uppercase">
-                                  Descuento MÃ¡ximo de LiquidaciÃ³n Permitido:
+                                  Descuento Máximo de Liquidación Permitido:
                                 </span>
                                 <div className="flex items-baseline gap-2">
                                   <span className="font-mono text-xl font-black text-amber-700">
                                     {maxSafeDiscountPercent}%
                                   </span>
                                   <span className="text-[10px] text-gray-400">
-                                    (Cualquier descuento mayor entra en pÃ©rdidas de taller)
+                                    (Cualquier descuento mayor entra en pérdidas de taller)
                                   </span>
                                 </div>
                                 <p className="text-[10px] text-gray-500 leading-tight pt-1">
-                                  CÃ¡lculo: Recupera el 100% de materiales directos, acabados, consumibles, luz CFE y mano de obra con 5% de contingencia para comisiones.
+                                  Cálculo: Recupera el 100% de materiales directos, acabados, consumibles, luz CFE y mano de obra con 5% de contingencia para comisiones.
                                 </p>
                               </div>
 
                               <div className="p-3 bg-white rounded-xl border border-stone-200 flex flex-col justify-between">
                                 <div>
                                   <span className="text-gray-500 font-bold block text-[10px] uppercase">
-                                    Regla de LiquidaciÃ³n:
+                                    Regla de Liquidación:
                                   </span>
                                   <p className="text-[10.5px] text-gray-600 leading-relaxed mt-0.5">
                                     Si necesitas rematar inventario estancado, puedes aplicar hasta un <strong>{maxSafeDiscountPercent}% de descuento</strong> para recuperar el capital de taller sin perder dinero.
@@ -9399,14 +9398,14 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 {maxSafeDiscountPercent < 30 && (
                                   <div className="mt-2 p-1.5 rounded-lg bg-rose-50 text-rose-800 border border-rose-200 text-[10px] font-bold flex items-center gap-1.5">
                                     <AlertTriangle className="w-3.5 h-3.5 shrink-0 text-rose-600" />
-                                    <span>Â¡AtenciÃ³n! No aplicar 30% ni 50% de descuento en este SKU porque generarÃ¡ dÃ©ficit directo.</span>
+                                    <span>¡Atención! No aplicar 30% ni 50% de descuento en este SKU porque generará déficit directo.</span>
                                   </div>
                                 )}
                               </div>
                             </div>
                           </div>
 
-                          {/* CARD: RESUMEN EJECUTIVO DETALLADO DEL COSTE DETRÃS DEL PRODUCTO */}
+                          {/* CARD: RESUMEN EJECUTIVO DETALLADO DEL COSTE DETRÁS DEL PRODUCTO */}
                           {(() => {
                             const allRecipeItems = rec.items || [];
                             const recDirectCost = Math.round(allRecipeItems.filter(it => it && (it.supplyType === 'direct' || (!it.supplyType && it.supplyType !== 'finish' && it.supplyType !== 'indirect'))).reduce((acc, it) => acc + (Number(it.totalCost) || 0), 0) * 100) / 100;
@@ -9426,19 +9425,19 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                     </span>
                                     <div>
                                       <h4 className="font-heading font-black text-xs text-white flex items-center gap-1.5">
-                                        <span>RadiografÃ­a Completa del Coste DetrÃ¡s del Producto</span>
+                                        <span>Radiografía Completa del Coste Detrás del Producto</span>
                                         <span className="px-2 py-0.2 rounded-full bg-emerald-500/20 text-emerald-300 text-[9.5px] font-bold">
                                           Resumen Ejecutivo
                                         </span>
                                       </h4>
                                       <p className="text-[10px] text-gray-400">
-                                        Desglose transparente y fÃ¡cil de leer para entender cada centavo que compone este SKU
+                                        Desglose transparente y fácil de leer para entender cada centavo que compone este SKU
                                       </p>
                                     </div>
                                   </div>
 
                                   <div className="text-right">
-                                    <span className="text-[9.5px] text-gray-400 block uppercase">InversiÃ³n Total Aterrizada:</span>
+                                    <span className="text-[9.5px] text-gray-400 block uppercase">Inversión Total Aterrizada:</span>
                                     <span className="font-mono text-base font-black text-emerald-300">
                                       ${calculatedLandedCost.toFixed(2)} MXN
                                     </span>
@@ -9464,7 +9463,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   <div className="p-2.5 rounded-xl bg-white/5 border border-amber-400/20">
                                     <span className="text-amber-400 font-bold block uppercase text-[9px]">4. Luz CFE</span>
                                     <span className="font-mono font-black text-sm text-amber-300 mt-0.5 block">${energyCost.toFixed(2)}</span>
-                                    <span className="text-[9px] text-gray-400">MÃ¡quina digital</span>
+                                    <span className="text-[9px] text-gray-400">Máquina digital</span>
                                   </div>
                                   <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
                                     <span className="text-emerald-300 font-bold block uppercase text-[9px]">5. Mano de Obra</span>
@@ -9472,7 +9471,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                     <span className="text-[9px] text-gray-400">Armado y entintado</span>
                                   </div>
                                   <div className="p-2.5 rounded-xl bg-white/5 border border-blue-400/20">
-                                    <span className="text-blue-300 font-bold block uppercase text-[9px]">6. Embalaje / EnvÃ­o</span>
+                                    <span className="text-blue-300 font-bold block uppercase text-[9px]">6. Embalaje / Envío</span>
                                     <span className="font-mono font-black text-sm text-blue-200 mt-0.5 block">${(packagingCost + shippingCost).toFixed(2)}</span>
                                     <span className="text-[9px] text-gray-400">Caja, burbuja y flete</span>
                                   </div>
@@ -9490,7 +9489,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                     onClick={handleSyncRecipeToCostPrice}
                                     className="px-3 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-stone-950 font-bold text-[10px] transition-colors cursor-pointer"
                                   >
-                                    âš¡ Actualizar Costo de ProducciÃ³n
+                                    âš¡ Actualizar Costo de Producción
                                   </button>
                                 </div>
                               </div>
@@ -9516,7 +9515,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 </span>
                               </h4>
                               <p className="text-[10.5px] text-gray-500">
-                                Define el precio regular de lista, el ahorro y quÃ© piezas contiene
+                                Define el precio regular de lista, el ahorro y qué piezas contiene
                               </p>
                             </div>
                           </div>
@@ -9613,7 +9612,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   handleAddIncludedItem();
                                 }
                               }}
-                              placeholder="Ej: 1 Bandeja vaciabolsillos curva ergonÃ³mica (18 x 12 cm)..."
+                              placeholder="Ej: 1 Bandeja vaciabolsillos curva ergonómica (18 x 12 cm)..."
                               className="flex-1 px-3 py-1.5 text-xs rounded-xl border border-gray-300 bg-white"
                             />
                             <button
@@ -9629,7 +9628,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </div>
                     )}
 
-                    {/* OFERTA FLASH & RELÃMPAGO */}
+                    {/* OFERTA FLASH & RELÁMPAGO */}
                     <div className="rounded-2xl border border-amber-300 bg-gradient-to-r from-amber-50/50 via-stone-50 to-amber-50/30 overflow-hidden shadow-2xs">
                       <div
                         onClick={() => setEditorFlashAccordion(prev => !prev)}
@@ -9639,7 +9638,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           <Flame className="w-4 h-4 text-amber-500 fill-amber-500" />
                           <div>
                             <h4 className="font-heading font-extrabold text-xs text-gray-900 flex items-center gap-2">
-                              <span>Control de Oferta Flash &amp; RelÃ¡mpago</span>
+                              <span>Control de Oferta Flash &amp; Relámpago</span>
                               {editorForm.flashDealConfig?.enabled && (
                                 <span className="px-2 py-0.2 rounded-full bg-amber-400 text-stone-950 text-[9.5px] font-black uppercase">
                                   ACTIVA (-{editorForm.flashDealConfig.discountPercent || 15}%)
@@ -9647,7 +9646,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               )}
                             </h4>
                             <span className="text-[10.5px] text-gray-500">
-                              Descuento con temporizador de cuenta regresiva visible en catÃ¡logo (tope 15%)
+                              Descuento con temporizador de cuenta regresiva visible en catálogo (tope 15%)
                             </span>
                           </div>
                         </div>
@@ -9678,7 +9677,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         <div className="p-3.5 pt-0 border-t border-amber-200/60 space-y-3">
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                             <div>
-                              <label className="text-[11px] font-bold text-gray-700 block mb-1">DuraciÃ³n de la Oferta</label>
+                              <label className="text-[11px] font-bold text-gray-700 block mb-1">Duración de la Oferta</label>
                               <select
                                 value={editorForm.flashDealConfig.durationMinutes || 120}
                                 onChange={e => setEditorForm({
@@ -9690,16 +9689,16 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 })}
                                 className="w-full px-2.5 py-1.5 rounded-xl border border-stone-300 bg-white text-xs font-semibold"
                               >
-                                <option value={15}>âš¡ 15 Minutos (Blitz RelÃ¡mpago)</option>
+                                <option value={15}>âš¡ 15 Minutos (Blitz Relámpago)</option>
                                 <option value={60}>1 Hora</option>
-                                <option value={120}>2 Horas (EstÃ¡ndar)</option>
+                                <option value={120}>2 Horas (Estándar)</option>
                                 <option value={360}>6 Horas</option>
-                                <option value={1440}>24 Horas (1 DÃ­a)</option>
+                                <option value={1440}>24 Horas (1 Día)</option>
                               </select>
                             </div>
 
                             <div>
-                              <label className="text-[11px] font-bold text-gray-700 block mb-1">Porcentaje de Descuento (MÃ¡x 15%)</label>
+                              <label className="text-[11px] font-bold text-gray-700 block mb-1">Porcentaje de Descuento (Máx 15%)</label>
                               <select
                                 value={editorForm.flashDealConfig.discountPercent || 15}
                                 onChange={e => setEditorForm({
@@ -9713,7 +9712,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               >
                                 <option value={5}>5% de descuento</option>
                                 <option value={10}>10% de descuento</option>
-                                <option value={15}>15% de descuento (Tope MÃ¡ximo Taller)</option>
+                                <option value={15}>15% de descuento (Tope Máximo Taller)</option>
                               </select>
                             </div>
                           </div>
@@ -9770,7 +9769,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               });
                             }}
                             className="px-2.5 py-1 rounded-lg bg-gradient-to-r from-[#D4A359] to-amber-500 text-[#17251E] font-black text-[11px] hover:brightness-105 transition-all flex items-center gap-1 cursor-pointer shadow-xs"
-                            title="Calcular automÃ¡ticamente el SKU Ã³ptimo"
+                            title="Calcular automáticamente el SKU óptimo"
                           >
                             <Zap className="w-3 h-3" />
                             <span>Autogenerar SKU</span>
@@ -9783,7 +9782,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         <div className="p-3.5 pt-0 border-t border-[#E8E4DA] space-y-3">
                           <div className="grid grid-cols-2 sm:grid-cols-6 gap-2 pt-2">
                             <div>
-                              <label className="text-[9.5px] font-bold text-gray-700 uppercase block mb-1">1. Ãrea</label>
+                              <label className="text-[9.5px] font-bold text-gray-700 uppercase block mb-1">1. Área</label>
                               <select
                                 value={editorForm.skuArea || 'HOG'}
                                 onChange={e => {
@@ -9806,7 +9805,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             </div>
 
                             <div>
-                              <label className="text-[9.5px] font-bold text-gray-700 uppercase block mb-1">2. TÃ©cnica</label>
+                              <label className="text-[9.5px] font-bold text-gray-700 uppercase block mb-1">2. Técnica</label>
                               <select
                                 value={editorForm.skuTechnique || '3D'}
                                 onChange={e => {
@@ -9910,27 +9909,27 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             </div>
                           </div>
 
-                          {/* Ficha TÃ©cnica Interna */}
+                          {/* Ficha Técnica Interna */}
                           {(() => {
                             const activeSku = editorForm.code || editorForm.sku || 'HOG-LAS-MAD-BAR-001';
                             const breakdown = parseSku(activeSku);
                             return (
                               <div className="p-3 rounded-xl bg-white border border-[#2D4F3E]/30 shadow-2xs space-y-2">
                                 <div className="flex items-center justify-between border-b border-gray-100 pb-1.5">
-                                  <span className="text-[11px] font-bold text-gray-600 uppercase">Ficha TÃ©cnica Interna:</span>
+                                  <span className="text-[11px] font-bold text-gray-600 uppercase">Ficha Técnica Interna:</span>
                                   <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                                    âœ“ GuÃ­a de PreparaciÃ³n de Taller
+                                    âœ“ Guía de Preparación de Taller
                                   </span>
                                 </div>
 
                                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10px]">
                                   <div className="p-1.5 rounded-lg bg-gray-50 border border-gray-100">
-                                    <div className="font-bold text-gray-400 uppercase text-[9px]">ðŸ­ Destino / Ãrea</div>
-                                    <div className="font-bold text-gray-800 mt-0.5">{breakdown?.explanation?.destino || 'Ãrea general'}</div>
+                                    <div className="font-bold text-gray-400 uppercase text-[9px]">ðŸ­ Destino / Área</div>
+                                    <div className="font-bold text-gray-800 mt-0.5">{breakdown?.explanation?.destino || 'Área general'}</div>
                                   </div>
                                   <div className="p-1.5 rounded-lg bg-gray-50 border border-gray-100">
                                     <div className="font-bold text-gray-400 uppercase text-[9px]">âš™ï¸ Maquinaria / Proceso</div>
-                                    <div className="font-bold text-emerald-800 mt-0.5">{breakdown?.explanation?.maquinaria || 'Proceso estÃ¡ndar'}</div>
+                                    <div className="font-bold text-emerald-800 mt-0.5">{breakdown?.explanation?.maquinaria || 'Proceso estándar'}</div>
                                   </div>
                                   <div className="p-1.5 rounded-lg bg-gray-50 border border-gray-100">
                                     <div className="font-bold text-gray-400 uppercase text-[9px]">ðŸªµ Materia Prima</div>
@@ -9988,7 +9987,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         onClick={() => setEditorActiveTab('repo')}
                         className="px-4 py-2 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white font-black text-xs flex items-center gap-1.5 shadow-md transition-all cursor-pointer active:scale-95"
                       >
-                        <span>Continuar a: 5. Repositorio &amp; FabricaciÃ³n</span>
+                        <span>Continuar a: 5. Repositorio &amp; Fabricación</span>
                         <Link2 className="w-3.5 h-3.5" />
                         <span>âž¡ï¸</span>
                       </button>
@@ -10007,7 +10006,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   machineHours: Math.floor(Number(editorForm.costBreakdown?.machineHours) || 1),
                   machineMinutes: Math.round(((Number(editorForm.costBreakdown?.machineHours) || 1.5) % 1) * 60),
                   postProcessingMinutes: Number(editorForm.costBreakdown?.manualWorkMin) || 10,
-                  leadTimeDays: editorForm.specifications?.estimatedLeadTime || '2 a 4 dÃ­as hÃ¡biles'
+                  leadTimeDays: editorForm.specifications?.estimatedLeadTime || '2 a 4 días hábiles'
                 };
 
                 const updateRepo = (patch) => {
@@ -10043,7 +10042,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       },
                       specifications: {
                         ...(prev.specifications || {}),
-                        estimatedLeadTime: nextTimes.leadTimeDays || prev.specifications?.estimatedLeadTime || '2 a 4 dÃ­as hÃ¡biles'
+                        estimatedLeadTime: nextTimes.leadTimeDays || prev.specifications?.estimatedLeadTime || '2 a 4 días hábiles'
                       }
                     };
                   });
@@ -10090,10 +10089,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           </span>
                         </div>
                         <h3 className="text-lg font-black tracking-tight">
-                          5. Repositorio, Archivos 3D &amp; Tiempos de FabricaciÃ³n
+                          5. Repositorio, Archivos 3D &amp; Tiempos de Fabricación
                         </h3>
                         <p className="text-xs text-emerald-100/80 mt-0.5 max-w-xl">
-                          Registra dÃ³nde se encuentra el modelo 3D (enlace MakerWorld, ruta local en tu PC o nube) y define con precisiÃ³n los tiempos de impresiÃ³n y acabado.
+                          Registra dónde se encuentra el modelo 3D (enlace MakerWorld, ruta local en tu PC o nube) y define con precisión los tiempos de impresión y acabado.
                         </p>
                       </div>
 
@@ -10120,7 +10119,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               Repositorio Web del Modelo (MakerWorld, Printables, etc.)
                             </h4>
                             <p className="text-[11px] text-gray-500">
-                              Enlace directo para descargar el archivo, consultar la ficha del autor o actualizar perfiles de impresiÃ³n.
+                              Enlace directo para descargar el archivo, consultar la ficha del autor o actualizar perfiles de impresión.
                             </p>
                           </div>
                         </div>
@@ -10177,7 +10176,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-xs'
                                 : 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'
                             }`}
-                            title="Abrir enlace en nueva pestaÃ±a"
+                            title="Abrir enlace en nueva pestaña"
                           >
                             <ExternalLink className="w-3.5 h-3.5" />
                             <span>Probar Enlace</span>
@@ -10189,7 +10188,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             onClick={() => {
                               if (repo.makerworldUrl) {
                                 navigator.clipboard.writeText(repo.makerworldUrl);
-                                setEditorMessage({ text: 'Â¡Enlace de MakerWorld copiado al portapapeles!', type: 'success' });
+                                setEditorMessage({ text: '¡Enlace de MakerWorld copiado al portapapeles!', type: 'success' });
                                 setTimeout(() => setEditorMessage({ text: '', type: '' }), 3000);
                               }
                             }}
@@ -10205,7 +10204,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
                         <div>
                           <label className="text-[11px] font-bold text-gray-600 block mb-1">
-                            ID / CÃ³digo del Modelo:
+                            ID / Código del Modelo:
                           </label>
                           <input
                             type="text"
@@ -10218,7 +10217,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                         <div>
                           <label className="text-[11px] font-bold text-gray-600 block mb-1">
-                            Autor / DiseÃ±ador Original:
+                            Autor / Diseñador Original:
                           </label>
                           <input
                             type="text"
@@ -10239,12 +10238,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             className="w-full px-3 py-1.5 rounded-xl border border-stone-300 text-xs bg-white cursor-pointer"
                           >
                             <option value="Comercial Autorizado">Comercial Autorizado</option>
-                            <option value="Maker's Club / MembresÃ­a">Maker's Club / MembresÃ­a</option>
+                            <option value="Maker's Club / Membresía">Maker's Club / Membresía</option>
                             <option value="Standard Digital File License">Standard Digital File License</option>
                             <option value="Creative Commons (CC BY-NC)">Creative Commons (CC BY-NC)</option>
                             <option value="Creative Commons (CC BY)">Creative Commons (CC BY)</option>
-                            <option value="DiseÃ±o Exclusivo Artesano Digital">DiseÃ±o Exclusivo Artesano Digital</option>
-                            <option value="Dominio PÃºblico / Libre">Dominio PÃºblico / Libre</option>
+                            <option value="Diseño Exclusivo Artesano Digital">Diseño Exclusivo Artesano Digital</option>
+                            <option value="Dominio Público / Libre">Dominio Público / Libre</option>
                           </select>
                         </div>
                       </div>
@@ -10273,7 +10272,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           </div>
                           <div>
                             <h4 className="font-bold text-sm text-gray-800">
-                              UbicaciÃ³n de Archivos en tu Computadora (PC Local / Taller)
+                              Ubicación de Archivos en tu Computadora (PC Local / Taller)
                             </h4>
                             <p className="text-[11px] text-gray-500">
                               Ruta de la carpeta o archivo .3mf / .stl en tu equipo para abrirlo directamente en Bambu Studio, Cura o PrusaSlicer.
@@ -10308,7 +10307,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             onClick={() => {
                               if (repo.localPath) {
                                 navigator.clipboard.writeText(repo.localPath);
-                                setEditorMessage({ text: 'Â¡Ruta local copiada! Puedes pegarla en el Explorador de Windows o tu laminador.', type: 'success' });
+                                setEditorMessage({ text: '¡Ruta local copiada! Puedes pegarla en el Explorador de Windows o tu laminador.', type: 'success' });
                                 setTimeout(() => setEditorMessage({ text: '', type: '' }), 3500);
                               }
                             }}
@@ -10325,16 +10324,16 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         </div>
                       </div>
 
-                      {/* Notas TÃ©cnicas de Rebanado (Slicer) */}
+                      {/* Notas Técnicas de Rebanado (Slicer) */}
                       <div className="space-y-1 pt-1">
                         <label className="text-[11px] font-bold text-gray-600 block">
-                          Notas de Rebanador / ParÃ¡metros de ImpresiÃ³n (Boquilla, Relleno, Capas, Soportes):
+                          Notas de Rebanador / Parámetros de Impresión (Boquilla, Relleno, Capas, Soportes):
                         </label>
                         <input
                           type="text"
                           value={repo.slicerNotes || ''}
                           onChange={e => updateRepo({ slicerNotes: e.target.value })}
-                          placeholder="Ej: Boquilla 0.4mm, capa 0.20mm, 15% giroide, soportes tipo Ã¡rbol activados..."
+                          placeholder="Ej: Boquilla 0.4mm, capa 0.20mm, 15% giroide, soportes tipo árbol activados..."
                           className="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs"
                         />
                       </div>
@@ -10349,7 +10348,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           </div>
                           <div>
                             <h4 className="font-bold text-sm text-gray-800">
-                              Tiempos Estimados de FabricaciÃ³n &amp; Entrega
+                              Tiempos Estimados de Fabricación &amp; Entrega
                             </h4>
                             <p className="text-[11px] text-gray-500">
                               Define el tiempo de uso de maquinaria, post-procesado manual y el plazo prometido de despacho al cliente.
@@ -10368,9 +10367,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         <div className="p-3.5 bg-stone-50 rounded-2xl border border-stone-200/80 space-y-2">
                           <div className="flex items-center justify-between">
                             <label className="font-bold text-xs text-gray-800 flex items-center gap-1">
-                              <span>ðŸ–¨ï¸ Tiempo de MÃ¡quina:</span>
+                              <span>ðŸ–¨ï¸ Tiempo de Máquina:</span>
                             </label>
-                            <span className="text-[10px] font-mono text-gray-500">ImpresiÃ³n / LÃ¡ser</span>
+                            <span className="text-[10px] font-mono text-gray-500">Impresión / Láser</span>
                           </div>
 
                           <div className="grid grid-cols-2 gap-2">
@@ -10398,7 +10397,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             </div>
                           </div>
                           <span className="text-[10px] text-gray-500 block text-center">
-                            Subtotal: {(mH * 60) + mM} minutos de mÃ¡quina
+                            Subtotal: {(mH * 60) + mM} minutos de máquina
                           </span>
                         </div>
 
@@ -10440,17 +10439,17 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           </div>
 
                           <div>
-                            <span className="text-[10px] text-gray-500 block mb-0.5">Plazo visible en ficha tÃ©cnica:</span>
+                            <span className="text-[10px] text-gray-500 block mb-0.5">Plazo visible en ficha técnica:</span>
                             <select
-                              value={times.leadTimeDays || '2 a 4 dÃ­as hÃ¡biles'}
+                              value={times.leadTimeDays || '2 a 4 días hábiles'}
                               onChange={e => updateTimes({ leadTimeDays: e.target.value })}
                               className="w-full px-2.5 py-1.5 rounded-xl border border-stone-300 text-xs bg-white cursor-pointer font-bold text-gray-700"
                             >
-                              <option value="Mismo dÃ­a (en stock)">Mismo dÃ­a (en stock)</option>
-                              <option value="1 a 2 dÃ­as hÃ¡biles">1 a 2 dÃ­as hÃ¡biles (rÃ¡pido)</option>
-                              <option value="2 a 4 dÃ­as hÃ¡biles">2 a 4 dÃ­as hÃ¡biles (estÃ¡ndar)</option>
-                              <option value="3 a 5 dÃ­as hÃ¡biles">3 a 5 dÃ­as hÃ¡biles (personalizado)</option>
-                              <option value="5 a 7 dÃ­as hÃ¡biles">5 a 7 dÃ­as hÃ¡biles (bajo pedido)</option>
+                              <option value="Mismo día (en stock)">Mismo día (en stock)</option>
+                              <option value="1 a 2 días hábiles">1 a 2 días hábiles (rápido)</option>
+                              <option value="2 a 4 días hábiles">2 a 4 días hábiles (estándar)</option>
+                              <option value="3 a 5 días hábiles">3 a 5 días hábiles (personalizado)</option>
+                              <option value="5 a 7 días hábiles">5 a 7 días hábiles (bajo pedido)</option>
                             </select>
                           </div>
                           <input
@@ -10548,7 +10547,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           onClick={() => setEditorActiveTab('general')}
                           className="px-3.5 py-2 rounded-xl border border-stone-300 bg-white hover:bg-stone-100 text-stone-700 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
                         >
-                          <span>ðŸ“‹ Ver GalerÃ­a &amp; Datos</span>
+                          <span>ðŸ“‹ Ver Galería &amp; Datos</span>
                         </button>
                       </div>
 
@@ -10614,7 +10613,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         </div>
       )}
 
-      {/* Modal de SimulaciÃ³n Detallada de Disponibilidad de Taller */}
+      {/* Modal de Simulación Detallada de Disponibilidad de Taller */}
       {recipeSimulationModal && (
         <div className="fixed inset-0 z-[70] flex items-center justify-center p-3 sm:p-5 bg-black/75 backdrop-blur-sm animate-fade-in">
           <div
@@ -10629,7 +10628,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                 </div>
                 <div>
                   <h3 className="text-base font-bold font-heading flex items-center gap-2">
-                    <span>Resultado de SimulaciÃ³n de Taller</span>
+                    <span>Resultado de Simulación de Taller</span>
                     <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${
                       recipeSimulationModal.feasible
                         ? 'bg-emerald-900/60 text-emerald-300 border-emerald-700'
@@ -10639,7 +10638,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     </span>
                   </h3>
                   <p className="text-xs text-gray-400">
-                    SimulaciÃ³n para: <strong className="text-white">{recipeSimulationModal.requestedUnits || 1} pieza(s)</strong> â€¢ Capacidad mÃ¡x. actual: <strong className="text-amber-300 font-mono">{recipeSimulationModal.maxPossibleUnits} piezas</strong>
+                    Simulación para: <strong className="text-white">{recipeSimulationModal.requestedUnits || 1} pieza(s)</strong> â€¢ Capacidad máx. actual: <strong className="text-amber-300 font-mono">{recipeSimulationModal.maxPossibleUnits} piezas</strong>
                   </p>
                 </div>
               </div>
@@ -10669,8 +10668,8 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                 <div>
                   <h4 className="font-bold text-sm">
                     {recipeSimulationModal.feasible
-                      ? `Â¡Excelente! Tienes suficiente stock en bodega para fabricar ${recipeSimulationModal.requestedUnits} pieza(s).`
-                      : `AtenciÃ³n: No hay suficiente stock de algunos insumos para fabricar ${recipeSimulationModal.requestedUnits} pieza(s).`}
+                      ? `¡Excelente! Tienes suficiente stock en bodega para fabricar ${recipeSimulationModal.requestedUnits} pieza(s).`
+                      : `Atención: No hay suficiente stock de algunos insumos para fabricar ${recipeSimulationModal.requestedUnits} pieza(s).`}
                   </h4>
                   <p className="text-xs mt-0.5 text-gray-600">
                     Costo estimado en insumos: <strong className="font-mono text-gray-900">${recipeSimulationModal.totalEstimatedCost} MXN</strong> (Neto: ${recipeSimulationModal.totalNetCost} â€¢ Merma/Purga: ${recipeSimulationModal.totalWasteCost} - {recipeSimulationModal.wastePercentAverage}%)
@@ -10690,7 +10689,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </span>
                     )}
                     <span className="px-2 py-0.5 rounded bg-stone-900 text-white font-mono font-bold text-[11px]">
-                      Total ProducciÃ³n: ${recipeSimulationModal.grandTotalCost || recipeSimulationModal.totalEstimatedCost} MXN
+                      Total Producción: ${recipeSimulationModal.grandTotalCost || recipeSimulationModal.totalEstimatedCost} MXN
                     </span>
                   </div>
                 </div>
@@ -10731,7 +10730,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         <div className={`font-mono font-bold text-xs ${it.sufficient ? 'text-emerald-700' : 'text-rose-700'}`}>
                           {it.remainingStock} {it.stockUnit}
                         </div>
-                        <div className="text-[9.5px] text-gray-400">LÃ­nea: ${it.lineCost} MXN</div>
+                        <div className="text-[9.5px] text-gray-400">Línea: ${it.lineCost} MXN</div>
                       </div>
                     </div>
                   ))}
@@ -10743,14 +10742,14 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
             {/* Footer */}
             <div className="p-4 px-6 bg-white border-t border-stone-200 flex items-center justify-between shrink-0">
               <span className="text-[11px] text-gray-500">
-                Capacidad mÃ¡xima de producciÃ³n con stock actual: <strong>{recipeSimulationModal.maxPossibleUnits} piezas</strong>
+                Capacidad máxima de producción con stock actual: <strong>{recipeSimulationModal.maxPossibleUnits} piezas</strong>
               </span>
               <button
                 type="button"
                 onClick={() => setRecipeSimulationModal(null)}
                 className="px-5 py-2 rounded-xl bg-[#2D4F3E] text-white font-bold text-xs hover:bg-[#20392C] transition-colors cursor-pointer"
               >
-                Cerrar SimulaciÃ³n
+                Cerrar Simulación
               </button>
             </div>
           </div>
@@ -10799,7 +10798,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
           return (m.name || '').toLowerCase().includes(q) || (m.materialType || '').toLowerCase().includes(q) || (m.color || '').toLowerCase().includes(q);
         });
 
-        // Preview del costo en el modal de aÃ±adir cantidades
+        // Preview del costo en el modal de añadir cantidades
         let previewCalculatedPrice = 0;
         if (recipeSelectedMatId) {
           const selMat = rawMaterialsList.find(m => m.id === recipeSelectedMatId);
@@ -10835,13 +10834,13 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   </div>
                   <div>
                     <h3 className="text-base font-bold font-heading flex items-center gap-2">
-                      <span>Calculadora de Costos &amp; MÃ¡rgenes</span>
+                      <span>Calculadora de Costos &amp; Márgenes</span>
                       <span className="px-2 py-0.5 rounded-full bg-emerald-900/60 text-emerald-300 text-[10px] font-bold border border-emerald-700">
-                        FÃ³rmulas de Taller 3D
+                        Fórmulas de Taller 3D
                       </span>
                     </h3>
                     <p className="text-xs text-gray-400">
-                      Producto: <strong className="text-white">{breakdownModalProduct.name}</strong> â€¢ CÃ³digo: <span className="font-mono text-emerald-300">{breakdownModalProduct.code || 'S/C'}</span>
+                      Producto: <strong className="text-white">{breakdownModalProduct.name}</strong> â€¢ Código: <span className="font-mono text-emerald-300">{breakdownModalProduct.code || 'S/C'}</span>
                     </p>
                   </div>
                 </div>
@@ -10871,7 +10870,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                  {/* COLUMNA 1: Calculadora de Costos Recetas (Estilo App MÃ³vil Beauty Tools Apps) */}
+                  {/* COLUMNA 1: Calculadora de Costos Recetas (Estilo App Móvil Beauty Tools Apps) */}
                   <div className="bg-[#141615] text-white p-4 sm:p-5 rounded-2xl border-2 border-[#EA580C] shadow-xl space-y-4 flex flex-col justify-between">
                     
                     {/* Header de la Receta */}
@@ -10889,7 +10888,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         <button
                           type="button"
                           onClick={() => {
-                            // Feedback tÃ¡ctil al recalcular
+                            // Feedback táctil al recalcular
                             const btn = document.getElementById('btn-recipe-calc-action');
                             if (btn) {
                               btn.classList.add('text-amber-400');
@@ -10914,11 +10913,11 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           value={breakdownForm.recipeName || ''}
                           onChange={e => setBreakdownForm({ ...breakdownForm, recipeName: e.target.value })}
                           className="w-full px-3.5 py-2 rounded-xl bg-[#222524] border border-gray-700 text-white font-bold text-xs focus:border-[#EA580C] focus:outline-none transition-all"
-                          placeholder="ImpresiÃ³n 3d"
+                          placeholder="Impresión 3d"
                         />
                       </div>
 
-                      {/* BotÃ³n Naranja Central: AÃ‘ADIR CANTIDADES */}
+                      {/* Botón Naranja Central: AÃ‘ADIR CANTIDADES */}
                       <div className="my-3 text-center">
                         <button
                           type="button"
@@ -10969,12 +10968,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         )}
                       </div>
 
-                      {/* ParÃ¡metros de la Receta (Borde Naranja) */}
+                      {/* Parámetros de la Receta (Borde Naranja) */}
                       <div className="rounded-xl border-2 border-[#EA580C] bg-[#1C1F1E] p-3.5 space-y-3 mt-3">
                         {/* Rendimiento */}
                         <div className="space-y-1">
                           <label className="block text-xs font-bold text-gray-200">
-                            Â¿CuÃ¡ntas unidades rinde la receta?
+                            ¿Cuántas unidades rinde la receta?
                           </label>
                           <input
                             type="number"
@@ -11036,12 +11035,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           value={breakdownForm.recipeNotes || ''}
                           onChange={e => setBreakdownForm({ ...breakdownForm, recipeNotes: e.target.value })}
                           className="w-full px-3 py-1.5 rounded-xl bg-[#222524] border border-gray-700 text-white text-xs focus:border-[#EA580C] focus:outline-none resize-none"
-                          placeholder="Notas opcionales de preparaciÃ³n o taller..."
+                          placeholder="Notas opcionales de preparación o taller..."
                         />
                       </div>
                     </div>
 
-                    {/* Resumen Financiero Directo de la Receta con botÃ³n para aplicar precio */}
+                    {/* Resumen Financiero Directo de la Receta con botón para aplicar precio */}
                     <div className="pt-2 border-t border-gray-800 space-y-2">
                       <div className="p-3 rounded-xl bg-[#0F1110] border border-gray-800 text-[11px] space-y-1 text-gray-300">
                         <div className="flex justify-between">
@@ -11053,7 +11052,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           <strong className="font-mono text-amber-300">+${overheadCostPerUnit.toFixed(2)}</strong>
                         </div>
                         <div className="flex justify-between font-bold text-white border-t border-gray-800 pt-1">
-                          <span>Costo FabricaciÃ³n Unidad:</span>
+                          <span>Costo Fabricación Unidad:</span>
                           <span className="font-mono text-emerald-400">${recipeTotalUnitCost.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between text-[#FF7A00] font-bold">
@@ -11074,16 +11073,16 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                   </div>
 
-                  {/* COLUMNA 2: Tiempos de MÃ¡quina y Mano de Obra */}
+                  {/* COLUMNA 2: Tiempos de Máquina y Mano de Obra */}
                   <div className="space-y-4 bg-white p-4 rounded-2xl border border-[#E8E4DA]">
                     <h4 className="font-bold text-sm text-[#1F2421] border-b pb-2 flex items-center gap-2">
-                      <span>âš¡ 2. Tiempo de MÃ¡quina &amp; Mano de Obra</span>
+                      <span>âš¡ 2. Tiempo de Máquina &amp; Mano de Obra</span>
                     </h4>
 
-                    {/* Horas MÃ¡quina */}
+                    {/* Horas Máquina */}
                     <div className="space-y-1">
                       <div className="flex items-center justify-between">
-                        <label className="font-bold text-gray-700">Horas de ImpresiÃ³n 3D / MÃ¡quina</label>
+                        <label className="font-bold text-gray-700">Horas de Impresión 3D / Máquina</label>
                         <span className="font-mono font-bold text-emerald-700">${machineSubtotal.toFixed(2)} MXN</span>
                       </div>
                       <div className="flex items-center gap-2">
@@ -11098,7 +11097,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         />
                         <span className="text-gray-400 font-medium">hrs</span>
                       </div>
-                      <p className="text-[10px] text-gray-400">Calculado a ${electHour}/h luz + ${wearHour}/h amortizaciÃ³n y boquilla.</p>
+                      <p className="text-[10px] text-gray-400">Calculado a ${electHour}/h luz + ${wearHour}/h amortización y boquilla.</p>
                     </div>
 
                     {/* Minutos Mano de Obra */}
@@ -11125,7 +11124,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     {/* Costos Indirectos / Varios */}
                     <div className="grid grid-cols-2 gap-2 pt-2 border-t border-gray-100">
                       <div>
-                        <label className="font-bold text-gray-700 block mb-1">DiseÃ±o / STL ($)</label>
+                        <label className="font-bold text-gray-700 block mb-1">Diseño / STL ($)</label>
                         <input
                           type="number"
                           step="1"
@@ -11152,7 +11151,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                     {/* Estado de Costeo */}
                     <div className="pt-2 border-t border-gray-100">
-                      <label className="font-bold text-gray-700 block mb-1">Estado de VerificaciÃ³n de Costo</label>
+                      <label className="font-bold text-gray-700 block mb-1">Estado de Verificación de Costo</label>
                       <select
                         value={breakdownForm.costStatus || 'Verificado'}
                         onChange={e => setBreakdownForm({ ...breakdownForm, costStatus: e.target.value })}
@@ -11160,7 +11159,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       >
                         <option value="Verificado">âœ… Verificado (Basado en piezas reales)</option>
                         <option value="Estimado">âš ï¸ Estimado (Pendiente de pesar)</option>
-                        <option value="En cotizaciÃ³n">ðŸ’¬ En cotizaciÃ³n especial</option>
+                        <option value="En cotización">ðŸ’¬ En cotización especial</option>
                       </select>
                     </div>
 
@@ -11181,7 +11180,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   <div className="flex items-center justify-between border-b border-white/10 pb-3">
                     <span className="font-bold text-sm text-emerald-300 flex items-center gap-1.5">
                       <DollarSign className="w-4 h-4" />
-                      <span>AnÃ¡lisis de Rentabilidad Resultante</span>
+                      <span>Análisis de Rentabilidad Resultante</span>
                     </span>
                     <span className={`px-2.5 py-0.5 rounded-full text-xs font-black ${
                       liveProfit < 0
@@ -11190,7 +11189,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           ? 'bg-emerald-900 text-emerald-300'
                           : 'bg-amber-900 text-amber-200'
                     }`}>
-                      {liveProfit < 0 ? 'En PÃ©rdida' : liveMargin >= 40 ? 'Margen Ã“ptimo (â‰¥40%)' : 'Bajo Objetivo (<40%)'}
+                      {liveProfit < 0 ? 'En Pérdida' : liveMargin >= 40 ? 'Margen Ã“ptimo (â‰¥40%)' : 'Bajo Objetivo (<40%)'}
                     </span>
                   </div>
 
@@ -11198,7 +11197,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     <div className="bg-white/5 p-3 rounded-xl border border-white/10">
                       <div className="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Costo Total</div>
                       <div className="text-lg font-black font-mono text-white mt-0.5">${liveTotalCost.toFixed(1)}</div>
-                      <div className="text-[10px] text-gray-400">filamento + mÃ¡quina + mo</div>
+                      <div className="text-[10px] text-gray-400">filamento + máquina + mo</div>
                     </div>
 
                     <div className="bg-white/5 p-3 rounded-xl border border-white/10 flex flex-col justify-center items-center">
@@ -11221,7 +11220,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           placeholder="0"
                         />
                       </div>
-                      <div className="text-[10px] text-gray-400 mt-1">se guardarÃ¡ en catÃ¡logo</div>
+                      <div className="text-[10px] text-gray-400 mt-1">se guardará en catálogo</div>
                     </div>
 
                     <div className="bg-white/5 p-3 rounded-xl border border-white/10">
@@ -11287,7 +11286,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         </span>
                         <div>
                           <h4 className="text-sm font-extrabold text-white font-heading">
-                            AÃ±adir Cantidades a la Receta
+                            Añadir Cantidades a la Receta
                           </h4>
                           <p className="text-[10px] text-gray-400">
                             Selecciona del inventario de taller o ingresa un insumo libre
@@ -11401,7 +11400,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             <option value="mL">Mililitros (mL)</option>
                             <option value="L">Litros (L)</option>
                             <option value="pza">Piezas (pza)</option>
-                            <option value="cmÂ²">CentÃ­metrosÂ² (cmÂ²)</option>
+                            <option value="cmÂ²">CentímetrosÂ² (cmÂ²)</option>
                             <option value="m">Metros (m)</option>
                             <option value="hoja">Hojas (hoja)</option>
                           </select>
@@ -11437,7 +11436,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         className="px-5 py-2 rounded-xl bg-[#FF7A00] hover:bg-[#E66E00] disabled:opacity-50 text-black font-extrabold text-xs uppercase tracking-wider transition-all shadow-md active:scale-95 cursor-pointer flex items-center gap-1.5"
                       >
                         <Plus className="w-3.5 h-3.5 stroke-[3]" />
-                        <span>AÃ±adir a la receta</span>
+                        <span>Añadir a la receta</span>
                       </button>
                     </div>
                   </div>
@@ -11449,7 +11448,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         );
       })()}
 
-      {/* Modal General de ConfirmaciÃ³n y Desglose de Cambios del Panel Administrador */}
+      {/* Modal General de Confirmación y Desglose de Cambios del Panel Administrador */}
       <AdminConfirmSaveModal
         isOpen={adminConfirmModal.isOpen}
         title={adminConfirmModal.title}
@@ -11461,7 +11460,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         onCancel={() => setAdminConfirmModal(prev => ({ ...prev, isOpen: false }))}
       />
 
-{/* Modal de ConfirmaciÃ³n para Eliminar Producto (Sin bloqueos de window.confirm) */}
+{/* Modal de Confirmación para Eliminar Producto (Sin bloqueos de window.confirm) */}
       {confirmDeleteProduct && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
           <div className="w-full max-w-md bg-white rounded-3xl border border-rose-200 shadow-2xl p-6 space-y-5 text-gray-900">
@@ -11470,8 +11469,8 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                 <Trash2 className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-base font-black text-rose-950 font-heading">Â¿Eliminar producto del catÃ¡logo?</h3>
-                <p className="text-xs text-rose-600 font-medium">Esta acciÃ³n quitarÃ¡ el producto de la tienda y del catÃ¡logo activo.</p>
+                <h3 className="text-base font-black text-rose-950 font-heading">¿Eliminar producto del catálogo?</h3>
+                <p className="text-xs text-rose-600 font-medium">Esta acción quitará el producto de la tienda y del catálogo activo.</p>
               </div>
             </div>
 
@@ -11503,7 +11502,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                 className="px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-black shadow-md active:scale-95 cursor-pointer transition-all flex items-center gap-1.5"
               >
                 <Trash2 className="w-4 h-4" />
-                <span>SÃ­, Eliminar Producto</span>
+                <span>Sí, Eliminar Producto</span>
               </button>
             </div>
           </div>
@@ -11519,8 +11518,8 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                 <Check className="w-6 h-6 text-amber-700" />
               </div>
               <div>
-                <h3 className="text-base font-black text-stone-900 font-heading">Â¿Deseas guardar los cambios realizados?</h3>
-                <p className="text-xs text-stone-500">Se registraron modificaciones durante esta sesiÃ³n en el panel:</p>
+                <h3 className="text-base font-black text-stone-900 font-heading">¿Deseas guardar los cambios realizados?</h3>
+                <p className="text-xs text-stone-500">Se registraron modificaciones durante esta sesión en el panel:</p>
               </div>
             </div>
 
@@ -11615,7 +11614,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         </div>
       )}
 
-      {/* Estudio FotogrÃ¡fico de CatÃ¡logo (4 Fotos con Sharp / IA) */}
+      {/* Estudio Fotográfico de Catálogo (4 Fotos con Sharp / IA) */}
       <ProductPhotoStudioModal
         isOpen={isPhotoStudioOpen}
         onClose={() => setIsPhotoStudioOpen(false)}

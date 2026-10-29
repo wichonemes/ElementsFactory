@@ -1,6 +1,5 @@
 ﻿import React, { useState, useEffect, useMemo } from 'react';
 import {
-import ImageOptimized from './ImageOptimized';
   Flame, Zap, Clock, Tag, Sparkles, Copy, Check,
   ChevronRight, ChevronLeft, Gift, ArrowDown, Award, Percent, TrendingUp,
   ArrowRight
@@ -8,9 +7,9 @@ import ImageOptimized from './ImageOptimized';
 import SeasonalAtmosphere from './SeasonalAtmosphere';
 
 /**
- * Mapa de Paletas TemÃ¡ticas para MonthlyEventBanner
+ * Mapa de Paletas Temáticas para MonthlyEventBanner
  * Armoniza los colores, degradados, sellos y badges con la paleta de la tienda
- * y con la temporada activa (ClÃ¡sico Taller Verde Bosque / Oro, Navidad, OtoÃ±o, etc.)
+ * y con la temporada activa (Clásico Taller Verde Bosque / Oro, Navidad, Otoño, etc.)
  */
 export const EVENT_THEMES = {
   // ==========================================
@@ -38,7 +37,7 @@ export const EVENT_THEMES = {
     progressBar: 'bg-gradient-to-r from-[#244231] via-[#D4A359] to-[#823B17]'
   },
   salvia_menta: {
-    name: 'Verde Salvia Matcha & Menta BotÃ¡nica (Saturada)',
+    name: 'Verde Salvia Matcha & Menta Botánica (Saturada)',
     isLight: true,
     majorBg: 'bg-gradient-to-br from-[#72BA8F] via-[#54A576] to-[#3B895C] border-emerald-700/80 text-stone-950 font-semibold',
     midBg: 'bg-gradient-to-br from-[#7FC39B] via-[#63B184] to-[#459567] border-teal-700/70 text-stone-950 font-semibold',
@@ -59,7 +58,7 @@ export const EVENT_THEMES = {
     progressBar: 'bg-gradient-to-r from-[#166534] via-[#0D9488] to-[#15803D]'
   },
   terracota_claro: {
-    name: 'Terracota Vivo & Arcilla Cocida (CÃ¡lida)',
+    name: 'Terracota Vivo & Arcilla Cocida (Cálida)',
     isLight: true,
     majorBg: 'bg-gradient-to-br from-[#DC7E61] via-[#C86445] to-[#A64528] border-orange-800/80 text-stone-950 font-semibold',
     midBg: 'bg-gradient-to-br from-[#E38E73] via-[#D17255] to-[#B55134] border-orange-900/70 text-stone-950 font-semibold',
@@ -80,7 +79,7 @@ export const EVENT_THEMES = {
     progressBar: 'bg-gradient-to-r from-[#8C3317] via-[#D4A359] to-amber-500'
   },
   marfil_oro: {
-    name: 'Oro Artesanal Radiante & Ãmbar (Luminosa)',
+    name: 'Oro Artesanal Radiante & Ámbar (Luminosa)',
     isLight: true,
     majorBg: 'bg-gradient-to-br from-[#E6BE4D] via-[#D4A532] to-[#B88719] border-amber-800/80 text-stone-950 font-semibold',
     midBg: 'bg-gradient-to-br from-[#EBC65F] via-[#DBB042] to-[#C29328] border-amber-900/70 text-stone-950 font-semibold',
@@ -101,7 +100,7 @@ export const EVENT_THEMES = {
     progressBar: 'bg-gradient-to-r from-[#17251E] via-[#D4A359] to-amber-400'
   },
   cielo_verano: {
-    name: 'Azul Brisa Marina & OcÃ©ano Claro (Saturada)',
+    name: 'Azul Brisa Marina & Océano Claro (Saturada)',
     isLight: true,
     majorBg: 'bg-gradient-to-br from-[#54AEE6] via-[#3594D1] to-[#1B77B3] border-sky-800/80 text-stone-950 font-semibold',
     midBg: 'bg-gradient-to-br from-[#68B8EA] via-[#48A1DC] to-[#2B86C2] border-sky-900/70 text-stone-950 font-semibold',
@@ -122,7 +121,7 @@ export const EVENT_THEMES = {
     progressBar: 'bg-gradient-to-r from-[#0369A1] via-sky-400 to-cyan-300'
   },
   cempasuchil_sol: {
-    name: 'CempasÃºchil & Sol de MediodÃ­a (Amarillo Flor)',
+    name: 'Cempasúchil & Sol de Mediodía (Amarillo Flor)',
     isLight: true,
     majorBg: 'bg-gradient-to-br from-[#F59E0B] via-[#D97706] to-[#B45309] border-amber-800/80 text-stone-950 font-semibold',
     midBg: 'bg-gradient-to-br from-[#FBBF24] via-[#F59E0B] to-[#D97706] border-orange-800/70 text-stone-950 font-semibold',
@@ -143,7 +142,7 @@ export const EVENT_THEMES = {
     progressBar: 'bg-gradient-to-r from-[#78350F] via-[#F59E0B] to-[#FBBF24]'
   },
   lavanda_lila: {
-    name: 'Lavanda AromÃ¡tica & Amatista (Floral Saturado)',
+    name: 'Lavanda Aromática & Amatista (Floral Saturado)',
     isLight: true,
     majorBg: 'bg-gradient-to-br from-[#A78BFA] via-[#8B5CF6] to-[#6D28D9] border-purple-800/80 text-stone-950 font-semibold',
     midBg: 'bg-gradient-to-br from-[#C4B5FD] via-[#A78BFA] to-[#7C3AED] border-indigo-800/70 text-stone-950 font-semibold',
@@ -164,7 +163,7 @@ export const EVENT_THEMES = {
     progressBar: 'bg-gradient-to-r from-[#4C1D95] via-[#8B5CF6] to-[#C4B5FD]'
   },
   durazno_coral: {
-    name: 'Durazno Dulce & Coral Floral (Frutal CÃ¡lido)',
+    name: 'Durazno Dulce & Coral Floral (Frutal Cálido)',
     isLight: true,
     majorBg: 'bg-gradient-to-br from-[#FB923C] via-[#EA580C] to-[#C2410C] border-orange-900/80 text-stone-950 font-semibold',
     midBg: 'bg-gradient-to-br from-[#FDBA74] via-[#FB923C] to-[#EA580C] border-red-800/70 text-stone-950 font-semibold',
@@ -185,7 +184,7 @@ export const EVENT_THEMES = {
     progressBar: 'bg-gradient-to-r from-[#7C2D12] via-[#EA580C] to-[#FDBA74]'
   },
   menta_glaciar: {
-    name: 'Menta Glaciar & Turquesa Fresco (AromÃ¡tico)',
+    name: 'Menta Glaciar & Turquesa Fresco (Aromático)',
     isLight: true,
     majorBg: 'bg-gradient-to-br from-[#2DD4BF] via-[#0D9488] to-[#115E59] border-teal-900/80 text-stone-950 font-semibold',
     midBg: 'bg-gradient-to-br from-[#5EEAD4] via-[#14B8A6] to-[#0F766E] border-teal-800/70 text-stone-950 font-semibold',
@@ -206,7 +205,7 @@ export const EVENT_THEMES = {
     progressBar: 'bg-gradient-to-r from-[#042F2E] via-[#0D9488] to-[#5EEAD4]'
   },
   canela_caramelo: {
-    name: 'Canela Tostada & Miel de Taller (CÃ¡lida Artesanal)',
+    name: 'Canela Tostada & Miel de Taller (Cálida Artesanal)',
     isLight: true,
     majorBg: 'bg-gradient-to-br from-[#C2824D] via-[#A66735] to-[#804820] border-amber-950/80 text-stone-950 font-semibold',
     midBg: 'bg-gradient-to-br from-[#D29461] via-[#B87742] to-[#915428] border-amber-900/70 text-stone-950 font-semibold',
@@ -231,7 +230,7 @@ export const EVENT_THEMES = {
   // PALETAS PROFUNDAS & NOCTURNAS (Noche / Gala)
   // ==========================================
   clasico: {
-    name: 'Taller Artesanal ClÃ¡sico (Verde Bosque & Oro)',
+    name: 'Taller Artesanal Clásico (Verde Bosque & Oro)',
     majorBg: 'bg-gradient-to-br from-[#17251E] via-[#22382B] to-[#121A15] border-[#D4A359]/70 text-white',
     midBg: 'bg-gradient-to-br from-[#1B2C24] via-[#1E3A2F] to-[#16251E] border-emerald-400/60 text-white',
     glowMajor: 'bg-[#D4A359]',
@@ -271,7 +270,7 @@ export const EVENT_THEMES = {
     progressBar: 'bg-gradient-to-r from-red-500 via-amber-400 to-emerald-400'
   },
   otono: {
-    name: 'OtoÃ±o & Cosecha (Naranja & Ãmbar)',
+    name: 'Otoño & Cosecha (Naranja & Ámbar)',
     majorBg: 'bg-gradient-to-br from-[#2D1608] via-[#241C16] to-[#181F1A] border-orange-500/70 text-white',
     midBg: 'bg-gradient-to-br from-[#241A10] via-[#2C2114] to-[#1A1D1A] border-amber-400/60 text-white',
     glowMajor: 'bg-orange-600',
@@ -291,7 +290,7 @@ export const EVENT_THEMES = {
     progressBar: 'bg-gradient-to-r from-orange-600 via-amber-500 to-yellow-400'
   },
   sanvalentin: {
-    name: 'San ValentÃ­n & Amor (RubÃ­ & Rosa)',
+    name: 'San Valentín & Amor (Rubí & Rosa)',
     majorBg: 'bg-gradient-to-br from-[#2D0F1B] via-[#221820] to-[#171E1A] border-rose-400/70 text-white',
     midBg: 'bg-gradient-to-br from-[#25101E] via-[#261622] to-[#181D1A] border-pink-400/60 text-white',
     glowMajor: 'bg-pink-600',
@@ -311,7 +310,7 @@ export const EVENT_THEMES = {
     progressBar: 'bg-gradient-to-r from-rose-500 via-pink-400 to-amber-300'
   },
   primavera: {
-    name: 'Primavera & BotÃ¡nica (Verde Selva)',
+    name: 'Primavera & Botánica (Verde Selva)',
     majorBg: 'bg-gradient-to-br from-[#12281A] via-[#1A3825] to-[#141F18] border-emerald-400/70 text-white',
     midBg: 'bg-gradient-to-br from-[#163020] via-[#1F3D2A] to-[#132219] border-teal-400/60 text-white',
     glowMajor: 'bg-emerald-500',
@@ -331,7 +330,7 @@ export const EVENT_THEMES = {
     progressBar: 'bg-gradient-to-r from-emerald-400 via-green-400 to-amber-300'
   },
   verano: {
-    name: 'Verano CÃ¡lido & OcÃ©ano (Azul Profundo)',
+    name: 'Verano Cálido & Océano (Azul Profundo)',
     majorBg: 'bg-gradient-to-br from-[#0F2834] via-[#16384A] to-[#142322] border-cyan-400/70 text-white',
     midBg: 'bg-gradient-to-br from-[#10303E] via-[#164354] to-[#122728] border-amber-400/60 text-white',
     glowMajor: 'bg-cyan-500',
@@ -371,7 +370,7 @@ export const EVENT_THEMES = {
     progressBar: 'bg-gradient-to-r from-amber-400 via-yellow-400 to-red-500'
   },
   cyber_neon: {
-    name: 'Cyber Taller & NeÃ³n Turquesa (Ciberpunk)',
+    name: 'Cyber Taller & Neón Turquesa (Ciberpunk)',
     majorBg: 'bg-gradient-to-br from-[#0B132B] via-[#1C2541] to-[#0D1B2A] border-cyan-400/80 text-white',
     midBg: 'bg-gradient-to-br from-[#0D1F2D] via-[#1D2D44] to-[#0A1128] border-teal-400/70 text-white',
     glowMajor: 'bg-cyan-400',
@@ -391,7 +390,7 @@ export const EVENT_THEMES = {
     progressBar: 'bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400'
   },
   retro_arcade: {
-    name: 'Retro Arcade NeÃ³n (PÃºrpura & Fucsia 80s)',
+    name: 'Retro Arcade Neón (Púrpura & Fucsia 80s)',
     majorBg: 'bg-gradient-to-br from-[#1E0528] via-[#2F0743] to-[#12001F] border-fuchsia-500/80 text-white',
     midBg: 'bg-gradient-to-br from-[#270335] via-[#380E4F] to-[#1A002C] border-pink-500/70 text-white',
     glowMajor: 'bg-fuchsia-500',
@@ -411,7 +410,7 @@ export const EVENT_THEMES = {
     progressBar: 'bg-gradient-to-r from-fuchsia-500 via-pink-400 to-yellow-400'
   },
   chocolate_cafe: {
-    name: 'Espresso Tostado & Madera Nogal (CÃ¡lida Profunda)',
+    name: 'Espresso Tostado & Madera Nogal (Cálida Profunda)',
     majorBg: 'bg-gradient-to-br from-[#1F130E] via-[#2E1C15] to-[#150D0A] border-amber-600/70 text-white',
     midBg: 'bg-gradient-to-br from-[#251711] via-[#352119] to-[#1A100C] border-amber-700/60 text-white',
     glowMajor: 'bg-amber-600',
@@ -431,7 +430,7 @@ export const EVENT_THEMES = {
     progressBar: 'bg-gradient-to-r from-[#78350F] via-[#D4A359] to-amber-400'
   },
   medianoche_zafiro: {
-    name: 'Zafiro Real & Medianoche GalÃ¡ctico (Azul Marino)',
+    name: 'Zafiro Real & Medianoche Galáctico (Azul Marino)',
     majorBg: 'bg-gradient-to-br from-[#061226] via-[#0E2044] to-[#040C1A] border-blue-400/80 text-white',
     midBg: 'bg-gradient-to-br from-[#0A1A36] via-[#142A58] to-[#071328] border-indigo-400/70 text-white',
     glowMajor: 'bg-blue-500',
@@ -451,7 +450,7 @@ export const EVENT_THEMES = {
     progressBar: 'bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-400'
   },
   carbon_minimal: {
-    name: 'Grafito TitÃ¡n & Cobre Industrial (Minimalista)',
+    name: 'Grafito Titán & Cobre Industrial (Minimalista)',
     majorBg: 'bg-gradient-to-br from-[#121417] via-[#1E232A] to-[#0E1012] border-stone-400/60 text-white',
     midBg: 'bg-gradient-to-br from-[#181C22] via-[#242A33] to-[#121518] border-orange-400/60 text-white',
     glowMajor: 'bg-stone-400',
@@ -471,7 +470,7 @@ export const EVENT_THEMES = {
     progressBar: 'bg-gradient-to-r from-stone-400 via-orange-500 to-amber-400'
   },
   vino_borgona: {
-    name: 'Vino Tinto BorgoÃ±a & Oro Real (Elegancia Nocturna)',
+    name: 'Vino Tinto Borgoña & Oro Real (Elegancia Nocturna)',
     majorBg: 'bg-gradient-to-br from-[#26050C] via-[#3D0A16] to-[#170207] border-rose-500/70 text-white',
     midBg: 'bg-gradient-to-br from-[#300812] via-[#4A0E1C] to-[#1F0309] border-amber-400/60 text-white',
     glowMajor: 'bg-rose-600',
@@ -493,14 +492,14 @@ export const EVENT_THEMES = {
 };
 
 /**
- * Resolver de tema segÃºn seasonalEffect o activeTheme
+ * Resolver de tema según seasonalEffect o activeTheme
  */
 function resolveEventThemeKey(activeTheme, seasonalEffect, eventsConfig) {
   if (activeTheme && EVENT_THEMES[activeTheme]) return activeTheme;
   if (eventsConfig?.theme && EVENT_THEMES[eventsConfig.theme]) return eventsConfig.theme;
   if (eventsConfig?.accentTheme && EVENT_THEMES[eventsConfig.accentTheme]) return eventsConfig.accentTheme;
 
-  // DetecciÃ³n automÃ¡tica por efecto estacional
+  // Detección automática por efecto estacional
   if (seasonalEffect) {
     if (['snow', 'snow_blizzard', 'christmas_lights', 'santa_sleigh', 'pine_needles'].includes(seasonalEffect)) {
       return 'navidad';
@@ -526,7 +525,7 @@ function resolveEventThemeKey(activeTheme, seasonalEffect, eventsConfig) {
 }
 
 /**
- * Helper para formatear fechas de eventos de forma amigable en espaÃ±ol (ej. "15 de octubre")
+ * Helper para formatear fechas de eventos de forma amigable en español (ej. "15 de octubre")
  */
 export function formatFriendlyDate(dateStr) {
   if (!dateStr) return '';
@@ -551,8 +550,8 @@ export const DEFAULT_SEASONAL_SLIDES = [
     image: './uploads/img_001.jpg',
     categoryTag: 'Hogar & Estilo',
     badge: 'Novedad de Temporada',
-    title: 'ColecciÃ³n Hogar y Estilo',
-    description: 'LÃ¡mpara moderna T38 Â· Maceta espiral T6 Â· Colgador Bienvenidos L14',
+    title: 'Colección Hogar y Estilo',
+    description: 'Lámpara moderna T38 Â· Maceta espiral T6 Â· Colgador Bienvenidos L14',
     worldId: 'hogar'
   },
   {
@@ -568,8 +567,8 @@ export const DEFAULT_SEASONAL_SLIDES = [
     id: 'bodas-eventos',
     image: './uploads/bienvenida_ceremonia_boda.jpg',
     categoryTag: 'Bodas & Eventos',
-    badge: 'EdiciÃ³n Especial Ceremonias',
-    title: 'ColecciÃ³n Bodas & Celebraciones',
+    badge: 'Edición Especial Ceremonias',
+    title: 'Colección Bodas & Celebraciones',
     description: 'Letreros de bienvenida Â· Copas grabadas Â· Recuerdos en madera',
     worldId: 'eventos'
   },
@@ -579,31 +578,31 @@ export const DEFAULT_SEASONAL_SLIDES = [
     categoryTag: 'Setup & Gaming',
     badge: 'Lanzamiento de Taller',
     title: 'Setup Gamer & Home Office',
-    description: 'Smart Deck Â· Soporte para audÃ­fonos Â· Organizador modular 3D',
+    description: 'Smart Deck Â· Soporte para audífonos Â· Organizador modular 3D',
     worldId: 'hogar'
   },
   {
     id: 'linea-termica',
     image: './uploads/sublimacion_taza_tarro_contexto.jpg',
-    categoryTag: 'SublimaciÃ³n & Textil',
-    badge: 'Novedad TÃ©rmica',
-    title: 'LÃ­nea TÃ©rmica & Personalizada',
-    description: 'Tazas mÃ¡gicas de revelado tÃ©rmico Â· Tarros cerveceros Â· Termos lÃ¡ser',
+    categoryTag: 'Sublimación & Textil',
+    badge: 'Novedad Térmica',
+    title: 'Línea Térmica & Personalizada',
+    description: 'Tazas mágicas de revelado térmico Â· Tarros cerveceros Â· Termos láser',
     worldId: 'personalizados'
   }
 ];
 
 /**
  * MonthlyEventBanner - Banner comercial interactivo de eventos mensuales
- * Estilo eventos de alta conversiÃ³n (Temu, Mercado Libre, AliExpress).
+ * Estilo eventos de alta conversión (Temu, Mercado Libre, AliExpress).
  * Incluye:
- * - Paletas temÃ¡ticas armonizadas con la tienda artesanal y la temporada activa
- * - Badge de Descuento Gigante de Alto Impacto ("el chiste es que luzca la promociÃ³n")
- * - Carrusel dinÃ¡mico para alternar entre Evento Grande, Quincena Flash y CarÃ¡tula de Novedades
- * - AtmÃ³sfera de partÃ­culas estacionales embebida
+ * - Paletas temáticas armonizadas con la tienda artesanal y la temporada activa
+ * - Badge de Descuento Gigante de Alto Impacto ("el chiste es que luzca la promoción")
+ * - Carrusel dinámico para alternar entre Evento Grande, Quincena Flash y Carátula de Novedades
+ * - Atmósfera de partículas estacionales embebida
  * - Cuenta regresiva en vivo (Countdown)
  * - Barra de cuota / demanda apartada con urgencia
- * - Copiado de cupÃ³n en 1 clic
+ * - Copiado de cupón en 1 clic
  */
 export default function MonthlyEventBanner({
   eventsConfig = null,
@@ -631,8 +630,8 @@ export default function MonthlyEventBanner({
   const mid = eventsConfig?.midMonthEvent;
   const flash = eventsConfig?.flashSpecial;
 
-  // Regla del usuario: el evento grande del mes o la quincena relÃ¡mpago: "o es uno o es otro".
-  // Si baseEventMode es 'mid' o si major estÃ¡ inactivo y mid activo, el evento base es 'mid'.
+  // Regla del usuario: el evento grande del mes o la quincena relámpago: "o es uno o es otro".
+  // Si baseEventMode es 'mid' o si major está inactivo y mid activo, el evento base es 'mid'.
   // De lo contrario, es 'major'.
   const isMidMode = eventsConfig?.baseEventMode === 'mid' || (major?.active === false && mid?.active !== false);
   const activeBaseKey = isMidMode ? 'mid' : 'major';
@@ -643,7 +642,7 @@ export default function MonthlyEventBanner({
   const hasBase = hasMajor || hasMid;
   const hasFlash = Boolean(flash && flash.active === true);
 
-  // Lista ordenada de pestaÃ±as activas (mÃ¡ximo 1 base + 1 flash si estÃ¡ encendido + 1 showcase si estÃ¡ activo)
+  // Lista ordenada de pestañas activas (máximo 1 base + 1 flash si está encendido + 1 showcase si está activo)
   const availableTabs = useMemo(() => {
     const list = [];
     if (hasBase) list.push(activeBaseKey);
@@ -652,23 +651,23 @@ export default function MonthlyEventBanner({
     return list.length > 0 ? list : ['major'];
   }, [hasBase, activeBaseKey, hasFlash, showShowcaseTab]);
 
-  // Si la pestaÃ±a activa actual deja de estar disponible (ej. al apagar flash), ajustar automÃ¡ticamente
+  // Si la pestaña activa actual deja de estar disponible (ej. al apagar flash), ajustar automáticamente
   useEffect(() => {
     if (!availableTabs.includes(activeTab)) {
       setActiveTab(availableTabs[0] || 'major');
     }
   }, [availableTabs, activeTab]);
 
-  // Evento actualmente seleccionado para la lÃ³gica de cupones, descuentos y fechas
+  // Evento actualmente seleccionado para la lógica de cupones, descuentos y fechas
   const currentEvent = activeTab === 'flash' && hasFlash
     ? flash
     : (activeTab === 'mid' && hasMid ? mid : (major || baseEvent || mid));
 
-  // Obtener la paleta temÃ¡tica resuelta
+  // Obtener la paleta temática resuelta
   const themeKey = resolveEventThemeKey(activeTheme, seasonalEffect, eventsConfig);
   const theme = EVENT_THEMES[themeKey] || EVENT_THEMES.clasico;
 
-  // RotaciÃ³n tipo carrusel suave si hay mÃ¡s de 1 pestaÃ±a y no hay interacciÃ³n del mouse
+  // Rotación tipo carrusel suave si hay más de 1 pestaña y no hay interacción del mouse
   useEffect(() => {
     if (availableTabs.length <= 1 || isHovered || isSlidePaused) return;
     const timer = setInterval(() => {
@@ -680,7 +679,7 @@ export default function MonthlyEventBanner({
     return () => clearInterval(timer);
   }, [availableTabs, isHovered, isSlidePaused]);
 
-  // RotaciÃ³n automÃ¡tica de imÃ¡genes dentro de la carÃ¡tula si la pestaÃ±a showcase estÃ¡ activa
+  // Rotación automática de imágenes dentro de la carátula si la pestaña showcase está activa
   useEffect(() => {
     if (activeTab !== 'showcase' || isSlidePaused || seasonalSlides.length <= 1) return;
     const timer = setInterval(() => {
@@ -750,7 +749,7 @@ export default function MonthlyEventBanner({
   const flashTiming = getEventTiming(flash);
   const currentTiming = getEventTiming(currentEvent);
 
-  // CÃ¡lculo de cuenta regresiva dinÃ¡mica en vivo (hacia startDate si es upcoming, o endDate si es live)
+  // Cálculo de cuenta regresiva dinámica en vivo (hacia startDate si es upcoming, o endDate si es live)
   useEffect(() => {
     if (!currentEvent) return;
 
@@ -758,7 +757,7 @@ export default function MonthlyEventBanner({
       const now = new Date();
       let targetDate;
 
-      // Si el evento aÃºn no inicia (fecha futura), la cuenta regresiva apunta al inicio (00:00:00)
+      // Si el evento aún no inicia (fecha futura), la cuenta regresiva apunta al inicio (00:00:00)
       if (currentEvent.startDate) {
         const start = new Date(`${currentEvent.startDate}T00:00:00`);
         if (now.getTime() < start.getTime()) {
@@ -766,7 +765,7 @@ export default function MonthlyEventBanner({
         }
       }
 
-      // Si ya iniciÃ³ o no tiene startDate, la cuenta regresiva apunta a la fecha de fin (23:59:59)
+      // Si ya inició o no tiene startDate, la cuenta regresiva apunta a la fecha de fin (23:59:59)
       if (!targetDate) {
         if (currentEvent.endDate) {
           targetDate = new Date(`${currentEvent.endDate}T23:59:59`);
@@ -806,12 +805,12 @@ export default function MonthlyEventBanner({
       setCopiedCoupon(code);
       setTimeout(() => setCopiedCoupon(null), 3000);
     } catch (e) {
-      console.warn('No se pudo copiar automÃ¡ticamente:', e);
+      console.warn('No se pudo copiar automáticamente:', e);
       setCopiedCoupon(code);
     }
   };
 
-  // Formateo del nÃºmero de descuento para el badge hero gigante
+  // Formateo del número de descuento para el badge hero gigante
   const discountInfo = useMemo(() => {
     const raw = (currentEvent?.discountText || '15% OFF').trim();
     const match = raw.match(/(\d+%\s*OFF|\d+%|\d+)/i);
@@ -830,7 +829,7 @@ export default function MonthlyEventBanner({
     return { number, suffix, full: raw };
   }, [currentEvent?.discountText]);
 
-  // Mantener todos los hooks activos mientras llega la configuraciÃ³n.
+  // Mantener todos los hooks activos mientras llega la configuración.
   if (!currentEvent) return null;
 
   const isFlashTab = activeTab === 'flash';
@@ -878,10 +877,10 @@ export default function MonthlyEventBanner({
       onMouseLeave={() => setIsHovered(false)}
       className={`relative overflow-hidden rounded-3xl border-2 transition-all shadow-xl group/banner min-h-[460px] sm:min-h-[480px] lg:min-h-[500px] flex flex-col justify-between ${bannerBgClass} ${className}`}
     >
-      {/* Fondo fotogrÃ¡fico de temporada suave y armonizado con la paleta */}
+      {/* Fondo fotográfico de temporada suave y armonizado con la paleta */}
       {effectiveBannerImage && (
         <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-          <ImageOptimized loading="lazy"
+          <img loading="lazy"
             src={effectiveBannerImage}
             alt=""
             className={`w-full h-full object-cover mix-blend-overlay ${theme.isLight ? 'opacity-20' : 'opacity-30'}`}
@@ -890,7 +889,7 @@ export default function MonthlyEventBanner({
         </div>
       )}
 
-      {/* AtmÃ³sfera de temporada flotando sobre el banner */}
+      {/* Atmósfera de temporada flotando sobre el banner */}
       {seasonalEffect && seasonalEffect !== 'none' && (
         <SeasonalAtmosphere
           effect={seasonalEffect}
@@ -903,13 +902,13 @@ export default function MonthlyEventBanner({
       <div className={`absolute -top-24 -right-24 w-80 h-80 rounded-full blur-3xl pointer-events-none opacity-30 ${bannerGlow1}`} />
       <div className={`absolute -bottom-24 -left-24 w-80 h-80 rounded-full blur-3xl pointer-events-none opacity-25 ${bannerGlow2}`} />
 
-      {/* PestaÃ±as de selector y controles de carrusel (RotaciÃ³n automÃ¡tica & PestaÃ±as de Inicio) */}
+      {/* Pestañas de selector y controles de carrusel (Rotación automática & Pestañas de Inicio) */}
       {availableTabs.length > 1 && (
         <div className={`flex items-center justify-between backdrop-blur-md px-4 sm:px-6 pt-2.5 pb-0 gap-2 ${
           theme.isLight ? 'border-b border-black/10 bg-black/[0.04]' : 'border-b border-white/10 bg-black/30'
         }`}>
           <div className="flex gap-2 overflow-x-auto scrollbar-none">
-            {/* 1. PestaÃ±a de Evento Base (O Gran Bazar O Quincena, nunca ambos) */}
+            {/* 1. Pestaña de Evento Base (O Gran Bazar O Quincena, nunca ambos) */}
             {hasMajor && (
               <button
                 type="button"
@@ -943,7 +942,7 @@ export default function MonthlyEventBanner({
                 }`}
               >
                 <Zap className="w-3.5 h-3.5" />
-                <span>{mid.title ? mid.title.slice(0, 24) + '...' : 'Quincena RelÃ¡mpago'}</span>
+                <span>{mid.title ? mid.title.slice(0, 24) + '...' : 'Quincena Relámpago'}</span>
                 <span className={`text-[10px] uppercase px-1.5 py-0.2 rounded-md font-black ${
                   midTiming.isUpcoming ? 'bg-amber-400 text-stone-950' : 'bg-stone-950/20'
                 }`}>
@@ -954,7 +953,7 @@ export default function MonthlyEventBanner({
               </button>
             )}
 
-            {/* 2. PestaÃ±a de Especial Oferta RelÃ¡mpago de Fin de Semana & LiquidaciÃ³n */}
+            {/* 2. Pestaña de Especial Oferta Relámpago de Fin de Semana & Liquidación */}
             {hasFlash && (
               <button
                 type="button"
@@ -966,7 +965,7 @@ export default function MonthlyEventBanner({
                 }`}
               >
                 <Zap className="w-3.5 h-3.5 fill-current text-amber-500" />
-                <span>{flash.title ? flash.title.slice(0, 24) + '...' : 'Oferta RelÃ¡mpago Finde'}</span>
+                <span>{flash.title ? flash.title.slice(0, 24) + '...' : 'Oferta Relámpago Finde'}</span>
                 <span className={`text-[10px] uppercase px-1.5 py-0.2 rounded-md font-black ${
                   flashTiming.isUpcoming ? 'bg-amber-400 text-stone-950' : 'bg-red-600 text-white animate-pulse'
                 }`}>
@@ -977,7 +976,7 @@ export default function MonthlyEventBanner({
               </button>
             )}
 
-            {/* 3. PestaÃ±a de Novedades & CarÃ¡tula */}
+            {/* 3. Pestaña de Novedades & Carátula */}
             {showShowcaseTab && (
               <button
                 type="button"
@@ -989,7 +988,7 @@ export default function MonthlyEventBanner({
                 }`}
               >
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Novedades & CarÃ¡tula</span>
+                <span>Novedades & Carátula</span>
                 <span className="text-[10px] uppercase px-1.5 py-0.2 rounded-md font-black bg-stone-950/20 text-stone-950">
                   {seasonalSlides.length} Fotos
                 </span>
@@ -997,12 +996,12 @@ export default function MonthlyEventBanner({
             )}
           </div>
 
-          {/* Flechitas para rotar entre pestaÃ±as tipo carrusel */}
+          {/* Flechitas para rotar entre pestañas tipo carrusel */}
           <div className="flex items-center gap-1 pb-1 shrink-0">
             <button
               type="button"
               onClick={prevTab}
-              title="PestaÃ±a anterior"
+              title="Pestaña anterior"
               className={`p-1 rounded-lg text-xs transition-all cursor-pointer ${
                 theme.isLight ? 'bg-black/5 hover:bg-black/10 text-stone-800' : 'bg-white/10 hover:bg-white/20 text-white'
               }`}
@@ -1012,7 +1011,7 @@ export default function MonthlyEventBanner({
             <button
               type="button"
               onClick={toggleEvent}
-              title="Siguiente pestaÃ±a"
+              title="Siguiente pestaña"
               className={`p-1 rounded-lg text-xs transition-all cursor-pointer ${
                 theme.isLight ? 'bg-black/5 hover:bg-black/10 text-stone-800' : 'bg-white/10 hover:bg-white/20 text-white'
               }`}
@@ -1023,7 +1022,7 @@ export default function MonthlyEventBanner({
         </div>
       )}
 
-      {/* CONTENIDO SEGÃšN LA PESTAÃ‘A ACTIVA: CARÃTULA O EVENTO (MISMO TAMAÃ‘O UNIFORME) */}
+      {/* CONTENIDO SEGÃšN LA PESTAÃ‘A ACTIVA: CARÁTULA O EVENTO (MISMO TAMAÃ‘O UNIFORME) */}
       {activeTab === 'showcase' ? (
         <div className="p-4 sm:p-6 lg:p-7 space-y-4 sm:space-y-5 relative z-10 flex-1 flex flex-col justify-between min-h-[420px] sm:min-h-[440px]">
           
@@ -1032,7 +1031,7 @@ export default function MonthlyEventBanner({
             <div className="flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-gradient-to-r from-[#D4A359] to-[#F5D061] text-stone-950 shadow-sm">
                 <Sparkles className="w-3.5 h-3.5 text-stone-950 fill-stone-950" />
-                <span>ColecciÃ³n Oficial &amp; GalerÃ­a de Taller</span>
+                <span>Colección Oficial &amp; Galería de Taller</span>
               </span>
               <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-amber-300 font-bold text-xs border border-white/15">
                 {seasonalSlides[currentSlide]?.badge || 'Novedad de Temporada'}
@@ -1046,9 +1045,9 @@ export default function MonthlyEventBanner({
             </div>
           </div>
 
-          {/* Cuerpo Central de la CarÃ¡tula */}
+          {/* Cuerpo Central de la Carátula */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-            {/* Foto de la CarÃ¡tula con Crossfade y Controles */}
+            {/* Foto de la Carátula con Crossfade y Controles */}
             <div className="lg:col-span-7 relative">
               <div
                 className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border-2 border-white/20 bg-[#121A15] group/slide select-none h-[280px] sm:h-[340px]"
@@ -1065,7 +1064,7 @@ export default function MonthlyEventBanner({
                           isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
                         }`}
                       >
-                        <ImageOptimized loading="lazy"
+                        <img loading="lazy"
                           src={slide.image}
                           alt={slide.title}
                           className="w-full h-full object-cover object-center transform group-hover/slide:scale-105 transition-transform duration-1000"
@@ -1121,7 +1120,7 @@ export default function MonthlyEventBanner({
               </div>
             </div>
 
-            {/* Detalles de la ColecciÃ³n */}
+            {/* Detalles de la Colección */}
             <div className="lg:col-span-5 space-y-4">
               <div className="space-y-1.5">
                 <span className={`text-[11px] font-black uppercase tracking-widest ${
@@ -1141,7 +1140,7 @@ export default function MonthlyEventBanner({
                 </p>
               </div>
 
-              {/* Selector RÃ¡pido de las 5 Colecciones */}
+              {/* Selector Rápido de las 5 Colecciones */}
               <div className="space-y-1.5 pt-1">
                 <span className={`text-[10px] font-bold uppercase tracking-wider ${
                   theme.isLight ? 'text-stone-800' : 'text-stone-300'
@@ -1164,21 +1163,21 @@ export default function MonthlyEventBanner({
                                 : 'bg-white/10 text-gray-200 hover:bg-white/20 hover:text-white')
                         }`}
                       >
-                        {slide.title.replace('ColecciÃ³n ', '')}
+                        {slide.title.replace('Colección ', '')}
                       </button>
                     );
                   })}
                 </div>
               </div>
 
-              {/* Botones de AcciÃ³n */}
+              {/* Botones de Acción */}
               <div className="pt-2 flex flex-wrap items-center gap-3">
                 <button
                   type="button"
                   onClick={() => onOpenWorld && onOpenWorld(seasonalSlides[currentSlide]?.worldId)}
                   className="px-6 py-2.5 rounded-full bg-[#D4A359] hover:bg-[#c28e38] text-stone-950 font-black text-xs sm:text-sm transition-all shadow-lg flex items-center gap-2 cursor-pointer active:scale-98"
                 >
-                  <span>Ver esta colecciÃ³n</span>
+                  <span>Ver esta colección</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
 
@@ -1192,7 +1191,7 @@ export default function MonthlyEventBanner({
                         : 'bg-white/10 hover:bg-white/20 text-white border border-white/20'
                     }`}
                   >
-                    <span>Explorar catÃ¡logo</span>
+                    <span>Explorar catálogo</span>
                   </button>
                 )}
               </div>
@@ -1204,25 +1203,25 @@ export default function MonthlyEventBanner({
             theme.isLight ? 'border-t border-black/10 text-stone-800 font-medium' : 'border-t border-white/10 text-gray-200'
           }`}>
             <span className="flex items-center gap-1.5">
-              <span className="text-amber-500">ðŸšš</span> EnvÃ­o prioritario a todo MÃ©xico
+              <span className="text-amber-500">ðŸšš</span> Envío prioritario a todo México
             </span>
             <span className="flex items-center gap-1.5">
               <span className="text-amber-500">ðŸª™</span> 2X Monedas para el Arcade
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="text-amber-500">ðŸŽ</span> Grabado lÃ¡ser de nombres sin costo
+              <span className="text-amber-500">ðŸŽ</span> Grabado láser de nombres sin costo
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="text-amber-500">ðŸ›¡ï¸</span> GarantÃ­a artesanal de satisfacciÃ³n
+              <span className="text-amber-500">ðŸ›¡ï¸</span> Garantía artesanal de satisfacción
             </span>
           </div>
 
         </div>
       ) : (
-        /* Contenido Principal del Evento (Mismo tamaÃ±o uniforme) */
+        /* Contenido Principal del Evento (Mismo tamaño uniforme) */
         <div className="p-4 sm:p-6 lg:p-7 space-y-4 sm:space-y-5 relative z-10 flex-1 flex flex-col justify-between min-h-[420px] sm:min-h-[440px]">
         
-        {/* Fila Superior: Badges & Estado en Vivo/PrÃ³ximamente & Countdown */}
+        {/* Fila Superior: Badges & Estado en Vivo/Próximamente & Countdown */}
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-2">
             <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider shadow-sm ${
@@ -1231,7 +1230,7 @@ export default function MonthlyEventBanner({
                 : (isMajorTab ? theme.badgeMajor : theme.badgeMid)
             }`}>
               {isFlashTab ? <Zap className="w-3.5 h-3.5 fill-current text-stone-950" /> : (isMajorTab ? <Flame className="w-3.5 h-3.5 fill-current" /> : <Zap className="w-3.5 h-3.5 fill-current" />)}
-              <span>{currentEvent.badge || (isFlashTab ? 'âš¡ OFERTA RELÃMPAGO DE FIN DE SEMANA' : (isMajorTab ? 'ðŸ”¥ EVENTO GRANDE DEL MES' : 'âš¡ QUINCENA ARTESANAL FLASH'))}</span>
+              <span>{currentEvent.badge || (isFlashTab ? 'âš¡ OFERTA RELÁMPAGO DE FIN DE SEMANA' : (isMajorTab ? 'ðŸ”¥ EVENTO GRANDE DEL MES' : 'âš¡ QUINCENA ARTESANAL FLASH'))}</span>
             </span>
 
             {currentTiming.isUpcoming ? (
@@ -1239,7 +1238,7 @@ export default function MonthlyEventBanner({
                 <Sparkles className="w-3.5 h-3.5 text-amber-300 fill-amber-300" />
                 <span>PRÃ“XIMAMENTE</span>
                 <span className="px-1.5 py-0.2 rounded-md bg-stone-950/40 text-amber-200 text-[10px] font-black">
-                  {timeLeft.days > 0 ? `Faltan ${timeLeft.days} ${timeLeft.days === 1 ? 'dÃ­a' : 'dÃ­as'}` : 'Inicia hoy'}
+                  {timeLeft.days > 0 ? `Faltan ${timeLeft.days} ${timeLeft.days === 1 ? 'día' : 'días'}` : 'Inicia hoy'}
                 </span>
               </span>
             ) : (
@@ -1286,7 +1285,7 @@ export default function MonthlyEventBanner({
           </div>
         </div>
 
-        {/* Banner Destacado de PrÃ³ximamente (Visible cuando startDate es en fecha futura) */}
+        {/* Banner Destacado de Próximamente (Visible cuando startDate es en fecha futura) */}
         {currentTiming.isUpcoming && (
           <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-500/25 via-amber-400/20 to-orange-500/20 border-2 border-amber-300/80 p-3.5 backdrop-blur-md shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-fade-in">
             <div className="flex items-center gap-3">
@@ -1295,11 +1294,11 @@ export default function MonthlyEventBanner({
               </div>
               <div className="space-y-0.5">
                 <div className="text-xs sm:text-sm font-black text-amber-200 uppercase tracking-wide flex flex-wrap items-center gap-1.5 font-heading">
-                  <span>Â¡Evento PrÃ³ximamente!</span>
+                  <span>¡Evento Próximamente!</span>
                   <span className="px-2 py-0.5 rounded-full bg-amber-400 text-stone-950 text-[11px] font-black shadow-xs">
                     {timeLeft.days > 0
-                      ? `Faltan ${timeLeft.days} ${timeLeft.days === 1 ? 'dÃ­a' : 'dÃ­as'} para que inicie`
-                      : 'Â¡Inicia hoy a la medianoche!'}
+                      ? `Faltan ${timeLeft.days} ${timeLeft.days === 1 ? 'día' : 'días'} para que inicie`
+                      : '¡Inicia hoy a la medianoche!'}
                   </span>
                 </div>
                 <p className="text-[11px] sm:text-xs text-stone-100 leading-snug">
@@ -1316,7 +1315,7 @@ export default function MonthlyEventBanner({
           </div>
         )}
 
-        {/* Fila Central: Sello Gigante de Descuento + TÃ­tulo + CupÃ³n */}
+        {/* Fila Central: Sello Gigante de Descuento + Título + Cupón */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-center">
           
           {/* LADO IZQUIERDO / CENTRO: HERO BADGE GIGANTE DEL DESCUENTO Y TEXTOS */}
@@ -1324,7 +1323,7 @@ export default function MonthlyEventBanner({
             
             {/* BADGE GIGANTE DE DESCUENTO (Llamativo, Bold, Estilo Temu / Mercado Libre) */}
             <div className="relative group/seal shrink-0 self-center sm:self-auto">
-              {/* Resplandor pulsante detrÃ¡s del badge */}
+              {/* Resplandor pulsante detrás del badge */}
               <div className={`absolute -inset-1.5 rounded-3xl blur-md opacity-75 animate-pulse transition-all ${
                 isFlashTab
                   ? 'bg-gradient-to-r from-orange-600 via-amber-500 to-yellow-400'
@@ -1357,10 +1356,10 @@ export default function MonthlyEventBanner({
               </h2>
 
               <p className={`text-xs sm:text-sm leading-relaxed font-normal ${effectiveTextColorMode === 'black' ? 'text-stone-900 font-semibold' : effectiveTextColorMode === 'white' ? 'text-gray-100' : (theme.isLight ? 'text-stone-700 font-medium' : 'text-gray-200')}`}>
-                {currentEvent.subtitle || 'Aprovecha beneficios exclusivos en paquetes y combos del taller con envoltura de regalo de cortesÃ­a y grabado lÃ¡ser personalizado.'}
+                {currentEvent.subtitle || 'Aprovecha beneficios exclusivos en paquetes y combos del taller con envoltura de regalo de cortesía y grabado láser personalizado.'}
               </p>
 
-              {/* Beneficio destacado en cÃ¡psula */}
+              {/* Beneficio destacado en cápsula */}
               {currentEvent.benefitText && (
                 <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-xl text-xs font-semibold ${theme.isLight ? 'bg-black/5 border border-black/10 text-[#2D4F3E]' : 'bg-white/10 border border-white/15 text-amber-200'}`}>
                   <Sparkles className={`w-3.5 h-3.5 ${theme.isLight ? 'text-[#9E472A]' : 'text-amber-300'} shrink-0`} />
@@ -1377,7 +1376,7 @@ export default function MonthlyEventBanner({
                 <div className={`flex items-center justify-between text-[11px] ${theme.isLight ? 'text-stone-900 font-bold' : 'text-gray-200'}`}>
                   <span className="flex items-center gap-1 font-bold">
                     <Tag className={`w-3 h-3 ${theme.isLight ? 'text-[#9E472A]' : 'text-amber-400'}`} />{' '}
-                    {currentTiming.isUpcoming ? 'CupÃ³n Preventa' : 'CupÃ³n del Evento'}
+                    {currentTiming.isUpcoming ? 'Cupón Preventa' : 'Cupón del Evento'}
                   </span>
                   <span className={`${theme.isLight ? 'text-[#9E472A]' : 'text-amber-300'} font-black text-xs`}>{discountInfo.full}</span>
                 </div>
@@ -1398,7 +1397,7 @@ export default function MonthlyEventBanner({
                     {copiedCoupon === currentEvent.couponCode ? (
                       <>
                         <Check className="w-3.5 h-3.5 stroke-[3]" />
-                        <span>Â¡Copiado!</span>
+                        <span>¡Copiado!</span>
                       </>
                     ) : (
                       <>
@@ -1411,13 +1410,13 @@ export default function MonthlyEventBanner({
                 {copiedCoupon === currentEvent.couponCode && (
                   <p className="text-[10px] text-emerald-300 text-center font-bold animate-fade-in">
                     {currentTiming.isUpcoming
-                      ? `âœ“ CÃ³digo listo en portapapeles. VÃ¡lido a partir del ${currentTiming.formattedStartDate || currentEvent.startDate}.`
-                      : 'âœ“ CÃ³digo listo en portapapeles. AplÃ­calo al tramitar tu pedido.'}
+                      ? `âœ“ Código listo en portapapeles. Válido a partir del ${currentTiming.formattedStartDate || currentEvent.startDate}.`
+                      : 'âœ“ Código listo en portapapeles. Aplícalo al tramitar tu pedido.'}
                   </p>
                 )}
                 {currentTiming.isUpcoming && copiedCoupon !== currentEvent.couponCode && (
                   <p className="text-[10px] text-amber-200/90 text-center font-medium">
-                    ðŸ“… VÃ¡lido a partir del {currentTiming.formattedStartDate || currentEvent.startDate}
+                    ðŸ“… Válido a partir del {currentTiming.formattedStartDate || currentEvent.startDate}
                   </p>
                 )}
               </div>
@@ -1460,8 +1459,8 @@ export default function MonthlyEventBanner({
                 theme.isLight ? 'text-amber-900' : 'text-amber-300'
               }`}>
                 {currentTiming.isUpcoming
-                  ? 'Â¡Aparta tu lugar!'
-                  : (progressPercent > 80 ? 'Â¡Pocos lugares disponibles!' : 'Cupos disponibles')}
+                  ? '¡Aparta tu lugar!'
+                  : (progressPercent > 80 ? '¡Pocos lugares disponibles!' : 'Cupos disponibles')}
               </span>
             </div>
 
@@ -1481,16 +1480,16 @@ export default function MonthlyEventBanner({
             theme.isLight ? 'text-stone-800 font-medium' : 'text-gray-200'
           }`}>
             <span className="flex items-center gap-1.5">
-              <span className="text-amber-500">ðŸšš</span> EnvÃ­o prioritario a todo MÃ©xico
+              <span className="text-amber-500">ðŸšš</span> Envío prioritario a todo México
             </span>
             <span className="flex items-center gap-1.5">
               <span className="text-amber-500">ðŸª™</span> 2X Monedas para el Arcade
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="text-amber-500">ðŸŽ</span> Grabado lÃ¡ser de nombres sin costo
+              <span className="text-amber-500">ðŸŽ</span> Grabado láser de nombres sin costo
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="text-amber-500">ðŸ›¡ï¸</span> GarantÃ­a artesanal de satisfacciÃ³n
+              <span className="text-amber-500">ðŸ›¡ï¸</span> Garantía artesanal de satisfacción
             </span>
           </div>
         </div>

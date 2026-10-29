@@ -1,6 +1,5 @@
 ﻿import React, { useState } from 'react';
 import { Clock, Zap, Flame, ArrowRight, X, Sparkles, Percent } from 'lucide-react';
-import ImageOptimized from './ImageOptimized';
 
 export default function BlitzClockWidget({
   blitzDeal,
@@ -30,7 +29,7 @@ export default function BlitzClockWidget({
   const flashPrice = Math.round(product.price * 0.85);
 
   const isFinal15m = isUrgentLessThan15m || (secondsRemaining <= 900 && cycleDuration > 900);
-  const badgeTitle = isFinal15m ? 'Â¡ÃšLTIMOS 15 MINUTOS!' : 'OFERTA RELÃMPAGO 15 MIN';
+  const badgeTitle = isFinal15m ? '¡ÃšLTIMOS 15 MINUTOS!' : 'OFERTA RELÁMPAGO 15 MIN';
   const pillTitle = isFinal15m ? 'âš¡ Menos de 15 min' : 'âš¡ 15 min Blitz';
   const progressPercent = blitzPercentRemaining ?? (
     secondsRemaining <= 900
@@ -41,7 +40,7 @@ export default function BlitzClockWidget({
   // If user minimized the widget, show a sleek floating pill
   if (dismissed) {
     return (
-      <aside aria-label="Oferta relÃ¡mpago" className="fixed bottom-20 sm:bottom-5 right-4 sm:right-6 z-40">
+      <aside aria-label="Oferta relámpago" className="fixed bottom-20 sm:bottom-5 right-4 sm:right-6 z-40">
         <button
           type="button"
           onClick={() => updateDismissed(false)}
@@ -66,7 +65,7 @@ export default function BlitzClockWidget({
 
   return (
     <aside
-      aria-label="Reloj de oferta relÃ¡mpago"
+      aria-label="Reloj de oferta relámpago"
       className="fixed bottom-20 sm:bottom-5 left-3 right-3 sm:left-auto sm:right-6 z-40 sm:max-w-[400px] sm:w-[calc(100vw-2.5rem)] animate-fade-in select-none"
     >
       {/* VERSIÃ“N MÃ“VIL DISCRETA: Pastilla delgada y compacta que no obstruye la pantalla */}
@@ -80,7 +79,7 @@ export default function BlitzClockWidget({
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
           </span>
 
-          <ImageOptimized loading="lazy"
+          <img loading="lazy"
             src={product.primaryImage || product.whiteBgImage}
             alt={product.name}
             className="w-7 h-7 rounded-full object-cover border border-amber-300/40 bg-white shrink-0"
@@ -187,7 +186,7 @@ export default function BlitzClockWidget({
             onClick={() => onSelectProduct && onSelectProduct(product)}
             className="flex items-center gap-3 cursor-pointer group/prod min-w-0"
           >
-            <ImageOptimized loading="lazy"
+            <img loading="lazy"
               src={product.primaryImage || product.whiteBgImage}
               alt={product.name}
               className="w-12 h-12 rounded-xl object-cover border border-amber-300/30 group-hover/prod:scale-105 transition-transform bg-white shrink-0"
