@@ -1,5 +1,6 @@
 ﻿import React, { useState } from 'react';
 import { Eye, Plus, MessageCircle, Sparkles, Layers, Image as ImageIcon, Calculator, ShoppingBag, Flame, Clock, Zap } from 'lucide-react';
+import { getOptimizedSrcSet, PRODUCT_CARD_SIZES } from '../utils/imageOptimization';
 
 export default function ProductCard({
   product,
@@ -135,8 +136,10 @@ export default function ProductCard({
         onContextMenu={(e) => e.preventDefault()}
         className="relative aspect-square sm:aspect-auto sm:h-72 overflow-hidden bg-white cursor-pointer select-none flex items-center justify-center p-2 sm:p-4"
       >
-        <img loading="lazy"
+        <img
           src={currentPhoto}
+          srcSet={getOptimizedSrcSet(currentPhoto)}
+          sizes={PRODUCT_CARD_SIZES}
           alt={product.name}
           draggable={false}
           onDragStart={(e) => e.preventDefault()}
@@ -147,6 +150,7 @@ export default function ProductCard({
               : 'object-contain p-1.5 sm:p-2 bg-white'
           }`}
           loading="lazy"
+          decoding="async"
           onError={(e) => {
             e.currentTarget.onerror = null;
             e.currentTarget.src = './uploads/img_002.jpg';
@@ -198,9 +202,13 @@ export default function ProductCard({
 
           {/* Marca de Agua Sutil de Taller */}
           <div className="flex items-center gap-1 px-1.5 py-[2px] rounded-full bg-black/20 backdrop-blur-2xs text-[7px] font-medium text-white/80 select-none tracking-tight border border-white/5 shadow-2xs">
-            <img loading="lazy"
-              src="./brand/artesano_isotipo_transparente.png"
+            <img
+              src="./brand/artesano_isotipo_transparente-64.webp"
               alt=""
+              width="16"
+              height="16"
+              loading="lazy"
+              decoding="async"
               className="w-2 h-2 object-contain shrink-0 opacity-80"
             />
             <span>Artesano Digital</span>
@@ -251,7 +259,7 @@ export default function ProductCard({
           {/* Sello de Taller & Envío Seguro estilo Mercado Libre */}
           <div className="text-[10px] text-emerald-700 font-bold flex items-center gap-1 pt-0.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
-            <span className="truncate">Taller SLP Â· Envío Seguro</span>
+            <span className="truncate">Taller SLP · Envío Seguro</span>
           </div>
         </div>
       </div>

@@ -11,7 +11,7 @@ export default function BrandLogo({
   iconOnly = false 
 }) {
   const basePath = './brand/';
-  const iconSrc = `${basePath}artesano_isotipo_transparente.png`;
+  const iconSrc = `${basePath}artesano_isotipo_transparente-128.webp`;
 
   if (iconOnly) {
     return (
@@ -21,6 +21,7 @@ export default function BrandLogo({
           alt="Artesano Digital"
           className="h-9 w-auto object-contain drop-shadow-sm"
           loading="eager"
+          decoding="async"
           onError={(e) => {
             if (!e.currentTarget.dataset.fallback) {
               e.currentTarget.dataset.fallback = '1';

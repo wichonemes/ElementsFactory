@@ -167,9 +167,9 @@ export default function PackagesAdminSection({
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
           {[
             { id: 'all', label: 'Todos los Paquetes', count: allBundles.length },
-            { id: 'hogar', label: 'ðŸ¡ Hogar', count: allBundles.filter(b => b.worlds?.includes('hogar')).length },
-            { id: 'negocios', label: 'ðŸ’¼ Negocios', count: allBundles.filter(b => b.worlds?.includes('negocios')).length },
-            { id: 'eventos', label: 'ðŸŽ‰ Eventos', count: allBundles.filter(b => b.worlds?.includes('eventos')).length }
+            { id: 'hogar', label: '🏡 Hogar', count: allBundles.filter(b => b.worlds?.includes('hogar')).length },
+            { id: 'negocios', label: '💼 Negocios', count: allBundles.filter(b => b.worlds?.includes('negocios')).length },
+            { id: 'eventos', label: '🎉 Eventos', count: allBundles.filter(b => b.worlds?.includes('eventos')).length }
           ].map(tab => (
             <button
               key={tab.id}
@@ -238,7 +238,7 @@ export default function PackagesAdminSection({
                   <div className="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-stone-950 px-3.5 py-1 text-[11px] font-black uppercase tracking-wider flex items-center justify-between shadow-2xs">
                     <div className="flex items-center gap-1.5">
                       <Crown className="w-3.5 h-3.5 fill-stone-950 text-stone-950" />
-                      <span>ðŸ‘‘ Paquete Estrella del Mes</span>
+                      <span>👑 Paquete Estrella del Mes</span>
                     </div>
                     <span className="text-[10px] bg-stone-950 text-amber-300 px-2 py-0.2 rounded-full font-bold">
                       Activo
@@ -301,7 +301,7 @@ export default function PackagesAdminSection({
                       <ul className="space-y-0.5 text-gray-600 text-[11px]">
                         {p.includedItems.slice(0, 3).map((item, i) => (
                           <li key={i} className="flex items-start gap-1 truncate">
-                            <span className="text-[#2D4F3E] font-black leading-none">â€¢</span>
+                            <span className="text-[#2D4F3E] font-black leading-none">•</span>
                             <span className="truncate">{item}</span>
                           </li>
                         ))}
@@ -319,8 +319,8 @@ export default function PackagesAdminSection({
                     <span className="font-bold">Opciones de nivel:</span>
                     <div className="flex items-center gap-1.5 font-mono font-bold text-gray-700">
                       <span className="bg-stone-100 text-stone-700 px-1.5 py-0.2 rounded border border-stone-200">Base: ${tiers[0]?.price || p.price}</span>
-                      <span className="bg-emerald-50 text-emerald-800 px-1.5 py-0.2 rounded border border-emerald-200">â˜… Pro: ${tiers[1]?.price || p.price}</span>
-                      <span className="bg-amber-50 text-amber-900 px-1.5 py-0.2 rounded border border-amber-200">â­ VIP: ${tiers[2]?.price || Math.round(p.price * 1.35)}</span>
+                      <span className="bg-emerald-50 text-emerald-800 px-1.5 py-0.2 rounded border border-emerald-200">★ Pro: ${tiers[1]?.price || p.price}</span>
+                      <span className="bg-amber-50 text-amber-900 px-1.5 py-0.2 rounded border border-amber-200">⭐ VIP: ${tiers[2]?.price || Math.round(p.price * 1.35)}</span>
                     </div>
                   </div>
 

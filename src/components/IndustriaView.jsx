@@ -97,7 +97,7 @@ export default function IndustriaView({
       materialName: 'PETG Técnico',
       tag: 'Mecánico & Refacciones',
       colors: [
-        { name: 'Negro Ã“nix Mate', desc: 'Acabado antirreflejo para carcasas y componentes mecánicos', finish: 'Satinado Técnico' },
+        { name: 'Negro Ónix Mate', desc: 'Acabado antirreflejo para carcasas y componentes mecánicos', finish: 'Satinado Técnico' },
         { name: 'Negro Carbón', desc: 'Negro profundo de alta resistencia química y al desgaste', finish: 'Brillante Mecánico' },
         { name: 'Blanco Puro', desc: 'Ductos de aire e interiores limpios de maquinaria', finish: 'Sólido' },
         { name: 'Blanco Marfil', desc: 'Tono neutro cálido para inspección visual de ensambles', finish: 'Sólido Técnico' },
@@ -119,7 +119,7 @@ export default function IndustriaView({
       materialName: 'TPU 95A Elastómero',
       tag: 'Flexible & Antirrayón',
       colors: [
-        { name: 'Negro Ã“nix Mate', desc: 'Aspecto de caucho vulcanizado para amortiguadores', finish: 'Goma Flexible' },
+        { name: 'Negro Ónix Mate', desc: 'Aspecto de caucho vulcanizado para amortiguadores', finish: 'Goma Flexible' },
         { name: 'Negro Carbón', desc: 'Protecciones de impacto para esquinas y fixtures', finish: 'Goma Densa' },
         { name: 'Blanco Puro', desc: 'Topes y ventosas limpias que no manchan piezas de vista', finish: 'Goma Limpia' },
         { name: 'Gris Plomo Titán', desc: 'Apoyos y bases elásticas para estaciones de ensamble', finish: 'Amortiguador' },
@@ -135,7 +135,7 @@ export default function IndustriaView({
       materialName: 'PLA+ Pro Alta Rigidez',
       tag: 'Prototipos & Pruebas DFM',
       colors: [
-        { name: 'Negro Ã“nix Mate', desc: 'Máxima definición geométrica y comprobación de holguras', finish: 'Ultra Precisión' },
+        { name: 'Negro Ónix Mate', desc: 'Máxima definición geométrica y comprobación de holguras', finish: 'Ultra Precisión' },
         { name: 'Negro Carbón', desc: 'Alta rigidez para ensambles mecánicos de prueba', finish: 'Sólido' },
         { name: 'Blanco Puro', desc: 'Excelente contraste para revisión de cotas y maquetas', finish: 'Mate Puro' },
         { name: 'Blanco Marfil', desc: 'Verificación de ensambles con tornillería y roscas', finish: 'Satinado' },
@@ -157,7 +157,7 @@ export default function IndustriaView({
       materialName: 'ABS / ASA Industrial',
       tag: 'Resistencia Térmica & UV',
       colors: [
-        { name: 'Negro Ã“nix Mate', desc: 'Protección UV exterior y resistencia a temperatura continua', finish: 'Térmico Exterior' },
+        { name: 'Negro Ónix Mate', desc: 'Protección UV exterior y resistencia a temperatura continua', finish: 'Térmico Exterior' },
         { name: 'Negro Carbón', desc: 'Chasis robustos y carcasas de protección eléctrica', finish: 'Industrial' },
         { name: 'Blanco Puro', desc: 'Reflexión solar y baja absorción de calor en intemperie', finish: 'Intemperie Solar' },
         { name: 'Gris Plomo Titán', desc: 'Reemplazos técnicos y cubiertas de bombas o motores', finish: 'Industrial' },
@@ -180,7 +180,7 @@ export default function IndustriaView({
     whatsapp: '',
     aplicacion: 'Prototipos funcionales (desde 24 a 72 hrs)',
     material: 'PETG Técnico (Tenaz)',
-    colorSeleccionado: 'Negro Ã“nix Mate (Estándar)',
+    colorSeleccionado: 'Negro Ónix Mate (Estándar)',
     cantidad: '1',
     urgencia: 'Desde 24 a 72 hrs',
     detalles: '',
@@ -204,26 +204,26 @@ export default function IndustriaView({
   const handleSubmitWhatsApp = (e) => {
     if (e) e.preventDefault();
     
-    const text = `ðŸ­ *ORDEN TÃ‰CNICA DE COTIZACIÃ“N INDUSTRIAL Â· ARTESANO DIGITAL*
-â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
-ðŸ‘¤ *Contacto:* ${formData.nombre || 'No especificado'}
-ðŸ¢ *Empresa / Planta:* ${formData.empresa || 'Particular / Taller'}
-ðŸ“§ *Correo Corporativo:* ${formData.correo || 'Pendiente'}
-ðŸ“± *Tel/WhatsApp:* ${formData.whatsapp || 'Mismo número'}
+    const text = `🏭 *ORDEN TÉCNICA DE COTIZACIÓN INDUSTRIAL · ARTESANO DIGITAL*
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+👤 *Contacto:* ${formData.nombre || 'No especificado'}
+🏢 *Empresa / Planta:* ${formData.empresa || 'Particular / Taller'}
+📧 *Correo Corporativo:* ${formData.correo || 'Pendiente'}
+📱 *Tel/WhatsApp:* ${formData.whatsapp || 'Mismo número'}
 
-âš™ï¸ *PARÁMETROS DE MANUFACTURA:*
-â€¢ *Aplicación:* ${formData.aplicacion}
-â€¢ *Polímero sugerido:* ${formData.material}
-â€¢ *Color / Acabado:* ${formData.colorSeleccionado || 'Negro Ã“nix Mate (Estándar)'}
-â€¢ *Cantidad:* ${formData.cantidad} pieza(s)
-â€¢ *Tiempo de entrega:* ${formData.urgencia}
-â€¢ *Archivo 3D:* ${formData.archivoNombre ? `Archivo: ${formData.archivoNombre}` : 'Archivo digital por WhatsApp'}
-â€¢ *Convenio NDA:* ${formData.requiereNda ? 'SÍ (Requiero firma previa de confidencialidad)' : 'No necesario'}
+⚙️ *PARÁMETROS DE MANUFACTURA:*
+• *Aplicación:* ${formData.aplicacion}
+• *Polímero sugerido:* ${formData.material}
+• *Color / Acabado:* ${formData.colorSeleccionado || 'Negro Ónix Mate (Estándar)'}
+• *Cantidad:* ${formData.cantidad} pieza(s)
+• *Tiempo de entrega:* ${formData.urgencia}
+• *Archivo 3D:* ${formData.archivoNombre ? `Archivo: ${formData.archivoNombre}` : 'Archivo digital por WhatsApp'}
+• *Convenio NDA:* ${formData.requiereNda ? 'SÍ (Requiero firma previa de confidencialidad)' : 'No necesario'}
 
-ðŸ“ *Requerimientos funcionales / Notas:*
+📝 *Requerimientos funcionales / Notas:*
 ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción.'}
-â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
-ðŸ“ *San Luis Potosí, S.L.P. Â· Entrega local en planta*`;
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📍 *San Luis Potosí, S.L.P. · Entrega local en planta*`;
 
     const url = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
@@ -235,48 +235,48 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
     petg: {
       id: 'petg',
       name: 'PETG Técnico Industrial',
-      tag: 'USO MECÁNICO GENERAL Â· ALTA TENACIDAD',
-      temp: '75Â°C - 80Â°C',
+      tag: 'USO MECÁNICO GENERAL · ALTA TENACIDAD',
+      temp: '75°C - 80°C',
       impact: 'Alto (Tenaz sin fractura frágil)',
       chemical: 'Resistente a lubricantes, agua y alcoholes',
       tensile: '50 MPa',
-      density: '1.27 g/cmÂ³',
+      density: '1.27 g/cm³',
       summary: 'El caballo de batalla del taller. Excelente unión interlaminar, alta durabilidad y absorción de impacto sin romperse. Producido con máxima precisión dimensional para refacciones y piezas mecánicas.',
       apps: ['Guardas de seguridad de maquinaria', 'Ductos de aire y ventilación', 'Cajas de componentes electrónicos', 'Soportes de montaje y fijación']
     },
     tpu: {
       id: 'tpu',
       name: 'TPU 95A Poliuretano Elastómero',
-      tag: 'AMORTIGUACIÃ“N & IMPACTO Â· FLEXIBLE',
-      temp: '85Â°C',
+      tag: 'AMORTIGUACIÓN & IMPACTO · FLEXIBLE',
+      temp: '85°C',
       impact: 'Ultra Alto (Elastomérico indestructible)',
       chemical: 'Excelente contra aceites minerales y grasas',
       tensile: '35 MPa (Elongación >450%)',
-      density: '1.21 g/cmÂ³',
+      density: '1.21 g/cm³',
       summary: 'Caucho técnico con memoria de forma y altísima resistencia al desgarro. No marca ni raya superficies pulidas o pintadas en línea de ensamble.',
       apps: ['Topes de final de carrera', 'Nidos para piezas delicadas / sin rayones', 'Sellos, empaques y juntas', 'Mordazas flexibles de sujeción']
     },
     plaplus: {
       id: 'plaplus',
       name: 'PLA+ Pro Alta Rigidez',
-      tag: 'VALIDACIÃ“N DIMENSIONAL RÁPIDA Â· ALTA PRECISIÃ“N',
-      temp: '60Â°C',
+      tag: 'VALIDACIÓN DIMENSIONAL RÁPIDA · ALTA PRECISIÓN',
+      temp: '60°C',
       impact: 'Medio-Alto (Rígido)',
       chemical: 'Estable en ambientes secos de oficina o ensamble',
       tensile: '55 MPa (Módulo de alta rigidez)',
-      density: '1.24 g/cmÂ³',
+      density: '1.24 g/cm³',
       summary: 'Máxima precisión geométrica y definición de aristas para comprobaciones de holgura, pruebas de ensamble con tornillos y prototipos entregados en 24 a 72 horas.',
       apps: ['Maquetas de ensamble rápido', 'Galgas de comprobación visual', 'Modelos ergonómicos de prueba', 'Piezas de ajuste pre-mecanizado']
     },
     abs: {
       id: 'abs',
       name: 'ABS / ASA Industrial',
-      tag: 'CABINA CERRADA AISLADA Â· TÃ‰RMICO',
-      temp: '90Â°C - 95Â°C',
+      tag: 'CABINA CERRADA AISLADA · TÉRMICO',
+      temp: '90°C - 95°C',
       impact: 'Alto con ductilidad térmica',
       chemical: 'Resistencia a intemperie UV (ASA) y calor',
       tensile: '42 MPa',
-      density: '1.06 g/cmÂ³',
+      density: '1.06 g/cm³',
       summary: 'Procesado en cabina cerrada para retener temperatura y evitar corrientes de aire. Recomendado para piezas de tamaño pequeño a mediano con requerimientos de calor o intemperie.',
       apps: ['Gabinetes y carcasas para intemperie', 'Refacciones bajo temperatura', 'Plantillas de verificación térmica', 'Piezas sometidas a calor moderado']
     }
@@ -332,7 +332,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                     <span>NDA DISPONIBLE</span>
                   </span>
                   <span className="text-[#5BB8FF] text-[8.5px] sm:text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#5BB8FF]/10 border border-[#5BB8FF]/20">
-                    Â±0.15 mm
+                    ±0.15 mm
                   </span>
                 </div>
               </div>
@@ -409,7 +409,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 <div className="h-4 w-px bg-white/10" />
                 <div>
                   <span className="block text-[7.5px] uppercase text-gray-500">Tolerancia</span>
-                  <strong className="text-[#8FB99B]">Â±0.15 mm</strong>
+                  <strong className="text-[#8FB99B]">±0.15 mm</strong>
                 </div>
                 <div className="h-4 w-px bg-white/10" />
                 <div>
@@ -427,7 +427,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          3. SECCIÃ“N 01: 4 SOLUCIONES (2X2 EN MÃ“VIL, 4 EN FILA EN PC)
+          3. SECCIÓN 01: 4 SOLUCIONES (2X2 EN MÓVIL, 4 EN FILA EN PC)
           ======================================================== */}
       <section id="soluciones-industriales" className="py-7 sm:py-14 border-b border-white/10 bg-[#0E1317]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -480,14 +480,14 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 bgActive: 'bg-[#5BB8FF]/10',
                 textAccent: 'text-[#5BB8FF]',
                 btnBg: 'bg-[#5BB8FF]',
-                tag: 'VALIDACIÃ“N RÁPIDA Â· DESDE 24 A 72 HRS',
+                tag: 'VALIDACIÓN RÁPIDA · DESDE 24 A 72 HRS',
                 badge: 'Formatos .step / .stl',
                 bgImage: protoBg.url,
                 showPhoto: protoBg.enabled,
                 shortDesc: 'Validación rápida de cotas, holguras y ensamble desde archivo 3D.',
                 desc: 'Prueba ajustes, interferencias de ensamble y holguras imprimiendo directamente tu archivo 3D antes de mandar a fabricar en serie o invertir en moldes.',
                 specs: [
-                  { label: 'Tolerancia', val: 'Â±0.15 mm en cotas críticas' },
+                  { label: 'Tolerancia', val: '±0.15 mm en cotas críticas' },
                   { label: 'Materiales', val: 'PETG Técnico y PLA+ Pro' },
                   { label: 'Entrega', val: 'Desde 24 a 72 horas' },
                   { label: 'Formatos CAD', val: 'STEP, STL, IGES, SLDPRT' }
@@ -510,7 +510,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 bgActive: 'bg-[#8FB99B]/10',
                 textAccent: 'text-[#8FB99B]',
                 btnBg: 'bg-[#8FB99B]',
-                tag: 'LÍNEA DE PRODUCCIÃ“N & ENSAMBLE',
+                tag: 'LÍNEA DE PRODUCCIÓN & ENSAMBLE',
                 badge: 'Ajuste fiel a cota',
                 bgImage: jigBg.url,
                 showPhoto: jigBg.enabled,
@@ -540,7 +540,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 bgActive: 'bg-amber-400/10',
                 textAccent: 'text-amber-400',
                 btnBg: 'bg-amber-400',
-                tag: 'SUSTITUCIÃ“N DIRECTA SIN MOLDES',
+                tag: 'SUSTITUCIÓN DIRECTA SIN MOLDES',
                 badge: 'Desde 1 sola pieza',
                 bgImage: spareBg.url,
                 showPhoto: spareBg.enabled,
@@ -706,7 +706,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                           </div>
                           <div>
                             <span className={`font-mono text-[9px] sm:text-[10px] uppercase tracking-wider block font-bold ${curApp.textAccent}`}>
-                              {curApp.code} Â· {curApp.tag}
+                              {curApp.code} · {curApp.tag}
                             </span>
                             <h4 className="text-base sm:text-xl font-bold text-white">
                               {curApp.title}
@@ -724,7 +724,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                             className="p-1 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 text-xs cursor-pointer"
                             title="Cerrar detalle"
                           >
-                            âœ•
+                            ✕
                           </button>
                         </div>
                       </div>
@@ -774,7 +774,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          4. SECCIÃ“N 02: MATERIALES TÃ‰CNICOS DINÁMICOS
+          4. SECCIÓN 02: MATERIALES TÉCNICOS DINÁMICOS
           ======================================================== */}
       <section id="materiales-taller" className="py-7 sm:py-14 border-b border-white/10 bg-[#0A0E11]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -868,7 +868,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                         className="p-1 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 text-xs cursor-pointer"
                         title="Cerrar especificaciones"
                       >
-                        âœ•
+                        ✕
                       </button>
                     </div>
                   </div>
@@ -916,7 +916,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          5. SECCIÃ“N 03: CÃ“MO TRABAJAMOS (PROCESO ÁGIL)
+          5. SECCIÓN 03: CÓMO TRABAJAMOS (PROCESO ÁGIL)
           ======================================================== */}
       <section id="proceso-industria" className="py-7 sm:py-14 border-b border-white/10 bg-[#0E1317]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -1001,7 +1001,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          6. SECCIÃ“N 04: SECTORES INDUSTRIALES
+          6. SECCIÓN 04: SECTORES INDUSTRIALES
           ======================================================== */}
       <section className="py-8 sm:py-12 border-b border-white/10 bg-[#0E1317]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -1046,7 +1046,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          7. SECCIÃ“N 05: INFORMACIÃ“N CLAVE (2X2 EN MÃ“VIL, 4 EN FILA EN PC)
+          7. SECCIÓN 05: INFORMACIÓN CLAVE (2X2 EN MÓVIL, 4 EN FILA EN PC)
           ======================================================== */}
       <section id="info-clave-industria" className="py-7 sm:py-14 border-b border-white/10 bg-[#0A0E11]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -1225,7 +1225,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                             className="p-1 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 text-xs cursor-pointer"
                             title="Ocultar detalle"
                           >
-                            âœ•
+                            ✕
                           </button>
                         </div>
                       </div>
@@ -1253,7 +1253,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          8. SECCIÃ“N 06: TERMINAL DE COTIZACIÃ“N INDUSTRIAL B2B
+          8. SECCIÓN 06: TERMINAL DE COTIZACIÓN INDUSTRIAL B2B
           ======================================================== */}
       <section id="cotizar-industria" className="py-8 sm:py-16 bg-[#0E1317]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
@@ -1261,7 +1261,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
           <div className="p-4 sm:p-10 rounded-2xl border border-white/15 bg-[#12181C] shadow-2xl space-y-5 sm:space-y-7 relative overflow-hidden">
             <div className="absolute top-0 right-0 p-5 font-mono text-[9px] text-[#5BB8FF] opacity-60 hidden sm:flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#5BB8FF] animate-pulse" />
-              <span>TERMINAL // COTIZACIÃ“N DIRECTA B2B</span>
+              <span>TERMINAL // COTIZACIÓN DIRECTA B2B</span>
             </div>
 
             <div className="max-w-2xl">
@@ -1404,7 +1404,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                   className="text-[#5BB8FF] hover:underline font-bold text-[11px] flex items-center gap-1 cursor-pointer"
                 >
                   <Palette className="w-3.5 h-3.5" />
-                  <span>Ver catálogo de colores abajo â†“</span>
+                  <span>Ver catálogo de colores abajo ↓</span>
                 </a>
               </div>
 
@@ -1468,7 +1468,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
 
       
       {/* ========================================================
-          7. PESTAÃ‘A / DRAWER: CARTA TÃ‰CNICA DE ACABADOS (UX MOBILE-FIRST)
+          7. PESTAÑA / DRAWER: CARTA TÉCNICA DE ACABADOS (UX MOBILE-FIRST)
           ======================================================== */}
       <section id="consulta-colores-industria" className="py-6 sm:py-10 bg-[#0A0E11] border-t border-white/10">
         <div className="max-w-4xl mx-auto px-3 sm:px-6">
@@ -1671,7 +1671,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                           href="#cotizar-industria"
                           className="text-[11px] text-[#5BB8FF] hover:underline font-mono inline-flex items-center gap-1 shrink-0 font-bold"
                         >
-                          <span>Subir al formulario â†‘</span>
+                          <span>Subir al formulario ↑</span>
                         </a>
                       </div>
                     </div>
@@ -1690,7 +1690,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          8. SECCIÃ“N: COMPARTIR ESTE PORTAL CON EQUIPOS INDUSTRIALES / PLANTAS
+          8. SECCIÓN: COMPARTIR ESTE PORTAL CON EQUIPOS INDUSTRIALES / PLANTAS
           ======================================================== */}
       <section className="py-8 sm:py-14 border-t border-white/10 bg-gradient-to-b from-[#0A0E11] via-[#10171D] to-[#0A0E11]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
@@ -1722,7 +1722,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 <div className="space-y-1 min-w-0 w-full sm:w-auto">
                   <div className="flex items-center gap-1.5 text-[#5BB8FF] text-[9.5px] font-bold">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#5BB8FF]" />
-                    <span>ARTESANO DIGITAL Â· INDUSTRIA</span>
+                    <span>ARTESANO DIGITAL · INDUSTRIA</span>
                   </div>
                   <div className="text-white font-sans font-semibold text-xs sm:text-sm truncate">
                     Servicio de Impresión 3D Técnica y Refacciones
@@ -1733,7 +1733,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 </div>
 
                 <span className="px-2.5 py-1 rounded bg-[#8FB99B]/15 text-[#8FB99B] border border-[#8FB99B]/30 text-[9.5px] shrink-0 font-bold self-start sm:self-auto">
-                  NDA Confidencial Â· Sin Mínimos
+                  NDA Confidencial · Sin Mínimos
                 </span>
               </div>
 
@@ -1796,7 +1796,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
               {/* Mensaje de cortesía para equipos de planta */}
               <div className="text-[10px] sm:text-[10.5px] text-gray-400 font-mono text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-1 pt-2 border-t border-white/5">
                 <span>Atención directa y confidencial para parques industriales y talleres mecánicos.</span>
-                <span className="text-[#8FB99B] font-bold">San Luis Potosí Â· Envíos nacionales</span>
+                <span className="text-[#8FB99B] font-bold">San Luis Potosí · Envíos nacionales</span>
               </div>
 
             </div>
@@ -1805,12 +1805,12 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
       </section>
 
       {/* ========================================================
-          9. SECCIÃ“N: REGRESO A LA TIENDA PRINCIPAL
+          9. SECCIÓN: REGRESO A LA TIENDA PRINCIPAL
           ======================================================== */}
       <section className="py-12 border-t border-white/10 bg-[#0A0E11] text-center">
         <div className="max-w-3xl mx-auto px-4 space-y-3">
           <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#5BB8FF]">
-            Artesano Digital Â· Catálogo General
+            Artesano Digital · Catálogo General
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-white">
             ¿Buscas artículos de regalo o decoración?
@@ -1832,8 +1832,8 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
 
       {/* Footer */}
       <footer className="max-w-7xl mx-auto px-4 sm:px-6 py-8 border-t border-white/5 text-center font-mono text-[11px] text-gray-500 space-y-1">
-        <div><strong>Artesano Digital Â· Manufactura Aditiva & Prototipado</strong> Â· San Luis Potosí, S.L.P.</div>
-        <div className="text-[10px] text-gray-600">Prototipos funcionales Â· Utillaje & Jigs Â· Refacciones Â· Preseries B2B</div>
+        <div><strong>Artesano Digital · Manufactura Aditiva & Prototipado</strong> · San Luis Potosí, S.L.P.</div>
+        <div className="text-[10px] text-gray-600">Prototipos funcionales · Utillaje & Jigs · Refacciones · Preseries B2B</div>
       </footer>
 
     </div>

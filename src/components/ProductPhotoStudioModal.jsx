@@ -31,7 +31,7 @@ const SLOT_CONFIG = [
     index: 3,
     slotName: 'Tamaño y Medidas',
     number: '4',
-    description: 'Cotas en español con dimensiones técnicas y tarjeta de referencia de escala (8.6 Ã— 5.4 cm).',
+    description: 'Cotas en español con dimensiones técnicas y tarjeta de referencia de escala (8.6 × 5.4 cm).',
     badgeColor: 'bg-amber-900/60 text-amber-300 border-amber-700/50'
   }
 ];
@@ -277,7 +277,7 @@ export default function ProductPhotoStudioModal({
 
       const data = await res.json();
       setGenerationProgress(100);
-      setGenerationStep('¡Las 4 imágenes han sido creadas con éxito en 1000 Ã— 1000 WebP!');
+      setGenerationStep('¡Las 4 imágenes han sido creadas con éxito en 1000 × 1000 WebP!');
       setGeneratedGallery(data.gallery);
       setHasUnsavedChanges(true);
       setStaleSlots({ 0: false, 2: false, 3: false });
@@ -497,11 +497,11 @@ export default function ProductPhotoStudioModal({
                   Estudio Fotográfico de Catálogo (4 Tomas IA)
                 </h2>
                 <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-950/80 border border-emerald-600/50 text-emerald-300">
-                  <Sparkles className="w-3 h-3" /> Sharp Nativo Â· $0.00 MXN
+                  <Sparkles className="w-3 h-3" /> Sharp Nativo · $0.00 MXN
                 </span>
               </div>
               <p className="text-xs text-slate-400">
-                1 a 4 fotos de referencia (celular o PC) â†’ 4 tomas profesionales de catálogo en 1000 Ã— 1000 WebP
+                1 a 4 fotos de referencia (celular o PC) → 4 tomas profesionales de catálogo en 1000 × 1000 WebP
               </p>
             </div>
           </div>
@@ -566,7 +566,7 @@ export default function ProductPhotoStudioModal({
                   onChange={(e) => setSelectedProductId(e.target.value)}
                   className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500 transition"
                 >
-                  <option value="new">âž• Nuevo Producto en Creación (Borrador)</option>
+                  <option value="new">➕ Nuevo Producto en Creación (Borrador)</option>
                   {products.map(p => (
                     <option key={p.id} value={p.id}>
                       {p.name} ({p.sku || p.code || 'Sin SKU'}) - ${p.price?.toLocaleString('es-MX')} MXN
@@ -624,7 +624,7 @@ export default function ProductPhotoStudioModal({
                     type="text"
                     value={dimensions}
                     onChange={(e) => setDimensions(e.target.value)}
-                    placeholder="Ej. 22 Ã— 14 Ã— 3.5 cm"
+                    placeholder="Ej. 22 × 14 × 3.5 cm"
                     className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500"
                   />
                   <span className="text-[10px] text-slate-500">Cotas numéricas y escala</span>
@@ -675,7 +675,7 @@ export default function ProductPhotoStudioModal({
                 </p>
               </div>
               <span className="text-[11px] font-bold text-amber-300 bg-amber-950/60 border border-amber-800/70 px-2.5 py-1 rounded-lg shrink-0 self-start sm:self-auto">
-                ðŸ“± Toma foto directa con cámara o sube desde galería
+                📱 Toma foto directa con cámara o sube desde galería
               </span>
             </div>
 
@@ -747,7 +747,7 @@ export default function ProductPhotoStudioModal({
                         <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded border ${
                           hasPhoto ? 'bg-emerald-950 text-emerald-300 border-emerald-700' : angle.badgeColor
                         }`}>
-                          {hasPhoto ? 'âœ“ Lista' : angle.badge}
+                          {hasPhoto ? '✓ Lista' : angle.badge}
                         </span>
                       </div>
 
@@ -837,11 +837,11 @@ export default function ProductPhotoStudioModal({
                     <Sparkles className="w-4 h-4" /> Flujo Oficial de Fabricación en 4 Tomas
                   </span>
                   <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 font-bold">
-                    Orden: 2 â†’ 3 â†’ 1 â†’ 4
+                    Orden: 2 → 3 → 1 → 4
                   </span>
                 </div>
                 <p className="text-xs text-slate-400">
-                  Crea las 4 tomas profesionales listas para catálogo: En Contexto, Fondo Blanco #FFFFFF, Detalle Macro y Medidas con tarjeta de escala (8.6 Ã— 5.4 cm).
+                  Crea las 4 tomas profesionales listas para catálogo: En Contexto, Fondo Blanco #FFFFFF, Detalle Macro y Medidas con tarjeta de escala (8.6 × 5.4 cm).
                 </p>
                 {isGenerating && (
                   <div className="pt-2 space-y-1.5">
@@ -901,7 +901,7 @@ export default function ProductPhotoStudioModal({
 
               {hasUnsavedChanges && (
                 <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 animate-pulse">
-                  âš ï¸ Cambios pendientes de guardar
+                  ⚠️ Cambios pendientes de guardar
                 </span>
               )}
             </div>
@@ -962,7 +962,7 @@ export default function ProductPhotoStudioModal({
                             target="_blank"
                             rel="noopener noreferrer"
                             className="absolute top-2 right-2 p-1.5 bg-slate-900/80 hover:bg-slate-900 text-slate-300 hover:text-white rounded-lg border border-slate-700 opacity-0 group-hover:opacity-100 transition"
-                            title="Ver en tamaño completo (1000 Ã— 1000)"
+                            title="Ver en tamaño completo (1000 × 1000)"
                           >
                             <Eye className="w-3.5 h-3.5" />
                           </a>
@@ -1175,7 +1175,7 @@ export default function ProductPhotoStudioModal({
                   Proveedor Externo Opcional: {aiConfig?.externalAi?.provider || 'Google Gemini / Imagen 3'}
                 </div>
                 <p className="text-slate-400">
-                  <strong>Estado:</strong> {aiConfig?.externalAi?.available ? 'âœ… Conectado' : 'âšª No configurado (No necesario)'}
+                  <strong>Estado:</strong> {aiConfig?.externalAi?.available ? '✅ Conectado' : '⚪ No configurado (No necesario)'}
                 </p>
                 <p className="text-slate-400">
                   <strong>Costo estimado si se activa:</strong> {aiConfig?.externalAi?.estimatedCost || '~$0.03 USD (~$0.60 MXN) por imagen generada'}

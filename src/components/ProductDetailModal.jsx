@@ -10,6 +10,7 @@ import TemuUrgencyModule from './TemuUrgencyModule';
 import WorkshopArcadeModal from './WorkshopArcadeModal';
 import { useArcadeSession } from '../hooks/useArcadeSession';
 import { formatServiceDate } from '../utils/serviceStatus';
+import { getOptimizedSrcSet, PRODUCT_CARD_SIZES, HERO_IMAGE_SIZES } from '../utils/imageOptimization';
 import {
   getFilamentColor,
   isDarkColor,
@@ -448,8 +449,12 @@ export default function ProductDetailModal({
                 {/* Active Main Image con Protección Anti-Piratería */}
                 <img
                   src={activeImage}
+                  srcSet={getOptimizedSrcSet(activeImage)}
+                  sizes={HERO_IMAGE_SIZES}
                   alt={`${product.name} - ${currentMeta.label}`}
                   draggable={false}
+                  loading="eager"
+                  decoding="async"
                   onDragStart={(e) => e.preventDefault()}
                   onContextMenu={(e) => e.preventDefault()}
                   className={`w-full h-full transition-all duration-300 select-none ${
@@ -463,8 +468,12 @@ export default function ProductDetailModal({
                 {/* Marca de Agua Sutil de Taller para Protección de Imagen con Logotipo Oficial */}
                 <div className="absolute bottom-2.5 right-2.5 z-10 flex items-center gap-1 px-2 py-[2.5px] rounded-full bg-black/20 backdrop-blur-2xs text-[7.5px] font-medium text-white/70 pointer-events-none select-none tracking-tight border border-white/5 shadow-2xs">
                   <img
-                    src="./brand/artesano_isotipo_transparente.png"
+                    src="./brand/artesano_isotipo_transparente-64.webp"
                     alt=""
+                    width="20"
+                    height="20"
+                    loading="lazy"
+                    decoding="async"
                     className="w-2.5 h-2.5 object-contain shrink-0 opacity-80"
                   />
                   <span>Artesano Digital</span>
@@ -548,8 +557,12 @@ export default function ProductDetailModal({
                         >
                           <img
                             src={imgUrl}
+                            srcSet={getOptimizedSrcSet(imgUrl)}
+                            sizes="120px"
                             alt=""
                             draggable={false}
+                            loading="lazy"
+                            decoding="async"
                             onDragStart={(e) => e.preventDefault()}
                             onContextMenu={(e) => e.preventDefault()}
                             className={`w-full h-full select-none pointer-events-none ${idx === 0 ? 'object-cover' : 'object-contain p-1'}`}
@@ -1608,9 +1621,12 @@ export default function ProductDetailModal({
                       <div className="aspect-square rounded-xl overflow-hidden bg-gray-50 border border-gray-100 mb-2.5">
                         <img
                           src={rel.primaryImage}
+                          srcSet={getOptimizedSrcSet(rel.primaryImage)}
+                          sizes={PRODUCT_CARD_SIZES}
                           alt={rel.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           loading="lazy"
+                          decoding="async"
                         />
                       </div>
                       <div className="flex items-center justify-between gap-1">

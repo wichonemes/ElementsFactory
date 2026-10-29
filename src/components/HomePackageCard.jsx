@@ -1,5 +1,6 @@
 ﻿import React from 'react';
 import { Plus, CheckCircle2, Percent, Layers, Sparkles } from 'lucide-react';
+import { getOptimizedSrcSet, PRODUCT_CARD_SIZES } from '../utils/imageOptimization';
 
 export default function HomePackageCard({
   packageItem,
@@ -29,9 +30,13 @@ export default function HomePackageCard({
     >
       {/* 1. Imagen del Paquete */}
       <div className="relative h-48 sm:h-56 bg-[#FAF9F5] overflow-hidden flex items-center justify-center p-3 sm:p-4">
-        <img loading="lazy"
+        <img
           src={imageSrc}
+          srcSet={getOptimizedSrcSet(imageSrc)}
+          sizes={PRODUCT_CARD_SIZES}
           alt={packageItem.name}
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
           onError={(e) => {
             e.currentTarget.onerror = null;
@@ -66,9 +71,13 @@ export default function HomePackageCard({
 
           {/* Marca de agua */}
           <div className="flex items-center gap-1 px-1.5 py-[2px] rounded-full bg-black/20 backdrop-blur-2xs text-[7px] font-medium text-white/80 tracking-tight border border-white/5 shadow-2xs">
-            <img loading="lazy"
-              src="./brand/artesano_isotipo_transparente.png"
+            <img
+              src="./brand/artesano_isotipo_transparente-64.webp"
               alt=""
+              width="16"
+              height="16"
+              loading="lazy"
+              decoding="async"
               className="w-2 h-2 object-contain shrink-0 opacity-80"
             />
             <span>Artesano Digital</span>
@@ -85,7 +94,7 @@ export default function HomePackageCard({
 
           <div className="flex items-center gap-1 text-[10.5px] font-bold select-none">
             <span className="text-[#9E472A]">Personalizable</span>
-            <span className="text-gray-400 font-medium text-[10px]">Â· Con grabado o logo</span>
+            <span className="text-gray-400 font-medium text-[10px]">· Con grabado o logo</span>
           </div>
 
           {packageItem.shortDescription && (
@@ -98,7 +107,7 @@ export default function HomePackageCard({
           {included.length > 0 && (
             <div className="p-2 sm:p-2.5 rounded-xl bg-[#FAF9F5] border border-stone-200/70 space-y-1 mt-1">
               <span className="text-[9.5px] sm:text-[10px] font-black uppercase tracking-wider text-stone-400 block">
-                âœ¦ Incluye en este combo:
+                ✦ Incluye en este combo:
               </span>
               <ul className="space-y-0.5">
                 {included.map((item, idx) => (
@@ -150,7 +159,7 @@ export default function HomePackageCard({
 
           <div className="text-[10px] text-emerald-700 font-bold flex items-center gap-1 pt-0.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
-            <span className="truncate">Taller SLP Â· Envío Seguro</span>
+            <span className="truncate">Taller SLP · Envío Seguro</span>
           </div>
         </div>
       </div>

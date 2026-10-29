@@ -226,14 +226,14 @@ export default function ProductWorkshopTab({
     const nextComponents = nextItems.filter(item => item.supplyType === 'component');
     const nextComponentNames = new Set(nextComponents.map(item => String(item.name || '').trim()));
     const manualIncluded = (editorForm.includedItems || []).filter(text => {
-      const match = String(text || '').match(/^[\d.,]+\s*[Ã—x]\s*(.+)$/);
+      const match = String(text || '').match(/^[\d.,]+\s*[×x]\s*(.+)$/);
       if (!match) return true;
       const name = match[1].trim();
       return !previousComponentNames.has(name) && !nextComponentNames.has(name);
     });
     const componentLines = nextComponents.map(item => {
       const quantity = number(item.netQuantity, 1);
-      return `${quantity} Ã— ${item.name}`;
+      return `${quantity} × ${item.name}`;
     });
     const includedItems = [...manualIncluded, ...componentLines];
     setEditorForm(prev => ({
@@ -587,7 +587,7 @@ export default function ProductWorkshopTab({
             <option value="">Elegir producto costeado…</option>
             {linkedProducts.map(product => (
               <option key={product.id} value={product.id}>
-                {product.name} â€” {money(product.costPrice)} {product.isBundle ? '(combo)' : ''}
+                {product.name} — {money(product.costPrice)} {product.isBundle ? '(combo)' : ''}
               </option>
             ))}
           </select>
@@ -669,7 +669,7 @@ export default function ProductWorkshopTab({
                       <div className="flex flex-wrap gap-1.5">
                         <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-[10px] font-bold text-emerald-800">
                           <Factory className="w-3 h-3" />
-                          {linkedAreas.length > 0 ? linkedAreas.join(' Â· ') : 'Sin área activa'}
+                          {linkedAreas.length > 0 ? linkedAreas.join(' · ') : 'Sin área activa'}
                         </span>
                         {SUPPLY_GROUPS.filter(group => group.id !== 'component').map(group => {
                           const groupCount = linkedItems.filter(it => groupIdFor(it) === group.id).length;
@@ -703,7 +703,7 @@ export default function ProductWorkshopTab({
                               <div className="min-w-0 flex-1">
                                 <div className="text-[10.5px] font-bold text-gray-800 truncate">{linkedItem.name}</div>
                                 <div className="text-[9.5px] text-gray-500">
-                                  {number(linkedItem.totalQuantity)} {linkedItem.unit} Â· {group?.short}
+                                  {number(linkedItem.totalQuantity)} {linkedItem.unit} · {group?.short}
                                 </div>
                               </div>
                               <span className="text-[10px] font-mono font-bold text-stone-700">{money(linkedItem.totalCost)}</span>
@@ -836,7 +836,7 @@ export default function ProductWorkshopTab({
                 onChange={event => chooseMaterial(event.target.value)}
                 className="w-full mt-1.5 px-2.5 py-2 rounded-xl border border-stone-300 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-emerald-300"
               >
-                <option value="">â€” Elegir insumo del almacén â€”</option>
+                <option value="">— Elegir insumo del almacén —</option>
                 {materialsByCategory.map(([category, materials]) => (
                   <optgroup key={category} label={category}>
                     {materials.map(mat => (
@@ -900,7 +900,7 @@ export default function ProductWorkshopTab({
           {selectedMaterial && (
             <p className="text-[10px] text-emerald-800/80">
               <Info className="w-3 h-3 inline mr-1" />
-              {selectedMaterial.name}: paquete de {parsePackageInfo(selectedMaterial).packageQuantity} {parsePackageInfo(selectedMaterial).packageMeasurement} Â· costo ${number(selectedMaterial.costPerUnit).toFixed(2)}.
+              {selectedMaterial.name}: paquete de {parsePackageInfo(selectedMaterial).packageQuantity} {parsePackageInfo(selectedMaterial).packageMeasurement} · costo ${number(selectedMaterial.costPerUnit).toFixed(2)}.
               El costo unitario se calcula automáticamente.
             </p>
           )}
@@ -951,7 +951,7 @@ export default function ProductWorkshopTab({
                           <div className="min-w-0 flex-1">
                             <div className="text-[11px] font-bold text-gray-800 truncate" title={item.name}>{item.name}</div>
                             <div className="text-[9px] text-gray-500">
-                              {item.category || 'general'} {item.notes ? `Â· ${item.notes}` : ''}
+                              {item.category || 'general'} {item.notes ? `· ${item.notes}` : ''}
                             </div>
                           </div>
                           <div className={`text-[9px] font-mono font-black px-1.5 py-0.5 rounded border ${
@@ -1023,7 +1023,7 @@ export default function ProductWorkshopTab({
                               ))}
                             </select>
                             <span className="text-[9px] text-gray-400 ml-auto">
-                              Total {number(item.totalQuantity)} {item.unit} Ã— {money(item.unitCost)}
+                              Total {number(item.totalQuantity)} {item.unit} × {money(item.unitCost)}
                             </span>
                           </div>
                         )}

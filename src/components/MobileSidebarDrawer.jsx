@@ -224,7 +224,7 @@ export default function MobileSidebarDrawer({
             </button>
           </div>
 
-          {/* GRUPO: ATENCIÃ“N DIRECTA */}
+          {/* GRUPO: ATENCIÓN DIRECTA */}
           <div className="p-2 space-y-1">
             <div className="px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-gray-400">
               Atención Directa
@@ -270,7 +270,7 @@ export default function MobileSidebarDrawer({
             <Lock className="w-2 h-2 opacity-40" />
             <span className="text-[8.5px]">taller</span>
           </button>
-          <span className="text-gray-400 select-none">Artesano Digital Â· Hecho en México</span>
+          <span className="text-gray-400 select-none">Artesano Digital · Hecho en México</span>
         </div>
       </aside>
     </div>

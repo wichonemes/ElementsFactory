@@ -11,6 +11,7 @@
     "server": "node server/index.js",
     "start": "node server/index.js",
     "export:catalog": "node scripts/export_catalog_to_downloads.cjs",
+    "optimize:images": "node scripts/optimize_responsive_images.mjs",
     "test:hosting": "node --test tests/hosting.test.mjs"
   },
   "keywords": [],

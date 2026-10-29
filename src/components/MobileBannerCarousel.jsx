@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Sparkles, ChevronDown, ChevronUp, ArrowRight, Printer, Flame, Layers, Wand2 } from 'lucide-react';
+import { getOptimizedSrcSet, HERO_IMAGE_SIZES } from '../utils/imageOptimization';
 
 export default function MobileBannerCarousel({
   slides = [],
@@ -77,9 +78,13 @@ export default function MobileBannerCarousel({
         }}
       >
         {/* Imagen de fondo */}
-        <img loading="lazy"
+        <img
           src={activeSlide.image || './uploads/img_001.jpg'}
+          srcSet={getOptimizedSrcSet(activeSlide.image || './uploads/img_001.jpg')}
+          sizes={HERO_IMAGE_SIZES}
           alt={activeSlide.title || 'Artesano Digital'}
+          fetchPriority="high"
+          decoding="async"
           className="w-full h-full object-cover object-center transition-all duration-700 brightness-85"
         />
 
@@ -123,7 +128,7 @@ export default function MobileBannerCarousel({
         </div>
       </div>
 
-      {/* 2. Cortinilla Desplegable / Colapsable ("Conoce nuestro taller â–¾") */}
+      {/* 2. Cortinilla Desplegable / Colapsable ("Conoce nuestro taller ▾") */}
       <div className="rounded-xl border border-[#E8E4DA] bg-white overflow-hidden shadow-2xs">
         <button
           type="button"
@@ -132,7 +137,7 @@ export default function MobileBannerCarousel({
         >
           <span className="flex items-center gap-1.5 text-[#2D4F3E]">
             <Sparkles className="w-3.5 h-3.5 text-[#D4A359] shrink-0" />
-            <span>Si lo piensas, se hace Â· Taller de Manufactura SLP</span>
+            <span>Si lo piensas, se hace · Taller de Manufactura SLP</span>
           </span>
           <span className="flex items-center gap-1 text-[11px] text-gray-400 font-semibold">
             <span>{isCurtainOpen ? 'Ocultar' : 'Ver más'}</span>

@@ -1,5 +1,6 @@
 ﻿import React from 'react';
 import { Home, Briefcase, CalendarHeart, ArrowRight, Sparkles, Gamepad2, Cog, Gift, Layers } from 'lucide-react';
+import { getOptimizedSrcSet, PRODUCT_CARD_SIZES } from '../utils/imageOptimization';
 
 export default function WorldSelector({ worlds, activeWorld, onSelectWorld, categories }) {
   const worldIcons = {
@@ -49,9 +50,13 @@ export default function WorldSelector({ worlds, activeWorld, onSelectWorld, cate
             >
               {/* Portada Fotográfica */}
               <div className="relative h-60 sm:h-64 overflow-hidden bg-stone-100">
-                <img loading="lazy"
+                <img
                   src={world.image}
+                  srcSet={getOptimizedSrcSet(world.image)}
+                  sizes={PRODUCT_CARD_SIZES}
                   alt={world.name}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover object-center group-hover:scale-106 transition-transform duration-700"
                 />
                 

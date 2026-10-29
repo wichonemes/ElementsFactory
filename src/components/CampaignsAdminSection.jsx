@@ -29,7 +29,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     major: {
       title: 'Mega Arranque de Año Artesanal',
       subtitle: 'Inicia el año equipando tu casa o negocio con paquetes en madera noble y piezas 3D con hasta 15% de ahorro.',
-      badge: 'ðŸ”¥ MEGA ARRANQUE DE AÃ‘O',
+      badge: '🔥 MEGA ARRANQUE DE AÑO',
       discountText: '15% OFF',
       couponCode: 'ARRANQUE15',
       benefitText: 'Envío prioritario + Grabado de nombres gratis'
@@ -37,7 +37,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     mid: {
       title: 'Quincena de Reyes & Propósitos',
       subtitle: 'Detalles coordinados para regalar en Reyes con entrega express y 2X monedas para arcade.',
-      badge: 'âš¡ QUINCENA DE REYES',
+      badge: '⚡ QUINCENA DE REYES',
       discountText: '10% OFF',
       couponCode: 'REYES10',
       benefitText: '2X Monedas para el Arcade + 10% Directo'
@@ -49,7 +49,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     major: {
       title: 'Gran Bazar del Amor & la Amistad',
       subtitle: 'Paquetes coordinados para parejas y amigos: llaveros Polaroid, tazas mágicas y lámparas en madera cálida.',
-      badge: 'ðŸ’– ESPECIAL SAN VALENTÍN',
+      badge: '💖 ESPECIAL SAN VALENTÍN',
       discountText: '15% OFF',
       couponCode: 'AMOR15',
       benefitText: 'Caja de regalo kraft + Tarjeta con dedicatoria'
@@ -57,7 +57,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     mid: {
       title: 'Quincena Love Drop Sorpresa',
       subtitle: 'Kits express listos para regalar el 14 de febrero con grabado láser personalizado incluido.',
-      badge: 'âš¡ QUINCENA FLASH LOVE',
+      badge: '⚡ QUINCENA FLASH LOVE',
       discountText: '10% OFF',
       couponCode: 'LOVE10',
       benefitText: 'Grabado de nombres y fecha sin costo adicional'
@@ -69,7 +69,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     major: {
       title: 'Gran Expo Artesanal de Primavera',
       subtitle: 'Renueva tus espacios con organizadores botánicos, macetas estriadas en 3D y bandejas de taller.',
-      badge: 'ðŸŒ¸ EXPO PRIMAVERA',
+      badge: '🌸 EXPO PRIMAVERA',
       discountText: '15% OFF',
       couponCode: 'PRIMAVERA15',
       benefitText: 'Detalle botánico de taller incluido'
@@ -77,7 +77,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     mid: {
       title: 'Quincena de Espacios Frescos',
       subtitle: 'Paquetes para recibidor y home office con descuento quincenal inmediato.',
-      badge: 'âš¡ QUINCENA ESPACIOS',
+      badge: '⚡ QUINCENA ESPACIOS',
       discountText: '10% OFF',
       couponCode: 'HOGAR10',
       benefitText: '10% de ahorro directo en paquetes de hogar'
@@ -89,7 +89,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     major: {
       title: 'Festival del Día del Niño & Creatividad',
       subtitle: 'Kits familiares y figuras geométricas coleccionables en impresión 3D para consentir a los pequeños.',
-      badge: 'ðŸš€ DÍA DEL NIÃ‘O ARTESANO',
+      badge: '🚀 DÍA DEL NIÑO ARTESANO',
       discountText: '15% OFF',
       couponCode: 'KIDS15',
       benefitText: 'Figura miniatura 3D sorpresa de regalo'
@@ -97,7 +97,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     mid: {
       title: 'Quincena Juguetes & Colecciones',
       subtitle: 'Zorros low-poly, portalápices temáticos y 2X créditos para el Arcade del Taller.',
-      badge: 'âš¡ QUINCENA CREATIVA',
+      badge: '⚡ QUINCENA CREATIVA',
       discountText: '10% OFF',
       couponCode: 'CREA10',
       benefitText: '2X Monedas para el Arcade + 10% Directo'
@@ -109,7 +109,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     major: {
       title: 'Gran Homenaje a Mamá: Recuerdos Inolvidables',
       subtitle: 'Llaveros familiares con fotos, tazas mágicas botánicas y letreros en relieve con amor.',
-      badge: 'ðŸ’ ESPECIAL DÍA DE LAS MADRES',
+      badge: '💐 ESPECIAL DÍA DE LAS MADRES',
       discountText: '15% OFF',
       couponCode: 'MAMA15',
       benefitText: 'Caja decorada kraft + Tarjeta floral personalizada'
@@ -117,7 +117,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     mid: {
       title: 'Quincena Exclusiva para Mamá',
       subtitle: 'Anticípate y asegura el regalo perfecto de taller con entrega prioritaria garantizada.',
-      badge: 'âš¡ QUINCENA MAMÁ EXPRESS',
+      badge: '⚡ QUINCENA MAMÁ EXPRESS',
       discountText: '10% OFF',
       couponCode: 'MAMA10',
       benefitText: 'Grabado de dedicatoria de cortesía'
@@ -129,7 +129,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     major: {
       title: 'Especial Papá & Maestros Artesanos',
       subtitle: 'Kits para asador, destapadores grabados, organizadores de escritorio y soportes gamer.',
-      badge: 'ðŸ‘” ESPECIAL DÍA DEL PADRE',
+      badge: '👔 ESPECIAL DÍA DEL PADRE',
       discountText: '15% OFF',
       couponCode: 'PAPA15',
       benefitText: 'Llavero destapador grabado de regalo'
@@ -137,7 +137,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     mid: {
       title: 'Quincena del Taller de Papá',
       subtitle: 'Detalles útiles para su oficina, setup o taller con descuento directo de quincena.',
-      badge: 'âš¡ QUINCENA PAPÁ FLASH',
+      badge: '⚡ QUINCENA PAPÁ FLASH',
       discountText: '10% OFF',
       couponCode: 'PAPA10',
       benefitText: '10% Directo en accesorios de escritorio'
@@ -149,7 +149,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     major: {
       title: 'Festival de Verano, Viajes & Graduaciones',
       subtitle: 'Termos térmicos grabados, gorras con parche de vinil y placas conmemorativas.',
-      badge: 'â˜€ï¸ ESPECIAL VERANO & GRADUACIONES',
+      badge: '☀️ ESPECIAL VERANO & GRADUACIONES',
       discountText: '15% OFF',
       couponCode: 'VERANO15',
       benefitText: '2 Llaveros acrílicos o madera de regalo en cada paquete'
@@ -157,7 +157,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     mid: {
       title: 'Quincena Playera & Accesorios',
       subtitle: 'Paquetes de viaje y accesorios personalizados para salir de vacaciones.',
-      badge: 'âš¡ QUINCENA PLAYERA FLASH',
+      badge: '⚡ QUINCENA PLAYERA FLASH',
       discountText: '10% OFF',
       couponCode: 'PLAYA10',
       benefitText: 'Envío express prioritario nacional'
@@ -169,7 +169,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     major: {
       title: 'Gran Fiesta Mexicana de Manufactura Artesanal',
       subtitle: 'Celebra lo hecho en México con piezas auténticas creadas en nuestro taller con manos mexicanas.',
-      badge: 'ðŸ‡²ðŸ‡½ GRAN BAZAR PATRIO',
+      badge: '🇲🇽 GRAN BAZAR PATRIO',
       discountText: '15% OFF',
       couponCode: 'VIVAMEXICO15',
       benefitText: 'Detalle patrio artesanal sorpresa incluido'
@@ -177,7 +177,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     mid: {
       title: 'Quincena Viva México en Taller',
       subtitle: 'Descuento patriótico en paquetes decorativos y combos para eventos familiares.',
-      badge: 'âš¡ QUINCENA TRADICIÃ“N FLASH',
+      badge: '⚡ QUINCENA TRADICIÓN FLASH',
       discountText: '10% OFF',
       couponCode: 'PATRIA10',
       benefitText: 'Grabado conmemorativo patrio gratis'
@@ -189,7 +189,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     major: {
       title: 'Festival de Tradición: Día de Muertos & Otoño',
       subtitle: 'Porta-velas con calado botánico, lámparas cálidas, catrinas geométricas y bandejas de taller.',
-      badge: 'ðŸ’€ FESTIVAL DÍA DE MUERTOS',
+      badge: '💀 FESTIVAL DÍA DE MUERTOS',
       discountText: '15% OFF',
       couponCode: 'TRADICION15',
       benefitText: 'Mini calaverita geométrica 3D de cortesía'
@@ -197,7 +197,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     mid: {
       title: 'Quincena Mágica de Otoño',
       subtitle: 'Ediciones limitadas de temporada listas para decorar tu hogar y altar.',
-      badge: 'âš¡ QUINCENA OTOÃ‘O MÁGICO',
+      badge: '⚡ QUINCENA OTOÑO MÁGICO',
       discountText: '10% OFF',
       couponCode: 'CATRINA10',
       benefitText: '2X Monedas para el Arcade + 10% Directo'
@@ -209,7 +209,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     major: {
       title: 'Buen Fin Artesanal de Fábrica',
       subtitle: 'Los mayores descuentos del año directamente desde nuestro taller de manufactura.',
-      badge: 'ðŸ”¥ EL BUEN FIN ARTESANAL',
+      badge: '🔥 EL BUEN FIN ARTESANAL',
       discountText: '15% OFF',
       couponCode: 'BUENFIN15',
       benefitText: 'Envío Gratis a todo México + Grabado sin costo'
@@ -217,7 +217,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     mid: {
       title: 'Quincena Anticipada del Buen Fin',
       subtitle: 'Adelántate a las aglomeraciones y asegura tus paquetes con precio promocional.',
-      badge: 'âš¡ ANTICIPO BUEN FIN',
+      badge: '⚡ ANTICIPO BUEN FIN',
       discountText: '10% OFF',
       couponCode: 'ANTICIPO10',
       benefitText: 'Aparta tu paquete con precio protegido'
@@ -229,7 +229,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     major: {
       title: 'Gran Bazar Navideño & Fin de Año',
       subtitle: 'Regalos corporativos y familiares coordinados con envoltura de gala y entrega prioritaria garantizada.',
-      badge: 'ðŸŽ„ GRAN BAZAR NAVIDEÃ‘O',
+      badge: '🎄 GRAN BAZAR NAVIDEÑO',
       discountText: '15% OFF',
       couponCode: 'NAVIDAD15',
       benefitText: 'Envoltura de regalo de gala + Grabado láser de cortesía'
@@ -237,7 +237,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
     mid: {
       title: 'Quincena Santa Express de Regalos',
       subtitle: '¡No te quedes sin regalos! Kits express listos para entregar en Navidad.',
-      badge: 'âš¡ QUINCENA SANTA EXPRESS',
+      badge: '⚡ QUINCENA SANTA EXPRESS',
       discountText: '10% OFF',
       couponCode: 'SANTA10',
       benefitText: 'Entrega prioritaria express garantizada'
@@ -247,7 +247,7 @@ export const MONTHLY_EVENT_TEMPLATES = [
 
 // Opciones de Paletas de Color para Temporadas
 export const COLOR_PALETTES = [
-  // PALETAS CLARAS DE ALTA SATURACIÃ“N Y BRILLO CALIBRADO (Sin blancos lechosos)
+  // PALETAS CLARAS DE ALTA SATURACIÓN Y BRILLO CALIBRADO (Sin blancos lechosos)
   {
     id: 'arena_lino',
     group: 'light',
@@ -413,7 +413,7 @@ export const COLOR_PALETTES = [
   {
     id: 'buenfin',
     group: 'dark',
-    name: 'Buen Fin Dorado & Ã“nix',
+    name: 'Buen Fin Dorado & Ónix',
     desc: 'Negro mate & acentos dorados',
     previewBg: 'bg-[#1A1412]',
     previewBorder: 'border-amber-400',
@@ -542,7 +542,7 @@ export default function CampaignsAdminSection({
         active: true,
         title: 'Gran Bazar Artesanal de Fin de Mes',
         subtitle: 'Descuento especial en paquetes de taller + envoltura de cortesía y grabado láser de nombres sin costo.',
-        badge: 'ðŸ”¥ EVENTO GRANDE DEL MES',
+        badge: '🔥 EVENTO GRANDE DEL MES',
         discountText: '15% OFF',
         couponCode: 'GRANMES15',
         startDate: '2026-10-24',
@@ -556,7 +556,7 @@ export default function CampaignsAdminSection({
         active: false,
         title: 'Quincena Relámpago Artesanal',
         subtitle: '¡Llegó la quincena! Llévate kits coordinados para hogar o negocio con precio de taller y 2X monedas arcade.',
-        badge: 'âš¡ QUINCENA ARTESANAL FLASH',
+        badge: '⚡ QUINCENA ARTESANAL FLASH',
         discountText: '10% OFF',
         couponCode: 'QUINCENA10',
         startDate: '2026-10-12',
@@ -570,7 +570,7 @@ export default function CampaignsAdminSection({
         active: false,
         title: 'Venta Relámpago de Fin de Semana & Liquidación',
         subtitle: '¡Especial de Fin de Semana! Promociones relámpago, últimas piezas y liquidaciones de taller con cupón exclusivo.',
-        badge: 'âš¡ OFERTA RELÁMPAGO DE FIN DE SEMANA',
+        badge: '⚡ OFERTA RELÁMPAGO DE FIN DE SEMANA',
         discountText: '15% OFF',
         couponCode: 'FLASHFINDE15',
         startDate: '2026-10-17',
@@ -890,34 +890,34 @@ export default function CampaignsAdminSection({
 
     const changes = [
       {
-        icon: 'ðŸ—“ï¸',
+        icon: '🗓️',
         label: 'Campaña / Temporada Activa',
         detail: `Temporada activa: ${seasonName}. Efecto ambiental: ${campaignConfig.seasonalEffect || 'snow'}.`,
         badge: seasonName
       },
       {
-        icon: 'ðŸŽ¨',
+        icon: '🎨',
         label: 'Paleta de Color y Tema',
         detail: `Tema de acento aplicado en la tienda: ${campaignConfig.accentTheme || 'salvia_menta'}.`,
         badge: campaignConfig.accentTheme || 'salvia_menta'
       },
       {
-        icon: 'ðŸ“¢',
+        icon: '📢',
         label: 'Banner Principal de Tienda',
         detail: `Título: "${campaignConfig.title || 'Sin título'}". Insignia: ${campaignConfig.bannerBadge || 'Promoción Especial'}.`,
         badge: isPublish ? 'Publicado en Vivo' : 'Borrador Guardado'
       },
       {
-        icon: 'âš¡',
+        icon: '⚡',
         label: 'Eventos del Mes & Ofertas Relámpago',
-        detail: `Modo Base: ${activeEventDesc}. Oferta Relámpago de Fin de Semana: ${events.flashSpecial?.active ? 'ðŸŸ¢ Activa' : 'Pausada'}.`,
+        detail: `Modo Base: ${activeEventDesc}. Oferta Relámpago de Fin de Semana: ${events.flashSpecial?.active ? '🟢 Activa' : 'Pausada'}.`,
         badge: events.flashSpecial?.active ? 'Flash Activo' : 'Base Activo'
       }
     ];
 
     if (campaignConfig.promoNotice) {
       changes.push({
-        icon: 'ðŸ·ï¸',
+        icon: '🏷️',
         label: 'Aviso de Barra Superior',
         detail: `Texto: "${campaignConfig.promoNotice}".`
       });
@@ -978,7 +978,7 @@ export default function CampaignsAdminSection({
         const data = await res.json();
         setCampaignConfig(data);
         setMessage({
-          text: 'ðŸ’¾ Borrador guardado exitosamente. Tus cambios están protegidos y listos para cuando decidas publicarlos.',
+          text: '💾 Borrador guardado exitosamente. Tus cambios están protegidos y listos para cuando decidas publicarlos.',
           type: 'info'
         });
       } else {
@@ -1017,7 +1017,7 @@ export default function CampaignsAdminSection({
         const data = await res.json();
         setCampaignConfig(data);
         setMessage({
-          text: 'ðŸš€ ¡Campaña y Temporada PUBLICADAS EN VIVO en la tienda! Los clientes ya pueden ver los nuevos colores, banner y promociones.',
+          text: '🚀 ¡Campaña y Temporada PUBLICADAS EN VIVO en la tienda! Los clientes ya pueden ver los nuevos colores, banner y promociones.',
           type: 'success'
         });
         if (onRefreshCatalog) onRefreshCatalog();
@@ -1052,7 +1052,7 @@ export default function CampaignsAdminSection({
 
   const activeSeason = campaignConfig.seasons?.find(s => s.id === campaignConfig.activeSeasonId) || {
     name: 'Temporada Personalizada',
-    icon: 'â­'
+    icon: '⭐'
   };
 
   const currentThemeMeta = COLOR_PALETTES.find(p => p.id === campaignConfig.accentTheme) || COLOR_PALETTES[0];
@@ -1065,7 +1065,7 @@ export default function CampaignsAdminSection({
         <div className="space-y-1">
           <div className="flex items-center gap-2.5">
             <span className="p-2.5 rounded-2xl bg-purple-100 text-purple-800 font-bold text-lg">
-              ðŸŒ¸
+              🌸
             </span>
             <div>
               <div className="flex items-center gap-2">
@@ -1074,11 +1074,11 @@ export default function CampaignsAdminSection({
                 </h3>
                 {campaignConfig.isDraft ? (
                   <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1">
-                    <span>ðŸŸ¡</span> Borrador Pendiente de Publicar
+                    <span>🟡</span> Borrador Pendiente de Publicar
                   </span>
                 ) : (
                   <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1">
-                    <span>ðŸŸ¢</span> En Vivo en Tienda
+                    <span>🟢</span> En Vivo en Tienda
                   </span>
                 )}
               </div>
@@ -1130,12 +1130,12 @@ export default function CampaignsAdminSection({
             ? 'bg-amber-50 text-amber-900 border border-amber-200'
             : 'bg-rose-50 text-rose-800 border border-rose-200'
         }`}>
-          <span>{message.type === 'success' ? 'âœ“' : message.type === 'info' ? 'â„¹' : 'âš ï¸'}</span>
+          <span>{message.type === 'success' ? '✓' : message.type === 'info' ? 'ℹ' : '⚠️'}</span>
           <span>{message.text}</span>
         </div>
       )}
 
-      {/* 1. PREVISUALIZACIÃ“N EN VIVO DEL BANNER DE EVENTOS Y CARÁTULA (HASTA ARRIBA DEL TODO) */}
+      {/* 1. PREVISUALIZACIÓN EN VIVO DEL BANNER DE EVENTOS Y CARÁTULA (HASTA ARRIBA DEL TODO) */}
       <div className="bg-white p-6 rounded-3xl border border-[#E8E4DA] shadow-xs space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-3">
           <div>
@@ -1165,7 +1165,7 @@ export default function CampaignsAdminSection({
         />
       </div>
 
-      {/* 2. SELECTOR DE SECCIONES EN PESTAÃ‘AS MINIMALISTAS (ESTILO ÁREAS) */}
+      {/* 2. SELECTOR DE SECCIONES EN PESTAÑAS MINIMALISTAS (ESTILO ÁREAS) */}
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
         {[
           { id: 'themes', label: 'Colores & Letra', icon: Palette, desc: 'Paletas, letra y partículas' },
@@ -1215,9 +1215,9 @@ export default function CampaignsAdminSection({
         })}
       </div>
 
-      {/* 3. CONTENIDO DE LA PESTAÃ‘A SELECCIONADA */}
+      {/* 3. CONTENIDO DE LA PESTAÑA SELECCIONADA */}
 
-      {/* PESTAÃ‘A 1: COLORES, LETRA, ESTACIONES Y PARTÍCULAS */}
+      {/* PESTAÑA 1: COLORES, LETRA, ESTACIONES Y PARTÍCULAS */}
       {activeBannerTab === 'themes' && (
         <div className="space-y-5 animate-fade-in">
           {/* Selector de Letra Blanca o Negra para Tienda y Banners */}
@@ -1293,7 +1293,7 @@ export default function CampaignsAdminSection({
                   onClick={() => setIsSeasonsCollapsed(prev => !prev)}
                   className="px-2.5 py-1 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold text-[11px] transition-colors cursor-pointer"
                 >
-                  {isSeasonsCollapsed ? 'â–¼ Mostrar estaciones' : 'â–² Contraer'}
+                  {isSeasonsCollapsed ? '▼ Mostrar estaciones' : '▲ Contraer'}
                 </button>
               </div>
             </div>
@@ -1366,7 +1366,7 @@ export default function CampaignsAdminSection({
                       }`}
                     >
                       <Sun className="w-3.5 h-3.5 text-amber-500" />
-                      <span>â˜€ï¸ Claras Saturadas (10)</span>
+                      <span>☀️ Claras Saturadas (10)</span>
                     </button>
                     <button
                       type="button"
@@ -1378,7 +1378,7 @@ export default function CampaignsAdminSection({
                       }`}
                     >
                       <Moon className="w-3.5 h-3.5 text-indigo-400" />
-                      <span>ðŸŒ™ Oscuras &amp; Temáticas (12)</span>
+                      <span>🌙 Oscuras &amp; Temáticas (12)</span>
                     </button>
                   </div>
 
@@ -1387,7 +1387,7 @@ export default function CampaignsAdminSection({
                     onClick={() => setIsPalettesCollapsed(prev => !prev)}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-[#2D4F3E] bg-[#E8EFEA] hover:bg-[#D5E3DA] transition-colors cursor-pointer border border-[#2D4F3E]/20"
                   >
-                    <span>{isPalettesCollapsed ? 'â–¼ Mostrar paletas' : 'â–² Contraer sección'}</span>
+                    <span>{isPalettesCollapsed ? '▼ Mostrar paletas' : '▲ Contraer sección'}</span>
                   </button>
                 </div>
               </div>
@@ -1444,7 +1444,7 @@ export default function CampaignsAdminSection({
                         onClick={() => setIsPalettesExpanded(prev => !prev)}
                         className="text-[#2D4F3E] font-bold hover:underline cursor-pointer"
                       >
-                        {isPalettesExpanded ? 'â–² Mostrar solo 5 recomendadas' : `Ver las ${filtered.length - 5} restantes â†’`}
+                        {isPalettesExpanded ? '▲ Mostrar solo 5 recomendadas' : `Ver las ${filtered.length - 5} restantes →`}
                       </button>
                     </div>
                   </div>
@@ -1474,7 +1474,7 @@ export default function CampaignsAdminSection({
                   onClick={() => setIsEffectsCollapsed(prev => !prev)}
                   className="px-2.5 py-1 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold text-[11px] transition-colors cursor-pointer"
                 >
-                  {isEffectsCollapsed ? 'â–¼ Mostrar efectos' : 'â–² Contraer'}
+                  {isEffectsCollapsed ? '▼ Mostrar efectos' : '▲ Contraer'}
                 </button>
               </div>
             </div>
@@ -1629,7 +1629,7 @@ export default function CampaignsAdminSection({
                     type="text"
                     value={campaignConfig.bannerBadge || ''}
                     onChange={e => updateField('bannerBadge', e.target.value)}
-                    placeholder="Ej: ðŸŒ¸ Especial de Primavera"
+                    placeholder="Ej: 🌸 Especial de Primavera"
                     className="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs font-semibold focus:ring-1 focus:ring-[#2D4F3E]"
                   />
                 </div>
@@ -1668,7 +1668,7 @@ export default function CampaignsAdminSection({
                     type="text"
                     value={campaignConfig.promoNotice || ''}
                     onChange={e => updateField('promoNotice', e.target.value)}
-                    placeholder="Ej: ðŸŽ Envío gratis a todo México en compras mayores a $800 + grabado de cortesía"
+                    placeholder="Ej: 🎁 Envío gratis a todo México en compras mayores a $800 + grabado de cortesía"
                     className="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs text-emerald-800 font-semibold bg-emerald-50/50 focus:ring-1 focus:ring-[#2D4F3E]"
                   />
                 </div>
@@ -1678,7 +1678,7 @@ export default function CampaignsAdminSection({
         </div>
       )}
 
-      {/* PESTAÃ‘A 2: EVENTO GRANDE DEL MES */}
+      {/* PESTAÑA 2: EVENTO GRANDE DEL MES */}
       {activeBannerTab === 'major' && (
         <div className="bg-white p-6 rounded-3xl border border-[#E8E4DA] shadow-xs space-y-6 animate-fade-in">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-3">
@@ -1697,7 +1697,7 @@ export default function CampaignsAdminSection({
                   ? 'bg-amber-100 text-amber-900 border border-amber-300'
                   : 'bg-stone-100 text-stone-600'
               }`}>
-                {campaignConfig.monthlyEvents?.baseEventMode !== 'mid' ? 'ðŸŸ¢ Activo como Evento Base' : 'Pausado (Quincena Activa)'}
+                {campaignConfig.monthlyEvents?.baseEventMode !== 'mid' ? '🟢 Activo como Evento Base' : 'Pausado (Quincena Activa)'}
               </span>
             </div>
           </div>
@@ -1781,7 +1781,7 @@ export default function CampaignsAdminSection({
               </div>
               <label className="flex items-center gap-2 cursor-pointer">
                 <span className="text-[11px] font-bold text-gray-700">
-                  {campaignConfig.monthlyEvents?.baseEventMode !== 'mid' ? 'ðŸŸ¢ Activo en Tienda' : 'Pausado'}
+                  {campaignConfig.monthlyEvents?.baseEventMode !== 'mid' ? '🟢 Activo en Tienda' : 'Pausado'}
                 </span>
                 <input
                   type="checkbox"
@@ -1864,8 +1864,8 @@ export default function CampaignsAdminSection({
                 if (!isUpcoming) return null;
                 return (
                   <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs font-bold flex items-center gap-2">
-                    <span className="text-sm">â³</span>
-                    <span>PRÃ“XIMAMENTE (Faltan {days} {days === 1 ? 'día' : 'días'} para su inicio oficial)</span>
+                    <span className="text-sm">⏳</span>
+                    <span>PRÓXIMAMENTE (Faltan {days} {days === 1 ? 'día' : 'días'} para su inicio oficial)</span>
                   </div>
                 );
               })()}
@@ -1874,7 +1874,7 @@ export default function CampaignsAdminSection({
         </div>
       )}
 
-      {/* PESTAÃ‘A 3: QUINCENA RELÁMPAGO */}
+      {/* PESTAÑA 3: QUINCENA RELÁMPAGO */}
       {activeBannerTab === 'mid' && (
         <div className="bg-white p-6 rounded-3xl border border-[#E8E4DA] shadow-xs space-y-6 animate-fade-in">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-3">
@@ -1897,7 +1897,7 @@ export default function CampaignsAdminSection({
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                {campaignConfig.monthlyEvents?.baseEventMode === 'mid' ? 'âœ“ Activa como Evento Base' : 'Activar como Evento Base'}
+                {campaignConfig.monthlyEvents?.baseEventMode === 'mid' ? '✓ Activa como Evento Base' : 'Activar como Evento Base'}
               </button>
             </div>
           </div>
@@ -1917,7 +1917,7 @@ export default function CampaignsAdminSection({
               </div>
               <label className="flex items-center gap-2 cursor-pointer">
                 <span className="text-[11px] font-bold text-gray-700">
-                  {campaignConfig.monthlyEvents?.baseEventMode === 'mid' ? 'ðŸŸ¢ Activo en Tienda' : 'Pausado'}
+                  {campaignConfig.monthlyEvents?.baseEventMode === 'mid' ? '🟢 Activo en Tienda' : 'Pausado'}
                 </span>
                 <input
                   type="checkbox"
@@ -2011,8 +2011,8 @@ export default function CampaignsAdminSection({
                 if (!isUpcoming) return null;
                 return (
                   <div className="p-2.5 rounded-xl bg-cyan-50 border border-cyan-300 text-cyan-900 text-xs font-bold flex items-center gap-2">
-                    <span className="text-sm">â³</span>
-                    <span>PRÃ“XIMAMENTE (Faltan {days} {days === 1 ? 'día' : 'días'} para su inicio oficial)</span>
+                    <span className="text-sm">⏳</span>
+                    <span>PRÓXIMAMENTE (Faltan {days} {days === 1 ? 'día' : 'días'} para su inicio oficial)</span>
                   </div>
                 );
               })()}
@@ -2021,7 +2021,7 @@ export default function CampaignsAdminSection({
         </div>
       )}
 
-      {/* PESTAÃ‘A 4: FINDE FLASH */}
+      {/* PESTAÑA 4: FINDE FLASH */}
       {activeBannerTab === 'flash' && (
         <div className="bg-white p-6 rounded-3xl border border-[#E8E4DA] shadow-xs space-y-6 animate-fade-in">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-3">
@@ -2037,7 +2037,7 @@ export default function CampaignsAdminSection({
             <div className="flex items-center gap-2">
               <label className="flex items-center gap-2 cursor-pointer bg-stone-50 px-3 py-1.5 rounded-xl border border-stone-200">
                 <span className="text-xs font-bold text-gray-700">
-                  {campaignConfig.monthlyEvents?.flashSpecial?.active ? 'ðŸŸ¢ Activo en Tienda' : 'Pausado'}
+                  {campaignConfig.monthlyEvents?.flashSpecial?.active ? '🟢 Activo en Tienda' : 'Pausado'}
                 </span>
                 <input
                   type="checkbox"
@@ -2137,8 +2137,8 @@ export default function CampaignsAdminSection({
                 if (!isUpcoming) return null;
                 return (
                   <div className="p-2.5 rounded-xl bg-orange-50 border border-orange-300 text-orange-900 text-xs font-bold flex items-center gap-2">
-                    <span className="text-sm">â³</span>
-                    <span>PRÃ“XIMAMENTE (Faltan {days} {days === 1 ? 'día' : 'días'} para su inicio oficial)</span>
+                    <span className="text-sm">⏳</span>
+                    <span>PRÓXIMAMENTE (Faltan {days} {days === 1 ? 'día' : 'días'} para su inicio oficial)</span>
                   </div>
                 );
               })()}
@@ -2147,7 +2147,7 @@ export default function CampaignsAdminSection({
         </div>
       )}
 
-      {/* PESTAÃ‘A 5: CARÁTULA DE NOVEDADES & FOTOS */}
+      {/* PESTAÑA 5: CARÁTULA DE NOVEDADES & FOTOS */}
       {activeBannerTab === 'showcase' && (
         <div className="bg-white p-6 rounded-3xl border border-[#E8E4DA] shadow-xs space-y-6 animate-fade-in">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-3">
@@ -2279,7 +2279,7 @@ export default function CampaignsAdminSection({
                         rows={2}
                         value={slide.description || ''}
                         onChange={e => updateShowcaseSlide(idx, 'description', e.target.value)}
-                        placeholder="Lámpara moderna T38 Â· Maceta espiral T6 Â· Colgador Bienvenidos L14"
+                        placeholder="Lámpara moderna T38 · Maceta espiral T6 · Colgador Bienvenidos L14"
                         className="w-full px-3 py-1.5 rounded-xl border border-gray-300 text-xs"
                       />
                     </div>

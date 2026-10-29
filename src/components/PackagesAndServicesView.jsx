@@ -11,6 +11,7 @@ import PatchBarShowcase from './PatchBarShowcase';
 import SeasonalAtmosphere from './SeasonalAtmosphere';
 import MonthlyEventBanner from './MonthlyEventBanner';
 import { formatServiceDate } from '../utils/serviceStatus';
+import { getOptimizedSrcSet, PRODUCT_CARD_SIZES } from '../utils/imageOptimization';
 
 /**
  * Generador de las 3 opciones de nivel para cada paquete de taller:
@@ -80,9 +81,9 @@ export const getBundleTiers = (promo) => {
         id: 'maestra',
         tierType: 'deluxe',
         name: 'Nivel Edición Maestra',
-        badge: 'â­ Todo Incluido VIP',
+        badge: '⭐ Todo Incluido VIP',
         tag: 'Kit VIP de Colección',
-        tierBadge: 'â­ Todo Incluido',
+        tierBadge: '⭐ Todo Incluido',
         accentColor: 'amber',
         valueCallout: 'Máxima capacidad, madera de nogal y llaveros para toda la familia',
         price: 620,
@@ -162,9 +163,9 @@ export const getBundleTiers = (promo) => {
         id: 'maestra',
         tierType: 'deluxe',
         name: 'Nivel Edición Maestra',
-        badge: 'â­ Todo Incluido VIP',
+        badge: '⭐ Todo Incluido VIP',
         tag: 'Máximo Rendimiento',
-        tierBadge: 'â­ Todo Incluido',
+        tierBadge: '⭐ Todo Incluido',
         accentColor: 'amber',
         valueCallout: 'Setup definitivo con acabados grafito texturizado, soporte tablet y placa personalizada',
         price: 720,
@@ -245,9 +246,9 @@ export const getBundleTiers = (promo) => {
         id: 'maestra',
         tierType: 'deluxe',
         name: 'Nivel Edición Maestra',
-        badge: 'â­ Todo Incluido VIP',
+        badge: '⭐ Todo Incluido VIP',
         tag: 'Kit Consentido Total',
-        tierBadge: 'â­ Todo Incluido',
+        tierBadge: '⭐ Todo Incluido',
         accentColor: 'amber',
         valueCallout: 'Kit completo con gancho para correa, doble chapita y bolsitas de regalo',
         price: 420,
@@ -331,9 +332,9 @@ export const getBundleTiers = (promo) => {
         id: 'maestra',
         tierType: 'deluxe',
         name: 'Nivel Edición Maestra',
-        badge: 'â­ Todo Incluido VIP',
+        badge: '⭐ Todo Incluido VIP',
         tag: 'Pack Restaurante Integral',
-        tierBadge: 'â­ Todo Incluido',
+        tierBadge: '⭐ Todo Incluido',
         accentColor: 'amber',
         valueCallout: 'Capacidad para 15 mesas con logo grabado, 6 servilleteros, 3 QR y letrero de barra',
         price: 2590,
@@ -417,9 +418,9 @@ export const getBundleTiers = (promo) => {
         id: 'maestra',
         tierType: 'deluxe',
         name: 'Nivel Edición Maestra',
-        badge: 'â­ Todo Incluido VIP',
+        badge: '⭐ Todo Incluido VIP',
         tag: 'Kit Ejecutivo Doble',
-        tierBadge: 'â­ Todo Incluido',
+        tierBadge: '⭐ Todo Incluido',
         accentColor: 'amber',
         valueCallout: 'Doble estación NFC para caja y recepción, 12 posavasos y vajilla ejecutiva completa',
         price: 1090,
@@ -503,9 +504,9 @@ export const getBundleTiers = (promo) => {
         id: 'maestra',
         tierType: 'deluxe',
         name: 'Nivel Edición Maestra',
-        badge: 'â­ Todo Incluido VIP',
+        badge: '⭐ Todo Incluido VIP',
         tag: 'Boutique Pro 50 Pzas',
-        tierBadge: 'â­ Todo Incluido',
+        tierBadge: '⭐ Todo Incluido',
         accentColor: 'amber',
         valueCallout: 'Doble tótem, doble bandeja organizadora, 50 llaveros grabados a doble cara y placa 3D',
         price: 1250,
@@ -590,9 +591,9 @@ export const getBundleTiers = (promo) => {
         id: 'maestra',
         tierType: 'deluxe',
         name: 'Nivel Edición Maestra',
-        badge: 'â­ Todo Incluido VIP',
+        badge: '⭐ Todo Incluido VIP',
         tag: 'Experiencia Total Todo Incluido',
-        tierBadge: 'â­ Todo Incluido',
+        tierBadge: '⭐ Todo Incluido',
         accentColor: 'amber',
         valueCallout: 'La suite más completa: 50 conos, centro 3D con luz LED y 20 recuerdos para padrinos',
         price: 3490,
@@ -678,9 +679,9 @@ export const getBundleTiers = (promo) => {
         id: 'maestra',
         tierType: 'deluxe',
         name: 'Nivel Edición Maestra',
-        badge: 'â­ Todo Incluido VIP',
+        badge: '⭐ Todo Incluido VIP',
         tag: 'Máxima Experiencia VIP (80 Invitados)',
-        tierBadge: 'â­ Todo Incluido',
+        tierBadge: '⭐ Todo Incluido',
         accentColor: 'amber',
         valueCallout: 'Doble prensa, 4 horas continuas, 80 prendas con parche conmemorativo exclusivo del evento',
         price: 9990,
@@ -764,9 +765,9 @@ export const getBundleTiers = (promo) => {
         id: 'maestra',
         tierType: 'deluxe',
         name: 'Nivel Edición Maestra',
-        badge: 'â­ Todo Incluido VIP',
+        badge: '⭐ Todo Incluido VIP',
         tag: 'Set de Gran Celebración',
-        tierBadge: 'â­ Todo Incluido',
+        tierBadge: '⭐ Todo Incluido',
         accentColor: 'amber',
         valueCallout: '55 llaveros con bolsita de organza, letrero XL, doble QR y cuadro de firmas de madera',
         price: 2450,
@@ -851,9 +852,9 @@ export const getBundleTiers = (promo) => {
         id: 'maestra',
         tierType: 'deluxe',
         name: 'Nivel Edición Maestra',
-        badge: 'â­ Todo Incluido VIP',
+        badge: '⭐ Todo Incluido VIP',
         tag: 'Doble Prensa & Parche Exclusivo',
-        tierBadge: 'â­ Todo Incluido',
+        tierBadge: '⭐ Todo Incluido',
         accentColor: 'amber',
         valueCallout: 'Doble prensa simultánea (cero filas), 4 horas, 2 operadores y parche personalizado exclusivo',
         price: 9500,
@@ -926,9 +927,9 @@ export const getBundleTiers = (promo) => {
       id: 'maestra',
       tierType: 'deluxe',
       name: 'Nivel Edición Maestra',
-      badge: 'â­ Todo Incluido VIP',
+      badge: '⭐ Todo Incluido VIP',
       tag: 'Kit Premium VIP',
-      tierBadge: 'â­ Todo Incluido',
+      tierBadge: '⭐ Todo Incluido',
       accentColor: 'amber',
       valueCallout: 'Máximo volumen, piezas de repuesto, empaque de regalo y acabados de lujo',
       price: Math.round(basePrice * 1.38),
@@ -1098,20 +1099,20 @@ export default function PackagesAndServicesView({
     const hasCoupon = Boolean(activeMonthlyEvent && eventDiscountPct > 0);
     const discountedPrice = hasCoupon ? Math.round(basePrice * (1 - eventDiscountPct / 100)) : basePrice;
 
-    let msg = `*COTIZACIÃ“N DE PAQUETE PROMOCIONAL â€” ARTESANO DIGITAL*\n`;
+    let msg = `*COTIZACIÓN DE PAQUETE PROMOCIONAL — ARTESANO DIGITAL*\n`;
     msg += `==================================================\n`;
     msg += `Hola Artesano Digital, me interesa contratar el siguiente paquete:\n\n`;
-    msg += `â€¢ *[${promo.code}] ${promo.name}*\n`;
-    msg += `â€¢ Configuración elegida: *${tierName}*\n`;
-    msg += `â€¢ Inversión regular del paquete: *$${basePrice} MXN* (Ahorro regular de $${savings} MXN)\n`;
+    msg += `• *[${promo.code}] ${promo.name}*\n`;
+    msg += `• Configuración elegida: *${tierName}*\n`;
+    msg += `• Inversión regular del paquete: *$${basePrice} MXN* (Ahorro regular de $${savings} MXN)\n`;
 
     if (hasCoupon) {
-      msg += `â€¢ *Cupón de Evento:* [${activeMonthlyEvent.couponCode}] (${activeMonthlyEvent.discountText || `${eventDiscountPct}% OFF`})\n`;
-      msg += `â€¢ *Precio Especial con Cupón:* *$${discountedPrice} MXN* (Ahorro extra de $${basePrice - discountedPrice} MXN)\n`;
+      msg += `• *Cupón de Evento:* [${activeMonthlyEvent.couponCode}] (${activeMonthlyEvent.discountText || `${eventDiscountPct}% OFF`})\n`;
+      msg += `• *Precio Especial con Cupón:* *$${discountedPrice} MXN* (Ahorro extra de $${basePrice - discountedPrice} MXN)\n`;
     }
 
     if (items && items.length > 0) {
-      msg += `â€¢ Piezas y detalles incluidos:\n  - ${items.join('\n  - ')}\n`;
+      msg += `• Piezas y detalles incluidos:\n  - ${items.join('\n  - ')}\n`;
     }
     if (settings?.serviceStatus?.isPaused) {
       const resumeStr = formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'próximo aviso';
@@ -1254,17 +1255,21 @@ export default function PackagesAndServicesView({
         id={promo.code === 'EV-PATCHBAR' ? 'patch-bar-event-card' : `bundle-card-${promo.id || promo.code}`}
         className="bg-white rounded-3xl border border-[#E8DFC8] hover:border-[#C8BBA0] hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-xs group"
       >
-        {/* FOTO GRANDE DEL PRODUCTO â€” PROTAGONISTA INDISCUTIBLE */}
+        {/* FOTO GRANDE DEL PRODUCTO — PROTAGONISTA INDISCUTIBLE */}
         <div
           onClick={() => onSelectProduct(promo)}
           onContextMenu={(e) => e.preventDefault()}
           className="relative w-full aspect-[4/3] bg-[#FAF8F5] overflow-hidden cursor-pointer group/thumb select-none"
           title="Clic para ver fotos en alta resolución del paquete"
         >
-          <img loading="lazy"
+          <img
             src={promo.primaryImage || promo.gallery?.[0] || promo.whiteBgImage}
+            srcSet={getOptimizedSrcSet(promo.primaryImage || promo.gallery?.[0] || promo.whiteBgImage)}
+            sizes={PRODUCT_CARD_SIZES}
             alt={promo.name}
             draggable={false}
+            loading="lazy"
+            decoding="async"
             onDragStart={(e) => e.preventDefault()}
             onContextMenu={(e) => e.preventDefault()}
             className="w-full h-full object-cover group-hover/thumb:scale-104 transition-transform duration-500 pointer-events-none select-none"
@@ -1290,9 +1295,13 @@ export default function PackagesAndServicesView({
 
           {/* Marca de Agua Sutil de Taller para Protección de Imagen con Logotipo Oficial */}
           <div className="absolute bottom-2 right-2 z-10 flex items-center gap-1 px-1.5 py-[2px] rounded-full bg-black/15 backdrop-blur-2xs text-[7px] font-medium text-white/60 pointer-events-none select-none tracking-tight border border-white/5 shadow-2xs">
-            <img loading="lazy"
-              src="./brand/artesano_isotipo_transparente.png"
+            <img
+              src="./brand/artesano_isotipo_transparente-64.webp"
               alt=""
+              width="16"
+              height="16"
+              loading="lazy"
+              decoding="async"
               className="w-2 h-2 object-contain shrink-0 opacity-75"
             />
             <span>Artesano Digital</span>
@@ -1309,7 +1318,7 @@ export default function PackagesAndServicesView({
           )}
         </div>
 
-        {/* CONTENIDO LIMPIO: NOMBRE, PRECIO Y BOTÃ“N DE DESPLIEGUE */}
+        {/* CONTENIDO LIMPIO: NOMBRE, PRECIO Y BOTÓN DE DESPLIEGUE */}
         <div className="p-4 sm:p-5 flex flex-col justify-between flex-1 space-y-3.5">
           
           <div className="space-y-1.5">
@@ -1342,7 +1351,7 @@ export default function PackagesAndServicesView({
             )}
           </div>
 
-          {/* BOTÃ“N PARA DESPLEGAR DETALLES + BOTÃ“N WHATSAPP */}
+          {/* BOTÓN PARA DESPLEGAR DETALLES + BOTÓN WHATSAPP */}
           <div className="pt-2 border-t border-stone-100 flex items-center gap-2">
             <button
               type="button"
@@ -1384,7 +1393,7 @@ export default function PackagesAndServicesView({
               {promo.includedItems && promo.includedItems.length > 0 && (
                 <div className="space-y-1.5 bg-[#FAF8F5] p-3 rounded-2xl border border-stone-200">
                   <span className="font-bold text-[11px] text-stone-800 uppercase tracking-wider block">
-                    âœ¦ Incluye en tu paquete:
+                    ✦ Incluye en tu paquete:
                   </span>
                   <ul className="space-y-1 text-stone-700">
                     {promo.includedItems.map((item, idx) => {
@@ -1527,7 +1536,7 @@ export default function PackagesAndServicesView({
           <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pb-0.5 select-none">
             {[
               { id: 'all', label: 'Todos los Paquetes', count: allBundles.length },
-              { id: 'especial', label: 'â­ Selección Especial', count: especialBundles.length },
+              { id: 'especial', label: '⭐ Selección Especial', count: especialBundles.length },
               { id: 'hogar', label: 'Hogar', count: hogarBundles.length },
               { id: 'negocios', label: 'Negocios', count: negociosBundles.length },
               { id: 'eventos', label: 'Eventos', count: eventosBundles.length },
@@ -1571,7 +1580,7 @@ export default function PackagesAndServicesView({
       {/* Main Body */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-8">
 
-        {/* VISTA 1: TODOS LOS PAQUETES CON ROTACIÃ“N DINÁMICA (INCLUYE PATCH BAR) */}
+        {/* VISTA 1: TODOS LOS PAQUETES CON ROTACIÓN DINÁMICA (INCLUYE PATCH BAR) */}
         {activeAreaFilter === 'all' && (
           <section className="space-y-6">
             <div className="flex items-center justify-between pb-2 border-b border-[#E8DFC8]">
@@ -1595,7 +1604,7 @@ export default function PackagesAndServicesView({
           </section>
         )}
 
-        {/* SECCIÃ“N ESPECIAL: TEMPORADA ACTIVA & SELECCIÃ“N DEL MES */}
+        {/* SECCIÓN ESPECIAL: TEMPORADA ACTIVA & SELECCIÓN DEL MES */}
         {activeAreaFilter === 'especial' && (
           <section id="paquetes-especial" className="space-y-6">
             <div className="flex items-center justify-between pb-2 border-b border-[#E8DFC8]">
@@ -1619,7 +1628,7 @@ export default function PackagesAndServicesView({
           </section>
         )}
 
-        {/* SECCIÃ“N 1: PAQUETES DE HOGAR */}
+        {/* SECCIÓN 1: PAQUETES DE HOGAR */}
         {activeAreaFilter === 'hogar' && (
           <section id="paquetes-hogar" className="space-y-6">
             <div className="flex items-center justify-between pb-2 border-b border-[#E8DFC8]">
@@ -1647,7 +1656,7 @@ export default function PackagesAndServicesView({
           </section>
         )}
 
-        {/* SECCIÃ“N 2: PAQUETES DE NEGOCIOS */}
+        {/* SECCIÓN 2: PAQUETES DE NEGOCIOS */}
         {activeAreaFilter === 'negocios' && (
           <section id="paquetes-negocios" className="space-y-6">
             <div className="flex items-center justify-between pb-2 border-b border-[#E8DFC8]">
@@ -1675,7 +1684,7 @@ export default function PackagesAndServicesView({
           </section>
         )}
 
-        {/* SECCIÃ“N 3: PAQUETES DE EVENTOS ESPECIALES */}
+        {/* SECCIÓN 3: PAQUETES DE EVENTOS ESPECIALES */}
         {activeAreaFilter === 'eventos' && (
           <section id="paquetes-eventos" className="space-y-6">
             <div className="flex items-center justify-between pb-2 border-b border-[#E8DFC8]">
@@ -1703,7 +1712,7 @@ export default function PackagesAndServicesView({
           </section>
         )}
 
-        {/* SECCIÃ“N 4: PATCH BAR EN VIVO DEDICADA */}
+        {/* SECCIÓN 4: PATCH BAR EN VIVO DEDICADA */}
         {activeAreaFilter === 'servicios' && (
           <section id="servicios-patchbar-area" className="space-y-6">
             <div className="flex items-center justify-between pb-2 border-b border-[#E8DFC8]">
@@ -1736,7 +1745,7 @@ export default function PackagesAndServicesView({
           </section>
         )}
 
-        {/* SECCIÃ“N INFORMATIVA DE PATCH BAR AL FINAL DE 'ALL' */}
+        {/* SECCIÓN INFORMATIVA DE PATCH BAR AL FINAL DE 'ALL' */}
         {activeAreaFilter === 'all' && (
           <section id="servicios-taller" className="pt-6 border-t border-[#E8DFC8] space-y-4">
             <div className="flex items-center justify-between">

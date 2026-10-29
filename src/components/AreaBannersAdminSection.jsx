@@ -450,7 +450,7 @@ export default function AreaBannersAdminSection({
   };
 
   // ==========================================
-  // GESTIÃ“N DE LAS 8 TARJETAS DE SELECCIÃ“N
+  // GESTIÓN DE LAS 8 TARJETAS DE SELECCIÓN
   // ==========================================
 
   const persistCardsPreview = (updated) => {
@@ -672,7 +672,7 @@ export default function AreaBannersAdminSection({
   return (
     <div className="space-y-6">
       
-      {/* SELECTOR DE PESTAÃ‘A PRINCIPAL (BANNERS DE PORTADA VS TARJETAS DE SELECCIÃ“N) */}
+      {/* SELECTOR DE PESTAÑA PRINCIPAL (BANNERS DE PORTADA VS TARJETAS DE SELECCIÓN) */}
       <div className="bg-white p-3 rounded-2xl sm:rounded-3xl border border-[#E8E4DA] shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div className="flex items-center gap-1.5 p-1 bg-[#FAF9F5] border border-[#E8E4DA] rounded-2xl w-full sm:w-auto">
           <button
@@ -717,7 +717,7 @@ export default function AreaBannersAdminSection({
         </button>
       </div>
 
-      {/* NOTIFICACIÃ“N DE ESTADO FLOTANTE */}
+      {/* NOTIFICACIÓN DE ESTADO FLOTANTE */}
       {statusMsg.text && (
         <div className={`p-4 rounded-2xl text-xs font-bold flex items-center gap-2 border animate-in fade-in shadow-xs ${
           statusMsg.type === 'success'
@@ -736,7 +736,7 @@ export default function AreaBannersAdminSection({
       )}
 
       {/* ========================================================================= */}
-      {/* VISTA 1: TARJETAS DE SELECCIÃ“N (DISEÃ‘O E INDUSTRIA)                      */}
+      {/* VISTA 1: TARJETAS DE SELECCIÓN (DISEÑO E INDUSTRIA)                      */}
       {/* ========================================================================= */}
       {activeSectionTab === 'cards' && (
         <div className="space-y-6">
@@ -764,7 +764,7 @@ export default function AreaBannersAdminSection({
                 className="px-3 py-2 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 text-xs font-bold transition-all cursor-pointer shadow-2xs"
                 title="Desactivar todas las fotos para que se vean en modo oscuro"
               >
-                â—‹ Desactivar Todas
+                ○ Desactivar Todas
               </button>
               <button
                 type="button"
@@ -772,7 +772,7 @@ export default function AreaBannersAdminSection({
                 className="px-3 py-2 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 text-xs font-bold transition-all cursor-pointer shadow-2xs"
                 title="Activar fotos de fondo en todas las tarjetas"
               >
-                â— Activar Todas
+                ● Activar Todas
               </button>
               <button
                 type="button"
@@ -786,7 +786,7 @@ export default function AreaBannersAdminSection({
             </div>
           </div>
 
-          {/* 1. SECTOR DISEÃ‘O & PUBLICIDAD (4 TARJETAS) */}
+          {/* 1. SECTOR DISEÑO & PUBLICIDAD (4 TARJETAS) */}
           <div className="bg-white p-6 rounded-3xl border border-[#E8E4DA] shadow-xs space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-3">
               <div className="flex items-center gap-2.5">
@@ -833,7 +833,7 @@ export default function AreaBannersAdminSection({
                           ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
                           : 'bg-gray-100 text-gray-600 border-gray-200'
                       }`}>
-                        {isPhotoActive ? 'â— Foto Activa' : 'â—‹ Modo Oscuro'}
+                        {isPhotoActive ? '● Foto Activa' : '○ Modo Oscuro'}
                       </span>
                     </div>
 
@@ -933,7 +933,7 @@ export default function AreaBannersAdminSection({
             </div>
           </div>
 
-          {/* 2. SECTOR INDUSTRIA TÃ‰CNICA (4 TARJETAS) */}
+          {/* 2. SECTOR INDUSTRIA TÉCNICA (4 TARJETAS) */}
           <div className="bg-white p-6 rounded-3xl border border-[#E8E4DA] shadow-xs space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-3">
               <div className="flex items-center gap-2.5">
@@ -980,7 +980,7 @@ export default function AreaBannersAdminSection({
                           ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
                           : 'bg-gray-100 text-gray-600 border-gray-200'
                       }`}>
-                        {isPhotoActive ? 'â— Foto Activa' : 'â—‹ Modo Oscuro'}
+                        {isPhotoActive ? '● Foto Activa' : '○ Modo Oscuro'}
                       </span>
                     </div>
 

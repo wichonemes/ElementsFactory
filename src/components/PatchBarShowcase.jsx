@@ -40,7 +40,7 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
         <div className="text-center max-w-3xl mx-auto mb-10 space-y-2.5">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#D82B6E]/10 text-[#D82B6E] text-xs font-black uppercase tracking-wider shadow-2xs">
             <Flame className="w-3.5 h-3.5" />
-            <span>Experiencia en Vivo Â· Activación para Eventos</span>
+            <span>Experiencia en Vivo · Activación para Eventos</span>
           </div>
           
           <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1F2421] font-heading tracking-tight">

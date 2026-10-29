@@ -5,6 +5,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import SeasonalAtmosphere from './SeasonalAtmosphere';
+import { getOptimizedSrcSet, HERO_IMAGE_SIZES } from '../utils/imageOptimization';
 
 /**
  * Mapa de Paletas Temáticas para MonthlyEventBanner
@@ -13,7 +14,7 @@ import SeasonalAtmosphere from './SeasonalAtmosphere';
  */
 export const EVENT_THEMES = {
   // ==========================================
-  // PALETAS CLARAS Y VIVAS DE ALTA SATURACIÃ“N (Colores ricos con brillo calibrado, sin blancos planos)
+  // PALETAS CLARAS Y VIVAS DE ALTA SATURACIÓN (Colores ricos con brillo calibrado, sin blancos planos)
   // ==========================================
   arena_lino: {
     name: 'Arena Dorada & Lino Artesanal (Saturada)',
@@ -350,7 +351,7 @@ export const EVENT_THEMES = {
     progressBar: 'bg-gradient-to-r from-cyan-400 via-blue-500 to-amber-400'
   },
   buenfin: {
-    name: 'Buen Fin & Black Friday (Dorado & Ã“nix)',
+    name: 'Buen Fin & Black Friday (Dorado & Ónix)',
     majorBg: 'bg-gradient-to-br from-[#1A1412] via-[#221B16] to-[#121A15] border-amber-400/80 text-white',
     midBg: 'bg-gradient-to-br from-[#1C1717] via-[#241E1C] to-[#141C18] border-red-500/70 text-white',
     glowMajor: 'bg-amber-500',
@@ -551,7 +552,7 @@ export const DEFAULT_SEASONAL_SLIDES = [
     categoryTag: 'Hogar & Estilo',
     badge: 'Novedad de Temporada',
     title: 'Colección Hogar y Estilo',
-    description: 'Lámpara moderna T38 Â· Maceta espiral T6 Â· Colgador Bienvenidos L14',
+    description: 'Lámpara moderna T38 · Maceta espiral T6 · Colgador Bienvenidos L14',
     worldId: 'hogar'
   },
   {
@@ -560,7 +561,7 @@ export const DEFAULT_SEASONAL_SLIDES = [
     categoryTag: 'Negocios & Marcas',
     badge: 'Temporada Comercial',
     title: 'Branding Comercial & Mostrador',
-    description: 'Soportes verticales QR Â· Enlaces NFC inteligentes Â· Letreros 3D',
+    description: 'Soportes verticales QR · Enlaces NFC inteligentes · Letreros 3D',
     worldId: 'negocios'
   },
   {
@@ -569,7 +570,7 @@ export const DEFAULT_SEASONAL_SLIDES = [
     categoryTag: 'Bodas & Eventos',
     badge: 'Edición Especial Ceremonias',
     title: 'Colección Bodas & Celebraciones',
-    description: 'Letreros de bienvenida Â· Copas grabadas Â· Recuerdos en madera',
+    description: 'Letreros de bienvenida · Copas grabadas · Recuerdos en madera',
     worldId: 'eventos'
   },
   {
@@ -578,7 +579,7 @@ export const DEFAULT_SEASONAL_SLIDES = [
     categoryTag: 'Setup & Gaming',
     badge: 'Lanzamiento de Taller',
     title: 'Setup Gamer & Home Office',
-    description: 'Smart Deck Â· Soporte para audífonos Â· Organizador modular 3D',
+    description: 'Smart Deck · Soporte para audífonos · Organizador modular 3D',
     worldId: 'hogar'
   },
   {
@@ -587,7 +588,7 @@ export const DEFAULT_SEASONAL_SLIDES = [
     categoryTag: 'Sublimación & Textil',
     badge: 'Novedad Térmica',
     title: 'Línea Térmica & Personalizada',
-    description: 'Tazas mágicas de revelado térmico Â· Tarros cerveceros Â· Termos láser',
+    description: 'Tazas mágicas de revelado térmico · Tarros cerveceros · Termos láser',
     worldId: 'personalizados'
   }
 ];
@@ -880,9 +881,13 @@ export default function MonthlyEventBanner({
       {/* Fondo fotográfico de temporada suave y armonizado con la paleta */}
       {effectiveBannerImage && (
         <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-          <img loading="lazy"
+          <img
             src={effectiveBannerImage}
+            srcSet={getOptimizedSrcSet(effectiveBannerImage)}
+            sizes={HERO_IMAGE_SIZES}
             alt=""
+            fetchPriority="high"
+            decoding="async"
             className={`w-full h-full object-cover mix-blend-overlay ${theme.isLight ? 'opacity-20' : 'opacity-30'}`}
           />
           <div className={`absolute inset-0 ${theme.isLight ? 'bg-gradient-to-t from-white/75 via-transparent to-white/40' : 'bg-gradient-to-t from-black/75 via-black/25 to-black/45'}`} />
@@ -1022,7 +1027,7 @@ export default function MonthlyEventBanner({
         </div>
       )}
 
-      {/* CONTENIDO SEGÃšN LA PESTAÃ‘A ACTIVA: CARÁTULA O EVENTO (MISMO TAMAÃ‘O UNIFORME) */}
+      {/* CONTENIDO SEGÚN LA PESTAÑA ACTIVA: CARÁTULA O EVENTO (MISMO TAMAÑO UNIFORME) */}
       {activeTab === 'showcase' ? (
         <div className="p-4 sm:p-6 lg:p-7 space-y-4 sm:space-y-5 relative z-10 flex-1 flex flex-col justify-between min-h-[420px] sm:min-h-[440px]">
           
@@ -1064,9 +1069,14 @@ export default function MonthlyEventBanner({
                           isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
                         }`}
                       >
-                        <img loading="lazy"
+                        <img
                           src={slide.image}
+                          srcSet={getOptimizedSrcSet(slide.image)}
+                          sizes={HERO_IMAGE_SIZES}
                           alt={slide.title}
+                          loading={isActive ? 'eager' : 'lazy'}
+                          fetchPriority={isActive ? 'high' : 'low'}
+                          decoding="async"
                           className="w-full h-full object-cover object-center transform group-hover/slide:scale-105 transition-transform duration-1000"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/30 pointer-events-none" />
@@ -1126,7 +1136,7 @@ export default function MonthlyEventBanner({
                 <span className={`text-[11px] font-black uppercase tracking-widest ${
                   theme.isLight ? 'text-[#855E42]' : 'text-[#D4A359]'
                 }`}>
-                  âœ¦ Destacado de Temporada
+                  ✦ Destacado de Temporada
                 </span>
                 <h3 className={`text-2xl sm:text-3xl font-black font-heading leading-tight ${
                   effectiveTextColorMode === 'black' ? 'text-[#1F2421]' : effectiveTextColorMode === 'white' ? 'text-white' : (theme.isLight ? 'text-[#1F2421]' : 'text-white')
@@ -1203,16 +1213,16 @@ export default function MonthlyEventBanner({
             theme.isLight ? 'border-t border-black/10 text-stone-800 font-medium' : 'border-t border-white/10 text-gray-200'
           }`}>
             <span className="flex items-center gap-1.5">
-              <span className="text-amber-500">ðŸšš</span> Envío prioritario a todo México
+              <span className="text-amber-500">🚚</span> Envío prioritario a todo México
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="text-amber-500">ðŸª™</span> 2X Monedas para el Arcade
+              <span className="text-amber-500">🪙</span> 2X Monedas para el Arcade
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="text-amber-500">ðŸŽ</span> Grabado láser de nombres sin costo
+              <span className="text-amber-500">🎁</span> Grabado láser de nombres sin costo
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="text-amber-500">ðŸ›¡ï¸</span> Garantía artesanal de satisfacción
+              <span className="text-amber-500">🛡️</span> Garantía artesanal de satisfacción
             </span>
           </div>
 
@@ -1230,13 +1240,13 @@ export default function MonthlyEventBanner({
                 : (isMajorTab ? theme.badgeMajor : theme.badgeMid)
             }`}>
               {isFlashTab ? <Zap className="w-3.5 h-3.5 fill-current text-stone-950" /> : (isMajorTab ? <Flame className="w-3.5 h-3.5 fill-current" /> : <Zap className="w-3.5 h-3.5 fill-current" />)}
-              <span>{currentEvent.badge || (isFlashTab ? 'âš¡ OFERTA RELÁMPAGO DE FIN DE SEMANA' : (isMajorTab ? 'ðŸ”¥ EVENTO GRANDE DEL MES' : 'âš¡ QUINCENA ARTESANAL FLASH'))}</span>
+              <span>{currentEvent.badge || (isFlashTab ? '⚡ OFERTA RELÁMPAGO DE FIN DE SEMANA' : (isMajorTab ? '🔥 EVENTO GRANDE DEL MES' : '⚡ QUINCENA ARTESANAL FLASH'))}</span>
             </span>
 
             {currentTiming.isUpcoming ? (
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/20 border border-amber-400/50 text-amber-300 text-[11px] font-black animate-pulse shadow-sm">
                 <Sparkles className="w-3.5 h-3.5 text-amber-300 fill-amber-300" />
-                <span>PRÃ“XIMAMENTE</span>
+                <span>PRÓXIMAMENTE</span>
                 <span className="px-1.5 py-0.2 rounded-md bg-stone-950/40 text-amber-200 text-[10px] font-black">
                   {timeLeft.days > 0 ? `Faltan ${timeLeft.days} ${timeLeft.days === 1 ? 'día' : 'días'}` : 'Inicia hoy'}
                 </span>
@@ -1290,7 +1300,7 @@ export default function MonthlyEventBanner({
           <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-500/25 via-amber-400/20 to-orange-500/20 border-2 border-amber-300/80 p-3.5 backdrop-blur-md shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-fade-in">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-amber-500 text-stone-950 flex items-center justify-center font-black text-base shrink-0 shadow-md">
-                â³
+                ⏳
               </div>
               <div className="space-y-0.5">
                 <div className="text-xs sm:text-sm font-black text-amber-200 uppercase tracking-wide flex flex-wrap items-center gap-1.5 font-heading">
@@ -1344,7 +1354,7 @@ export default function MonthlyEventBanner({
                   {discountInfo.number}
                 </span>
                 <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest bg-black/40 px-2 py-0.5 rounded-full text-white border border-white/20">
-                  {currentTiming.isUpcoming ? 'PRÃ“XIMO' : discountInfo.suffix}
+                  {currentTiming.isUpcoming ? 'PRÓXIMO' : discountInfo.suffix}
                 </span>
               </div>
             </div>
@@ -1369,7 +1379,7 @@ export default function MonthlyEventBanner({
             </div>
           </div>
 
-          {/* LADO DERECHO: CUPÃ“N DE 1 CLIC */}
+          {/* LADO DERECHO: CUPÓN DE 1 CLIC */}
           <div className="lg:col-span-4 flex flex-col items-stretch sm:items-end justify-center gap-2.5">
             {currentEvent.couponCode ? (
               <div className={`${theme.isLight ? 'bg-black/15 shadow-md border-black/25' : 'bg-white/10'} backdrop-blur-md p-3 sm:p-3.5 rounded-2xl border-2 border-dashed ${theme.couponBorder} w-full sm:max-w-xs space-y-2`}>
@@ -1410,13 +1420,13 @@ export default function MonthlyEventBanner({
                 {copiedCoupon === currentEvent.couponCode && (
                   <p className="text-[10px] text-emerald-300 text-center font-bold animate-fade-in">
                     {currentTiming.isUpcoming
-                      ? `âœ“ Código listo en portapapeles. Válido a partir del ${currentTiming.formattedStartDate || currentEvent.startDate}.`
-                      : 'âœ“ Código listo en portapapeles. Aplícalo al tramitar tu pedido.'}
+                      ? `✓ Código listo en portapapeles. Válido a partir del ${currentTiming.formattedStartDate || currentEvent.startDate}.`
+                      : '✓ Código listo en portapapeles. Aplícalo al tramitar tu pedido.'}
                   </p>
                 )}
                 {currentTiming.isUpcoming && copiedCoupon !== currentEvent.couponCode && (
                   <p className="text-[10px] text-amber-200/90 text-center font-medium">
-                    ðŸ“… Válido a partir del {currentTiming.formattedStartDate || currentEvent.startDate}
+                    📅 Válido a partir del {currentTiming.formattedStartDate || currentEvent.startDate}
                   </p>
                 )}
               </div>
@@ -1480,16 +1490,16 @@ export default function MonthlyEventBanner({
             theme.isLight ? 'text-stone-800 font-medium' : 'text-gray-200'
           }`}>
             <span className="flex items-center gap-1.5">
-              <span className="text-amber-500">ðŸšš</span> Envío prioritario a todo México
+              <span className="text-amber-500">🚚</span> Envío prioritario a todo México
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="text-amber-500">ðŸª™</span> 2X Monedas para el Arcade
+              <span className="text-amber-500">🪙</span> 2X Monedas para el Arcade
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="text-amber-500">ðŸŽ</span> Grabado láser de nombres sin costo
+              <span className="text-amber-500">🎁</span> Grabado láser de nombres sin costo
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="text-amber-500">ðŸ›¡ï¸</span> Garantía artesanal de satisfacción
+              <span className="text-amber-500">🛡️</span> Garantía artesanal de satisfacción
             </span>
           </div>
         </div>

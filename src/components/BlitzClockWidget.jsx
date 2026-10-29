@@ -29,8 +29,8 @@ export default function BlitzClockWidget({
   const flashPrice = Math.round(product.price * 0.85);
 
   const isFinal15m = isUrgentLessThan15m || (secondsRemaining <= 900 && cycleDuration > 900);
-  const badgeTitle = isFinal15m ? '¡ÃšLTIMOS 15 MINUTOS!' : 'OFERTA RELÁMPAGO 15 MIN';
-  const pillTitle = isFinal15m ? 'âš¡ Menos de 15 min' : 'âš¡ 15 min Blitz';
+  const badgeTitle = isFinal15m ? '¡ÚLTIMOS 15 MINUTOS!' : 'OFERTA RELÁMPAGO 15 MIN';
+  const pillTitle = isFinal15m ? '⚡ Menos de 15 min' : '⚡ 15 min Blitz';
   const progressPercent = blitzPercentRemaining ?? (
     secondsRemaining <= 900
       ? Math.max(4, Math.min(100, Math.round((secondsRemaining / 900) * 100)))
@@ -68,7 +68,7 @@ export default function BlitzClockWidget({
       aria-label="Reloj de oferta relámpago"
       className="fixed bottom-20 sm:bottom-5 left-3 right-3 sm:left-auto sm:right-6 z-40 sm:max-w-[400px] sm:w-[calc(100vw-2.5rem)] animate-fade-in select-none"
     >
-      {/* VERSIÃ“N MÃ“VIL DISCRETA: Pastilla delgada y compacta que no obstruye la pantalla */}
+      {/* VERSIÓN MÓVIL DISCRETA: Pastilla delgada y compacta que no obstruye la pantalla */}
       <div className="sm:hidden flex items-center justify-between gap-2 bg-[#121E17]/95 backdrop-blur-md text-white border border-[#E5C378]/80 shadow-[0_8px_24px_rgba(0,0,0,0.6)] rounded-full px-2.5 py-1.5 w-full max-w-sm mx-auto">
         <div
           onClick={() => onSelectProduct && onSelectProduct(product)}
@@ -119,7 +119,7 @@ export default function BlitzClockWidget({
         </div>
       </div>
 
-      {/* VERSIÃ“N ESCRITORIO: Tarjeta completa detallada con reloj digital y barra de progreso */}
+      {/* VERSIÓN ESCRITORIO: Tarjeta completa detallada con reloj digital y barra de progreso */}
       <div className="hidden sm:block relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#121E17] via-[#1B2F24] to-[#121E17] text-white border-2 border-[#E5C378] shadow-[0_12px_40px_rgba(0,0,0,0.6)] ring-4 ring-[#E5C378]/20 p-4 sm:p-5 space-y-3.5">
         
         {/* Subtle background glow effect */}

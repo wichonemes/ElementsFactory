@@ -261,7 +261,7 @@ export default function FlashDealsControlSection({
       hogar: {
         id: 'hogar',
         name: 'Hogar & Decoración',
-        icon: 'ðŸ ',
+        icon: '🏠',
         rule: `Tope configurable: máximo ${hogarTarget} ofertas flash activas`,
         shortRule: `Tope: ${hogarTarget} ofertas`,
         min: 1,
@@ -277,7 +277,7 @@ export default function FlashDealsControlSection({
       negocios: {
         id: 'negocios',
         name: 'Negocios & Marca',
-        icon: 'ðŸ’¼',
+        icon: '💼',
         rule: `Tope configurable: máximo ${negociosTarget} ofertas flash activas`,
         shortRule: `Tope: ${negociosTarget} ofertas`,
         min: 1,
@@ -293,7 +293,7 @@ export default function FlashDealsControlSection({
       eventos: {
         id: 'eventos',
         name: 'Eventos Especiales',
-        icon: 'ðŸŽ‰',
+        icon: '🎉',
         rule: `Tope configurable: máximo ${eventosTarget} ofertas flash activas`,
         shortRule: `Tope: ${eventosTarget} ofertas`,
         min: 1,
@@ -309,7 +309,7 @@ export default function FlashDealsControlSection({
       paquetes: {
         id: 'paquetes',
         name: 'Paquetes & Servicios',
-        icon: 'ðŸŽ',
+        icon: '🎁',
         rule: `Tope configurable: máximo ${paquetesTarget} ofertas promocionales`,
         shortRule: `Tope: ${paquetesTarget} ofertas`,
         min: 1,
@@ -725,7 +725,7 @@ export default function FlashDealsControlSection({
                 className="px-4 py-2 rounded-xl bg-emerald-700 text-white hover:bg-emerald-800 text-xs font-black shadow-xs flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
               >
                 <Play className="w-4 h-4 fill-white" />
-                <span>â–¶ï¸ Reanudar / Despausar Todas</span>
+                <span>▶️ Reanudar / Despausar Todas</span>
               </button>
               <button
                 onClick={() => handleControlFlash('reset_cycle', 'all')}
@@ -758,7 +758,7 @@ export default function FlashDealsControlSection({
           </div>
         ) : null}
 
-        {/* ANÁLISIS DINÁMICO: ¿EN DÃ“NDE HAY MÁS OFERTAS? */}
+        {/* ANÁLISIS DINÁMICO: ¿EN DÓNDE HAY MÁS OFERTAS? */}
         <div className="p-4 rounded-xl bg-gradient-to-r from-[#FAF7F0] via-[#F4EDE0] to-[#FAF7F0] border border-[#E5D7B7] space-y-3">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
             <div className="flex items-center gap-2 text-xs font-bold text-[#1F2421]">
@@ -869,10 +869,10 @@ export default function FlashDealsControlSection({
           {/* Steppers por Área */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {[
-              { id: 'hogar', name: 'Hogar & Decoración', icon: 'ðŸ ', baseDefault: 3 },
-              { id: 'negocios', name: 'Negocios & Marca', icon: 'ðŸ’¼', baseDefault: 3 },
-              { id: 'eventos', name: 'Eventos Especiales', icon: 'ðŸŽ‰', baseDefault: 5 },
-              { id: 'paquetes', name: 'Paquetes & Servicios', icon: 'ðŸŽ', baseDefault: 1 }
+              { id: 'hogar', name: 'Hogar & Decoración', icon: '🏠', baseDefault: 3 },
+              { id: 'negocios', name: 'Negocios & Marca', icon: '💼', baseDefault: 3 },
+              { id: 'eventos', name: 'Eventos Especiales', icon: '🎉', baseDefault: 5 },
+              { id: 'paquetes', name: 'Paquetes & Servicios', icon: '🎁', baseDefault: 1 }
             ].map(item => {
               const currentVal = Number(limitsForm[item.id]) || item.baseDefault;
               const stats = areaLimitsStats[item.id];
@@ -1081,7 +1081,7 @@ export default function FlashDealsControlSection({
                           : 'bg-gray-100 text-gray-700'
                       }`}
                     >
-                      {area.isPaused ? 'â¸ï¸ Pausada (0 activas)' : `${area.active} / ${area.target} activas`}
+                      {area.isPaused ? '⏸️ Pausada (0 activas)' : `${area.active} / ${area.target} activas`}
                     </span>
                   </div>
                 </div>
@@ -1213,7 +1213,7 @@ export default function FlashDealsControlSection({
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              <span>ðŸŒ Todas las Áreas</span>
+              <span>🌐 Todas las Áreas</span>
               <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
                 selectedArea === 'all' ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-700'
               }`}>
@@ -1230,7 +1230,7 @@ export default function FlashDealsControlSection({
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              <span>ðŸ  Hogar</span>
+              <span>🏠 Hogar</span>
               <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
                 selectedArea === 'hogar' ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-800'
               }`}>
@@ -1253,7 +1253,7 @@ export default function FlashDealsControlSection({
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              <span>ðŸ’¼ Negocios</span>
+              <span>💼 Negocios</span>
               <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
                 selectedArea === 'negocios' ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-800'
               }`}>
@@ -1276,7 +1276,7 @@ export default function FlashDealsControlSection({
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              <span>ðŸŽ‰ Eventos</span>
+              <span>🎉 Eventos</span>
               <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
                 selectedArea === 'eventos' ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-800'
               }`}>
@@ -1299,7 +1299,7 @@ export default function FlashDealsControlSection({
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              <span>ðŸŽ Paquetes &amp; Servicios</span>
+              <span>🎁 Paquetes &amp; Servicios</span>
               <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
                 selectedArea === 'paquetes' ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-800'
               }`}>
@@ -1326,7 +1326,7 @@ export default function FlashDealsControlSection({
                     title="Reanudar y despausar todas las ofertas flash"
                   >
                     <Play className="w-3.5 h-3.5 fill-white" />
-                    <span>â–¶ï¸ Reanudar Todas</span>
+                    <span>▶️ Reanudar Todas</span>
                   </button>
                 ) : (
                   <button
@@ -1336,7 +1336,7 @@ export default function FlashDealsControlSection({
                     title="Pausar todas las ofertas flash del taller"
                   >
                     <Pause className="w-3.5 h-3.5" />
-                    <span>â¸ï¸ Pausar Todas</span>
+                    <span>⏸️ Pausar Todas</span>
                   </button>
                 )}
 
@@ -1360,7 +1360,7 @@ export default function FlashDealsControlSection({
                     title={`Reanudar y despausar área de ${areaLimitsStats[selectedArea]?.name}`}
                   >
                     <Play className="w-3.5 h-3.5 fill-white" />
-                    <span>â–¶ï¸ Reanudar Área</span>
+                    <span>▶️ Reanudar Área</span>
                   </button>
                 ) : (
                   <button
@@ -1370,7 +1370,7 @@ export default function FlashDealsControlSection({
                     title={`Pausar ofertas de ${areaLimitsStats[selectedArea]?.name}`}
                   >
                     <Pause className="w-3.5 h-3.5" />
-                    <span>â¸ï¸ Pausar Área</span>
+                    <span>⏸️ Pausar Área</span>
                   </button>
                 )}
 
@@ -1393,8 +1393,8 @@ export default function FlashDealsControlSection({
               <Zap className="w-3.5 h-3.5" />
               <span>
                 {selectedArea === 'all'
-                  ? 'âš¡ Poner Producto en Flash'
-                  : `âš¡ Poner Producto en Flash (${(areaLimitsStats[selectedArea]?.name || '').split(' ')[0]})`}
+                  ? '⚡ Poner Producto en Flash'
+                  : `⚡ Poner Producto en Flash (${(areaLimitsStats[selectedArea]?.name || '').split(' ')[0]})`}
               </span>
             </button>
           </div>
@@ -1435,7 +1435,7 @@ export default function FlashDealsControlSection({
                   <option value="">-- Elige un producto elegible ({eligibleProductsForQuickAdd.length} disponibles) --</option>
                   {eligibleProductsForQuickAdd.map(p => (
                     <option key={p.id} value={p.id}>
-                      [{p.code}] {p.name} â€” ${p.price} MXN {p.worlds ? `(${p.worlds.join(', ')})` : ''}
+                      [{p.code}] {p.name} — ${p.price} MXN {p.worlds ? `(${p.worlds.join(', ')})` : ''}
                     </option>
                   ))}
                 </select>
@@ -1465,7 +1465,7 @@ export default function FlashDealsControlSection({
                   onChange={(e) => setQuickAddDuration(Number(e.target.value))}
                   className="w-full px-3 py-2 rounded-lg border border-gray-300 bg-white font-medium focus:ring-1 focus:ring-[#2D4F3E]"
                 >
-                  <option value={15}>âš¡ 15 minutos (Blitz Relámpago)</option>
+                  <option value={15}>⚡ 15 minutos (Blitz Relámpago)</option>
                   <option value={30}>30 minutos</option>
                   <option value={60}>1 hora</option>
                   <option value={120}>2 horas (Recomendado)</option>
@@ -1537,7 +1537,7 @@ export default function FlashDealsControlSection({
               className="text-xs px-2.5 py-1.5 rounded-xl border border-gray-200 bg-white font-medium"
             >
               <option value="all">Cualquier duración</option>
-              <option value="blitz">Solo Blitz (â‰¤ 15 min)</option>
+              <option value="blitz">Solo Blitz (≤ 15 min)</option>
               <option value="short">Cortas (15m a 3h)</option>
               <option value="long">Largas (&gt; 3h)</option>
             </select>
@@ -1572,7 +1572,7 @@ export default function FlashDealsControlSection({
               No hay ofertas flash activas que coincidan con los filtros seleccionados.
             </p>
             <p className="text-[11px] text-gray-400 max-w-md mx-auto">
-              Puedes cambiar el área seleccionada, limpiar la búsqueda o usar el botón &ldquo;âš¡ Poner Producto en Flash&rdquo; para activar una oferta de inmediato.
+              Puedes cambiar el área seleccionada, limpiar la búsqueda o usar el botón &ldquo;⚡ Poner Producto en Flash&rdquo; para activar una oferta de inmediato.
             </p>
           </div>
         ) : (
@@ -1619,11 +1619,11 @@ export default function FlashDealsControlSection({
                         <div className="font-bold text-[#1F2421] leading-snug">{p.name}</div>
                         <div className="text-[10.5px] text-gray-400 mt-0.5 flex items-center gap-1">
                           {item.isManual ? (
-                            <span className="text-emerald-700 font-semibold">â— Manual (Admin)</span>
+                            <span className="text-emerald-700 font-semibold">● Manual (Admin)</span>
                           ) : (
-                            <span className="text-amber-700 font-semibold">â— Rotación Automática</span>
+                            <span className="text-amber-700 font-semibold">● Rotación Automática</span>
                           )}
-                          <span>â€¢ {p.category || 'General'}</span>
+                          <span>• {p.category || 'General'}</span>
                         </div>
                       </td>
 
@@ -1640,7 +1640,7 @@ export default function FlashDealsControlSection({
                                     : 'bg-emerald-50 text-emerald-800 border-emerald-200'
                                 }`}
                               >
-                                <span>{w === 'hogar' ? 'ðŸ ' : w === 'negocios' ? 'ðŸ’¼' : 'ðŸŽ‰'}</span>
+                                <span>{w === 'hogar' ? '🏠' : w === 'negocios' ? '💼' : '🎉'}</span>
                                 <span>{w}</span>
                               </span>
                             ))
@@ -1650,7 +1650,7 @@ export default function FlashDealsControlSection({
 
                           {(p.isBundle || p.category === 'paquetes' || p.category === 'servicios') && (
                             <span className="px-2 py-0.5 rounded-md bg-purple-50 text-purple-800 border border-purple-200 text-[10px] font-semibold flex items-center gap-1">
-                              <span>ðŸŽ</span>
+                              <span>🎁</span>
                               <span>Paquete</span>
                             </span>
                           )}
@@ -1763,12 +1763,12 @@ export default function FlashDealsControlSection({
           </div>
         )}
 
-        {/* BANNER INFORMATIVO: COMPARTICIÃ“N ENTRE ÁREAS */}
+        {/* BANNER INFORMATIVO: COMPARTICIÓN ENTRE ÁREAS */}
         <div className="p-3.5 rounded-xl bg-[#FAF7F0] border border-[#E5D7B7] text-xs text-[#2D4F3E] flex items-start gap-2.5">
           <Sparkles className="w-4 h-4 text-[#C28E38] shrink-0 mt-0.5" />
           <div className="space-y-0.5">
             <span className="font-bold text-[#1F2421] block">
-              ðŸ”„ Compartición Automática entre Áreas &amp; Preservación de Márgenes
+              🔄 Compartición Automática entre Áreas &amp; Preservación de Márgenes
             </span>
             <p className="text-[11px] text-gray-600 leading-relaxed">
               Cuando un producto pertenece a múltiples áreas (ej. Hogar + Eventos), su oferta flash, descuento y temporizador se reflejan de forma sincronizada en ambas áreas de la tienda sin alterar los costos base de taller ni duplicar inventario.

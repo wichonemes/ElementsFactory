@@ -29,6 +29,7 @@ import { useFlashDeal } from './hooks/useFlashDeal';
 import { Home, Briefcase, CalendarHeart, Sparkles, ChevronRight, ShoppingBag, Layers, MessageCircle, Gift, RotateCw, Calendar, AlertTriangle, MapPin, Truck, Gamepad2 } from 'lucide-react';
 import { formatServiceDate } from './utils/serviceStatus';
 import { playCoinSound, playSoftAreaSwitchSound, playMarioPowerDownSound } from './utils/soundEffects';
+import { getOptimizedSrcSet, HERO_IMAGE_SIZES } from './utils/imageOptimization';
 import catalogFallbackData from './data/catalogFallback.json';
 
 const normalizeAssetUrl = (url) => {
@@ -390,7 +391,7 @@ export default function App() {
     });
   }, [products, activeWorld, selectedCategory, selectedTechnique, searchQuery]);
 
-  // Paquetes para la vista actual (Inicio o Área seleccionada) â€” rotados dinámicamente
+  // Paquetes para la vista actual (Inicio o Área seleccionada) — rotados dinámicamente
   const currentAreaPackages = useMemo(() => {
     const list = products.filter(p => p.isBundle && (activeWorld === 'all' || p.worlds?.includes(activeWorld)));
     if (!list || list.length === 0) return [];
@@ -669,25 +670,25 @@ export default function App() {
       activePub = localStorage.getItem('artesano_active_pub') || '';
     } catch {}
 
-    let msg = `*CONSULTA DIRECTA â€” ARTESANO DIGITAL*\n`;
+    let msg = `*CONSULTA DIRECTA — ARTESANO DIGITAL*\n`;
     msg += `--------------------------------------\n`;
     msg += `Hola, me interesa cotizar el siguiente producto:\n\n`;
-    msg += `â€¢ *[${product.code}] ${product.name}*\n`;
-    msg += `â€¢ Cantidad: *${quantity} ${product.priceUnit || 'piezas'}*\n`;
+    msg += `• *[${product.code}] ${product.name}*\n`;
+    msg += `• Cantidad: *${quantity} ${product.priceUnit || 'piezas'}*\n`;
 
     if (selectedVariants && Object.keys(selectedVariants).length > 0) {
       const vars = Object.entries(selectedVariants).map(([k, v]) => `${k}: ${v}`).join(', ');
-      msg += `â€¢ Opciones: ${vars}\n`;
+      msg += `• Opciones: ${vars}\n`;
     }
 
     if (customText && customText.trim()) {
-      msg += `â€¢ Personalización deseada: "${customText.trim()}"\n`;
+      msg += `• Personalización deseada: "${customText.trim()}"\n`;
     }
 
     if (product.priceType === 'quote' || product.price === null) {
-      msg += `â€¢ Precio: A cotizar por diseño\n`;
+      msg += `• Precio: A cotizar por diseño\n`;
     } else {
-      msg += `â€¢ Precio de referencia: $${product.price} MXN\n`;
+      msg += `• Precio de referencia: $${product.price} MXN\n`;
     }
 
     if (activePub) {
@@ -869,7 +870,7 @@ export default function App() {
               </span>
               <div>
                 <div className="font-extrabold text-sm sm:text-base flex items-center gap-2 flex-wrap">
-                  <span>â¸ï¸ Aviso de Taller: No hay servicio hasta el {formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'próximo aviso'}</span>
+                  <span>⏸️ Aviso de Taller: No hay servicio hasta el {formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'próximo aviso'}</span>
                   <span className="px-2 py-0.2 rounded-full bg-black/25 text-amber-200 text-[10px] font-bold uppercase tracking-wider">
                     {settings.serviceStatus.pausedReason || 'Receso de taller'}
                   </span>
@@ -922,7 +923,7 @@ export default function App() {
         </div>
       )}
 
-      {/* VISTA MÃ“VIL ESTILO MERCADO LIBRE: Banner Compacto + Cortinilla */}
+      {/* VISTA MÓVIL ESTILO MERCADO LIBRE: Banner Compacto + Cortinilla */}
       {activeWorld === 'all' && !searchQuery && (
         <div className="md:hidden">
           <MobileBannerCarousel
@@ -964,7 +965,15 @@ export default function App() {
       {activeWorld !== 'all' && activeWorld !== 'paquetes-servicios' && activeWorld !== 'publicidad-desarrollo' && activeWorld !== 'industria' && activeWorld !== 'servicios' && currentWorldObj && (
         <div className="relative bg-[#1F2421] text-white overflow-hidden py-10 sm:py-14 border-b border-black/20">
           <div className="absolute inset-0 opacity-20">
-            <img loading="lazy" src={currentWorldObj.image} alt="" className="w-full h-full object-cover" />
+            <img
+              src={currentWorldObj.image}
+              srcSet={getOptimizedSrcSet(currentWorldObj.image)}
+              sizes={HERO_IMAGE_SIZES}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover"
+            />
           </div>
           <div className="absolute inset-0 bg-gradient-to-r from-[#1F2421] via-[#1F2421]/90 to-transparent"></div>
           
@@ -1010,7 +1019,7 @@ export default function App() {
         /* Main Catalog Section */
         <main id="catalogo-section" className="flex-1">
 
-        {/* â”€â”€â”€ FILTROS EN MÃ“VIL â”€ la versión de PC vive arriba, debajo del navbar â”€â”€â”€ */}
+        {/* ─── FILTROS EN MÓVIL ─ la versión de PC vive arriba, debajo del navbar ─── */}
         <div className="md:hidden">
           <FiltersBar
             activeWorld={activeWorld}
@@ -1080,23 +1089,31 @@ export default function App() {
               <div className="flex items-center gap-3 min-w-0">
                 <div className="flex -space-x-3 shrink-0">
                   <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden border-2 border-white/20 bg-black/40 shadow-xs">
-                    <img loading="lazy"
+                    <img
                       src="./uploads/personalizados-figuras-funko.jpg"
+                      srcSet={getOptimizedSrcSet('./uploads/personalizados-figuras-funko.jpg')}
+                      sizes="56px"
                       alt="Funko Custom"
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden border-2 border-sky-400/50 bg-black/40 shadow-xs">
-                    <img loading="lazy"
+                    <img
                       src="./uploads/personalizados-dibujo-figura-3d.jpg"
+                      srcSet={getOptimizedSrcSet('./uploads/personalizados-dibujo-figura-3d.jpg')}
+                      sizes="56px"
                       alt="De Dibujo a 3D"
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover"
                     />
                   </div>
                 </div>
                 <div className="min-w-0">
                   <div className="text-[10px] font-black uppercase tracking-wider text-amber-300">
-                    Nuevo Â· 6 Categorías
+                    Nuevo · 6 Categorías
                   </div>
                   <div className="font-heading font-black text-xs sm:text-sm text-white truncate">
                     Productos Personalizados
@@ -1122,9 +1139,13 @@ export default function App() {
             
             {loading ? (
               <div className="py-24 text-center space-y-3">
-                <img loading="lazy"
-                  src="./brand/artesano_isotipo_transparente.png"
+                <img
+                  src="./brand/artesano_isotipo_transparente-128.webp"
                   alt="Cargando"
+                  width="40"
+                  height="40"
+                  loading="eager"
+                  decoding="async"
                   className="w-10 h-10 object-contain mx-auto animate-bounce"
                 />
                 <p className="text-xs text-gray-500 font-medium">Cargando catálogo Artesano Digital...</p>
@@ -1189,7 +1210,7 @@ export default function App() {
                                     Paquetes &amp; Combos de Ahorro
                                   </span>
                                   <span className="hidden md:inline text-xs text-stone-500 font-medium">
-                                    Â· {currentWorldObj ? `Soluciones coordinadas de ${currentWorldObj.name}` : 'Soluciones coordinadas de taller'}
+                                    · {currentWorldObj ? `Soluciones coordinadas de ${currentWorldObj.name}` : 'Soluciones coordinadas de taller'}
                                   </span>
                                 </div>
                                 <span className="text-[11px] font-bold text-stone-600 bg-white px-2.5 sm:px-3 py-1 rounded-full border border-[#E8E4DA] shadow-2xs">
@@ -1237,7 +1258,7 @@ export default function App() {
                 <div ref={infiniteSentinelRef} className="py-6 flex flex-col items-center justify-center">
                   <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/95 border border-[#E8E4DA] text-xs font-semibold text-gray-600 shadow-2xs">
                     <span className="w-2 h-2 rounded-full bg-[#2D4F3E] animate-ping" />
-                    <span>Catálogo continuo Â· Desliza para seguir explorando</span>
+                    <span>Catálogo continuo · Desliza para seguir explorando</span>
                   </div>
                 </div>
 

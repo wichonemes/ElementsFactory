@@ -52,13 +52,13 @@ export default function PromotionsSection({
   const currentHeading = worldHeadings[activeWorld] || worldHeadings.all;
 
   const handleWhatsAppQuote = (promo) => {
-    let msg = `*COTIZACIÃ“N DE PAQUETE PROMOCIONAL â€” ARTESANO DIGITAL*\n`;
+    let msg = `*COTIZACIÓN DE PAQUETE PROMOCIONAL — ARTESANO DIGITAL*\n`;
     msg += `--------------------------------------------------\n`;
     msg += `¡Hola! Me interesa aprovechar la siguiente promoción:\n\n`;
-    msg += `â€¢ *[${promo.code}] ${promo.name}*\n`;
-    msg += `â€¢ Precio especial: *$${promo.price} MXN* (Ahorro de $${promo.savings} MXN)\n`;
+    msg += `• *[${promo.code}] ${promo.name}*\n`;
+    msg += `• Precio especial: *$${promo.price} MXN* (Ahorro de $${promo.savings} MXN)\n`;
     if (promo.includedItems && promo.includedItems.length > 0) {
-      msg += `â€¢ Piezas de interés:\n  - ${promo.includedItems.join('\n  - ')}\n`;
+      msg += `• Piezas de interés:\n  - ${promo.includedItems.join('\n  - ')}\n`;
     }
     msg += `\n_¿Tienen disponibilidad y tiempos de entrega para este combo?_`;
 

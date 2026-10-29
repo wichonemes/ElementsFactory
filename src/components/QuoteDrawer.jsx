@@ -208,19 +208,19 @@ export default function QuoteDrawer({
       : 'https://wichonemes.github.io/artesano';
 
     let msg = isDirect
-      ? `*PEDIDO DIRECTO INMEDIATO â€” ARTESANO DIGITAL*\n`
-      : `*SOLICITUD DE COTIZACIÃ“N â€” ARTESANO DIGITAL*\n`;
+      ? `*PEDIDO DIRECTO INMEDIATO — ARTESANO DIGITAL*\n`
+      : `*SOLICITUD DE COTIZACIÓN — ARTESANO DIGITAL*\n`;
 
     msg += `--------------------------------------\n`;
 
     if (customerName.trim()) {
-      msg += `â€¢ *Cliente:* ${customerName.trim()}\n`;
+      msg += `• *Cliente:* ${customerName.trim()}\n`;
     }
     if (cityZip.trim()) {
-      msg += `â€¢ *Ciudad / C.P. para entrega:* ${cityZip.trim()}\n`;
+      msg += `• *Ciudad / C.P. para entrega:* ${cityZip.trim()}\n`;
     }
     if (campaignRef.trim()) {
-      msg += `â€¢ *Referencia:* ${campaignRef.trim()}\n`;
+      msg += `• *Referencia:* ${campaignRef.trim()}\n`;
     }
 
     msg += `--------------------------------------\n`;
@@ -231,30 +231,30 @@ export default function QuoteDrawer({
       const prodUrl = `${baseUrl}/?prod=${encodeURIComponent(p.code || p.id)}`;
 
       msg += `${index + 1}. *[${p.code}] ${p.name}*\n`;
-      msg += `   â€¢ Cantidad: *${item.quantity} ${p.priceUnit || 'pza'}*\n`;
+      msg += `   • Cantidad: *${item.quantity} ${p.priceUnit || 'pza'}*\n`;
 
       if (item.selectedVariants && Object.keys(item.selectedVariants).length > 0) {
         const variantsStr = Object.entries(item.selectedVariants)
           .map(([k, v]) => `${k}: ${v}`)
           .join(', ');
-        msg += `   â€¢ Opciones: ${variantsStr}\n`;
+        msg += `   • Opciones: ${variantsStr}\n`;
       }
 
       if (item.customText && item.customText.trim()) {
-        msg += `   â€¢ Personalización: "${item.customText.trim()}"\n`;
+        msg += `   • Personalización: "${item.customText.trim()}"\n`;
       } else if (isDirect) {
-        msg += `   â€¢ Acabado: Estándar de taller (sin grabado)\n`;
+        msg += `   • Acabado: Estándar de taller (sin grabado)\n`;
       }
 
       if (p.priceType === 'quote' || p.price === null) {
-        msg += `   â€¢ Precio: A convenir por proyecto\n`;
+        msg += `   • Precio: A convenir por proyecto\n`;
       } else {
         const lineTotal = p.price * item.quantity;
-        msg += `   â€¢ Precio: $${p.price} c/u (Subtotal: $${lineTotal} MXN)\n`;
+        msg += `   • Precio: $${p.price} c/u (Subtotal: $${lineTotal} MXN)\n`;
       }
 
       // Enlace directo a la pieza en tienda
-      msg += `   â€¢ *Ver pieza:* ${prodUrl}\n`;
+      msg += `   • *Ver pieza:* ${prodUrl}\n`;
 
       // Enlace al modelo 3D en MakerWorld si es pieza 3D
       const is3D = p.techniques?.some(t => t === '3d' || t === 'impresion_3d' || t === '3d_printing') ||
@@ -262,7 +262,7 @@ export default function QuoteDrawer({
                    (p.categories && p.categories.some(c => c.includes('3d') || c.includes('gamer') || c.includes('escritorio')));
       if (is3D) {
         const makerUrl = p.makerWorldUrl || `https://makerworld.com/en/search/models?keyword=${encodeURIComponent(p.name.replace(/[^a-zA-Z0-9 ]/g, ''))}`;
-        msg += `   â€¢ *Modelo 3D MakerWorld:* ${makerUrl}\n`;
+        msg += `   • *Modelo 3D MakerWorld:* ${makerUrl}\n`;
       }
 
       msg += `\n`;
@@ -274,11 +274,11 @@ export default function QuoteDrawer({
     if (appliedCouponCode && discountAmount > 0) {
       const categoryLabel = activeCouponObj ? getCouponCategoryLabel(activeCouponObj) : 'Código Especial de Tienda';
       const benefitLabel = activeCouponObj?.label || activeCouponObj?.name || 'Descuento especial';
-      msg += `*CUPÃ“N APLICADO:* ${appliedCouponCode}\n`;
-      msg += `   â€¢ *Tipo:* ${categoryLabel}\n`;
-      msg += `   â€¢ *Beneficio:* ${benefitLabel}\n`;
-      msg += `   â€¢ *Ahorro otorgado:* -$${discountAmount} MXN\n`;
-      msg += `*TOTAL FINAL CON CUPÃ“N:* $${finalTotal} MXN\n`;
+      msg += `*CUPÓN APLICADO:* ${appliedCouponCode}\n`;
+      msg += `   • *Tipo:* ${categoryLabel}\n`;
+      msg += `   • *Beneficio:* ${benefitLabel}\n`;
+      msg += `   • *Ahorro otorgado:* -$${discountAmount} MXN\n`;
+      msg += `*TOTAL FINAL CON CUPÓN:* $${finalTotal} MXN\n`;
     } else {
       msg += `*Total a pagar:* $${subtotal} MXN\n`;
     }
@@ -540,7 +540,7 @@ export default function QuoteDrawer({
                         {/* Variantes seleccionadas */}
                         {item.selectedVariants && Object.keys(item.selectedVariants).length > 0 && (
                           <div className="text-[10.5px] text-gray-500 truncate">
-                            {Object.entries(item.selectedVariants).map(([k, v]) => `${k}: ${v}`).join(' Â· ')}
+                            {Object.entries(item.selectedVariants).map(([k, v]) => `${k}: ${v}`).join(' · ')}
                           </div>
                         )}
 
@@ -598,7 +598,7 @@ export default function QuoteDrawer({
                 })}
               </div>
 
-              {/* APARTADO DE CÃ“DIGOS DE DESCUENTO Y CUPONES */}
+              {/* APARTADO DE CÓDIGOS DE DESCUENTO Y CUPONES */}
               <div className="p-3.5 rounded-2xl bg-[#FAF9F5] border border-[#E5D7B7] space-y-2.5 text-xs">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5 font-bold text-gray-700">
@@ -619,7 +619,7 @@ export default function QuoteDrawer({
 
                 {/* Aviso claro de que los cupones no son acumulables */}
                 <div className="flex items-center gap-2 p-2 rounded-xl bg-amber-50/80 border border-amber-200/90 text-[11px] text-amber-900 leading-tight">
-                  <span className="text-amber-600 text-sm shrink-0">â„¹ï¸</span>
+                  <span className="text-amber-600 text-sm shrink-0">ℹ️</span>
                   <span><strong>Nota:</strong> Los cupones de descuento no son acumulables entre sí (máximo 1 cupón por pedido).</span>
                 </div>
 
@@ -705,7 +705,7 @@ export default function QuoteDrawer({
                             </span>
                           </div>
                           <p className="text-[11px] text-emerald-900 font-medium truncate mt-0.5">
-                            {activeCouponObj?.label || activeCouponObj?.name || 'Descuento aplicado'} Â· Ahorro: <strong className="text-emerald-700">-${discountAmount} MXN</strong>
+                            {activeCouponObj?.label || activeCouponObj?.name || 'Descuento aplicado'} · Ahorro: <strong className="text-emerald-700">-${discountAmount} MXN</strong>
                           </p>
                           {activeCouponObj?.expiresAt && (
                             <p className="text-[10px] text-gray-500 font-medium mt-0.5 flex items-center gap-1">
