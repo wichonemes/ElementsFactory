@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { 
   X, 
   MessageCircle, 
@@ -39,7 +39,7 @@ export default function MobileSidebarDrawer({
 
   return (
     <div className="md:hidden fixed inset-0 z-50 select-none">
-      {/* Fondo oscuro traslúcido con cierre al tocar */}
+      {/* Fondo oscuro traslÃºcido con cierre al tocar */}
       <div 
         onClick={onClose}
         className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity animate-fadeIn"
@@ -47,14 +47,14 @@ export default function MobileSidebarDrawer({
 
       {/* Panel lateral deslizable desde la izquierda */}
       <aside 
-        aria-label="Menú lateral de taller y herramientas"
+        aria-label="MenÃº lateral de taller y herramientas"
         className="fixed top-0 bottom-0 left-0 w-[84%] max-w-[330px] bg-white shadow-2xl flex flex-col z-50 animate-slideRight"
       >
         {/* 1. CABECERA DEL DRAWER (Verde Taller + Logo + Cierre) */}
         <div className="bg-[#17251E] text-white p-4 flex items-center justify-between border-b border-white/10 shrink-0">
           <div className="flex items-center gap-3 min-w-0">
             <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 p-1 flex items-center justify-center shrink-0">
-              <img
+              <img loading="lazy"
                 src="./brand/artesano_isotipo_transparente.png"
                 alt="Artesano Digital"
                 className="w-full h-full object-contain"
@@ -75,7 +75,7 @@ export default function MobileSidebarDrawer({
             type="button"
             onClick={onClose}
             className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center active:scale-95 transition-all cursor-pointer"
-            title="Cerrar menú"
+            title="Cerrar menÃº"
           >
             <X className="w-4 h-4" />
           </button>
@@ -86,14 +86,14 @@ export default function MobileSidebarDrawer({
           <div className="flex items-center justify-between text-[11px] font-bold text-gray-800">
             <span className="flex items-center gap-1.5 truncate">
               <MapPin className="w-3.5 h-3.5 text-[#2D4F3E] shrink-0" />
-              <span>San Luis Potosí, México</span>
+              <span>San Luis PotosÃ­, MÃ©xico</span>
             </span>
             <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black shrink-0">
               Activo
             </span>
           </div>
           <p className="text-[10px] text-gray-500 mt-0.5 leading-tight">
-            Manufactura 3D, Corte Láser y Sublimación sin intermediarios.
+            Manufactura 3D, Corte LÃ¡ser y SublimaciÃ³n sin intermediarios.
           </p>
         </div>
 
@@ -121,13 +121,13 @@ export default function MobileSidebarDrawer({
                 </div>
                 <div>
                   <div className="text-xs font-bold text-gray-900">Cotizador & Calculadora</div>
-                  <div className="text-[10px] text-gray-500">Calcula piezas en 3D, láser o vinil</div>
+                  <div className="text-[10px] text-gray-500">Calcula piezas en 3D, lÃ¡ser o vinil</div>
                 </div>
               </div>
               <ChevronRight className="w-4 h-4 text-gray-400 group-hover:translate-x-0.5 transition-transform" />
             </button>
 
-            {/* Arcade del Taller (¡Aquí vive el Arcade, sin repetirse arriba!) */}
+            {/* Arcade del Taller (Â¡AquÃ­ vive el Arcade, sin repetirse arriba!) */}
             <button
               type="button"
               onClick={() => {
@@ -151,7 +151,7 @@ export default function MobileSidebarDrawer({
               <ChevronRight className="w-4 h-4 text-gray-400 group-hover:translate-x-0.5 transition-transform" />
             </button>
 
-            {/* Catálogo Móvil en PDF (Si está activo) */}
+            {/* CatÃ¡logo MÃ³vil en PDF (Si estÃ¡ activo) */}
             {isCatalogEnabled && (
               <button
                 type="button"
@@ -168,17 +168,17 @@ export default function MobileSidebarDrawer({
                   </div>
                   <div>
                     <div className="text-xs font-bold text-gray-900 flex items-center gap-1.5">
-                      <span>{settings?.mobileCatalogConfig?.buttonText || 'Catálogo Móvil PDF'}</span>
+                      <span>{settings?.mobileCatalogConfig?.buttonText || 'CatÃ¡logo MÃ³vil PDF'}</span>
                       <span className="text-[9px] bg-amber-100 text-amber-900 font-bold px-1 rounded">9:16</span>
                     </div>
-                    <div className="text-[10px] text-gray-500">Descarga o consulta catálogos de temporada</div>
+                    <div className="text-[10px] text-gray-500">Descarga o consulta catÃ¡logos de temporada</div>
                   </div>
                 </div>
                 <ChevronRight className="w-4 h-4 text-gray-400 group-hover:translate-x-0.5 transition-transform" />
               </button>
             )}
 
-            {/* Ver Ofertas Relámpago (Filtro sutil) */}
+            {/* Ver Ofertas RelÃ¡mpago (Filtro sutil) */}
             <button
               type="button"
               onClick={() => {
@@ -199,7 +199,7 @@ export default function MobileSidebarDrawer({
               <ChevronRight className="w-4 h-4 text-gray-400 group-hover:translate-x-0.5 transition-transform" />
             </button>
 
-            {/* Centro de Servicios Especializados (Diseño, Publicidad y Manufactura) */}
+            {/* Centro de Servicios Especializados (DiseÃ±o, Publicidad y Manufactura) */}
             <button
               type="button"
               onClick={() => {
@@ -217,17 +217,17 @@ export default function MobileSidebarDrawer({
                     <span>Servicios</span>
                     <span className="text-[9px] bg-[#17251E] text-[#D4A359] px-1.5 py-0.2 rounded-full font-bold">Taller</span>
                   </div>
-                  <div className="text-[10px] text-gray-500">Diseño, Publicidad &amp; Industria B2B</div>
+                  <div className="text-[10px] text-gray-500">DiseÃ±o, Publicidad &amp; Industria B2B</div>
                 </div>
               </div>
               <ChevronRight className="w-4 h-4 text-gray-400 group-hover:translate-x-0.5 transition-transform" />
             </button>
           </div>
 
-          {/* GRUPO: ATENCIÓN DIRECTA */}
+          {/* GRUPO: ATENCIÃ“N DIRECTA */}
           <div className="p-2 space-y-1">
             <div className="px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-gray-400">
-              Atención Directa
+              AtenciÃ³n Directa
             </div>
 
             {/* WhatsApp */}
@@ -245,7 +245,7 @@ export default function MobileSidebarDrawer({
                 </div>
                 <div>
                   <div className="text-xs font-bold text-gray-900">WhatsApp con el Artesano</div>
-                  <div className="text-[10px] text-gray-500">Atención personalizada y dudas</div>
+                  <div className="text-[10px] text-gray-500">AtenciÃ³n personalizada y dudas</div>
                 </div>
               </div>
               <ChevronRight className="w-4 h-4 text-gray-400 group-hover:translate-x-0.5 transition-transform" />
@@ -256,7 +256,7 @@ export default function MobileSidebarDrawer({
 
         {/* 4. FOOTER DEL DRAWER */}
         <div className="p-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between text-[10px] text-gray-400 shrink-0">
-          {/* Acceso ultra discreto para el dueño del taller en la esquina inferior izquierda */}
+          {/* Acceso ultra discreto para el dueÃ±o del taller en la esquina inferior izquierda */}
           <button
             type="button"
             onClick={() => {
@@ -270,9 +270,10 @@ export default function MobileSidebarDrawer({
             <Lock className="w-2 h-2 opacity-40" />
             <span className="text-[8.5px]">taller</span>
           </button>
-          <span className="text-gray-400 select-none">Artesano Digital · Hecho en México</span>
+          <span className="text-gray-400 select-none">Artesano Digital Â· Hecho en MÃ©xico</span>
         </div>
       </aside>
     </div>
   );
 }
+

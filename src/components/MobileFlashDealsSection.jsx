@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Flame, Clock, Plus, Zap, ShieldCheck } from 'lucide-react';
 
 export default function MobileFlashDealsSection({
@@ -22,10 +22,10 @@ export default function MobileFlashDealsSection({
 
   return (
     <section className="md:hidden px-3 py-2 select-none">
-      {/* Contenedor en 2 Columnas idéntico a Mercado Libre (Captura 4) */}
+      {/* Contenedor en 2 Columnas idÃ©ntico a Mercado Libre (Captura 4) */}
       <div className="grid grid-cols-2 gap-2.5 items-stretch">
         
-        {/* COLUMNA IZQUIERDA: Tarjeta Amarilla con Título, Reloj y 3 Mini Ofertas */}
+        {/* COLUMNA IZQUIERDA: Tarjeta Amarilla con TÃ­tulo, Reloj y 3 Mini Ofertas */}
         <div className="bg-[#FFE600] rounded-2xl p-2.5 flex flex-col justify-between border border-amber-300 shadow-xs">
           {/* Header de la tarjeta amarilla */}
           <div className="flex items-start justify-between gap-1 mb-2">
@@ -37,7 +37,7 @@ export default function MobileFlashDealsSection({
                 </span>
               </div>
               <div className="text-[10px] font-black uppercase tracking-tight text-stone-900 leading-tight">
-                RELÁMPAGO
+                RELÃMPAGO
               </div>
             </div>
 
@@ -60,7 +60,7 @@ export default function MobileFlashDealsSection({
                   className="bg-white/90 hover:bg-white rounded-xl p-1.5 flex items-center gap-1.5 cursor-pointer active:scale-98 transition-transform border border-amber-200/60 shadow-2xs"
                 >
                   <div className="w-10 h-10 rounded-lg bg-gray-50 overflow-hidden shrink-0 border border-gray-200">
-                    <img
+                    <img loading="lazy"
                       src={p.primaryImage || './uploads/img_001.jpg'}
                       alt={p.name}
                       className="w-full h-full object-cover"
@@ -89,9 +89,9 @@ export default function MobileFlashDealsSection({
             onClick={() => onSelectProduct && onSelectProduct(featured)}
             className="bg-white rounded-2xl p-2.5 flex flex-col justify-between border border-stone-200/80 shadow-xs cursor-pointer active:scale-98 transition-transform relative"
           >
-            {/* Foto grande con badge de relámpago y temporizador */}
+            {/* Foto grande con badge de relÃ¡mpago y temporizador */}
             <div className="relative aspect-square rounded-xl overflow-hidden bg-gray-50 mb-1.5 border border-gray-100">
-              <img
+              <img loading="lazy"
                 src={featured.primaryImage || './uploads/img_001.jpg'}
                 alt={featured.name}
                 className="w-full h-full object-cover"
@@ -102,7 +102,7 @@ export default function MobileFlashDealsSection({
               </span>
             </div>
 
-            {/* Información de producto */}
+            {/* InformaciÃ³n de producto */}
             <div>
               <h4 className="text-[11px] font-bold text-gray-900 line-clamp-1 leading-snug">
                 {featured.name}
@@ -123,11 +123,11 @@ export default function MobileFlashDealsSection({
 
               <div className="text-[9px] text-emerald-700 font-bold flex items-center gap-0.5 mt-1">
                 <ShieldCheck className="w-3 h-3 text-emerald-600 shrink-0" />
-                <span className="truncate">Taller San Luis Potosí</span>
+                <span className="truncate">Taller San Luis PotosÃ­</span>
               </div>
             </div>
 
-            {/* Botón flotante para agregar rápido con pulgar */}
+            {/* BotÃ³n flotante para agregar rÃ¡pido con pulgar */}
             <button
               type="button"
               onClick={(e) => {
@@ -153,3 +153,4 @@ export default function MobileFlashDealsSection({
     </section>
   );
 }
+

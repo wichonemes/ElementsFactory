@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from 'react';
+﻿import React, { useState, useMemo, useRef } from 'react';
 import {
   Palette,
   Globe,
@@ -25,7 +25,7 @@ export default function PublicidadDesarrolloView({
   onOpenCalculator,
   onSelectWorld
 }) {
-  // Alcance del Proyecto: Selección modular de productos por área con desglose en tiempo real
+  // Alcance del Proyecto: SelecciÃ³n modular de productos por Ã¡rea con desglose en tiempo real
   const [selectedItemIds, setSelectedItemIds] = useState(['logo_solo']);
   const [activeCategoryFilter, setActiveCategoryFilter] = useState('branding');
   const [expandedInfoIds, setExpandedInfoIds] = useState([]);
@@ -37,12 +37,12 @@ export default function PublicidadDesarrolloView({
   // Estado de feedback al copiar enlace
   const [copiedLink, setCopiedLink] = useState(false);
 
-  // URL canónica para compartir el portal de diseño y publicidad
+  // URL canÃ³nica para compartir el portal de diseÃ±o y publicidad
   const sharePortalUrl = typeof window !== 'undefined'
     ? `${window.location.origin}${window.location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '')}/?world=servicios&tab=diseno`
     : 'https://wichonemes.github.io/artesano/?world=servicios&tab=diseno';
 
-  const sharePortalText = `Diseño gráfico, desarrollo web y gran formato en Artesano Digital: identidad visual, tiendas online, lonas y producción publicitaria: ${sharePortalUrl}`;
+  const sharePortalText = `DiseÃ±o grÃ¡fico, desarrollo web y gran formato en Artesano Digital: identidad visual, tiendas online, lonas y producciÃ³n publicitaria: ${sharePortalUrl}`;
 
   const handleShareWhatsApp = () => {
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(sharePortalText)}`, '_blank');
@@ -59,8 +59,8 @@ export default function PublicidadDesarrolloView({
   const handleNativeShare = () => {
     if (typeof navigator !== 'undefined' && navigator.share) {
       navigator.share({
-        title: 'Diseño Gráfico, Web & Publicidad // Artesano Digital',
-        text: 'Soluciones visuales y digitales completas: branding, sitios web interactivos, gran formato y publicidad en San Luis Potosí.',
+        title: 'DiseÃ±o GrÃ¡fico, Web & Publicidad // Artesano Digital',
+        text: 'Soluciones visuales y digitales completas: branding, sitios web interactivos, gran formato y publicidad en San Luis PotosÃ­.',
         url: sharePortalUrl
       }).catch(() => {});
     } else {
@@ -68,7 +68,7 @@ export default function PublicidadDesarrolloView({
     }
   };
 
-  // Helper para leer configuración individual de cada tarjeta (url y si está activada o desactivada)
+  // Helper para leer configuraciÃ³n individual de cada tarjeta (url y si estÃ¡ activada o desactivada)
   const parseCardBg = (cardVal, fallbackUrl) => {
     if (!cardVal) return { url: fallbackUrl, enabled: false };
     if (typeof cardVal === 'string') return { url: cardVal, enabled: false };
@@ -83,7 +83,7 @@ export default function PublicidadDesarrolloView({
   const webBg = parseCardBg(settings?.categoryBackgroundPhotos?.diseno?.web, './interfaces/assets/ui-01.jpg');
   const editorialBg = parseCardBg(settings?.categoryBackgroundPhotos?.diseno?.editorial, './portafolio/assets/popol-spread.webp');
 
-  // Paleta oficial de temas y estilos para las 4 áreas principales
+  // Paleta oficial de temas y estilos para las 4 Ã¡reas principales
   const categoryTheme = {
     branding: {
       id: 'branding',
@@ -132,7 +132,7 @@ export default function PublicidadDesarrolloView({
       label: 'Web & Tienda',
       code: 'DEV-03',
       tag: 'Desarrollo Web',
-      desc: 'Sitios web responsivos, catálogos online y tiendas rápidas optimizadas.',
+      desc: 'Sitios web responsivos, catÃ¡logos online y tiendas rÃ¡pidas optimizadas.',
       bgImage: webBg.url,
       showPhoto: webBg.enabled,
       icon: Globe,
@@ -150,10 +150,10 @@ export default function PublicidadDesarrolloView({
     },
     editorial: {
       id: 'editorial',
-      label: 'Catálogos & Redes',
+      label: 'CatÃ¡logos & Redes',
       code: 'EDIT-04',
       tag: 'Contenido & Impresos',
-      desc: 'Menús digitales, catálogos en PDF y contenido gráfico para historias y posts.',
+      desc: 'MenÃºs digitales, catÃ¡logos en PDF y contenido grÃ¡fico para historias y posts.',
       bgImage: editorialBg.url,
       showPhoto: editorialBg.enabled,
       icon: Film,
@@ -171,7 +171,7 @@ export default function PublicidadDesarrolloView({
     }
   };
 
-  // Lista de las 4 áreas principales para los botones superiores (2x2 en celular, 4 en desktop)
+  // Lista de las 4 Ã¡reas principales para los botones superiores (2x2 en celular, 4 en desktop)
   const categoriesList = [
     categoryTheme.branding,
     categoryTheme.publicidad,
@@ -179,21 +179,21 @@ export default function PublicidadDesarrolloView({
     categoryTheme.editorial
   ];
 
-  // Catálogo completo de productos organizados por área con información detallada de entregables
+  // CatÃ¡logo completo de productos organizados por Ã¡rea con informaciÃ³n detallada de entregables
   const projectItemsCatalog = [
-    // --- 1. IDENTIDAD & BRANDING (ÁMBAR) ---
+    // --- 1. IDENTIDAD & BRANDING (ÃMBAR) ---
     {
       id: 'logo_solo',
       category: 'branding',
       categoryLabel: 'Identidad & Marca',
-      title: 'Diseño de Logotipo Principal',
+      title: 'DiseÃ±o de Logotipo Principal',
       subtitle: 'Solo logotipo vectorial maestro',
       desc: 'Entrega de archivos maestros de identidad para uso comercial y publicidad.',
       whatIncludes: [
-        'Propuesta de logotipo profesional diseñada con intención comercial.',
+        'Propuesta de logotipo profesional diseÃ±ada con intenciÃ³n comercial.',
         'Archivos vectoriales maestros editables (.AI de Illustrator, .PDF, .SVG).',
-        'Imágenes en alta resolución (.PNG transparente y .JPG para avatares).',
-        'Cesión completa de derechos de autor para uso de tu marca.'
+        'ImÃ¡genes en alta resoluciÃ³n (.PNG transparente y .JPG para avatares).',
+        'CesiÃ³n completa de derechos de autor para uso de tu marca.'
       ],
       price: 1200
     },
@@ -203,13 +203,13 @@ export default function PublicidadDesarrolloView({
       categoryLabel: 'Identidad & Marca',
       title: 'Identidad Visual & Branding Completo',
       subtitle: 'Logo + Isotipo + Paleta + Manual de Marca',
-      desc: 'Sistema visual integral para posicionar tu negocio como marca sólida.',
+      desc: 'Sistema visual integral para posicionar tu negocio como marca sÃ³lida.',
       whatIncludes: [
         'Logotipo principal, versiones responsivas e isotipo / icono de marca.',
-        'Paleta de colores oficial con códigos HEX, RGB y CMYK para imprenta.',
-        'Selección y jerarquía tipográfica institucional.',
+        'Paleta de colores oficial con cÃ³digos HEX, RGB y CMYK para imprenta.',
+        'SelecciÃ³n y jerarquÃ­a tipogrÃ¡fica institucional.',
         'Manual de identidad visual en PDF con normas de uso y aplicaciones correctas.',
-        'Kit completo de archivos vectoriales y transparentes en alta definición.'
+        'Kit completo de archivos vectoriales y transparentes en alta definiciÃ³n.'
       ],
       price: 2500
     },
@@ -217,12 +217,12 @@ export default function PublicidadDesarrolloView({
       id: 'vectorizado_logo',
       category: 'branding',
       categoryLabel: 'Identidad & Marca',
-      title: 'Vectorización / Limpieza de Logo',
-      subtitle: 'De foto o boceto a curvas nítidas',
-      desc: 'Trazado técnico profesional para que tu logo nunca se pixelee.',
+      title: 'VectorizaciÃ³n / Limpieza de Logo',
+      subtitle: 'De foto o boceto a curvas nÃ­tidas',
+      desc: 'Trazado tÃ©cnico profesional para que tu logo nunca se pixelee.',
       whatIncludes: [
-        'Redibujo técnico en curvas vectoriales de logotipo existente o boceto.',
-        'Eliminación de pixelado para que se pueda imprimir a cualquier tamaño.',
+        'Redibujo tÃ©cnico en curvas vectoriales de logotipo existente o boceto.',
+        'EliminaciÃ³n de pixelado para que se pueda imprimir a cualquier tamaÃ±o.',
         'Entrega en vectores (.AI, .SVG, .PDF) y PNG con fondo transparente.'
       ],
       price: 450
@@ -231,12 +231,12 @@ export default function PublicidadDesarrolloView({
       id: 'membretes_firmas',
       category: 'branding',
       categoryLabel: 'Identidad & Marca',
-      title: 'Papelería Digital & Firmas de Correo',
+      title: 'PapelerÃ­a Digital & Firmas de Correo',
       subtitle: 'Hoja membretada institucional y kit de perfiles',
-      desc: 'Aplicación institucional de marca para comunicación comercial formal.',
+      desc: 'AplicaciÃ³n institucional de marca para comunicaciÃ³n comercial formal.',
       whatIncludes: [
         'Hoja membretada digital editable en Word y plantilla PDF.',
-        'Diseño de firma digital para correos electrónicos corporativos.',
+        'DiseÃ±o de firma digital para correos electrÃ³nicos corporativos.',
         'Kit de portadas y avatares institucionales para redes comerciales.'
       ],
       price: 550
@@ -247,15 +247,15 @@ export default function PublicidadDesarrolloView({
       id: 'lona_1x1',
       category: 'publicidad',
       categoryLabel: 'Lonas & Gran Formato',
-      title: 'Lona Publicitaria 1.0 × 1.0 m',
-      subtitle: '1 m² lista para colgar · Bastilla y ojillos',
+      title: 'Lona Publicitaria 1.0 Ã— 1.0 m',
+      subtitle: '1 mÂ² lista para colgar Â· Bastilla y ojillos',
       desc: 'Lona comercial compacta de alta durabilidad para exteriores.',
       whatIncludes: [
         'Lona frontlite de 13 oz resistente al sol, viento y lluvia.',
-        'Impresión digital a todo color en alta definición.',
+        'ImpresiÃ³n digital a todo color en alta definiciÃ³n.',
         'Bastilla perimetral termosellada con refuerzo para evitar desgarres.',
-        'Ojillos metálicos galvanizados en las 4 esquinas.',
-        'Nota de taller: No incluye diseño gráfico (requiere archivo en curvas o alta resolución).'
+        'Ojillos metÃ¡licos galvanizados en las 4 esquinas.',
+        'Nota de taller: No incluye diseÃ±o grÃ¡fico (requiere archivo en curvas o alta resoluciÃ³n).'
       ],
       price: 260,
       isPrint: true
@@ -264,15 +264,15 @@ export default function PublicidadDesarrolloView({
       id: 'lona_2x1',
       category: 'publicidad',
       categoryLabel: 'Lonas & Gran Formato',
-      title: 'Lona Publicitaria 2.0 × 1.0 m',
-      subtitle: '2 m² comercial · Medida más solicitada',
-      desc: 'Medida estándar más común para fachadas comerciales y promociones.',
+      title: 'Lona Publicitaria 2.0 Ã— 1.0 m',
+      subtitle: '2 mÂ² comercial Â· Medida mÃ¡s solicitada',
+      desc: 'Medida estÃ¡ndar mÃ¡s comÃºn para fachadas comerciales y promociones.',
       whatIncludes: [
-        'Dimensiones: 2 metros de ancho por 1 metro de alto (2 m²).',
+        'Dimensiones: 2 metros de ancho por 1 metro de alto (2 mÂ²).',
         'Lona frontlite 13 oz de uso rudo para exteriores.',
-        'Bastilla perimetral reforzada y ojillos metálicos cada metro.',
+        'Bastilla perimetral reforzada y ojillos metÃ¡licos cada metro.',
         'Acabado listo para montar con cinchos o cuerda.',
-        'Nota de taller: No incluye diseño gráfico.'
+        'Nota de taller: No incluye diseÃ±o grÃ¡fico.'
       ],
       price: 490,
       isPrint: true
@@ -281,14 +281,14 @@ export default function PublicidadDesarrolloView({
       id: 'lona_3x2',
       category: 'publicidad',
       categoryLabel: 'Lonas & Gran Formato',
-      title: 'Lona Publicitaria 3.0 × 2.0 m',
-      subtitle: '6 m² gran visibilidad exterior',
+      title: 'Lona Publicitaria 3.0 Ã— 2.0 m',
+      subtitle: '6 mÂ² gran visibilidad exterior',
       desc: 'Formato amplio para marquesinas, bardas y espectaculares ligeros.',
       whatIncludes: [
         '6 metros cuadrados de alto impacto visual para tu negocio.',
         'Lona frontlite 13 oz para exteriores con tintas UV duraderas.',
-        'Bastilla perimetral de refuerzo y ojillos metálicos cada 80 cm.',
-        'Nota de taller: No incluye diseño gráfico.'
+        'Bastilla perimetral de refuerzo y ojillos metÃ¡licos cada 80 cm.',
+        'Nota de taller: No incluye diseÃ±o grÃ¡fico.'
       ],
       price: 1350,
       isPrint: true
@@ -297,14 +297,14 @@ export default function PublicidadDesarrolloView({
       id: 'rotulacion_vinil',
       category: 'publicidad',
       categoryLabel: 'Lonas & Gran Formato',
-      title: 'Rotulación en Vinil Adhesivo m²',
-      subtitle: 'Por metro cuadrado para cristal o vehículo',
-      desc: 'Vinil comercial de alta adherencia para cristales, muros o vehículos.',
+      title: 'RotulaciÃ³n en Vinil Adhesivo mÂ²',
+      subtitle: 'Por metro cuadrado para cristal o vehÃ­culo',
+      desc: 'Vinil comercial de alta adherencia para cristales, muros o vehÃ­culos.',
       whatIncludes: [
-        'Vinil de corte o impreso en alta definición por metro cuadrado.',
-        'Adhesivo resistente para cristales, vitrinas, acrílico o carrocerías.',
-        'Acabado brillante o mate a elección.',
-        'Nota: No incluye diseño gráfico ni instalación en sitio.'
+        'Vinil de corte o impreso en alta definiciÃ³n por metro cuadrado.',
+        'Adhesivo resistente para cristales, vitrinas, acrÃ­lico o carrocerÃ­as.',
+        'Acabado brillante o mate a elecciÃ³n.',
+        'Nota: No incluye diseÃ±o grÃ¡fico ni instalaciÃ³n en sitio.'
       ],
       price: 380,
       isPrint: true
@@ -313,14 +313,14 @@ export default function PublicidadDesarrolloView({
       id: 'microperforado',
       category: 'publicidad',
       categoryLabel: 'Lonas & Gran Formato',
-      title: 'Vinil Microperforado para Cristales m²',
-      subtitle: 'Privacidad interior con visión hacia afuera',
+      title: 'Vinil Microperforado para Cristales mÂ²',
+      subtitle: 'Privacidad interior con visiÃ³n hacia afuera',
       desc: 'Publicidad visible desde la calle permitiendo entrar la luz natural.',
       whatIncludes: [
         'Vinil microperforado especial para ventanales y medallones de autos.',
         'Muestra tu publicidad al exterior y permite ver hacia afuera desde dentro.',
-        'Protección solar ligera y reducción de deslumbramiento.',
-        'Nota: No incluye diseño gráfico.'
+        'ProtecciÃ³n solar ligera y reducciÃ³n de deslumbramiento.',
+        'Nota: No incluye diseÃ±o grÃ¡fico.'
       ],
       price: 420,
       isPrint: true
@@ -329,15 +329,15 @@ export default function PublicidadDesarrolloView({
       id: 'banner_roll_up',
       category: 'publicidad',
       categoryLabel: 'Lonas & Gran Formato',
-      title: 'Banner Roll-Up Retráctil 0.85 × 2.0 m',
+      title: 'Banner Roll-Up RetrÃ¡ctil 0.85 Ã— 2.0 m',
       subtitle: 'Estructura de aluminio + lona impresa',
-      desc: 'Exhibidor portátil y ligero para expos, ferias y puntos de venta.',
+      desc: 'Exhibidor portÃ¡til y ligero para expos, ferias y puntos de venta.',
       whatIncludes: [
-        'Estructura retráctil portátil de aluminio de 0.85 × 2.0 m.',
-        'Lona impresa en calidad fotográfica montada lista para desenrollar.',
-        'Maletín de lona para fácil transportación.',
+        'Estructura retrÃ¡ctil portÃ¡til de aluminio de 0.85 Ã— 2.0 m.',
+        'Lona impresa en calidad fotogrÃ¡fica montada lista para desenrollar.',
+        'MaletÃ­n de lona para fÃ¡cil transportaciÃ³n.',
         'Armado en menos de 1 minuto sin necesidad de herramientas.',
-        'Nota: No incluye diseño gráfico.'
+        'Nota: No incluye diseÃ±o grÃ¡fico.'
       ],
       price: 1150,
       isPrint: true
@@ -349,14 +349,14 @@ export default function PublicidadDesarrolloView({
       category: 'web',
       categoryLabel: 'Web & Tienda',
       title: 'Sitio Web / Landing Page Comercial',
-      subtitle: '1 página responsiva adaptada a celular',
-      desc: 'Presencia profesional en internet con llamada directa a la acción.',
+      subtitle: '1 pÃ¡gina responsiva adaptada a celular',
+      desc: 'Presencia profesional en internet con llamada directa a la acciÃ³n.',
       whatIncludes: [
-        'Diseño web moderno 100% responsivo y adaptado a celulares y tablets.',
-        'Secciones: Portada, Servicios, Beneficios, Galería, Ubicación y Preguntas.',
-        'Botones directos de contacto a WhatsApp y llamada telefónica.',
-        'Optimización de velocidad de carga y alta en motores de búsqueda.',
-        'Configuración de dominio y hosting con certificado SSL seguro.'
+        'DiseÃ±o web moderno 100% responsivo y adaptado a celulares y tablets.',
+        'Secciones: Portada, Servicios, Beneficios, GalerÃ­a, UbicaciÃ³n y Preguntas.',
+        'Botones directos de contacto a WhatsApp y llamada telefÃ³nica.',
+        'OptimizaciÃ³n de velocidad de carga y alta en motores de bÃºsqueda.',
+        'ConfiguraciÃ³n de dominio y hosting con certificado SSL seguro.'
       ],
       price: 2900
     },
@@ -364,76 +364,76 @@ export default function PublicidadDesarrolloView({
       id: 'tienda_catalogo',
       category: 'web',
       categoryLabel: 'Web & Tienda',
-      title: 'Tienda Online / Catálogo WhatsApp',
+      title: 'Tienda Online / CatÃ¡logo WhatsApp',
       subtitle: 'Con carrito de compras y pedidos directos',
       desc: 'Plataforma para mostrar productos y recibir pedidos estructurados por WhatsApp.',
       whatIncludes: [
-        'Catálogo interactivo con buscador en vivo y filtros por categoría.',
-        'Carrito de compras integrado con resumen de pedido automático.',
-        'Panel de administración protegido para editar productos y precios.',
-        'Carga inicial de catálogo y configuración técnica en la nube.',
+        'CatÃ¡logo interactivo con buscador en vivo y filtros por categorÃ­a.',
+        'Carrito de compras integrado con resumen de pedido automÃ¡tico.',
+        'Panel de administraciÃ³n protegido para editar productos y precios.',
+        'Carga inicial de catÃ¡logo y configuraciÃ³n tÃ©cnica en la nube.',
         'Dominio propio, hosting seguro con SSL y soporte de arranque.'
       ],
       price: 5800
     },
 
-    // --- 4. CONTENIDO EDITORIAL, TARJETAS & MENÚS (MORADO) ---
+    // --- 4. CONTENIDO EDITORIAL, TARJETAS & MENÃšS (MORADO) ---
     {
       id: 'tarjetas_presentacion',
       category: 'editorial',
-      categoryLabel: 'Catálogos & Redes',
-      title: 'Diseño de Tarjetas de Presentación',
-      subtitle: 'Frente y vuelta · Lista para imprenta',
-      desc: 'Diseño comercial profesional de tarjeta de presentación con acabados listos para imprimir.',
+      categoryLabel: 'CatÃ¡logos & Redes',
+      title: 'DiseÃ±o de Tarjetas de PresentaciÃ³n',
+      subtitle: 'Frente y vuelta Â· Lista para imprenta',
+      desc: 'DiseÃ±o comercial profesional de tarjeta de presentaciÃ³n con acabados listos para imprimir.',
       whatIncludes: [
-        'Diseño gráfico personalizado frente y vuelta con tu logotipo y datos de contacto.',
-        'Formato estándar comercial (9 × 5 cm) con guías de corte, sangría y modo CMYK.',
-        'Entrega en archivo PDF de prensa de alta resolución para imprimir.',
-        'Versión digital optimizada para compartir por WhatsApp como tarjeta virtual.'
+        'DiseÃ±o grÃ¡fico personalizado frente y vuelta con tu logotipo y datos de contacto.',
+        'Formato estÃ¡ndar comercial (9 Ã— 5 cm) con guÃ­as de corte, sangrÃ­a y modo CMYK.',
+        'Entrega en archivo PDF de prensa de alta resoluciÃ³n para imprimir.',
+        'VersiÃ³n digital optimizada para compartir por WhatsApp como tarjeta virtual.'
       ],
       price: 350
     },
     {
       id: 'catalogo_pdf',
       category: 'editorial',
-      categoryLabel: 'Catálogos & Redes',
-      title: 'Catálogo Digital PDF Interactivo',
+      categoryLabel: 'CatÃ¡logos & Redes',
+      title: 'CatÃ¡logo Digital PDF Interactivo',
       subtitle: 'Para celular con enlaces a WhatsApp',
       desc: 'Documento comercial en PDF con botones directos para cotizar.',
       whatIncludes: [
-        'Diseño editorial estructurado de productos, descripciones y precios.',
+        'DiseÃ±o editorial estructurado de productos, descripciones y precios.',
         'Botones interactivos que abren WhatsApp con el producto elegido.',
-        'Optimizado para envío ligero por WhatsApp y correo sin perder nitidez.',
-        'Entrega en PDF interactivo y versión apta para imprimir.'
+        'Optimizado para envÃ­o ligero por WhatsApp y correo sin perder nitidez.',
+        'Entrega en PDF interactivo y versiÃ³n apta para imprimir.'
       ],
       price: 850
     },
     {
       id: 'menu_digital',
       category: 'editorial',
-      categoryLabel: 'Catálogos & Redes',
-      title: 'Menú Digital para Restaurante o Bar',
-      subtitle: 'Para lectura en móvil o código QR',
-      desc: 'Menú visual y apetecible para restaurantes, cafeterías o bares.',
+      categoryLabel: 'CatÃ¡logos & Redes',
+      title: 'MenÃº Digital para Restaurante o Bar',
+      subtitle: 'Para lectura en mÃ³vil o cÃ³digo QR',
+      desc: 'MenÃº visual y apetecible para restaurantes, cafeterÃ­as o bares.',
       whatIncludes: [
-        'Diseño estructurado por secciones (bebidas, entradas, platos fuertes, combos).',
-        'Formato vertical para lectura rápida y cómoda en pantalla de celular.',
-        'Diseño de código QR institucional listo para imprimir y colocar en mesas.',
-        'Entrega en PDF de alta resolución y formatos de imagen.'
+        'DiseÃ±o estructurado por secciones (bebidas, entradas, platos fuertes, combos).',
+        'Formato vertical para lectura rÃ¡pida y cÃ³moda en pantalla de celular.',
+        'DiseÃ±o de cÃ³digo QR institucional listo para imprimir y colocar en mesas.',
+        'Entrega en PDF de alta resoluciÃ³n y formatos de imagen.'
       ],
       price: 750
     },
     {
       id: 'pack_flyers_6',
       category: 'editorial',
-      categoryLabel: 'Catálogos & Redes',
-      title: 'Paquete 6 Diseños para Redes Sociales',
+      categoryLabel: 'CatÃ¡logos & Redes',
+      title: 'Paquete 6 DiseÃ±os para Redes Sociales',
       subtitle: 'Posts o historias promocionales',
       desc: 'Contenido visual consistente con tu marca para promociones del mes.',
       whatIncludes: [
-        '6 piezas gráficas con tu logotipo, colores de marca y mensajes de venta.',
-        'Formatos a elegir: Cuadrado para feed (1080×1080) o historias (1080×1920).',
-        'Textos publicitarios claros y llamados a la acción comerciales.',
+        '6 piezas grÃ¡ficas con tu logotipo, colores de marca y mensajes de venta.',
+        'Formatos a elegir: Cuadrado para feed (1080Ã—1080) o historias (1080Ã—1920).',
+        'Textos publicitarios claros y llamados a la acciÃ³n comerciales.',
         'Entrega en JPG y PNG optimizados para no perder calidad en redes.'
       ],
       price: 600
@@ -441,14 +441,14 @@ export default function PublicidadDesarrolloView({
     {
       id: 'volante_impreso',
       category: 'editorial',
-      categoryLabel: 'Catálogos & Redes',
-      title: 'Diseño de Volante / Flyer Publicitario',
+      categoryLabel: 'CatÃ¡logos & Redes',
+      title: 'DiseÃ±o de Volante / Flyer Publicitario',
       subtitle: '1 o 2 caras listo para imprenta',
-      desc: 'Diseño publicitario comercial con medidas estándar para imprenta.',
+      desc: 'DiseÃ±o publicitario comercial con medidas estÃ¡ndar para imprenta.',
       whatIncludes: [
-        'Diseño publicitario comercial (media carta o cuarto de carta).',
+        'DiseÃ±o publicitario comercial (media carta o cuarto de carta).',
         'Estructura visual: gancho principal, oferta, beneficios y contacto.',
-        'Entrega en archivo PDF de prensa con guías de corte, sangría y modo CMYK.'
+        'Entrega en archivo PDF de prensa con guÃ­as de corte, sangrÃ­a y modo CMYK.'
       ],
       price: 450
     }
@@ -458,47 +458,47 @@ export default function PublicidadDesarrolloView({
   const corporatePackages = [
     {
       id: 'pack_apertura',
-      badge: 'Más Solicitado para Negocios',
+      badge: 'MÃ¡s Solicitado para Negocios',
       badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
       title: 'Paquete Apertura Comercial / Local Nuevo',
-      subtitle: 'Logo + Lona 2.0 × 1.0 m + Tarjetas + Volantes',
+      subtitle: 'Logo + Lona 2.0 Ã— 1.0 m + Tarjetas + Volantes',
       priceText: '$2,250 MXN',
-      idealFor: 'Negocios nuevos, locales comerciales y puntos de venta en inauguración.',
+      idealFor: 'Negocios nuevos, locales comerciales y puntos de venta en inauguraciÃ³n.',
       includes: [
-        'Diseño de logotipo vectorial maestro (.AI, .PDF, .PNG transparente).',
-        'Lona publicitaria de 2.0 × 1.0 m impresa en 13 oz con bastilla y ojillos lista para colgar.',
-        'Diseño de tarjetas de presentación comerciales frente y vuelta lista para imprenta.',
-        'Diseño de volante publicitario para promoción de apertura.'
+        'DiseÃ±o de logotipo vectorial maestro (.AI, .PDF, .PNG transparente).',
+        'Lona publicitaria de 2.0 Ã— 1.0 m impresa en 13 oz con bastilla y ojillos lista para colgar.',
+        'DiseÃ±o de tarjetas de presentaciÃ³n comerciales frente y vuelta lista para imprenta.',
+        'DiseÃ±o de volante publicitario para promociÃ³n de apertura.'
       ]
     },
     {
       id: 'pack_digital_360',
-      badge: 'Solución Digital Completa',
+      badge: 'SoluciÃ³n Digital Completa',
       badgeColor: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
-      title: 'Paquete Digital & Ventas 360°',
-      subtitle: 'Identidad Completa + Sitio Web + Catálogo WhatsApp',
+      title: 'Paquete Digital & Ventas 360Â°',
+      subtitle: 'Identidad Completa + Sitio Web + CatÃ¡logo WhatsApp',
       priceText: '$7,200 MXN',
       idealFor: 'Marcas y empresas que buscan vender por internet y proyectar autoridad.',
       includes: [
         'Identidad visual completa (logo principal, isotipo, manual de marca y paleta oficial).',
         'Sitio web responsivo de alto rendimiento adaptado a celulares y con botones directos.',
-        'Catálogo digital interactivo en PDF con botones directos para pedidos en WhatsApp.',
+        'CatÃ¡logo digital interactivo en PDF con botones directos para pedidos en WhatsApp.',
         'Pack de 6 artes publicitarios para redes sociales.'
       ]
     },
     {
       id: 'pack_poliza_mensual',
-      badge: 'Póliza Mensual para Empresas',
+      badge: 'PÃ³liza Mensual para Empresas',
       badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
-      title: 'Maquila de Diseño & Soporte Comercial Continuo',
-      subtitle: 'Diseñador dedicado para tu negocio (redes, catálogos e impresos)',
+      title: 'Maquila de DiseÃ±o & Soporte Comercial Continuo',
+      subtitle: 'DiseÃ±ador dedicado para tu negocio (redes, catÃ¡logos e impresos)',
       priceText: '$3,200 MXN / mes',
       idealFor: 'Restaurantes, franquicias y pymes con promociones y cambios semanales.',
       includes: [
-        '15 piezas gráficas mensuales (posts, historias promocionales, flyers o banners).',
-        'Actualización continua de menús digitales o listas de precios.',
-        'Adaptación rápida de artes para lonas y promociones de temporada.',
-        'Atención prioritaria directa por WhatsApp con entregas ágiles.'
+        '15 piezas grÃ¡ficas mensuales (posts, historias promocionales, flyers o banners).',
+        'ActualizaciÃ³n continua de menÃºs digitales o listas de precios.',
+        'AdaptaciÃ³n rÃ¡pida de artes para lonas y promociones de temporada.',
+        'AtenciÃ³n prioritaria directa por WhatsApp con entregas Ã¡giles.'
       ]
     },
     {
@@ -506,19 +506,19 @@ export default function PublicidadDesarrolloView({
       badge: 'Proyecto a la Medida',
       badgeColor: 'bg-sky-500/20 text-sky-300 border-sky-500/40',
       title: 'Proyecto Especial Corporativo / Gran Escala',
-      subtitle: 'Lonas de gran dimensión, rotulación de flotillas o plataformas a medida',
-      priceText: 'Cotización Personalizada',
+      subtitle: 'Lonas de gran dimensiÃ³n, rotulaciÃ³n de flotillas o plataformas a medida',
+      priceText: 'CotizaciÃ³n Personalizada',
       idealFor: 'Empresas, constructoras, eventos masivos y requerimientos industriales.',
       includes: [
-        'Levantamiento de especificaciones técnicas y medidas no estándar.',
-        'Asesoría en materiales de uso rudo para exteriores de gran formato.',
-        'Cotización formal y factura fiscal para tu empresa.',
-        'Atención personalizada directa por WhatsApp.'
+        'Levantamiento de especificaciones tÃ©cnicas y medidas no estÃ¡ndar.',
+        'AsesorÃ­a en materiales de uso rudo para exteriores de gran formato.',
+        'CotizaciÃ³n formal y factura fiscal para tu empresa.',
+        'AtenciÃ³n personalizada directa por WhatsApp.'
       ]
     }
   ];
 
-  // Alternar selección de un ítem para la cotización
+  // Alternar selecciÃ³n de un Ã­tem para la cotizaciÃ³n
   const toggleItem = (itemId) => {
     setSelectedItemIds(prev => {
       if (prev.includes(itemId)) {
@@ -529,7 +529,7 @@ export default function PublicidadDesarrolloView({
     });
   };
 
-  // Alternar extensión de información de lo que contiene cada producto
+  // Alternar extensiÃ³n de informaciÃ³n de lo que contiene cada producto
   const toggleInfo = (itemId) => {
     setExpandedInfoIds(prev => {
       if (prev.includes(itemId)) {
@@ -540,12 +540,12 @@ export default function PublicidadDesarrolloView({
     });
   };
 
-  // Filtrado estricto por área: solo muestra los productos del área activa
+  // Filtrado estricto por Ã¡rea: solo muestra los productos del Ã¡rea activa
   const filteredCatalog = useMemo(() => {
     return projectItemsCatalog.filter(item => item.category === activeCategoryFilter);
   }, [activeCategoryFilter]);
 
-  // Lista de ítems seleccionados (conserva la selección global acumulada de todas las áreas)
+  // Lista de Ã­tems seleccionados (conserva la selecciÃ³n global acumulada de todas las Ã¡reas)
   const selectedItems = useMemo(() => {
     return projectItemsCatalog.filter(item => selectedItemIds.includes(item.id));
   }, [selectedItemIds]);
@@ -555,10 +555,10 @@ export default function PublicidadDesarrolloView({
     return selectedItems.reduce((acc, cur) => acc + cur.price, 0);
   }, [selectedItems]);
 
-  // Tema activo del área seleccionada
+  // Tema activo del Ã¡rea seleccionada
   const activeTheme = categoryTheme[activeCategoryFilter] || categoryTheme.branding;
 
-  // Envío a WhatsApp con el desglose exacto
+  // EnvÃ­o a WhatsApp con el desglose exacto
   const handleSendWhatsAppScope = () => {
     if (selectedItems.length === 0) {
       alert('Por favor selecciona al menos un producto o servicio para cotizar.');
@@ -566,28 +566,28 @@ export default function PublicidadDesarrolloView({
     }
 
     const itemsListText = selectedItems
-      .map(item => `• *${item.title}* (${item.subtitle}): $${item.price.toLocaleString('es-MX')} MXN`)
+      .map(item => `â€¢ *${item.title}* (${item.subtitle}): $${item.price.toLocaleString('es-MX')} MXN`)
       .join('\n');
 
     const hasPrintItems = selectedItems.some(i => i.isPrint);
 
-    const text = `Hola Artesano Digital, me interesa cotizar los siguientes productos de su portal de *Diseño & Publicidad*:
+    const text = `Hola Artesano Digital, me interesa cotizar los siguientes productos de su portal de *DiseÃ±o & Publicidad*:
 
 ${itemsListText}
 
-*Inversión Total Estimada:* $${totalEstimate.toLocaleString('es-MX')} MXN
-${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfico)_\n` : ''}${quoteNotes.trim() ? `\n• *Detalles / Medidas:* ${quoteNotes.trim()}\n` : ''}
-¿Podemos platicar sobre este proyecto?`;
+*InversiÃ³n Total Estimada:* $${totalEstimate.toLocaleString('es-MX')} MXN
+${hasPrintItems ? `_(Nota: Los precios de impresiÃ³n no incluyen diseÃ±o grÃ¡fico)_\n` : ''}${quoteNotes.trim() ? `\nâ€¢ *Detalles / Medidas:* ${quoteNotes.trim()}\n` : ''}
+Â¿Podemos platicar sobre este proyecto?`;
 
     const url = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
   };
 
-  // Cotizar un paquete empresarial específico directamente por WhatsApp
+  // Cotizar un paquete empresarial especÃ­fico directamente por WhatsApp
   const handleQuoteCorporatePackage = (pkg) => {
-    const text = `Hola Artesano Digital, me interesa cotizar el *${pkg.title}* (${pkg.priceText}) que vi en su sección de empresas de *Diseño & Publicidad*.
+    const text = `Hola Artesano Digital, me interesa cotizar el *${pkg.title}* (${pkg.priceText}) que vi en su secciÃ³n de empresas de *DiseÃ±o & Publicidad*.
 
-¿Podemos platicar sobre los detalles para mi negocio?`;
+Â¿Podemos platicar sobre los detalles para mi negocio?`;
 
     const url = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
@@ -600,18 +600,18 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
       <section className="relative overflow-hidden bg-gradient-to-b from-[#080A0D] via-[#101319] to-[#0D1015] text-white pt-4 pb-5 sm:pt-7 sm:pb-8 px-4 sm:px-6 lg:px-8 border-b border-stone-800/80">
         <div className="max-w-4xl mx-auto relative z-10 space-y-1 sm:space-y-1.5">
           <h1 className="text-2xl sm:text-3xl font-black font-heading tracking-tight leading-[1.1]">
-            Diseño &amp; <span className="text-[#e8b84f]">Publicidad</span>
+            DiseÃ±o &amp; <span className="text-[#e8b84f]">Publicidad</span>
           </h1>
           <p className="text-xs sm:text-sm text-stone-300 font-normal leading-relaxed max-w-xl">
-            Identidad visual, lonas de gran formato, rotulación en vinil, desarrollo web interactivo y producción publicitaria.
+            Identidad visual, lonas de gran formato, rotulaciÃ³n en vinil, desarrollo web interactivo y producciÃ³n publicitaria.
           </p>
         </div>
       </section>
 
-      {/* 2. MÓDULO PRINCIPAL FUSIONADO: SELECCIONA ÁREA Y ELIGE PRODUCTOS CON DETALLE DESPLEGABLE */}
+      {/* 2. MÃ“DULO PRINCIPAL FUSIONADO: SELECCIONA ÃREA Y ELIGE PRODUCTOS CON DETALLE DESPLEGABLE */}
       <main className="max-w-4xl mx-auto px-3.5 sm:px-6 py-4 sm:py-6 space-y-5 sm:space-y-7">
 
-        {/* ================= CATÁLOGO Y ALCANCE DE PROYECTO (4 ÁREAS PRINCIPALES) ================= */}
+        {/* ================= CATÃLOGO Y ALCANCE DE PROYECTO (4 ÃREAS PRINCIPALES) ================= */}
         <section id="alcance-proyecto" ref={alcanceRef} className="space-y-3.5 animate-fadeIn">
           
           {/* Cabecera unificada */}
@@ -622,7 +622,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                 <span>Servicios &amp; Alcance del Proyecto</span>
               </div>
               <h2 className="text-base sm:text-lg font-black text-white mt-0.5">
-                Selecciona tu Área y Elige tus Productos
+                Selecciona tu Ãrea y Elige tus Productos
               </h2>
             </div>
             <span className="text-xs text-stone-400 font-mono self-end">
@@ -630,7 +630,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
             </span>
           </div>
 
-          {/* Selectores de Área (4 Áreas estilo tarjeta con foto desenfocada de referencia) */}
+          {/* Selectores de Ãrea (4 Ãreas estilo tarjeta con foto desenfocada de referencia) */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5">
             {categoriesList.map(cat => {
               const isSelected = activeCategoryFilter === cat.id;
@@ -650,7 +650,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                   {/* Foto desenfocada de fondo con opacidad visible (individualmente activable o desactivable) */}
                   {cat.showPhoto && (
                     <>
-                      <img
+                      <img loading="lazy"
                         src={cat.bgImage}
                         alt=""
                         aria-hidden="true"
@@ -662,13 +662,13 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                     </>
                   )}
 
-                  {/* Fila superior: Código con línea decorativa estilo referencia y Estado */}
+                  {/* Fila superior: CÃ³digo con lÃ­nea decorativa estilo referencia y Estado */}
                   <div className="relative z-10 flex items-start justify-between w-full">
                     <div>
                       <span className="font-heading font-black text-xs sm:text-sm tracking-wider uppercase text-white drop-shadow-sm">
                         {cat.code}
                       </span>
-                      {/* Línea decorativa como en la imagen de referencia */}
+                      {/* LÃ­nea decorativa como en la imagen de referencia */}
                       <div className={`w-7 h-0.5 mt-1 rounded-full ${cat.underlineClass}`} />
                     </div>
 
@@ -690,7 +690,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                     </span>
                   </div>
 
-                  {/* Sección inferior: Icono en caja redondeada, Tag neón, Título Futura y Descripción */}
+                  {/* SecciÃ³n inferior: Icono en caja redondeada, Tag neÃ³n, TÃ­tulo Futura y DescripciÃ³n */}
                   <div className="relative z-10 pt-3 space-y-1.5">
                     <div className="flex items-center gap-2">
                       <div
@@ -728,10 +728,10 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
             })}
           </div>
 
-          {/* Contenedor de Productos del Área Activa */}
+          {/* Contenedor de Productos del Ãrea Activa */}
           <div className="bg-[#10131A] rounded-2xl sm:rounded-3xl border border-stone-800 p-3 sm:p-4 shadow-2xl space-y-3 text-white">
             
-            {/* Encabezado del área activa */}
+            {/* Encabezado del Ã¡rea activa */}
             <div className="flex items-center justify-between border-b border-stone-800/80 pb-2">
               <div className="flex items-center gap-2">
                 <span className={`w-2.5 h-2.5 rounded-full ${activeTheme.dotColor}`} />
@@ -744,17 +744,17 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
               </span>
             </div>
 
-            {/* AVISO DE TALLER PARA IMPRESIÓN (SOLO EN LONAS & GRAN FORMATO) */}
+            {/* AVISO DE TALLER PARA IMPRESIÃ“N (SOLO EN LONAS & GRAN FORMATO) */}
             {activeCategoryFilter === 'publicidad' && (
               <div className="p-2 sm:p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-200 text-[11px] sm:text-xs flex items-center gap-2">
                 <Printer className="w-3.5 h-3.5 shrink-0 text-emerald-400" />
                 <span>
-                  <strong>Nota de Impresión:</strong> Los precios de lonas y vinil <strong>no incluyen diseño gráfico</strong>.
+                  <strong>Nota de ImpresiÃ³n:</strong> Los precios de lonas y vinil <strong>no incluyen diseÃ±o grÃ¡fico</strong>.
                 </span>
               </div>
             )}
 
-            {/* LISTA EXCLUSIVA DE PRODUCTOS CON PESTAÑA DESPLEGABLE DE INFORMACIÓN */}
+            {/* LISTA EXCLUSIVA DE PRODUCTOS CON PESTAÃ‘A DESPLEGABLE DE INFORMACIÃ“N */}
             <div className="space-y-2">
               {filteredCatalog.map((item) => {
                 const isSelected = selectedItemIds.includes(item.id);
@@ -789,7 +789,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                             <span>{item.title}</span>
                             {item.isPrint && (
                               <span className="text-[9px] font-normal text-emerald-400 shrink-0 hidden xs:inline">
-                                · Sin diseño
+                                Â· Sin diseÃ±o
                               </span>
                             )}
                           </div>
@@ -810,7 +810,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                       </div>
                     </div>
 
-                    {/* Pestaña / Botón para extender la información de lo que contiene el producto */}
+                    {/* PestaÃ±a / BotÃ³n para extender la informaciÃ³n de lo que contiene el producto */}
                     <div className="mt-2 pt-2 border-t border-white/5 flex items-center justify-between">
                       <button
                         type="button"
@@ -821,17 +821,17 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                         className="inline-flex items-center gap-1 text-[10px] sm:text-[10.5px] font-bold text-stone-400 hover:text-white transition-colors cursor-pointer touch-manipulation py-0.5"
                       >
                         <Info className="w-3 h-3 text-[#e8b84f]" />
-                        <span>{isInfoOpen ? 'Ocultar qué incluye ▴' : '¿Qué incluye este producto? ▾'}</span>
+                        <span>{isInfoOpen ? 'Ocultar quÃ© incluye â–´' : 'Â¿QuÃ© incluye este producto? â–¾'}</span>
                       </button>
 
                       <span className={`text-[8.5px] font-mono uppercase px-1.5 py-0.5 rounded ${
                         isSelected ? 'text-white/80' : 'text-stone-400'
                       }`}>
-                        {isSelected ? '✓ Seleccionado' : 'Toca para agregar'}
+                        {isSelected ? 'âœ“ Seleccionado' : 'Toca para agregar'}
                       </span>
                     </div>
 
-                    {/* Información extendida desplegable */}
+                    {/* InformaciÃ³n extendida desplegable */}
                     {isInfoOpen && (
                       <div className="mt-2.5 p-2.5 rounded-lg bg-[#0E1218] border border-white/10 space-y-1.5 animate-fadeIn">
                         <div className="text-[9.5px] font-mono uppercase tracking-wider text-[#e8b84f] font-bold">
@@ -858,14 +858,14 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
               })}
             </div>
 
-            {/* RESUMEN DEL ALCANCE & BOTÓN DIRECTO DE WHATSAPP */}
+            {/* RESUMEN DEL ALCANCE & BOTÃ“N DIRECTO DE WHATSAPP */}
             <div className="pt-3 border-t border-stone-800 space-y-3">
               {/* Tarjeta de Total */}
               <div className="p-3.5 sm:p-4 rounded-xl bg-gradient-to-r from-[#141820] to-[#1C2532] text-white shadow-xl border border-[#e8b84f]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="space-y-0.5">
                   <div className="text-[9.5px] font-bold uppercase tracking-wider text-[#e8b84f] flex items-center gap-1">
                     <DollarSign className="w-3 h-3" />
-                    <span>Inversión Estimada:</span>
+                    <span>InversiÃ³n Estimada:</span>
                   </div>
                   <div className="text-xl sm:text-2xl font-black font-heading text-[#e8b84f] tracking-tight">
                     ${totalEstimate.toLocaleString('es-MX')} <span className="text-xs font-normal text-stone-300">MXN</span>
@@ -873,7 +873,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                   <div className="text-[10.5px] text-stone-300">
                     {selectedItems.length > 0
                       ? `${selectedItems.length} ${selectedItems.length === 1 ? 'producto seleccionado' : 'productos seleccionados'}`
-                      : 'Ningún producto seleccionado'}
+                      : 'NingÃºn producto seleccionado'}
                   </div>
                 </div>
 
@@ -887,10 +887,10 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                 </button>
               </div>
 
-              {/* Chips de selección acumulada con código de color */}
+              {/* Chips de selecciÃ³n acumulada con cÃ³digo de color */}
               {selectedItems.length > 0 && (
                 <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
-                  <span className="text-[10px] text-stone-400 font-mono">Selección:</span>
+                  <span className="text-[10px] text-stone-400 font-mono">SelecciÃ³n:</span>
                   {selectedItems.map((item) => {
                     const itemTheme = categoryTheme[item.category] || categoryTheme.branding;
 
@@ -916,21 +916,21 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                 </div>
               )}
 
-              {/* Campo para Medidas Específicas / Detalles del Proyecto */}
+              {/* Campo para Medidas EspecÃ­ficas / Detalles del Proyecto */}
               <div className="p-3 rounded-xl bg-[#080A0E] border border-stone-800 space-y-1">
                 <label className="text-[11px] font-bold text-stone-200 flex items-center gap-1.5">
                   <Sparkles className="w-3 h-3 text-[#e8b84f]" />
-                  <span>¿Medidas específicas o detalles de tu proyecto? (opcional):</span>
+                  <span>Â¿Medidas especÃ­ficas o detalles de tu proyecto? (opcional):</span>
                 </label>
                 <textarea
                   rows="2"
                   value={quoteNotes}
                   onChange={(e) => setQuoteNotes(e.target.value)}
-                  placeholder="Ej. Medidas especiales de lona (3.5 × 1.8 m), acabados requeridos o fecha límite..."
+                  placeholder="Ej. Medidas especiales de lona (3.5 Ã— 1.8 m), acabados requeridos o fecha lÃ­mite..."
                   className="w-full p-2.5 rounded-xl border border-stone-700 text-xs text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-1 focus:ring-[#e8b84f] bg-[#141820]"
                 />
                 <p className="text-[9.5px] text-stone-400">
-                  Tus detalles se adjuntarán automáticamente al mensaje de WhatsApp.
+                  Tus detalles se adjuntarÃ¡n automÃ¡ticamente al mensaje de WhatsApp.
                 </p>
               </div>
 
@@ -940,14 +940,14 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
 
         </section>
 
-        {/* ================= SECCIÓN PORTAFOLIO OFICIAL ARTESANO DIGITAL ================= */}
+        {/* ================= SECCIÃ“N PORTAFOLIO OFICIAL ARTESANO DIGITAL ================= */}
         <div className="pt-4 border-t border-stone-800/80 space-y-3">
           <div className="text-center space-y-0.5">
             <span className="text-[10px] font-black uppercase tracking-wider text-[#e8b84f]">
               Portafolio Oficial
             </span>
             <h3 className="text-base font-black text-white font-heading">
-              ¿Quieres revisar proyectos anteriores antes de cotizar?
+              Â¿Quieres revisar proyectos anteriores antes de cotizar?
             </h3>
             <p className="text-xs text-stone-400 max-w-md mx-auto">
               Conoce el portafolio de Artesano Digital y las soluciones creadas para marcas y negocios.
@@ -960,7 +960,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
               <div className="flex items-center justify-between pb-2 border-b border-white/10">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-lg border border-[#e8b84f]/40 bg-[#0B0D11] flex items-center justify-center p-1 shadow-inner">
-                    <img
+                    <img loading="lazy"
                       src="./brand/artesano_isotipo_transparente.png"
                       alt="Artesano Digital Logo"
                       className="w-full h-full object-contain"
@@ -980,7 +980,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
 
               <div className="py-2.5 flex items-center gap-3">
                 <div className="w-14 h-18 sm:w-16 sm:h-20 shrink-0 rounded-xl bg-gradient-to-b from-[#202631] to-[#0E1116] border border-white/15 overflow-hidden shadow-md flex items-center justify-center p-2">
-                  <img
+                  <img loading="lazy"
                     src="./brand/artesano_digital_icono.svg"
                     alt="Artesano Digital"
                     className="w-full h-full object-contain"
@@ -992,11 +992,11 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
 
                 <div className="space-y-1 text-xs text-stone-300 leading-relaxed font-normal">
                   <p className="italic text-stone-200 text-[11px] line-clamp-2">
-                    "Si lo piensas, se hace. Cada pieza visual y publicitaria resuelve un propósito comercial real."
+                    "Si lo piensas, se hace. Cada pieza visual y publicitaria resuelve un propÃ³sito comercial real."
                   </p>
                   <div className="text-[10px] text-stone-400 flex items-center gap-1">
                     <MapPin className="w-3 h-3 text-[#e8b84f] shrink-0" />
-                    <span>San Luis Potosí, SLP · Envíos nacionales.</span>
+                    <span>San Luis PotosÃ­, SLP Â· EnvÃ­os nacionales.</span>
                   </div>
                 </div>
               </div>
@@ -1066,7 +1066,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                   {/* Entregables incluidos en el paquete */}
                   <div className="space-y-1.5 pt-1 border-t border-white/5">
                     <div className="text-[9.5px] font-mono uppercase tracking-wider text-stone-400 font-bold">
-                      ¿Qué contiene este paquete?
+                      Â¿QuÃ© contiene este paquete?
                     </div>
                     <ul className="space-y-1 text-xs text-stone-300">
                       {pkg.includes.map((inc, i) => (
@@ -1098,20 +1098,20 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
 
         </section>
 
-        {/* ================= SECCIÓN COMPARTIR PORTAL ================= */}
+        {/* ================= SECCIÃ“N COMPARTIR PORTAL ================= */}
         <section className="pt-4 border-t border-stone-800">
           <div className="rounded-2xl border border-[#e8b84f]/30 bg-[#0E1218] p-3.5 sm:p-5 shadow-xl relative overflow-hidden">
             <div className="relative space-y-3">
               <div className="space-y-1 text-center sm:text-left">
                 <div className="inline-flex items-center gap-1.5 font-mono text-[9.5px] uppercase tracking-[0.2em] text-[#e8b84f]">
                   <Sparkles className="w-3 h-3 text-[#e8b84f]" />
-                  <span>Diseño Gráfico, Web &amp; Gran Formato</span>
+                  <span>DiseÃ±o GrÃ¡fico, Web &amp; Gran Formato</span>
                 </div>
                 <h3 className="text-base sm:text-lg font-black text-white tracking-tight">
-                  ¿Conoces a un negocio que necesite identidad, web o lonas?
+                  Â¿Conoces a un negocio que necesite identidad, web o lonas?
                 </h3>
                 <p className="text-xs text-gray-300 leading-relaxed max-w-xl">
-                  Comparte este portal con tu equipo o socios. Soluciones visuales completas desde San Luis Potosí por Artesano Digital.
+                  Comparte este portal con tu equipo o socios. Soluciones visuales completas desde San Luis PotosÃ­ por Artesano Digital.
                 </p>
               </div>
 
@@ -1142,7 +1142,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                   {copiedLink ? (
                     <>
                       <Check className="w-3.5 h-3.5 text-emerald-400" />
-                      <span className="text-emerald-300 font-bold">¡Copiado!</span>
+                      <span className="text-emerald-300 font-bold">Â¡Copiado!</span>
                     </>
                   ) : (
                     <>
@@ -1161,3 +1161,4 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
     </div>
   );
 }
+

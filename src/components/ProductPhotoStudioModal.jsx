@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import {
   X, Camera, Upload, Sparkles, RefreshCw, CheckCircle2,
   AlertTriangle, RotateCcw, Info, ZoomIn, Eye, Sliders, Check
@@ -9,14 +9,14 @@ const SLOT_CONFIG = [
     index: 0,
     slotName: 'En Contexto',
     number: '1',
-    description: 'Ambiente realista de uso donde el producto es el protagonista, con decoración secundaria.',
+    description: 'Ambiente realista de uso donde el producto es el protagonista, con decoraciÃ³n secundaria.',
     badgeColor: 'bg-emerald-900/60 text-emerald-300 border-emerald-700/50'
   },
   {
     index: 1,
     slotName: 'Fondo Blanco',
     number: '2',
-    description: 'Toma base centrada sobre fondo blanco puro (#FFFFFF) con iluminación uniforme y sombra de contacto.',
+    description: 'Toma base centrada sobre fondo blanco puro (#FFFFFF) con iluminaciÃ³n uniforme y sombra de contacto.',
     badgeColor: 'bg-blue-900/60 text-blue-300 border-blue-700/50',
     isBase: true
   },
@@ -29,9 +29,9 @@ const SLOT_CONFIG = [
   },
   {
     index: 3,
-    slotName: 'Tamaño y Medidas',
+    slotName: 'TamaÃ±o y Medidas',
     number: '4',
-    description: 'Cotas en español con dimensiones técnicas y tarjeta de referencia de escala (8.6 × 5.4 cm).',
+    description: 'Cotas en espaÃ±ol con dimensiones tÃ©cnicas y tarjeta de referencia de escala (8.6 Ã— 5.4 cm).',
     badgeColor: 'bg-amber-900/60 text-amber-300 border-amber-700/50'
   }
 ];
@@ -107,7 +107,7 @@ export default function ProductPhotoStudioModal({
       setDraftName('Nuevo Producto Artesano');
       setDraftSku('NUEVO-' + Date.now().toString().slice(-4));
       setDimensions('');
-      setMaterials('Polímero PLA / Madera / Cerámica');
+      setMaterials('PolÃ­mero PLA / Madera / CerÃ¡mica');
       setIncludes('1 pieza terminada en taller');
       setGeneratedGallery(['', '', '', '']);
       setRefFront({ file: null, preview: '' });
@@ -170,7 +170,7 @@ export default function ProductPhotoStudioModal({
   const handleAngleFileChange = (angleKey, file) => {
     if (!file) return;
     if (!file.type.startsWith('image/')) {
-      showToast('Por favor selecciona un archivo de imagen válido (JPG, PNG o WebP).', 'error');
+      showToast('Por favor selecciona un archivo de imagen vÃ¡lido (JPG, PNG o WebP).', 'error');
       return;
     }
 
@@ -209,7 +209,7 @@ export default function ProductPhotoStudioModal({
   // Generate all 4 images
   const handleGenerateAll = async () => {
     if (!refFront.file && !refFront.preview) {
-      showToast('Por favor sube o toma al menos la fotografía frontal (principal) de referencia.', 'warning');
+      showToast('Por favor sube o toma al menos la fotografÃ­a frontal (principal) de referencia.', 'warning');
       return;
     }
 
@@ -228,7 +228,7 @@ export default function ProductPhotoStudioModal({
         formData.append('referenceImageUrl', refFront.preview);
       }
 
-      // Fotos opcionales de ángulo
+      // Fotos opcionales de Ã¡ngulo
       if (refTop.file) formData.append('referenceTop', refTop.file);
       else if (refTop.preview) formData.append('referenceTopUrl', refTop.preview);
 
@@ -253,12 +253,12 @@ export default function ProductPhotoStudioModal({
 
       const timer2 = setTimeout(() => {
         setGenerationProgress(65);
-        setGenerationStep('Generando toma 1: Ambientación en contexto de uso...');
+        setGenerationStep('Generando toma 1: AmbientaciÃ³n en contexto de uso...');
       }, 1400);
 
       const timer3 = setTimeout(() => {
         setGenerationProgress(85);
-        setGenerationStep('Generando toma 4: Infografía técnica con medidas y escala...');
+        setGenerationStep('Generando toma 4: InfografÃ­a tÃ©cnica con medidas y escala...');
       }, 2100);
 
       const res = await fetch('/api/admin/photo-studio/generate-all', {
@@ -277,11 +277,11 @@ export default function ProductPhotoStudioModal({
 
       const data = await res.json();
       setGenerationProgress(100);
-      setGenerationStep('¡Las 4 imágenes han sido creadas con éxito en 1000 × 1000 WebP!');
+      setGenerationStep('Â¡Las 4 imÃ¡genes han sido creadas con Ã©xito en 1000 Ã— 1000 WebP!');
       setGeneratedGallery(data.gallery);
       setHasUnsavedChanges(true);
       setStaleSlots({ 0: false, 2: false, 3: false });
-      showToast('¡4 tomas generadas exitosamente! Revisa cada una antes de aplicar.', 'success');
+      showToast('Â¡4 tomas generadas exitosamente! Revisa cada una antes de aplicar.', 'success');
     } catch (err) {
       console.error('Error al generar fotos:', err);
       showToast(`Error al procesar: ${err.message}`, 'error');
@@ -294,7 +294,7 @@ export default function ProductPhotoStudioModal({
   const handleManualSlotUpload = async (slotIndex, file) => {
     if (!file) return;
     if (!file.type.startsWith('image/')) {
-      showToast('Selecciona una imagen válida.', 'error');
+      showToast('Selecciona una imagen vÃ¡lida.', 'error');
       return;
     }
 
@@ -321,12 +321,12 @@ export default function ProductPhotoStudioModal({
       setGeneratedGallery(updatedGallery);
       setHasUnsavedChanges(true);
 
-      // Si se reemplaza la toma base (slot 1), marcar las demás como desactualizadas
+      // Si se reemplaza la toma base (slot 1), marcar las demÃ¡s como desactualizadas
       if (slotIndex === 1) {
         setStaleSlots({ 0: true, 2: true, 3: true });
         showToast('Toma 2 (Base) reemplazada. Te recomendamos regenerar las tomas 1, 3 y 4 para mantener coherencia.', 'warning');
       } else {
-        showToast(`Toma ${slotIndex + 1} actualizada con tu propia fotografía.`, 'success');
+        showToast(`Toma ${slotIndex + 1} actualizada con tu propia fotografÃ­a.`, 'success');
       }
     } catch (err) {
       showToast(`Error: ${err.message}`, 'error');
@@ -392,7 +392,7 @@ export default function ProductPhotoStudioModal({
       return;
     }
 
-    // Modo Borrador / Nuevo Producto: Pasar directamente al formulario de creación
+    // Modo Borrador / Nuevo Producto: Pasar directamente al formulario de creaciÃ³n
     if (selectedProductId === 'new' || !selectedProduct?.id) {
       if (onProductUpdated) {
         onProductUpdated({
@@ -409,7 +409,7 @@ export default function ProductPhotoStudioModal({
         });
       }
       setHasUnsavedChanges(false);
-      showToast('¡Las 4 fotos se han aplicado al borrador del producto! Puedes guardar el producto en el editor.', 'success');
+      showToast('Â¡Las 4 fotos se han aplicado al borrador del producto! Puedes guardar el producto en el editor.', 'success');
       setTimeout(() => onClose(), 800);
       return;
     }
@@ -434,7 +434,7 @@ export default function ProductPhotoStudioModal({
       setHasUnsavedChanges(false);
       setSelectedProduct(data.product);
       if (onProductUpdated) onProductUpdated(data.product);
-      showToast('¡Fotografías aplicadas al producto y catálogo con éxito! Respaldo anterior creado.', 'success');
+      showToast('Â¡FotografÃ­as aplicadas al producto y catÃ¡logo con Ã©xito! Respaldo anterior creado.', 'success');
     } catch (err) {
       showToast(`Error al guardar: ${err.message}`, 'error');
     } finally {
@@ -446,11 +446,11 @@ export default function ProductPhotoStudioModal({
   const handleRestoreGallery = async () => {
     if (!selectedProduct?.id) return;
     if (!selectedProduct?.previousImagesBackup) {
-      showToast('Este producto no tiene un respaldo de galería anterior.', 'info');
+      showToast('Este producto no tiene un respaldo de galerÃ­a anterior.', 'info');
       return;
     }
 
-    const confirmRestore = window.confirm('¿Deseas restaurar la galería anterior de este producto? Se descartarán las imágenes actuales.');
+    const confirmRestore = window.confirm('Â¿Deseas restaurar la galerÃ­a anterior de este producto? Se descartarÃ¡n las imÃ¡genes actuales.');
     if (!confirmRestore) return;
 
     setIsRestoring(true);
@@ -463,7 +463,7 @@ export default function ProductPhotoStudioModal({
 
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
-        throw new Error(errData.error || 'Error al restaurar galería');
+        throw new Error(errData.error || 'Error al restaurar galerÃ­a');
       }
 
       const data = await res.json();
@@ -473,7 +473,7 @@ export default function ProductPhotoStudioModal({
       }
       setHasUnsavedChanges(false);
       if (onProductUpdated) onProductUpdated(data.product);
-      showToast('Galería anterior restaurada correctamente.', 'success');
+      showToast('GalerÃ­a anterior restaurada correctamente.', 'success');
     } catch (err) {
       showToast(`Error: ${err.message}`, 'error');
     } finally {
@@ -494,14 +494,14 @@ export default function ProductPhotoStudioModal({
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-lg sm:text-xl font-bold tracking-tight text-white">
-                  Estudio Fotográfico de Catálogo (4 Tomas IA)
+                  Estudio FotogrÃ¡fico de CatÃ¡logo (4 Tomas IA)
                 </h2>
                 <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-950/80 border border-emerald-600/50 text-emerald-300">
-                  <Sparkles className="w-3 h-3" /> Sharp Nativo · $0.00 MXN
+                  <Sparkles className="w-3 h-3" /> Sharp Nativo Â· $0.00 MXN
                 </span>
               </div>
               <p className="text-xs text-slate-400">
-                1 a 4 fotos de referencia (celular o PC) → 4 tomas profesionales de catálogo en 1000 × 1000 WebP
+                1 a 4 fotos de referencia (celular o PC) â†’ 4 tomas profesionales de catÃ¡logo en 1000 Ã— 1000 WebP
               </p>
             </div>
           </div>
@@ -552,7 +552,7 @@ export default function ProductPhotoStudioModal({
               <div className="lg:col-span-5 space-y-2">
                 <div className="flex items-center justify-between">
                   <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
-                    Producto Destino del Catálogo
+                    Producto Destino del CatÃ¡logo
                   </label>
                   {selectedProductId === 'new' && (
                     <span className="text-[10px] font-bold text-amber-400 bg-amber-950/60 border border-amber-700/60 px-2 py-0.2 rounded-full">
@@ -566,7 +566,7 @@ export default function ProductPhotoStudioModal({
                   onChange={(e) => setSelectedProductId(e.target.value)}
                   className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500 transition"
                 >
-                  <option value="new">➕ Nuevo Producto en Creación (Borrador)</option>
+                  <option value="new">âž• Nuevo Producto en CreaciÃ³n (Borrador)</option>
                   {products.map(p => (
                     <option key={p.id} value={p.id}>
                       {p.name} ({p.sku || p.code || 'Sin SKU'}) - ${p.price?.toLocaleString('es-MX')} MXN
@@ -624,10 +624,10 @@ export default function ProductPhotoStudioModal({
                     type="text"
                     value={dimensions}
                     onChange={(e) => setDimensions(e.target.value)}
-                    placeholder="Ej. 22 × 14 × 3.5 cm"
+                    placeholder="Ej. 22 Ã— 14 Ã— 3.5 cm"
                     className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500"
                   />
-                  <span className="text-[10px] text-slate-500">Cotas numéricas y escala</span>
+                  <span className="text-[10px] text-slate-500">Cotas numÃ©ricas y escala</span>
                 </div>
 
                 <div className="space-y-1">
@@ -638,7 +638,7 @@ export default function ProductPhotoStudioModal({
                     type="text"
                     value={materials}
                     onChange={(e) => setMaterials(e.target.value)}
-                    placeholder="Ej. PLA madera / Cerámica"
+                    placeholder="Ej. PLA madera / CerÃ¡mica"
                     className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500"
                   />
                   <span className="text-[10px] text-slate-500">Textura y acabados</span>
@@ -662,7 +662,7 @@ export default function ProductPhotoStudioModal({
             </div>
           </div>
 
-          {/* Section 2: 4 Tomas de Referencia Multi-Ángulo (Frente obligatoria, Arriba/Costado/Detalle opcionales) */}
+          {/* Section 2: 4 Tomas de Referencia Multi-Ãngulo (Frente obligatoria, Arriba/Costado/Detalle opcionales) */}
           <div className="space-y-3">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
@@ -671,15 +671,15 @@ export default function ProductPhotoStudioModal({
                   <span>Tomas de Referencia del Producto (Toma fotos o sube archivos)</span>
                 </h3>
                 <p className="text-xs text-slate-400 mt-0.5">
-                  La foto de <strong>Frente</strong> es la principal y obligatoria para generar. Las tomas de <strong>Arriba</strong>, <strong>Costado</strong> y <strong>Detalle</strong> son 100% opcionales pero le dan a la IA referencias dimensionales mucho más exactas.
+                  La foto de <strong>Frente</strong> es la principal y obligatoria para generar. Las tomas de <strong>Arriba</strong>, <strong>Costado</strong> y <strong>Detalle</strong> son 100% opcionales pero le dan a la IA referencias dimensionales mucho mÃ¡s exactas.
                 </p>
               </div>
               <span className="text-[11px] font-bold text-amber-300 bg-amber-950/60 border border-amber-800/70 px-2.5 py-1 rounded-lg shrink-0 self-start sm:self-auto">
-                📱 Toma foto directa con cámara o sube desde galería
+                ðŸ“± Toma foto directa con cÃ¡mara o sube desde galerÃ­a
               </span>
             </div>
 
-            {/* Grid de 4 Ángulos de Referencia */}
+            {/* Grid de 4 Ãngulos de Referencia */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               {[
                 {
@@ -690,7 +690,7 @@ export default function ProductPhotoStudioModal({
                   isRequired: true,
                   badge: 'Obligatoria',
                   badgeColor: 'bg-emerald-950 text-emerald-300 border-emerald-700',
-                  desc: 'Determina el diseño, color y silueta sobre fondo blanco puro.'
+                  desc: 'Determina el diseÃ±o, color y silueta sobre fondo blanco puro.'
                 },
                 {
                   key: 'top',
@@ -738,7 +738,7 @@ export default function ProductPhotoStudioModal({
                     }`}
                   >
                     <div>
-                      {/* Encabezado del ángulo */}
+                      {/* Encabezado del Ã¡ngulo */}
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
                           <AngleIcon className={`w-3.5 h-3.5 ${hasPhoto ? 'text-emerald-400' : 'text-amber-400'}`} />
@@ -747,14 +747,14 @@ export default function ProductPhotoStudioModal({
                         <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded border ${
                           hasPhoto ? 'bg-emerald-950 text-emerald-300 border-emerald-700' : angle.badgeColor
                         }`}>
-                          {hasPhoto ? '✓ Lista' : angle.badge}
+                          {hasPhoto ? 'âœ“ Lista' : angle.badge}
                         </span>
                       </div>
 
                       {/* Visor / Subida */}
                       {hasPhoto ? (
                         <div className="relative rounded-xl overflow-hidden border border-slate-700 bg-slate-900 aspect-square flex items-center justify-center">
-                          <img
+                          <img loading="lazy"
                             src={angle.state.preview}
                             alt={angle.title}
                             className="w-full h-full object-contain p-2"
@@ -781,7 +781,7 @@ export default function ProductPhotoStudioModal({
                             <Camera className="w-5 h-5" />
                           </div>
                           <span className="text-[11px] font-bold text-slate-300 leading-snug">
-                            {angle.isRequired ? 'Tomar o subir foto de frente' : 'Tomar o subir ángulo'}
+                            {angle.isRequired ? 'Tomar o subir foto de frente' : 'Tomar o subir Ã¡ngulo'}
                           </span>
                           <span className="text-[9.5px] text-slate-500 mt-1">
                             {angle.desc}
@@ -802,7 +802,7 @@ export default function ProductPhotoStudioModal({
                       />
                     </div>
 
-                    {/* Acciones del ángulo */}
+                    {/* Acciones del Ã¡ngulo */}
                     <div className="pt-2.5 flex items-center gap-1.5">
                       <button
                         type="button"
@@ -829,19 +829,19 @@ export default function ProductPhotoStudioModal({
               })}
             </div>
 
-            {/* Barra de Disparo para Generación de las 4 Tomas */}
+            {/* Barra de Disparo para GeneraciÃ³n de las 4 Tomas */}
             <div className="bg-gradient-to-br from-slate-900 via-slate-900 to-amber-950/30 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="space-y-1 text-center md:text-left">
                 <div className="flex items-center justify-center md:justify-start gap-2">
                   <span className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-                    <Sparkles className="w-4 h-4" /> Flujo Oficial de Fabricación en 4 Tomas
+                    <Sparkles className="w-4 h-4" /> Flujo Oficial de FabricaciÃ³n en 4 Tomas
                   </span>
                   <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 font-bold">
-                    Orden: 2 → 3 → 1 → 4
+                    Orden: 2 â†’ 3 â†’ 1 â†’ 4
                   </span>
                 </div>
                 <p className="text-xs text-slate-400">
-                  Crea las 4 tomas profesionales listas para catálogo: En Contexto, Fondo Blanco #FFFFFF, Detalle Macro y Medidas con tarjeta de escala (8.6 × 5.4 cm).
+                  Crea las 4 tomas profesionales listas para catÃ¡logo: En Contexto, Fondo Blanco #FFFFFF, Detalle Macro y Medidas con tarjeta de escala (8.6 Ã— 5.4 cm).
                 </p>
                 {isGenerating && (
                   <div className="pt-2 space-y-1.5">
@@ -873,12 +873,12 @@ export default function ProductPhotoStudioModal({
                   {isGenerating ? (
                     <>
                       <RefreshCw className="w-4 h-4 animate-spin text-slate-950" />
-                      <span>Generando las 4 tomas de catálogo...</span>
+                      <span>Generando las 4 tomas de catÃ¡logo...</span>
                     </>
                   ) : (
                     <>
                       <Sparkles className="w-4 h-4" />
-                      <span>Generar las 4 imágenes de catálogo</span>
+                      <span>Generar las 4 imÃ¡genes de catÃ¡logo</span>
                     </>
                   )}
                 </button>
@@ -892,7 +892,7 @@ export default function ProductPhotoStudioModal({
             <div className="flex flex-wrap items-center justify-between gap-2 pt-2">
               <div className="flex items-center gap-2">
                 <h3 className="text-sm font-bold uppercase tracking-wider text-white">
-                  Galería de Catálogo Oficial (Orden 1, 2, 3 y 4)
+                  GalerÃ­a de CatÃ¡logo Oficial (Orden 1, 2, 3 y 4)
                 </h3>
                 <span className="text-xs text-slate-400">
                   Haz clic en cualquier toma para reemplazarla con tu propia foto o regenerarla.
@@ -901,7 +901,7 @@ export default function ProductPhotoStudioModal({
 
               {hasUnsavedChanges && (
                 <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 animate-pulse">
-                  ⚠️ Cambios pendientes de guardar
+                  âš ï¸ Cambios pendientes de guardar
                 </span>
               )}
             </div>
@@ -952,7 +952,7 @@ export default function ProductPhotoStudioModal({
                         </div>
                       ) : imgUrl ? (
                         <>
-                          <img
+                          <img loading="lazy"
                             src={imgUrl}
                             alt={slot.slotName}
                             className="w-full h-full object-contain transition duration-300 group-hover:scale-105"
@@ -962,7 +962,7 @@ export default function ProductPhotoStudioModal({
                             target="_blank"
                             rel="noopener noreferrer"
                             className="absolute top-2 right-2 p-1.5 bg-slate-900/80 hover:bg-slate-900 text-slate-300 hover:text-white rounded-lg border border-slate-700 opacity-0 group-hover:opacity-100 transition"
-                            title="Ver en tamaño completo (1000 × 1000)"
+                            title="Ver en tamaÃ±o completo (1000 Ã— 1000)"
                           >
                             <Eye className="w-3.5 h-3.5" />
                           </a>
@@ -1029,7 +1029,7 @@ export default function ProductPhotoStudioModal({
                     {/* Actions per slot */}
                     <div className="space-y-1.5 pt-1">
                       
-                      {/* Subir / Reemplazar Foto (Botón explícito pedido por el usuario) */}
+                      {/* Subir / Reemplazar Foto (BotÃ³n explÃ­cito pedido por el usuario) */}
                       <button
                         type="button"
                         disabled={isReplacing}
@@ -1079,7 +1079,7 @@ export default function ProductPhotoStudioModal({
             <div className="flex items-center gap-2 text-xs text-slate-400 max-w-lg">
               <Info className="w-4 h-4 text-amber-400 shrink-0" />
               <span>
-                <strong>Aviso de Catálogo:</strong> Las imágenes generadas son referencias visuales de alta precisión del producto. No modifican precios, existencias ni especificaciones comerciales.
+                <strong>Aviso de CatÃ¡logo:</strong> Las imÃ¡genes generadas son referencias visuales de alta precisiÃ³n del producto. No modifican precios, existencias ni especificaciones comerciales.
               </span>
             </div>
 
@@ -1091,10 +1091,10 @@ export default function ProductPhotoStudioModal({
                   disabled={isRestoring}
                   onClick={handleRestoreGallery}
                   className="py-2 px-4 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 flex items-center gap-1.5 transition"
-                  title="Revertir a la galería anterior antes de los cambios"
+                  title="Revertir a la galerÃ­a anterior antes de los cambios"
                 >
                   <RotateCcw className={`w-3.5 h-3.5 text-blue-400 ${isRestoring ? 'animate-spin' : ''}`} />
-                  Restaurar galería anterior
+                  Restaurar galerÃ­a anterior
                 </button>
               )}
 
@@ -1121,7 +1121,7 @@ export default function ProductPhotoStudioModal({
                 {isSaving ? (
                   <>
                     <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                    Guardando en catálogo...
+                    Guardando en catÃ¡logo...
                   </>
                 ) : (
                   <>
@@ -1165,7 +1165,7 @@ export default function ProductPhotoStudioModal({
                   <strong>Costo:</strong> {aiConfig?.costPerImage || '$0.00 MXN / Gratis e Ilimitado'}.
                 </p>
                 <p className="text-slate-300">
-                  Opera 100% en el servidor (Render / Supabase). Corrige encuadres, compone sobre fondo blanco puro con sombras vectoriales difusas, recorta detalles macro reales con filtro de nitidez y calcula cotas de medidas en español sin cuotas externas.
+                  Opera 100% en el servidor (Render / Supabase). Corrige encuadres, compone sobre fondo blanco puro con sombras vectoriales difusas, recorta detalles macro reales con filtro de nitidez y calcula cotas de medidas en espaÃ±ol sin cuotas externas.
                 </p>
               </div>
 
@@ -1175,7 +1175,7 @@ export default function ProductPhotoStudioModal({
                   Proveedor Externo Opcional: {aiConfig?.externalAi?.provider || 'Google Gemini / Imagen 3'}
                 </div>
                 <p className="text-slate-400">
-                  <strong>Estado:</strong> {aiConfig?.externalAi?.available ? '✅ Conectado' : '⚪ No configurado (No necesario)'}
+                  <strong>Estado:</strong> {aiConfig?.externalAi?.available ? 'âœ… Conectado' : 'âšª No configurado (No necesario)'}
                 </p>
                 <p className="text-slate-400">
                   <strong>Costo estimado si se activa:</strong> {aiConfig?.externalAi?.estimatedCost || '~$0.03 USD (~$0.60 MXN) por imagen generada'}
@@ -1188,7 +1188,7 @@ export default function ProductPhotoStudioModal({
               <div className="p-3 bg-slate-950/40 border border-slate-800 rounded-xl space-y-1 text-slate-400">
                 <strong>Almacenamiento Persistente en Render:</strong>
                 <p>
-                  Destino: <span className="font-mono text-amber-300">{aiConfig?.storageTarget}</span>. Las imágenes generadas se guardan de forma permanente y no se borran al reiniciar o desplegar la aplicación en Render.
+                  Destino: <span className="font-mono text-amber-300">{aiConfig?.storageTarget}</span>. Las imÃ¡genes generadas se guardan de forma permanente y no se borran al reiniciar o desplegar la aplicaciÃ³n en Render.
                 </p>
               </div>
             </div>
@@ -1206,3 +1206,4 @@ export default function ProductPhotoStudioModal({
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+﻿import React, { useState, useMemo, useEffect } from 'react';
 import {
   Package, Boxes, Plus, Edit, Star, Search, Filter,
   Layers, Check, DollarSign, Sparkles, Tag, ArrowRight,
@@ -20,7 +20,7 @@ export default function PackagesAdminSection({
   const [savingStar, setSavingStar] = useState(false);
   const [statusMsg, setStatusMsg] = useState({ type: '', text: '' });
 
-  // Cargar configuración de campaña para saber qué paquete está fijado como estrella
+  // Cargar configuraciÃ³n de campaÃ±a para saber quÃ© paquete estÃ¡ fijado como estrella
   const loadCampaignConfig = async () => {
     setLoadingConfig(true);
     try {
@@ -30,7 +30,7 @@ export default function PackagesAdminSection({
         setCampaignConfig(data || {});
       }
     } catch (e) {
-      console.warn('Error cargando config de campañas:', e);
+      console.warn('Error cargando config de campaÃ±as:', e);
     } finally {
       setLoadingConfig(false);
     }
@@ -45,7 +45,7 @@ export default function PackagesAdminSection({
     return products.filter(p => p.isBundle);
   }, [products]);
 
-  // Filtrar según búsqueda y área
+  // Filtrar segÃºn bÃºsqueda y Ã¡rea
   const filteredBundles = useMemo(() => {
     return allBundles.filter(p => {
       if (areaFilter !== 'all' && !p.worlds?.includes(areaFilter)) {
@@ -88,7 +88,7 @@ export default function PackagesAdminSection({
           type: 'success',
           text: isAlreadyStarred
             ? 'Paquete estrella removido de la cabecera.'
-            : '¡Paquete estrella del mes fijado exitosamente!'
+            : 'Â¡Paquete estrella del mes fijado exitosamente!'
         });
       } else {
         throw new Error('Error al guardar en servidor');
@@ -109,13 +109,13 @@ export default function PackagesAdminSection({
         <div className="space-y-1">
           <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#2D4F3E]">
             <Package className="w-4 h-4 text-[#D4A359]" />
-            <span>Catálogo Especializado</span>
+            <span>CatÃ¡logo Especializado</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-black font-heading text-[#1F2421]">
             Paquetes & Combos de Taller ({allBundles.length})
           </h2>
           <p className="text-xs sm:text-sm text-gray-600 max-w-3xl">
-            Administra los kits coordinados, define el Paquete Estrella del Mes y ajusta los 3 niveles de personalización (Esencial, Pro, VIP) con precios y componentes de taller.
+            Administra los kits coordinados, define el Paquete Estrella del Mes y ajusta los 3 niveles de personalizaciÃ³n (Esencial, Pro, VIP) con precios y componentes de taller.
           </p>
         </div>
 
@@ -136,7 +136,7 @@ export default function PackagesAdminSection({
               type="button"
               onClick={onRefreshCatalog}
               className="p-2.5 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all cursor-pointer shadow-2xs"
-              title="Refrescar catálogo"
+              title="Refrescar catÃ¡logo"
             >
               <RefreshCw className="w-4 h-4" />
             </button>
@@ -144,7 +144,7 @@ export default function PackagesAdminSection({
         </div>
       </div>
 
-      {/* Notificación de estado */}
+      {/* NotificaciÃ³n de estado */}
       {statusMsg.text && (
         <div className={`p-4 rounded-2xl text-xs font-bold flex items-center gap-2 border animate-in fade-in ${
           statusMsg.type === 'success'
@@ -160,16 +160,16 @@ export default function PackagesAdminSection({
         </div>
       )}
 
-      {/* Barra de Filtros por Área y Buscador */}
+      {/* Barra de Filtros por Ãrea y Buscador */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-[#E8E4DA] shadow-xs">
         
-        {/* Selector de Área */}
+        {/* Selector de Ãrea */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
           {[
             { id: 'all', label: 'Todos los Paquetes', count: allBundles.length },
-            { id: 'hogar', label: '🏡 Hogar', count: allBundles.filter(b => b.worlds?.includes('hogar')).length },
-            { id: 'negocios', label: '💼 Negocios', count: allBundles.filter(b => b.worlds?.includes('negocios')).length },
-            { id: 'eventos', label: '🎉 Eventos', count: allBundles.filter(b => b.worlds?.includes('eventos')).length }
+            { id: 'hogar', label: 'ðŸ¡ Hogar', count: allBundles.filter(b => b.worlds?.includes('hogar')).length },
+            { id: 'negocios', label: 'ðŸ’¼ Negocios', count: allBundles.filter(b => b.worlds?.includes('negocios')).length },
+            { id: 'eventos', label: 'ðŸŽ‰ Eventos', count: allBundles.filter(b => b.worlds?.includes('eventos')).length }
           ].map(tab => (
             <button
               key={tab.id}
@@ -212,7 +212,7 @@ export default function PackagesAdminSection({
             No se encontraron paquetes con los filtros aplicados
           </h3>
           <p className="text-xs text-gray-500 max-w-md mx-auto">
-            Intenta cambiar los términos de búsqueda o crear un nuevo paquete para tu catálogo.
+            Intenta cambiar los tÃ©rminos de bÃºsqueda o crear un nuevo paquete para tu catÃ¡logo.
           </p>
         </div>
       ) : (
@@ -238,7 +238,7 @@ export default function PackagesAdminSection({
                   <div className="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-stone-950 px-3.5 py-1 text-[11px] font-black uppercase tracking-wider flex items-center justify-between shadow-2xs">
                     <div className="flex items-center gap-1.5">
                       <Crown className="w-3.5 h-3.5 fill-stone-950 text-stone-950" />
-                      <span>👑 Paquete Estrella del Mes</span>
+                      <span>ðŸ‘‘ Paquete Estrella del Mes</span>
                     </div>
                     <span className="text-[10px] bg-stone-950 text-amber-300 px-2 py-0.2 rounded-full font-bold">
                       Activo
@@ -250,7 +250,7 @@ export default function PackagesAdminSection({
                   
                   {/* Encabezado: Foto, SKU y Nombre */}
                   <div className="flex items-start gap-3">
-                    <img
+                    <img loading="lazy"
                       src={p.primaryImage || p.gallery?.[0] || p.whiteBgImage}
                       alt={p.name}
                       className="w-16 h-16 rounded-2xl object-cover bg-gray-100 border border-gray-200 shrink-0"
@@ -274,7 +274,7 @@ export default function PackagesAdminSection({
                         {p.name}
                       </h4>
                       <p className="text-[11px] text-gray-500 line-clamp-1 mt-0.5">
-                        {p.shortDescription || 'Sin descripción corta.'}
+                        {p.shortDescription || 'Sin descripciÃ³n corta.'}
                       </p>
                     </div>
                   </div>
@@ -301,7 +301,7 @@ export default function PackagesAdminSection({
                       <ul className="space-y-0.5 text-gray-600 text-[11px]">
                         {p.includedItems.slice(0, 3).map((item, i) => (
                           <li key={i} className="flex items-start gap-1 truncate">
-                            <span className="text-[#2D4F3E] font-black leading-none">•</span>
+                            <span className="text-[#2D4F3E] font-black leading-none">â€¢</span>
                             <span className="truncate">{item}</span>
                           </li>
                         ))}
@@ -319,8 +319,8 @@ export default function PackagesAdminSection({
                     <span className="font-bold">Opciones de nivel:</span>
                     <div className="flex items-center gap-1.5 font-mono font-bold text-gray-700">
                       <span className="bg-stone-100 text-stone-700 px-1.5 py-0.2 rounded border border-stone-200">Base: ${tiers[0]?.price || p.price}</span>
-                      <span className="bg-emerald-50 text-emerald-800 px-1.5 py-0.2 rounded border border-emerald-200">★ Pro: ${tiers[1]?.price || p.price}</span>
-                      <span className="bg-amber-50 text-amber-900 px-1.5 py-0.2 rounded border border-amber-200">⭐ VIP: ${tiers[2]?.price || Math.round(p.price * 1.35)}</span>
+                      <span className="bg-emerald-50 text-emerald-800 px-1.5 py-0.2 rounded border border-emerald-200">â˜… Pro: ${tiers[1]?.price || p.price}</span>
+                      <span className="bg-amber-50 text-amber-900 px-1.5 py-0.2 rounded border border-amber-200">â­ VIP: ${tiers[2]?.price || Math.round(p.price * 1.35)}</span>
                     </div>
                   </div>
 
@@ -366,3 +366,4 @@ export default function PackagesAdminSection({
     </div>
   );
 }
+

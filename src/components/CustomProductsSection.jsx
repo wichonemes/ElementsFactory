@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import {
   Sparkles,
   Dog,
@@ -47,11 +47,11 @@ export default function CustomProductsSection({
       badge: 'POP! Custom',
       badgeColor: 'bg-amber-100 text-amber-900 border-amber-300',
       title: 'Funko Custom Mascotas',
-      fullTitle: 'Figura Funko Custom — Mascotas (Perros, Gatos y Compañeros)',
-      tagline: 'Tu perrito, gatito o animal de compañía en volumen 3D',
+      fullTitle: 'Figura Funko Custom â€” Mascotas (Perros, Gatos y CompaÃ±eros)',
+      tagline: 'Tu perrito, gatito o animal de compaÃ±Ã­a en volumen 3D',
       priceEstimate: 'Desde $650 MXN',
       priceNumber: 650,
-      leadTime: '3 a 5 días',
+      leadTime: '3 a 5 dÃ­as',
       images: [
         './uploads/catalog-v2-cust-pets-1.webp',
         './uploads/catalog-v2-cust-pets-2.webp',
@@ -59,37 +59,37 @@ export default function CustomProductsSection({
         './uploads/catalog-v2-cust-pets-4.webp'
       ],
       photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Caja y empaque'],
-      shortDesc: 'Inmortalizamos a tu mejor amigo con sus manchas, pelaje, collar y rasgos únicos, en su caja POP! Custom con ventana transparente y su nombre.',
-      materialsText: '75 g Filamento PLA+ biodegradable / Resina UV técnica · Caja POP! Custom en cartón sulfatado con ventana de acetato · Acabados a mano con sellador mate UV.',
-      costsText: 'Costo directo estimado: $194.50 MXN (Filamento $22.50 + Caja ventana $28.00 + Pintura y sellador $18.00 + Luz y máquina $36.00 + Modelado $90.00). Margen ~70%.',
-      timesText: '4.5 horas de máquina FDM · 45 min de esculpido digital de fotos y detallado.',
+      shortDesc: 'Inmortalizamos a tu mejor amigo con sus manchas, pelaje, collar y rasgos Ãºnicos, en su caja POP! Custom con ventana transparente y su nombre.',
+      materialsText: '75 g Filamento PLA+ biodegradable / Resina UV tÃ©cnica Â· Caja POP! Custom en cartÃ³n sulfatado con ventana de acetato Â· Acabados a mano con sellador mate UV.',
+      costsText: 'Costo directo estimado: $194.50 MXN (Filamento $22.50 + Caja ventana $28.00 + Pintura y sellador $18.00 + Luz y mÃ¡quina $36.00 + Modelado $90.00). Margen ~70%.',
+      timesText: '4.5 horas de mÃ¡quina FDM Â· 45 min de esculpido digital de fotos y detallado.',
       steps: [
-        '1. Envíanos fotos claras de tu mascota (frente, lomo y collar).',
-        '2. Modelamos la figura en 3D respetando sus manchas y fisionomía.',
-        '3. Imprimimos en 3D con alta definición y aplicamos acabados a color.',
-        '4. Diseñamos la caja POP! con su nombre y te entregamos la pieza lista para presumir.'
+        '1. EnvÃ­anos fotos claras de tu mascota (frente, lomo y collar).',
+        '2. Modelamos la figura en 3D respetando sus manchas y fisionomÃ­a.',
+        '3. Imprimimos en 3D con alta definiciÃ³n y aplicamos acabados a color.',
+        '4. DiseÃ±amos la caja POP! con su nombre y te entregamos la pieza lista para presumir.'
       ],
       includes: [
         'Figura 3D personalizada de tu mascota (9 a 10 cm)',
         'Caja POP! Custom con ventana transparente y nombre',
-        'Acabado protegido para exhibición duradera',
-        'Asesoría directa de taller durante todo el proceso'
+        'Acabado protegido para exhibiciÃ³n duradera',
+        'AsesorÃ­a directa de taller durante todo el proceso'
       ],
-      whatsappText: `Hola Artesano Digital,\nMe interesa cotizar una *Figura Estilo Funko Personalizada para mi Mascota*:\n• Tipo de mascota (perro, gato, otro):\n• Nombre de mi mascota:\n• Cuento con fotos de referencia para su modelado y su caja POP! Custom.\n¿Podrían darme informes sobre tiempos de entrega y costo?`
+      whatsappText: `Hola Artesano Digital,\nMe interesa cotizar una *Figura Estilo Funko Personalizada para mi Mascota*:\nâ€¢ Tipo de mascota (perro, gato, otro):\nâ€¢ Nombre de mi mascota:\nâ€¢ Cuento con fotos de referencia para su modelado y su caja POP! Custom.\nÂ¿PodrÃ­an darme informes sobre tiempos de entrega y costo?`
     },
     {
       id: 'parejas',
       dbId: 'figuras-funko-parejas',
       category: 'parejas',
       icon: Heart,
-      badge: 'Set Dúo POP!',
+      badge: 'Set DÃºo POP!',
       badgeColor: 'bg-rose-100 text-rose-900 border-rose-300',
       title: 'Funko Custom Parejas',
-      fullTitle: 'Figura Funko Custom — Parejas (Set Dúo Novios o Esposos)',
-      tagline: 'El regalo más romántico y memorable para dos',
+      fullTitle: 'Figura Funko Custom â€” Parejas (Set DÃºo Novios o Esposos)',
+      tagline: 'El regalo mÃ¡s romÃ¡ntico y memorable para dos',
       priceEstimate: 'Desde $1,250 MXN',
       priceNumber: 1250,
-      leadTime: '4 a 6 días',
+      leadTime: '4 a 6 dÃ­as',
       images: [
         './uploads/catalog-v2-cust-parejas-1.webp',
         './uploads/catalog-v2-cust-parejas-2.webp',
@@ -97,23 +97,23 @@ export default function CustomProductsSection({
         './uploads/catalog-v2-cust-parejas-4.webp'
       ],
       photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Caja doble'],
-      shortDesc: 'Set de figuras personalizadas para novios, esposos o aniversarios. Reproducimos sus outfits favoritos, peinados, poses cómplices y caja conmemorativa doble.',
-      materialsText: '150 g Filamento PLA+ grado ingeniería · Caja conmemorativa doble POP! con ventana de acetato · Acabados finos de textiles, accesorios y sellador mate.',
-      costsText: 'Costo directo estimado: $347.00 MXN (Filamento $45.00 + Caja doble $42.00 + Pintura y acabados $32.00 + Luz y máquina $68.00 + Modelado dúo $160.00). Margen ~72%.',
-      timesText: '8.5 horas de máquina FDM · 80 min de modelado digital y post-proceso artesanal.',
+      shortDesc: 'Set de figuras personalizadas para novios, esposos o aniversarios. Reproducimos sus outfits favoritos, peinados, poses cÃ³mplices y caja conmemorativa doble.',
+      materialsText: '150 g Filamento PLA+ grado ingenierÃ­a Â· Caja conmemorativa doble POP! con ventana de acetato Â· Acabados finos de textiles, accesorios y sellador mate.',
+      costsText: 'Costo directo estimado: $347.00 MXN (Filamento $45.00 + Caja doble $42.00 + Pintura y acabados $32.00 + Luz y mÃ¡quina $68.00 + Modelado dÃºo $160.00). Margen ~72%.',
+      timesText: '8.5 horas de mÃ¡quina FDM Â· 80 min de modelado digital y post-proceso artesanal.',
       steps: [
-        '1. Envíanos fotos de la pareja y la vestimenta que desean recrear.',
-        '2. Diseñamos el modelo 3D digital con los rasgos y poses elegidas.',
+        '1. EnvÃ­anos fotos de la pareja y la vestimenta que desean recrear.',
+        '2. DiseÃ±amos el modelo 3D digital con los rasgos y poses elegidas.',
         '3. Fabricamos en 3D con materiales de alta durabilidad.',
         '4. Entregamos las figuras en su caja personalizada con sus nombres y fecha.'
       ],
       includes: [
         'Set de 2 figuras 3D personalizadas (10 a 11 cm)',
-        'Caja doble de colección con nombres, fecha o dedicatoria',
-        'Vestimenta y peinados personalizados según tus fotos',
-        'Envío protegido a cualquier parte de la República'
+        'Caja doble de colecciÃ³n con nombres, fecha o dedicatoria',
+        'Vestimenta y peinados personalizados segÃºn tus fotos',
+        'EnvÃ­o protegido a cualquier parte de la RepÃºblica'
       ],
-      whatsappText: `Hola Artesano Digital,\nMe interesa cotizar una *Figura Estilo Funko Personalizada de Pareja*:\n• Ocasión: (Aniversario / Boda / Cumpleaños / Regalo especial)\n• Cuento con fotos de ambos para los outfits y peinados.\n¿Podrían darme informes sobre opciones y tiempos de entrega?`
+      whatsappText: `Hola Artesano Digital,\nMe interesa cotizar una *Figura Estilo Funko Personalizada de Pareja*:\nâ€¢ OcasiÃ³n: (Aniversario / Boda / CumpleaÃ±os / Regalo especial)\nâ€¢ Cuento con fotos de ambos para los outfits y peinados.\nÂ¿PodrÃ­an darme informes sobre opciones y tiempos de entrega?`
     },
     {
       id: 'profesiones',
@@ -123,35 +123,35 @@ export default function CustomProductsSection({
       badge: 'Profesiones',
       badgeColor: 'bg-emerald-100 text-emerald-900 border-emerald-300',
       title: 'Funko Profesiones & Graduaciones',
-      fullTitle: 'Figura Funko Custom — Profesiones & Graduaciones',
-      tagline: 'Celebra su vocación profesional, graduación o ascenso',
+      fullTitle: 'Figura Funko Custom â€” Profesiones & Graduaciones',
+      tagline: 'Celebra su vocaciÃ³n profesional, graduaciÃ³n o ascenso',
       priceEstimate: 'Desde $680 MXN',
       priceNumber: 680,
-      leadTime: '3 a 5 días',
+      leadTime: '3 a 5 dÃ­as',
       images: [
         './uploads/catalog-v2-cust-prof-1.webp',
         './uploads/catalog-v2-cust-prof-2.webp',
         './uploads/catalog-v2-cust-prof-3.webp',
         './uploads/catalog-v2-cust-prof-4.webp'
       ],
-      photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Caja de título'],
-      shortDesc: 'Médicos con bata y estetoscopio, ingenieros con casco y planos, enfermeros, abogados, maestros, chefs o deportistas con uniforme oficial y caja conmemorativa.',
-      materialsText: '85 g Filamento PLA+ · Accesorios en resina técnica (estetoscopios, cascos, birretes, instrumental) · Caja POP! Custom con título profesional grabado.',
-      costsText: 'Costo directo estimado: $215.50 MXN (Filamento $25.50 + Caja título $28.00 + Resina/Pintura $22.00 + Máquina $40.00 + Modelado $100.00). Margen ~68%.',
-      timesText: '5.0 horas de máquina FDM · 50 min modelado de accesorios y ensamble.',
+      photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Caja de tÃ­tulo'],
+      shortDesc: 'MÃ©dicos con bata y estetoscopio, ingenieros con casco y planos, enfermeros, abogados, maestros, chefs o deportistas con uniforme oficial y caja conmemorativa.',
+      materialsText: '85 g Filamento PLA+ Â· Accesorios en resina tÃ©cnica (estetoscopios, cascos, birretes, instrumental) Â· Caja POP! Custom con tÃ­tulo profesional grabado.',
+      costsText: 'Costo directo estimado: $215.50 MXN (Filamento $25.50 + Caja tÃ­tulo $28.00 + Resina/Pintura $22.00 + MÃ¡quina $40.00 + Modelado $100.00). Margen ~68%.',
+      timesText: '5.0 horas de mÃ¡quina FDM Â· 50 min modelado de accesorios y ensamble.',
       steps: [
-        '1. Envíanos foto de la persona y del uniforme o vestimenta profesional.',
+        '1. EnvÃ­anos foto de la persona y del uniforme o vestimenta profesional.',
         '2. Modelamos los accesorios clave (estetoscopio, birrete, herramientas, etc.).',
-        '3. Impresión 3D y detallado cuidadoso de taller.',
-        '4. Empaque en caja POP! con su título profesional y dedicatoria.'
+        '3. ImpresiÃ³n 3D y detallado cuidadoso de taller.',
+        '4. Empaque en caja POP! con su tÃ­tulo profesional y dedicatoria.'
       ],
       includes: [
         'Figura 3D con uniforme y accesorios profesionales (10 a 11 cm)',
-        'Caja POP! Custom con título, profesión y nombre',
-        'Muestra digital previa para tu confirmación',
+        'Caja POP! Custom con tÃ­tulo, profesiÃ³n y nombre',
+        'Muestra digital previa para tu confirmaciÃ³n',
         'Acabado resistente listo para escritorio o consultorio'
       ],
-      whatsappText: `Hola Artesano Digital,\nMe interesa cotizar una *Figura Estilo Funko Personalizada de Profesión*:\n• Profesión / Especialidad:\n• Ocasión: (Graduación / Titulación / Regalo de trabajo)\n• Cuento con fotos de referencia del uniforme y accesorios.\n¿Podrían orientarme sobre tiempos y costo?`
+      whatsappText: `Hola Artesano Digital,\nMe interesa cotizar una *Figura Estilo Funko Personalizada de ProfesiÃ³n*:\nâ€¢ ProfesiÃ³n / Especialidad:\nâ€¢ OcasiÃ³n: (GraduaciÃ³n / TitulaciÃ³n / Regalo de trabajo)\nâ€¢ Cuento con fotos de referencia del uniforme y accesorios.\nÂ¿PodrÃ­an orientarme sobre tiempos y costo?`
     },
     {
       id: 'amigos',
@@ -160,12 +160,12 @@ export default function CustomProductsSection({
       icon: Users,
       badge: 'Amigos POP!',
       badgeColor: 'bg-blue-100 text-blue-900 border-blue-300',
-      title: 'Funko Amigos & Cumpleaños',
-      fullTitle: 'Figura Funko Custom — Amigos & Cumpleaños',
-      tagline: 'Para ese amigo o amiga que siempre está ahí',
+      title: 'Funko Amigos & CumpleaÃ±os',
+      fullTitle: 'Figura Funko Custom â€” Amigos & CumpleaÃ±os',
+      tagline: 'Para ese amigo o amiga que siempre estÃ¡ ahÃ­',
       priceEstimate: 'Desde $650 MXN',
       priceNumber: 650,
-      leadTime: '3 a 5 días',
+      leadTime: '3 a 5 dÃ­as',
       images: [
         './uploads/catalog-v2-cust-amigos-1.webp',
         './uploads/catalog-v2-cust-amigos-2.webp',
@@ -173,23 +173,23 @@ export default function CustomProductsSection({
         './uploads/catalog-v2-cust-amigos-4.webp'
       ],
       photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Caja conmemorativa'],
-      shortDesc: 'Recrea a tu mejor amigo con sus prendas favoritas, tatuajes, tenis o accesorios característicos (guitarra, videojuegos, libro, taza de café).',
-      materialsText: '80 g Filamento PLA+ · Accesorios personalizados detallados · Caja POP! con dedicatoria o apodo especial.',
-      costsText: 'Costo directo estimado: $198.00 MXN (Filamento $24.00 + Caja ventana $28.00 + Pintura $18.00 + Máquina $38.00 + Modelado $90.00). Margen ~70%.',
-      timesText: '4.5 horas de máquina FDM · 45 min de modelado digital y post-proceso.',
+      shortDesc: 'Recrea a tu mejor amigo con sus prendas favoritas, tatuajes, tenis o accesorios caracterÃ­sticos (guitarra, videojuegos, libro, taza de cafÃ©).',
+      materialsText: '80 g Filamento PLA+ Â· Accesorios personalizados detallados Â· Caja POP! con dedicatoria o apodo especial.',
+      costsText: 'Costo directo estimado: $198.00 MXN (Filamento $24.00 + Caja ventana $28.00 + Pintura $18.00 + MÃ¡quina $38.00 + Modelado $90.00). Margen ~70%.',
+      timesText: '4.5 horas de mÃ¡quina FDM Â· 45 min de modelado digital y post-proceso.',
       steps: [
-        '1. Envíanos fotos de tu amigo(a) y los elementos que lo definen.',
+        '1. EnvÃ­anos fotos de tu amigo(a) y los elementos que lo definen.',
         '2. Modelamos la figura con sus rasgos, estilo y pose favorita.',
         '3. Imprimimos en 3D con colores vivos y duraderos.',
-        '4. Añadimos su apodo y fecha especial a la caja POP! Custom.'
+        '4. AÃ±adimos su apodo y fecha especial a la caja POP! Custom.'
       ],
       includes: [
         'Figura 3D personalizada con accesorios de identidad (10 cm)',
-        'Caja POP! Custom con apodo, número de edición y dedicatoria',
-        'Acabado sellado contra polvo y decoloración',
+        'Caja POP! Custom con apodo, nÃºmero de ediciÃ³n y dedicatoria',
+        'Acabado sellado contra polvo y decoloraciÃ³n',
         'Empaque de regalo listo para entregar'
       ],
-      whatsappText: `Hola Artesano Digital,\nMe interesa cotizar una *Figura Estilo Funko para un Amigo / Cumpleaños*:\n• Nombre o apodo del amigo:\n• Detalles o accesorios que me gustaría incluir:\n¿Podrían darme informes sobre tiempos y costo?`
+      whatsappText: `Hola Artesano Digital,\nMe interesa cotizar una *Figura Estilo Funko para un Amigo / CumpleaÃ±os*:\nâ€¢ Nombre o apodo del amigo:\nâ€¢ Detalles o accesorios que me gustarÃ­a incluir:\nÂ¿PodrÃ­an darme informes sobre tiempos y costo?`
     },
     {
       id: 'familia',
@@ -199,11 +199,11 @@ export default function CustomProductsSection({
       badge: 'Pack Familiar',
       badgeColor: 'bg-purple-100 text-purple-900 border-purple-300',
       title: 'Funko Pack Familiar',
-      fullTitle: 'Figura Funko Custom — Pack Familiar (Papá, Mamá e Hijos)',
-      tagline: 'El retrato familiar más tierno y divertido en 3D',
+      fullTitle: 'Figura Funko Custom â€” Pack Familiar (PapÃ¡, MamÃ¡ e Hijos)',
+      tagline: 'El retrato familiar mÃ¡s tierno y divertido en 3D',
       priceEstimate: 'Desde $1,850 MXN (3 piezas)',
       priceNumber: 1850,
-      leadTime: '5 a 8 días',
+      leadTime: '5 a 8 dÃ­as',
       images: [
         './uploads/catalog-v2-cust-familia-1.webp',
         './uploads/catalog-v2-cust-familia-2.webp',
@@ -211,23 +211,23 @@ export default function CustomProductsSection({
         './uploads/catalog-v2-cust-familia-4.webp'
       ],
       photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Caja set familiar'],
-      shortDesc: 'Recrea a toda la familia en una composición armoniosa: papás, hijos y bebés con sus alturas proporcionales, en caja exhibidora panorámica con apellido familiar.',
-      materialsText: '240 g Filamento PLA+ · Base panorámica escalonada · Caja triple o cuádruple con ventana acrílica amplia.',
-      costsText: 'Costo directo estimado: $520.00 MXN (Filamento $72.00 + Caja panorámica $65.00 + Pintura $45.00 + Máquina $118.00 + Modelado familiar $220.00). Margen ~72%.',
-      timesText: '14 horas de máquina FDM · 120 min de diseño y ensamble de conjunto.',
+      shortDesc: 'Recrea a toda la familia en una composiciÃ³n armoniosa: papÃ¡s, hijos y bebÃ©s con sus alturas proporcionales, en caja exhibidora panorÃ¡mica con apellido familiar.',
+      materialsText: '240 g Filamento PLA+ Â· Base panorÃ¡mica escalonada Â· Caja triple o cuÃ¡druple con ventana acrÃ­lica amplia.',
+      costsText: 'Costo directo estimado: $520.00 MXN (Filamento $72.00 + Caja panorÃ¡mica $65.00 + Pintura $45.00 + MÃ¡quina $118.00 + Modelado familiar $220.00). Margen ~72%.',
+      timesText: '14 horas de mÃ¡quina FDM Â· 120 min de diseÃ±o y ensamble de conjunto.',
       steps: [
-        '1. Envíanos una foto familiar reciente o fotos individuales de cada integrante.',
-        '2. Modelamos a cada miembro respetando sus alturas y rasgos característicos.',
-        '3. Producimos en 3D cuidando la armonía de la paleta de colores.',
-        '4. Ensamblamos en caja panorámica con el apellido familiar grabado.'
+        '1. EnvÃ­anos una foto familiar reciente o fotos individuales de cada integrante.',
+        '2. Modelamos a cada miembro respetando sus alturas y rasgos caracterÃ­sticos.',
+        '3. Producimos en 3D cuidando la armonÃ­a de la paleta de colores.',
+        '4. Ensamblamos en caja panorÃ¡mica con el apellido familiar grabado.'
       ],
       includes: [
-        'Set de 3 o más figuras 3D a escala proporcional',
-        'Base panorámica escalonada para lucir a todos los miembros',
-        'Caja de colección familiar con apellido y dedicatoria',
-        'Empaque de protección reforzado para traslado seguro'
+        'Set de 3 o mÃ¡s figuras 3D a escala proporcional',
+        'Base panorÃ¡mica escalonada para lucir a todos los miembros',
+        'Caja de colecciÃ³n familiar con apellido y dedicatoria',
+        'Empaque de protecciÃ³n reforzado para traslado seguro'
       ],
-      whatsappText: `Hola Artesano Digital,\nMe interesa cotizar un *Pack Familiar Estilo Funko 3D*:\n• Número de integrantes (adultos, niños, bebés, mascotas):\n• Apellido familiar para la caja:\n¿Podrían darme informes y opciones de paquetes familiares?`
+      whatsappText: `Hola Artesano Digital,\nMe interesa cotizar un *Pack Familiar Estilo Funko 3D*:\nâ€¢ NÃºmero de integrantes (adultos, niÃ±os, bebÃ©s, mascotas):\nâ€¢ Apellido familiar para la caja:\nÂ¿PodrÃ­an darme informes y opciones de paquetes familiares?`
     },
     {
       id: 'abuelitos',
@@ -237,11 +237,11 @@ export default function CustomProductsSection({
       badge: 'Homenaje Especial',
       badgeColor: 'bg-warm-100 text-stone-900 border-stone-300',
       title: 'Funko Homenaje a los Abuelitos',
-      fullTitle: 'Figura Funko Custom — Abuelitos (Homenaje a los Abuelos)',
+      fullTitle: 'Figura Funko Custom â€” Abuelitos (Homenaje a los Abuelos)',
       tagline: 'Un tributo inolvidable lleno de amor y gratitud',
-      priceEstimate: 'Desde $680 MXN (o $1,290 Dúo)',
+      priceEstimate: 'Desde $680 MXN (o $1,290 DÃºo)',
       priceNumber: 680,
-      leadTime: '3 a 5 días',
+      leadTime: '3 a 5 dÃ­as',
       images: [
         './uploads/catalog-v2-cust-abuelitos-1.webp',
         './uploads/catalog-v2-cust-abuelitos-2.webp',
@@ -249,23 +249,23 @@ export default function CustomProductsSection({
         './uploads/catalog-v2-cust-abuelitos-4.webp'
       ],
       photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Caja conmemorativa'],
-      shortDesc: 'Captura la ternura, el peinado, los anteojos y la calidez de los abuelos. El regalo más conmovedor para el Día de los Abuelos, bodas de oro o cumpleaños.',
-      materialsText: '80 g Filamento PLA+ · Accesorios en resina (anteojos, tejido, bastón) · Caja POP! conmemorativa con mensaje de amor de los nietos.',
-      costsText: 'Costo directo estimado: $210.00 MXN (Filamento $24.00 + Caja $28.00 + Resina anteojos $20.00 + Máquina $38.00 + Modelado $100.00). Margen ~69%.',
-      timesText: '4.5 horas de máquina FDM · 55 min de modelado con detalles de ternura.',
+      shortDesc: 'Captura la ternura, el peinado, los anteojos y la calidez de los abuelos. El regalo mÃ¡s conmovedor para el DÃ­a de los Abuelos, bodas de oro o cumpleaÃ±os.',
+      materialsText: '80 g Filamento PLA+ Â· Accesorios en resina (anteojos, tejido, bastÃ³n) Â· Caja POP! conmemorativa con mensaje de amor de los nietos.',
+      costsText: 'Costo directo estimado: $210.00 MXN (Filamento $24.00 + Caja $28.00 + Resina anteojos $20.00 + MÃ¡quina $38.00 + Modelado $100.00). Margen ~69%.',
+      timesText: '4.5 horas de mÃ¡quina FDM Â· 55 min de modelado con detalles de ternura.',
       steps: [
-        '1. Envíanos fotos de tus abuelitos (individual o en pareja).',
-        '2. Modelamos sus rasgos tiernos, anteojos, suéter o prendas queridas.',
-        '3. Imprimimos en 3D con máxima fidelidad y suavidad.',
-        '4. Diseñamos la caja POP! con dedicatoria de toda la familia.'
+        '1. EnvÃ­anos fotos de tus abuelitos (individual o en pareja).',
+        '2. Modelamos sus rasgos tiernos, anteojos, suÃ©ter o prendas queridas.',
+        '3. Imprimimos en 3D con mÃ¡xima fidelidad y suavidad.',
+        '4. DiseÃ±amos la caja POP! con dedicatoria de toda la familia.'
       ],
       includes: [
         'Figura 3D personalizada con accesorios de ternura (10 cm)',
         'Caja POP! Custom conmemorativa con dedicatoria especial',
-        'Acabado mate de protección UV para exhibir toda la vida',
-        'Empaque de regalo con moño y tarjeta dedicatoria'
+        'Acabado mate de protecciÃ³n UV para exhibir toda la vida',
+        'Empaque de regalo con moÃ±o y tarjeta dedicatoria'
       ],
-      whatsappText: `Hola Artesano Digital,\nMe interesa cotizar una *Figura Estilo Funko en Homenaje a mis Abuelitos*:\n• Es para: (Abuelito / Abuelita / Ambos en dúo)\n• Cuento con fotos para el modelado.\n¿Podrían apoyarme con tiempos y detalles de empaque con dedicatoria?`
+      whatsappText: `Hola Artesano Digital,\nMe interesa cotizar una *Figura Estilo Funko en Homenaje a mis Abuelitos*:\nâ€¢ Es para: (Abuelito / Abuelita / Ambos en dÃºo)\nâ€¢ Cuento con fotos para el modelado.\nÂ¿PodrÃ­an apoyarme con tiempos y detalles de empaque con dedicatoria?`
     },
     {
       id: 'dibujo',
@@ -276,11 +276,11 @@ export default function CustomProductsSection({
       badgeColor: 'bg-sky-100 text-sky-900 border-sky-300',
       isSpecialDrawing: true,
       title: 'De Dibujo Infantil a Escultura 3D',
-      fullTitle: 'De Dibujo Infantil a Figura 3D Real (El Arte de tus Pequeños)',
-      tagline: '¡El dibujo o boceto de tu pequeño, ahora en volumen real!',
+      fullTitle: 'De Dibujo Infantil a Figura 3D Real (El Arte de tus PequeÃ±os)',
+      tagline: 'Â¡El dibujo o boceto de tu pequeÃ±o, ahora en volumen real!',
       priceEstimate: 'Desde $580 MXN',
       priceNumber: 580,
-      leadTime: '3 a 5 días',
+      leadTime: '3 a 5 dÃ­as',
       images: [
         './uploads/catalog-v2-cust-dibujo-1.webp',
         './uploads/catalog-v2-cust-dibujo-2.webp',
@@ -288,23 +288,23 @@ export default function CustomProductsSection({
         './uploads/catalog-v2-cust-dibujo-4.webp'
       ],
       photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Peana y escala'],
-      shortDesc: '¿Tienes un dibujo de tu pequeño? Lo convertimos en una escultura 3D física única. Dragones, monstruos, superhéroes o personajes fieles a sus trazos.',
-      materialsText: '95 g Filamento PLA biodegradable no tóxico o resina técnica · Base pedestal grabada con nombre del niño y fecha · Caja de regalo con viruta kraft.',
-      costsText: 'Costo directo estimado: $236.50 MXN (Filamento $28.50 + Base grabada $18.00 + Caja kraft $22.00 + Máquina $48.00 + Esculpido 3D $120.00). Margen ~59%.',
-      timesText: '6.0 horas de máquina FDM · 60 min de vectorización y escultura digital a partir del dibujo.',
+      shortDesc: 'Â¿Tienes un dibujo de tu pequeÃ±o? Lo convertimos en una escultura 3D fÃ­sica Ãºnica. Dragones, monstruos, superhÃ©roes o personajes fieles a sus trazos.',
+      materialsText: '95 g Filamento PLA biodegradable no tÃ³xico o resina tÃ©cnica Â· Base pedestal grabada con nombre del niÃ±o y fecha Â· Caja de regalo con viruta kraft.',
+      costsText: 'Costo directo estimado: $236.50 MXN (Filamento $28.50 + Base grabada $18.00 + Caja kraft $22.00 + MÃ¡quina $48.00 + Esculpido 3D $120.00). Margen ~59%.',
+      timesText: '6.0 horas de mÃ¡quina FDM Â· 60 min de vectorizaciÃ³n y escultura digital a partir del dibujo.',
       steps: [
         '1. Tu dibujo: Nos mandas la foto del dibujo de tu hijo (a mano o digital).',
         '2. Lo digitalizamos: Nuestro equipo lo convierte en modelo 3D respetando cada trazo.',
-        '3. Imprimimos en 3D: Tecnología de alta precisión para darle volumen y forma.',
-        '4. ¡Tu figura real!: Escultura física terminada sobre peana grabada, lista para decorar o regalar.'
+        '3. Imprimimos en 3D: TecnologÃ­a de alta precisiÃ³n para darle volumen y forma.',
+        '4. Â¡Tu figura real!: Escultura fÃ­sica terminada sobre peana grabada, lista para decorar o regalar.'
       ],
       includes: [
-        'Digitalización y modelado 3D profesional a partir del dibujo',
-        'Impresión 3D de alta definición en volumen real (10 a 15 cm)',
-        'Base pedestal grabada con nombre del pequeño y año',
-        'Pieza única e irrepetible que atesorarán para siempre'
+        'DigitalizaciÃ³n y modelado 3D profesional a partir del dibujo',
+        'ImpresiÃ³n 3D de alta definiciÃ³n en volumen real (10 a 15 cm)',
+        'Base pedestal grabada con nombre del pequeÃ±o y aÃ±o',
+        'Pieza Ãºnica e irrepetible que atesorarÃ¡n para siempre'
       ],
-      whatsappText: `Hola Artesano Digital,\nTengo un *Dibujo / Boceto de mi hijo* y me encantaría convertirlo en una *Figura 3D Física*:\n• Tengo la foto del dibujo lista para enviárselas.\n¿Podrían apoyarme con la cotización de digitalización e impresión 3D?`
+      whatsappText: `Hola Artesano Digital,\nTengo un *Dibujo / Boceto de mi hijo* y me encantarÃ­a convertirlo en una *Figura 3D FÃ­sica*:\nâ€¢ Tengo la foto del dibujo lista para enviÃ¡rselas.\nÂ¿PodrÃ­an apoyarme con la cotizaciÃ³n de digitalizaciÃ³n e impresiÃ³n 3D?`
     }
   ];
 
@@ -330,10 +330,10 @@ export default function CustomProductsSection({
   return (
     <div className="bg-[#FAF9F5] text-stone-900 min-h-screen">
       
-      {/* 1. BANNER ESTANDARIZADO DE ÁREA (Idéntico a Hogar, Negocios y Eventos: Compacto y con texto a la izquierda) */}
+      {/* 1. BANNER ESTANDARIZADO DE ÃREA (IdÃ©ntico a Hogar, Negocios y Eventos: Compacto y con texto a la izquierda) */}
       <div className="relative bg-[#1F2421] text-white overflow-hidden py-8 sm:py-12 border-b border-black/20">
         <div className="absolute inset-0 opacity-20">
-          <img
+          <img loading="lazy"
             src="./uploads/personalizados-figuras-funko.jpg"
             alt="Personalizados Artesano Digital"
             className="w-full h-full object-cover"
@@ -344,13 +344,13 @@ export default function CustomProductsSection({
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-2 text-left">
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/10 text-[11px] font-bold text-emerald-400 border border-emerald-400/20">
             <Sparkles className="w-3 h-3 text-emerald-400" />
-            <span>Colección Oficial de Taller</span>
+            <span>ColecciÃ³n Oficial de Taller</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-extrabold font-heading text-white tracking-tight">
             Personalizados
           </h1>
           <p className="text-xs sm:text-sm text-gray-300 max-w-2xl leading-relaxed">
-            Convertimos tus fotografías más queridas y los dibujos de tus pequeños en figuras tridimensionales reales y coleccionables en filamento ecológico.
+            Convertimos tus fotografÃ­as mÃ¡s queridas y los dibujos de tus pequeÃ±os en figuras tridimensionales reales y coleccionables en filamento ecolÃ³gico.
           </p>
         </div>
       </div>
@@ -370,11 +370,11 @@ export default function CustomProductsSection({
         </nav>
       </div>
 
-      {/* 2. BARRA DE PESTAÑAS / FILTROS (Móvil Primero - Desplazable) */}
+      {/* 2. BARRA DE PESTAÃ‘AS / FILTROS (MÃ³vil Primero - Desplazable) */}
       <div className="sticky top-20 z-30 bg-[#FBF9F5]/95 backdrop-blur-md border-b border-stone-200 shadow-2xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-2 py-2">
           
-          {/* Categorías Deslizables */}
+          {/* CategorÃ­as Deslizables */}
           <nav className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-1">
             {[
               { id: 'all', label: 'Todos (7)' },
@@ -432,7 +432,7 @@ export default function CustomProductsSection({
               >
                 {/* Imagen del Producto con Vistas y Marca de Agua */}
                 <div className="relative aspect-square bg-[#101215] overflow-hidden select-none">
-                  <img
+                  <img loading="lazy"
                     src={currentImage}
                     alt={prod.title}
                     draggable={false}
@@ -444,7 +444,7 @@ export default function CustomProductsSection({
 
                   {/* Marca de Agua Sutil Oficial */}
                   <div className="absolute top-2 right-2 z-10 flex items-center gap-1 px-1.5 py-[2px] rounded-full bg-black/20 backdrop-blur-2xs text-[7px] font-medium text-white/70 pointer-events-none select-none tracking-tight border border-white/5 shadow-2xs">
-                    <img
+                    <img loading="lazy"
                       src="./brand/artesano_isotipo_transparente.png"
                       alt=""
                       className="w-2 h-2 object-contain shrink-0 opacity-80"
@@ -452,14 +452,14 @@ export default function CustomProductsSection({
                     <span className="hidden xs:inline">Artesano Digital</span>
                   </div>
 
-                  {/* Badge de Categoría Compacto */}
+                  {/* Badge de CategorÃ­a Compacto */}
                   <div className="absolute top-2 left-2 pointer-events-none z-10">
                     <span className={`px-2 py-0.5 rounded-md text-[8.5px] sm:text-[9.5px] font-black uppercase tracking-wider backdrop-blur-md shadow-2xs ${prod.badgeColor}`}>
                       {prod.badge}
                     </span>
                   </div>
 
-                  {/* Selector de 4 Vistas Mini Táctil en la Base de la Foto */}
+                  {/* Selector de 4 Vistas Mini TÃ¡ctil en la Base de la Foto */}
                   <div
                     onClick={(e) => e.stopPropagation()}
                     className="absolute bottom-1.5 left-1.5 right-1.5 flex items-center justify-center gap-1 bg-black/60 backdrop-blur-md py-1 px-1.5 rounded-lg z-10"
@@ -485,7 +485,7 @@ export default function CustomProductsSection({
                   </div>
                 </div>
 
-                {/* Contenido / Información de la Tarjeta */}
+                {/* Contenido / InformaciÃ³n de la Tarjeta */}
                 <div className="p-2.5 sm:p-4 flex-1 flex flex-col justify-between space-y-2">
                   <div className="space-y-1">
                     <h3 className="font-heading font-black text-xs sm:text-sm text-stone-900 leading-snug line-clamp-1 group-hover:text-[#2D4F3E] transition-colors">
@@ -499,7 +499,7 @@ export default function CustomProductsSection({
                   <div className="pt-2 border-t border-stone-100 flex items-center justify-between gap-1">
                     <div>
                       <span className="text-[8.5px] sm:text-[9px] uppercase font-bold text-stone-400 block leading-tight">
-                        Inversión
+                        InversiÃ³n
                       </span>
                       <span className="font-black font-mono text-xs sm:text-sm text-[#17251E]">
                         {prod.priceEstimate}
@@ -512,7 +512,7 @@ export default function CustomProductsSection({
                     </span>
                   </div>
 
-                  {/* Botones de Acción */}
+                  {/* Botones de AcciÃ³n */}
                   <div className="pt-1 grid grid-cols-2 gap-1.5">
                     <button
                       type="button"
@@ -576,16 +576,16 @@ export default function CustomProductsSection({
 
             <div className="p-5 sm:p-6 space-y-6">
               
-              {/* Galería Principal de 4 Vistas */}
+              {/* GalerÃ­a Principal de 4 Vistas */}
               <div className="space-y-3">
                 <div className="relative aspect-[4/3] rounded-2xl bg-[#101215] overflow-hidden select-none">
-                  <img
+                  <img loading="lazy"
                     src={selectedProductForModal.images[modalPhotoIndex] || selectedProductForModal.images[0]}
                     alt={selectedProductForModal.title}
                     className="w-full h-full object-cover select-none pointer-events-none"
                   />
                   <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 rounded-full bg-black/30 backdrop-blur-2xs text-[9px] font-medium text-white/80 border border-white/10">
-                    <img src="./brand/artesano_isotipo_transparente.png" alt="" className="w-3 h-3 object-contain" />
+                    <img loading="lazy" src="./brand/artesano_isotipo_transparente.png" alt="" className="w-3 h-3 object-contain" />
                     <span>Artesano Digital</span>
                   </div>
                 </div>
@@ -603,7 +603,7 @@ export default function CustomProductsSection({
                           : 'border-stone-200 opacity-70 hover:opacity-100'
                       }`}
                     >
-                      <img src={img} alt="" className="w-full h-full object-cover" />
+                      <img loading="lazy" src={img} alt="" className="w-full h-full object-cover" />
                       <span className="absolute bottom-1 left-1 right-1 bg-black/70 text-white text-[8.5px] font-bold text-center py-0.5 rounded backdrop-blur-2xs truncate px-0.5">
                         {selectedProductForModal.photoLabels[idx] || `Vista ${idx + 1}`}
                       </span>
@@ -612,7 +612,7 @@ export default function CustomProductsSection({
                 </div>
               </div>
 
-              {/* Descripción y Especificaciones */}
+              {/* DescripciÃ³n y Especificaciones */}
               <div className="space-y-4">
                 <p className="text-xs sm:text-sm text-stone-600 leading-relaxed font-normal">
                   {selectedProductForModal.shortDesc}
@@ -628,17 +628,17 @@ export default function CustomProductsSection({
                     <strong className="text-stone-800">Materiales:</strong> {selectedProductForModal.materialsText}
                   </p>
                   <p className="text-[11px] text-stone-600 leading-relaxed">
-                    <strong className="text-stone-800">Coste de producción:</strong> {selectedProductForModal.costsText}
+                    <strong className="text-stone-800">Coste de producciÃ³n:</strong> {selectedProductForModal.costsText}
                   </p>
                   <p className="text-[11px] text-stone-600 leading-relaxed">
                     <strong className="text-stone-800">Tiempos de taller:</strong> {selectedProductForModal.timesText}
                   </p>
                 </div>
 
-                {/* Pasos de Personalización */}
+                {/* Pasos de PersonalizaciÃ³n */}
                 <div className="space-y-2">
                   <h4 className="text-xs font-bold uppercase tracking-wider text-stone-400">
-                    ¿Cómo solicitar tu modelo personalizado?
+                    Â¿CÃ³mo solicitar tu modelo personalizado?
                   </h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {selectedProductForModal.steps.map((st, i) => (
@@ -649,7 +649,7 @@ export default function CustomProductsSection({
                   </div>
                 </div>
 
-                {/* Qué incluye */}
+                {/* QuÃ© incluye */}
                 <div className="space-y-2">
                   <h4 className="text-xs font-bold uppercase tracking-wider text-stone-400">
                     El paquete incluye:
@@ -666,10 +666,10 @@ export default function CustomProductsSection({
 
               </div>
 
-              {/* Botón de Cotización por WhatsApp */}
+              {/* BotÃ³n de CotizaciÃ³n por WhatsApp */}
               <div className="pt-4 border-t border-stone-200 flex flex-col sm:flex-row items-center justify-between gap-3">
                 <div>
-                  <span className="text-stone-400 block text-[10px] uppercase font-bold">Precio de Cotización Base</span>
+                  <span className="text-stone-400 block text-[10px] uppercase font-bold">Precio de CotizaciÃ³n Base</span>
                   <span className="text-lg font-black font-mono text-[#17251E]">{selectedProductForModal.priceEstimate}</span>
                 </div>
 
@@ -691,3 +691,4 @@ export default function CustomProductsSection({
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import {
   X, Trash2, MessageCircle, Copy, Check, ShoppingBag, ArrowRight,
   Info, Calendar, MapPin, User, Truck, AlertTriangle, Zap, Tag, Sparkles, RotateCcw,
@@ -21,14 +21,14 @@ export default function QuoteDrawer({
 }) {
   if (!isOpen) return null;
 
-  // Modo de Compra: 'direct' (Compra Directa Inmediata) | 'quote' (Cotización Personalizada)
+  // Modo de Compra: 'direct' (Compra Directa Inmediata) | 'quote' (CotizaciÃ³n Personalizada)
   const [checkoutMode, setCheckoutMode] = useState('direct');
   const [customerName, setCustomerName] = useState('');
   const [cityZip, setCityZip] = useState('');
   const [deliveryNotes, setDeliveryNotes] = useState('');
   const [copied, setCopied] = useState(false);
 
-  // Cupones activos cargados desde el servidor con fallback estático
+  // Cupones activos cargados desde el servidor con fallback estÃ¡tico
   const [serverCoupons, setServerCoupons] = useState([]);
   useEffect(() => {
     const loadCoupons = async () => {
@@ -50,7 +50,7 @@ export default function QuoteDrawer({
     loadCoupons();
   }, []);
 
-  // Cupón y Código de Descuento
+  // CupÃ³n y CÃ³digo de Descuento
   const [couponInput, setCouponInput] = useState('');
   const [appliedCouponCode, setAppliedCouponCode] = useState(() => {
     try {
@@ -65,7 +65,7 @@ export default function QuoteDrawer({
   const [isJustApplied, setIsJustApplied] = useState(false);
   const [floatingCoins, setFloatingCoins] = useState([]);
 
-  // Campaña o referencia
+  // CampaÃ±a o referencia
   const [campaignRef] = useState(() => {
     try {
       return localStorage.getItem('artesano_active_pub') || '';
@@ -96,7 +96,7 @@ export default function QuoteDrawer({
     } catch (e) {}
   };
 
-  // Manejador interactivo estilo monedita de Mario al cliquear el cupón en el carrito
+  // Manejador interactivo estilo monedita de Mario al cliquear el cupÃ³n en el carrito
   const handleCouponCardClick = (e) => {
     playMarioCoinSound();
     const rect = e.currentTarget.getBoundingClientRect();
@@ -112,7 +112,7 @@ export default function QuoteDrawer({
     }, 900);
   };
 
-  // Cálculo de Subtotales
+  // CÃ¡lculo de Subtotales
   let hasPendingQuotes = false;
   let subtotal = 0;
 
@@ -140,40 +140,40 @@ export default function QuoteDrawer({
     })) || [])
   ];
 
-  // Validar cupón activo contra la lista de cupones
+  // Validar cupÃ³n activo contra la lista de cupones
   const activeCouponObj = appliedCouponCode ? findCoupon(appliedCouponCode, combinedCustomCoupons) : null;
   const couponCalculation = activeCouponObj ? calculateCouponDiscount(activeCouponObj, subtotal) : null;
 
   const discountAmount = couponCalculation?.isValid ? couponCalculation.discountAmount : 0;
-  // Piso comercial: ningún total con productos puede quedar en $0 MXN
+  // Piso comercial: ningÃºn total con productos puede quedar en $0 MXN
   const finalTotal = subtotal > 0
     ? (couponCalculation?.isValid ? couponCalculation.finalTotal : subtotal)
     : 0;
 
-  // Manejador para aplicar un nuevo código de descuento
+  // Manejador para aplicar un nuevo cÃ³digo de descuento
   const handleApplyCoupon = (e) => {
     e?.preventDefault();
     setCouponError('');
     setCouponSuccessMsg('');
 
     if (!couponInput.trim()) {
-      setCouponError('Ingresa un código de descuento');
+      setCouponError('Ingresa un cÃ³digo de descuento');
       return;
     }
 
     const found = findCoupon(couponInput, combinedCustomCoupons);
     if (!found) {
-      setCouponError('Código no válido. Verifica que esté bien escrito o consulta con nosotros en WhatsApp.');
+      setCouponError('CÃ³digo no vÃ¡lido. Verifica que estÃ© bien escrito o consulta con nosotros en WhatsApp.');
       return;
     }
 
     const calc = calculateCouponDiscount(found, subtotal);
     if (!calc.isValid) {
-      setCouponError(calc.reason || 'Este código no aplica para el monto actual');
+      setCouponError(calc.reason || 'Este cÃ³digo no aplica para el monto actual');
       return;
     }
 
-    // Aplicar con éxito y disparar animación y sonido retro
+    // Aplicar con Ã©xito y disparar animaciÃ³n y sonido retro
     setAppliedCouponCode(found.code);
     setIsJustApplied(true);
     playMarioCoinSound();
@@ -182,12 +182,12 @@ export default function QuoteDrawer({
     try {
       localStorage.setItem('artesano_active_coupon', found.code);
     } catch {}
-    setCouponSuccessMsg(`¡Código ${found.code} aplicado con éxito!`);
+    setCouponSuccessMsg(`Â¡CÃ³digo ${found.code} aplicado con Ã©xito!`);
     setIsChangingCoupon(false);
     setCouponInput('');
   };
 
-  // Manejador para quitar o cambiar el cupón
+  // Manejador para quitar o cambiar el cupÃ³n
   const handleRemoveCoupon = () => {
     setAppliedCouponCode('');
     try {
@@ -199,7 +199,7 @@ export default function QuoteDrawer({
     setIsJustApplied(false);
   };
 
-  // Construcción del mensaje estructurado para WhatsApp con enlaces directos
+  // ConstrucciÃ³n del mensaje estructurado para WhatsApp con enlaces directos
   const buildWhatsAppMessage = () => {
     const isDirect = checkoutMode === 'direct';
     const cleanPath = typeof window !== 'undefined' ? window.location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '') : '';
@@ -208,53 +208,53 @@ export default function QuoteDrawer({
       : 'https://wichonemes.github.io/artesano';
 
     let msg = isDirect
-      ? `*PEDIDO DIRECTO INMEDIATO — ARTESANO DIGITAL*\n`
-      : `*SOLICITUD DE COTIZACIÓN — ARTESANO DIGITAL*\n`;
+      ? `*PEDIDO DIRECTO INMEDIATO â€” ARTESANO DIGITAL*\n`
+      : `*SOLICITUD DE COTIZACIÃ“N â€” ARTESANO DIGITAL*\n`;
 
     msg += `--------------------------------------\n`;
 
     if (customerName.trim()) {
-      msg += `• *Cliente:* ${customerName.trim()}\n`;
+      msg += `â€¢ *Cliente:* ${customerName.trim()}\n`;
     }
     if (cityZip.trim()) {
-      msg += `• *Ciudad / C.P. para entrega:* ${cityZip.trim()}\n`;
+      msg += `â€¢ *Ciudad / C.P. para entrega:* ${cityZip.trim()}\n`;
     }
     if (campaignRef.trim()) {
-      msg += `• *Referencia:* ${campaignRef.trim()}\n`;
+      msg += `â€¢ *Referencia:* ${campaignRef.trim()}\n`;
     }
 
     msg += `--------------------------------------\n`;
-    msg += isDirect ? `*PRODUCTOS A COMPRAR (ESTÁNDAR):*\n\n` : `*PRODUCTOS A COTIZAR:*\n\n`;
+    msg += isDirect ? `*PRODUCTOS A COMPRAR (ESTÃNDAR):*\n\n` : `*PRODUCTOS A COTIZAR:*\n\n`;
 
     items.forEach((item, index) => {
       const p = item.product;
       const prodUrl = `${baseUrl}/?prod=${encodeURIComponent(p.code || p.id)}`;
 
       msg += `${index + 1}. *[${p.code}] ${p.name}*\n`;
-      msg += `   • Cantidad: *${item.quantity} ${p.priceUnit || 'pza'}*\n`;
+      msg += `   â€¢ Cantidad: *${item.quantity} ${p.priceUnit || 'pza'}*\n`;
 
       if (item.selectedVariants && Object.keys(item.selectedVariants).length > 0) {
         const variantsStr = Object.entries(item.selectedVariants)
           .map(([k, v]) => `${k}: ${v}`)
           .join(', ');
-        msg += `   • Opciones: ${variantsStr}\n`;
+        msg += `   â€¢ Opciones: ${variantsStr}\n`;
       }
 
       if (item.customText && item.customText.trim()) {
-        msg += `   • Personalización: "${item.customText.trim()}"\n`;
+        msg += `   â€¢ PersonalizaciÃ³n: "${item.customText.trim()}"\n`;
       } else if (isDirect) {
-        msg += `   • Acabado: Estándar de taller (sin grabado)\n`;
+        msg += `   â€¢ Acabado: EstÃ¡ndar de taller (sin grabado)\n`;
       }
 
       if (p.priceType === 'quote' || p.price === null) {
-        msg += `   • Precio: A convenir por proyecto\n`;
+        msg += `   â€¢ Precio: A convenir por proyecto\n`;
       } else {
         const lineTotal = p.price * item.quantity;
-        msg += `   • Precio: $${p.price} c/u (Subtotal: $${lineTotal} MXN)\n`;
+        msg += `   â€¢ Precio: $${p.price} c/u (Subtotal: $${lineTotal} MXN)\n`;
       }
 
       // Enlace directo a la pieza en tienda
-      msg += `   • *Ver pieza:* ${prodUrl}\n`;
+      msg += `   â€¢ *Ver pieza:* ${prodUrl}\n`;
 
       // Enlace al modelo 3D en MakerWorld si es pieza 3D
       const is3D = p.techniques?.some(t => t === '3d' || t === 'impresion_3d' || t === '3d_printing') ||
@@ -262,7 +262,7 @@ export default function QuoteDrawer({
                    (p.categories && p.categories.some(c => c.includes('3d') || c.includes('gamer') || c.includes('escritorio')));
       if (is3D) {
         const makerUrl = p.makerWorldUrl || `https://makerworld.com/en/search/models?keyword=${encodeURIComponent(p.name.replace(/[^a-zA-Z0-9 ]/g, ''))}`;
-        msg += `   • *Modelo 3D MakerWorld:* ${makerUrl}\n`;
+        msg += `   â€¢ *Modelo 3D MakerWorld:* ${makerUrl}\n`;
       }
 
       msg += `\n`;
@@ -272,19 +272,19 @@ export default function QuoteDrawer({
     msg += `*Subtotal de productos:* $${subtotal} MXN\n`;
 
     if (appliedCouponCode && discountAmount > 0) {
-      const categoryLabel = activeCouponObj ? getCouponCategoryLabel(activeCouponObj) : 'Código Especial de Tienda';
+      const categoryLabel = activeCouponObj ? getCouponCategoryLabel(activeCouponObj) : 'CÃ³digo Especial de Tienda';
       const benefitLabel = activeCouponObj?.label || activeCouponObj?.name || 'Descuento especial';
-      msg += `*CUPÓN APLICADO:* ${appliedCouponCode}\n`;
-      msg += `   • *Tipo:* ${categoryLabel}\n`;
-      msg += `   • *Beneficio:* ${benefitLabel}\n`;
-      msg += `   • *Ahorro otorgado:* -$${discountAmount} MXN\n`;
-      msg += `*TOTAL FINAL CON CUPÓN:* $${finalTotal} MXN\n`;
+      msg += `*CUPÃ“N APLICADO:* ${appliedCouponCode}\n`;
+      msg += `   â€¢ *Tipo:* ${categoryLabel}\n`;
+      msg += `   â€¢ *Beneficio:* ${benefitLabel}\n`;
+      msg += `   â€¢ *Ahorro otorgado:* -$${discountAmount} MXN\n`;
+      msg += `*TOTAL FINAL CON CUPÃ“N:* $${finalTotal} MXN\n`;
     } else {
       msg += `*Total a pagar:* $${subtotal} MXN\n`;
     }
 
     if (hasPendingQuotes) {
-      msg += `*(Piezas sin precio fijo se confirmarán en este chat)*\n`;
+      msg += `*(Piezas sin precio fijo se confirmarÃ¡n en este chat)*\n`;
     }
 
     if (deliveryNotes.trim()) {
@@ -292,9 +292,9 @@ export default function QuoteDrawer({
     }
 
     if (isDirect) {
-      msg += `\n_Modalidad: Compra directa rápida. Solicito cuenta para transferencia/pago y fecha de entrega._`;
+      msg += `\n_Modalidad: Compra directa rÃ¡pida. Solicito cuenta para transferencia/pago y fecha de entrega._`;
     } else {
-      msg += `\n_Solicito cotización detallada con tiempos de elaboración._`;
+      msg += `\n_Solicito cotizaciÃ³n detallada con tiempos de elaboraciÃ³n._`;
     }
 
     return msg;
@@ -305,7 +305,7 @@ export default function QuoteDrawer({
     playCoinSound();
     playRandomOrderCelebrationSound();
 
-    // Monitoreo: Registrar uso de cupón en la base de datos del taller
+    // Monitoreo: Registrar uso de cupÃ³n en la base de datos del taller
     if (appliedCouponCode && discountAmount > 0) {
       try {
         fetch('/api/coupons/record-use', {
@@ -399,7 +399,7 @@ export default function QuoteDrawer({
           </div>
         </div>
 
-        {/* Selector de Modalidad: Compra Directa vs Cotización */}
+        {/* Selector de Modalidad: Compra Directa vs CotizaciÃ³n */}
         {items.length > 0 && (
           <div className="px-4 py-2 bg-gray-50 border-b border-gray-200/80 shrink-0">
             <div className="grid grid-cols-2 p-1 bg-gray-200/80 rounded-xl text-xs font-bold">
@@ -413,7 +413,7 @@ export default function QuoteDrawer({
                 }`}
               >
                 <Zap className="w-3.5 h-3.5 text-amber-500" />
-                <span>Compra Directa (Rápido)</span>
+                <span>Compra Directa (RÃ¡pido)</span>
               </button>
 
               <button
@@ -440,7 +440,7 @@ export default function QuoteDrawer({
                 <ShoppingBag className="w-8 h-8 opacity-60" />
               </div>
               <div>
-                <h4 className="text-base font-bold text-gray-800">Tu carrito está vacío</h4>
+                <h4 className="text-base font-bold text-gray-800">Tu carrito estÃ¡ vacÃ­o</h4>
                 <p className="text-xs text-gray-500 max-w-xs mx-auto mt-1">
                   Agrega piezas de Hogar, Negocios o Eventos para pedir directamente o cotizar.
                 </p>
@@ -459,25 +459,25 @@ export default function QuoteDrawer({
                     href={`/api/catalog-pdf/download/primary?download=1`}
                     download={settings?.mobileCatalogConfig?.fileName || 'Catalogo_Movil_Artesano_Digital.pdf'}
                     className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#FAF9F5] text-[#2D4F3E] border border-[#2D4F3E]/20 text-xs font-bold hover:bg-[#2D4F3E]/10 cursor-pointer transition-all"
-                    title={settings?.mobileCatalogConfig?.title || 'Descargar catálogo 9:16 para celular con enlaces MakerWorld'}
+                    title={settings?.mobileCatalogConfig?.title || 'Descargar catÃ¡logo 9:16 para celular con enlaces MakerWorld'}
                   >
                     <FileText className="w-3.5 h-3.5 text-[#2D4F3E]" />
-                    <span>{settings?.mobileCatalogConfig?.buttonText || 'Catálogo PDF Móvil'}</span>
+                    <span>{settings?.mobileCatalogConfig?.buttonText || 'CatÃ¡logo PDF MÃ³vil'}</span>
                   </a>
                 )}
               </div>
             </div>
           ) : (
             <>
-              {/* Aviso cuando el taller está en receso */}
+              {/* Aviso cuando el taller estÃ¡ en receso */}
               {settings?.serviceStatus?.isPaused && (
                 <div className="p-3 rounded-xl bg-amber-50 border border-amber-300 text-amber-950 text-xs space-y-1">
                   <div className="font-bold flex items-center gap-1.5 text-amber-900">
                     <Calendar className="w-4 h-4 text-amber-700 shrink-0" />
-                    <span>Taller en receso hasta el {formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'próximo aviso'}</span>
+                    <span>Taller en receso hasta el {formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'prÃ³ximo aviso'}</span>
                   </div>
                   <p className="text-[11px] text-amber-800 leading-relaxed">
-                    Puedes confirmar tu pedido hoy y quedará programado con prioridad de entrega al reanudar.
+                    Puedes confirmar tu pedido hoy y quedarÃ¡ programado con prioridad de entrega al reanudar.
                   </p>
                 </div>
               )}
@@ -487,15 +487,15 @@ export default function QuoteDrawer({
                 <div className="p-2.5 rounded-xl bg-emerald-50/70 border border-emerald-200 text-emerald-900 text-xs flex items-center gap-2 shadow-2xs">
                   <Zap className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span className="text-[11.5px] font-medium leading-tight">
-                    <strong>Modo Express:</strong> Piezas terminadas con diseño de taller listas para envío.
+                    <strong>Modo Express:</strong> Piezas terminadas con diseÃ±o de taller listas para envÃ­o.
                   </span>
                 </div>
               )}
 
-              {/* Lista de Artículos */}
+              {/* Lista de ArtÃ­culos */}
               <div className="space-y-2.5">
                 <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400">
-                  Artículos en orden ({items.length}):
+                  ArtÃ­culos en orden ({items.length}):
                 </div>
 
                 {items.map((item, idx) => {
@@ -508,7 +508,7 @@ export default function QuoteDrawer({
                       className="p-3 rounded-2xl border border-[#E8E4DA] bg-white flex gap-3 relative group shadow-2xs"
                     >
                       {/* Miniatura Cuadrada */}
-                      <img
+                      <img loading="lazy"
                         src={p.primaryImage}
                         alt={p.name}
                         className="w-16 h-16 rounded-xl object-cover bg-gray-50 border border-gray-100 shrink-0"
@@ -540,18 +540,18 @@ export default function QuoteDrawer({
                         {/* Variantes seleccionadas */}
                         {item.selectedVariants && Object.keys(item.selectedVariants).length > 0 && (
                           <div className="text-[10.5px] text-gray-500 truncate">
-                            {Object.entries(item.selectedVariants).map(([k, v]) => `${k}: ${v}`).join(' · ')}
+                            {Object.entries(item.selectedVariants).map(([k, v]) => `${k}: ${v}`).join(' Â· ')}
                           </div>
                         )}
 
-                        {/* Personalización secundaria */}
+                        {/* PersonalizaciÃ³n secundaria */}
                         {item.customText ? (
                           <div className="text-[10px] text-[#2D4F3E] bg-[#F4F0E8] px-2 py-0.5 rounded-md inline-block max-w-full truncate">
                             Personalizado: {item.customText}
                           </div>
                         ) : (
                           <span className="text-[10px] text-gray-400 italic block">
-                            Acabado estándar de taller
+                            Acabado estÃ¡ndar de taller
                           </span>
                         )}
 
@@ -598,12 +598,12 @@ export default function QuoteDrawer({
                 })}
               </div>
 
-              {/* APARTADO DE CÓDIGOS DE DESCUENTO Y CUPONES */}
+              {/* APARTADO DE CÃ“DIGOS DE DESCUENTO Y CUPONES */}
               <div className="p-3.5 rounded-2xl bg-[#FAF9F5] border border-[#E5D7B7] space-y-2.5 text-xs">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5 font-bold text-gray-700">
                     <Tag className="w-3.5 h-3.5 text-[#D4A359]" />
-                    <span>¿Tienes un código de descuento?</span>
+                    <span>Â¿Tienes un cÃ³digo de descuento?</span>
                   </div>
                   {appliedCouponCode && !isChangingCoupon && (
                     <button
@@ -612,15 +612,15 @@ export default function QuoteDrawer({
                       className="text-[11px] text-[#2D4F3E] hover:underline font-bold flex items-center gap-1 cursor-pointer"
                     >
                       <RotateCcw className="w-3 h-3" />
-                      <span>Cambiar código</span>
+                      <span>Cambiar cÃ³digo</span>
                     </button>
                   )}
                 </div>
 
                 {/* Aviso claro de que los cupones no son acumulables */}
                 <div className="flex items-center gap-2 p-2 rounded-xl bg-amber-50/80 border border-amber-200/90 text-[11px] text-amber-900 leading-tight">
-                  <span className="text-amber-600 text-sm shrink-0">ℹ️</span>
-                  <span><strong>Nota:</strong> Los cupones de descuento no son acumulables entre sí (máximo 1 cupón por pedido).</span>
+                  <span className="text-amber-600 text-sm shrink-0">â„¹ï¸</span>
+                  <span><strong>Nota:</strong> Los cupones de descuento no son acumulables entre sÃ­ (mÃ¡ximo 1 cupÃ³n por pedido).</span>
                 </div>
 
                 {/* Enlace directo para canjear cupones con monedas del Arcade */}
@@ -635,7 +635,7 @@ export default function QuoteDrawer({
                   >
                     <span className="flex items-center gap-1.5">
                       <Gift className="w-4 h-4 text-amber-700 group-hover:rotate-12 transition-transform" />
-                      <span>¿Quieres cupones? Canjea monedas en Arcade</span>
+                      <span>Â¿Quieres cupones? Canjea monedas en Arcade</span>
                     </span>
                     <span className="text-[11px] text-amber-700 underline font-semibold">
                       Canjear &rarr;
@@ -643,27 +643,27 @@ export default function QuoteDrawer({
                   </button>
                 )}
 
-                {/* Si ya hay un cupón activo y no se está cambiando */}
+                {/* Si ya hay un cupÃ³n activo y no se estÃ¡ cambiando */}
                 {appliedCouponCode && !isChangingCoupon ? (
                   <div className="space-y-2">
-                    {/* Banner de animación al recién aplicar */}
+                    {/* Banner de animaciÃ³n al reciÃ©n aplicar */}
                     {isJustApplied && (
                       <div className="p-2 rounded-xl bg-gradient-to-r from-emerald-600 to-[#2D4F3E] text-white text-[11px] font-bold flex items-center justify-between shadow-md animate-bounce">
                         <span className="flex items-center gap-1.5">
                           <Check className="w-3.5 h-3.5 text-white" />
-                          <span>¡Cupón agregado al carrito de compras con éxito!</span>
+                          <span>Â¡CupÃ³n agregado al carrito de compras con Ã©xito!</span>
                         </span>
                         <Sparkles className="w-3.5 h-3.5 text-white" />
                       </div>
                     )}
 
-                    {/* Tarjeta de Cupón Resplandeciente e interactiva al estilo monedita de Mario */}
+                    {/* Tarjeta de CupÃ³n Resplandeciente e interactiva al estilo monedita de Mario */}
                     <div
                       onClick={handleCouponCardClick}
                       className={`relative overflow-hidden p-3 rounded-2xl bg-gradient-to-r from-emerald-50 via-amber-50/70 to-emerald-50 border-2 border-emerald-400 flex items-center justify-between gap-2 shadow-md shadow-emerald-500/20 coupon-glow-active transition-all cursor-pointer select-none active:scale-95 group ${
                         isJustApplied ? 'animate-coupon-fly-in ring-2 ring-emerald-500' : ''
                       }`}
-                      title="¡Haz clic aquí para interactuar con tu cupón!"
+                      title="Â¡Haz clic aquÃ­ para interactuar con tu cupÃ³n!"
                     >
                       {/* Efecto de barrido resplandeciente continuo */}
                       <div className="absolute inset-0 pointer-events-none shimmer-sweep opacity-30" />
@@ -676,7 +676,7 @@ export default function QuoteDrawer({
                           className="absolute pointer-events-none animate-mario-coin z-30 font-black text-amber-500 text-sm drop-shadow-md select-none flex items-center gap-0.5"
                         >
                           <Coins className="w-3.5 h-3.5 text-amber-600" />
-                          <span className="text-xs text-amber-600 font-black">+¡Ting!</span>
+                          <span className="text-xs text-amber-600 font-black">+Â¡Ting!</span>
                         </div>
                       ))}
 
@@ -698,18 +698,18 @@ export default function QuoteDrawer({
                                 ? 'bg-purple-100 text-purple-900 border-purple-300'
                                 : 'bg-blue-100 text-blue-900 border-blue-300'
                             }`}>
-                              {activeCouponObj && getCouponCategory(activeCouponObj) === 'arcade' ? 'Descuento Arcade' : 'Cupón de Tienda'}
+                              {activeCouponObj && getCouponCategory(activeCouponObj) === 'arcade' ? 'Descuento Arcade' : 'CupÃ³n de Tienda'}
                             </span>
                             <span className="text-[10px] font-bold text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-200">
                               Interactivo
                             </span>
                           </div>
                           <p className="text-[11px] text-emerald-900 font-medium truncate mt-0.5">
-                            {activeCouponObj?.label || activeCouponObj?.name || 'Descuento aplicado'} · Ahorro: <strong className="text-emerald-700">-${discountAmount} MXN</strong>
+                            {activeCouponObj?.label || activeCouponObj?.name || 'Descuento aplicado'} Â· Ahorro: <strong className="text-emerald-700">-${discountAmount} MXN</strong>
                           </p>
                           {activeCouponObj?.expiresAt && (
                             <p className="text-[10px] text-gray-500 font-medium mt-0.5 flex items-center gap-1">
-                              <Calendar className="w-3 h-3 text-gray-400 inline" /> Válido hasta: {new Date(activeCouponObj.expiresAt).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' })}
+                              <Calendar className="w-3 h-3 text-gray-400 inline" /> VÃ¡lido hasta: {new Date(activeCouponObj.expiresAt).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' })}
                             </p>
                           )}
                         </div>
@@ -722,27 +722,27 @@ export default function QuoteDrawer({
                           handleRemoveCoupon();
                         }}
                         className="relative z-20 text-[11px] text-red-600 hover:text-red-800 font-bold px-2.5 py-1 rounded-lg hover:bg-red-50/80 cursor-pointer shrink-0 border border-transparent hover:border-red-200 transition-colors"
-                        title="Quitar cupón"
+                        title="Quitar cupÃ³n"
                       >
                         Quitar
                       </button>
                     </div>
 
-                    {/* Alerta si el carrito está por debajo del mínimo de compra para este cupón */}
+                    {/* Alerta si el carrito estÃ¡ por debajo del mÃ­nimo de compra para este cupÃ³n */}
                     {couponCalculation && !couponCalculation.isValid && (
                       <div className="mt-2 p-2 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-[11px] font-semibold flex items-center gap-1.5">
                         <AlertTriangle className="w-3.5 h-3.5 text-amber-700 shrink-0" />
-                        <span>{couponCalculation.reason || 'Cupón en pausa: no alcanza el mínimo de compra'}</span>
+                        <span>{couponCalculation.reason || 'CupÃ³n en pausa: no alcanza el mÃ­nimo de compra'}</span>
                       </div>
                     )}
                   </div>
                 ) : (
-                  /* Formulario para ingresar o cambiar el código */
+                  /* Formulario para ingresar o cambiar el cÃ³digo */
                   <form onSubmit={handleApplyCoupon} className="space-y-1.5">
                     <div className="flex items-center gap-2">
                       <input
                         type="text"
-                        placeholder="Ingresa tu código (ej: BIENVENIDO, TALLER10...)"
+                        placeholder="Ingresa tu cÃ³digo (ej: BIENVENIDO, TALLER10...)"
                         value={couponInput}
                         onChange={e => {
                           setCouponInput(e.target.value.toUpperCase());
@@ -782,11 +782,11 @@ export default function QuoteDrawer({
                 )}
               </div>
 
-              {/* Formulario Rápido de Entrega */}
+              {/* Formulario RÃ¡pido de Entrega */}
               <div className="p-3.5 rounded-2xl bg-[#FAF9F5] border border-[#E8E4DA] space-y-2.5 text-xs">
                 <div className="font-bold text-gray-700 flex items-center gap-1.5 text-xs">
                   <User className="w-3.5 h-3.5 text-[#2D4F3E]" />
-                  <span>Datos rápidos para tu entrega:</span>
+                  <span>Datos rÃ¡pidos para tu entrega:</span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -796,7 +796,7 @@ export default function QuoteDrawer({
                     </label>
                     <input
                       type="text"
-                      placeholder="Ej: Sofía Martínez"
+                      placeholder="Ej: SofÃ­a MartÃ­nez"
                       value={customerName}
                       onChange={e => setCustomerName(e.target.value)}
                       className="w-full px-3 py-1.5 rounded-xl border border-gray-300 focus:border-[#2D4F3E] focus:outline-none bg-white text-base sm:text-xs"
@@ -820,11 +820,11 @@ export default function QuoteDrawer({
                 {checkoutMode === 'quote' && (
                   <div>
                     <label className="text-[11px] font-semibold text-gray-600 block mb-0.5">
-                      Detalles de grabado o personalización requerida:
+                      Detalles de grabado o personalizaciÃ³n requerida:
                     </label>
                     <textarea
                       rows={2}
-                      placeholder="Indica nombres, fechas, colores específicos o adjunta link de tu logo..."
+                      placeholder="Indica nombres, fechas, colores especÃ­ficos o adjunta link de tu logo..."
                       value={deliveryNotes}
                       onChange={e => setDeliveryNotes(e.target.value)}
                       className="w-full px-3 py-1.5 rounded-xl border border-gray-300 focus:border-[#2D4F3E] focus:outline-none bg-white text-base sm:text-xs"
@@ -859,11 +859,11 @@ export default function QuoteDrawer({
               </div>
 
               <div className="text-[10px] text-gray-400">
-                * Confirmas dirección exacta y método de pago (transferencia/tarjeta) por WhatsApp.
+                * Confirmas direcciÃ³n exacta y mÃ©todo de pago (transferencia/tarjeta) por WhatsApp.
               </div>
             </div>
 
-            {/* Botón Principal Grande y Rápido */}
+            {/* BotÃ³n Principal Grande y RÃ¡pido */}
             <div className="space-y-2">
               <button
                 type="button"
@@ -878,7 +878,7 @@ export default function QuoteDrawer({
                 <span>
                   {checkoutMode === 'direct'
                     ? `Hacer Pedido Directo ($${finalTotal} MXN)`
-                    : 'Enviar Cotización por WhatsApp'}
+                    : 'Enviar CotizaciÃ³n por WhatsApp'}
                 </span>
               </button>
 
@@ -888,7 +888,7 @@ export default function QuoteDrawer({
                 className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-full bg-white text-gray-700 border border-[#E8E4DA] text-xs font-semibold hover:bg-gray-50 active:scale-98 transition-all cursor-pointer"
               >
                 {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-gray-400" />}
-                <span>{copied ? '¡Resumen copiado al portapapeles!' : 'Copiar resumen de orden'}</span>
+                <span>{copied ? 'Â¡Resumen copiado al portapapeles!' : 'Copiar resumen de orden'}</span>
               </button>
 
               {settings?.mobileCatalogConfig?.enabled !== false && settings?.mobileCatalogConfig?.showInDrawer !== false && (
@@ -896,10 +896,10 @@ export default function QuoteDrawer({
                   href={`/api/catalog-pdf/download/primary?download=1`}
                   download={settings?.mobileCatalogConfig?.fileName || 'Catalogo_Movil_Artesano_Digital.pdf'}
                   className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-full bg-amber-50 text-amber-900 border border-amber-200 text-xs font-bold hover:bg-amber-100 active:scale-98 transition-all cursor-pointer text-center"
-                  title={settings?.mobileCatalogConfig?.title || 'Descargar catálogo vertical 9:16 para celular con enlaces MakerWorld'}
+                  title={settings?.mobileCatalogConfig?.title || 'Descargar catÃ¡logo vertical 9:16 para celular con enlaces MakerWorld'}
                 >
                   <FileText className="w-3.5 h-3.5 text-amber-900 shrink-0" />
-                  <span>{settings?.mobileCatalogConfig?.buttonText ? `Descargar ${settings.mobileCatalogConfig.buttonText}` : 'Descargar Catálogo PDF Móvil (9:16)'}</span>
+                  <span>{settings?.mobileCatalogConfig?.buttonText ? `Descargar ${settings.mobileCatalogConfig.buttonText}` : 'Descargar CatÃ¡logo PDF MÃ³vil (9:16)'}</span>
                 </a>
               )}
             </div>
@@ -910,3 +910,4 @@ export default function QuoteDrawer({
     </div>
   );
 }
+

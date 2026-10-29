@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Flame, Sparkles, CheckCircle2, MessageCircle, ArrowRight, Clock, Users, ShieldCheck, HeartHandshake } from 'lucide-react';
 
 export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
@@ -6,27 +6,27 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
 
   const whatsappNumber = (settings?.whatsappNumber || '524442818795').replace(/[^0-9]/g, '');
   const patchBarWhatsAppUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-    '¡Hola Artesano Digital! Me interesa cotizar el Servicio de Patch Bar en Vivo para mi evento (boda / fiesta / corporativo). ¿Podrían darme informes de paquetes y disponibilidad?'
+    'Â¡Hola Artesano Digital! Me interesa cotizar el Servicio de Patch Bar en Vivo para mi evento (boda / fiesta / corporativo). Â¿PodrÃ­an darme informes de paquetes y disponibilidad?'
   )}`;
 
   const tabs = [
     {
       id: 'completo',
-      label: 'Estación en madera',
+      label: 'EstaciÃ³n en madera',
       image: './uploads/patch_bar_servicio_en_vivo.jpg',
-      caption: 'Mobiliario de madera artesanal con repisas para gorras, charolas de parches y prensa térmica industrial.'
+      caption: 'Mobiliario de madera artesanal con repisas para gorras, charolas de parches y prensa tÃ©rmica industrial.'
     },
     {
       id: 'parches',
       label: 'Muestrario de parches',
       image: './uploads/angle_patch_bar.jpg',
-      caption: 'Parches y stickers textiles de alta durabilidad: iniciales, frases de celebración y monogramas personalizados.'
+      caption: 'Parches y stickers textiles de alta durabilidad: iniciales, frases de celebraciÃ³n y monogramas personalizados.'
     },
     {
       id: 'infografia',
       label: 'Medidas y capacidad',
       image: './uploads/info_patch_bar.jpg',
-      caption: 'Estación de 160 x 80 cm, apta para salones y jardines, con capacidad de 50 a 300+ invitados.'
+      caption: 'EstaciÃ³n de 160 x 80 cm, apta para salones y jardines, con capacidad de 50 a 300+ invitados.'
     }
   ];
 
@@ -40,7 +40,7 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
         <div className="text-center max-w-3xl mx-auto mb-10 space-y-2.5">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#D82B6E]/10 text-[#D82B6E] text-xs font-black uppercase tracking-wider shadow-2xs">
             <Flame className="w-3.5 h-3.5" />
-            <span>Experiencia en Vivo · Activación para Eventos</span>
+            <span>Experiencia en Vivo Â· ActivaciÃ³n para Eventos</span>
           </div>
           
           <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1F2421] font-heading tracking-tight">
@@ -48,7 +48,7 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
           </h2>
           
           <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-            La dinámica más divertida para <strong>bodas, XV años, cumpleaños y eventos empresariales</strong>. Llevamos nuestro stand de madera artesanal y tus invitados personalizan y planchan su propia gorra o tote bag al instante.
+            La dinÃ¡mica mÃ¡s divertida para <strong>bodas, XV aÃ±os, cumpleaÃ±os y eventos empresariales</strong>. Llevamos nuestro stand de madera artesanal y tus invitados personalizan y planchan su propia gorra o tote bag al instante.
           </p>
         </div>
 
@@ -64,7 +64,7 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
               Elige tu base favorita
             </h3>
             <p className="text-xs text-stone-600 leading-relaxed mb-3">
-              Tus invitados escogen entre gorras estilo <strong>trucker</strong> (varios colores neutros con malla fresca) o <strong>tote bags</strong> de manta 100% algodón crudo.
+              Tus invitados escogen entre gorras estilo <strong>trucker</strong> (varios colores neutros con malla fresca) o <strong>tote bags</strong> de manta 100% algodÃ³n crudo.
             </p>
             <div className="flex flex-wrap gap-1.5 text-[11px] font-semibold text-[#2D4F3E]">
               <span className="px-2.5 py-0.5 rounded-lg bg-emerald-50 border border-emerald-200">Gorras trucker</span>
@@ -81,10 +81,10 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
               Selecciona tus parches
             </h3>
             <p className="text-xs text-stone-600 leading-relaxed mb-3">
-              Charolas con diseños exclusivos del evento: <strong>iniciales de los novios o festejado</strong>, frases icónicas de fiesta, flores botánicas y stickers textiles.
+              Charolas con diseÃ±os exclusivos del evento: <strong>iniciales de los novios o festejado</strong>, frases icÃ³nicas de fiesta, flores botÃ¡nicas y stickers textiles.
             </p>
             <div className="flex flex-wrap gap-1.5 text-[11px] font-semibold text-[#D82B6E]">
-              <span className="px-2.5 py-0.5 rounded-lg bg-rose-50 border border-rose-200">Parches temáticos</span>
+              <span className="px-2.5 py-0.5 rounded-lg bg-rose-50 border border-rose-200">Parches temÃ¡ticos</span>
               <span className="px-2.5 py-0.5 rounded-lg bg-rose-50 border border-rose-200">Monogramas D&amp;A</span>
             </div>
           </div>
@@ -95,14 +95,14 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
               3
             </div>
             <h3 className="text-base sm:text-lg font-bold text-[#1F2421] mb-1 font-heading">
-              ¡Planchado en vivo!
+              Â¡Planchado en vivo!
             </h3>
             <p className="text-xs text-stone-600 leading-relaxed mb-3">
-              Nuestro operador calificado aplica cada parche con <strong>prensa térmica de alta presión</strong> en menos de 45 segundos. Listo para usarse durante la fiesta.
+              Nuestro operador calificado aplica cada parche con <strong>prensa tÃ©rmica de alta presiÃ³n</strong> en menos de 45 segundos. Listo para usarse durante la fiesta.
             </p>
             <div className="flex flex-wrap gap-1.5 text-[11px] font-semibold text-stone-700">
               <span className="px-2.5 py-0.5 rounded-lg bg-stone-100 border border-stone-200">&lt; 45 segundos</span>
-              <span className="px-2.5 py-0.5 rounded-lg bg-stone-100 border border-stone-200">Fijación lavable</span>
+              <span className="px-2.5 py-0.5 rounded-lg bg-stone-100 border border-stone-200">FijaciÃ³n lavable</span>
             </div>
           </div>
 
@@ -132,7 +132,7 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
 
             {/* Displayed Image */}
             <div className="flex-1 flex items-center justify-center overflow-hidden rounded-2xl bg-black/40 border border-white/10 relative my-2">
-              <img
+              <img loading="lazy"
                 src={currentTabObj.image}
                 alt={currentTabObj.label}
                 className="w-full h-full object-contain max-h-[380px] transition-all duration-500"
@@ -159,13 +159,13 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
               </div>
 
               <h3 className="text-xl sm:text-2xl font-extrabold text-[#1F2421] font-heading">
-                ¿Qué incluye nuestro servicio?
+                Â¿QuÃ© incluye nuestro servicio?
               </h3>
 
               <ul className="space-y-2.5 text-xs text-stone-600">
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#2D4F3E] shrink-0 mt-0.5" />
-                  <span><strong>Mobiliario artesanal de madera:</strong> Repisas de exhibición, charolas organizadoras y letrero tallado.</span>
+                  <span><strong>Mobiliario artesanal de madera:</strong> Repisas de exhibiciÃ³n, charolas organizadoras y letrero tallado.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#2D4F3E] shrink-0 mt-0.5" />
@@ -173,11 +173,11 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#2D4F3E] shrink-0 mt-0.5" />
-                  <span><strong>Parches exclusivos de tu evento:</strong> Diseños a medida (monogramas, fechas, frases divertidas de fiesta o logotipos).</span>
+                  <span><strong>Parches exclusivos de tu evento:</strong> DiseÃ±os a medida (monogramas, fechas, frases divertidas de fiesta o logotipos).</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#2D4F3E] shrink-0 mt-0.5" />
-                  <span><strong>Prensa térmica industrial &amp; Operador:</strong> Personal uniformado que asiste a tus invitados durante 3 horas.</span>
+                  <span><strong>Prensa tÃ©rmica industrial &amp; Operador:</strong> Personal uniformado que asiste a tus invitados durante 3 horas.</span>
                 </li>
               </ul>
             </div>
@@ -192,7 +192,7 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
                 </div>
               </div>
               <p className="text-[10.5px] text-stone-500 leading-tight">
-                * El costo final se ajusta al número de invitados, tipo de prendas y horas de servicio requeridas.
+                * El costo final se ajusta al nÃºmero de invitados, tipo de prendas y horas de servicio requeridas.
               </p>
             </div>
 
@@ -213,7 +213,7 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
                   onClick={onOpenPatchBarProduct}
                   className="w-full py-2.5 px-4 rounded-2xl bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  <span>Ver ficha técnica y fotos completas</span>
+                  <span>Ver ficha tÃ©cnica y fotos completas</span>
                   <ArrowRight className="w-3.5 h-3.5 text-stone-500" />
                 </button>
               )}
@@ -227,3 +227,4 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
     </section>
   );
 }
+
