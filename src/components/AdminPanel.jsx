@@ -52,6 +52,7 @@ import {
   buildCostBreakdownFromSummary,
   repairProductCosts,
   auditProductCost,
+  enrichRecipeItems,
   num
 } from '../../shared/costing.js';
 
@@ -1650,11 +1651,17 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         shippingCost: 0,
         costStatus: 'Estimado'
       },
-      manufacturingRecipe: generateDefaultRecipeForProduct({
-        techniques: ['3d'],
-        code: 'HOG-3D-PLA-001',
-        name: 'Nuevo Producto'
-      }, rawMaterialsList),
+      manufacturingRecipe: (() => {
+        const baseRecipe = generateDefaultRecipeForProduct({
+          techniques: ['3d'],
+          code: 'HOG-3D-PLA-001',
+          name: 'Nuevo Producto'
+        }, rawMaterialsList);
+        return {
+          ...baseRecipe,
+          items: enrichRecipeItems(baseRecipe.items || [], rawMaterialsList)
+        };
+      })(),
       privateNotes: '',
       repository: {
         platform: 'makerworld',
@@ -1728,8 +1735,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     const recipeSeed = prod.manufacturingRecipe?.items?.length
       ? prod.manufacturingRecipe
       : buildRecipeFromProduct(prod, rawMaterialsList, workshopParams);
-    const recipeSummary = computeRecipeCost(recipeSeed, prod, rawMaterialsList, workshopParams);
-    const resolvedRecipe = applySummaryToRecipe(recipeSeed, recipeSummary);
+    const enrichedSeed = {
+      ...recipeSeed,
+      items: enrichRecipeItems(recipeSeed.items || [], rawMaterialsList)
+    };
+    const recipeSummary = computeRecipeCost(enrichedSeed, prod, rawMaterialsList, workshopParams);
+    const resolvedRecipe = applySummaryToRecipe(enrichedSeed, recipeSummary);
 
 
     const repo = prod.repository || {};
@@ -1949,7 +1960,8 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       if (it.id !== itemId) return it;
       return {
         ...it,
-        supplyType: newType
+        supplyType: newType,
+        manualGroup: true
       };
     });
     setEditorForm({
@@ -5183,19 +5195,19 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                   {productViewMode === 'grid' ? (
                     /* VISTA EN CUADRÍCULA DE TARJETAS (ESTILO PAQUETES - FÁCIL EDICIÓN) */
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3 sm:gap-4">
                       {filteredProducts.map(p => (
                         <div
                           key={p.id}
-                          className="rounded-3xl border border-[#E8E4DA] hover:border-gray-400 bg-white transition-all flex flex-col justify-between overflow-hidden shadow-xs hover:shadow-md relative"
+                          className="rounded-2xl border border-[#E8E4DA] hover:border-gray-400 bg-white transition-all flex flex-col justify-between overflow-hidden shadow-xs hover:shadow-md relative"
                         >
-                          <div className="p-4 sm:p-5 space-y-3.5">
+                          <div className="p-3 space-y-2.5">
                             {/* Encabezado: Foto, SKU y Nombre */}
                             <div className="flex items-start gap-3">
                               <img loading="lazy"
                                 src={p.primaryImage || p.gallery?.[0] || p.whiteBgImage}
                                 alt={p.name}
-                                className="w-16 h-16 rounded-2xl object-cover bg-gray-100 border border-gray-200 shrink-0"
+                                className="w-12 h-12 rounded-xl object-cover bg-gray-100 border border-gray-200 shrink-0"
                               />
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-1.5 flex-wrap">
@@ -5231,10 +5243,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   </button>
                                 </div>
 
-                                <h4 className="font-bold text-xs sm:text-sm text-[#1F2421] truncate mt-1" title={p.name}>
+                                <h4 className="font-bold text-xs text-[#1F2421] truncate mt-0.5" title={p.name}>
                                   {p.name}
                                 </h4>
-                                <p className="text-[11px] text-gray-500 line-clamp-1 mt-0.5">
+                                <p className="text-[10px] text-gray-500 line-clamp-1 mt-0.5">
                                   {p.shortDescription || 'Sin descripción corta.'}
                                 </p>
 
@@ -5290,7 +5302,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             </div>
 
                             {/* Precios y Existencia */}
-                            <div className="p-2.5 rounded-2xl bg-gray-50 border border-gray-200/80 flex items-center justify-between">
+                            <div className="p-2 rounded-xl bg-gray-50 border border-gray-200/80 flex items-center justify-between">
                               <div>
                                 <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Precio</div>
                                 <div className="font-black text-sm sm:text-base text-[#2D4F3E] font-mono">
@@ -5371,7 +5383,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           </div>
 
                           {/* Barra de Acciones */}
-                          <div className="p-3 bg-gray-50 border-t border-gray-100 flex items-center justify-between gap-2">
+                          <div className="p-2 bg-gray-50 border-t border-gray-100 flex items-center justify-between gap-1.5">
                             <div className="flex items-center gap-1.5">
                               <button
                                 type="button"

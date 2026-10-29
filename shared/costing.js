@@ -173,6 +173,61 @@ export function normalizeRecipeItems(items = [], rawMaterials = []) {
   });
 }
 
+const SUPPLY_TYPES = new Set([
+  'direct', 'complementary', 'intangible', 'micro',
+  'finish', 'indirect', 'production', 'component'
+]);
+
+/**
+ * Clasifica un insumo en el grupo de receta correcto cuando el dato viejo
+ * venía como "direct" por defecto. Respeta los movimientos manuales.
+ */
+export function inferSupplyType(item = {}) {
+  const current = item.supplyType;
+  if (item.manualGroup && current) return current;
+  if (current === 'component' || item.linkedProductId) return 'component';
+  if (current && current !== 'direct' && SUPPLY_TYPES.has(current)) return current;
+
+  const text = normalizeText(`${item.name || ''} ${item.category || ''}`);
+  if (/empaque|caja|bolsa|etiqueta|celofan|viruta|burbuja|esquinero|tissue|kraft/.test(text)) return 'indirect';
+  if (/servicio|maquila|corte externo|grabado externo|impresion externa|instalacion|flete|envio/.test(text)) return 'production';
+  if (/diseno|licencia|archivo|modelo digital|arte digital|render|plantilla/.test(text)) return 'intangible';
+  if (/barniz|tinte|pintura|sellador|laca|acabado|esmalte/.test(text)) return 'finish';
+  if (/guante|estopa|limpieza|proteccion|desechable|solvente|alcohol|bata|mascarilla/.test(text)) return 'indirect';
+  if (/iman|magnet|led|luz|argolla|herraje|tornillo|clavo|inserto|mecanismo|switch|interruptor|mosqueton|broche|cierre|remache/.test(text)) return 'complementary';
+  if (/lija|cinta|pegamento|resistol|cianocrilato|silicon|adhesivo|brocha|pincel|diluyente/.test(text)) return 'micro';
+  return current || 'direct';
+}
+
+/**
+ * Completa la información de cada renglón de receta con los datos reales
+ * del almacén: material vinculado, categoría, unidad, costo, proveedor y grupo.
+ */
+export function enrichRecipeItems(items = [], rawMaterials = []) {
+  return normalizeRecipeItems(items, rawMaterials).map(item => {
+    const material = findMaterial(rawMaterials, item);
+    const category = material?.category || item.category || 'general';
+    const supplyType = inferSupplyType({ ...item, category });
+    const unit = item.unit || material?.packageMeasurement || material?.unit || 'pieza';
+    const unitCost = num(item.unitCost, 0) > 0
+      ? num(item.unitCost, 0)
+      : (material ? materialUnitCost(material, unit) : 0);
+    const totalQuantity = num(item.totalQuantity, num(item.netQuantity, 0) + num(item.wasteQuantity, 0));
+    return {
+      ...item,
+      materialId: material?.id || item.materialId || '',
+      category,
+      supplyType,
+      unit,
+      unitCost: round4(unitCost),
+      totalQuantity: round2(totalQuantity),
+      totalCost: round2(totalQuantity * unitCost),
+      supplier: item.supplier || material?.supplier || '',
+      notes: item.notes || (material?.supplier ? `Proveedor: ${material.supplier}` : '')
+    };
+  });
+}
+
 function isPackagingItem(item) {
   return item?.category === 'packaging' || /empaque|caja|bolsa|etiqueta|viruta|burbuja|esquinero|tissue|celofan|celofán/i.test(item?.name || '');
 }
