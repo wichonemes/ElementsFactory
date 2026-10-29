@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect, useMemo } from 'react';
 import {
+import ImageOptimized from './ImageOptimized';
   Flame, Zap, Clock, Tag, Sparkles, Copy, Check,
   ChevronRight, ChevronLeft, Gift, ArrowDown, Award, Percent, TrendingUp,
   ArrowRight
@@ -880,7 +881,7 @@ export default function MonthlyEventBanner({
       {/* Fondo fotogrÃ¡fico de temporada suave y armonizado con la paleta */}
       {effectiveBannerImage && (
         <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-          <img loading="lazy"
+          <ImageOptimized loading="lazy"
             src={effectiveBannerImage}
             alt=""
             className={`w-full h-full object-cover mix-blend-overlay ${theme.isLight ? 'opacity-20' : 'opacity-30'}`}
@@ -1064,7 +1065,7 @@ export default function MonthlyEventBanner({
                           isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
                         }`}
                       >
-                        <img loading="lazy"
+                        <ImageOptimized loading="lazy"
                           src={slide.image}
                           alt={slide.title}
                           className="w-full h-full object-cover object-center transform group-hover/slide:scale-105 transition-transform duration-1000"

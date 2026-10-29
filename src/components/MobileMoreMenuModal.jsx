@@ -1,5 +1,6 @@
 ﻿import React from 'react';
 import { 
+import ImageOptimized from './ImageOptimized';
   ArrowLeft, 
   MessageCircle, 
   FileText, 
@@ -46,7 +47,7 @@ export default function MobileMoreMenuModal({
           </button>
           <div className="flex items-center gap-2.5">
             <div className="w-10 h-10 rounded-full bg-white/10 border border-white/20 p-1 flex items-center justify-center">
-              <img loading="lazy"
+              <ImageOptimized loading="lazy"
                 src="./brand/artesano_isotipo_transparente.png"
                 alt="Artesano Digital"
                 className="w-full h-full object-contain"

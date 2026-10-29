@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import {
+import ImageOptimized from './ImageOptimized';
   Gift, Sparkles, Upload, Image as ImageIcon, Check,
   AlertTriangle, Star, Flame, Eye, Edit, Plus, Calendar,
   Tag, ArrowRight, Layers, DollarSign, Award, ChevronRight,
@@ -1591,7 +1592,7 @@ export default function CampaignsAdminSection({
                         }`}
                         title={img.label}
                       >
-                        <img loading="lazy" src={img.url} alt="" className="w-full h-full object-cover" />
+                        <ImageOptimized loading="lazy" src={img.url} alt="" className="w-full h-full object-cover" />
                         <span className="absolute inset-0 bg-black/40 group-hover:bg-black/20 flex items-end p-1 text-[8.5px] font-bold text-white line-clamp-1">
                           {img.label}
                         </span>
@@ -2191,7 +2192,7 @@ export default function CampaignsAdminSection({
                   <div className="lg:col-span-4 space-y-2">
                     <div className="relative rounded-xl overflow-hidden border border-gray-300 bg-white aspect-video shadow-xs group flex items-center justify-center">
                       {slide.image ? (
-                        <img loading="lazy"
+                        <ImageOptimized loading="lazy"
                           src={slide.image}
                           alt={slide.title}
                           className="w-full h-full object-cover"
@@ -2241,7 +2242,7 @@ export default function CampaignsAdminSection({
                             }`}
                             title={sug.label}
                           >
-                            <img loading="lazy" src={sug.url} alt="" className="w-full h-full object-cover" />
+                            <ImageOptimized loading="lazy" src={sug.url} alt="" className="w-full h-full object-cover" />
                           </button>
                         ))}
                       </div>

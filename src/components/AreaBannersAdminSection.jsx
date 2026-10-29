@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import {
+import ImageOptimized from './ImageOptimized';
   Image as ImageIcon, Upload, Check, AlertTriangle, RefreshCw,
   Eye, Sparkles, Home, Briefcase, CalendarHeart, ExternalLink,
   Layers, ArrowRight, Save, Gift, Wrench, Palette, Gamepad2,
@@ -1194,7 +1195,7 @@ export default function AreaBannersAdminSection({
 
             <div className="relative rounded-3xl overflow-hidden bg-[#1F2421] text-white shadow-xl border-2 border-white/10 min-h-[190px] sm:min-h-[220px] flex items-center">
               {formData.image ? (
-                <img loading="lazy"
+                <ImageOptimized loading="lazy"
                   src={formData.image}
                   alt={formData.name}
                   className="absolute inset-0 w-full h-full object-cover opacity-35"
@@ -1290,7 +1291,7 @@ export default function AreaBannersAdminSection({
                             : 'bg-gray-50 hover:bg-gray-100 text-gray-700 border-gray-200'
                         }`}
                       >
-                        <img loading="lazy"
+                        <ImageOptimized loading="lazy"
                           src={item.url}
                           alt={item.label}
                           className="w-full h-14 rounded-lg object-cover bg-gray-200"

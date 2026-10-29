@@ -1,5 +1,6 @@
 ﻿import React, { useState, useMemo, useEffect } from 'react';
 import {
+import ImageOptimized from './ImageOptimized';
   Flame, Clock, Zap, Percent, Search, RefreshCw, AlertTriangle,
   CheckCircle2, Sparkles, Filter, ChevronRight, Edit, X, ArrowUpRight,
   TrendingUp, BarChart3, Package, ShieldAlert, Sliders, Check,
@@ -1603,7 +1604,7 @@ export default function FlashDealsControlSection({
                       {/* Foto y CÃ³digo */}
                       <td className="py-2.5 px-3">
                         <div className="flex items-center gap-2">
-                          <img loading="lazy"
+                          <ImageOptimized loading="lazy"
                             src={p.primaryImage || p.whiteBgImage || '/placeholder.png'}
                             alt=""
                             className="w-10 h-10 rounded-lg object-cover bg-white border border-gray-200 shrink-0"

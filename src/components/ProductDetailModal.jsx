@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import {
+import ImageOptimized from './ImageOptimized';
   X, Check, ShoppingBag, MessageCircle, Share2, Clock, Ruler,
   ShieldCheck, Sparkles, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Maximize2,
   Package, Eye, Layers, Calculator, Calendar, AlertTriangle, Truck, MapPin,
@@ -462,7 +463,7 @@ export default function ProductDetailModal({
 
                 {/* Marca de Agua Sutil de Taller para Protección de Imagen con Logotipo Oficial */}
                 <div className="absolute bottom-2.5 right-2.5 z-10 flex items-center gap-1 px-2 py-[2.5px] rounded-full bg-black/20 backdrop-blur-2xs text-[7.5px] font-medium text-white/70 pointer-events-none select-none tracking-tight border border-white/5 shadow-2xs">
-                  <img
+                  <ImageOptimized
                     src="./brand/artesano_isotipo_transparente.png"
                     alt=""
                     className="w-2.5 h-2.5 object-contain shrink-0 opacity-80"
@@ -1606,7 +1607,7 @@ export default function ProductDetailModal({
                   >
                     <div>
                       <div className="aspect-square rounded-xl overflow-hidden bg-gray-50 border border-gray-100 mb-2.5">
-                        <img
+                        <ImageOptimized
                           src={rel.primaryImage}
                           alt={rel.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"

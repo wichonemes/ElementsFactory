@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect, useRef } from 'react';
 import {
+import ImageOptimized from './ImageOptimized';
   X, Camera, Upload, Sparkles, RefreshCw, CheckCircle2,
   AlertTriangle, RotateCcw, Info, ZoomIn, Eye, Sliders, Check
 } from 'lucide-react';
@@ -754,7 +755,7 @@ export default function ProductPhotoStudioModal({
                       {/* Visor / Subida */}
                       {hasPhoto ? (
                         <div className="relative rounded-xl overflow-hidden border border-slate-700 bg-slate-900 aspect-square flex items-center justify-center">
-                          <img loading="lazy"
+                          <ImageOptimized loading="lazy"
                             src={angle.state.preview}
                             alt={angle.title}
                             className="w-full h-full object-contain p-2"
@@ -952,7 +953,7 @@ export default function ProductPhotoStudioModal({
                         </div>
                       ) : imgUrl ? (
                         <>
-                          <img loading="lazy"
+                          <ImageOptimized loading="lazy"
                             src={imgUrl}
                             alt={slot.slotName}
                             className="w-full h-full object-contain transition duration-300 group-hover:scale-105"

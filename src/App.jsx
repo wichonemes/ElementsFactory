@@ -30,6 +30,7 @@ import { Home, Briefcase, CalendarHeart, Sparkles, ChevronRight, ShoppingBag, La
 import { formatServiceDate } from './utils/serviceStatus';
 import { playCoinSound, playSoftAreaSwitchSound, playMarioPowerDownSound } from './utils/soundEffects';
 import catalogFallbackData from './data/catalogFallback.json';
+import ImageOptimized from './ImageOptimized';
 
 const normalizeAssetUrl = (url) => {
   if (!url || typeof url !== 'string') return url;
@@ -964,7 +965,7 @@ export default function App() {
       {activeWorld !== 'all' && activeWorld !== 'paquetes-servicios' && activeWorld !== 'publicidad-desarrollo' && activeWorld !== 'industria' && activeWorld !== 'servicios' && currentWorldObj && (
         <div className="relative bg-[#1F2421] text-white overflow-hidden py-10 sm:py-14 border-b border-black/20">
           <div className="absolute inset-0 opacity-20">
-            <img loading="lazy" src={currentWorldObj.image} alt="" className="w-full h-full object-cover" />
+            <ImageOptimized loading="lazy" src={currentWorldObj.image} alt="" className="w-full h-full object-cover" />
           </div>
           <div className="absolute inset-0 bg-gradient-to-r from-[#1F2421] via-[#1F2421]/90 to-transparent"></div>
           
@@ -1080,14 +1081,14 @@ export default function App() {
               <div className="flex items-center gap-3 min-w-0">
                 <div className="flex -space-x-3 shrink-0">
                   <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden border-2 border-white/20 bg-black/40 shadow-xs">
-                    <img loading="lazy"
+                    <ImageOptimized loading="lazy"
                       src="./uploads/personalizados-figuras-funko.jpg"
                       alt="Funko Custom"
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden border-2 border-sky-400/50 bg-black/40 shadow-xs">
-                    <img loading="lazy"
+                    <ImageOptimized loading="lazy"
                       src="./uploads/personalizados-dibujo-figura-3d.jpg"
                       alt="De Dibujo a 3D"
                       className="w-full h-full object-cover"
@@ -1122,7 +1123,7 @@ export default function App() {
             
             {loading ? (
               <div className="py-24 text-center space-y-3">
-                <img loading="lazy"
+                <ImageOptimized loading="lazy"
                   src="./brand/artesano_isotipo_transparente.png"
                   alt="Cargando"
                   className="w-10 h-10 object-contain mx-auto animate-bounce"

@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Sparkles, ChevronDown, ChevronUp, ArrowRight, Printer, Flame, Layers, Wand2 } from 'lucide-react';
+import ImageOptimized from './ImageOptimized';
 
 export default function MobileBannerCarousel({
   slides = [],
@@ -77,7 +78,7 @@ export default function MobileBannerCarousel({
         }}
       >
         {/* Imagen de fondo */}
-        <img loading="lazy"
+        <ImageOptimized loading="lazy"
           src={activeSlide.image || './uploads/img_001.jpg'}
           alt={activeSlide.title || 'Artesano Digital'}
           className="w-full h-full object-cover object-center transition-all duration-700 brightness-85"

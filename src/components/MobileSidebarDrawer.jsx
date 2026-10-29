@@ -1,5 +1,6 @@
 ﻿import React from 'react';
 import { 
+import ImageOptimized from './ImageOptimized';
   X, 
   MessageCircle, 
   FileText, 
@@ -54,7 +55,7 @@ export default function MobileSidebarDrawer({
         <div className="bg-[#17251E] text-white p-4 flex items-center justify-between border-b border-white/10 shrink-0">
           <div className="flex items-center gap-3 min-w-0">
             <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 p-1 flex items-center justify-center shrink-0">
-              <img loading="lazy"
+              <ImageOptimized loading="lazy"
                 src="./brand/artesano_isotipo_transparente.png"
                 alt="Artesano Digital"
                 className="w-full h-full object-contain"

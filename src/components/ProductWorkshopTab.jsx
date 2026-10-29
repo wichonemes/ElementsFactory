@@ -1,5 +1,6 @@
 ﻿import React, { useMemo, useState } from 'react';
 import {
+import ImageOptimized from './ImageOptimized';
   Wrench, Boxes, Plus, Trash2, ChevronDown, ChevronRight, Link2,
   Calculator, Zap, Clock, DollarSign, Package, Layers, Paintbrush,
   Sparkles, Printer, Scissors, Box, Shirt, Check, AlertCircle, Save,
@@ -438,7 +439,7 @@ export default function ProductWorkshopTab({
           <div className="flex items-start gap-4 min-w-0">
             <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/20 overflow-hidden flex items-center justify-center shrink-0">
               {editorForm.primaryImage ? (
-                <img loading="lazy" src={editorForm.primaryImage} alt={editorForm.name || 'Producto'} className="w-full h-full object-cover" />
+                <ImageOptimized loading="lazy" src={editorForm.primaryImage} alt={editorForm.name || 'Producto'} className="w-full h-full object-cover" />
               ) : (
                 <Wrench className="w-6 h-6 text-white/70" />
               )}

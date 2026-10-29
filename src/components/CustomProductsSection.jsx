@@ -1,5 +1,6 @@
 ﻿import React, { useState } from 'react';
 import {
+import ImageOptimized from './ImageOptimized';
   Sparkles,
   Dog,
   Heart,
@@ -333,7 +334,7 @@ export default function CustomProductsSection({
       {/* 1. BANNER ESTANDARIZADO DE ÃREA (IdÃ©ntico a Hogar, Negocios y Eventos: Compacto y con texto a la izquierda) */}
       <div className="relative bg-[#1F2421] text-white overflow-hidden py-8 sm:py-12 border-b border-black/20">
         <div className="absolute inset-0 opacity-20">
-          <img loading="lazy"
+          <ImageOptimized loading="lazy"
             src="./uploads/personalizados-figuras-funko.jpg"
             alt="Personalizados Artesano Digital"
             className="w-full h-full object-cover"
@@ -444,7 +445,7 @@ export default function CustomProductsSection({
 
                   {/* Marca de Agua Sutil Oficial */}
                   <div className="absolute top-2 right-2 z-10 flex items-center gap-1 px-1.5 py-[2px] rounded-full bg-black/20 backdrop-blur-2xs text-[7px] font-medium text-white/70 pointer-events-none select-none tracking-tight border border-white/5 shadow-2xs">
-                    <img loading="lazy"
+                    <ImageOptimized loading="lazy"
                       src="./brand/artesano_isotipo_transparente.png"
                       alt=""
                       className="w-2 h-2 object-contain shrink-0 opacity-80"
@@ -579,13 +580,13 @@ export default function CustomProductsSection({
               {/* GalerÃ­a Principal de 4 Vistas */}
               <div className="space-y-3">
                 <div className="relative aspect-[4/3] rounded-2xl bg-[#101215] overflow-hidden select-none">
-                  <img loading="lazy"
+                  <ImageOptimized loading="lazy"
                     src={selectedProductForModal.images[modalPhotoIndex] || selectedProductForModal.images[0]}
                     alt={selectedProductForModal.title}
                     className="w-full h-full object-cover select-none pointer-events-none"
                   />
                   <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 rounded-full bg-black/30 backdrop-blur-2xs text-[9px] font-medium text-white/80 border border-white/10">
-                    <img loading="lazy" src="./brand/artesano_isotipo_transparente.png" alt="" className="w-3 h-3 object-contain" />
+                    <ImageOptimized loading="lazy" src="./brand/artesano_isotipo_transparente.png" alt="" className="w-3 h-3 object-contain" />
                     <span>Artesano Digital</span>
                   </div>
                 </div>
@@ -603,7 +604,7 @@ export default function CustomProductsSection({
                           : 'border-stone-200 opacity-70 hover:opacity-100'
                       }`}
                     >
-                      <img loading="lazy" src={img} alt="" className="w-full h-full object-cover" />
+                      <ImageOptimized loading="lazy" src={img} alt="" className="w-full h-full object-cover" />
                       <span className="absolute bottom-1 left-1 right-1 bg-black/70 text-white text-[8.5px] font-bold text-center py-0.5 rounded backdrop-blur-2xs truncate px-0.5">
                         {selectedProductForModal.photoLabels[idx] || `Vista ${idx + 1}`}
                       </span>

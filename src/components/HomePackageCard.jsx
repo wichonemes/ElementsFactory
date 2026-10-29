@@ -1,5 +1,6 @@
 ﻿import React from 'react';
 import { Plus, CheckCircle2, Percent, Layers, Sparkles } from 'lucide-react';
+import ImageOptimized from './ImageOptimized';
 
 export default function HomePackageCard({
   packageItem,
@@ -66,7 +67,7 @@ export default function HomePackageCard({
 
           {/* Marca de agua */}
           <div className="flex items-center gap-1 px-1.5 py-[2px] rounded-full bg-black/20 backdrop-blur-2xs text-[7px] font-medium text-white/80 tracking-tight border border-white/5 shadow-2xs">
-            <img loading="lazy"
+            <ImageOptimized loading="lazy"
               src="./brand/artesano_isotipo_transparente.png"
               alt=""
               className="w-2 h-2 object-contain shrink-0 opacity-80"

@@ -1,5 +1,6 @@
 ﻿import React, { useState } from 'react';
 import { Clock, Zap, Flame, ArrowRight, X, Sparkles, Percent } from 'lucide-react';
+import ImageOptimized from './ImageOptimized';
 
 export default function BlitzClockWidget({
   blitzDeal,
@@ -79,7 +80,7 @@ export default function BlitzClockWidget({
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
           </span>
 
-          <img loading="lazy"
+          <ImageOptimized loading="lazy"
             src={product.primaryImage || product.whiteBgImage}
             alt={product.name}
             className="w-7 h-7 rounded-full object-cover border border-amber-300/40 bg-white shrink-0"
@@ -186,7 +187,7 @@ export default function BlitzClockWidget({
             onClick={() => onSelectProduct && onSelectProduct(product)}
             className="flex items-center gap-3 cursor-pointer group/prod min-w-0"
           >
-            <img loading="lazy"
+            <ImageOptimized loading="lazy"
               src={product.primaryImage || product.whiteBgImage}
               alt={product.name}
               className="w-12 h-12 rounded-xl object-cover border border-amber-300/30 group-hover/prod:scale-105 transition-transform bg-white shrink-0"

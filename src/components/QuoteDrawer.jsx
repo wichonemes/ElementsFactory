@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import {
+import ImageOptimized from './ImageOptimized';
   X, Trash2, MessageCircle, Copy, Check, ShoppingBag, ArrowRight,
   Info, Calendar, MapPin, User, Truck, AlertTriangle, Zap, Tag, Sparkles, RotateCcw,
   Paintbrush, FileText, Gift, Ticket, Coins
@@ -508,7 +509,7 @@ export default function QuoteDrawer({
                       className="p-3 rounded-2xl border border-[#E8E4DA] bg-white flex gap-3 relative group shadow-2xs"
                     >
                       {/* Miniatura Cuadrada */}
-                      <img loading="lazy"
+                      <ImageOptimized loading="lazy"
                         src={p.primaryImage}
                         alt={p.name}
                         className="w-16 h-16 rounded-xl object-cover bg-gray-50 border border-gray-100 shrink-0"

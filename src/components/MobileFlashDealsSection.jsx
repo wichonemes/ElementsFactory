@@ -1,5 +1,6 @@
 ﻿import React from 'react';
 import { Flame, Clock, Plus, Zap, ShieldCheck } from 'lucide-react';
+import ImageOptimized from './ImageOptimized';
 
 export default function MobileFlashDealsSection({
   products = [],
@@ -60,7 +61,7 @@ export default function MobileFlashDealsSection({
                   className="bg-white/90 hover:bg-white rounded-xl p-1.5 flex items-center gap-1.5 cursor-pointer active:scale-98 transition-transform border border-amber-200/60 shadow-2xs"
                 >
                   <div className="w-10 h-10 rounded-lg bg-gray-50 overflow-hidden shrink-0 border border-gray-200">
-                    <img loading="lazy"
+                    <ImageOptimized loading="lazy"
                       src={p.primaryImage || './uploads/img_001.jpg'}
                       alt={p.name}
                       className="w-full h-full object-cover"
@@ -91,7 +92,7 @@ export default function MobileFlashDealsSection({
           >
             {/* Foto grande con badge de relÃ¡mpago y temporizador */}
             <div className="relative aspect-square rounded-xl overflow-hidden bg-gray-50 mb-1.5 border border-gray-100">
-              <img loading="lazy"
+              <ImageOptimized loading="lazy"
                 src={featured.primaryImage || './uploads/img_001.jpg'}
                 alt={featured.name}
                 className="w-full h-full object-cover"

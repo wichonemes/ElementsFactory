@@ -1,5 +1,6 @@
 ﻿import React, { useState, useMemo, useRef } from 'react';
 import {
+import ImageOptimized from './ImageOptimized';
   Palette,
   Globe,
   Printer,
@@ -650,7 +651,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresiÃ³n no incluyen diseÃ±o gr�
                   {/* Foto desenfocada de fondo con opacidad visible (individualmente activable o desactivable) */}
                   {cat.showPhoto && (
                     <>
-                      <img loading="lazy"
+                      <ImageOptimized loading="lazy"
                         src={cat.bgImage}
                         alt=""
                         aria-hidden="true"

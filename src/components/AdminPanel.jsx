@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect, useMemo } from 'react';
 import {
+import ImageOptimized from './ImageOptimized';
   X, Shield, Lock, LogOut, Plus, Edit, Copy, Trash2, Eye,
   BarChart3, Package, FolderTree, Settings, Upload, Check, AlertTriangle,
   ExternalLink, Search, RefreshCw, KeyRound, Sparkles,
@@ -5192,7 +5193,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           <div className="p-4 sm:p-5 space-y-3.5">
                             {/* Encabezado: Foto, SKU y Nombre */}
                             <div className="flex items-start gap-3">
-                              <img loading="lazy"
+                              <ImageOptimized loading="lazy"
                                 src={p.primaryImage || p.gallery?.[0] || p.whiteBgImage}
                                 alt={p.name}
                                 className="w-16 h-16 rounded-2xl object-cover bg-gray-100 border border-gray-200 shrink-0"
@@ -5440,7 +5441,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           className="flex items-start gap-3 cursor-pointer group active:opacity-75 transition-opacity touch-manipulation"
                           title="Toca para editar este producto"
                         >
-                          <img loading="lazy"
+                          <ImageOptimized loading="lazy"
                             src={p.primaryImage}
                             alt=""
                             className="w-16 h-16 rounded-xl object-cover bg-gray-100 border border-gray-200 shrink-0 shadow-2xs group-hover:scale-105 transition-transform"
@@ -5677,7 +5678,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             <tr key={p.id} className="hover:bg-gray-50/80 transition-colors">
                               <td className="py-1 px-2">
                                 <div className="flex items-center gap-1.5">
-                                  <img loading="lazy"
+                                  <ImageOptimized loading="lazy"
                                     src={p.primaryImage}
                                     alt=""
                                     className="w-7 h-7 rounded-md object-cover bg-gray-100 border border-gray-200 shrink-0 shadow-2xs"
@@ -6471,7 +6472,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               <tr key={p.id} className="hover:bg-gray-50/80 transition-colors">
                                 <td className="py-1 px-2">
                                   <div className="flex items-center gap-1.5">
-                                    <img loading="lazy"
+                                    <ImageOptimized loading="lazy"
                                       src={p.primaryImage}
                                       alt=""
                                       className="w-7 h-7 rounded-md object-cover bg-gray-100 border border-gray-200 shrink-0 shadow-2xs"
@@ -7953,7 +7954,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       return (
                         <div className="space-y-3">
                           <div className="relative rounded-3xl overflow-hidden border-2 border-stone-200 bg-stone-100 aspect-square shadow-md group flex items-center justify-center">
-                            <img loading="lazy"
+                            <ImageOptimized loading="lazy"
                               src={activeImgUrl || fallbackImg}
                               alt="FotografÃ­a activa del producto"
                               className="w-full h-full object-contain p-2 bg-white"
@@ -8041,7 +8042,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               >
                                 <div className="w-full aspect-square rounded-xl overflow-hidden bg-stone-100 flex items-center justify-center border border-stone-100">
                                   {hasImg ? (
-                                    <img loading="lazy" src={slot.src} alt={slot.label} className="w-full h-full object-cover" />
+                                    <ImageOptimized loading="lazy" src={slot.src} alt={slot.label} className="w-full h-full object-cover" />
                                   ) : (
                                     <span className="text-sm opacity-50">{slot.icon}</span>
                                   )}
@@ -8099,7 +8100,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   editorActiveSlot === actualIndex ? 'border-[#2D4F3E] ring-2 ring-[#2D4F3E]/20' : 'border-stone-200'
                                 }`}
                               >
-                                <img loading="lazy" src={extraUrl || '/uploads/bandeja_vaciabolsillos_ovalada_white.jpg'} alt="" className="w-full h-full object-cover" />
+                                <ImageOptimized loading="lazy" src={extraUrl || '/uploads/bandeja_vaciabolsillos_ovalada_white.jpg'} alt="" className="w-full h-full object-cover" />
                                 <button
                                   type="button"
                                   onClick={(e) => { e.stopPropagation(); handleRemoveExtraImage(actualIndex); }}

@@ -1,5 +1,6 @@
 ﻿import React, { useState } from 'react';
 import { Tag, Sparkles, CheckCircle2, MessageCircle, ArrowRight, Layers, Percent, Gift, ShoppingBag, Calculator } from 'lucide-react';
+import ImageOptimized from './ImageOptimized';
 
 export default function PromotionsSection({
   promotions = [],
@@ -129,7 +130,7 @@ export default function PromotionsSection({
                   onClick={() => onSelectProduct(promo)}
                   className="relative h-60 sm:h-64 overflow-hidden bg-gray-50 cursor-pointer select-none"
                 >
-                  <img loading="lazy"
+                  <ImageOptimized loading="lazy"
                     src={promo.whiteBgImage || promo.primaryImage}
                     alt={promo.name}
                     className="w-full h-full object-contain p-4 group-hover:scale-104 transition-transform duration-500 bg-white"

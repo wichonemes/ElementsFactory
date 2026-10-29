@@ -1,4 +1,5 @@
-﻿import React from 'react';
+import React from 'react';
+import ImageOptimized from './ImageOptimized';
 import { Home, Briefcase, CalendarHeart, ArrowRight, Sparkles, Gamepad2, Cog, Gift, Layers } from 'lucide-react';
 
 export default function WorldSelector({ worlds, activeWorld, onSelectWorld, categories }) {
@@ -49,11 +50,12 @@ export default function WorldSelector({ worlds, activeWorld, onSelectWorld, cate
             >
               {/* Portada FotogrÃ¡fica */}
               <div className="relative h-60 sm:h-64 overflow-hidden bg-stone-100">
-                <img loading="lazy"
-                  src={world.image}
-                  alt={world.name}
-                  className="w-full h-full object-cover object-center group-hover:scale-106 transition-transform duration-700"
-                />
+              <ImageOptimized
+                loading="lazy"
+                src={world.image}
+                alt={world.name}
+                className="w-full h-full object-cover object-center group-hover:scale-106 transition-transform duration-700"
+              />
                 
                 {/* Degradado CinematogrÃ¡fico */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/20" />

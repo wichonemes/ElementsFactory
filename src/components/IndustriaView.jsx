@@ -1,5 +1,6 @@
 ﻿import React, { useState } from 'react';
 import {
+import ImageOptimized from './ImageOptimized';
   ArrowLeft,
   ArrowRight,
   ShieldCheck,
@@ -609,7 +610,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracciÃ�
                         {/* Foto desenfocada de fondo con opacidad visible (individualmente activable o desactivable) */}
                         {app.showPhoto && (
                           <>
-                            <img loading="lazy"
+                            <ImageOptimized loading="lazy"
                               src={app.bgImage}
                               alt=""
                               aria-hidden="true"

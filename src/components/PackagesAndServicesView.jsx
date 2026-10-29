@@ -1,5 +1,6 @@
 ﻿import React, { useState, useMemo, useEffect } from 'react';
 import {
+import ImageOptimized from './ImageOptimized';
   Gift, Home, Briefcase, CalendarHeart, Sparkles, Percent,
   CheckCircle2, ArrowRight, ShoppingBag, Calculator, MessageCircle,
   Layers, Package, Flame, Clock, Star, ShieldCheck, Plus,
@@ -1290,7 +1291,7 @@ export default function PackagesAndServicesView({
 
           {/* Marca de Agua Sutil de Taller para ProtecciÃ³n de Imagen con Logotipo Oficial */}
           <div className="absolute bottom-2 right-2 z-10 flex items-center gap-1 px-1.5 py-[2px] rounded-full bg-black/15 backdrop-blur-2xs text-[7px] font-medium text-white/60 pointer-events-none select-none tracking-tight border border-white/5 shadow-2xs">
-            <img loading="lazy"
+            <ImageOptimized loading="lazy"
               src="./brand/artesano_isotipo_transparente.png"
               alt=""
               className="w-2 h-2 object-contain shrink-0 opacity-75"

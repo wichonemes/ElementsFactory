@@ -1,5 +1,6 @@
 ﻿import React, { useState } from 'react';
 import { Flame, Sparkles, CheckCircle2, MessageCircle, ArrowRight, Clock, Users, ShieldCheck, HeartHandshake } from 'lucide-react';
+import ImageOptimized from './ImageOptimized';
 
 export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
   const [activeTab, setActiveTab] = useState('completo'); // 'completo' | 'parches' | 'infografia'
@@ -132,7 +133,7 @@ export default function PatchBarShowcase({ onOpenPatchBarProduct, settings }) {
 
             {/* Displayed Image */}
             <div className="flex-1 flex items-center justify-center overflow-hidden rounded-2xl bg-black/40 border border-white/10 relative my-2">
-              <img loading="lazy"
+              <ImageOptimized loading="lazy"
                 src={currentTabObj.image}
                 alt={currentTabObj.label}
                 className="w-full h-full object-contain max-h-[380px] transition-all duration-500"

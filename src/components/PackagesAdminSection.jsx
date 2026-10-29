@@ -1,5 +1,6 @@
 ﻿import React, { useState, useMemo, useEffect } from 'react';
 import {
+import ImageOptimized from './ImageOptimized';
   Package, Boxes, Plus, Edit, Star, Search, Filter,
   Layers, Check, DollarSign, Sparkles, Tag, ArrowRight,
   RefreshCw, Crown, AlertTriangle, ExternalLink
@@ -250,7 +251,7 @@ export default function PackagesAdminSection({
                   
                   {/* Encabezado: Foto, SKU y Nombre */}
                   <div className="flex items-start gap-3">
-                    <img loading="lazy"
+                    <ImageOptimized loading="lazy"
                       src={p.primaryImage || p.gallery?.[0] || p.whiteBgImage}
                       alt={p.name}
                       className="w-16 h-16 rounded-2xl object-cover bg-gray-100 border border-gray-200 shrink-0"
