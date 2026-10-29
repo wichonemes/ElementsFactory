@@ -1093,6 +1093,25 @@ export function generateDefaultRecipeForProduct(prod, rawMaterials = [], worksho
   };
 }
 
+const LOCAL_DELETED_PRODUCTS_KEY = 'artesano_admin_deleted_products';
+
+function readLocalDeletedProductIds() {
+  if (typeof window === 'undefined') return [];
+  try {
+    const value = JSON.parse(localStorage.getItem(LOCAL_DELETED_PRODUCTS_KEY) || '[]');
+    return Array.isArray(value) ? value.filter(Boolean) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveLocalDeletedProductIds(ids) {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(LOCAL_DELETED_PRODUCTS_KEY, JSON.stringify([...new Set(ids.filter(Boolean))]));
+  } catch {}
+}
+
 export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDeal = null }) {
   if (!isOpen) return null;
 
@@ -1416,7 +1435,8 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         }
       } catch {}
 
-      setProducts(dataProd || []);
+      const localDeletedIds = new Set(readLocalDeletedProductIds());
+      setProducts((dataProd || []).filter(p => !localDeletedIds.has(p?.id)));
       setCategories(dataCat || []);
       setAnalytics(dataStats || { visits: 0, views: 0, orders: 0 });
       setBusinessSettings(dataSett || null);
@@ -3222,31 +3242,149 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   const handleConfirmDeleteExecution = async () => {
     if (!confirmDeleteProduct) return;
     const target = confirmDeleteProduct;
+
+    const applyDeletionLocally = () => {
+      saveLocalDeletedProductIds([...readLocalDeletedProductIds(), target.id]);
+      setProducts(prev => (prev || []).filter(p => p?.id !== target.id));
+      setSessionChanges(prev => ({
+        ...prev,
+        deleted: [...prev.deleted.filter(x => x.id !== target.id), {
+          id: target.id,
+          name: target.name || 'Producto',
+          sku: target.sku || target.code || '',
+          time: new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })
+        }]
+      }));
+      setConfirmDeleteProduct(null);
+      if (onRefreshCatalog) onRefreshCatalog();
+    };
+
     try {
       const res = await fetch(`/api/admin/products/${target.id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.ok) {
-        setSessionChanges(prev => ({
-          ...prev,
-          deleted: [...prev.deleted.filter(x => x.id !== target.id), {
-            id: target.id,
-            name: target.name || 'Producto',
-            sku: target.sku || target.code || '',
-            time: new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })
-          }]
-        }));
-        setConfirmDeleteProduct(null);
+        applyDeletionLocally();
         await loadAllData();
-        if (onRefreshCatalog) onRefreshCatalog();
       } else {
-        const errData = await res.json().catch(() => ({}));
-        alert(errData.error || 'No se pudo eliminar el producto del catálogo.');
+        // GitHub Pages / modo estático: no hay backend. Guardamos la baja en
+        // este navegador para que el producto no reaparezca al recargar.
+        applyDeletionLocally();
       }
     } catch (err) {
-      console.error('Error deleting product:', err);
-      alert('Error de conexión al eliminar el producto.');
+      console.warn('Sin backend para eliminar; se guarda la baja localmente:', err);
+      applyDeletionLocally();
+    }
+  };
+
+  // ============================================================
+  // FOTOS DE TARJETAS (DISEÑO / INDUSTRIA) CON FALLBACK LOCAL
+  // ============================================================
+  const readInlineCard = (section, key, fallbackUrl = '') => {
+    const raw = businessSettings?.categoryBackgroundPhotos?.[section]?.[key];
+    if (!raw) return { url: fallbackUrl, enabled: false };
+    if (typeof raw === 'string') return { url: raw || fallbackUrl, enabled: false };
+    return { url: raw.url || fallbackUrl, enabled: Boolean(raw.enabled) };
+  };
+
+  const updateInlineCard = (section, key, patch, fallbackUrl = '') => {
+    const current = readInlineCard(section, key, fallbackUrl);
+    const nextCard = { ...current, ...patch };
+    const updated = {
+      ...(businessSettings || {}),
+      ...(nextCard.enabled ? { showCategoryBackgroundPhotos: true } : {}),
+      categoryBackgroundPhotos: {
+        ...(businessSettings?.categoryBackgroundPhotos || {}),
+        [section]: {
+          ...((businessSettings?.categoryBackgroundPhotos || {})[section] || {}),
+          [key]: nextCard
+        }
+      }
+    };
+    setBusinessSettings(updated);
+    try {
+      localStorage.setItem('artesano_settings_cache', JSON.stringify(updated));
+    } catch (err) {
+      setServiceStatusMsg({
+        type: 'error',
+        text: 'La foto es demasiado grande para guardarse en este navegador. Usa una imagen más ligera.'
+      });
+    }
+    return nextCard;
+  };
+
+  const toggleInlineCardPhoto = (section, key, fallbackUrl) => {
+    const current = readInlineCard(section, key, fallbackUrl);
+    const next = updateInlineCard(section, key, { enabled: !current.enabled }, fallbackUrl);
+    setServiceStatusMsg({
+      type: 'success',
+      text: next.enabled
+        ? `Foto de ${key.toUpperCase()} activada en la tienda.`
+        : `Foto de ${key.toUpperCase()} desactivada (modo oscuro).`
+    });
+    setTimeout(() => setServiceStatusMsg({ text: '', type: '' }), 3000);
+  };
+
+  const uploadInlineCardPhoto = async (section, key, file, fallbackUrl) => {
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      setServiceStatusMsg({ type: 'error', text: 'Selecciona una imagen válida (JPG, PNG o WebP).' });
+      return;
+    }
+
+    const compressImage = (sourceFile) => new Promise((resolve, reject) => {
+      const objectUrl = URL.createObjectURL(sourceFile);
+      const image = new Image();
+      image.onload = () => {
+        try {
+          const maxSide = 1400;
+          const scale = Math.min(1, maxSide / Math.max(image.width, image.height));
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.max(1, Math.round(image.width * scale));
+          canvas.height = Math.max(1, Math.round(image.height * scale));
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+          const dataUrl = canvas.toDataURL('image/webp', 0.82);
+          URL.revokeObjectURL(objectUrl);
+          resolve(dataUrl.startsWith('data:image/webp') ? dataUrl : canvas.toDataURL('image/jpeg', 0.84));
+        } catch (err) {
+          URL.revokeObjectURL(objectUrl);
+          reject(err);
+        }
+      };
+      image.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        reject(new Error('No se pudo leer la imagen.'));
+      };
+      image.src = objectUrl;
+    });
+
+    try {
+      let imageUrl = '';
+      try {
+        const formData = new FormData();
+        formData.append('image', file);
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const res = await fetch('/api/upload', { method: 'POST', headers, body: formData });
+        if (res.ok) {
+          const data = await res.json().catch(() => ({}));
+          imageUrl = data.imageUrl || data.url || '';
+        }
+      } catch {}
+
+      if (!imageUrl) imageUrl = await compressImage(file);
+      if (!imageUrl) throw new Error('No se pudo procesar la imagen.');
+
+      updateInlineCard(section, key, { url: imageUrl, enabled: true }, fallbackUrl);
+      setServiceStatusMsg({
+        type: 'success',
+        text: `Foto de ${key.toUpperCase()} subida y activada.`
+      });
+      setTimeout(() => setServiceStatusMsg({ text: '', type: '' }), 3500);
+    } catch (err) {
+      console.error('Error subiendo foto de tarjeta:', err);
+      setServiceStatusMsg({ type: 'error', text: 'No se pudo subir la foto: ' + err.message });
     }
   };
 
@@ -7607,45 +7745,62 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             { key: 'web', label: 'DEV-03: Web & Tienda', defaultUrl: './interfaces/assets/ui-01.jpg' },
                             { key: 'editorial', label: 'EDIT-04: Catálogos & Redes', defaultUrl: './portafolio/assets/popol-spread.webp' }
                           ].map(card => {
-                            const currentVal = businessSettings?.categoryBackgroundPhotos?.diseno?.[card.key] ?? card.defaultUrl;
+                            const cfg = readInlineCard('diseno', card.key, card.defaultUrl);
                             return (
-                              <div key={card.key} className="p-3 rounded-xl border border-gray-200 bg-gray-50/60 space-y-2">
-                                <div className="text-[11px] font-bold text-gray-800 truncate" title={card.label}>
-                                  {card.label}
+                              <div key={card.key} className={`p-2.5 rounded-xl border space-y-2 ${cfg.enabled ? 'border-emerald-300 bg-emerald-50/30' : 'border-gray-200 bg-gray-50/60'}`}>
+                                <div className="flex items-start justify-between gap-1.5">
+                                  <div className="text-[10.5px] font-bold text-gray-800 truncate" title={card.label}>
+                                    {card.label}
+                                  </div>
+                                  <button
+                                    type="button"
+                                    onClick={() => toggleInlineCardPhoto('diseno', card.key, card.defaultUrl)}
+                                    className={`px-2 py-0.5 rounded-full text-[9px] font-black border transition-colors cursor-pointer ${
+                                      cfg.enabled
+                                        ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                                        : 'bg-gray-100 text-gray-500 border-gray-300'
+                                    }`}
+                                  >
+                                    {cfg.enabled ? '● Activa' : '○ Oculta'}
+                                  </button>
                                 </div>
                                 <div className="w-full h-20 rounded-lg overflow-hidden bg-black/80 relative border border-gray-200">
                                   <img loading="lazy"
-                                    src={currentVal}
+                                    src={cfg.url || card.defaultUrl}
                                     alt=""
-                                    className="w-full h-full object-cover"
+                                    className={`w-full h-full object-cover ${cfg.enabled ? '' : 'opacity-40 grayscale'}`}
                                     onError={(e) => { e.currentTarget.src = card.defaultUrl; }}
                                   />
                                 </div>
-                                <div>
-                                  <label className="block text-[9.5px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">
-                                    Ruta o URL de la foto:
+                                <div className="flex flex-wrap items-center gap-1">
+                                  <label className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-white border border-emerald-300 text-emerald-800 text-[9.5px] font-bold cursor-pointer hover:bg-emerald-50">
+                                    <Upload className="w-3 h-3" /> Subir
+                                    <input
+                                      type="file"
+                                      accept="image/*"
+                                      className="hidden"
+                                      onChange={(e) => {
+                                        const file = e.target.files?.[0];
+                                        if (file) uploadInlineCardPhoto('diseno', card.key, file, card.defaultUrl);
+                                        e.target.value = '';
+                                      }}
+                                    />
                                   </label>
-                                  <input
-                                    type="text"
-                                    value={currentVal}
-                                    onChange={(e) => {
-                                      const val = e.target.value;
-                                      const updated = {
-                                        ...businessSettings,
-                                        categoryBackgroundPhotos: {
-                                          ...(businessSettings?.categoryBackgroundPhotos || {}),
-                                          diseno: {
-                                            ...((businessSettings?.categoryBackgroundPhotos?.diseno) || {}),
-                                            [card.key]: val
-                                          }
-                                        }
-                                      };
-                                      setBusinessSettings(updated);
-                                    }}
-                                    placeholder="./uploads/tu_foto.jpg"
-                                    className="w-full px-2 py-1 text-[11px] rounded border border-gray-300 bg-white focus:outline-none focus:border-[#2D4F3E]"
-                                  />
+                                  <button
+                                    type="button"
+                                    onClick={() => updateInlineCard('diseno', card.key, { url: card.defaultUrl, enabled: false }, card.defaultUrl)}
+                                    className="px-2 py-1 rounded-lg bg-white border border-gray-200 text-gray-500 text-[9.5px] font-bold hover:text-gray-800 cursor-pointer"
+                                  >
+                                    Restaurar
+                                  </button>
                                 </div>
+                                <input
+                                  type="text"
+                                  value={cfg.url}
+                                  onChange={(e) => updateInlineCard('diseno', card.key, { url: e.target.value, enabled: true }, card.defaultUrl)}
+                                  placeholder="./uploads/tu_foto.jpg"
+                                  className="w-full px-2 py-1 text-[10px] rounded border border-gray-300 bg-white focus:outline-none focus:border-[#2D4F3E]"
+                                />
                               </div>
                             );
                           })}
@@ -7669,45 +7824,62 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             { key: 'spare', label: 'SPARE-03: Refacciones y obsoletos', defaultUrl: './uploads/industria_portada_oficial_ingenieria.webp' },
                             { key: 'batch', label: 'BATCH-04: Lotes Cortos y Preseries', defaultUrl: './uploads/catalog-v2-ind1-detail-oficial.webp' }
                           ].map(card => {
-                            const currentVal = businessSettings?.categoryBackgroundPhotos?.industria?.[card.key] ?? card.defaultUrl;
+                            const cfg = readInlineCard('industria', card.key, card.defaultUrl);
                             return (
-                              <div key={card.key} className="p-3 rounded-xl border border-gray-200 bg-gray-50/60 space-y-2">
-                                <div className="text-[11px] font-bold text-gray-800 truncate" title={card.label}>
-                                  {card.label}
+                              <div key={card.key} className={`p-2.5 rounded-xl border space-y-2 ${cfg.enabled ? 'border-sky-300 bg-sky-50/30' : 'border-gray-200 bg-gray-50/60'}`}>
+                                <div className="flex items-start justify-between gap-1.5">
+                                  <div className="text-[10.5px] font-bold text-gray-800 truncate" title={card.label}>
+                                    {card.label}
+                                  </div>
+                                  <button
+                                    type="button"
+                                    onClick={() => toggleInlineCardPhoto('industria', card.key, card.defaultUrl)}
+                                    className={`px-2 py-0.5 rounded-full text-[9px] font-black border transition-colors cursor-pointer ${
+                                      cfg.enabled
+                                        ? 'bg-sky-100 text-sky-800 border-sky-300'
+                                        : 'bg-gray-100 text-gray-500 border-gray-300'
+                                    }`}
+                                  >
+                                    {cfg.enabled ? '● Activa' : '○ Oculta'}
+                                  </button>
                                 </div>
                                 <div className="w-full h-20 rounded-lg overflow-hidden bg-black/80 relative border border-gray-200">
                                   <img loading="lazy"
-                                    src={currentVal}
+                                    src={cfg.url || card.defaultUrl}
                                     alt=""
-                                    className="w-full h-full object-cover"
+                                    className={`w-full h-full object-cover ${cfg.enabled ? '' : 'opacity-40 grayscale'}`}
                                     onError={(e) => { e.currentTarget.src = card.defaultUrl; }}
                                   />
                                 </div>
-                                <div>
-                                  <label className="block text-[9.5px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">
-                                    Ruta o URL de la foto:
+                                <div className="flex flex-wrap items-center gap-1">
+                                  <label className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-white border border-sky-300 text-sky-800 text-[9.5px] font-bold cursor-pointer hover:bg-sky-50">
+                                    <Upload className="w-3 h-3" /> Subir
+                                    <input
+                                      type="file"
+                                      accept="image/*"
+                                      className="hidden"
+                                      onChange={(e) => {
+                                        const file = e.target.files?.[0];
+                                        if (file) uploadInlineCardPhoto('industria', card.key, file, card.defaultUrl);
+                                        e.target.value = '';
+                                      }}
+                                    />
                                   </label>
-                                  <input
-                                    type="text"
-                                    value={currentVal}
-                                    onChange={(e) => {
-                                      const val = e.target.value;
-                                      const updated = {
-                                        ...businessSettings,
-                                        categoryBackgroundPhotos: {
-                                          ...(businessSettings?.categoryBackgroundPhotos || {}),
-                                          industria: {
-                                            ...((businessSettings?.categoryBackgroundPhotos?.industria) || {}),
-                                            [card.key]: val
-                                          }
-                                        }
-                                      };
-                                      setBusinessSettings(updated);
-                                    }}
-                                    placeholder="./uploads/tu_foto.jpg"
-                                    className="w-full px-2 py-1 text-[11px] rounded border border-gray-300 bg-white focus:outline-none focus:border-[#2D4F3E]"
-                                  />
+                                  <button
+                                    type="button"
+                                    onClick={() => updateInlineCard('industria', card.key, { url: card.defaultUrl, enabled: false }, card.defaultUrl)}
+                                    className="px-2 py-1 rounded-lg bg-white border border-gray-200 text-gray-500 text-[9.5px] font-bold hover:text-gray-800 cursor-pointer"
+                                  >
+                                    Restaurar
+                                  </button>
                                 </div>
+                                <input
+                                  type="text"
+                                  value={cfg.url}
+                                  onChange={(e) => updateInlineCard('industria', card.key, { url: e.target.value, enabled: true }, card.defaultUrl)}
+                                  placeholder="./uploads/tu_foto.jpg"
+                                  className="w-full px-2 py-1 text-[10px] rounded border border-gray-300 bg-white focus:outline-none focus:border-[#2D4F3E]"
+                                />
                               </div>
                             );
                           })}

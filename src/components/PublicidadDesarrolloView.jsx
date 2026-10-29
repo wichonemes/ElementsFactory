@@ -79,6 +79,8 @@ export default function PublicidadDesarrolloView({
     };
   };
 
+  const globalPhotosEnabled = settings?.showCategoryBackgroundPhotos !== false;
+
   const brandingBg = parseCardBg(settings?.categoryBackgroundPhotos?.diseno?.branding, './portafolio/assets/artesano-cover.webp');
   const publicidadBg = parseCardBg(settings?.categoryBackgroundPhotos?.diseno?.publicidad, './portafolio/assets/civil-shirts.webp');
   const webBg = parseCardBg(settings?.categoryBackgroundPhotos?.diseno?.web, './interfaces/assets/ui-01.jpg');
@@ -93,7 +95,7 @@ export default function PublicidadDesarrolloView({
       tag: 'Identidad Visual',
       desc: 'Logotipos vectoriales, paleta de color y manual de marca para tu negocio.',
       bgImage: brandingBg.url,
-      showPhoto: brandingBg.enabled,
+      showPhoto: globalPhotosEnabled && brandingBg.enabled,
       icon: Palette,
       activeCardClass: 'border-amber-400 bg-amber-500/10 ring-2 ring-amber-400/30 text-white',
       glowBorderClass: 'border-[#e8b84f] ring-2 ring-[#e8b84f]/40 shadow-[0_0_20px_rgba(232,184,79,0.25)]',
@@ -114,7 +116,7 @@ export default function PublicidadDesarrolloView({
       tag: 'Gran Formato',
       desc: 'Lonas de alta densidad, vinil cortado y microperforado para fachada o cancel.',
       bgImage: publicidadBg.url,
-      showPhoto: publicidadBg.enabled,
+      showPhoto: globalPhotosEnabled && publicidadBg.enabled,
       icon: Printer,
       activeCardClass: 'border-emerald-400 bg-emerald-500/10 ring-2 ring-emerald-400/30 text-white',
       glowBorderClass: 'border-emerald-400 ring-2 ring-emerald-400/40 shadow-[0_0_20px_rgba(16,185,129,0.25)]',
@@ -135,7 +137,7 @@ export default function PublicidadDesarrolloView({
       tag: 'Desarrollo Web',
       desc: 'Sitios web responsivos, catálogos online y tiendas rápidas optimizadas.',
       bgImage: webBg.url,
-      showPhoto: webBg.enabled,
+      showPhoto: globalPhotosEnabled && webBg.enabled,
       icon: Globe,
       activeCardClass: 'border-cyan-400 bg-cyan-500/10 ring-2 ring-cyan-400/30 text-white',
       glowBorderClass: 'border-sky-400 ring-2 ring-sky-400/40 shadow-[0_0_20px_rgba(56,189,248,0.25)]',
@@ -156,7 +158,7 @@ export default function PublicidadDesarrolloView({
       tag: 'Contenido & Impresos',
       desc: 'Menús digitales, catálogos en PDF y contenido gráfico para historias y posts.',
       bgImage: editorialBg.url,
-      showPhoto: editorialBg.enabled,
+      showPhoto: globalPhotosEnabled && editorialBg.enabled,
       icon: Film,
       activeCardClass: 'border-purple-400 bg-purple-500/10 ring-2 ring-purple-400/30 text-white',
       glowBorderClass: 'border-purple-400 ring-2 ring-purple-400/40 shadow-[0_0_20px_rgba(192,132,252,0.25)]',

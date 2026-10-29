@@ -5,7 +5,8 @@ import {
   Download, FileSpreadsheet, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Layers, Tag,
   Clock, Zap, Sliders, Check, X, ShieldAlert, PackageCheck, Sparkles,
   ArrowRight, ArrowUpRight, ArrowUp, ArrowLeft, Building2, Phone, Mail, Globe, MapPin,
-  MessageCircle, User, ExternalLink, Copy, Cpu, Wrench, FileText, Eye, Upload
+  MessageCircle, User, ExternalLink, Copy, Cpu, Wrench, FileText, Eye, Upload,
+  Printer, Scissors, Paintbrush, Cog, TreePine, Shirt
 } from 'lucide-react';
 
 import ShippingLogisticsSection from './ShippingLogisticsSection';
@@ -70,6 +71,119 @@ export function parsePackageInfo(mat) {
   if (unit.includes('2 pzas') || unit.includes('2 piezas') || unit.includes('2')) return { packageQuantity: 2, packageMeasurement: 'pza' };
 
   return { packageQuantity: 1, packageMeasurement: 'pza' };
+}
+
+// ============================================================
+// AGRUPACIÓN VISUAL DE INSUMOS POR FAMILIA Y SUBFAMILIA
+// ============================================================
+export const MATERIAL_FAMILIES = [
+  { id: 'filamentos', label: 'Filamentos 3D', short: 'Filamentos', icon: Boxes, tone: 'emerald' },
+  { id: 'viniles', label: 'Viniles & Textiles', short: 'Viniles', icon: Shirt, tone: 'indigo' },
+  { id: 'laser', label: 'Maderas, Acrílicos & Láser', short: 'Láser', icon: Scissors, tone: 'amber' },
+  { id: 'sublimacion', label: 'Sublimación & Cerámica', short: 'Sublimación', icon: Printer, tone: 'rose' },
+  { id: 'ensamble', label: 'Herrajes & Ensamble', short: 'Ensamble', icon: Cog, tone: 'sky' },
+  { id: 'empaque', label: 'Empaques & Etiquetas', short: 'Empaque', icon: PackageCheck, tone: 'orange' },
+  { id: 'consumibles', label: 'Consumibles & Acabados', short: 'Consumibles', icon: Paintbrush, tone: 'purple' },
+  { id: 'refacciones', label: 'Refacciones & Maquinaria', short: 'Refacciones', icon: Wrench, tone: 'stone' },
+  { id: 'otros', label: 'Otros insumos', short: 'Otros', icon: Layers, tone: 'gray' }
+];
+
+function moneyFmt(value) {
+  return `$${(Number(value) || 0).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+const SUPPLIER_SPECIALTIES = [
+  { id: '3d', label: 'Impresión 3D', icon: '🖨️', category: '3d', test: /3d|filamento|resina|\bpla\b|\btpu\b|\bpetg\b/ },
+  { id: 'vinyl', label: 'Vinil & Textil', icon: '✂️', category: 'vinyl', test: /vinil|textil|puf|transfer|playera|gorra|tote/ },
+  { id: 'laser', label: 'Corte & Grabado Láser', icon: '🔥', category: 'laser', test: /laser|madera|mdf|acrilico|triplay|grabado/ },
+  { id: 'sublimation', label: 'Sublimación & Cerámica', icon: '🎨', category: 'sublimation', test: /sublimacion|taza|termo|ceramica|tinta/ },
+  { id: 'assembly', label: 'Herrajes & Ensamble', icon: '🔩', category: 'assembly', test: /herraje|iman|tornillo|argolla|ensamble|led|switch/ },
+  { id: 'packaging', label: 'Cajas & Empaque', icon: '📦', category: 'packaging', test: /caja|empaque|bolsa|etiqueta|kraft/ },
+  { id: 'spare_parts', label: 'Refacciones & CNC', icon: '🔧', category: 'spare_parts', test: /refaccion|repuesto|cnc|boquilla|nozzle|hotend/ }
+];
+
+function supplierHasSpecialty(supplier, specialty) {
+  if (!supplier) return false;
+  if (supplier.category === specialty.category) return true;
+  const text = `${supplier.name || ''} ${supplier.notes || ''} ${supplier.contactName || ''}`.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  return specialty.test.test(text);
+}
+
+function normalizeMaterialText(mat) {
+  return `${mat?.name || ''} ${mat?.category || ''} ${mat?.materialType || ''}`
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
+export function materialFamilyFor(mat) {
+  const text = normalizeMaterialText(mat);
+  const category = String(mat?.category || '').toLowerCase();
+  if (category === '3d' || /filamento|\bpla\b|\btpu\b|\bpetg\b|\babs\b|\basa\b|bobina/.test(text)) return 'filamentos';
+  if (category === 'vinyl' || /vinil|vinil textil|puf|fosforescente|fluorescente|transfer textil/.test(text)) return 'viniles';
+  if (category === 'laser' || /madera|triplay|mdf|acrilico|pino|nogal|liston|tabla/.test(text)) return 'laser';
+  if (category === 'sublimation' || /sublimacion|taza|termo|tarro|papel transfer|tinta sublimacion/.test(text)) return 'sublimacion';
+  if (category === 'assembly' || /iman|argolla|tornillo|clavo|tuerca|herraje|broche|cierre|led|interruptor|switch|mosqueton|remache/.test(text)) return 'ensamble';
+  if (category === 'packaging' || /caja|bolsa|empaque|etiqueta|celofan|kraft|viruta|burbuja/.test(text)) return 'empaque';
+  if (category === 'consumables' || /barniz|tinte|pintura|sellador|laca|pegamento|resistol|cianocrilato|lija|cinta|guante|estopa|limpieza|alcohol/.test(text)) return 'consumibles';
+  if (category === 'spare_parts' || /boquilla|nozzle|hotend|resistencia|termistor|correa|engranaje|refaccion|repuesto/.test(text)) return 'refacciones';
+  return 'otros';
+}
+
+export function materialSubfamilyFor(mat, familyId) {
+  const text = normalizeMaterialText(mat);
+  if (familyId === 'filamentos') {
+    if (/\btpu\b/.test(text)) return { id: 'tpu', label: 'TPU', icon: '🧵' };
+    if (/\bpetg\b/.test(text)) return { id: 'petg', label: 'PETG', icon: '🧵' };
+    if (/\babs\b|\basa\b/.test(text)) return { id: 'asa', label: 'ASA / ABS', icon: '🧵' };
+    if (/\bpla\b/.test(text)) return { id: 'pla', label: 'PLA', icon: '🧵' };
+    return { id: 'otros-filamentos', label: 'Otros filamentos', icon: '🧵' };
+  }
+  if (familyId === 'viniles') {
+    if (/puf/.test(text)) return { id: 'puf', label: 'Vinil PUF', icon: '✂️' };
+    if (/fosforescente|fluorescente|glow/.test(text)) return { id: 'fluorescente', label: 'Fluorescente', icon: '✨' };
+    if (/textil|playera|gorra|tote|tela/.test(text)) return { id: 'textil', label: 'Vinil Textil', icon: '👕' };
+    if (/espejo|metalizado|holografico|perla|brillante/.test(text)) return { id: 'especial', label: 'Especial / Metalizado', icon: '🪞' };
+    return { id: 'corte', label: 'Vinil de Corte', icon: '✂️' };
+  }
+  if (familyId === 'laser') {
+    if (/mdf/.test(text)) return { id: 'mdf', label: 'MDF', icon: '🪵' };
+    if (/acrilico/.test(text)) return { id: 'acrilico', label: 'Acrílico', icon: '🟦' };
+    if (/madera|triplay|pino|nogal|liston|tabla/.test(text)) return { id: 'madera', label: 'Maderas & Triplay', icon: '🌲' };
+    return { id: 'otros-laser', label: 'Otros materiales láser', icon: '🔥' };
+  }
+  if (familyId === 'sublimacion') {
+    if (/taza|termo|tarro|ceramica/.test(text)) return { id: 'tazas', label: 'Tazas & Termos', icon: '☕' };
+    if (/papel|tinta|transfer/.test(text)) return { id: 'papel', label: 'Papel & Tintas', icon: '🎨' };
+    if (/placa|rigido|fotoboton/.test(text)) return { id: 'rigidos', label: 'Rígidos', icon: '🖼️' };
+    return { id: 'otros-sub', label: 'Otros sublimación', icon: '🎨' };
+  }
+  if (familyId === 'ensamble') {
+    if (/iman|magnet/.test(text)) return { id: 'imanes', label: 'Imanes', icon: '🧲' };
+    if (/argolla|llavero|mosqueton/.test(text)) return { id: 'argollas', label: 'Argollas & Llaveros', icon: '🔗' };
+    if (/tornillo|clavo|tuerca|remache/.test(text)) return { id: 'tornilleria', label: 'Tornillería', icon: '🔩' };
+    if (/led|luz|iluminacion/.test(text)) return { id: 'iluminacion', label: 'Iluminación', icon: '💡' };
+    return { id: 'otros-ensamble', label: 'Otros herrajes', icon: '⚙️' };
+  }
+  if (familyId === 'empaque') {
+    if (/caja|kraft/.test(text)) return { id: 'cajas', label: 'Cajas', icon: '📦' };
+    if (/bolsa|celofan|tissue/.test(text)) return { id: 'bolsas', label: 'Bolsas', icon: '🛍️' };
+    if (/etiqueta|sticker/.test(text)) return { id: 'etiquetas', label: 'Etiquetas', icon: '🏷️' };
+    return { id: 'otros-empaque', label: 'Otros empaques', icon: '📦' };
+  }
+  if (familyId === 'consumibles') {
+    if (/barniz|tinte|pintura|sellador|laca/.test(text)) return { id: 'acabados', label: 'Acabados', icon: '🎨' };
+    if (/pegamento|resistol|cianocrilato|silicon/.test(text)) return { id: 'pegamentos', label: 'Pegamentos', icon: '🧴' };
+    if (/lija|cinta|brocha|pincel/.test(text)) return { id: 'lijas', label: 'Lijas & Cintas', icon: '🧰' };
+    if (/guante|estopa|limpieza|alcohol/.test(text)) return { id: 'limpieza', label: 'Limpieza & Protección', icon: '🧼' };
+    return { id: 'otros-consumibles', label: 'Otros consumibles', icon: '🧰' };
+  }
+  if (familyId === 'refacciones') {
+    if (/boquilla|nozzle|hotend|resistencia|termistor|correa|engranaje/.test(text)) return { id: 'impresora', label: 'Refacciones impresora', icon: '🖨️' };
+    if (/laser|tubo|lente|espejo/.test(text)) return { id: 'laser', label: 'Refacciones láser', icon: '🔥' };
+    return { id: 'otras-refacciones', label: 'Otras refacciones', icon: '🔧' };
+  }
+  return { id: 'general', label: 'General', icon: '📦' };
 }
 
 // Helper para convertir consumo de receta a unidades de stock de almacén de taller
@@ -492,21 +606,24 @@ export default function RawMaterialsSection({
   const [inventoryViewMode, setInventoryViewMode] = useState(() => {
     if (typeof window !== 'undefined') {
       try {
-        const saved = localStorage.getItem('artesano_inventory_view_mode_v2');
-        if (saved === 'cards' || saved === 'table') return saved;
+        const saved = localStorage.getItem('artesano_inventory_view_mode_v3');
+        if (saved === 'grouped' || saved === 'cards' || saved === 'table') return saved;
       } catch (e) {}
     }
-    return 'cards';
+    return 'grouped';
   });
 
   const handleChangeInventoryView = (mode) => {
     setInventoryViewMode(mode);
     try {
       if (typeof window !== 'undefined') {
-        localStorage.setItem('artesano_inventory_view_mode_v2', mode);
+        localStorage.setItem('artesano_inventory_view_mode_v3', mode);
       }
     } catch (e) {}
   };
+
+  const [openMaterialFamilies, setOpenMaterialFamilies] = useState(() => new Set(['filamentos']));
+  const [openMaterialSubfamilies, setOpenMaterialSubfamilies] = useState(() => new Set(['filamentos|pla']));
   const [tableScrollWidth, setTableScrollWidth] = useState(1200);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -1293,6 +1410,63 @@ Ganancia Neta Estimada: $${calcResults.profit.toFixed(2)} MXN`;
     });
   }, [materials, filterCategory, filterStockStatus, filterMaterialType, filterColor, filterFinish, searchQuery]);
 
+  // Agrupación por familia y subfamilia para la vista "Agrupado"
+  const groupedMaterials = useMemo(() => {
+    const familyMap = new Map();
+    filteredMaterials.forEach(mat => {
+      const familyId = materialFamilyFor(mat);
+      const sub = materialSubfamilyFor(mat, familyId);
+      if (!familyMap.has(familyId)) {
+        familyMap.set(familyId, { items: [], subgroups: new Map() });
+      }
+      const family = familyMap.get(familyId);
+      family.items.push(mat);
+      if (!family.subgroups.has(sub.id)) {
+        family.subgroups.set(sub.id, { ...sub, items: [] });
+      }
+      family.subgroups.get(sub.id).items.push(mat);
+    });
+
+    return MATERIAL_FAMILIES
+      .filter(meta => familyMap.has(meta.id))
+      .map(meta => {
+        const family = familyMap.get(meta.id);
+        const value = family.items.reduce((sum, mat) => sum + (Number(mat.currentStock) || 0) * (Number(mat.costPerUnit) || 0), 0);
+        const alerts = family.items.filter(mat => getStockStatus(mat).key !== 'ok').length;
+        return {
+          ...meta,
+          items: family.items,
+          count: family.items.length,
+          value,
+          alerts,
+          subgroups: [...family.subgroups.values()].map(sub => ({
+            ...sub,
+            count: sub.items.length,
+            value: sub.items.reduce((sum, mat) => sum + (Number(mat.currentStock) || 0) * (Number(mat.costPerUnit) || 0), 0),
+            alerts: sub.items.filter(mat => getStockStatus(mat).key !== 'ok').length
+          }))
+        };
+      });
+  }, [filteredMaterials]);
+
+  const toggleMaterialFamily = (familyId) => {
+    setOpenMaterialFamilies(prev => {
+      const next = new Set(prev);
+      if (next.has(familyId)) next.delete(familyId);
+      else next.add(familyId);
+      return next;
+    });
+  };
+
+  const toggleMaterialSubfamily = (subKey) => {
+    setOpenMaterialSubfamilies(prev => {
+      const next = new Set(prev);
+      if (next.has(subKey)) next.delete(subKey);
+      else next.add(subKey);
+      return next;
+    });
+  };
+
   // Actualizar ancho virtual para la barra de scroll superior (después de inicializar filteredMaterials)
   useEffect(() => {
     const updateScrollDimensions = () => {
@@ -1371,6 +1545,16 @@ Ganancia Neta Estimada: $${calcResults.profit.toFixed(2)} MXN`;
       return true;
     });
   }, [suppliers, supplierCategoryFilter, supplierSearchQuery, materials]);
+
+  const groupedSuppliers = useMemo(() => {
+    if (supplierCategoryFilter !== 'all') return [];
+    return SUPPLIER_SPECIALTIES
+      .map(specialty => ({
+        ...specialty,
+        suppliers: filteredSuppliers.filter(sup => supplierHasSpecialty(sup, specialty))
+      }))
+      .filter(group => group.suppliers.length > 0);
+  }, [filteredSuppliers, supplierCategoryFilter]);
 
   // ==========================================
   // HANDLERS: EDICIÓN RÁPIDA DE CELDAS A MANO
@@ -2838,8 +3022,21 @@ Artesano Digital — Taller & Manufactura Inteligente`;
               </div>
 
               <div className="flex items-center gap-1.5 flex-wrap">
-                {/* Selector de vista: Tarjetas / Tabla */}
+                {/* Selector de vista: Agrupado / Tarjetas / Tabla */}
                 <div className="flex items-center gap-0.5 bg-white p-0.5 rounded-lg border border-gray-200 shadow-2xs">
+                  <button
+                    type="button"
+                    onClick={() => handleChangeInventoryView('grouped')}
+                    className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10.5px] font-bold transition-all cursor-pointer ${
+                      inventoryViewMode === 'grouped'
+                        ? 'bg-[#2D4F3E] text-white shadow-2xs'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-stone-100'
+                    }`}
+                    title="Agrupar por familia: filamentos, viniles, láser, etc."
+                  >
+                    <Layers className="w-3.5 h-3.5" />
+                    <span>Agrupado</span>
+                  </button>
                   <button
                     type="button"
                     onClick={() => handleChangeInventoryView('cards')}
@@ -2904,7 +3101,169 @@ Artesano Digital — Taller & Manufactura Inteligente`;
               </div>
             </div>
 
-            {inventoryViewMode === 'cards' ? (
+            {inventoryViewMode === 'grouped' ? (
+              /* VISTA AGRUPADA: FAMILIAS → SUBFAMILIAS → INSUMOS */
+              <div className="p-2.5 sm:p-3 bg-[#FAF9F5]/60 space-y-2">
+                {filteredMaterials.length === 0 ? (
+                  <div className="py-12 px-4 text-center text-gray-500 bg-white rounded-2xl border border-dashed border-[#D8D2C4]">
+                    <Boxes className="w-10 h-10 text-gray-300 mx-auto mb-2" />
+                    <p className="font-bold text-sm text-gray-700">No se encontraron materias primas con estos filtros</p>
+                    <p className="text-xs text-gray-400 mt-1 max-w-sm mx-auto">Prueba con otra búsqueda o restablece los filtros.</p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFilterCategory('all');
+                        setFilterMaterialType('all');
+                        setFilterColor('all');
+                        setFilterFinish('all');
+                        setFilterStockStatus('all');
+                        setSearchQuery('');
+                      }}
+                      className="mt-3 px-4 py-2 rounded-xl bg-[#2D4F3E] text-white text-xs font-bold hover:bg-[#20392C] cursor-pointer transition-all shadow-xs"
+                    >
+                      Restablecer todos los filtros
+                    </button>
+                  </div>
+                ) : groupedMaterials.map(family => {
+                  const FamilyIcon = family.icon;
+                  const famOpen = openMaterialFamilies.has(family.id);
+                  return (
+                    <div key={family.id} className="rounded-2xl border border-stone-200 bg-white overflow-hidden shadow-2xs">
+                      <button
+                        type="button"
+                        onClick={() => toggleMaterialFamily(family.id)}
+                        className="w-full flex items-center gap-2.5 p-2.5 bg-stone-50/70 hover:bg-stone-100/70 text-left cursor-pointer"
+                      >
+                        <span className="w-9 h-9 rounded-xl bg-white border border-stone-200 text-stone-700 flex items-center justify-center shrink-0">
+                          <FamilyIcon className="w-4 h-4" />
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            <span className="font-black text-xs text-gray-900">{family.label}</span>
+                            <span className="text-[8.5px] font-bold px-1.5 py-0.5 rounded bg-white border border-stone-200 text-stone-500">{family.count}</span>
+                            {family.alerts > 0 && (
+                              <span className="text-[8.5px] font-bold px-1.5 py-0.5 rounded bg-rose-50 border border-rose-200 text-rose-700">{family.alerts} alertas</span>
+                            )}
+                          </div>
+                          <div className="text-[9px] text-gray-500">{family.subgroups.length} subgrupos · {moneyFmt(family.value)} en almacén</div>
+                        </div>
+                        <span className="font-mono font-black text-[11px] text-stone-800">{moneyFmt(family.value)}</span>
+                        {famOpen ? <ChevronDown className="w-4 h-4 text-gray-400" /> : <ChevronRight className="w-4 h-4 text-gray-400" />}
+                      </button>
+
+                      {famOpen && (
+                        <div className="p-2 space-y-1.5">
+                          {family.subgroups.map(sub => {
+                            const subKey = `${family.id}|${sub.id}`;
+                            const subOpen = openMaterialSubfamilies.has(subKey);
+                            return (
+                              <div key={sub.id} className="rounded-xl border border-stone-200 overflow-hidden bg-stone-50/30">
+                                <button
+                                  type="button"
+                                  onClick={() => toggleMaterialSubfamily(subKey)}
+                                  className="w-full flex items-center gap-2 px-2 py-1.5 text-left hover:bg-stone-100/60 cursor-pointer"
+                                >
+                                  <span className="text-sm leading-none">{sub.icon}</span>
+                                  <span className="font-bold text-[10.5px] text-gray-800">{sub.label}</span>
+                                  <span className="text-[8px] font-bold px-1.5 py-0.5 rounded bg-white border border-stone-200 text-stone-500">{sub.count}</span>
+                                  {sub.alerts > 0 && (
+                                    <span className="text-[8px] font-bold px-1.5 py-0.5 rounded bg-rose-50 border border-rose-200 text-rose-700">{sub.alerts}</span>
+                                  )}
+                                  <span className="ml-auto font-mono text-[9.5px] font-bold text-stone-600">{moneyFmt(sub.value)}</span>
+                                  {subOpen ? <ChevronDown className="w-3.5 h-3.5 text-gray-400" /> : <ChevronRight className="w-3.5 h-3.5 text-gray-400" />}
+                                </button>
+
+                                {subOpen && (
+                                  <div className="p-1.5 grid sm:grid-cols-2 xl:grid-cols-3 gap-1.5">
+                                    {sub.items.map(mat => {
+                                      const st = getStockStatus(mat);
+                                      const catBadge = getCategoryBadge(mat.category);
+                                      const filamentColor = getFilamentColor(mat.color && mat.color !== 'N/A' ? mat.color : mat.name);
+                                      const currentStockInputVal = editingStockMap[mat.id] !== undefined ? editingStockMap[mat.id] : mat.currentStock;
+                                      const minAlertInputVal = editingMinAlertMap[mat.id] !== undefined ? editingMinAlertMap[mat.id] : mat.minStockAlert;
+                                      const costInputVal = editingCostMap[mat.id] !== undefined ? editingCostMap[mat.id] : mat.costPerUnit;
+                                      const isRedAlert = (Number(currentStockInputVal) || 0) <= (Number(minAlertInputVal) || 1);
+                                      const lineVal = (Number(currentStockInputVal) || 0) * (Number(costInputVal) || 0);
+                                      return (
+                                        <div key={`group-${mat.id}`} className={`rounded-xl border bg-white p-2 ${isRedAlert ? 'border-rose-200' : 'border-stone-200'}`}>
+                                          <div className="flex items-center gap-2">
+                                            {filamentColor ? (
+                                              <span
+                                                className="w-6 h-6 rounded-full border shrink-0 shadow-2xs"
+                                                style={{ background: filamentColor.css, borderColor: filamentColor.border }}
+                                                title={filamentColor.name}
+                                              />
+                                            ) : (
+                                              <span className={`w-6 h-6 rounded-lg border flex items-center justify-center shrink-0 text-[10px] ${catBadge.color}`}>{catBadge.icon}</span>
+                                            )}
+                                            <div className="min-w-0 flex-1">
+                                              <div className="text-[9.5px] font-bold text-gray-800 truncate" title={mat.name}>{mat.name}</div>
+                                              <div className="text-[7.5px] text-gray-500 flex flex-wrap gap-x-1">
+                                                <span>{catBadge.label}</span>
+                                                {mat.color && mat.color !== 'N/A' && <span>· {mat.color}</span>}
+                                                {mat.supplier && <span className="truncate max-w-[110px]">· {mat.supplier}</span>}
+                                              </div>
+                                            </div>
+                                            <span className={`shrink-0 text-[8px] font-black px-1 py-0.5 rounded border ${st.color}`} title={st.label}>{st.icon}</span>
+                                          </div>
+
+                                          <div className="grid grid-cols-3 gap-1 mt-1.5">
+                                            <label className="rounded-md bg-stone-50 border border-stone-200 px-1 py-0.5 text-center">
+                                              <span className="block text-[6.5px] uppercase font-bold text-gray-400">Stock</span>
+                                              <input
+                                                type="number" step="any" min="0" value={currentStockInputVal}
+                                                onChange={(e) => setEditingStockMap(prev => ({ ...prev, [mat.id]: e.target.value }))}
+                                                onBlur={(e) => handleSaveStock(mat.id, e.target.value)}
+                                                onKeyDown={(e) => { if (e.key === 'Enter') handleSaveStock(mat.id, e.currentTarget.value); }}
+                                                className="w-full bg-transparent text-center font-mono font-black text-[10px] text-gray-800 focus:outline-none"
+                                              />
+                                            </label>
+                                            <label className="rounded-md bg-stone-50 border border-stone-200 px-1 py-0.5 text-center">
+                                              <span className="block text-[6.5px] uppercase font-bold text-gray-400">Mín</span>
+                                              <input
+                                                type="number" step="any" min="0" value={minAlertInputVal}
+                                                onChange={(e) => setEditingMinAlertMap(prev => ({ ...prev, [mat.id]: e.target.value }))}
+                                                onBlur={(e) => handleSaveMinAlert(mat.id, e.target.value)}
+                                                onKeyDown={(e) => { if (e.key === 'Enter') handleSaveMinAlert(mat.id, e.currentTarget.value); }}
+                                                className="w-full bg-transparent text-center font-mono font-bold text-[10px] text-gray-700 focus:outline-none"
+                                              />
+                                            </label>
+                                            <label className="rounded-md bg-stone-50 border border-stone-200 px-1 py-0.5 text-center">
+                                              <span className="block text-[6.5px] uppercase font-bold text-gray-400">Costo</span>
+                                              <input
+                                                type="number" step="any" min="0" value={costInputVal}
+                                                onChange={(e) => setEditingCostMap(prev => ({ ...prev, [mat.id]: e.target.value }))}
+                                                onBlur={(e) => handleSaveUnitCost(mat.id, e.target.value)}
+                                                onKeyDown={(e) => { if (e.key === 'Enter') handleSaveUnitCost(mat.id, e.currentTarget.value); }}
+                                                className="w-full bg-transparent text-center font-mono font-bold text-[10px] text-emerald-800 focus:outline-none"
+                                              />
+                                            </label>
+                                          </div>
+
+                                          <div className="flex items-center justify-between mt-1">
+                                            <span className="text-[7.5px] text-gray-500">Valor {moneyFmt(lineVal)}</span>
+                                            <div className="flex items-center gap-0.5">
+                                              <button type="button" onClick={() => handleAdjustStock(mat, String(mat.unit || '').includes('kg') ? -0.2 : -1)} className="w-5 h-5 rounded bg-stone-100 text-gray-700 font-black text-[10px] cursor-pointer" title="Restar">−</button>
+                                              <button type="button" onClick={() => handleAdjustStock(mat, String(mat.unit || '').includes('kg') ? +0.5 : +1)} className="w-5 h-5 rounded bg-emerald-50 text-emerald-800 font-black text-[10px] cursor-pointer" title="Sumar">+</button>
+                                              <button type="button" onClick={() => handleOpenEditModal(mat)} className="p-1 rounded text-gray-500 hover:bg-amber-50 hover:text-amber-700 cursor-pointer" title="Editar"><Edit className="w-3 h-3" /></button>
+                                              <button type="button" onClick={() => handleDeleteMaterial(mat.id, mat.name)} className="p-1 rounded text-rose-500 hover:bg-rose-50 cursor-pointer" title="Eliminar"><Trash2 className="w-3 h-3" /></button>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            ) : inventoryViewMode === 'cards' ? (
               /* VISTA EN TARJETAS: INSUMOS & STOCK ESTILO CATÁLOGO */
               <div className="p-3 sm:p-4 bg-[#FAF9F5]/60">
                 {filteredMaterials.length === 0 ? (
@@ -6141,6 +6500,36 @@ Artesano Digital — Taller & Manufactura Inteligente`;
             </div>
           </div>
 
+          {/* Filtros rápidos por especialidad (un proveedor puede aparecer en varias) */}
+          <div className="flex flex-wrap items-center gap-1.5 px-1">
+            <span className="text-[9px] font-black uppercase tracking-wider text-gray-400 mr-1">Filtrar:</span>
+            <button
+              type="button"
+              onClick={() => setSupplierCategoryFilter('all')}
+              className={`px-2 py-1 rounded-lg border text-[9.5px] font-bold cursor-pointer transition-colors ${
+                supplierCategoryFilter === 'all' ? 'bg-[#2D4F3E] text-white border-[#2D4F3E]' : 'bg-white text-gray-600 border-gray-200 hover:border-emerald-300'
+              }`}
+            >
+              Todos ({suppliers.length})
+            </button>
+            {SUPPLIER_SPECIALTIES.map(specialty => {
+              const count = suppliers.filter(sup => supplierHasSpecialty(sup, specialty)).length;
+              if (count === 0) return null;
+              return (
+                <button
+                  key={specialty.id}
+                  type="button"
+                  onClick={() => setSupplierCategoryFilter(specialty.id)}
+                  className={`px-2 py-1 rounded-lg border text-[9.5px] font-bold cursor-pointer transition-colors ${
+                    supplierCategoryFilter === specialty.id ? 'bg-[#2D4F3E] text-white border-[#2D4F3E]' : 'bg-white text-gray-600 border-gray-200 hover:border-emerald-300'
+                  }`}
+                >
+                  {specialty.icon} {specialty.label} ({count})
+                </button>
+              );
+            })}
+          </div>
+
           {/* Cuadrícula de Tarjetas de Proveedores */}
           {filteredSuppliers.length === 0 ? (
             <div className="bg-white p-12 rounded-3xl border border-[#E8E4DA] text-center space-y-3">
@@ -6163,6 +6552,72 @@ Artesano Digital — Taller & Manufactura Inteligente`;
                   + Registrar Proveedor
                 </button>
               </div>
+            </div>
+          ) : supplierCategoryFilter === 'all' ? (
+            <div className="space-y-2.5">
+              {groupedSuppliers.map(group => (
+                <div key={group.id} className="rounded-2xl border border-[#E8E4DA] bg-white overflow-hidden shadow-2xs">
+                  <div className="flex items-center gap-2.5 px-3 py-2 bg-stone-50/80 border-b border-stone-200">
+                    <span className="w-8 h-8 rounded-xl bg-white border border-stone-200 flex items-center justify-center text-sm shrink-0">{group.icon}</span>
+                    <div className="min-w-0 flex-1">
+                      <div className="font-black text-xs text-gray-900">{group.label}</div>
+                      <div className="text-[9px] text-gray-500">{group.suppliers.length} proveedor(es) · puede repetirse en otras especialidades</div>
+                    </div>
+                    <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-white border border-stone-200 text-stone-600">{group.suppliers.length}</span>
+                  </div>
+                  <div className="p-2.5 grid sm:grid-cols-2 xl:grid-cols-3 gap-2">
+                    {group.suppliers.map(sup => {
+                      const catBadge = getCategoryBadge(sup.category);
+                      const supMaterials = materials.filter(m =>
+                        m.supplierId === sup.id || m.supplier?.toLowerCase().trim() === sup.name?.toLowerCase().trim()
+                      );
+                      const urgentCount = supMaterials.filter(m => getStockStatus(m).key === 'urgent').length;
+                      return (
+                        <div key={`${group.id}-${sup.id}`} className="rounded-xl border border-stone-200 bg-stone-50/30 p-2.5 space-y-1.5">
+                          <div className="flex items-start gap-2">
+                            <span className={`w-7 h-7 rounded-lg border flex items-center justify-center text-[11px] shrink-0 ${catBadge.color}`}>{catBadge.icon}</span>
+                            <div className="min-w-0 flex-1">
+                              <div className="text-[10.5px] font-bold text-gray-900 truncate" title={sup.name}>{sup.name}</div>
+                              <div className="text-[8.5px] text-gray-500 truncate">{sup.contactName || 'Sin asesor'} · {sup.address || 'SLP'}</div>
+                            </div>
+                            {urgentCount > 0 && (
+                              <span className="text-[8px] font-black px-1.5 py-0.5 rounded bg-rose-50 border border-rose-200 text-rose-700 shrink-0">{urgentCount} rojo(s)</span>
+                            )}
+                          </div>
+                          <div className="flex flex-wrap gap-1 text-[8.5px] text-gray-500">
+                            <span className="px-1.5 py-0.5 rounded bg-white border border-stone-200">{sup.leadTimeDays || '1-2 días'}</span>
+                            <span className="px-1.5 py-0.5 rounded bg-white border border-stone-200">{supMaterials.length} insumos</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            {sup.whatsapp && (
+                              <a
+                                href={`https://wa.me/${sup.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Hola, te contacto del taller Artesano Digital para cotizar resurtido de material.')}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex-1 inline-flex items-center justify-center gap-1 px-2 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[9px] font-bold"
+                              >
+                                <MessageCircle className="w-3 h-3" /> WhatsApp
+                              </a>
+                            )}
+                            {sup.phone && (
+                              <a href={`tel:${sup.phone}`} className="inline-flex items-center justify-center gap-1 px-2 py-1 rounded-lg bg-white border border-stone-200 text-gray-700 text-[9px] font-bold" title={sup.phone}>
+                                <Phone className="w-3 h-3" /> Llamar
+                              </a>
+                            )}
+                            <button
+                              type="button"
+                              onClick={() => handleOpenSupplierModal(sup.id, null)}
+                              className="inline-flex items-center justify-center gap-1 px-2 py-1 rounded-lg bg-white border border-stone-200 text-[#2D4F3E] text-[9px] font-bold hover:bg-emerald-50 cursor-pointer"
+                            >
+                              <Eye className="w-3 h-3" /> Ficha
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4.5">

@@ -459,6 +459,8 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
               };
             };
 
+            const globalPhotosEnabled = settings?.showCategoryBackgroundPhotos !== false;
+
             const protoBg = parseCardBg(settings?.categoryBackgroundPhotos?.industria?.proto, './uploads/catalog-v2-ind1-context-oficial.webp');
             const jigBg = parseCardBg(settings?.categoryBackgroundPhotos?.industria?.jig, './uploads/catalog-v2-ind2-context-oficial.webp');
             const spareBg = parseCardBg(settings?.categoryBackgroundPhotos?.industria?.spare, './uploads/industria_portada_oficial_ingenieria.webp');
@@ -483,7 +485,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 tag: 'VALIDACIÓN RÁPIDA · DESDE 24 A 72 HRS',
                 badge: 'Formatos .step / .stl',
                 bgImage: protoBg.url,
-                showPhoto: protoBg.enabled,
+                showPhoto: globalPhotosEnabled && protoBg.enabled,
                 shortDesc: 'Validación rápida de cotas, holguras y ensamble desde archivo 3D.',
                 desc: 'Prueba ajustes, interferencias de ensamble y holguras imprimiendo directamente tu archivo 3D antes de mandar a fabricar en serie o invertir en moldes.',
                 specs: [
@@ -513,7 +515,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 tag: 'LÍNEA DE PRODUCCIÓN & ENSAMBLE',
                 badge: 'Ajuste fiel a cota',
                 bgImage: jigBg.url,
-                showPhoto: jigBg.enabled,
+                showPhoto: globalPhotosEnabled && jigBg.enabled,
                 shortDesc: 'Galgas de control, nidos Poka-Yoke y mordazas que no rayan piezas.',
                 desc: 'Fabricamos con las medidas exactas de tu archivo nidos de apoyo, plantillas para operarios y mordazas protectoras que no rayan piezas terminadas.',
                 specs: [
@@ -543,7 +545,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 tag: 'SUSTITUCIÓN DIRECTA SIN MOLDES',
                 badge: 'Desde 1 sola pieza',
                 bgImage: spareBg.url,
-                showPhoto: spareBg.enabled,
+                showPhoto: globalPhotosEnabled && spareBg.enabled,
                 shortDesc: 'Sustitución de bujes, poleas y piezas descontinuadas desde 1 pieza.',
                 desc: '¿Se rompió una pieza y el fabricante tarda semanas o ya no existe? Con tu archivo 3D (.stl, .step), te la imprimimos en polímero técnico resistente.',
                 specs: [
@@ -573,7 +575,7 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
                 tag: 'VOLUMEN FLEXIBLE BAJO DEMANDA',
                 badge: 'Escalable 10 a 500+ pzs',
                 bgImage: batchBg.url,
-                showPhoto: batchBg.enabled,
+                showPhoto: globalPhotosEnabled && batchBg.enabled,
                 shortDesc: 'Producción continua de 10 a 500 piezas sin costo de apertura de molde.',
                 desc: 'Producción continua de varias piezas bajo demanda para arranques, reemplazos o preseries sin tener que pagar matrices ni herramentales costosos.',
                 specs: [

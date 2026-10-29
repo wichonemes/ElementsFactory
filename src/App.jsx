@@ -326,7 +326,17 @@ export default function App() {
 
       if (Array.isArray(dataWorlds) && dataWorlds.length > 0) setWorlds(dataWorlds.map(normalizeWorldItem));
       if (Array.isArray(dataCats) && dataCats.length > 0) setCategories(dataCats);
-      if (Array.isArray(dataProds) && dataProds.length > 0) setProducts(dataProds.map(normalizeProductItem));
+      if (Array.isArray(dataProds) && dataProds.length > 0) {
+        let localDeletedIds = new Set();
+        try {
+          localDeletedIds = new Set(JSON.parse(localStorage.getItem('artesano_admin_deleted_products') || '[]'));
+        } catch {}
+        setProducts(
+          dataProds
+            .filter(prod => !localDeletedIds.has(prod?.id))
+            .map(normalizeProductItem)
+        );
+      }
       if (dataSettings && typeof dataSettings === 'object') {
         let mergedSettings = dataSettings;
         try {
