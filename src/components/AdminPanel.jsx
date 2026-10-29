@@ -4401,12 +4401,15 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
             </div>
             <div className="min-w-0">
               <div className="text-sm sm:text-base font-bold font-heading flex items-center gap-1.5 sm:gap-2">
-                <span className="truncate">Panel Privado Artesano</span>
-                <span className="text-[9px] sm:text-[10px] bg-emerald-900/60 text-emerald-300 px-1.5 sm:px-2 py-0.2 rounded-full border border-emerald-700 shrink-0">
+                <span className="truncate">
+                  <span className="sm:hidden">Panel Taller</span>
+                  <span className="hidden sm:inline">Panel Privado Artesano</span>
+                </span>
+                <span className="hidden sm:inline-flex text-[9px] sm:text-[10px] bg-emerald-900/60 text-emerald-300 px-1.5 sm:px-2 py-0.2 rounded-full border border-emerald-700 shrink-0">
                   Activo
                 </span>
               </div>
-              <div className="text-[10px] sm:text-xs text-gray-400 truncate">
+              <div className="hidden sm:block text-[10px] sm:text-xs text-gray-400 truncate">
                 {currentUser ? `${currentUser.name} (${currentUser.username})` : 'Acceso Restringido'}
               </div>
             </div>
@@ -4430,7 +4433,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               title="Salir a la Tienda"
             >
               <X className="w-4 h-4 sm:w-5 sm:h-5" />
-              <span className="text-xs">Salir a la Tienda</span>
+              <span className="hidden sm:inline text-xs">Salir a la Tienda</span>
             </button>
           </div>
         </div>
@@ -4536,21 +4539,21 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           setActiveTab('stats');
                         }
                       }}
-                      className={`py-1.5 px-1 rounded-lg text-xs font-bold transition-all text-center flex items-center justify-center gap-1 cursor-pointer ${
+                      className={`py-1.5 px-0.5 rounded-lg text-[10px] font-bold transition-all text-center flex flex-col items-center justify-center gap-0.5 cursor-pointer ${
                         isCurrent
                           ? 'bg-[#2D4F3E] text-white shadow-xs'
                           : 'text-gray-600 hover:text-gray-900'
                       }`}
                     >
-                      <span className="text-xs">{group.icon}</span>
-                      <span className="truncate">{group.label}</span>
+                      <span className="text-sm leading-none">{group.icon}</span>
+                      <span className="whitespace-nowrap leading-none">{group.label}</span>
                     </button>
                   );
                 })}
               </div>
 
               {/* Sub-chips táctiles para la sección activa (limpio, scroll suave horizontal) */}
-              <div className="flex gap-1.5 overflow-x-auto pb-0.5 scrollbar-none no-scrollbar">
+              <div className="flex flex-wrap gap-1.5">
                 {(
                   mobileNavGroup === 'catalog' ? [
                     { id: 'products', label: 'Productos & SKUs', icon: '📦', count: products.length },

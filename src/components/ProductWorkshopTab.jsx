@@ -199,6 +199,8 @@ export default function ProductWorkshopTab({
   const [expandedComponents, setExpandedComponents] = useState(() => new Set());
   const [selectedComponentId, setSelectedComponentId] = useState('');
   const [componentQty, setComponentQty] = useState(1);
+  const [componentSearch, setComponentSearch] = useState('');
+  const [showComponentResults, setShowComponentResults] = useState(false);
   const [addGroup, setAddGroup] = useState('direct');
   const [materialSearch, setMaterialSearch] = useState('');
   const [selectedMaterialId, setSelectedMaterialId] = useState('');
@@ -239,6 +241,13 @@ export default function ProductWorkshopTab({
   const selectedMaterial = rawMaterialsList.find(mat => mat.id === selectedMaterialId) || null;
   const linkedProducts = products.filter(product => product?.id && product.id !== editorForm?.id);
   const selectedComponent = linkedProducts.find(product => product.id === selectedComponentId) || null;
+
+  const componentResults = useMemo(() => {
+    const query = normalizeText(componentSearch.trim());
+    return linkedProducts
+      .filter(product => !query || normalizeText(`${product.name || ''} ${product.sku || product.code || ''} ${(product.techniques || []).join(' ')}`).includes(query))
+      .slice(0, 12);
+  }, [linkedProducts, componentSearch]);
 
   const addGroupCategories = {
     direct: ['3d', 'laser', 'sublimation', 'vinyl', 'print'],
@@ -1137,37 +1146,86 @@ export default function ProductWorkshopTab({
           </span>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-1.5 p-2 rounded-xl bg-rose-50/50 border border-rose-100">
-          <select
-            value={selectedComponentId}
-            onChange={event => setSelectedComponentId(event.target.value)}
-            className="flex-1 min-w-0 px-2.5 py-2 rounded-xl border border-rose-200 bg-white text-[10.5px] font-semibold focus:outline-none focus:ring-2 focus:ring-rose-300"
-          >
-            <option value="">Elegir producto costeado…</option>
-            {linkedProducts.map(product => (
-              <option key={product.id} value={product.id}>
-                {product.name} — {money(product.costPrice)} {product.isBundle ? '(combo)' : ''}
-              </option>
-            ))}
-          </select>
-          <div className="flex items-center gap-1.5">
-            <label className="text-[9px] font-bold text-rose-800 whitespace-nowrap">Cant.</label>
-            <input
-              type="number"
-              min="0.01"
-              step="0.25"
-              value={componentQty}
-              onChange={event => setComponentQty(event.target.value)}
-              className="w-16 px-2 py-2 rounded-xl border border-rose-200 bg-white text-[10.5px] font-bold focus:outline-none focus:ring-2 focus:ring-rose-300"
-            />
-            <button
-              type="button"
-              onClick={addLinkedProduct}
-              className="inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black text-[10.5px] transition-colors shadow-sm cursor-pointer active:scale-95"
-            >
-              <Plus className="w-3 h-3" /> Vincular
-            </button>
+        <div className="p-2 rounded-xl bg-rose-50/50 border border-rose-100 space-y-1.5">
+          <div className="flex flex-col sm:flex-row gap-1.5">
+            <div className="relative flex-1 min-w-0">
+              <Search className="w-3.5 h-3.5 text-rose-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={componentSearch}
+                onChange={event => { setComponentSearch(event.target.value); setShowComponentResults(true); }}
+                onFocus={() => setShowComponentResults(true)}
+                placeholder="Buscar producto costeado por nombre, SKU o técnica…"
+                className="w-full pl-8 pr-2 py-2 rounded-xl border border-rose-200 bg-white text-[10.5px] font-semibold focus:outline-none focus:ring-2 focus:ring-rose-300"
+              />
+            </div>
+            <div className="flex items-center gap-1.5">
+              <label className="text-[9px] font-bold text-rose-800 whitespace-nowrap">Cant.</label>
+              <input
+                type="number"
+                min="0.01"
+                step="0.25"
+                value={componentQty}
+                onChange={event => setComponentQty(event.target.value)}
+                className="w-16 px-2 py-2 rounded-xl border border-rose-200 bg-white text-[10.5px] font-bold focus:outline-none focus:ring-2 focus:ring-rose-300"
+              />
+              <button
+                type="button"
+                onClick={addLinkedProduct}
+                className="inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black text-[10.5px] transition-colors shadow-sm cursor-pointer active:scale-95"
+              >
+                <Plus className="w-3 h-3" /> Vincular
+              </button>
+            </div>
           </div>
+
+          {selectedComponent && (
+            <div className="flex items-center gap-2 rounded-xl bg-white border border-rose-200 p-2">
+              {selectedComponent.primaryImage ? (
+                <img src={selectedComponent.primaryImage} alt="" className="w-8 h-8 rounded-lg object-cover border border-rose-100 shrink-0" />
+              ) : (
+                <span className="w-8 h-8 rounded-lg bg-rose-50 border border-rose-200 flex items-center justify-center shrink-0"><Package className="w-4 h-4 text-rose-600" /></span>
+              )}
+              <div className="min-w-0 flex-1">
+                <div className="text-[10.5px] font-bold text-gray-900 truncate">{selectedComponent.name}</div>
+                <div className="text-[8.5px] text-gray-500">Costo base {money(selectedComponent.costPrice)} · {selectedComponent.isBundle ? 'Combo' : 'Producto'}</div>
+              </div>
+              <button type="button" onClick={() => { setSelectedComponentId(''); setShowComponentResults(true); }} className="p-1 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 cursor-pointer" title="Quitar selección">
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
+
+          {(showComponentResults || componentSearch) && (
+            <div className="grid sm:grid-cols-2 gap-1.5 max-h-44 overflow-y-auto pr-1">
+              {componentResults.map(product => (
+                <button
+                  key={product.id}
+                  type="button"
+                  onClick={() => { setSelectedComponentId(product.id); setShowComponentResults(false); setComponentSearch(''); }}
+                  className={`flex items-center gap-2 p-1.5 rounded-xl border text-left transition-colors cursor-pointer ${
+                    product.id === selectedComponentId ? 'bg-rose-100 border-rose-400' : 'bg-white border-rose-100 hover:border-rose-300 hover:bg-rose-50/60'
+                  }`}
+                >
+                  {product.primaryImage ? (
+                    <img src={product.primaryImage} alt="" className="w-8 h-8 rounded-lg object-cover border border-rose-100 shrink-0" />
+                  ) : (
+                    <span className="w-8 h-8 rounded-lg bg-rose-50 border border-rose-200 flex items-center justify-center shrink-0"><Package className="w-4 h-4 text-rose-600" /></span>
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <div className="text-[10px] font-bold text-gray-900 truncate">{product.name}</div>
+                    <div className="text-[8px] text-gray-500 truncate">{product.sku || product.code || 'SIN SKU'} · {money(product.costPrice)}</div>
+                  </div>
+                  {product.isBundle && <span className="text-[7.5px] font-black px-1 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-200 shrink-0">COMBO</span>}
+                </button>
+              ))}
+              {componentResults.length === 0 && (
+                <div className="sm:col-span-2 text-[9.5px] text-gray-500 bg-white border border-dashed border-rose-200 rounded-xl p-2 text-center">
+                  No hay productos con esa búsqueda.
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {componentGroup?.items.length > 0 ? (

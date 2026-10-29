@@ -6,7 +6,7 @@ import {
   Clock, Zap, Sliders, Check, X, ShieldAlert, PackageCheck, Sparkles,
   ArrowRight, ArrowUpRight, ArrowUp, ArrowLeft, Building2, Phone, Mail, Globe, MapPin,
   MessageCircle, User, ExternalLink, Copy, Cpu, Wrench, FileText, Eye, Upload,
-  Printer, Scissors, Paintbrush, Cog, TreePine, Shirt
+  Printer, Scissors, Paintbrush, Cog, TreePine, Shirt, Factory
 } from 'lucide-react';
 
 import ShippingLogisticsSection from './ShippingLogisticsSection';
@@ -87,6 +87,58 @@ export const MATERIAL_FAMILIES = [
   { id: 'refacciones', label: 'Refacciones & Maquinaria', short: 'Refacciones', icon: Wrench, tone: 'stone' },
   { id: 'otros', label: 'Otros insumos', short: 'Otros', icon: Layers, tone: 'gray' }
 ];
+
+export const MATERIAL_AREAS = [
+  { id: '3d', label: 'Impresión 3D', icon: Boxes, tone: 'emerald' },
+  { id: 'laser', label: 'Corte & Grabado Láser', icon: Scissors, tone: 'amber' },
+  { id: 'sublimation', label: 'Sublimación & Cerámica', icon: Printer, tone: 'rose' },
+  { id: 'vinyl', label: 'Vinil & Textil', icon: Shirt, tone: 'indigo' },
+  { id: 'print', label: 'Impresión Láser / Tinta', icon: Printer, tone: 'cyan' },
+  { id: 'assembly', label: 'Ensamble & Herrajes', icon: Cog, tone: 'sky' },
+  { id: 'packaging', label: 'Empaques & Etiquetas', icon: PackageCheck, tone: 'orange' },
+  { id: 'spare_parts', label: 'Refacciones & Maquinaria', icon: Wrench, tone: 'stone' },
+  { id: 'consumables', label: 'Consumibles & Acabados', icon: Paintbrush, tone: 'purple' },
+  { id: 'other', label: 'Otros insumos', icon: Layers, tone: 'gray' }
+];
+
+export const MATERIAL_SUPPLY_GROUPS = [
+  { id: 'direct', label: 'Materias primas directas', icon: Package, tone: 'emerald' },
+  { id: 'complementary', label: 'Insumos complementarios', icon: Cog, tone: 'sky' },
+  { id: 'intangible', label: 'Intangibles y licencias', icon: Sparkles, tone: 'violet' },
+  { id: 'micro', label: 'Microinsumos', icon: Hammer, tone: 'orange' },
+  { id: 'finish', label: 'Acabados y terminaciones', icon: Paintbrush, tone: 'purple' },
+  { id: 'indirect', label: 'Insumos indirectos', icon: ShieldAlert, tone: 'stone' },
+  { id: 'packaging', label: 'Empaques y etiquetas', icon: PackageCheck, tone: 'amber' },
+  { id: 'production', label: 'Producción y servicios', icon: Factory, tone: 'rose' }
+];
+
+export function materialAreaFor(mat) {
+  const text = normalizeMaterialText(mat);
+  const category = String(mat?.category || '').toLowerCase();
+  if (category === '3d' || /filamento|\bpla\b|\btpu\b|\bpetg\b|\basa\b|\babs\b/.test(text)) return '3d';
+  if (category === 'laser' || /madera|triplay|mdf|acrilico|pino|nogal/.test(text)) return 'laser';
+  if (category === 'sublimation' || /sublimacion|taza|termo|tarro|papel transfer/.test(text)) return 'sublimation';
+  if (category === 'vinyl' || /vinil|puf|textil|transfer/.test(text)) return 'vinyl';
+  if (category === 'print' || /impresion laser|tinta|papel bond|invitacion/.test(text)) return 'print';
+  if (category === 'assembly' || /herraje|tornillo|clavo|iman|argolla|led|broche|switch/.test(text)) return 'assembly';
+  if (category === 'packaging' || /caja|bolsa|empaque|etiqueta|kraft|celofan/.test(text)) return 'packaging';
+  if (category === 'spare_parts' || /boquilla|nozzle|hotend|refaccion|repuesto|correa/.test(text)) return 'spare_parts';
+  if (category === 'consumables' || /barniz|tinte|pintura|pegamento|lija|cinta|guante|estopa|limpieza/.test(text)) return 'consumables';
+  return 'other';
+}
+
+export function materialSupplyGroupFor(mat) {
+  const text = normalizeMaterialText(mat);
+  const category = String(mat?.category || '').toLowerCase();
+  if (category === 'packaging' || /caja|bolsa|empaque|etiqueta|kraft|celofan|viruta/.test(text)) return 'packaging';
+  if (/barniz|tinte|pintura|sellador|laca|esmalte|acabado/.test(text)) return 'finish';
+  if (/diseno|licencia|archivo|modelo digital|arte digital|render/.test(text)) return 'intangible';
+  if (/servicio|maquila|corte externo|grabado externo|instalacion/.test(text)) return 'production';
+  if (/tornillo|clavo|tuerca|argolla|iman|led|interruptor|switch|herraje|broche|cierre|remache/.test(text)) return 'complementary';
+  if (/pegamento|resistol|cianocrilato|lija|cinta|brocha|pincel|guante|estopa|limpieza|alcohol|diluyente/.test(text) || category === 'consumables') return 'micro';
+  if (/guante|estopa|limpieza|proteccion/.test(text)) return 'indirect';
+  return 'direct';
+}
 
 function moneyFmt(value) {
   return `$${(Number(value) || 0).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -624,6 +676,9 @@ export default function RawMaterialsSection({
 
   const [openMaterialFamilies, setOpenMaterialFamilies] = useState(() => new Set(['filamentos']));
   const [openMaterialSubfamilies, setOpenMaterialSubfamilies] = useState(() => new Set(['filamentos|pla']));
+  const [inventoryGroupMode, setInventoryGroupMode] = useState('area');
+  const [openMaterialAreas, setOpenMaterialAreas] = useState(() => new Set(['3d']));
+  const [openAreaSupplyGroups, setOpenAreaSupplyGroups] = useState(() => new Set(['3d|direct']));
   const [tableScrollWidth, setTableScrollWidth] = useState(1200);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -1448,6 +1503,61 @@ Ganancia Neta Estimada: $${calcResults.profit.toFixed(2)} MXN`;
         };
       });
   }, [filteredMaterials]);
+
+  const groupedMaterialsByArea = useMemo(() => {
+    const areaMap = new Map();
+    filteredMaterials.forEach(mat => {
+      const areaId = materialAreaFor(mat);
+      const groupId = materialSupplyGroupFor(mat);
+      if (!areaMap.has(areaId)) areaMap.set(areaId, { items: [], groups: new Map() });
+      const area = areaMap.get(areaId);
+      area.items.push(mat);
+      if (!area.groups.has(groupId)) area.groups.set(groupId, []);
+      area.groups.get(groupId).push(mat);
+    });
+
+    return MATERIAL_AREAS
+      .filter(area => areaMap.has(area.id))
+      .map(area => {
+        const areaData = areaMap.get(area.id);
+        const value = areaData.items.reduce((sum, mat) => sum + (Number(mat.currentStock) || 0) * (Number(mat.costPerUnit) || 0), 0);
+        const alerts = areaData.items.filter(mat => getStockStatus(mat).key !== 'ok').length;
+        return {
+          ...area,
+          count: areaData.items.length,
+          value,
+          alerts,
+          groups: MATERIAL_SUPPLY_GROUPS.map(group => {
+            const groupItems = areaData.groups.get(group.id) || [];
+            return {
+              ...group,
+              items: groupItems,
+              count: groupItems.length,
+              value: groupItems.reduce((sum, mat) => sum + (Number(mat.currentStock) || 0) * (Number(mat.costPerUnit) || 0), 0),
+              alerts: groupItems.filter(mat => getStockStatus(mat).key !== 'ok').length
+            };
+          })
+        };
+      });
+  }, [filteredMaterials]);
+
+  const toggleMaterialArea = (areaId) => {
+    setOpenMaterialAreas(prev => {
+      const next = new Set(prev);
+      if (next.has(areaId)) next.delete(areaId);
+      else next.add(areaId);
+      return next;
+    });
+  };
+
+  const toggleAreaSupplyGroup = (key) => {
+    setOpenAreaSupplyGroups(prev => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
 
   const toggleMaterialFamily = (familyId) => {
     setOpenMaterialFamilies(prev => {
@@ -3065,6 +3175,31 @@ Artesano Digital — Taller & Manufactura Inteligente`;
                   </button>
                 </div>
 
+                {inventoryViewMode === 'grouped' && (
+                  <div className="flex items-center gap-0.5 bg-white p-0.5 rounded-lg border border-gray-200 shadow-2xs">
+                    <button
+                      type="button"
+                      onClick={() => setInventoryGroupMode('area')}
+                      className={`px-2 py-1 rounded-md text-[10px] font-bold transition-all cursor-pointer ${
+                        inventoryGroupMode === 'area' ? 'bg-[#2D4F3E] text-white' : 'text-gray-600 hover:bg-stone-100'
+                      }`}
+                      title="Agrupar por área y luego por tipo de insumo"
+                    >
+                      Por área
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setInventoryGroupMode('family')}
+                      className={`px-2 py-1 rounded-md text-[10px] font-bold transition-all cursor-pointer ${
+                        inventoryGroupMode === 'family' ? 'bg-[#2D4F3E] text-white' : 'text-gray-600 hover:bg-stone-100'
+                      }`}
+                      title="Agrupar por familia de material"
+                    >
+                      Por familia
+                    </button>
+                  </div>
+                )}
+
                 <button
                   type="button"
                   onClick={handleOpenNewModal}
@@ -3124,7 +3259,109 @@ Artesano Digital — Taller & Manufactura Inteligente`;
                       Restablecer todos los filtros
                     </button>
                   </div>
-                ) : groupedMaterials.map(family => {
+                ) : inventoryGroupMode === 'area' ? groupedMaterialsByArea.map(area => {
+                  const AreaIcon = area.icon;
+                  const areaOpen = openMaterialAreas.has(area.id);
+                  return (
+                    <div key={area.id} className="rounded-2xl border border-stone-200 bg-white overflow-hidden shadow-2xs">
+                      <button
+                        type="button"
+                        onClick={() => toggleMaterialArea(area.id)}
+                        className="w-full flex items-center gap-2.5 p-2.5 bg-stone-50/70 hover:bg-stone-100/70 text-left cursor-pointer"
+                      >
+                        <span className="w-9 h-9 rounded-xl bg-white border border-stone-200 text-stone-700 flex items-center justify-center shrink-0">
+                          <AreaIcon className="w-4 h-4" />
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            <span className="font-black text-xs text-gray-900">{area.label}</span>
+                            <span className="text-[8.5px] font-bold px-1.5 py-0.5 rounded bg-white border border-stone-200 text-stone-500">{area.count}</span>
+                            {area.alerts > 0 && <span className="text-[8.5px] font-bold px-1.5 py-0.5 rounded bg-rose-50 border border-rose-200 text-rose-700">{area.alerts} alertas</span>}
+                          </div>
+                          <div className="text-[9px] text-gray-500">{area.groups.filter(g => g.count > 0).length} grupos con insumos · {moneyFmt(area.value)} en almacén</div>
+                        </div>
+                        <span className="font-mono font-black text-[11px] text-stone-800">{moneyFmt(area.value)}</span>
+                        {areaOpen ? <ChevronDown className="w-4 h-4 text-gray-400" /> : <ChevronRight className="w-4 h-4 text-gray-400" />}
+                      </button>
+
+                      {areaOpen && (
+                        <div className="p-2 space-y-1.5">
+                          {area.groups.map(group => {
+                            const key = `${area.id}|${group.id}`;
+                            const groupOpen = openAreaSupplyGroups.has(key);
+                            return (
+                              <div key={group.id} className="rounded-xl border border-stone-200 overflow-hidden bg-stone-50/30">
+                                <button
+                                  type="button"
+                                  onClick={() => toggleAreaSupplyGroup(key)}
+                                  className="w-full flex items-center gap-2 px-2 py-1.5 text-left hover:bg-stone-100/60 cursor-pointer"
+                                >
+                                  <span className="w-6 h-6 rounded-lg bg-white border border-stone-200 flex items-center justify-center text-stone-500 shrink-0"><group.icon className="w-3 h-3" /></span>
+                                  <span className="font-bold text-[10px] text-gray-800">{group.label}</span>
+                                  <span className="text-[8px] font-bold px-1.5 py-0.5 rounded bg-white border border-stone-200 text-stone-500">{group.count}</span>
+                                  {group.alerts > 0 && <span className="text-[8px] font-bold px-1.5 py-0.5 rounded bg-rose-50 border border-rose-200 text-rose-700">{group.alerts}</span>}
+                                  <span className="ml-auto font-mono text-[9px] font-bold text-stone-600">{moneyFmt(group.value)}</span>
+                                  {groupOpen ? <ChevronDown className="w-3.5 h-3.5 text-gray-400" /> : <ChevronRight className="w-3.5 h-3.5 text-gray-400" />}
+                                </button>
+
+                                {groupOpen && (
+                                  <div className="p-1.5 space-y-1">
+                                    {group.items.length === 0 ? (
+                                      <div className="flex items-center justify-between gap-2 rounded-lg border border-dashed border-stone-200 bg-white px-2 py-1.5">
+                                        <span className="text-[9px] text-gray-400">Sin insumos en este grupo.</span>
+                                        <button type="button" onClick={handleOpenNewModal} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 border border-emerald-200 text-[8.5px] font-bold text-emerald-800 cursor-pointer">
+                                          <Plus className="w-2.5 h-2.5" /> Agregar
+                                        </button>
+                                      </div>
+                                    ) : group.items.map(mat => {
+                                      const st = getStockStatus(mat);
+                                      const catBadge = getCategoryBadge(mat.category);
+                                      const filamentColor = getFilamentColor(mat.color && mat.color !== 'N/A' ? mat.color : mat.name);
+                                      const currentStockInputVal = editingStockMap[mat.id] !== undefined ? editingStockMap[mat.id] : mat.currentStock;
+                                      const pkg = parsePackageInfo(mat);
+                                      return (
+                                        <div key={`area-${mat.id}`} className={`flex items-center gap-2 rounded-lg border bg-white p-1.5 ${st.key === 'urgent' ? 'border-rose-200' : 'border-stone-200'}`}>
+                                          {filamentColor ? (
+                                            <span className="w-7 h-7 rounded-full border shrink-0 shadow-2xs" style={{ background: filamentColor.css, borderColor: filamentColor.border }} title={filamentColor.name} />
+                                          ) : (
+                                            <span className={`w-7 h-7 rounded-lg border flex items-center justify-center shrink-0 text-[11px] ${catBadge.color}`}>{catBadge.icon}</span>
+                                          )}
+                                          <div className="min-w-0 flex-1">
+                                            <div className="text-[9.5px] font-bold text-gray-800 truncate" title={mat.name}>{mat.name}</div>
+                                            <div className="text-[7.5px] text-gray-500 truncate">{catBadge.label} · {mat.unit || `${pkg.packageQuantity} ${pkg.packageMeasurement}`} · {mat.supplier || 'Sin proveedor'}</div>
+                                          </div>
+                                          <div className="flex items-center gap-0.5 bg-stone-50 border border-stone-200 rounded-md px-0.5 shrink-0">
+                                            <button type="button" onClick={() => handleAdjustStock(mat, String(mat.unit || '').includes('kg') ? -0.2 : -1)} className="w-4 h-4 text-[9px] font-black text-gray-600 cursor-pointer" title="Restar">−</button>
+                                            <input
+                                              type="number" step="any" min="0" value={currentStockInputVal}
+                                              onChange={(e) => setEditingStockMap(prev => ({ ...prev, [mat.id]: e.target.value }))}
+                                              onBlur={(e) => handleSaveStock(mat.id, e.target.value)}
+                                              onKeyDown={(e) => { if (e.key === 'Enter') handleSaveStock(mat.id, e.currentTarget.value); }}
+                                              className="w-8 text-center bg-transparent font-mono font-black text-[9px] text-gray-800 focus:outline-none"
+                                              title="Stock actual"
+                                            />
+                                            <button type="button" onClick={() => handleAdjustStock(mat, String(mat.unit || '').includes('kg') ? +0.5 : +1)} className="w-4 h-4 text-[9px] font-black text-emerald-700 cursor-pointer" title="Sumar">+</button>
+                                          </div>
+                                          <div className="text-right shrink-0 hidden sm:block min-w-[52px]">
+                                            <div className="text-[8px] text-gray-400">Costo</div>
+                                            <div className="font-mono font-bold text-[9px] text-emerald-800">{moneyFmt(mat.costPerUnit)}</div>
+                                          </div>
+                                          <span className="shrink-0 text-[8px] font-black px-1 py-0.5 rounded border" title={st.label}>{st.icon}</span>
+                                          <button type="button" onClick={() => handleOpenEditModal(mat)} className="p-1 rounded text-gray-400 hover:text-amber-700 hover:bg-amber-50 cursor-pointer shrink-0" title="Editar"><Edit className="w-3 h-3" /></button>
+                                          <button type="button" onClick={() => handleDeleteMaterial(mat.id, mat.name)} className="p-1 rounded text-rose-400 hover:text-rose-700 hover:bg-rose-50 cursor-pointer shrink-0" title="Eliminar"><Trash2 className="w-3 h-3" /></button>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                }) : groupedMaterials.map(family => {
                   const FamilyIcon = family.icon;
                   const famOpen = openMaterialFamilies.has(family.id);
                   return (
