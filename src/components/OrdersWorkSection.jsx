@@ -461,17 +461,26 @@ export default function OrdersWorkSection({ token, products = [] }) {
     const costPatch = hasCostData
       ? { costBreakdown: { ...cost, materialsCost: round2(perUnitMaterials * quantity) } }
       : {};
+    const paidSoFar = amountReceived(order);
+    const statusPatch = order.status === 'pagado' && amount > round2(paidSoFar) + 0.01
+      ? { status: 'confirmado', paidAt: null }
+      : (order.status === 'pagado' && amount < round2(paidSoFar) - 0.01
+        ? { amountPaid: amount }
+        : {});
 
     try {
       if (order.materialsDeducted && qtyForm.adjustStock && quantity !== oldQuantity) {
         await patchOrder(order, { revertStock: true });
-        await patchOrder(order, { quantity, unitPrice, amount, consumeStock: true, ...costPatch });
+        await patchOrder(order, { quantity, unitPrice, amount, consumeStock: true, ...costPatch, ...statusPatch });
       } else {
-        await patchOrder(order, { quantity, unitPrice, amount, ...costPatch });
+        await patchOrder(order, { quantity, unitPrice, amount, ...costPatch, ...statusPatch });
       }
       setQtyModal(null);
       await loadOrders();
-      notify(`Pedido ${order.orderNumber}: ${quantity} pieza(s) · total ${money(amount)} · anticipo 50% ${money(round2(amount * 0.5))}.`);
+      const difference = round2(amount - paidSoFar);
+      notify(`Pedido ${order.orderNumber}: ${quantity} pieza(s) · total ${money(amount)} · anticipo 50% ${money(round2(amount * 0.5))}${
+        difference > 0 ? ` · faltan ${money(difference)} por cobrar` : difference < 0 ? ` · ${money(Math.abs(difference))} a favor del cliente` : ''
+      }.`);
     } catch (error) {
       console.error(error);
       notify(error.message, 'error');
