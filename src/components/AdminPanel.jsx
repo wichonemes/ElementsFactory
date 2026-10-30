@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useMemo } from 'react';
+﻿import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
   X, Shield, Lock, LogOut, Plus, Edit, Copy, Trash2, Eye,
   BarChart3, Package, FolderTree, Settings, Upload, Check, AlertTriangle,
