@@ -46,6 +46,7 @@ for (const method of ['get', 'post', 'put', 'delete', 'patch']) {
     const isFileOperation = typeof route === 'string' && (
       route === '/api/upload' || 
       route === '/api/admin/catalog-pdf/upload' ||
+      route.startsWith('/api/admin/catalog-pdf/chunk') ||
       route.startsWith('/api/catalog-pdf/download')
     );
     if (typeof route === 'string' && route.startsWith('/api/') && !isFileOperation && handlers.length) {
@@ -2011,6 +2012,11 @@ app.post('/api/admin/catalog-pdf/chunk/start', requireAdmin, async (_req, res) =
     const uploadId = `catup-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
     if (cloudDb?.pool) {
       await ensureCatalogChunksTable();
+      try {
+        await cloudDb.pool.query("DELETE FROM artisan_private.catalog_chunks WHERE updated_at < now() - interval '1 day'");
+      } catch (cleanupErr) {
+        console.warn('[STORAGE] Limpieza de partes antiguas:', cleanupErr.message);
+      }
     } else {
       fs.mkdirSync(localChunkDir(uploadId), { recursive: true });
     }
@@ -2094,7 +2100,11 @@ app.post('/api/admin/catalog-pdf/chunk/complete', requireAdmin, async (req, res)
       }
       const stored = await storeFile(fullBuffer, originalName, fileType || 'application/pdf');
       fileUrl = stored.url;
-      await cloudDb.pool.query('DELETE FROM artisan_private.catalog_chunks WHERE file_id = $1', [uploadId]);
+      try {
+        await cloudDb.pool.query('DELETE FROM artisan_private.catalog_chunks WHERE file_id = $1', [uploadId]);
+      } catch (cleanupErr) {
+        console.warn('[STORAGE] No se pudieron limpiar las partes temporales:', cleanupErr.message);
+      }
     } else {
       const dir = localChunkDir(uploadId);
       const files = fs.readdirSync(dir).filter(f => f.endsWith('.part')).sort();
