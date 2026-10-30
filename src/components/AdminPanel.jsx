@@ -1216,6 +1216,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     filamentWastePercent: 15,
     targetMarginPercent: 40,
     reservePercent: 10,
+    failureReservePercent: 3,
+    ivaPercent: 16,
+    includeIvaInCost: true,
+    cardFeePercent: 4.1,
     rateStatus: 'Estimadas'
   });
   const [savingParams, setSavingParams] = useState(false);
@@ -1225,7 +1229,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   const [marginsWorld, setMarginsWorld] = useState('all');
   const [marginsTechnique, setMarginsTechnique] = useState('all');
   const [marginsStatus, setMarginsStatus] = useState('all'); // 'all' | 'optimal' | 'low' | 'loss' | 'missing'
-  const [marginSalesChannel, setMarginSalesChannel] = useState('direct'); // 'direct' | 'mercadolibre' | 'custom'
+  const [marginSalesChannel, setMarginSalesChannel] = useState('direct'); // 'direct' | 'card' | 'mercadolibre' | 'custom'
   const [customCommission, setCustomCommission] = useState(16);
   const [customFixedFee, setCustomFixedFee] = useState(25);
 
@@ -1489,7 +1493,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       setAnalytics(dataStats || { visits: 0, views: 0, orders: 0 });
       setBusinessSettings(dataSett || null);
       if (dataSett?.workshopParams) {
-        setWorkshopParams(dataSett.workshopParams);
+        setWorkshopParams(prev => ({ ...prev, ...dataSett.workshopParams }));
       }
       setRawMaterialsList(Array.isArray(dataMats) ? dataMats : []);
     } catch (err) {
@@ -2654,29 +2658,29 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       {
         icon: '🧵',
         label: 'Costo Filamento PLA',
-        detail: `$${workshopParams.plaCostPerKg || 350} MXN por kg`,
+        detail: `$${workshopParams.plaPerKg || 500} MXN por kg`,
         badge: 'PLA'
       },
       {
         icon: '🪡',
         label: 'Costo Filamento TPU',
-        detail: `$${workshopParams.tpuCostPerKg || 550} MXN por kg`,
+        detail: `$${workshopParams.tpuPerKg || 700} MXN por kg`,
         badge: 'TPU'
       },
       {
         icon: '⚡',
-        label: 'Tarifa Eléctrica del Taller',
-        detail: `$${workshopParams.electricityKwhRate || 3.5} MXN por kWh (${workshopParams.printerKw || 0.15} kW de impresora)`
+        label: 'Tarifa Eléctrica y Desgaste',
+        detail: `$${workshopParams.electricityPerHour || 1.04} MXN/h energía · $${workshopParams.wearPerHour || 3} MXN/h desgaste`
       },
       {
         icon: '⏱️',
-        label: 'Mano de Obra & Desgaste',
-        detail: `$${workshopParams.hourlyLaborCost || 80} MXN/h labor humana · $${workshopParams.wearRatePerHour || 1.8} MXN/h depreciación máquina`
+        label: 'Mano de Obra',
+        detail: `$${workshopParams.laborPerHour || 60} MXN/h · ${workshopParams.filamentWastePercent || 15}% merma de filamento`
       },
       {
         icon: '📈',
-        label: 'Margen de Utilidad & Reserva',
-        detail: `${workshopParams.defaultMarkupPercent || 150}% margen de utilidad deseado · ${workshopParams.failureReservePercent || 10}% reserva por fallos`
+        label: 'Margen, IVA y Comisiones',
+        detail: `${workshopParams.targetMarginPercent || 40}% margen objetivo · IVA ${workshopParams.ivaPercent ?? 16}% ${workshopParams.includeIvaInCost !== false ? '(sumado al costo)' : '(no sumado)'} · Tarjeta ${workshopParams.cardFeePercent || 4.1}% · Reserva fallas ${workshopParams.failureReservePercent || 3}%`
       }
     ];
 
@@ -3022,7 +3026,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     const summary = computeRecipeCost(recipe, breakdownModalProduct, rawMaterialsList, workshopParams);
     const yieldUnits = Math.max(1, Number(breakdownForm.yieldUnits) || 1);
     const targetMargin = Math.max(1, Math.min(85, Number(breakdownForm.targetMarginPercent ?? workshopParams.targetMarginPercent) || 40)) / 100;
-    const recipeSuggestedPrice = summary.totalCost > 0 ? Math.round(summary.totalCost / (1 - targetMargin)) : 0;
+    const cardFee = marginSalesChannel === 'card' ? (Number(workshopParams.cardFeePercent) || 4.1) / 100 : 0;
+    const recipeSuggestedPrice = summary.totalCost > 0
+      ? Math.round(summary.totalCost / Math.max(0.05, 1 - targetMargin - cardFee))
+      : 0;
     const totalCalculated = summary.totalCost;
     const updatedPrice = breakdownForm.salePrice !== undefined && breakdownForm.salePrice !== '' && !isNaN(Number(breakdownForm.salePrice))
       ? Number(breakdownForm.salePrice)
@@ -4023,6 +4030,8 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       if (marginSalesChannel === 'mercadolibre') {
         commission = 0.16; // 16% promedio de comisión ML por categoría
         fixedFee = price < 299 && price > 0 ? 25 : 0; // Cargo fijo por unidad en ventas < $299 MXN
+      } else if (marginSalesChannel === 'card') {
+        commission = (Number(workshopParams.cardFeePercent) || 4.1) / 100;
       } else if (marginSalesChannel === 'custom') {
         commission = (Number(customCommission) || 0) / 100;
         fixedFee = Number(customFixedFee) || 0;
@@ -5815,12 +5824,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           </div>
 
                           {/* Barra de Acciones */}
-                          <div className="p-2 bg-gray-50 border-t border-gray-100 flex items-center justify-between gap-1.5">
-                            <div className="flex items-center gap-1.5">
+                          <div className="p-2 bg-gray-50 border-t border-gray-100 flex flex-wrap items-center gap-1.5">
+                            <div className="flex items-center gap-1 shrink-0">
                               <button
                                 type="button"
                                 onClick={() => handleDuplicateProduct(p.id)}
-                                className="p-2 rounded-xl bg-white hover:bg-gray-100 text-gray-600 border border-gray-200 text-xs font-bold transition-colors cursor-pointer"
+                                className="w-8 h-8 rounded-xl bg-white hover:bg-gray-100 text-gray-600 border border-gray-200 text-xs font-bold transition-colors cursor-pointer flex items-center justify-center"
                                 title="Duplicar como plantilla"
                               >
                                 <Copy className="w-3.5 h-3.5" />
@@ -5828,25 +5837,25 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               <button
                                 type="button"
                                 onClick={() => handleDeleteProduct(p.id)}
-                                className="p-2 rounded-xl bg-white hover:bg-rose-50 text-rose-600 border border-rose-200 text-xs font-bold transition-colors cursor-pointer"
+                                className="w-8 h-8 rounded-xl bg-white hover:bg-rose-50 text-rose-600 border border-rose-200 text-xs font-bold transition-colors cursor-pointer flex items-center justify-center"
                                 title="Eliminar producto"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
                               </button>
                             </div>
 
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1.5 flex-1 min-w-[150px] justify-end">
                               <button
                                 type="button"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   handleOpenPhotoStudio(p.id);
                                 }}
-                                className="py-1.5 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs"
+                                className="flex-1 min-w-0 py-1.5 px-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-[10px] sm:text-[10.5px] font-bold transition-all cursor-pointer flex items-center justify-center gap-1 shadow-2xs"
                                 title="Generar 4 tomas de catálogo con IA"
                               >
-                                <Camera className="w-3.5 h-3.5 text-amber-700" />
-                                <span>4 Fotos IA</span>
+                                <Camera className="w-3.5 h-3.5 text-amber-700 shrink-0" />
+                                <span className="truncate">4 Fotos IA</span>
                               </button>
 
                               <button
@@ -5855,10 +5864,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   e.stopPropagation();
                                   handleOpenEditProduct(p);
                                 }}
-                                className="py-1.5 px-4 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 shadow-xs"
+                                className="flex-1 min-w-0 py-1.5 px-2.5 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-[10px] sm:text-[10.5px] font-black transition-all cursor-pointer flex items-center justify-center gap-1 shadow-xs whitespace-nowrap"
                                 title="Editar producto"
                               >
-                                <Edit className="w-3.5 h-3.5" />
+                                <Edit className="w-3.5 h-3.5 shrink-0" />
                                 <span>Editar</span>
                               </button>
                             </div>
@@ -6047,54 +6056,49 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         </div>
 
                         {/* Fila de Botones de Acción Táctiles y Accesibles */}
-                        <div className="flex items-center justify-between gap-2 pt-2 border-t border-gray-100">
-                          <div className="flex items-center gap-1.5">
-                            <button
-                              type="button"
-                              onClick={() => handleDuplicateProduct(p.id)}
-                              className="min-h-[38px] flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold transition-colors cursor-pointer touch-manipulation"
-                              title="Duplicar como plantilla"
-                            >
-                              <Copy className="w-3.5 h-3.5" />
-                              <span className="hidden xs:inline">Duplicar</span>
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => handleDeleteProduct(p.id)}
-                              className="min-h-[38px] flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold transition-colors cursor-pointer touch-manipulation"
-                              title="Eliminar producto"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                              <span className="hidden xs:inline">Borrar</span>
-                            </button>
-                          </div>
-
-                          <div className="flex items-center gap-2">
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleOpenPhotoStudio(p.id);
-                              }}
-                              className="min-h-[42px] flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-bold border border-amber-300 transition-colors cursor-pointer active:scale-95 touch-manipulation"
-                              title="Generar 4 tomas de catálogo con IA"
-                            >
-                              <Camera className="w-4 h-4 text-amber-700" />
-                              <span>4 Fotos IA</span>
-                            </button>
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleOpenEditProduct(p);
-                              }}
-                              className="min-h-[42px] px-4 py-2 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-xs font-black shadow-md active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1.5 touch-manipulation"
-                              title="Editar producto"
-                            >
-                              <Edit className="w-4 h-4" />
-                              <span>Editar</span>
-                            </button>
-                          </div>
+                        <div className="grid grid-cols-2 gap-1.5 pt-2 border-t border-gray-100">
+                          <button
+                            type="button"
+                            onClick={() => handleDuplicateProduct(p.id)}
+                            className="min-h-[40px] flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-[11px] font-bold transition-colors cursor-pointer touch-manipulation"
+                            title="Duplicar como plantilla"
+                          >
+                            <Copy className="w-3.5 h-3.5" />
+                            <span>Duplicar</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteProduct(p.id)}
+                            className="min-h-[40px] flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 text-[11px] font-bold transition-colors cursor-pointer touch-manipulation"
+                            title="Eliminar producto"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                            <span>Borrar</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleOpenPhotoStudio(p.id);
+                            }}
+                            className="min-h-[40px] flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 text-[11px] font-bold border border-amber-300 transition-colors cursor-pointer active:scale-95 touch-manipulation"
+                            title="Generar 4 tomas de catálogo con IA"
+                          >
+                            <Camera className="w-4 h-4 text-amber-700" />
+                            <span>4 Fotos IA</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleOpenEditProduct(p);
+                            }}
+                            className="min-h-[40px] px-2 py-1.5 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white text-[11px] font-black shadow-md active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1.5 touch-manipulation"
+                            title="Editar producto"
+                          >
+                            <Edit className="w-4 h-4" />
+                            <span>Editar</span>
+                          </button>
                         </div>
                       </div>
                     ))}
@@ -6564,6 +6568,50 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           </div>
 
                           <div>
+                            <label className="font-bold text-gray-700 block mb-1">IVA en Costos (%)</label>
+                            <input
+                              type="number"
+                              step="any"
+                              value={workshopParams.ivaPercent ?? 16}
+                              onChange={e => setWorkshopParams({ ...workshopParams, ivaPercent: Number(e.target.value) })}
+                              className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 bg-white font-semibold"
+                            />
+                            <label className="mt-1 flex items-center gap-1.5 text-[10px] text-gray-600 font-semibold cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={workshopParams.includeIvaInCost !== false}
+                                onChange={e => setWorkshopParams({ ...workshopParams, includeIvaInCost: e.target.checked })}
+                                className="w-3.5 h-3.5 rounded"
+                              />
+                              Sumar IVA al costo de producción
+                            </label>
+                          </div>
+
+                          <div>
+                            <label className="font-bold text-gray-700 block mb-1">Comisión Tarjeta (%)</label>
+                            <input
+                              type="number"
+                              step="0.1"
+                              value={workshopParams.cardFeePercent ?? 4.1}
+                              onChange={e => setWorkshopParams({ ...workshopParams, cardFeePercent: Number(e.target.value) })}
+                              className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 bg-white font-semibold"
+                            />
+                            <span className="text-[10px] text-gray-400 mt-0.5 block">Terminal, link de pago o recargas</span>
+                          </div>
+
+                          <div>
+                            <label className="font-bold text-gray-700 block mb-1">Reserva por Fallas (%)</label>
+                            <input
+                              type="number"
+                              step="any"
+                              value={workshopParams.failureReservePercent ?? 3}
+                              onChange={e => setWorkshopParams({ ...workshopParams, failureReservePercent: Number(e.target.value) })}
+                              className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 bg-white font-semibold"
+                            />
+                            <span className="text-[10px] text-gray-400 mt-0.5 block">Reprocesos y mermas no capturadas</span>
+                          </div>
+
+                          <div>
                             <label className="font-bold text-gray-700 block mb-1">Margen Objetivo (%)</label>
                             <input
                               type="number"
@@ -6628,6 +6676,19 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             </button>
                             <button
                               type="button"
+                              onClick={() => setMarginSalesChannel('card')}
+                              className={`px-3 py-1 text-xs font-bold rounded-md transition-all flex items-center gap-1 cursor-pointer ${
+                                marginSalesChannel === 'card'
+                                  ? 'bg-sky-600 text-white shadow-xs'
+                                  : 'text-gray-600 hover:text-gray-900'
+                              }`}
+                              title="Cobro con tarjeta, terminal o link de pago: comisión configurable (4.1% sugerido)"
+                            >
+                              <span>💳</span>
+                              <span>Tarjeta / Terminal ({workshopParams.cardFeePercent || 4.1}%)</span>
+                            </button>
+                            <button
+                              type="button"
                               onClick={() => setMarginSalesChannel('mercadolibre')}
                               className={`px-3 py-1 text-xs font-bold rounded-md transition-all flex items-center gap-1 cursor-pointer ${
                                 marginSalesChannel === 'mercadolibre'
@@ -6652,6 +6713,13 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             </button>
                           </div>
                         </div>
+
+                        {marginSalesChannel === 'card' && (
+                          <div className="text-[11px] text-sky-900 font-semibold bg-sky-100/70 px-2.5 py-1 rounded-lg border border-sky-300 flex items-center gap-1.5 animate-fade-in">
+                            <span className="text-sm">💳</span>
+                            <span>Comisión de cobro aplicada: <strong>{workshopParams.cardFeePercent || 4.1}%</strong> sobre el precio de venta.</span>
+                          </div>
+                        )}
 
                         {marginSalesChannel === 'mercadolibre' && (
                           <div className="text-[11px] text-amber-900 font-semibold bg-amber-100/70 px-2.5 py-1 rounded-lg border border-amber-300 flex items-center gap-1.5 animate-fade-in">
@@ -6991,8 +7059,8 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                         <option value="servicio">/ servicio</option>
                                       </select>
                                       {row.platformFee > 0 && (
-                                        <span className="text-[8.5px] font-bold text-amber-900 bg-amber-100/90 px-1 py-0 rounded border border-amber-300 whitespace-nowrap" title={`Deducción de plataforma: $${row.platformFee} ($${(row.price * row.commission).toFixed(1)} com. + $${row.fixedFee} fijo)`}>
-                                          -${row.platformFee} ML
+                                        <span className="text-[8.5px] font-bold text-amber-900 bg-amber-100/90 px-1 py-0 rounded border border-amber-300 whitespace-nowrap" title={`Deducción de cobro: $${row.platformFee} ($${(row.price * row.commission).toFixed(1)} comisión + $${row.fixedFee} fijo)`}>
+                                          -${row.platformFee} {marginSalesChannel === 'mercadolibre' ? 'ML' : marginSalesChannel === 'card' ? 'Tarjeta' : 'Com.'}
                                         </span>
                                       )}
                                     </div>
@@ -8293,18 +8361,18 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
             </div>
 
             {/* TABS DE NAVEGACIÓN UX ERGONÓMICOS (Móvil y Escritorio) */}
-            <div className="bg-[#FAF9F5] border-b border-[#E8E4DA] px-3 sm:px-5 py-2.5 flex items-center gap-1.5 sm:gap-2 overflow-x-auto scrollbar-none shrink-0">
+            <div className="bg-[#FAF9F5] border-b border-[#E8E4DA] px-3 sm:px-5 py-2.5 flex flex-wrap items-center gap-1.5 sm:gap-2 shrink-0">
               <button
                 type="button"
                 onClick={() => setEditorActiveTab('general')}
-                className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
+                className={`px-2.5 sm:px-3.5 py-2 rounded-xl text-[10.5px] sm:text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
                   editorActiveTab === 'general'
                     ? 'bg-[#2D4F3E] text-white shadow-sm'
                     : 'bg-white text-gray-700 border border-stone-200 hover:bg-stone-50'
                 }`}
               >
                 <span>📋</span>
-                <span>1. Datos &amp; Galería</span>
+                <span>1. Datos &amp; Fotos</span>
                 {editorChecklist.stepStatus.general
                   ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                   : <AlertCircle className="w-3.5 h-3.5 text-amber-500" />}
@@ -8313,14 +8381,14 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               <button
                 type="button"
                 onClick={() => setEditorActiveTab('taller')}
-                className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
+                className={`px-2.5 sm:px-3.5 py-2 rounded-xl text-[10.5px] sm:text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
                   editorActiveTab === 'taller'
                     ? 'bg-[#2D4F3E] text-white shadow-sm'
                     : 'bg-white text-gray-700 border border-stone-200 hover:bg-stone-50'
                 }`}
               >
                 <span>🪵</span>
-                <span>2. Taller &amp; Insumos (Escandallo)</span>
+                <span>2. Receta &amp; Insumos</span>
                 {editorChecklist.stepStatus.taller
                   ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                   : <AlertCircle className="w-3.5 h-3.5 text-amber-500" />}
@@ -8334,14 +8402,14 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               <button
                 type="button"
                 onClick={() => setEditorActiveTab('packaging')}
-                className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
+                className={`px-2.5 sm:px-3.5 py-2 rounded-xl text-[10.5px] sm:text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
                   editorActiveTab === 'packaging'
                     ? 'bg-[#2D4F3E] text-white shadow-sm'
                     : 'bg-white text-gray-700 border border-stone-200 hover:bg-stone-50'
                 }`}
               >
                 <span>📦</span>
-                <span>3. Embalaje &amp; Flete Nacional</span>
+                <span>3. Empaque &amp; Envío</span>
                 {editorForm.manufacturingRecipe?.packagingAndShipping?.enabled && (
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                 )}
@@ -8350,14 +8418,14 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               <button
                 type="button"
                 onClick={() => setEditorActiveTab('pricing')}
-                className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
+                className={`px-2.5 sm:px-3.5 py-2 rounded-xl text-[10.5px] sm:text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
                   editorActiveTab === 'pricing'
                     ? 'bg-[#2D4F3E] text-white shadow-sm'
                     : 'bg-white text-gray-700 border border-stone-200 hover:bg-stone-50'
                 }`}
               >
                 <span>💰</span>
-                <span>4. Precios, Margen &amp; Descuentos</span>
+                <span>4. Precio &amp; Margen</span>
                 {editorChecklist.stepStatus.pricing
                   ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                   : <AlertCircle className="w-3.5 h-3.5 text-amber-500" />}
@@ -8373,14 +8441,14 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               <button
                 type="button"
                 onClick={() => setEditorActiveTab('repo')}
-                className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
+                className={`px-2.5 sm:px-3.5 py-2 rounded-xl text-[10.5px] sm:text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
                   editorActiveTab === 'repo'
                     ? 'bg-[#2D4F3E] text-white shadow-sm'
                     : 'bg-white text-gray-700 border border-stone-200 hover:bg-stone-50'
                 }`}
               >
                 <Link2 className="w-3.5 h-3.5" />
-                <span>5. Repositorio &amp; Fabricación</span>
+                <span>5. Repositorio</span>
                 {(editorForm.repository?.makerworldUrl || editorForm.makerWorldModel || editorForm.repository?.localPath) && (
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                 )}
@@ -11338,8 +11406,13 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         const recipeRawMaterialsCost = rawMaterialsPerUnit * yieldUnits;
         const overheadCostPerUnit = costSummary?.fixedOverheadCost || 0;
         const recipeTotalUnitCost = costSummary?.totalCost || 0;
-        const suggestedPriceFromRecipe = recipeTotalUnitCost > 0 ? Math.round(recipeTotalUnitCost / (1 - targetMargin)) : 0;
-        const profitFromRecipe = Math.max(0, suggestedPriceFromRecipe - recipeTotalUnitCost);
+        const cardFeeDecimal = marginSalesChannel === 'card'
+          ? (Number(workshopParams.cardFeePercent) || 4.1) / 100
+          : 0;
+        const suggestedPriceFromRecipe = recipeTotalUnitCost > 0
+          ? Math.round(recipeTotalUnitCost / Math.max(0.05, 1 - targetMargin - cardFeeDecimal))
+          : 0;
+        const profitFromRecipe = Math.max(0, suggestedPriceFromRecipe * (1 - cardFeeDecimal) - recipeTotalUnitCost);
 
         // Componentes reales del motor compartido de costos.
         const machineSubtotal = (costSummary?.energyCost || 0) + (costSummary?.wearCost || 0);
@@ -11350,10 +11423,13 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
           ? Number(breakdownForm.salePrice)
           : (suggestedPriceFromRecipe > 0 ? suggestedPriceFromRecipe : (Number(breakdownModalProduct.price) || 0));
 
-        const liveProfit = salePrice > 0 ? Math.round((salePrice - liveTotalCost) * 10) / 10 : 0;
+        const livePaymentFee = salePrice > 0 ? Math.round((salePrice * cardFeeDecimal) * 10) / 10 : 0;
+        const liveProfit = salePrice > 0 ? Math.round((salePrice - liveTotalCost - livePaymentFee) * 10) / 10 : 0;
         const liveMargin = salePrice > 0 ? Math.round((liveProfit / salePrice) * 1000) / 10 : 0;
         const liveMarkup = liveTotalCost > 0 ? Math.round((liveProfit / liveTotalCost) * 1000) / 10 : 0;
-        const liveTargetPrice = suggestedPriceFromRecipe > 0 ? suggestedPriceFromRecipe : Math.round((liveTotalCost / (1 - targetMargin)) * 10) / 10;
+        const liveTargetPrice = suggestedPriceFromRecipe > 0
+          ? suggestedPriceFromRecipe
+          : Math.round((liveTotalCost / Math.max(0.05, 1 - targetMargin - cardFeeDecimal)) * 10) / 10;
         const reservePercent = Math.max(0, Number(workshopParams.reservePercent) || 10) / 100;
         const liveReserve = liveProfit > 0 ? Math.round((liveProfit * reservePercent) * 10) / 10 : 0;
         const liveFreeProfit = Math.round((liveProfit - liveReserve) * 10) / 10;
@@ -11427,7 +11503,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   <div className="flex items-center gap-2 font-medium">
                     <Sparkles className="w-4 h-4 text-emerald-700 shrink-0" />
                     <span>
-                      Tarifas activas: PLA <strong>${plaKg}/kg</strong> • TPU <strong>${tpuKg}/kg</strong> • Merma <strong>{workshopParams.filamentWastePercent || 15}%</strong> • Luz+Desgaste <strong>${(electHour + wearHour).toFixed(2)}/h</strong> • Mano de obra <strong>${laborHour}/h</strong>
+                      Tarifas activas: PLA <strong>${plaKg}/kg</strong> • TPU <strong>${tpuKg}/kg</strong> • Merma filamento <strong>{workshopParams.filamentWastePercent || 15}%</strong> • Reserva fallas <strong>{workshopParams.failureReservePercent || 3}%</strong> • IVA <strong>{workshopParams.ivaPercent ?? 16}%</strong> {workshopParams.includeIvaInCost !== false ? '(sumado)' : '(no sumado)'} • Tarjeta <strong>{workshopParams.cardFeePercent || 4.1}%</strong> • Luz+Desgaste <strong>${(electHour + wearHour).toFixed(2)}/h</strong> • Mano de obra <strong>${laborHour}/h</strong>
                     </span>
                   </div>
                   <span className="px-2 py-0.5 rounded bg-white text-emerald-800 font-bold border border-emerald-200">
@@ -11764,7 +11840,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     <div className="bg-white/5 p-3 rounded-xl border border-white/10">
                       <div className="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Costo Total</div>
                       <div className="text-lg font-black font-mono text-white mt-0.5">${liveTotalCost.toFixed(1)}</div>
-                      <div className="text-[10px] text-gray-400">filamento + máquina + mo</div>
+                      <div className="text-[9px] text-emerald-200">
+                        Base ${(costSummary?.totalBeforeIva || 0).toFixed(1)} + IVA ${(costSummary?.ivaCost || 0).toFixed(1)}
+                      </div>
+                      <div className="text-[9px] text-gray-400">
+                        Merma ${(costSummary?.totalWasteCost || 0).toFixed(1)} · Fallas ${(costSummary?.failureReserveCost || 0).toFixed(1)}
+                      </div>
                     </div>
 
                     <div className="bg-white/5 p-3 rounded-xl border border-white/10 flex flex-col justify-center items-center">
@@ -11795,7 +11876,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       <div className={`text-lg font-black font-mono mt-0.5 ${liveProfit >= 0 ? 'text-emerald-300' : 'text-rose-400'}`}>
                         ${liveProfit.toFixed(1)}
                       </div>
-                      <div className="text-[10px] text-gray-400">libre de costos</div>
+                      <div className="text-[10px] text-gray-400">
+                        después de IVA y comisión ${livePaymentFee.toFixed(1)}
+                      </div>
                     </div>
 
                     <div className="bg-white/5 p-3 rounded-xl border border-white/10">

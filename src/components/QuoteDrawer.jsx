@@ -1101,7 +1101,7 @@ export default function QuoteDrawer({
                 {checkoutMode === 'direct' ? <Zap className="w-5 h-5 fill-white" /> : <MessageCircle className="w-5 h-5" />}
                 <span>
                   {checkoutMode === 'direct'
-                    ? `Hacer Pedido Directo (${formatQuoteMoney(billableTotal)} MXN)`
+                    ? `Enviar pedido por WhatsApp (${formatQuoteMoney(billableTotal)} MXN)`
                     : 'Enviar Cotización por WhatsApp'}
                 </span>
               </button>

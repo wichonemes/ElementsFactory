@@ -769,6 +769,10 @@ export default function RawMaterialsSection({
     filamentWastePercent: 15,
     targetMarginPercent: 40,
     reservePercent: 10,
+    failureReservePercent: 3,
+    ivaPercent: 16,
+    includeIvaInCost: true,
+    cardFeePercent: 4.1,
     rateStatus: 'Estimadas',
     ...workshopParams
   });
@@ -1241,6 +1245,11 @@ export default function RawMaterialsSection({
         unitDirectCost: 0,
         laborCost: 0,
         totalOperationalCost: 0,
+        ivaCost: 0,
+        includeIva: true,
+        totalWithIva: 0,
+        cardFeePercent: 4.1,
+        cardFee: 0,
         suggestedPrice: 0,
         profit: 0
       };
@@ -1255,10 +1264,17 @@ export default function RawMaterialsSection({
     const laborCost = laborHours * (Number(localParams.laborPerHour) || 60);
 
     const totalOperationalCost = powerCost + wearCost + maintenanceCost + unitDirectCost + laborCost;
-    const margin = (Number(localParams.targetMarginPercent) || 40) / 100;
-    const factor = margin >= 1 ? 1.5 : (1 / (1 - margin));
-    const suggestedPrice = totalOperationalCost * factor;
-    const profit = Math.max(0, suggestedPrice - totalOperationalCost);
+    const ivaPercent = Number(localParams.ivaPercent ?? 16) || 0;
+    const includeIva = localParams.includeIvaInCost !== false;
+    const ivaCost = includeIva ? totalOperationalCost * (ivaPercent / 100) : 0;
+    const totalWithIva = totalOperationalCost + ivaCost;
+    const margin = Math.min(0.85, Math.max(0, (Number(localParams.targetMarginPercent) || 40) / 100));
+    const cardFeePercent = Number(localParams.cardFeePercent ?? 4.1) || 0;
+    const cardFee = cardFeePercent / 100;
+    const factor = Math.max(1.01, 1 / Math.max(0.05, 1 - margin - cardFee));
+    const suggestedPrice = totalWithIva * factor;
+    const cardFeeAmount = suggestedPrice * cardFee;
+    const profit = Math.max(0, suggestedPrice - totalWithIva - cardFeeAmount);
 
     return {
       hours,
@@ -1269,6 +1285,11 @@ export default function RawMaterialsSection({
       unitDirectCost: Number(unitDirectCost.toFixed(2)),
       laborCost: Number(laborCost.toFixed(2)),
       totalOperationalCost: Number(totalOperationalCost.toFixed(2)),
+      ivaCost: Number(ivaCost.toFixed(2)),
+      includeIva,
+      totalWithIva: Number(totalWithIva.toFixed(2)),
+      cardFeePercent,
+      cardFee: Number(cardFeeAmount.toFixed(2)),
       suggestedPrice: Number(suggestedPrice.toFixed(2)),
       profit: Number(profit.toFixed(2))
     };
@@ -1281,7 +1302,10 @@ Máquina: ${activeCalcMachine.name} (${activeCalcMachine.categoryName})
 Unidades / Medida: ${calcUnits} ${activeCalcMachine.unitMetricLabel || activeCalcMachine.unitMetric}
 Tiempo de Máquina: ${calcMachineMinutes} min ($${(calcResults.powerCost + calcResults.wearCost + calcResults.maintenanceCost).toFixed(2)})
 Mano de Obra: ${calcLaborMinutes} min ($${calcResults.laborCost.toFixed(2)})
-Costo Operativo Directo Total: $${calcResults.totalOperationalCost.toFixed(2)} MXN
+Costo Operativo Directo: $${calcResults.totalOperationalCost.toFixed(2)} MXN
+IVA ${localParams.ivaPercent ?? 16}%: $${calcResults.ivaCost.toFixed(2)} MXN
+Costo con IVA: $${calcResults.totalWithIva.toFixed(2)} MXN
+Comisión tarjeta ${calcResults.cardFeePercent}%: $${calcResults.cardFee.toFixed(2)} MXN
 Precio Sugerido (Margen ${localParams.targetMarginPercent}%): $${calcResults.suggestedPrice.toFixed(2)} MXN
 Ganancia Neta Estimada: $${calcResults.profit.toFixed(2)} MXN`;
 
@@ -2082,9 +2106,17 @@ Ganancia Neta Estimada: $${calcResults.profit.toFixed(2)} MXN`;
     const yieldUnits = Math.max(1, Number(recipeYieldUnits) || 1);
     const unitProductionCost = totalBatchCost / yieldUnits;
 
+    const ivaPercent = Number(localParams.ivaPercent ?? 16) || 0;
+    const includeIva = localParams.includeIvaInCost !== false;
+    const unitIvaCost = includeIva ? unitProductionCost * (ivaPercent / 100) : 0;
+    const unitCostWithIva = unitProductionCost + unitIvaCost;
+    const cardFeePercent = Number(localParams.cardFeePercent ?? 4.1) || 0;
+    const cardFeeDecimal = cardFeePercent / 100;
+
     const targetProfitPercent = Number(recipeTargetProfitPercent) || 0;
-    const suggestedPrice = Math.round(unitProductionCost * (1 + targetProfitPercent / 100));
-    const profitPerUnit = Math.max(0, suggestedPrice - unitProductionCost);
+    const suggestedPrice = Math.round((unitCostWithIva * (1 + targetProfitPercent / 100)) / Math.max(0.5, 1 - cardFeeDecimal));
+    const cardFeeAmount = suggestedPrice * cardFeeDecimal;
+    const profitPerUnit = Math.max(0, suggestedPrice - unitCostWithIva - cardFeeAmount);
     const profitMarginPercent = suggestedPrice > 0 ? Math.round((profitPerUnit / suggestedPrice) * 100) : 0;
 
     // Simulación de Maquilas Grandes y Lotes
@@ -2099,10 +2131,11 @@ Ganancia Neta Estimada: $${calcResults.profit.toFixed(2)} MXN`;
     const assemblyDays = Math.ceil(maquilaAssemblyHoursTotal / tHoursDay);
     const estimatedDeliveryDays = Math.max(1, machineDays + Math.ceil(assemblyDays * 0.4));
 
-    const maquilaTotalCost = unitProductionCost * mUnits;
+    const maquilaTotalCost = unitCostWithIva * mUnits;
     const maquilaUnitPriceQuote = Math.round(suggestedPrice * (1 - vDiscount / 100));
     const maquilaTotalQuote = maquilaUnitPriceQuote * mUnits;
-    const maquilaNetProfit = Math.max(0, maquilaTotalQuote - maquilaTotalCost);
+    const maquilaCardFee = maquilaTotalQuote * cardFeeDecimal;
+    const maquilaNetProfit = Math.max(0, maquilaTotalQuote - maquilaTotalCost - maquilaCardFee);
     const maquilaProfitMargin = maquilaTotalQuote > 0 ? Math.round((maquilaNetProfit / maquilaTotalQuote) * 100) : 0;
 
     return {
@@ -2127,6 +2160,12 @@ Ganancia Neta Estimada: $${calcResults.profit.toFixed(2)} MXN`;
       totalBatchCost,
       yieldUnits,
       unitProductionCost,
+      ivaPercent,
+      includeIva,
+      unitIvaCost,
+      unitCostWithIva,
+      cardFeePercent,
+      cardFeeAmount,
       suggestedPrice,
       profitPerUnit,
       profitMarginPercent,
@@ -5211,10 +5250,10 @@ Artesano Digital — Taller & Manufactura Inteligente`;
                     💰 Costo Fabricación
                   </span>
                   <span className="text-base font-mono font-black text-rose-950 mt-0.5 block">
-                    ${recipeCalculation.unitProductionCost.toFixed(2)}
+                    ${recipeCalculation.unitCostWithIva.toFixed(2)}
                   </span>
                   <span className="text-[9.5px] text-rose-700 block font-semibold">
-                    por pieza (rinde {recipeCalculation.yieldUnits})
+                    Base ${recipeCalculation.unitProductionCost.toFixed(2)} + IVA ${recipeCalculation.unitIvaCost.toFixed(2)} · merma incluida
                   </span>
                 </div>
 
@@ -5227,7 +5266,7 @@ Artesano Digital — Taller & Manufactura Inteligente`;
                     ${recipeCalculation.suggestedPrice} MXN
                   </span>
                   <span className="text-[10px] text-emerald-700 block font-black">
-                    Ganancia: +${recipeCalculation.profitPerUnit.toFixed(2)} ({recipeCalculation.profitMarginPercent}%)
+                    Ganancia: +${recipeCalculation.profitPerUnit.toFixed(2)} ({recipeCalculation.profitMarginPercent}%) · tarjeta ${recipeCalculation.cardFeePercent}%
                   </span>
                 </div>
 
@@ -5359,7 +5398,7 @@ Artesano Digital — Taller & Manufactura Inteligente`;
                       ${recipeCalculation.maquilaTotalCost.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                     </span>
                     <span className="text-[10px] text-rose-700 block">
-                      Insumos + energía + mano de obra + merma
+                      Insumos + energía + mano de obra + merma + IVA
                     </span>
                   </div>
 
@@ -6002,6 +6041,59 @@ Artesano Digital — Taller & Manufactura Inteligente`;
                     className="w-full px-3 py-2 rounded-xl border border-gray-300 bg-white font-mono font-bold text-sm focus:border-[#2D4F3E] focus:outline-none"
                   />
                   <span className="text-[10px] text-gray-400 block">Soportes, purgas y mermas de corte</span>
+                </div>
+
+                {/* IVA en costos */}
+                <div className="p-3.5 rounded-2xl bg-cyan-50/60 border border-cyan-200 space-y-1.5">
+                  <div className="flex items-center justify-between font-bold text-cyan-900">
+                    <span>IVA en Costos (%)</span>
+                  </div>
+                  <input
+                    type="number"
+                    step="1"
+                    value={localParams.ivaPercent ?? 16}
+                    onChange={e => setLocalParams({ ...localParams, ivaPercent: Number(e.target.value) })}
+                    className="w-full px-3 py-2 rounded-xl border border-cyan-300 bg-white font-mono font-black text-sm text-cyan-900 focus:border-[#2D4F3E] focus:outline-none"
+                  />
+                  <label className="flex items-center gap-1.5 text-[10px] text-cyan-800 font-semibold cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={localParams.includeIvaInCost !== false}
+                      onChange={e => setLocalParams({ ...localParams, includeIvaInCost: e.target.checked })}
+                      className="w-3.5 h-3.5 rounded"
+                    />
+                    Sumar IVA al costo
+                  </label>
+                </div>
+
+                {/* Comisión de cobro */}
+                <div className="p-3.5 rounded-2xl bg-sky-50/60 border border-sky-200 space-y-1.5">
+                  <div className="flex items-center justify-between font-bold text-sky-900">
+                    <span>Comisión Tarjeta (%)</span>
+                  </div>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={localParams.cardFeePercent ?? 4.1}
+                    onChange={e => setLocalParams({ ...localParams, cardFeePercent: Number(e.target.value) })}
+                    className="w-full px-3 py-2 rounded-xl border border-sky-300 bg-white font-mono font-black text-sm text-sky-900 focus:border-[#2D4F3E] focus:outline-none"
+                  />
+                  <span className="text-[10px] text-sky-700 block">Terminal, link de pago y recargas</span>
+                </div>
+
+                {/* Reserva por fallas */}
+                <div className="p-3.5 rounded-2xl bg-rose-50/60 border border-rose-200 space-y-1.5">
+                  <div className="flex items-center justify-between font-bold text-rose-900">
+                    <span>Reserva Fallas (%)</span>
+                  </div>
+                  <input
+                    type="number"
+                    step="0.5"
+                    value={localParams.failureReservePercent ?? 3}
+                    onChange={e => setLocalParams({ ...localParams, failureReservePercent: Number(e.target.value) })}
+                    className="w-full px-3 py-2 rounded-xl border border-rose-300 bg-white font-mono font-black text-sm text-rose-900 focus:border-[#2D4F3E] focus:outline-none"
+                  />
+                  <span className="text-[10px] text-rose-700 block">Reprocesos y mermas no capturadas</span>
                 </div>
 
                 {/* Margen Objetivo */}

@@ -1441,7 +1441,7 @@ export default function ProductDetailModal({
                   className="flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-[#16A34A] text-white text-sm font-bold hover:bg-[#15803D] active:scale-98 transition-all shadow-md shadow-emerald-500/10 cursor-pointer"
                 >
                   <ShoppingBag className="w-4 h-4" />
-                  <span>Hacer pedido</span>
+                  <span>Agregar al carrito</span>
                 </button>
               </div>
 
@@ -1692,7 +1692,7 @@ export default function ProductDetailModal({
               className="px-4 py-2.5 rounded-full bg-[#16A34A] text-white text-xs font-black hover:bg-[#15803D] active:scale-95 transition-all shadow-md shadow-emerald-500/20 cursor-pointer flex items-center gap-1.5"
             >
               <ShoppingBag className="w-3.5 h-3.5" />
-              <span>Pedir</span>
+              <span>Agregar al carrito</span>
             </button>
           </div>
         </div>

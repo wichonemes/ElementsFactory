@@ -12,36 +12,36 @@ import {
   computeRecipeCost, applySummaryToRecipe, buildRecipeFromProduct,
   normalizeRecipeItems, inferSupplyType, enrichRecipeItems, materialUnitCost
 } from '../../shared/costing';
-import { parsePackageInfo } from './RawMaterialsSection';
+import { parsePackageInfo, materialSupplyGroupFor, materialAreaFor } from './RawMaterialsSection';
 
 const SUPPLY_GROUPS = [
   {
-    id: 'direct', label: 'Materias primas directas', short: 'Directos',
+    id: 'direct', label: 'Materias primas directas', short: 'Materia prima',
     desc: 'Madera, acrílico, filamento, tela, tazas y piezas que sí forman el producto.',
     icon: Box, tone: 'emerald'
   },
   {
-    id: 'complementary', label: 'Insumos complementarios', short: 'Complementarios',
+    id: 'complementary', label: 'Insumos complementarios', short: 'Complementario',
     desc: 'Herrajes, luces, argollas, imanes, cierres y accesorios que complementan la pieza.',
     icon: Cog, tone: 'sky'
   },
   {
-    id: 'intangible', label: 'Intangibles y licencias', short: 'Intangibles',
+    id: 'intangible', label: 'Intangibles y licencias', short: 'Intangible',
     desc: 'Diseño, licencias, modelos, archivos y servicios digitales.',
     icon: Sparkles, tone: 'violet'
   },
   {
-    id: 'micro', label: 'Micro insumos', short: 'Micro insumos',
+    id: 'micro', label: 'Micro insumos', short: 'Microinsumo',
     desc: 'Tornillería, gotas de pegamento, lijas, cintas y consumibles mínimos.',
     icon: Hammer, tone: 'orange'
   },
   {
-    id: 'finish', label: 'Acabados y terminaciones', short: 'Acabados',
+    id: 'finish', label: 'Acabados y terminaciones', short: 'Acabado',
     desc: 'Barnices, tintes, pinturas, selladores y detalles finales.',
     icon: Paintbrush, tone: 'purple'
   },
   {
-    id: 'indirect', label: 'Insumos indirectos', short: 'Indirectos',
+    id: 'indirect', label: 'Insumos indirectos', short: 'Insumo indirecto',
     desc: 'Guantes, protección, limpieza, empaque y consumibles de operación.',
     icon: Leaf, tone: 'stone'
   },
@@ -51,7 +51,7 @@ const SUPPLY_GROUPS = [
     icon: Factory, tone: 'amber'
   },
   {
-    id: 'component', label: 'Productos vinculados', short: 'Componentes',
+    id: 'component', label: 'Productos vinculados', short: 'Componente',
     desc: 'Productos ya costeados que forman parte de este combo o pack.',
     icon: Link2, tone: 'rose'
   }
@@ -162,6 +162,17 @@ function isPrintTechnique(value) {
   return value === 'print' || value === 'impresion_laser';
 }
 
+function productMatchesTechnique(product, technique) {
+  if (!technique || technique === 'all') return true;
+  const list = (product?.techniques || []).map(value => String(value || '').toLowerCase());
+  if (technique === 'print') return list.some(isPrintTechnique);
+  if (technique === 'laser') return list.some(value => value.startsWith('laser'));
+  if (technique === '3d') return list.some(value => value.startsWith('3d'));
+  if (technique === 'sublimation') return list.some(value => value.includes('sublim'));
+  if (technique === 'vinyl') return list.some(value => value.includes('vinil') || value.includes('vinyl'));
+  return list.includes(String(technique).toLowerCase());
+}
+
 function areaNamesForTechniques(techniques = []) {
   const names = new Set();
   (Array.isArray(techniques) ? techniques : []).forEach(value => {
@@ -213,6 +224,8 @@ export default function ProductWorkshopTab({
   const [simUnits, setSimUnits] = useState(1);
   const [expandedItemId, setExpandedItemId] = useState('');
   const [showMaterialResults, setShowMaterialResults] = useState(false);
+  const [componentWorldFilter, setComponentWorldFilter] = useState('all');
+  const [componentTechFilter, setComponentTechFilter] = useState('all');
 
   const recipe = editorForm?.manufacturingRecipe || { items: [] };
   const rawItems = Array.isArray(recipe.items) ? recipe.items : [];
@@ -245,30 +258,48 @@ export default function ProductWorkshopTab({
   const componentResults = useMemo(() => {
     const query = normalizeText(componentSearch.trim());
     return linkedProducts
-      .filter(product => !query || normalizeText(`${product.name || ''} ${product.sku || product.code || ''} ${(product.techniques || []).join(' ')}`).includes(query))
-      .slice(0, 12);
-  }, [linkedProducts, componentSearch]);
+      .filter(product => {
+        const worldOk = componentWorldFilter === 'all' || (product.worlds || []).includes(componentWorldFilter);
+        const techOk = productMatchesTechnique(product, componentTechFilter);
+        const queryOk = !query || normalizeText(`${product.name || ''} ${product.sku || product.code || ''} ${(product.techniques || []).join(' ')}`).includes(query);
+        return worldOk && techOk && queryOk;
+      })
+      .slice(0, 24);
+  }, [linkedProducts, componentSearch, componentWorldFilter, componentTechFilter]);
 
-  const addGroupCategories = {
-    direct: ['3d', 'laser', 'sublimation', 'vinyl', 'print'],
-    complementary: ['assembly', 'spare_parts'],
-    intangible: [],
-    micro: ['consumables', 'assembly'],
-    finish: ['laser', 'sublimation', 'vinyl'],
-    indirect: ['packaging', 'consumables'],
-    production: ['assembly', 'spare_parts']
+  const activeMaterialAreaIds = useMemo(() => {
+    const ids = new Set();
+    (editorForm?.techniques || []).forEach(value => {
+      const technique = String(value || '').toLowerCase();
+      if (technique.startsWith('3d')) ids.add('3d');
+      if (technique.startsWith('laser')) ids.add('laser');
+      if (technique.includes('sublim')) ids.add('sublimation');
+      if (technique.includes('vinil') || technique.includes('vinyl')) ids.add('vinyl');
+      if (isPrintTechnique(technique)) ids.add('print');
+      if (technique === 'assembly') ids.add('assembly');
+    });
+    return [...ids];
+  }, [editorForm?.techniques]);
+
+  const materialMatchesGroup = (mat, groupId) => {
+    const inferred = materialSupplyGroupFor(mat);
+    if (groupId === 'indirect') return inferred === 'indirect' || inferred === 'packaging';
+    return inferred === groupId;
   };
 
   const materialResults = useMemo(() => {
     const query = normalizeText(materialSearch.trim());
-    const categories = addGroupCategories[addGroup] || [];
     return rawMaterialsList
       .filter(mat => {
-        if (!query) return categories.length === 0 || categories.includes(mat.category);
-        return normalizeText(`${mat.name || ''} ${mat.category || ''} ${mat.supplier || ''}`).includes(query);
+        const groupOk = materialMatchesGroup(mat, addGroup);
+        const areaOk = addGroup !== 'direct'
+          || activeMaterialAreaIds.length === 0
+          || activeMaterialAreaIds.includes(materialAreaFor(mat));
+        const queryOk = !query || normalizeText(`${mat.name || ''} ${mat.category || ''} ${mat.supplier || ''}`).includes(query);
+        return groupOk && areaOk && queryOk;
       })
-      .slice(0, 12);
-  }, [rawMaterialsList, materialSearch, addGroup]);
+      .slice(0, 24);
+  }, [rawMaterialsList, materialSearch, addGroup, activeMaterialAreaIds]);
 
   const activeAreas = AREAS.filter(area => {
     const techniques = editorForm?.techniques || [];
@@ -289,6 +320,20 @@ export default function ProductWorkshopTab({
       else next.add(groupId);
       return next;
     });
+  };
+
+  const openAddForGroup = (groupId) => {
+    setAddGroup(groupId);
+    setShowMaterialResults(true);
+    setMaterialSearch('');
+    setSelectedMaterialId('');
+    setCustomName('');
+    if (!openGroups.has(groupId)) {
+      setOpenGroups(prev => new Set([...prev, groupId]));
+    }
+    window.setTimeout(() => {
+      document.getElementById('workshop-add-form')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 60);
   };
 
   const updateRecipe = (nextItems, recipeExtra = {}, formExtra = {}) => {
@@ -581,7 +626,7 @@ export default function ProductWorkshopTab({
             ['Insumos', money(summary.materialCost), `${items.length} renglones`, 'bg-emerald-50 border-emerald-200 text-emerald-900'],
             ['Luz + desgaste', money(summary.energyCost + summary.wearCost), `${number(recipe.manufacturingTimeMinutes)} min`, 'bg-amber-50 border-amber-200 text-amber-900'],
             ['Mano de obra', money(summary.laborCost), `${number(recipe.laborTimeMinutes)} min`, 'bg-sky-50 border-sky-200 text-sky-900'],
-            ['Costo total', money(summary.totalCost), 'por pieza', 'bg-stone-100 border-stone-300 text-stone-900']
+            ['Costo total', money(summary.totalCost), summary.includeIvaInCost ? 'IVA incluido' : 'sin IVA', 'bg-stone-100 border-stone-300 text-stone-900']
           ].map(([label, value, sub, tone]) => (
             <div key={label} className={`rounded-xl border px-2.5 py-1.5 ${tone}`}>
               <span className="text-[8px] uppercase tracking-wider font-bold opacity-70">{label}</span>
@@ -687,7 +732,7 @@ export default function ProductWorkshopTab({
               <button
                 key={group.id}
                 type="button"
-                onClick={() => { setAddGroup(group.id); setShowMaterialResults(true); }}
+                onClick={() => { setAddGroup(group.id); setShowMaterialResults(true); setMaterialSearch(''); }}
                 className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold border transition-colors cursor-pointer ${
                   addGroup === group.id
                     ? 'bg-[#2D4F3E] border-[#2D4F3E] text-white shadow-sm'
@@ -697,6 +742,18 @@ export default function ProductWorkshopTab({
                 <group.icon className="w-3 h-3" /> {group.short}
               </button>
             ))}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[9px] text-gray-500">
+            <span>
+              Mostrando <strong className="text-emerald-800">{GROUP_MAP[addGroup]?.label || 'insumos'}</strong>
+            </span>
+            <span>·</span>
+            <span>
+              Áreas activas: <strong className="text-gray-700">{activeAreas.length > 0 ? activeAreas.map(area => area.short).join(', ') : 'todas'}</strong>
+            </span>
+            {activeAreas.length > 1 && <span className="text-emerald-700 font-semibold">Producto multiárea</span>}
+            <span className="text-gray-400">Cambia las áreas arriba si la receta usa otra técnica.</span>
           </div>
 
           <div className="grid md:grid-cols-[1.5fr_repeat(4,minmax(0,.55fr))_auto] gap-2 items-end">
@@ -822,24 +879,42 @@ export default function ProductWorkshopTab({
             const isOpen = openGroups.has(group.id);
             return (
               <div key={group.id} className="rounded-2xl border border-stone-200 overflow-hidden bg-white">
-                <button
-                  type="button"
-                  onClick={() => toggleGroup(group.id)}
-                  className="w-full flex items-center gap-2 p-2.5 text-left cursor-pointer bg-stone-50/80 hover:bg-stone-100/70"
-                >
-                  <span className="w-8 h-8 rounded-xl bg-white border border-stone-200 text-stone-600 flex items-center justify-center shrink-0">
-                    <group.icon className="w-4 h-4" />
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-1.5">
-                      <span className="font-black text-[11.5px] text-gray-900 truncate">{group.label}</span>
-                      <span className="text-[8.5px] font-bold px-1.5 py-0.5 rounded bg-white border border-stone-200 text-stone-500">{group.items.length}</span>
+                <div className="w-full flex items-center gap-1.5 sm:gap-2 p-2.5 bg-stone-50/80 hover:bg-stone-100/70">
+                  <button
+                    type="button"
+                    onClick={() => toggleGroup(group.id)}
+                    className="min-w-0 flex-1 flex items-center gap-2 text-left cursor-pointer"
+                  >
+                    <span className="w-8 h-8 rounded-xl bg-white border border-stone-200 text-stone-600 flex items-center justify-center shrink-0">
+                      <group.icon className="w-4 h-4" />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-black text-[11.5px] text-gray-900 truncate">{group.label}</span>
+                        <span className="text-[8.5px] font-bold px-1.5 py-0.5 rounded bg-white border border-stone-200 text-stone-500">{group.items.length}</span>
+                      </div>
+                      <p className="text-[9px] text-gray-500 truncate">{group.desc}</p>
                     </div>
-                    <p className="text-[9px] text-gray-500 truncate">{group.desc}</p>
-                  </div>
-                  <span className="font-mono font-black text-[11px] text-stone-800">{money(group.cost)}</span>
-                  {isOpen ? <ChevronDown className="w-4 h-4 text-gray-400 shrink-0" /> : <ChevronRight className="w-4 h-4 text-gray-400 shrink-0" />}
-                </button>
+                  </button>
+                  <span className="font-mono font-black text-[10.5px] text-stone-800 shrink-0">{money(group.cost)}</span>
+                  <button
+                    type="button"
+                    onClick={() => openAddForGroup(group.id)}
+                    className="shrink-0 inline-flex items-center gap-1 px-1.5 py-1 rounded-lg bg-white border border-stone-200 text-[8.5px] font-bold text-stone-600 hover:border-emerald-300 hover:text-emerald-800 cursor-pointer"
+                    title={`Agregar ${group.short.toLowerCase()}`}
+                  >
+                    <Plus className="w-3 h-3" />
+                    <span className="hidden sm:inline">{group.short}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => toggleGroup(group.id)}
+                    className="p-1 rounded-lg text-gray-400 hover:bg-white hover:text-gray-700 cursor-pointer shrink-0"
+                    title={isOpen ? 'Cerrar grupo' : 'Abrir grupo'}
+                  >
+                    {isOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+                  </button>
+                </div>
 
                 {isOpen && (
                   <div className="p-2 space-y-1.5 bg-stone-50/30">
@@ -848,14 +923,10 @@ export default function ProductWorkshopTab({
                         <p className="text-[10px] text-gray-400">Sin insumos en este grupo.</p>
                         <button
                           type="button"
-                          onClick={() => {
-                            setAddGroup(group.id);
-                            setShowMaterialResults(true);
-                            document.getElementById('workshop-add-form')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                          }}
+                          onClick={() => openAddForGroup(group.id)}
                           className="mt-1.5 inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-white border border-stone-200 text-[9.5px] font-bold text-stone-600 hover:border-emerald-300 hover:text-emerald-800 cursor-pointer"
                         >
-                          <Plus className="w-3 h-3" /> Agregar insumo
+                          <Plus className="w-3 h-3" /> Agregar {group.short.toLowerCase()}
                         </button>
                       </div>
                     ) : group.items.map(item => {
@@ -1179,6 +1250,57 @@ export default function ProductWorkshopTab({
             </div>
           </div>
 
+          <div className="grid sm:grid-cols-2 gap-1.5">
+            <div className="flex flex-wrap items-center gap-1">
+              <span className="text-[8.5px] font-black uppercase tracking-wider text-rose-700 mr-0.5">Área</span>
+              {[
+                ['all', 'Todas'],
+                ['hogar', 'Hogar'],
+                ['negocios', 'Negocios'],
+                ['eventos', 'Eventos'],
+                ['personalizados', 'Personalizados'],
+                ['servicios', 'Servicios']
+              ].map(([id, label]) => (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => setComponentWorldFilter(id)}
+                  className={`px-1.5 py-0.5 rounded-md border text-[8.5px] font-bold transition-colors cursor-pointer ${
+                    componentWorldFilter === id
+                      ? 'bg-rose-600 border-rose-600 text-white'
+                      : 'bg-white border-rose-200 text-rose-700 hover:border-rose-400'
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            <div className="flex flex-wrap items-center gap-1">
+              <span className="text-[8.5px] font-black uppercase tracking-wider text-rose-700 mr-0.5">Técnica</span>
+              {[
+                ['all', 'Todas'],
+                ['3d', '3D'],
+                ['laser', 'Láser'],
+                ['sublimation', 'Sublimación'],
+                ['vinyl', 'Vinil'],
+                ['print', 'Impresión']
+              ].map(([id, label]) => (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => setComponentTechFilter(id)}
+                  className={`px-1.5 py-0.5 rounded-md border text-[8.5px] font-bold transition-colors cursor-pointer ${
+                    componentTechFilter === id
+                      ? 'bg-rose-600 border-rose-600 text-white'
+                      : 'bg-white border-rose-200 text-rose-700 hover:border-rose-400'
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {selectedComponent && (
             <div className="flex items-center gap-2 rounded-xl bg-white border border-rose-200 p-2">
               {selectedComponent.primaryImage ? (
@@ -1196,7 +1318,7 @@ export default function ProductWorkshopTab({
             </div>
           )}
 
-          {(showComponentResults || componentSearch) && (
+          {(showComponentResults || componentSearch || componentWorldFilter !== 'all' || componentTechFilter !== 'all') && (
             <div className="grid sm:grid-cols-2 gap-1.5 max-h-44 overflow-y-auto pr-1">
               {componentResults.map(product => (
                 <button
@@ -1274,17 +1396,18 @@ export default function ProductWorkshopTab({
                         return next;
                       })}
                       className="p-1 rounded-lg text-rose-500 hover:bg-rose-100 cursor-pointer"
-                      title={expanded ? 'Cerrar' : 'Ver insumos'}
+                      title={expanded ? 'Cerrar edición' : 'Editar cantidad y ver insumos'}
                     >
-                      {expanded ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
+                      <Pencil className="w-3.5 h-3.5" />
                     </button>
                     <button
                       type="button"
                       onClick={() => removeItem(item.id)}
-                      className="p-1 rounded-lg text-rose-500 hover:bg-rose-100 hover:text-rose-800 cursor-pointer"
-                      title="Quitar producto vinculado"
+                      className="inline-flex items-center gap-0.5 px-1.5 py-1 rounded-lg text-rose-500 hover:bg-rose-100 hover:text-rose-800 cursor-pointer text-[8.5px] font-bold"
+                      title="Quitar producto del combo"
                     >
-                      <Unlink className="w-3.5 h-3.5" />
+                      <Unlink className="w-3 h-3" />
+                      <span className="hidden sm:inline">Quitar</span>
                     </button>
                   </div>
 

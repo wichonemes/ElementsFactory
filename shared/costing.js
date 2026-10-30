@@ -19,6 +19,9 @@ export const DEFAULT_WORKSHOP_PARAMS = {
   failureReservePercent: 3,
   fixedOverheadPerUnit: 0,
   kwhCost: 3.5,
+  ivaPercent: 16,
+  includeIvaInCost: true,
+  cardFeePercent: 4.1,
   rateStatus: 'Estimadas'
 };
 
@@ -186,17 +189,19 @@ export function inferSupplyType(item = {}) {
   const current = item.supplyType;
   if (item.manualGroup && current) return current;
   if (current === 'component' || item.linkedProductId) return 'component';
-  if (current && current !== 'direct' && SUPPLY_TYPES.has(current)) return current;
 
   const text = normalizeText(`${item.name || ''} ${item.category || ''}`);
+
+  // Consumibles propios de sublimación: papel, tinta, hoja y cinta térmica.
+  if (/papel.*sublim|hoja.*sublim|tinta.*sublim|cinta.*sublim|kapton|cinta.*transfer/.test(text)) return 'indirect';
   if (/empaque|caja|bolsa|etiqueta|celofan|viruta|burbuja|esquinero|tissue|kraft/.test(text)) return 'indirect';
-  if (/servicio|maquila|corte externo|grabado externo|impresion externa|instalacion|flete|envio/.test(text)) return 'production';
+  if (/\b(servicio|maquila|corte externo|grabado externo|impresion externa|instalacion)\b/.test(text)) return 'production';
   if (/diseno|licencia|archivo|modelo digital|arte digital|render|plantilla/.test(text)) return 'intangible';
   if (/barniz|tinte|pintura|sellador|laca|acabado|esmalte/.test(text)) return 'finish';
   if (/guante|estopa|limpieza|proteccion|desechable|solvente|alcohol|bata|mascarilla/.test(text)) return 'indirect';
   if (/iman|magnet|led|luz|argolla|herraje|tornillo|clavo|inserto|mecanismo|switch|interruptor|mosqueton|broche|cierre|remache/.test(text)) return 'complementary';
   if (/lija|cinta|pegamento|resistol|cianocrilato|silicon|adhesivo|brocha|pincel|diluyente/.test(text)) return 'micro';
-  return current || 'direct';
+  return current && SUPPLY_TYPES.has(current) ? current : 'direct';
 }
 
 /**
@@ -278,7 +283,7 @@ export function computeRecipeCost(recipe = {}, product = null, rawMaterials = []
     : round2(failureBase * (failurePercent / 100));
   const fixedOverheadCost = round2(num(recipe.fixedOverheadCost, num(product?.costBreakdown?.fixedOverheadCost, num(params.fixedOverheadPerUnit, 0))));
 
-  const totalCost = round2(
+  const totalBeforeIva = round2(
     materialCost +
     energyCost +
     wearCost +
@@ -288,6 +293,13 @@ export function computeRecipeCost(recipe = {}, product = null, rawMaterials = []
     failureReserveCost +
     fixedOverheadCost
   );
+
+  const ivaPercent = num(recipe.ivaPercent, num(params.ivaPercent, 16));
+  const includeIvaInCost = recipe.includeIvaInCost !== undefined
+    ? Boolean(recipe.includeIvaInCost)
+    : params.includeIvaInCost !== false;
+  const ivaCost = includeIvaInCost ? round2(totalBeforeIva * (ivaPercent / 100)) : 0;
+  const totalCost = round2(totalBeforeIva + ivaCost);
 
   const totalWasteCost = round2(items.reduce((sum, it) => sum + (it.wasteQuantity * it.unitCost), 0));
   const wastePercentAverage = materialCost > 0 ? Math.round((totalWasteCost / materialCost) * 1000) / 10 : 0;
@@ -310,6 +322,10 @@ export function computeRecipeCost(recipe = {}, product = null, rawMaterials = []
     failurePercent,
     failureReserveCost,
     fixedOverheadCost,
+    totalBeforeIva,
+    ivaPercent,
+    includeIvaInCost,
+    ivaCost,
     totalCost,
     totalMaterialCost: materialCost,
     totalWasteCost,
@@ -334,7 +350,11 @@ export function applySummaryToRecipe(recipe = {}, summary) {
     wearCost: summary.wearCost,
     laborCost: summary.laborCost,
     failureReserveCost: summary.failureReserveCost,
-    fixedOverheadCost: summary.fixedOverheadCost
+    fixedOverheadCost: summary.fixedOverheadCost,
+    totalBeforeIva: summary.totalBeforeIva,
+    ivaPercent: summary.ivaPercent,
+    includeIvaInCost: summary.includeIvaInCost,
+    ivaCost: summary.ivaCost
   };
 }
 
@@ -353,6 +373,11 @@ export function buildCostBreakdownFromSummary(summary, recipe = {}, previous = {
     additionalFailuresCost: summary.failureReserveCost,
     fixedOverheadCost: summary.fixedOverheadCost,
     shippingCost: summary.shippingCost,
+    totalWasteCost: summary.totalWasteCost,
+    wastePercentAverage: summary.wastePercentAverage,
+    totalBeforeIva: summary.totalBeforeIva,
+    ivaPercent: summary.ivaPercent,
+    ivaCost: summary.ivaCost,
     costStatus: 'Calculado de Taller'
   };
 }
