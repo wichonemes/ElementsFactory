@@ -53,16 +53,6 @@ export default function CatalogBottomNav({
       color: 'bg-sky-50/70 text-sky-900 border-sky-200 hover:border-sky-500 hover:bg-sky-50',
       badgeColor: 'bg-sky-100 text-sky-800',
       desc: 'Figuras POP! Custom y esculturas 3D de fotos'
-    },
-    {
-      id: 'servicios',
-      name: 'Servicios',
-      fullName: 'Servicios de Taller & Diseño',
-      count: 8,
-      icon: Layers,
-      color: 'bg-[#121519] text-[#e8b84f] border-[#e8b84f]/40 hover:border-[#e8b84f] hover:bg-black',
-      badgeColor: 'bg-[#e8b84f] text-[#121519]',
-      desc: 'Diseño gráfico, lonas, web y manufactura técnica'
     }
   ];
 

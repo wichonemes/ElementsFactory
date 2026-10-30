@@ -16,6 +16,25 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DB_PATH = process.env.LOCAL_DB_PATH || path.join(__dirname, 'data', 'db.json');
 
+// Los paquetes y combos viven solo en el área "Paquetes" del catálogo.
+// Su área comercial (Hogar, Negocios, Eventos) se guarda aparte para los filtros.
+const PACKAGE_AREA_IDS = ['hogar', 'negocios', 'eventos'];
+
+function normalizeProductAreaAssignment(product) {
+  if (!product || typeof product !== 'object') return product;
+  const worlds = Array.isArray(product.worlds) ? product.worlds.filter(Boolean) : [];
+  const isBundle = Boolean(product.isBundle || product.category === 'paquetes' || product.category === 'servicios');
+  if (isBundle) {
+    const bundleAreas = Array.isArray(product.bundleAreas)
+      ? product.bundleAreas.filter(area => PACKAGE_AREA_IDS.includes(area))
+      : (PACKAGE_AREA_IDS.includes(product.bundleArea)
+        ? [product.bundleArea]
+        : worlds.filter(area => PACKAGE_AREA_IDS.includes(area)));
+    return { ...product, isBundle: true, worlds: ['paquetes'], bundleAreas };
+  }
+  return { ...product, isBundle: false, worlds: worlds.filter(world => world !== 'paquetes') };
+}
+
 // Initial Worlds definition
 const initialWorlds = [
   {
@@ -15686,13 +15705,13 @@ class Database {
 
   createProduct(productData) {
     const db = this.read();
-    const newProduct = {
+    const newProduct = normalizeProductAreaAssignment({
       ...productData,
       id: productData.id || `prod-${Date.now()}`,
       status: productData.status || 'published',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
-    };
+    });
     db.products.push(newProduct);
     this.save(db);
     return newProduct;
@@ -15703,12 +15722,12 @@ class Database {
     const index = db.products.findIndex(p => p.id === id);
     if (index === -1) return null;
 
-    db.products[index] = {
+    db.products[index] = normalizeProductAreaAssignment({
       ...db.products[index],
       ...productData,
       id: db.products[index].id, // preserve ID
       updatedAt: new Date().toISOString()
-    };
+    });
     this.save(db);
     return db.products[index];
   }
@@ -15718,7 +15737,7 @@ class Database {
     const original = db.products.find(p => p.id === id);
     if (!original) return null;
 
-    const copy = {
+    const copy = normalizeProductAreaAssignment({
       ...original,
       id: `prod-${Date.now()}`,
       code: `${original.code}-COP`,
@@ -15727,7 +15746,7 @@ class Database {
       featured: false,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
-    };
+    });
     db.products.push(copy);
     this.save(db);
     return copy;

@@ -5,6 +5,7 @@ import {
   RefreshCw, Crown, AlertTriangle, ExternalLink
 } from 'lucide-react';
 import { getBundleTiers } from './PackagesAndServicesView';
+import { packageAreas } from '../utils/packageAreas';
 
 export default function PackagesAdminSection({
   token,
@@ -48,7 +49,7 @@ export default function PackagesAdminSection({
   // Filtrar según búsqueda y área
   const filteredBundles = useMemo(() => {
     return allBundles.filter(p => {
-      if (areaFilter !== 'all' && !p.worlds?.includes(areaFilter)) {
+      if (areaFilter !== 'all' && !packageAreas(p).includes(areaFilter)) {
         return false;
       }
       if (searchQuery.trim()) {
@@ -167,9 +168,9 @@ export default function PackagesAdminSection({
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
           {[
             { id: 'all', label: 'Todos los Paquetes', count: allBundles.length },
-            { id: 'hogar', label: '🏡 Hogar', count: allBundles.filter(b => b.worlds?.includes('hogar')).length },
-            { id: 'negocios', label: '💼 Negocios', count: allBundles.filter(b => b.worlds?.includes('negocios')).length },
-            { id: 'eventos', label: '🎉 Eventos', count: allBundles.filter(b => b.worlds?.includes('eventos')).length }
+            { id: 'hogar', label: '🏡 Hogar', count: allBundles.filter(b => packageAreas(b).includes('hogar')).length },
+            { id: 'negocios', label: '💼 Negocios', count: allBundles.filter(b => packageAreas(b).includes('negocios')).length },
+            { id: 'eventos', label: '🎉 Eventos', count: allBundles.filter(b => packageAreas(b).includes('eventos')).length }
           ].map(tab => (
             <button
               key={tab.id}
@@ -260,7 +261,7 @@ export default function PackagesAdminSection({
                         <span className="font-mono font-bold text-[10px] text-gray-500 bg-gray-100 px-1.5 py-0.2 rounded">
                           {p.code}
                         </span>
-                        {p.worlds?.map(w => (
+                        {packageAreas(p).map(w => (
                           <span
                             key={w}
                             className="px-2 py-0.2 rounded-full bg-emerald-50 text-emerald-800 text-[9.5px] font-bold border border-emerald-200 capitalize"

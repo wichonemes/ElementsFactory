@@ -234,11 +234,11 @@ export default function AreaBannersAdminSection({
   onWorldsUpdated = null
 }) {
   // Pestaña principal: 'cards' (Tarjetas de selección) o 'banners' (Banners de portada)
-  const [activeSectionTab, setActiveSectionTab] = useState('cards');
+  const [activeSectionTab, setActiveSectionTab] = useState('banners');
 
   const [worlds, setWorlds] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeAreaId, setActiveAreaId] = useState('publicidad-desarrollo');
+  const [activeAreaId, setActiveAreaId] = useState('hogar');
   const [formData, setFormData] = useState({
     name: '',
     tagline: '',
@@ -620,22 +620,6 @@ export default function AreaBannersAdminSection({
       {/* SELECTOR DE PESTAÑA PRINCIPAL (BANNERS DE PORTADA VS TARJETAS DE SELECCIÓN) */}
       <div className="bg-white p-3 rounded-2xl sm:rounded-3xl border border-[#E8E4DA] shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div className="flex items-center gap-1.5 p-1 bg-[#FAF9F5] border border-[#E8E4DA] rounded-2xl w-full sm:w-auto">
-          <button
-            type="button"
-            onClick={() => setActiveSectionTab('cards')}
-            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-              activeSectionTab === 'cards'
-                ? 'bg-[#2D4F3E] text-white shadow-sm'
-                : 'text-gray-700 hover:bg-gray-200/60'
-            }`}
-          >
-            <Sparkles className="w-4 h-4 text-amber-400" />
-            <span>Tarjetas de Diseño & Industria (8 Tarjetas)</span>
-            <span className="px-1.5 py-0.5 rounded text-[9.5px] bg-amber-400 text-stone-950 font-black">
-              Tu Petición
-            </span>
-          </button>
-
           <button
             type="button"
             onClick={() => setActiveSectionTab('banners')}
@@ -1072,9 +1056,7 @@ export default function AreaBannersAdminSection({
               { id: 'juguetes', label: 'Juguetes & Niños', icon: Gamepad2, desc: 'Articulados y dinámicos' },
               { id: 'personalizados', label: 'Personalizados', icon: Sparkles, desc: 'Dibujos 3D y creaciones' },
               { id: 'eventos', label: 'Eventos Especiales', icon: CalendarHeart, desc: 'Bodas, fiestas y recuerdos' },
-              { id: 'paquetes-servicios', label: 'Paquetes & Kits', icon: Gift, desc: 'Combos promocionales' },
-              { id: 'industria', label: 'Industria Técnica', icon: Wrench, desc: 'Piezas mecánicas y utillaje' },
-              { id: 'publicidad-desarrollo', label: 'Diseño & Publicidad', icon: Palette, desc: 'Branding y diseño web' }
+              { id: 'paquetes-servicios', label: 'Paquetes & Kits', icon: Gift, desc: 'Combos promocionales' }
             ].map(area => {
               const isSelected = activeAreaId === area.id;
               const Icon = area.icon;

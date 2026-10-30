@@ -278,7 +278,7 @@ export default function ProductWorkshopTab({
     const allowed = compatibleUnitsForMaterial(selectedMaterial);
     return UNIT_OPTIONS.filter(option => allowed.includes(option.value));
   }, [selectedMaterial]);
-  const linkedProducts = products.filter(product => product?.id && product.id !== editorForm?.id);
+  const linkedProducts = products.filter(product => product?.id && product.id !== editorForm?.id && !product.isBundle);
   const selectedComponent = linkedProducts.find(product => product.id === selectedComponentId) || null;
 
   const componentResults = useMemo(() => {
@@ -1348,8 +1348,7 @@ export default function ProductWorkshopTab({
                 ['hogar', 'Hogar'],
                 ['negocios', 'Negocios'],
                 ['eventos', 'Eventos'],
-                ['personalizados', 'Personalizados'],
-                ['servicios', 'Servicios']
+                ['personalizados', 'Personalizados']
               ].map(([id, label]) => (
                 <button
                   key={id}

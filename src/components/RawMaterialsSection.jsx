@@ -82,6 +82,7 @@ export const MATERIAL_FAMILIES = [
   { id: 'viniles', label: 'Viniles & Textiles', short: 'Viniles', icon: Shirt, tone: 'indigo' },
   { id: 'laser', label: 'Maderas, Acrílicos & Láser', short: 'Láser', icon: Scissors, tone: 'amber' },
   { id: 'sublimacion', label: 'Sublimación & Cerámica', short: 'Sublimación', icon: Printer, tone: 'rose' },
+  { id: 'impresion', label: 'Impresión & Papelería', short: 'Impresión', icon: Printer, tone: 'cyan' },
   { id: 'ensamble', label: 'Herrajes & Ensamble', short: 'Ensamble', icon: Cog, tone: 'sky' },
   { id: 'empaque', label: 'Empaques & Etiquetas', short: 'Empaque', icon: PackageCheck, tone: 'orange' },
   { id: 'consumibles', label: 'Consumibles & Acabados', short: 'Consumibles', icon: Paintbrush, tone: 'purple' },
@@ -113,25 +114,56 @@ export const MATERIAL_SUPPLY_GROUPS = [
   { id: 'production', label: 'Producción y servicios', icon: Factory, tone: 'rose' }
 ];
 
+// La categoría manda siempre. Solo si viene vacía se usa el texto del nombre.
+const AREA_BY_MATERIAL_CATEGORY = {
+  '3d': '3d',
+  filament: '3d',
+  laser: 'laser',
+  sublimation: 'sublimation',
+  vinyl: 'vinyl',
+  print: 'print',
+  assembly: 'assembly',
+  packaging: 'packaging',
+  spare_parts: 'spare_parts',
+  consumables: 'consumables'
+};
+
+const FAMILY_BY_MATERIAL_CATEGORY = {
+  '3d': 'filamentos',
+  filament: 'filamentos',
+  vinyl: 'viniles',
+  laser: 'laser',
+  sublimation: 'sublimacion',
+  print: 'impresion',
+  assembly: 'ensamble',
+  packaging: 'empaque',
+  consumables: 'consumibles',
+  spare_parts: 'refacciones'
+};
+
 export function materialAreaFor(mat) {
+  const category = String(mat?.category || '').toLowerCase().trim();
+  const direct = AREA_BY_MATERIAL_CATEGORY[category];
+  if (direct) return direct;
+
   const text = normalizeMaterialText(mat);
-  const category = String(mat?.category || '').toLowerCase();
-  if (category === '3d' || /filamento|\bpla\b|\btpu\b|\bpetg\b|\basa\b|\babs\b/.test(text)) return '3d';
-  if (category === 'laser' || /madera|triplay|mdf|acrilico|pino|nogal/.test(text)) return 'laser';
-  if (category === 'sublimation' || /sublimacion|taza|termo|tarro|papel transfer/.test(text)) return 'sublimation';
-  if (category === 'vinyl' || /vinil|puf|textil|transfer/.test(text)) return 'vinyl';
-  if (category === 'print' || /impresion laser|tinta|papel bond|invitacion/.test(text)) return 'print';
-  if (category === 'assembly' || /herraje|tornillo|clavo|iman|argolla|led|broche|switch/.test(text)) return 'assembly';
-  if (category === 'packaging' || /caja|bolsa|empaque|etiqueta|kraft|celofan/.test(text)) return 'packaging';
-  if (category === 'spare_parts' || /boquilla|nozzle|hotend|refaccion|repuesto|correa/.test(text)) return 'spare_parts';
-  if (category === 'consumables' || /barniz|tinte|pintura|pegamento|lija|cinta|guante|estopa|limpieza/.test(text)) return 'consumables';
+  // "asa" (de una taza) no debe confundirse con el filamento ASA: se exige contexto de filamento.
+  if (/\bfilamento\b|\bbobina\b|\bpla\b|\btpu\b|\bpetg\b|\babs\b|filamento.*\basa\b|\basa\b.*filamento/.test(text)) return '3d';
+  if (/madera|triplay|mdf|acrilico|pino|nogal/.test(text)) return 'laser';
+  if (/\bsublimacion\b|\btazas?\b|\btermos?\b|\btarros?\b|papel transfer|sublimable/.test(text)) return 'sublimation';
+  if (/\bvinil\b|\bpuf\b|textil|\bhtv\b|\bdtf\b|transfer/.test(text)) return 'vinyl';
+  if (/impresion laser|\btoner\b|\btinta\b|papel bond|invitacion|papel couche|\bcartulina\b|sulfatada|opalina|\bfoil\b/.test(text)) return 'print';
+  if (/herraje|tornillo|clavo|iman|argolla|led|broche|switch/.test(text)) return 'assembly';
+  if (/caja|bolsa|empaque|etiqueta|kraft|celofan/.test(text)) return 'packaging';
+  if (/boquilla|nozzle|hotend|refaccion|repuesto|correa/.test(text)) return 'spare_parts';
+  if (/barniz|tinte|pintura|pegamento|lija|cinta|guante|estopa|limpieza/.test(text)) return 'consumables';
   return 'other';
 }
 
 export function materialSupplyGroupFor(mat) {
   const text = normalizeMaterialText(mat);
   const category = String(mat?.category || '').toLowerCase();
-  if (/papel.*sublim|hoja.*sublim|tinta.*sublim|cinta.*sublim|cinta.*termica|kapton/.test(text)) return 'indirect';
+  if (/papel.*sublim|hoja.*sublim|tinta.*sublim|cinta.*sublim|cinta.*termica|kapton|toner|papel couche|cartulina|sulfatada|opalina|papel bond|foil/.test(text)) return 'indirect';
   if (/caja|bolsa|empaque|etiqueta|kraft|celofan|viruta/.test(text)) return 'packaging';
   if (/barniz|tinte|pintura|sellador|laca|esmalte|acabado/.test(text)) return 'finish';
   if (/diseno|licencia|archivo|modelo digital|arte digital|render/.test(text)) return 'intangible';
@@ -171,16 +203,20 @@ function normalizeMaterialText(mat) {
 }
 
 export function materialFamilyFor(mat) {
+  const category = String(mat?.category || '').toLowerCase().trim();
+  const direct = FAMILY_BY_MATERIAL_CATEGORY[category];
+  if (direct) return direct;
+
   const text = normalizeMaterialText(mat);
-  const category = String(mat?.category || '').toLowerCase();
-  if (category === '3d' || /filamento|\bpla\b|\btpu\b|\bpetg\b|\babs\b|\basa\b|bobina/.test(text)) return 'filamentos';
-  if (category === 'vinyl' || /vinil|vinil textil|puf|fosforescente|fluorescente|transfer textil/.test(text)) return 'viniles';
-  if (category === 'laser' || /madera|triplay|mdf|acrilico|pino|nogal|liston|tabla/.test(text)) return 'laser';
-  if (category === 'sublimation' || /sublimacion|taza|termo|tarro|papel transfer|tinta sublimacion/.test(text)) return 'sublimacion';
-  if (category === 'assembly' || /iman|argolla|tornillo|clavo|tuerca|herraje|broche|cierre|led|interruptor|switch|mosqueton|remache/.test(text)) return 'ensamble';
-  if (category === 'packaging' || /caja|bolsa|empaque|etiqueta|celofan|kraft|viruta|burbuja/.test(text)) return 'empaque';
-  if (category === 'consumables' || /barniz|tinte|pintura|sellador|laca|pegamento|resistol|cianocrilato|lija|cinta|guante|estopa|limpieza|alcohol/.test(text)) return 'consumibles';
-  if (category === 'spare_parts' || /boquilla|nozzle|hotend|resistencia|termistor|correa|engranaje|refaccion|repuesto/.test(text)) return 'refacciones';
+  if (/\bfilamento\b|\bbobina\b|\bpla\b|\btpu\b|\bpetg\b|\babs\b|filamento.*\basa\b|\basa\b.*filamento/.test(text)) return 'filamentos';
+  if (/\bvinil\b|\bpuf\b|textil|\bhtv\b|\bdtf\b|fosforescente|fluorescente|transfer textil/.test(text)) return 'viniles';
+  if (/madera|triplay|mdf|acrilico|pino|nogal|liston|tabla/.test(text)) return 'laser';
+  if (/\bsublimacion\b|\btazas?\b|\btermos?\b|\btarros?\b|papel transfer|tinta sublimacion|sublimable/.test(text)) return 'sublimacion';
+  if (/\btoner\b|papel couche|sulfatada|opalina|papel bond|\bfoil\b|papeleria/.test(text)) return 'impresion';
+  if (/iman|argolla|tornillo|clavo|tuerca|herraje|broche|cierre|led|interruptor|switch|mosqueton|remache/.test(text)) return 'ensamble';
+  if (/caja|bolsa|empaque|etiqueta|celofan|kraft|viruta|burbuja/.test(text)) return 'empaque';
+  if (/barniz|tinte|pintura|sellador|laca|pegamento|resistol|cianocrilato|lija|cinta|guante|estopa|limpieza|alcohol/.test(text)) return 'consumibles';
+  if (/boquilla|nozzle|hotend|resistencia|termistor|correa|engranaje|refaccion|repuesto/.test(text)) return 'refacciones';
   return 'otros';
 }
 
@@ -211,6 +247,12 @@ export function materialSubfamilyFor(mat, familyId) {
     if (/papel|tinta|transfer/.test(text)) return { id: 'papel', label: 'Papel & Tintas', icon: '🎨' };
     if (/placa|rigido|fotoboton/.test(text)) return { id: 'rigidos', label: 'Rígidos', icon: '🖼️' };
     return { id: 'otros-sub', label: 'Otros sublimación', icon: '🎨' };
+  }
+  if (familyId === 'impresion') {
+    if (/toner|tinta/.test(text)) return { id: 'toner', label: 'Tóners & Tintas', icon: '🖨️' };
+    if (/papel|couche|sulfatada|opalina|cartulina|bond/.test(text)) return { id: 'papel', label: 'Papeles & Cartulinas', icon: '📄' };
+    if (/foil|metalizado|laminado/.test(text)) return { id: 'foil', label: 'Foil & Acabados', icon: '✨' };
+    return { id: 'otros-impresion', label: 'Otros impresión', icon: '🖨️' };
   }
   if (familyId === 'ensamble') {
     if (/iman|magnet/.test(text)) return { id: 'imanes', label: 'Imanes', icon: '🧲' };

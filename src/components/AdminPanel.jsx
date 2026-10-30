@@ -4007,9 +4007,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       juguetes: getStats('juguetes'),
       personalizados: getStats('personalizados'),
       eventos: getStats('eventos'),
-      paquetes: getStats('paquetes'),
-      industria: getStats('industria'),
-      'publicidad-desarrollo': getStats('publicidad-desarrollo')
+      paquetes: getStats('paquetes')
     };
   }, [products]);
 
@@ -5440,7 +5438,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           Áreas del Catálogo
                         </h4>
                         <span className="text-[10px] font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
-                          8 áreas oficiales
+                          4 áreas oficiales
                         </span>
                       </div>
                       <span className="text-[11px] text-gray-500 font-medium">
@@ -5457,9 +5455,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         { id: 'juguetes', label: 'Juguetes', icon: '🧸', stats: stockAreaStats.juguetes },
                         { id: 'personalizados', label: 'Personalizados', icon: '✨', stats: stockAreaStats.personalizados },
                         { id: 'eventos', label: 'Eventos', icon: '🎉', stats: stockAreaStats.eventos },
-                        { id: 'paquetes', label: 'Paquetes', icon: '🎁', stats: stockAreaStats.paquetes },
-                        { id: 'industria', label: 'Industria', icon: '⚙️', stats: stockAreaStats.industria },
-                        { id: 'publicidad-desarrollo', label: 'Publicidad', icon: '🎨', stats: stockAreaStats['publicidad-desarrollo'] }
+                        { id: 'paquetes', label: 'Paquetes', icon: '🎁', stats: stockAreaStats.paquetes }
                       ].map(area => {
                         const isSelected = filterWorld === area.id;
                         const stats = area.stats || { total: 0, inStock: 0, madeToOrder: 0 };
@@ -6929,9 +6925,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             { id: 'juguetes', label: 'Juguetes', icon: '🧸' },
                             { id: 'personalizados', label: 'Personalizados', icon: '✨' },
                             { id: 'eventos', label: 'Eventos', icon: '🎉' },
-                            { id: 'paquetes', label: 'Paquetes', icon: '🎁' },
-                            { id: 'industria', label: 'Industria', icon: '⚙️' },
-                            { id: 'publicidad-desarrollo', label: 'Diseño & Pub.', icon: '🎨' }
+                            { id: 'paquetes', label: 'Paquetes', icon: '🎁' }
                           ].map(area => (
                             <button
                               key={area.id}
@@ -7318,9 +7312,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           { id: 'juguetes', label: 'Juguetes', icon: '🧸' },
                           { id: 'personalizados', label: 'Personalizados', icon: '✨' },
                           { id: 'eventos', label: 'Eventos', icon: '🎉' },
-                          { id: 'paquetes', label: 'Paquetes', icon: '🎁' },
-                          { id: 'industria', label: 'Industria', icon: '⚙️' },
-                          { id: 'publicidad-desarrollo', label: 'Diseño & Publicidad', icon: '🎨' }
+                          { id: 'paquetes', label: 'Paquetes', icon: '🎁' }
                         ].map(area => (
                           <button
                             key={area.id}
@@ -8818,8 +8810,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                 const checked = e.target.checked;
                                 const worlds = editorForm.worlds || [];
                                 const newWorlds = checked
-                                  ? (worlds.includes('paquetes') ? worlds : [...worlds, 'paquetes'])
-                                  : worlds;
+                                  ? ['paquetes']
+                                  : (worlds.filter(w => w !== 'paquetes').length > 0
+                                    ? worlds.filter(w => w !== 'paquetes')
+                                    : ['hogar']);
                                 setEditorForm({
                                   ...editorForm,
                                   isBundle: checked,
@@ -8843,7 +8837,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           <span>Áreas del Catálogo donde se exhibirá *</span>
                         </label>
                         <span className="text-[10.5px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.2 rounded-full">
-                          {(editorForm.worlds?.length || 0)} de 8 áreas activadas
+                          {(editorForm.worlds?.length || 0)} de 4 áreas activadas
                         </span>
                       </div>
 
@@ -8854,9 +8848,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           { id: 'juguetes', label: 'Juguetes', icon: '🧸' },
                           { id: 'personalizados', label: 'Personalizados', icon: '✨' },
                           { id: 'eventos', label: 'Eventos', icon: '🎉' },
-                          { id: 'paquetes', label: 'Paquetes', icon: '🎁' },
-                          { id: 'industria', label: 'Industria', icon: '⚙️' },
-                          { id: 'publicidad-desarrollo', label: 'Diseño & Pub.', icon: '🎨' }
+                          { id: 'paquetes', label: 'Paquetes', icon: '🎁' }
                         ].map(w => {
                           const isChecked = editorForm.worlds?.includes(w.id);
                           return (
@@ -8865,11 +8857,13 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               type="button"
                               onClick={() => {
                                 const curr = editorForm.worlds || [];
-                                const updated = isChecked ? curr.filter(x => x !== w.id) : [...curr, w.id];
+                                const updated = isChecked
+                                  ? curr.filter(x => x !== w.id)
+                                  : (w.id === 'paquetes' ? ['paquetes'] : [...curr.filter(x => x !== 'paquetes'), w.id]);
                                 setEditorForm({
                                   ...editorForm,
                                   worlds: updated,
-                                  isBundle: updated.includes('paquetes') ? true : editorForm.isBundle
+                                  isBundle: updated.includes('paquetes')
                                 });
                               }}
                               className={`p-2 rounded-xl border transition-all cursor-pointer flex items-center justify-between text-left ${

@@ -93,16 +93,6 @@ export default function MobileCategoriesModal({
       textClass: 'text-[#2D4F3E]'
     },
     {
-      id: 'servicios',
-      name: 'Servicios\nTaller & Diseño',
-      icon: Layers,
-      accentColor: '#D4A359',
-      borderClass: 'border-l-[#D4A359]',
-      textClass: 'text-amber-900',
-      tagText: 'Diseño & Taller',
-      tagClass: 'bg-amber-100 text-amber-900 border border-amber-300'
-    },
-    {
       id: 'tecnicas',
       name: 'Técnicas de\nTaller',
       icon: Wrench,
@@ -149,17 +139,6 @@ export default function MobileCategoriesModal({
       { id: 'personalizados-amigos', name: 'Set Dúo Amigos', icon: Sparkles, catId: 'personalizados-amigos', iconBg: 'bg-pink-50 text-pink-600 border border-pink-200 shadow-pink-50' },
       { id: 'personalizados-familia', name: 'Pack Familiar 3D', icon: Users, catId: 'personalizados-familia', iconBg: 'bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-indigo-50' }
     ],
-    servicios: [
-      // Fusión Oficial: Diseño y Publicidad + Industria y Manufactura
-      { id: 'pub-branding', name: 'Branding & Logos', icon: Palette, serviceTab: 'diseno', iconBg: 'bg-amber-50 text-amber-600 border border-amber-300 shadow-amber-100' },
-      { id: 'pub-lonas', name: 'Lonas & Gran Formato', icon: Printer, serviceTab: 'diseno', iconBg: 'bg-rose-50 text-rose-600 border border-rose-300 shadow-rose-100' },
-      { id: 'pub-web', name: 'Sitios Web & Tiendas', icon: Globe, serviceTab: 'diseno', iconBg: 'bg-emerald-50 text-emerald-600 border border-emerald-300 shadow-emerald-100' },
-      { id: 'pub-editorial', name: 'Catálogos & Contenido', icon: FileText, serviceTab: 'diseno', iconBg: 'bg-purple-50 text-purple-600 border border-purple-300 shadow-purple-100' },
-      { id: 'ind-prototipos', name: 'Prototipos 3D Técnicos', icon: Box, serviceTab: 'industria', iconBg: 'bg-sky-50 text-[#0284C7] border border-[#5BB8FF] shadow-sky-100' },
-      { id: 'ind-jigs', name: 'Utillaje & Jigs', icon: Wrench, serviceTab: 'industria', iconBg: 'bg-emerald-50 text-[#245C33] border border-[#8FB99B] shadow-emerald-100' },
-      { id: 'ind-refacciones', name: 'Refacciones Técnicas', icon: Cog, serviceTab: 'industria', iconBg: 'bg-amber-50 text-amber-700 border border-amber-300 shadow-amber-100' },
-      { id: 'ind-lotes', name: 'Lotes Cortos B2B', icon: Printer, serviceTab: 'industria', iconBg: 'bg-purple-50 text-purple-700 border border-purple-300 shadow-purple-100' }
-    ],
     tecnicas: [
       { id: 'tech-3d', name: 'Impresión 3D (PLA/TPU)', icon: Printer, techniqueId: '3d', iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-emerald-50' },
       { id: 'tech-laser', name: 'Corte y Grabado Láser', icon: Flame, techniqueId: 'laser', iconBg: 'bg-orange-50 text-orange-700 border border-orange-200 shadow-orange-50' },
@@ -177,8 +156,6 @@ export default function MobileCategoriesModal({
       if (onSelectWorld) onSelectWorld('all');
     } else if (item.isBundle) {
       if (onSelectWorld) onSelectWorld(item.worldId || activeAreaTab);
-    } else if (activeAreaTab === 'servicios' || item.serviceTab) {
-      if (onSelectWorld) onSelectWorld('servicios', item.serviceTab || 'diseno');
     } else {
       if (onSelectWorld) onSelectWorld(activeAreaTab, null, item.catId || 'all');
       if (onSelectCategory && item.catId) onSelectCategory(item.catId);

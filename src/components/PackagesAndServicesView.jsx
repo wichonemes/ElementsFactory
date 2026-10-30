@@ -12,6 +12,7 @@ import SeasonalAtmosphere from './SeasonalAtmosphere';
 import MonthlyEventBanner from './MonthlyEventBanner';
 import { formatServiceDate } from '../utils/serviceStatus';
 import { getOptimizedSrcSet, PRODUCT_CARD_SIZES } from '../utils/imageOptimization';
+import { packageAreas } from '../utils/packageAreas';
 
 /**
  * Generador de las 3 opciones de nivel para cada paquete de taller:
@@ -1031,17 +1032,17 @@ export default function PackagesAndServicesView({
   }, [products, packagesSeed, searchQuery]);
 
   const hogarBundles = useMemo(() => {
-    const list = filterBySearch(products.filter(p => p.isBundle && p.worlds?.includes('hogar')));
+    const list = filterBySearch(products.filter(p => p.isBundle && packageAreas(p).includes('hogar')));
     return shuffleArray(list, 202);
   }, [products, packagesSeed, searchQuery]);
 
   const negociosBundles = useMemo(() => {
-    const list = filterBySearch(products.filter(p => p.isBundle && p.worlds?.includes('negocios') && !p.code?.includes('EV')));
+    const list = filterBySearch(products.filter(p => p.isBundle && packageAreas(p).includes('negocios') && !p.code?.includes('EV')));
     return shuffleArray(list, 303);
   }, [products, packagesSeed, searchQuery]);
 
   const eventosBundles = useMemo(() => {
-    const list = filterBySearch(products.filter(p => p.isBundle && p.worlds?.includes('eventos')));
+    const list = filterBySearch(products.filter(p => p.isBundle && packageAreas(p).includes('eventos')));
     return shuffleArray(list, 404);
   }, [products, packagesSeed, searchQuery]);
 
@@ -1180,9 +1181,10 @@ export default function PackagesAndServicesView({
       };
     }
 
+    const areas = packageAreas(promo);
     const area = explicitArea || (
-      promo.worlds?.includes('negocios') && !promo.code?.includes('EV') ? 'negocios' :
-      promo.worlds?.includes('eventos') || promo.code?.includes('EV') ? 'eventos' :
+      areas.includes('negocios') && !promo.code?.includes('EV') ? 'negocios' :
+      areas.includes('eventos') || promo.code?.includes('EV') ? 'eventos' :
       'hogar'
     );
 
