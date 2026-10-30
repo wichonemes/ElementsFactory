@@ -3,6 +3,11 @@
   "buildCommand": "npm install && npx vite build",
   "outputDirectory": "dist",
   "cleanUrls": true,
+  "functions": {
+    "api/router.js": {
+      "maxDuration": 60
+    }
+  },
   "rewrites": [
     {
       "source": "/api/(.*)",

@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect, useRef } from 'react';
+import { prepareImageForUpload } from '../utils/imageUpload';
 import {
   X, Camera, Upload, Sparkles, RefreshCw, CheckCircle2,
   AlertTriangle, RotateCcw, Info, ZoomIn, Eye, Sliders, Check
@@ -218,24 +219,30 @@ export default function ProductPhotoStudioModal({
     setGenerationStep('Iniciando toma 2: Fondo blanco puro (#FFFFFF) centrado...');
 
     try {
+      // Las fotos del celular pesan varios MB y el servidor acepta ~4 MB por petición: se comprimen antes de subir
+      const compress = async (ref) => (ref.file ? await prepareImageForUpload(ref.file) : null);
+      const [frontFile, topFile, sideFile, detailFile] = await Promise.all([
+        compress(refFront), compress(refTop), compress(refSide), compress(refDetail)
+      ]);
+
       const formData = new FormData();
       
       // Foto frontal / principal
-      if (refFront.file) {
-        formData.append('referenceFront', refFront.file);
-        formData.append('referenceImage', refFront.file);
+      if (frontFile) {
+        formData.append('referenceFront', frontFile);
+        formData.append('referenceImage', frontFile);
       } else if (refFront.preview) {
         formData.append('referenceImageUrl', refFront.preview);
       }
 
       // Fotos opcionales de ángulo
-      if (refTop.file) formData.append('referenceTop', refTop.file);
+      if (topFile) formData.append('referenceTop', topFile);
       else if (refTop.preview) formData.append('referenceTopUrl', refTop.preview);
 
-      if (refSide.file) formData.append('referenceSide', refSide.file);
+      if (sideFile) formData.append('referenceSide', sideFile);
       else if (refSide.preview) formData.append('referenceSideUrl', refSide.preview);
 
-      if (refDetail.file) formData.append('referenceDetail', refDetail.file);
+      if (detailFile) formData.append('referenceDetail', detailFile);
       else if (refDetail.preview) formData.append('referenceDetailUrl', refDetail.preview);
 
       formData.append('sku', selectedProduct?.sku || selectedProduct?.code || draftSku || 'PROD-001');
@@ -281,7 +288,11 @@ export default function ProductPhotoStudioModal({
       setGeneratedGallery(data.gallery);
       setHasUnsavedChanges(true);
       setStaleSlots({ 0: false, 2: false, 3: false });
-      showToast('¡4 tomas generadas exitosamente! Revisa cada una antes de aplicar.', 'success');
+      if (data.warnings?.length) {
+        showToast(data.warnings.join(' '), 'warning');
+      } else {
+        showToast('¡4 tomas generadas con IA! Revisa cada una antes de aplicar.', 'success');
+      }
     } catch (err) {
       console.error('Error al generar fotos:', err);
       showToast(`Error al procesar: ${err.message}`, 'error');

@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { cloudDb } from './cloud-db.js';
 import { storeImage } from './cloud-files.js';
+import { aiPhotoEnabled, generateAiWhiteStudio, generateAiContextImage } from './ai-photo.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -384,8 +385,21 @@ export async function processCatalogStudioPackage({
   const sideBuffer = referenceImages.side || null;
   const customDetailBuffer = referenceImages.detail || null;
 
+  const warnings = [];
+  const engine = { white: 'sharp', context: 'sharp' };
+  const useAi = aiPhotoEnabled();
+
   // 1. Imagen 2: Fondo Blanco Puro (#FFFFFF) - Se genera primero como referencia madre obligatoria
-  const whiteBuffer = await generateWhiteBackgroundImage(frontBuffer);
+  let whiteBuffer = null;
+  if (useAi) {
+    try {
+      whiteBuffer = await generateAiWhiteStudio(frontBuffer, productName || sku);
+      engine.white = 'gemini';
+    } catch (err) {
+      warnings.push(`Fondo blanco con IA no disponible (${err.message}). Se usó el procesado básico.`);
+    }
+  }
+  if (!whiteBuffer) whiteBuffer = await generateWhiteBackgroundImage(frontBuffer);
   const whiteFilename = `${cleanSku}-white-v${timestamp}.webp`;
   const whiteUrl = await persistProcessedImage(whiteBuffer, whiteFilename);
 
@@ -410,11 +424,22 @@ export async function processCatalogStudioPackage({
   const detailFilename = `${cleanSku}-detail-v${timestamp}.webp`;
   const detailUrl = await persistProcessedImage(detailBuffer, detailFilename);
 
-  // 3. Imagen 1: En Contexto
-  const contextBuffer = await generateContextImage(whiteBuffer, {
-    name: productName,
-    specifications
-  });
+  // 3. Imagen 1: En Contexto (IA sobre el fondo blanco limpio; si falla, escena básica)
+  let contextBuffer = null;
+  if (engine.white === 'gemini') {
+    try {
+      contextBuffer = await generateAiContextImage(whiteBuffer, productName || sku);
+      engine.context = 'gemini';
+    } catch (err) {
+      warnings.push(`Escena en contexto con IA no disponible (${err.message}). Se usó la escena básica.`);
+    }
+  }
+  if (!contextBuffer) {
+    contextBuffer = await generateContextImage(whiteBuffer, {
+      name: productName,
+      specifications
+    });
+  }
   const contextFilename = `${cleanSku}-context-v${timestamp}.webp`;
   const contextUrl = await persistProcessedImage(contextBuffer, contextFilename);
 
@@ -440,6 +465,8 @@ export async function processCatalogStudioPackage({
     productName,
     timestamp,
     referenceAngles: savedReferenceAngles,
+    engine,
+    warnings,
     gallery: [
       contextUrl,    // Slot 0: En Contexto
       whiteUrl,      // Slot 1: Fondo Blanco Puro
@@ -597,12 +624,14 @@ export async function regenerateSingleSlot({
  * Reporte de configuración de IA y Motores para transparencia del sistema
  */
 export function getAiStudioConfig() {
-  const hasGeminiKey = Boolean(process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY.length > 10);
+  const hasGeminiKey = aiPhotoEnabled();
   return {
-    engine: 'sharp-native',
-    engineName: 'Motor de Estudio Nativo (Sharp v0.35.5)',
-    status: 'active',
-    costPerImage: '$0.00 MXN (100% Gratuito e Ilimitado)',
+    engine: hasGeminiKey ? 'gemini' : 'sharp-native',
+    engineName: hasGeminiKey
+      ? 'IA Gemini (Nano Banana) para fondo blanco y escena + Sharp para detalle y medidas'
+      : 'Motor básico sin IA (Sharp). Configura GEMINI_API_KEY para generar con IA',
+    status: hasGeminiKey ? 'active' : 'limited',
+    costPerImage: hasGeminiKey ? 'Pago por imagen generada (Google AI)' : '$0.00 MXN',
     storageTarget: cloudDb.enabled ? 'Supabase Storage (Persistente Render)' : 'Disco Local (public/uploads/)',
     features: [
       'Normalización y centrado a 1000 × 1000 píxeles WebP optimizado',
