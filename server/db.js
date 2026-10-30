@@ -16738,7 +16738,19 @@ class Database {
       productId: data.productId || 'personalizado',
       productName: data.productName?.trim() || 'Proyecto a la medida',
       quantity: Math.max(1, Number(data.quantity) || 1),
+      unitPrice: Math.max(0, Number(data.unitPrice) || (Number(data.amount) > 0 && Number(data.quantity) > 0
+        ? Math.round((Number(data.amount) / Math.max(1, Number(data.quantity))) * 100) / 100
+        : 0)),
       amount: Math.max(0, Number(data.amount) || 0),
+      deliveryDate: data.deliveryDate || null,
+      deliveryStatus: data.deliveryStatus === 'entregado' ? 'entregado' : 'pendiente',
+      deliveredAt: data.deliveredAt || null,
+      advancePaid: Boolean(data.advancePaid),
+      advanceReceived: Math.max(0, Number(data.advanceReceived) || 0),
+      amountPaid: Math.max(0, Number(data.amountPaid) || 0),
+      advanceAt: data.advanceAt || null,
+      paidAt: data.paidAt || null,
+      materialsDeducted: false,
       status: data.status || 'consulta', // 'consulta' | 'cotizado' | 'confirmado' | 'pagado' | 'cancelado'
       costBreakdown: {
         materialsCost,
@@ -16837,9 +16849,15 @@ class Database {
       };
     }
 
+    const {
+      revertStock: _revertStock,
+      consumeStock: _consumeStock,
+      ...payload
+    } = data;
+
     db.orders[idx] = {
       ...current,
-      ...data,
+      ...payload,
       id: current.id,
       customerCode,
       isRecurringCustomer,
@@ -16848,6 +16866,18 @@ class Database {
       hasCosts: Boolean(hasCosts),
       amount: data.amount !== undefined ? Math.max(0, Number(data.amount) || 0) : current.amount,
       quantity: data.quantity !== undefined ? Math.max(1, Number(data.quantity) || 1) : current.quantity,
+      unitPrice: data.unitPrice !== undefined
+        ? Math.max(0, Math.round((Number(data.unitPrice) || 0) * 100) / 100)
+        : (Number(current.unitPrice) || 0),
+      advanceReceived: data.advanceReceived !== undefined
+        ? Math.max(0, Math.round((Number(data.advanceReceived) || 0) * 100) / 100)
+        : (Number(current.advanceReceived) || 0),
+      amountPaid: data.amountPaid !== undefined
+        ? Math.max(0, Math.round((Number(data.amountPaid) || 0) * 100) / 100)
+        : (Number(current.amountPaid) || 0),
+      deliveryStatus: data.deliveryStatus !== undefined
+        ? (data.deliveryStatus === 'entregado' ? 'entregado' : 'pendiente')
+        : (current.deliveryStatus || 'pendiente'),
       couponCode: data.couponCode !== undefined ? (data.couponCode ? data.couponCode.trim().toUpperCase() : null) : (current.couponCode || null),
       couponCategory: data.couponCategory !== undefined ? data.couponCategory : (current.couponCategory || null),
       couponDiscount: data.couponDiscount !== undefined ? Math.max(0, Number(data.couponDiscount) || 0) : (current.couponDiscount || 0),
@@ -17443,9 +17473,9 @@ class Database {
     db.rawMaterials = db.rawMaterials || [];
     db.productionLogs = db.productionLogs || [];
 
-    const orderLogs = db.productionLogs.filter(l => l.orderId === orderId && l.action === 'deduct');
+    const orderLogs = db.productionLogs.filter(l => l.orderId === orderId && l.action === 'deduct' && !l.revertedAt);
     if (orderLogs.length === 0) {
-      return { success: false, message: 'No hay consumos registrados para revertir en este pedido.' };
+      return { success: false, message: 'No hay consumos pendientes de revertir en este pedido.' };
     }
 
     const restoredItems = [];
@@ -17465,6 +17495,7 @@ class Database {
           newStock: restoredStock
         });
       }
+      log.revertedAt = now;
     }
 
     db.productionLogs.push({
