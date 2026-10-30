@@ -39,12 +39,12 @@ export function detectQuoteArea(product = {}) {
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase();
 
-  if (/3d|filamento|fdm|resina|figura|fidget/.test(text)) return 'Impresion 3D';
-  if (/laser|mdf|madera|acrilico|grabado/.test(text)) return 'Corte y grabado laser';
-  if (/sublim|taza|termo|ceramica|playera|textil/.test(text)) return 'Sublimacion';
+  if (/3d|filamento|fdm|resina|figura|fidget/.test(text)) return 'Impresión 3D';
+  if (/laser|mdf|madera|acrilico|grabado/.test(text)) return 'Corte y grabado láser';
+  if (/sublim|taza|termo|ceramica|playera|textil/.test(text)) return 'Sublimación';
   if (/vinil|vinyl|sticker|rotulaci|transfer/.test(text)) return 'Corte de vinil';
-  if (/diseno|branding|identidad|logo|publicidad/.test(text)) return 'Diseno grafico';
-  if (/impresi|tinta|papel|invitaci|offset/.test(text)) return 'Impresion';
+  if (/diseno|branding|identidad|logo|publicidad/.test(text)) return 'Diseño gráfico';
+  if (/impresi|tinta|papel|invitaci|offset/.test(text)) return 'Impresión';
   return 'Taller artesanal';
 }
 
@@ -63,11 +63,7 @@ function addDays(date, days) {
 }
 
 function safeText(value, fallback = 'Por confirmar') {
-  const text = String(value || '')
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^\x20-\x7E\n]/g, '')
-    .trim();
+  const text = String(value || '').trim();
   return text || fallback;
 }
 
@@ -97,7 +93,7 @@ function drawPageHeader(doc, { settings, folio, date }) {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(9.5);
   doc.setTextColor(255, 255, 255);
-  doc.text('COTIZACION', 196, 10.5, { align: 'right' });
+  doc.text('COTIZACIÓN', 196, 10.5, { align: 'right' });
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(6.8);
   doc.text(`Folio ${folio}`, 196, 15.2, { align: 'right' });
@@ -119,9 +115,9 @@ function drawFooter(doc, page, pages, settings) {
   doc.setFontSize(6.4);
   doc.setTextColor(...BRAND.muted);
   doc.text(contact, 14, 290.5);
-  doc.text(`Pagina ${page} de ${pages}`, 196, 290.5, { align: 'right' });
+  doc.text(`Página ${page} de ${pages}`, 196, 290.5, { align: 'right' });
   doc.setFontSize(5.8);
-  doc.text('Documento generado automaticamente desde el carrito. No es comprobante fiscal.', 14, 294);
+  doc.text('Documento generado automáticamente desde el carrito. No es comprobante fiscal.', 14, 294);
 }
 
 export async function downloadQuotePdf({
@@ -147,8 +143,8 @@ export async function downloadQuotePdf({
 
   const doc = new jsPDF({ unit: 'mm', format: 'a4', compress: true });
   doc.setProperties({
-    title: `Cotizacion ${folio} - ${safeText(settings?.businessName, 'Artesano Digital')}`,
-    subject: 'Cotizacion de productos y servicios personalizados',
+    title: `Cotización ${folio} - ${safeText(settings?.businessName, 'Artesano Digital')}`,
+    subject: 'Cotización de productos y servicios personalizados',
     author: safeText(settings?.businessName, 'Artesano Digital'),
     creator: 'Artesano Digital'
   });
@@ -162,7 +158,7 @@ export async function downloadQuotePdf({
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(6.2);
   doc.setTextColor(...BRAND.muted);
-  doc.text('CLIENTE / RAZON SOCIAL', 18, y + 5);
+  doc.text('CLIENTE / RAZÓN SOCIAL', 18, y + 5);
   doc.text('CONTACTO', 106, y + 5);
   doc.text('ENTREGA', 18, y + 16);
   doc.text('PROYECTO / NOTAS', 106, y + 16);
@@ -174,7 +170,7 @@ export async function downloadQuotePdf({
   const contact = [customer.phone, customer.email].filter(Boolean).join(' · ');
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7.2);
-  doc.text(doc.splitTextToSize(safeText(contact, 'Telefono / correo por confirmar'), 82), 106, y + 10);
+  doc.text(doc.splitTextToSize(safeText(contact, 'Teléfono / correo por confirmar'), 82), 106, y + 10);
   doc.text(doc.splitTextToSize(safeText(customer.city, 'Ciudad / C.P. por confirmar'), 82), 18, y + 21);
   doc.text(
     doc.splitTextToSize(safeText(customer.notes || notes, 'Sin notas adicionales'), 82),
@@ -196,9 +192,9 @@ export async function downloadQuotePdf({
       ? Object.entries(item.selectedVariants).map(([key, value]) => `${key}: ${value}`).join(' · ')
       : '';
     const details = [
-      product.code ? `Codigo ${product.code}` : '',
-      variantText ? `Opciones: ${safeText(variantText, '')}` : '',
-      item.customText ? `Personalizacion: ${safeText(item.customText, '')}` : ''
+      product.code ? `Código ${product.code}` : '',
+      variantText ? `Opciones: ${variantText}` : '',
+      item.customText ? `Personalización: ${item.customText}` : ''
     ].filter(Boolean).join('\n');
 
     return [
@@ -213,7 +209,7 @@ export async function downloadQuotePdf({
 
   autoTable(doc, {
     startY: 67,
-    head: [['#', 'Producto / servicio', 'Area', 'Cant.', 'P. unit.', 'Importe']],
+    head: [['#', 'Producto / servicio', 'Área', 'Cant.', 'P. unit.', 'Importe']],
     body: rows,
     theme: 'grid',
     margin: { top: 30, left: 14, right: 14, bottom: 18 },
@@ -305,14 +301,14 @@ export async function downloadQuotePdf({
   doc.setFontSize(6.9);
   doc.setTextColor(...BRAND.muted);
   const terms = [
-    'Anticipo del 50% para iniciar produccion. Saldo al entregar.',
-    'Vigencia de la cotizacion: 15 dias naturales.',
-    'Envio no incluido; se cotiza segun destino y paqueteria.',
-    'Los tiempos de produccion inician al confirmar diseno y anticipo.',
-    pendingItems > 0 ? `${pendingItems} partida(s) marcadas "Por cotizar" se confirmaran por separado.` : '',
+    'Anticipo del 50% para iniciar producción. Saldo al entregar.',
+    'Vigencia de la cotización: 15 días naturales.',
+    'Envío no incluido; se cotiza según destino y paquetería.',
+    'Los tiempos de producción inician al confirmar diseño y anticipo.',
+    pendingItems > 0 ? `${pendingItems} partida(s) marcadas "Por cotizar" se confirmarán por separado.` : '',
     safeText(settings?.quoteNoteDefault, '')
   ].filter(Boolean);
-  doc.text(doc.splitTextToSize(safeText(terms.join(' '), ''), 94), 14, cursorY + 10);
+  doc.text(doc.splitTextToSize(terms.join(' '), 94), 14, cursorY + 10);
 
   doc.setFontSize(6.2);
   doc.setTextColor(...BRAND.muted);
