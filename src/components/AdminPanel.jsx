@@ -93,8 +93,8 @@ export function buildEditorChecklist(form) {
     total: checks.length,
     percent: Math.round((completed / checks.length) * 100),
     stepStatus: {
-      general: checks.filter(check => check.step === 'general').every(check => check.ok),
-      taller: checks.filter(check => check.step === 'taller').every(check => check.ok),
+      general: checks.filter(check => check.step === 'general' && check.blocker).every(check => check.ok),
+      taller: checks.filter(check => check.step === 'taller' && check.blocker).every(check => check.ok),
       packaging: checks.find(check => check.step === 'packaging')?.ok || false,
       pricing: checks.find(check => check.step === 'pricing')?.ok || false,
       repo: checks.find(check => check.step === 'repo')?.ok || false
