@@ -15896,8 +15896,8 @@ class Database {
     const newItem = {
       id: item.id || `cat-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
       name: item.name || 'Nuevo Catálogo',
-      season: item.season || 'Temporada',
-      badge: item.badge || 'Novedad',
+      season: item.season || '',
+      badge: item.badge || '',
       description: item.description || '',
       fileName: item.fileName || 'catalogo.pdf',
       fileUrl: item.fileUrl || '/downloads/catalogo.pdf',
@@ -16748,6 +16748,8 @@ class Database {
       advancePaid: Boolean(data.advancePaid),
       advanceReceived: Math.max(0, Number(data.advanceReceived) || 0),
       amountPaid: Math.max(0, Number(data.amountPaid) || 0),
+      terminalSurcharge: Math.max(0, Number(data.terminalSurcharge) || 0),
+      payments: Array.isArray(data.payments) ? data.payments : [],
       advanceAt: data.advanceAt || null,
       paidAt: data.paidAt || null,
       materialsDeducted: false,
@@ -16875,6 +16877,10 @@ class Database {
       amountPaid: data.amountPaid !== undefined
         ? Math.max(0, Math.round((Number(data.amountPaid) || 0) * 100) / 100)
         : (Number(current.amountPaid) || 0),
+      terminalSurcharge: data.terminalSurcharge !== undefined
+        ? Math.max(0, Math.round((Number(data.terminalSurcharge) || 0) * 100) / 100)
+        : (Number(current.terminalSurcharge) || 0),
+      payments: Array.isArray(data.payments) ? data.payments : (Array.isArray(current.payments) ? current.payments : []),
       deliveryStatus: data.deliveryStatus !== undefined
         ? (data.deliveryStatus === 'entregado' ? 'entregado' : 'pendiente')
         : (current.deliveryStatus || 'pendiente'),

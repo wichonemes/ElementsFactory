@@ -1769,6 +1769,25 @@ app.get('/api/catalog-pdf/download/:id', async (req, res) => {
     const isAttachment = req.query.download === '1' || req.query.download === 'true';
     const dispositionType = isAttachment ? 'attachment' : 'inline';
 
+    // 0. Catálogos subidos por partes (archivos grandes) guardados en chunks
+    if (cloudDb?.pool) {
+      try {
+        const chunks = await cloudDb.pool.query(
+          'SELECT data FROM artisan_private.catalog_chunks WHERE file_id = $1 ORDER BY idx ASC',
+          [req.params.id]
+        );
+        if (chunks.rows.length > 0) {
+          const buffer = Buffer.concat(chunks.rows.map(row => row.data));
+          res.setHeader('Content-Type', 'application/pdf');
+          res.setHeader('Content-Disposition', `${dispositionType}; filename="${encodeURIComponent(req.params.id)}.pdf"`);
+          res.setHeader('Content-Length', buffer.length);
+          return res.send(buffer);
+        }
+      } catch (err) {
+        console.warn('[STORAGE] Nota sobre chunks de catálogo:', err.message);
+      }
+    }
+
     // 1. Probar primero si el ID o nombre está directamente en artisan_private.catalog_files
     if (cloudDb?.pool) {
       try {
@@ -1940,9 +1959,9 @@ app.post('/api/admin/catalog-pdf/register', requireAdmin, (req, res) => {
         db.addMobileCatalogItem({
           id: `cat-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
           name: name || cleanFileName.replace(/\.[^/.]+$/, '').replace(/[_|-]/g, ' '),
-          season: season || 'Temporada Actual',
-          badge: badge || 'Nuevo',
-          description: description || 'Catálogo oficial descargable.',
+          season: season || '',
+          badge: badge || '',
+          description: description || '',
           enabled: enabled !== undefined ? (enabled === true || enabled === 'true') : true,
           isPrimary: isPrimary === true || isPrimary === 'true',
           ...fields
@@ -1958,6 +1977,172 @@ app.post('/api/admin/catalog-pdf/register', requireAdmin, (req, res) => {
       return;
     }
     updatedConfig = applyItem();
+    res.json({ success: true, mobileCatalogConfig: updatedConfig });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ==========================================
+// Subida de catálogos por partes (sin el límite práctico de 4.5 MB)
+// ==========================================
+const CATALOG_CHUNK_SIZE = 3 * 1024 * 1024;
+
+async function ensureCatalogChunksTable() {
+  if (!cloudDb?.pool) return;
+  await cloudDb.pool.query(`
+    CREATE TABLE IF NOT EXISTS artisan_private.catalog_chunks (
+      file_id text NOT NULL,
+      idx integer NOT NULL,
+      content_type text,
+      data bytea NOT NULL,
+      updated_at timestamptz DEFAULT now(),
+      PRIMARY KEY (file_id, idx)
+    );
+  `);
+}
+
+function localChunkDir(uploadId) {
+  return path.join(downloadsDir, '.chunks', String(uploadId).replace(/[^a-zA-Z0-9_-]/g, '_'));
+}
+
+app.post('/api/admin/catalog-pdf/chunk/start', requireAdmin, async (_req, res) => {
+  try {
+    const uploadId = `catup-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    if (cloudDb?.pool) {
+      await ensureCatalogChunksTable();
+    } else {
+      fs.mkdirSync(localChunkDir(uploadId), { recursive: true });
+    }
+    res.json({ uploadId, chunkSize: CATALOG_CHUNK_SIZE });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/admin/catalog-pdf/chunk/:uploadId/:index', requireAdmin, express.raw({ type: '*/*', limit: '4mb' }), async (req, res) => {
+  try {
+    const idx = Number(req.params.index);
+    const uploadId = String(req.params.uploadId || '');
+    if (!Number.isInteger(idx) || idx < 0) return res.status(400).json({ error: 'Índice de parte inválido.' });
+    if (!/^catup-[a-zA-Z0-9-]+$/.test(uploadId)) return res.status(400).json({ error: 'Subida inválida.' });
+    const buffer = Buffer.isBuffer(req.body) ? req.body : null;
+    if (!buffer || buffer.length === 0) return res.status(400).json({ error: 'La parte llegó vacía.' });
+
+    if (cloudDb?.pool) {
+      await ensureCatalogChunksTable();
+      await cloudDb.pool.query(`
+        INSERT INTO artisan_private.catalog_chunks (file_id, idx, content_type, data, updated_at)
+        VALUES ($1, $2, $3, $4, now())
+        ON CONFLICT (file_id, idx) DO UPDATE SET data = EXCLUDED.data, content_type = EXCLUDED.content_type, updated_at = now()
+      `, [uploadId, idx, req.headers['content-type'] || 'application/octet-stream', buffer]);
+    } else {
+      const dir = localChunkDir(uploadId);
+      fs.mkdirSync(dir, { recursive: true });
+      fs.writeFileSync(path.join(dir, `${String(idx).padStart(5, '0')}.part`), buffer);
+    }
+    res.json({ ok: true, index: idx, bytes: buffer.length });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/admin/catalog-pdf/chunk/complete', requireAdmin, async (req, res) => {
+  try {
+    const { uploadId, totalChunks, fileName, fileSize, fileType, catalogId, name } = req.body || {};
+    const parts = Number(totalChunks) || 0;
+    if (!/^catup-[a-zA-Z0-9-]+$/.test(String(uploadId || '')) || parts < 1) {
+      return res.status(400).json({ error: 'Subida incompleta o inválida.' });
+    }
+
+    if (!cloudDb?.pool) {
+      const dir = localChunkDir(uploadId);
+      const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => f.endsWith('.part')) : [];
+      if (files.length < parts) {
+        return res.status(400).json({ error: 'Faltan partes del archivo. Vuelve a intentarlo.' });
+      }
+    }
+
+    const originalName = String(fileName || 'catalogo.pdf').slice(0, 200);
+    const ext = path.extname(originalName).toLowerCase() || '.pdf';
+    const cleanBase = path.basename(originalName, ext).replace(/[^a-zA-Z0-9_-]/g, '_') || 'catalogo';
+    const assignedId = catalogId || `cat-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+    const displayName = String(name || '').trim() || cleanBase.replace(/[_-]+/g, ' ');
+    const size = Number(fileSize) || 0;
+    const fileSizeFormatted = size > 1024 * 1024
+      ? `${(size / (1024 * 1024)).toFixed(2)} MB`
+      : `${Math.round(size / 1024)} KB`;
+
+    let fileUrl = '';
+    if (cloudDb?.pool) {
+      await ensureCatalogChunksTable();
+      const countRes = await cloudDb.pool.query(
+        'SELECT COUNT(*)::int AS total FROM artisan_private.catalog_chunks WHERE file_id = $1',
+        [uploadId]
+      );
+      const received = countRes.rows[0]?.total || 0;
+      if (received < parts) {
+        return res.status(400).json({ error: `Faltan partes del archivo (${received} de ${parts}). Vuelve a intentarlo.` });
+      }
+      const chunkRows = await cloudDb.pool.query(
+        'SELECT data FROM artisan_private.catalog_chunks WHERE file_id = $1 ORDER BY idx ASC',
+        [uploadId]
+      );
+      const fullBuffer = Buffer.concat(chunkRows.rows.map(row => row.data));
+      if (!fullBuffer.length) {
+        return res.status(400).json({ error: 'El archivo llegó vacío. Vuelve a intentarlo.' });
+      }
+      const stored = await storeFile(fullBuffer, originalName, fileType || 'application/pdf');
+      fileUrl = stored.url;
+      await cloudDb.pool.query('DELETE FROM artisan_private.catalog_chunks WHERE file_id = $1', [uploadId]);
+    } else {
+      const dir = localChunkDir(uploadId);
+      const files = fs.readdirSync(dir).filter(f => f.endsWith('.part')).sort();
+      const outName = `${cleanBase}_${Date.now()}${ext}`;
+      const outPath = path.join(downloadsDir, outName);
+      const fd = fs.openSync(outPath, 'w');
+      for (const part of files) {
+        fs.writeSync(fd, fs.readFileSync(path.join(dir, part)));
+      }
+      fs.closeSync(fd);
+      fs.rmSync(dir, { recursive: true, force: true });
+      fileUrl = `/downloads/${outName}`;
+    }
+
+    const fields = {
+      fileName: originalName,
+      fileUrl,
+      fileSize: fileSizeFormatted,
+      fileType: fileType || 'application/pdf'
+    };
+
+    const applyItem = () => {
+      if (catalogId) {
+        db.updateMobileCatalogItem(catalogId, fields);
+      } else {
+        db.addMobileCatalogItem({
+          id: assignedId,
+          name: displayName,
+          season: '',
+          badge: '',
+          description: '',
+          enabled: true,
+          isPrimary: (db.getMobileCatalogConfig().catalogs || []).length === 0,
+          ...fields
+        });
+      }
+      return db.getMobileCatalogConfig();
+    };
+
+    let updatedConfig;
+    if (cloudDb?.enabled) {
+      await cloudDb.transaction(async () => {
+        updatedConfig = applyItem();
+      });
+    } else {
+      updatedConfig = applyItem();
+    }
+
     res.json({ success: true, mobileCatalogConfig: updatedConfig });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -2051,9 +2236,9 @@ app.post('/api/admin/catalog-pdf/upload', requireAdmin, catalogUpload.single('fi
         db.addMobileCatalogItem({
           id: assignedId,
           name: name || fileName.replace(/\.[^/.]+$/, '').replace(/[_|-]/g, ' '),
-          season: season || 'Temporada Actual',
-          badge: badge || 'Nuevo',
-          description: description || 'Catálogo oficial descargable.',
+          season: season || '',
+          badge: badge || '',
+          description: description || '',
           fileName,
           fileUrl,
           fileSize: fileSizeFormatted,
@@ -2099,10 +2284,17 @@ app.put('/api/admin/catalog-pdf/item/:id', requireAdmin, (req, res) => {
   }
 });
 
-app.delete('/api/admin/catalog-pdf/item/:id', requireAdmin, (req, res) => {
+app.delete('/api/admin/catalog-pdf/item/:id', requireAdmin, async (req, res) => {
   try {
     const ok = db.deleteMobileCatalogItem(req.params.id);
     if (!ok) return res.status(404).json({ error: 'Catálogo no encontrado' });
+    if (cloudDb?.pool) {
+      try {
+        await cloudDb.pool.query('DELETE FROM artisan_private.catalog_chunks WHERE file_id = $1', [req.params.id]);
+      } catch (cleanupErr) {
+        console.warn('[STORAGE] No se pudieron borrar las partes del catálogo:', cleanupErr.message);
+      }
+    }
     res.json({ success: true, mobileCatalogConfig: db.getMobileCatalogConfig() });
   } catch (err) {
     res.status(500).json({ error: err.message });

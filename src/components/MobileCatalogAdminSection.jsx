@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { upload } from '@vercel/blob/client';
 import { 
   FileText, 
   Upload, 
@@ -20,12 +19,10 @@ import {
   Plus,
   Trash2,
   Edit2,
-  Calendar,
   Star,
   ExternalLink,
   Layers,
-  X,
-  Link as LinkIcon
+  X
 } from 'lucide-react';
 
 export default function MobileCatalogAdminSection({
@@ -236,81 +233,83 @@ export default function MobileCatalogAdminSection({
     setCatalogModalOpen(true);
   };
 
-  // Archivos grandes: subida directa a Blob (evita el límite de 4.5 MB de la función) y registro en el catálogo
-  const uploadLargeCatalog = async (file, cleanName, form, editing) => {
+  // Archivos grandes: subida por partes de 3 MB (funciona con PDFs de cualquier tamaño)
+  const uploadChunkedCatalog = async (file, form, editing) => {
     const authHeaders = authToken ? { Authorization: `Bearer ${authToken}` } : {};
-    let blob;
-    try {
-      blob = await upload(`catalogo/${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`, file, {
-        access: 'public',
-        handleUploadUrl: '/api/admin/blob/client-token',
-        headers: authHeaders,
-        contentType: file.type || 'application/pdf',
-        multipart: file.size > 8 * 1024 * 1024,
-        onUploadProgress: ({ percentage }) => setUploadProgress(Math.min(95, Math.round(percentage)))
-      });
-    } catch (uploadErr) {
-      throw new Error(`No se pudo subir el PDF grande (más de 4 MB). ${uploadErr.message}`);
+    const startRes = await fetch('/api/admin/catalog-pdf/chunk/start', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...authHeaders },
+      body: JSON.stringify({ fileName: file.name, fileSize: file.size, contentType: file.type || 'application/pdf' })
+    });
+    const startData = await startRes.json().catch(() => ({}));
+    if (!startRes.ok || !startData.uploadId) {
+      throw new Error(startData.error || 'No se pudo iniciar la subida del PDF.');
     }
-    const response = await fetch('/api/admin/catalog-pdf/register', {
+    const { uploadId, chunkSize = 3 * 1024 * 1024 } = startData;
+    const totalChunks = Math.max(1, Math.ceil(file.size / chunkSize));
+
+    for (let i = 0; i < totalChunks; i += 1) {
+      const slice = file.slice(i * chunkSize, Math.min(file.size, (i + 1) * chunkSize));
+      const res = await fetch(`/api/admin/catalog-pdf/chunk/${uploadId}/${i}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/octet-stream', ...authHeaders },
+        body: slice
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || `Falló la parte ${i + 1} de ${totalChunks}. Revisa tu conexión e intenta de nuevo.`);
+      }
+      setUploadProgress(Math.min(95, Math.round(((i + 1) / totalChunks) * 95)));
+    }
+
+    const completeRes = await fetch('/api/admin/catalog-pdf/chunk/complete', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', ...authHeaders },
       body: JSON.stringify({
-        catalogId: editing?.id || '',
-        fileUrl: blob.url,
+        uploadId,
+        totalChunks,
         fileName: file.name,
         fileSize: file.size,
         fileType: file.type || 'application/pdf',
-        name: cleanName,
-        season: (form.season || '').trim(),
-        badge: (form.badge || '').trim(),
-        description: (form.description || '').trim(),
-        isPrimary: Boolean(form.isPrimary),
-        enabled: Boolean(form.enabled)
+        catalogId: editing?.id || '',
+        name: (form.name || '').trim()
       })
     });
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) {
-      throw new Error(data.error || `No se pudo registrar el catálogo (${response.status}).`);
+    const data = await completeRes.json().catch(() => ({}));
+    if (!completeRes.ok) {
+      throw new Error(data.error || 'No se pudo guardar el PDF subido.');
     }
     return { ok: true, data };
   };
 
-  // Guardar catálogo (Crear o Editar con o sin archivo)
+  // Guardar catálogo: solo se sube el PDF, el nombre se toma del archivo
   const handleSaveCatalogModal = async (e) => {
     e.preventDefault();
-    const cleanName = (modalForm.name || '').trim();
-    if (!cleanName) {
-      showFeedback('Por favor asigna un nombre o título al catálogo.', 'error');
+    if (!modalFile) {
+      showFeedback('Selecciona el archivo PDF que quieres subir.', 'error');
       return;
     }
-
-    if (!editingCatalog && !modalFile && !(modalForm.fileUrl || '').trim()) {
-      showFeedback('Por favor selecciona un archivo PDF o proporciona una URL de enlace.', 'error');
-      return;
-    }
+    const cleanName = (modalForm.name || '').trim()
+      || (modalFile.name || 'Catalogo').replace(/\.[^/.]+$/, '').replace(/[_-]+/g, ' ').trim()
+      || 'Catálogo';
 
     setIsUploading(true);
     setUploadProgress(5);
 
     try {
       if (modalFile) {
-        // Subida mediante XMLHttpRequest para progreso real (0%-100%), timeout y manejo de errores
         const formData = new FormData();
         formData.append('file', modalFile);
         formData.append('name', cleanName);
-        formData.append('season', (modalForm.season || '').trim());
-        formData.append('badge', (modalForm.badge || '').trim());
-        formData.append('description', (modalForm.description || '').trim());
         formData.append('isPrimary', modalForm.isPrimary ? 'true' : 'false');
-        formData.append('enabled', modalForm.enabled ? 'true' : 'false');
+        formData.append('enabled', 'true');
 
         if (editingCatalog?.id) {
           formData.append('catalogId', editingCatalog.id);
         }
 
-        const uploadResult = modalFile.size > 4 * 1024 * 1024
-          ? await uploadLargeCatalog(modalFile, cleanName, modalForm, editingCatalog)
+        const uploadResult = modalFile.size > 3.5 * 1024 * 1024
+          ? await uploadChunkedCatalog(modalFile, { ...modalForm, name: cleanName }, editingCatalog)
           : await new Promise((resolve, reject) => {
           const xhr = new XMLHttpRequest();
           uploadXhrRef.current = xhr;
@@ -735,19 +734,6 @@ export default function MobileCatalogAdminSection({
                             Hacer Principal
                           </button>
                         )}
-
-                        {cat.badge && (
-                          <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-amber-100 text-amber-900 border border-amber-300">
-                            {cat.badge}
-                          </span>
-                        )}
-
-                        {cat.season && (
-                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-stone-200/80 text-stone-700 flex items-center gap-1">
-                            <Calendar className="w-3 h-3 text-stone-500" />
-                            {cat.season}
-                          </span>
-                        )}
                       </div>
 
                       {/* Switch Activo / Inactivo */}
@@ -770,12 +756,6 @@ export default function MobileCatalogAdminSection({
                     <h4 className="font-bold text-sm text-gray-900 mb-1">
                       {cat.name}
                     </h4>
-
-                    {cat.description && (
-                      <p className="text-xs text-gray-600 mb-2.5 line-clamp-2 leading-relaxed">
-                        {cat.description}
-                      </p>
-                    )}
 
                     {/* Ficha técnica de archivo */}
                     <div className="p-2.5 rounded-xl bg-white border border-stone-200/80 text-[11px] text-gray-500 space-y-1 mb-3">
@@ -808,10 +788,10 @@ export default function MobileCatalogAdminSection({
                         type="button"
                         onClick={() => handleOpenEditModal(cat)}
                         className="p-1.5 rounded-lg bg-white hover:bg-stone-100 text-stone-700 border border-stone-300 text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer"
-                        title="Editar nombre, temporada y distintivo"
+                        title="Cambiar el archivo PDF"
                       >
                         <Edit2 className="w-3.5 h-3.5 text-amber-600" />
-                        <span>Editar</span>
+                        <span>Cambiar PDF</span>
                       </button>
                     </div>
 
@@ -961,7 +941,7 @@ export default function MobileCatalogAdminSection({
             <div className="flex items-center justify-between pb-4 border-b border-stone-200 mb-4">
               <h3 className="font-bold text-base text-gray-900 flex items-center gap-2">
                 <FileText className="w-5 h-5 text-[#2D4F3E]" />
-                <span>{editingCatalog ? `Editar Catálogo: ${editingCatalog.name}` : 'Subir Nuevo Catálogo PDF'}</span>
+                <span>{editingCatalog ? 'Cambiar PDF del Catálogo' : 'Subir Nuevo Catálogo PDF'}</span>
               </h3>
               <button
                 onClick={handleCancelModal}
@@ -973,79 +953,24 @@ export default function MobileCatalogAdminSection({
             </div>
 
             <form onSubmit={handleSaveCatalogModal} className="space-y-4 text-xs">
-              <div>
-                <label className="block font-bold text-gray-700 mb-1">
-                  Título del Catálogo *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={modalForm.name}
-                  onChange={(e) => setModalForm({ ...modalForm, name: e.target.value })}
-                  placeholder="Ej. Catálogo Especial Bodas & Eventos 2026"
-                  className="w-full px-3.5 py-2 rounded-xl border border-gray-300 text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2D4F3E]/20 focus:border-[#2D4F3E]"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block font-bold text-gray-700 mb-1">
-                    Temporada / Colección:
-                  </label>
-                  <input
-                    type="text"
-                    value={modalForm.season}
-                    onChange={(e) => setModalForm({ ...modalForm, season: e.target.value })}
-                    placeholder="Ej. Invierno / Navidad, Primavera"
-                    className="w-full px-3.5 py-2 rounded-xl border border-gray-300 text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2D4F3E]/20 focus:border-[#2D4F3E]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block font-bold text-gray-700 mb-1">
-                    Distintivo / Badge:
-                  </label>
-                  <input
-                    type="text"
-                    value={modalForm.badge}
-                    onChange={(e) => setModalForm({ ...modalForm, badge: e.target.value })}
-                    placeholder="Ej. Bodas, Navidad, Mayoreo"
-                    className="w-full px-3.5 py-2 rounded-xl border border-gray-300 text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2D4F3E]/20 focus:border-[#2D4F3E]"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block font-bold text-gray-700 mb-1">
-                  Descripción corta para el cliente:
-                </label>
-                <textarea
-                  rows={2}
-                  value={modalForm.description}
-                  onChange={(e) => setModalForm({ ...modalForm, description: e.target.value })}
-                  placeholder="Breve explicación de las piezas incluidas en este catálogo..."
-                  className="w-full px-3.5 py-2 rounded-xl border border-gray-300 text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2D4F3E]/20 focus:border-[#2D4F3E]"
-                />
-              </div>
-
-              {/* Selector de Archivo o Enlace Directo */}
+              {/* Selector de Archivo PDF */}
               <div className="p-3.5 rounded-2xl bg-stone-50 border border-stone-200 space-y-3">
                 <div>
                   <label className="block font-bold text-gray-700 mb-1.5">
-                    {editingCatalog ? 'Archivo PDF / Folleto:' : 'Opción A: Subir Archivo PDF / Folleto:'}
+                    Archivo PDF:
                   </label>
 
                   {editingCatalog && !modalIsReplacingFile && (
-                    <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-stone-200 mb-2">
+                    <div className="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-white border border-stone-200 mb-2">
                       <span className="truncate font-semibold text-gray-700" title={editingCatalog.fileName}>
                         {editingCatalog.fileName}
                       </span>
                       <button
                         type="button"
                         onClick={() => setModalIsReplacingFile(true)}
-                        className="px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-[11px] cursor-pointer"
+                        className="px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-[11px] cursor-pointer shrink-0"
                       >
-                        Reemplazar archivo
+                        Cambiar PDF
                       </button>
                     </div>
                   )}
@@ -1054,47 +979,22 @@ export default function MobileCatalogAdminSection({
                     <div>
                       <input
                         type="file"
-                        accept=".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx"
+                        accept=".pdf,application/pdf"
                         onChange={(e) => setModalFile(e.target.files?.[0] || null)}
                         className="w-full text-xs text-stone-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#2D4F3E] file:text-white hover:file:bg-[#233f32] cursor-pointer"
                       />
-                      <span className="text-[10px] text-stone-400 mt-1 block">
-                        Acepta PDF, JPG, PNG o documentos (hasta 50 MB).
+                      <span className="text-[10px] text-stone-500 mt-1 block">
+                        {modalFile
+                          ? `${modalFile.name} · ${(modalFile.size / (1024 * 1024)).toFixed(2)} MB`
+                          : 'PDF de cualquier tamaño. Se sube por partes y queda listo al terminar.'}
                       </span>
                     </div>
                   )}
-                </div>
-
-                <div className="pt-2.5 border-t border-stone-200">
-                  <label className="block font-bold text-gray-700 mb-1 flex items-center gap-1.5">
-                    <LinkIcon className="w-3.5 h-3.5 text-emerald-700" />
-                    <span>Opción B: O Enlace / URL Web Directo (Google Drive, Canva, Nube):</span>
-                  </label>
-                  <input
-                    type="url"
-                    value={modalForm.fileUrl || ''}
-                    onChange={(e) => setModalForm({ ...modalForm, fileUrl: e.target.value })}
-                    placeholder="https://... (enlace web a tu catálogo o PDF en la nube)"
-                    className="w-full px-3.5 py-2 rounded-xl border border-gray-300 text-xs text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#2D4F3E]/20 focus:border-[#2D4F3E]"
-                  />
-                  <span className="text-[10px] text-gray-400 mt-0.5 block">
-                    Si tu catálogo ya está alojado en Google Drive, Canva o tu web, puedes pegar su enlace directamente.
-                  </span>
                 </div>
               </div>
 
               {/* Opciones booleanas */}
               <div className="space-y-2 pt-2">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={modalForm.enabled}
-                    onChange={(e) => setModalForm({ ...modalForm, enabled: e.target.checked })}
-                    className="rounded text-[#2D4F3E] focus:ring-[#2D4F3E]"
-                  />
-                  <span className="font-semibold text-gray-700">Activo y disponible para descarga</span>
-                </label>
-
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"

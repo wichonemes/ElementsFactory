@@ -6,6 +6,11 @@ import {
 } from 'lucide-react';
 
 const DAY = 86400000;
+const TERMINAL_FEE_RATE = 0.04;
+
+function terminalFee(cardAmount) {
+  return round2((Number(cardAmount) || 0) * TERMINAL_FEE_RATE);
+}
 
 const STATUS_META = {
   consulta: { label: 'Consulta', tone: 'bg-sky-50 text-sky-800 border-sky-200', dot: 'bg-sky-500' },
@@ -173,7 +178,7 @@ export default function OrdersWorkSection({ token, products = [] }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingOrder, setEditingOrder] = useState(null);
   const [paymentModal, setPaymentModal] = useState(null);
-  const [paymentForm, setPaymentForm] = useState({ received: 0 });
+  const [paymentForm, setPaymentForm] = useState({ cash: 0, card: 0 });
   const [qtyModal, setQtyModal] = useState(null);
   const [qtyForm, setQtyForm] = useState({ quantity: 1, unitPrice: 0, adjustStock: true });
   const [cancelModal, setCancelModal] = useState(null);
@@ -385,7 +390,7 @@ export default function OrdersWorkSection({ token, products = [] }) {
     const received = amountReceived(order);
     const suggested = mode === 'advance' ? advanceExpected(order) : Math.max(0, round2(total - received));
     setPaymentModal({ order, mode });
-    setPaymentForm({ received: suggested });
+    setPaymentForm({ cash: suggested, card: 0 });
   };
 
   const confirmPayment = async () => {
@@ -393,7 +398,23 @@ export default function OrdersWorkSection({ token, products = [] }) {
     const { order, mode } = paymentModal;
     const total = orderTotal(order);
     const already = amountReceived(order);
-    const received = Math.max(0, round2(paymentForm.received));
+    const cash = Math.max(0, round2(paymentForm.cash));
+    const card = Math.max(0, round2(paymentForm.card));
+    const received = round2(cash + card);
+    const surcharge = terminalFee(card);
+    const terminalCharge = round2(card + surcharge);
+    const payment = {
+      id: `pay-${Date.now()}`,
+      kind: mode,
+      cash,
+      card,
+      surcharge,
+      terminalCharge,
+      amount: received,
+      at: new Date().toISOString()
+    };
+    const payments = [...(Array.isArray(order.payments) ? order.payments : []), payment];
+    const terminalSurcharge = round2((Number(order.terminalSurcharge) || 0) + surcharge);
     try {
       if (mode === 'advance') {
         const required = advanceExpected(order);
@@ -410,12 +431,15 @@ export default function OrdersWorkSection({ token, products = [] }) {
           amountPaid: newPaid,
           advanceAt: new Date().toISOString(),
           paidAt: fullyPaid ? new Date().toISOString() : (order.paidAt || null),
-          deliveryStatus: 'pendiente'
+          deliveryStatus: 'pendiente',
+          payments,
+          terminalSurcharge
         });
         await loadOrders();
-        notify(fullyPaid
+        notify(`${fullyPaid
           ? `Pago completo de ${money(newPaid)} registrado. Pedido en producción y ya aparece en Ventas del mes.`
-          : `Anticipo de ${money(received)} registrado. Pedido en producción e insumos descontados del almacén.`);
+          : `Anticipo de ${money(received)} registrado. Pedido en producción e insumos descontados del almacén.`}${
+          surcharge > 0 ? ` Cobra en terminal ${money(terminalCharge)} (incluye 4%: ${money(surcharge)}).` : ''}`);
       } else {
         const newPaid = round2(already + received);
         const fullyPaid = newPaid + 0.01 >= total;
@@ -423,12 +447,15 @@ export default function OrdersWorkSection({ token, products = [] }) {
           status: fullyPaid ? 'pagado' : order.status,
           amountPaid: fullyPaid ? total : newPaid,
           paidAt: fullyPaid ? new Date().toISOString() : (order.paidAt || null),
-          deliveryStatus: order.deliveryStatus || 'pendiente'
+          deliveryStatus: order.deliveryStatus || 'pendiente',
+          payments,
+          terminalSurcharge
         });
         await loadOrders();
-        notify(fullyPaid
+        notify(`${fullyPaid
           ? `Pago registrado por ${money(Math.max(0, total - already))}. Pedido liquidado y movido a Ventas del mes.`
-          : `Abono de ${money(received)} registrado. Quedan ${money(Math.max(0, total - newPaid))} por cobrar.`);
+          : `Abono de ${money(received)} registrado. Quedan ${money(Math.max(0, total - newPaid))} por cobrar.`}${
+          surcharge > 0 ? ` Cobra en terminal ${money(terminalCharge)} (incluye 4%: ${money(surcharge)}).` : ''}`);
       }
       setPaymentModal(null);
     } catch (error) {
@@ -580,9 +607,12 @@ export default function OrdersWorkSection({ token, products = [] }) {
 
   const exportMonth = () => {
     const rows = [
-      ['Pedido', 'Fecha pago', 'Cliente', 'Producto', 'Cantidad', 'Precio unitario', 'Venta', 'Pagado', 'Costo', 'Ganancia', 'Margen %', 'Entrega'],
+      ['Pedido', 'Fecha pago', 'Cliente', 'Producto', 'Cantidad', 'Precio unitario', 'Venta', 'Pagado', 'Efectivo', 'Tarjeta', 'Recargo terminal', 'Costo', 'Ganancia', 'Margen %', 'Entrega'],
       ...monthOrders.map(order => {
         const profit = orderProfit(order);
+        const payments = Array.isArray(order.payments) ? order.payments : [];
+        const cash = round2(payments.reduce((sum, p) => sum + (Number(p.cash) || 0), 0));
+        const card = round2(payments.reduce((sum, p) => sum + (Number(p.card) || 0), 0));
         return [
           order.orderNumber,
           dateKey(order.paidAt || order.date),
@@ -592,6 +622,9 @@ export default function OrdersWorkSection({ token, products = [] }) {
           orderUnitPrice(order),
           orderTotal(order),
           amountReceived(order),
+          cash,
+          card,
+          round2(order.terminalSurcharge),
           order.totalCost ?? '',
           profit ?? '',
           orderMargin(order) ?? '',
@@ -629,6 +662,7 @@ export default function OrdersWorkSection({ token, products = [] }) {
     const balance = balanceDue(order);
     const advance = advanceExpected(order);
     const depositPaid = isDepositPaid(order);
+    const terminalSurcharge = round2(order.terminalSurcharge);
     const paidPercent = total > 0 ? Math.min(100, Math.round((Math.min(received, total) / total) * 100)) : 0;
     const delivered = order.deliveryStatus === 'entregado';
     const inProduction = ['confirmado', 'fabricando', 'en_produccion', 'pagado'].includes(order.status);
@@ -698,6 +732,13 @@ export default function OrdersWorkSection({ token, products = [] }) {
             </div>
             <span className="text-[8px] font-bold text-gray-500">{paidPercent}% cobrado</span>
           </div>
+
+          {terminalSurcharge > 0 && (
+            <div className="flex items-center justify-between text-[8.5px] text-orange-800 bg-orange-50 border border-orange-200 rounded-lg px-2 py-1">
+              <span className="font-bold">Recargo terminal 4%</span>
+              <strong>{money(terminalSurcharge)}</strong>
+            </div>
+          )}
 
           <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
             {mode === 'pedidos' && (
@@ -1212,21 +1253,33 @@ export default function OrdersWorkSection({ token, products = [] }) {
         const total = orderTotal(order);
         const already = amountReceived(order);
         const required = advanceExpected(order);
-        const received = Math.max(0, round2(paymentForm.received));
-        const newBalance = Math.max(0, round2(total - already - received));
         const isAdvance = paymentModal.mode === 'advance';
-        const canConfirm = isAdvance ? received + 0.001 >= required : received > 0;
+        const cash = Math.max(0, round2(paymentForm.cash));
+        const card = Math.max(0, round2(paymentForm.card));
+        const applied = round2(cash + card);
+        const surcharge = terminalFee(card);
+        const terminalCharge = round2(card + surcharge);
+        const totalToCollect = round2(cash + terminalCharge);
+        const newBalance = Math.max(0, round2(total - already - applied));
+        const target = isAdvance ? required : Math.max(0, round2(total - already));
+        const missing = Math.max(0, round2(target - applied));
+        const canConfirm = isAdvance ? applied + 0.001 >= required : applied > 0;
+        const setSplit = (kind) => {
+          if (kind === 'cash') setPaymentForm({ cash: target, card: 0 });
+          else if (kind === 'card') setPaymentForm({ cash: 0, card: target });
+          else setPaymentForm({ cash: round2(target / 2), card: round2(target - round2(target / 2)) });
+        };
         return (
           <div className="fixed inset-0 z-[85] flex items-center justify-center p-3 bg-black/70 backdrop-blur-sm">
-            <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden">
-              <div className="px-4 py-3 bg-[#1F2421] text-white flex items-center justify-between">
+            <div className="w-full max-w-md max-h-[94vh] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col">
+              <div className="px-4 py-3 bg-[#1F2421] text-white flex items-center justify-between shrink-0">
                 <div>
                   <h3 className="text-sm font-black">{isAdvance ? 'Iniciar producción' : 'Registrar pago'}</h3>
                   <p className="text-[10px] text-gray-400">{order.orderNumber} · {order.productName}</p>
                 </div>
                 <button type="button" onClick={() => setPaymentModal(null)} className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 cursor-pointer"><X className="w-4 h-4" /></button>
               </div>
-              <div className="p-4 space-y-3 text-xs">
+              <div className="p-4 space-y-3 text-xs overflow-y-auto">
                 <div className="grid grid-cols-2 gap-2">
                   <div className="rounded-xl bg-[#FAF9F5] border border-[#E8E4DA] p-2.5">
                     <span className="text-[8px] uppercase font-bold text-gray-400 block">Total del pedido</span>
@@ -1242,29 +1295,61 @@ export default function OrdersWorkSection({ token, products = [] }) {
 
                 {isAdvance && (
                   <div className="rounded-xl bg-rose-50 border border-rose-200 p-2.5 text-[10px] text-rose-800">
-                    Sin el 50% de anticipo el pedido no pasa a producción. Si cobras más, también puedes registrarlo aquí.
+                    Sin el 50% de anticipo el pedido no pasa a producción. Puedes cobrarlo en efectivo, con terminal o mitad y mitad.
                   </div>
                 )}
 
-                <div>
-                  <label className="text-[9px] font-bold text-gray-500 uppercase block mb-0.5">
-                    {isAdvance ? 'Anticipo recibido' : 'Monto recibido ahora'}
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    value={paymentForm.received}
-                    onChange={event => setPaymentForm({ received: event.target.value })}
-                    className="w-full px-3 py-2.5 rounded-xl border border-stone-300 bg-white text-base font-black"
-                  />
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="text-[9px] uppercase font-black text-gray-400 mr-0.5">Forma de pago:</span>
+                  <button type="button" onClick={() => setSplit('cash')} className="px-2 py-1 rounded-lg border border-stone-200 bg-white text-[9.5px] font-bold text-stone-700 hover:border-emerald-300 cursor-pointer">Todo efectivo</button>
+                  <button type="button" onClick={() => setSplit('half')} className="px-2 py-1 rounded-lg border border-stone-200 bg-white text-[9.5px] font-bold text-stone-700 hover:border-emerald-300 cursor-pointer">Mitad y mitad</button>
+                  <button type="button" onClick={() => setSplit('card')} className="px-2 py-1 rounded-lg border border-stone-200 bg-white text-[9.5px] font-bold text-stone-700 hover:border-emerald-300 cursor-pointer">Todo tarjeta</button>
                 </div>
 
-                <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-2.5 space-y-1 text-[10.5px] text-emerald-900">
-                  <div className="flex justify-between"><span>Ya pagado</span><strong>{money(already)}</strong></div>
-                  <div className="flex justify-between"><span>Este pago</span><strong>{money(received)}</strong></div>
-                  <div className="flex justify-between border-t border-emerald-200 pt-1"><span>Saldo después del pago</span><strong>{money(newBalance)}</strong></div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-[9px] font-bold text-gray-500 uppercase block mb-0.5">Efectivo</label>
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={paymentForm.cash}
+                      onChange={event => setPaymentForm(prev => ({ ...prev, cash: event.target.value }))}
+                      className="w-full px-3 py-2.5 rounded-xl border border-stone-300 bg-white text-base font-black"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[9px] font-bold text-gray-500 uppercase block mb-0.5">Tarjeta (terminal)</label>
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={paymentForm.card}
+                      onChange={event => setPaymentForm(prev => ({ ...prev, card: event.target.value }))}
+                      className="w-full px-3 py-2.5 rounded-xl border border-stone-300 bg-white text-base font-black"
+                    />
+                    <span className="text-[8.5px] text-gray-500 block mt-0.5">
+                      {card > 0 ? `Se cobra ${money(terminalCharge)} (incluye 4%)` : 'Sin recargo'}
+                    </span>
+                  </div>
                 </div>
+
+                <div className="rounded-xl bg-[#FAF9F5] border border-[#E8E4DA] p-2.5 space-y-1 text-[10.5px]">
+                  <div className="flex justify-between"><span className="text-gray-500">Ya pagado</span><strong>{money(already)}</strong></div>
+                  <div className="flex justify-between"><span className="text-gray-500">Efectivo</span><strong>{money(cash)}</strong></div>
+                  <div className="flex justify-between"><span className="text-gray-500">Tarjeta (sin recargo)</span><strong>{money(card)}</strong></div>
+                  <div className="flex justify-between"><span className="text-gray-500">Recargo terminal 4%</span><strong className={surcharge > 0 ? 'text-orange-700' : ''}>{money(surcharge)}</strong></div>
+                  <div className="flex justify-between border-t border-[#E8E4DA] pt-1"><span className="text-gray-500">Cobrar en terminal</span><strong>{money(terminalCharge)}</strong></div>
+                  <div className="flex justify-between text-[11px] border-t border-[#E8E4DA] pt-1"><span className="font-bold text-gray-700">Total a recibir ahora</span><strong className="text-[#2D4F3E]">{money(totalToCollect)}</strong></div>
+                  <div className="flex justify-between"><span className="text-gray-500">Aplicado al pedido</span><strong>{money(applied)}</strong></div>
+                  <div className="flex justify-between border-t border-[#E8E4DA] pt-1"><span className="text-gray-500">Saldo después del pago</span><strong className={newBalance > 0 ? 'text-rose-700' : 'text-emerald-700'}>{money(newBalance)}</strong></div>
+                </div>
+
+                {missing > 0 && (
+                  <div className="rounded-xl bg-amber-50 border border-amber-200 p-2 text-[10px] text-amber-900">
+                    {isAdvance ? `Faltan ${money(missing)} para completar el anticipo del 50%.` : `Faltan ${money(missing)} para liquidar el pedido.`}
+                  </div>
+                )}
 
                 <div className="flex items-center justify-end gap-2">
                   <button type="button" onClick={() => setPaymentModal(null)} className="px-3.5 py-2 rounded-xl border border-stone-300 bg-white text-stone-700 text-[10.5px] font-bold cursor-pointer">Cancelar</button>
