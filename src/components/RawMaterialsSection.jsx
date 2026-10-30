@@ -131,6 +131,7 @@ export function materialAreaFor(mat) {
 export function materialSupplyGroupFor(mat) {
   const text = normalizeMaterialText(mat);
   const category = String(mat?.category || '').toLowerCase();
+  if (/papel.*sublim|hoja.*sublim|tinta.*sublim|cinta.*sublim|kapton|cinta.*transfer/.test(text)) return 'indirect';
   if (category === 'packaging' || /caja|bolsa|empaque|etiqueta|kraft|celofan|viruta/.test(text)) return 'packaging';
   if (/barniz|tinte|pintura|sellador|laca|esmalte|acabado/.test(text)) return 'finish';
   if (/diseno|licencia|archivo|modelo digital|arte digital|render/.test(text)) return 'intangible';
