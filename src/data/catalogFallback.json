@@ -2177,7 +2177,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "hogar"
+        "paquetes"
       ],
       "categories": [
         "hogar-decoracion",
@@ -2225,7 +2225,11 @@
       "measureImage": "./uploads/t35_vista4_medidas.webp",
       "stockQuantity": 14,
       "sku": "HOG-3D-PLA-BRI-035",
-      "dimensionsImage": "./uploads/t35_vista4_medidas.webp"
+      "dimensionsImage": "./uploads/t35_vista4_medidas.webp",
+      "isBundle": true,
+      "bundleAreas": [
+        "hogar"
+      ]
     },
     {
       "id": "letrero-boda-l2",
@@ -2516,7 +2520,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "negocios"
+        "paquetes"
       ],
       "categories": [
         "negocios-gym"
@@ -2573,6 +2577,10 @@
       "updatedAt": "2026-10-14T23:17:12.578Z",
       "sku": "NEG-HYB-PLA-NFC-032",
       "dimensionsImage": "./uploads/catalog-v2-t32-scale-fbb59a194e.webp",
+      "isBundle": true,
+      "bundleAreas": [
+        "negocios"
+      ],
       "regularPrice": 620
     },
     {
@@ -2585,7 +2593,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "negocios"
+        "paquetes"
       ],
       "categories": [
         "negocios-barberias"
@@ -2634,6 +2642,10 @@
       "stockQuantity": 0,
       "sku": "NEG-3D-PLA-MAT-018",
       "dimensionsImage": "./uploads/catalog-v2-t18-scale-8108f2560e.webp",
+      "isBundle": true,
+      "bundleAreas": [
+        "negocios"
+      ],
       "regularPrice": 590
     },
     {
@@ -2646,7 +2658,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "negocios"
+        "paquetes"
       ],
       "categories": [
         "negocios-joyerias",
@@ -2696,6 +2708,10 @@
       "stockQuantity": 0,
       "sku": "NEG-HYB-PLA-MAT-027",
       "dimensionsImage": "./uploads/catalog-v2-t27-scale-33b7bb81ef.webp",
+      "isBundle": true,
+      "bundleAreas": [
+        "negocios"
+      ],
       "regularPrice": 680
     },
     {
@@ -2708,8 +2724,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "eventos",
-        "negocios"
+        "paquetes"
       ],
       "categories": [
         "eventos-bodas",
@@ -2788,6 +2803,10 @@
         "Prensa térmica industrial de calor y operador técnico por 3 horas",
         "+ 50 a 100 prendas base (gorras trucker o bolsas tote bag de manta)",
         "+ Colección de más de 200 parches bordados y stickers textiles para elegir"
+      ],
+      "bundleAreas": [
+        "eventos",
+        "negocios"
       ]
     },
     {
@@ -2800,7 +2819,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "eventos"
+        "paquetes"
       ],
       "categories": [
         "eventos-bodas"
@@ -2857,7 +2876,11 @@
       "measureImage": "./uploads/catalog-v2-ev-suite-scale-0742a13507.webp",
       "stockQuantity": 0,
       "sku": "EVE-LAS-PIN-GRA-001",
-      "dimensionsImage": "./uploads/catalog-v2-ev-suite-scale-0742a13507.webp"
+      "dimensionsImage": "./uploads/catalog-v2-ev-suite-scale-0742a13507.webp",
+      "isBundle": true,
+      "bundleAreas": [
+        "eventos"
+      ]
     },
     {
       "id": "set-bienvenida-ceremonia-nupcial",
@@ -2869,7 +2892,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "eventos"
+        "paquetes"
       ],
       "categories": [
         "eventos-bodas"
@@ -2928,7 +2951,11 @@
       "measureImage": "./uploads/catalog-v2-ev-ceremonia-scale-e08a0d52ea.webp",
       "stockQuantity": 0,
       "sku": "EVE-HYB-ACR-GRA-001",
-      "dimensionsImage": "./uploads/catalog-v2-ev-ceremonia-scale-e08a0d52ea.webp"
+      "dimensionsImage": "./uploads/catalog-v2-ev-ceremonia-scale-e08a0d52ea.webp",
+      "isBundle": true,
+      "bundleAreas": [
+        "eventos"
+      ]
     },
     {
       "id": "centro-mesa-presidencial-3d-copas",
@@ -3011,7 +3038,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "eventos"
+        "paquetes"
       ],
       "categories": [
         "eventos-bodas",
@@ -3080,7 +3107,11 @@
       "measureImage": "./uploads/catalog-v2-ev-anticruda-scale-8f3ed9c922.webp",
       "stockQuantity": 0,
       "sku": "EVE-LAS-TEX-GRA-001",
-      "dimensionsImage": "./uploads/catalog-v2-ev-anticruda-scale-8f3ed9c922.webp"
+      "dimensionsImage": "./uploads/catalog-v2-ev-anticruda-scale-8f3ed9c922.webp",
+      "isBundle": true,
+      "bundleAreas": [
+        "eventos"
+      ]
     },
     {
       "id": "combo-hogar-recibidor-calido",
@@ -3097,7 +3128,7 @@
       "featured": true,
       "badge": "COMBO RECOMENDADO",
       "worlds": [
-        "hogar"
+        "paquetes"
       ],
       "categories": [
         "hogar-organizacion",
@@ -3160,7 +3191,10 @@
       "stockQuantity": 0,
       "sku": "PAQ-HYB-PIN-GRA-001",
       "dimensionsImage": "./uploads/catalog-v2-promo-hog-1-scale-a202394984.webp",
-      "updatedAt": "2026-10-15T16:40:53.987Z"
+      "updatedAt": "2026-10-15T16:40:53.987Z",
+      "bundleAreas": [
+        "hogar"
+      ]
     },
     {
       "id": "kit-home-office-gamer-pro",
@@ -3177,7 +3211,7 @@
       "featured": true,
       "badge": "MÁS VENDIDO ESCRITORIO",
       "worlds": [
-        "hogar"
+        "paquetes"
       ],
       "categories": [
         "hogar-estudio",
@@ -3234,7 +3268,10 @@
       "measureImage": "./uploads/catalog-v2-promo-hog-2-scale-1c5a412a91.webp",
       "stockQuantity": 0,
       "sku": "PAQ-3D-PLA-ENS-002",
-      "dimensionsImage": "./uploads/catalog-v2-promo-hog-2-scale-1c5a412a91.webp"
+      "dimensionsImage": "./uploads/catalog-v2-promo-hog-2-scale-1c5a412a91.webp",
+      "bundleAreas": [
+        "hogar"
+      ]
     },
     {
       "id": "pack-consentido-peludo-mascotas",
@@ -3251,7 +3288,7 @@
       "featured": true,
       "badge": "PET FRIENDLY",
       "worlds": [
-        "hogar"
+        "paquetes"
       ],
       "categories": [
         "hogar-mascotas",
@@ -3319,7 +3356,10 @@
       "measureImage": "./uploads/catalog-v2-promo-hog-3-scale-6a0903aae4.webp",
       "stockQuantity": 0,
       "sku": "PAQ-HYB-PLA-GRA-003",
-      "dimensionsImage": "./uploads/catalog-v2-promo-hog-3-scale-6a0903aae4.webp"
+      "dimensionsImage": "./uploads/catalog-v2-promo-hog-3-scale-6a0903aae4.webp",
+      "bundleAreas": [
+        "hogar"
+      ]
     },
     {
       "id": "pack-apertura-restaurante-cafe",
@@ -3336,7 +3376,7 @@
       "featured": true,
       "badge": "MÁS POPULAR RESTAURANTES",
       "worlds": [
-        "negocios"
+        "paquetes"
       ],
       "categories": [
         "negocios-restaurantes"
@@ -3398,7 +3438,10 @@
       "measureImage": "./uploads/catalog-v2-promo-biz-1-scale-8d57b77857.webp",
       "stockQuantity": 0,
       "sku": "PAQ-HYB-ACR-GRA-001",
-      "dimensionsImage": "./uploads/catalog-v2-promo-biz-1-scale-8d57b77857.webp"
+      "dimensionsImage": "./uploads/catalog-v2-promo-biz-1-scale-8d57b77857.webp",
+      "bundleAreas": [
+        "negocios"
+      ]
     },
     {
       "id": "kit-mostrador-smart-nfc-identidad",
@@ -3415,7 +3458,7 @@
       "featured": true,
       "badge": "CONECTIVIDAD SMART",
       "worlds": [
-        "negocios"
+        "paquetes"
       ],
       "categories": [
         "negocios-oficinas",
@@ -3482,7 +3525,10 @@
       "measureImage": "./uploads/catalog-v2-promo-biz-2-scale-7310c244c1.webp",
       "stockQuantity": 0,
       "sku": "PAQ-LAS-CER-NFC-002",
-      "dimensionsImage": "./uploads/catalog-v2-promo-biz-2-scale-7310c244c1.webp"
+      "dimensionsImage": "./uploads/catalog-v2-promo-biz-2-scale-7310c244c1.webp",
+      "bundleAreas": [
+        "negocios"
+      ]
     },
     {
       "id": "starter-pack-barberia-salon-boutique",
@@ -3499,7 +3545,7 @@
       "featured": true,
       "badge": "FIDELIZACIÓN CLIENTES",
       "worlds": [
-        "negocios"
+        "paquetes"
       ],
       "categories": [
         "negocios-barberias",
@@ -3554,7 +3600,10 @@
       "measureImage": "./uploads/catalog-v2-promo-biz-3-scale-00d81fef57.webp",
       "stockQuantity": 0,
       "sku": "PAQ-HYB-ACR-GRA-003",
-      "dimensionsImage": "./uploads/catalog-v2-promo-biz-3-scale-00d81fef57.webp"
+      "dimensionsImage": "./uploads/catalog-v2-promo-biz-3-scale-00d81fef57.webp",
+      "bundleAreas": [
+        "negocios"
+      ]
     },
     {
       "id": "paquete-boda-de-ensueno-todo-incluido",
@@ -3571,7 +3620,7 @@
       "featured": true,
       "badge": "PAQUETE BODA TOTAL",
       "worlds": [
-        "eventos"
+        "paquetes"
       ],
       "categories": [
         "eventos-bodas"
@@ -3637,7 +3686,10 @@
       "measureImage": "./uploads/catalog-v2-promo-ev-1-scale-7c45b34c88.webp",
       "stockQuantity": 0,
       "sku": "PAQ-HYB-PIN-GRA-001",
-      "dimensionsImage": "./uploads/catalog-v2-promo-ev-1-scale-7c45b34c88.webp"
+      "dimensionsImage": "./uploads/catalog-v2-promo-ev-1-scale-7c45b34c88.webp",
+      "bundleAreas": [
+        "eventos"
+      ]
     },
     {
       "id": "combo-fiesta-recuerdos-patch-bar-anticruda",
@@ -3654,8 +3706,7 @@
       "featured": true,
       "badge": "EXPERIENCIA ESTRELLA",
       "worlds": [
-        "eventos",
-        "negocios"
+        "paquetes"
       ],
       "categories": [
         "eventos-bodas",
@@ -3724,7 +3775,11 @@
       "measureImage": "./uploads/catalog-v2-promo-ev-2-scale-6fc7e58b74.webp",
       "stockQuantity": 0,
       "sku": "PAQ-LAS-TEX-GRA-002",
-      "dimensionsImage": "./uploads/catalog-v2-promo-ev-2-scale-6fc7e58b74.webp"
+      "dimensionsImage": "./uploads/catalog-v2-promo-ev-2-scale-6fc7e58b74.webp",
+      "bundleAreas": [
+        "eventos",
+        "negocios"
+      ]
     },
     {
       "id": "set-xv-anos-graduaciones-inolvidables",
@@ -3741,7 +3796,7 @@
       "featured": true,
       "badge": "FIESTAS & GRADUACIONES",
       "worlds": [
-        "eventos"
+        "paquetes"
       ],
       "categories": [
         "eventos-xvanos",
@@ -3807,7 +3862,10 @@
       "measureImage": "./uploads/catalog-v2-promo-ev-3-scale-c8a6e4b916.webp",
       "stockQuantity": 0,
       "sku": "PAQ-HYB-ACR-GRA-003",
-      "dimensionsImage": "./uploads/catalog-v2-promo-ev-3-scale-c8a6e4b916.webp"
+      "dimensionsImage": "./uploads/catalog-v2-promo-ev-3-scale-c8a6e4b916.webp",
+      "bundleAreas": [
+        "eventos"
+      ]
     },
     {
       "id": "bolsa-tote-bag-manta-vinil-textil",
@@ -7249,5 +7307,5 @@
       }
     ]
   },
-  "exportedAt": "2026-10-30T04:40:11.017Z"
+  "exportedAt": "2026-10-30T04:42:45.330Z"
 }

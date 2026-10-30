@@ -5630,7 +5630,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "hogar"
+        "paquetes"
       ],
       "categories": [
         "hogar-decoracion",
@@ -5855,7 +5855,11 @@
         "wearCost": 6.75,
         "laborCost": 10,
         "failureReserveCost": 2.69
-      }
+      },
+      "isBundle": true,
+      "bundleAreas": [
+        "hogar"
+      ]
     },
     {
       "id": "letrero-boda-l2",
@@ -6864,7 +6868,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "negocios"
+        "paquetes"
       ],
       "categories": [
         "negocios-gym"
@@ -7096,6 +7100,10 @@
         "laborCost": 12,
         "failureReserveCost": 4.13
       },
+      "isBundle": true,
+      "bundleAreas": [
+        "negocios"
+      ],
       "regularPrice": 620
     },
     {
@@ -7108,7 +7116,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "negocios"
+        "paquetes"
       ],
       "categories": [
         "negocios-barberias"
@@ -7332,6 +7340,10 @@
         "laborCost": 10,
         "failureReserveCost": 3.11
       },
+      "isBundle": true,
+      "bundleAreas": [
+        "negocios"
+      ],
       "regularPrice": 590
     },
     {
@@ -7344,7 +7356,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "negocios"
+        "paquetes"
       ],
       "categories": [
         "negocios-joyerias",
@@ -7569,6 +7581,10 @@
         "laborCost": 10,
         "failureReserveCost": 3.38
       },
+      "isBundle": true,
+      "bundleAreas": [
+        "negocios"
+      ],
       "regularPrice": 680
     },
     {
@@ -7581,8 +7597,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "eventos",
-        "negocios"
+        "paquetes"
       ],
       "categories": [
         "eventos-bodas",
@@ -7835,7 +7850,11 @@
         "wearCost": 0.75,
         "laborCost": 10,
         "failureReserveCost": 66.33
-      }
+      },
+      "bundleAreas": [
+        "eventos",
+        "negocios"
+      ]
     },
     {
       "id": "set-suite-nupcial-novia-novio",
@@ -7847,7 +7866,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "eventos"
+        "paquetes"
       ],
       "categories": [
         "eventos-bodas"
@@ -8092,7 +8111,11 @@
         "wearCost": 1,
         "laborCost": 15,
         "failureReserveCost": 8
-      }
+      },
+      "isBundle": true,
+      "bundleAreas": [
+        "eventos"
+      ]
     },
     {
       "id": "set-bienvenida-ceremonia-nupcial",
@@ -8104,7 +8127,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "eventos"
+        "paquetes"
       ],
       "categories": [
         "eventos-bodas"
@@ -8351,7 +8374,11 @@
         "wearCost": 1,
         "laborCost": 15,
         "failureReserveCost": 13.1
-      }
+      },
+      "isBundle": true,
+      "bundleAreas": [
+        "eventos"
+      ]
     },
     {
       "id": "centro-mesa-presidencial-3d-copas",
@@ -8608,7 +8635,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "eventos"
+        "paquetes"
       ],
       "categories": [
         "eventos-bodas",
@@ -8865,7 +8892,11 @@
         "wearCost": 0.75,
         "laborCost": 10,
         "failureReserveCost": 0.75
-      }
+      },
+      "isBundle": true,
+      "bundleAreas": [
+        "eventos"
+      ]
     },
     {
       "id": "combo-hogar-recibidor-calido",
@@ -8882,7 +8913,7 @@
       "featured": true,
       "badge": "COMBO RECOMENDADO",
       "worlds": [
-        "hogar"
+        "paquetes"
       ],
       "categories": [
         "hogar-organizacion",
@@ -9119,7 +9150,10 @@
         "wearCost": 4.5,
         "laborCost": 25,
         "failureReserveCost": 5.21
-      }
+      },
+      "bundleAreas": [
+        "hogar"
+      ]
     },
     {
       "id": "kit-home-office-gamer-pro",
@@ -9136,7 +9170,7 @@
       "featured": true,
       "badge": "MÁS VENDIDO ESCRITORIO",
       "worlds": [
-        "hogar"
+        "paquetes"
       ],
       "categories": [
         "hogar-estudio",
@@ -9367,7 +9401,10 @@
         "wearCost": 27,
         "laborCost": 20,
         "failureReserveCost": 5.74
-      }
+      },
+      "bundleAreas": [
+        "hogar"
+      ]
     },
     {
       "id": "pack-consentido-peludo-mascotas",
@@ -9384,7 +9421,7 @@
       "featured": true,
       "badge": "PET FRIENDLY",
       "worlds": [
-        "hogar"
+        "paquetes"
       ],
       "categories": [
         "hogar-mascotas",
@@ -9626,7 +9663,10 @@
         "wearCost": 9,
         "laborCost": 15,
         "failureReserveCost": 3.29
-      }
+      },
+      "bundleAreas": [
+        "hogar"
+      ]
     },
     {
       "id": "pack-apertura-restaurante-cafe",
@@ -9643,7 +9683,7 @@
       "featured": true,
       "badge": "MÁS POPULAR RESTAURANTES",
       "worlds": [
-        "negocios"
+        "paquetes"
       ],
       "categories": [
         "negocios-restaurantes"
@@ -9879,7 +9919,10 @@
         "wearCost": 75,
         "laborCost": 50,
         "failureReserveCost": 18.02
-      }
+      },
+      "bundleAreas": [
+        "negocios"
+      ]
     },
     {
       "id": "kit-mostrador-smart-nfc-identidad",
@@ -9896,7 +9939,7 @@
       "featured": true,
       "badge": "CONECTIVIDAD SMART",
       "worlds": [
-        "negocios"
+        "paquetes"
       ],
       "categories": [
         "negocios-oficinas",
@@ -10151,7 +10194,10 @@
         "wearCost": 22.5,
         "laborCost": 30,
         "failureReserveCost": 8.82
-      }
+      },
+      "bundleAreas": [
+        "negocios"
+      ]
     },
     {
       "id": "starter-pack-barberia-salon-boutique",
@@ -10168,7 +10214,7 @@
       "featured": true,
       "badge": "FIDELIZACIÓN CLIENTES",
       "worlds": [
-        "negocios"
+        "paquetes"
       ],
       "categories": [
         "negocios-barberias",
@@ -10397,7 +10443,10 @@
         "wearCost": 10.5,
         "laborCost": 40,
         "failureReserveCost": 8.56
-      }
+      },
+      "bundleAreas": [
+        "negocios"
+      ]
     },
     {
       "id": "paquete-boda-de-ensueno-todo-incluido",
@@ -10414,7 +10463,7 @@
       "featured": true,
       "badge": "PAQUETE BODA TOTAL",
       "worlds": [
-        "eventos"
+        "paquetes"
       ],
       "categories": [
         "eventos-bodas"
@@ -10654,7 +10703,10 @@
         "wearCost": 10.5,
         "laborCost": 90,
         "failureReserveCost": 25.06
-      }
+      },
+      "bundleAreas": [
+        "eventos"
+      ]
     },
     {
       "id": "combo-fiesta-recuerdos-patch-bar-anticruda",
@@ -10671,8 +10723,7 @@
       "featured": true,
       "badge": "EXPERIENCIA ESTRELLA",
       "worlds": [
-        "eventos",
-        "negocios"
+        "paquetes"
       ],
       "categories": [
         "eventos-bodas",
@@ -10915,7 +10966,11 @@
         "wearCost": 0.75,
         "laborCost": 10,
         "failureReserveCost": 81.33
-      }
+      },
+      "bundleAreas": [
+        "eventos",
+        "negocios"
+      ]
     },
     {
       "id": "set-xv-anos-graduaciones-inolvidables",
@@ -10932,7 +10987,7 @@
       "featured": true,
       "badge": "FIESTAS & GRADUACIONES",
       "worlds": [
-        "eventos"
+        "paquetes"
       ],
       "categories": [
         "eventos-xvanos",
@@ -11172,7 +11227,10 @@
         "wearCost": 42,
         "laborCost": 50,
         "failureReserveCost": 18.77
-      }
+      },
+      "bundleAreas": [
+        "eventos"
+      ]
     },
     {
       "id": "bolsa-tote-bag-manta-vinil-textil",
@@ -20331,8 +20389,8 @@
     {
       "id": "mat-cartulina-opalina",
       "name": "Cartulina Opalina Holandesa 250g A4 (Paquete 100 hojas)",
-      "category": "sublimation",
-      "materialType": "Papel, Tintas & Consumibles",
+      "category": "print",
+      "materialType": "Papelería & Impresión Láser",
       "color": "Blanco Marfil",
       "finish": "Mate",
       "unit": "paquete (100 hojas)",
@@ -22115,7 +22173,7 @@
     {
       "id": "mat-papel-sulfatada-12pts",
       "name": "Cartulina Sulfatada 1 Cara 12 Puntos A4 (100 hojas)",
-      "category": "sublimation",
+      "category": "print",
       "materialType": "Papelería & Impresión Láser",
       "color": "Blanco Marfil",
       "finish": "Satinado",
@@ -22145,7 +22203,7 @@
     {
       "id": "mat-foil-reactivo-oro",
       "name": "Foil Reactivo al Tóner Láser Oro Metalizado (Rollo 30cm x 15m)",
-      "category": "sublimation",
+      "category": "print",
       "materialType": "Papelería & Impresión Láser",
       "color": "Seda Oro",
       "finish": "Espejo Reflectivo",
@@ -23270,5 +23328,5 @@
       }
     ]
   },
-  "exportedAt": "2026-10-30T04:40:11.003Z"
+  "exportedAt": "2026-10-30T04:42:45.313Z"
 }
