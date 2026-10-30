@@ -24,6 +24,7 @@ import PackagesAdminSection from './PackagesAdminSection';
 import CouponsAdminSection from './CouponsAdminSection';
 import AdminConfirmSaveModal from './AdminConfirmSaveModal';
 import ProductPhotoStudioModal from './ProductPhotoStudioModal';
+import ErrorBoundary from './ErrorBoundary';
 import OrdersWorkSection from './OrdersWorkSection';
 import { uploadImageFile } from '../utils/imageUpload';
 import {
@@ -12295,13 +12296,15 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       )}
 
       {/* Estudio Fotográfico de Catálogo (4 Fotos con Sharp / IA) */}
-      <ProductPhotoStudioModal
-        isOpen={isPhotoStudioOpen}
-        onClose={() => setIsPhotoStudioOpen(false)}
-        products={products}
-        initialProductId={photoStudioProductId}
-        onProductUpdated={handleProductUpdatedFromStudio}
-      />
+      <ErrorBoundary title="El estudio de fotos tuvo un problema">
+        <ProductPhotoStudioModal
+          isOpen={isPhotoStudioOpen}
+          onClose={() => setIsPhotoStudioOpen(false)}
+          products={products}
+          initialProductId={photoStudioProductId}
+          onProductUpdated={handleProductUpdatedFromStudio}
+        />
+      </ErrorBoundary>
     </>
   );
 }
