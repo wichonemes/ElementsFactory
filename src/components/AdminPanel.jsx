@@ -56,7 +56,53 @@ import {
   num
 } from '../../shared/costing.js';
 
-// Helper para generar una receta de manufactura (BOM) inicial realista según la técnica
+// Checklist del editor: indica qué falta antes de publicar un producto.
+export function buildEditorChecklist(form) {
+  if (!form) {
+    return { checks: [], blockers: [], completed: 0, total: 0, percent: 0, stepStatus: {}, canPublish: false };
+  }
+
+  const categories = Array.isArray(form.categories) ? form.categories : [];
+  const techniques = Array.isArray(form.techniques) ? form.techniques : [];
+  const recipeItems = Array.isArray(form.manufacturingRecipe?.items) ? form.manufacturingRecipe.items : [];
+  const packaging = form.manufacturingRecipe?.packagingAndShipping || {};
+  const hasPrice = form.priceType === 'quote' || Number(form.price) > 0;
+  const hasRealImage = Boolean(form.primaryImage) && !String(form.primaryImage).includes('bandeja_vaciabolsillos_ovalada_white');
+
+  const checks = [
+    { id: 'name', label: 'Nombre', step: 'general', ok: Boolean(String(form.name || '').trim()), blocker: true, hint: 'Escribe el nombre del producto.' },
+    { id: 'category', label: 'Categoría', step: 'general', ok: categories.length > 0 || Boolean(form.category), blocker: true, hint: 'Asigna al menos una categoría.' },
+    { id: 'image', label: hasRealImage ? 'Foto principal' : 'Foto principal real', step: 'general', ok: hasRealImage, blocker: true, hint: 'Sube una foto real, no la imagen de ejemplo.' },
+    { id: 'description', label: 'Descripción corta', step: 'general', ok: Boolean(String(form.shortDescription || '').trim()), blocker: false, hint: 'Recomendado para vender mejor.' },
+    { id: 'technique', label: 'Técnica', step: 'general', ok: techniques.length > 0 || Boolean(form.technique), blocker: false, hint: 'Selecciona la técnica principal.' },
+    { id: 'sku', label: 'SKU / código', step: 'general', ok: Boolean(form.sku || form.code), blocker: false, hint: 'Código interno para identificar la pieza.' },
+    { id: 'recipe', label: 'Receta / insumos', step: 'taller', ok: recipeItems.length > 0, blocker: true, hint: 'Agrega al menos un insumo a la receta.' },
+    { id: 'cost', label: 'Costo calculado', step: 'taller', ok: Number(form.costPrice) > 0, blocker: true, hint: 'Sincroniza la receta para calcular el costo.' },
+    { id: 'price', label: 'Precio de venta', step: 'pricing', ok: hasPrice, blocker: true, hint: 'Define un precio o marca el producto como "a cotizar".' },
+    { id: 'packaging', label: 'Empaque y flete', step: 'packaging', ok: Boolean(packaging.enabled) || Number(packaging.packagingCost) > 0, blocker: false, hint: 'Opcional, pero útil para calcular el costo aterrizado.' },
+    { id: 'repo', label: 'Repositorio / archivo', step: 'repo', ok: Boolean(form.repository?.makerworldUrl || form.makerWorldModel || form.repository?.localPath), blocker: false, hint: 'Opcional para piezas fabricadas.' }
+  ];
+
+  const blockers = checks.filter(check => check.blocker && !check.ok);
+  const completed = checks.filter(check => check.ok).length;
+
+  return {
+    checks,
+    blockers,
+    completed,
+    total: checks.length,
+    percent: Math.round((completed / checks.length) * 100),
+    stepStatus: {
+      general: checks.filter(check => check.step === 'general').every(check => check.ok),
+      taller: checks.filter(check => check.step === 'taller').every(check => check.ok),
+      packaging: checks.find(check => check.step === 'packaging')?.ok || false,
+      pricing: checks.find(check => check.step === 'pricing')?.ok || false,
+      repo: checks.find(check => check.step === 'repo')?.ok || false
+    },
+    canPublish: blockers.length === 0
+  };
+}
+
 // Helper para generar una receta de manufactura (BOM) inicial realista según la técnica
 export function getPresetItemsForTechnique(tech, rawMaterials = []) {
   const findMat = (id, fallbackQ) => {
@@ -1618,7 +1664,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       priceType: 'starting_at',
       price: isBundle ? 499 : 199,
       priceUnit: isBundle ? 'combo' : 'pieza',
-      status: 'published',
+      status: 'draft',
       featured: false,
       isBundle,
       regularPrice: isBundle ? 649 : 249,
@@ -3640,12 +3686,31 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   };
 
   // Save Product
-  const handleSaveProduct = async (e) => {
-    if (e) e.preventDefault();
+  const handleSaveProduct = async (e, options = {}) => {
+    if (e?.preventDefault) e.preventDefault();
 
     if (!editorForm?.name || !editorForm.name.trim()) {
       setEditorMessage({ text: 'Por favor ingresa el nombre del producto o paquete.', type: 'error' });
+      setEditorActiveTab('general');
       return;
+    }
+
+    const targetStatus = options.status || editorForm.status || 'draft';
+    const wasPublished = editingProduct?.status === 'published';
+    const shouldValidateForPublish = targetStatus === 'published'
+      && (!wasPublished || options.forcePublish === true);
+
+    if (shouldValidateForPublish) {
+      const checklist = buildEditorChecklist(editorForm);
+      if (checklist.blockers.length > 0) {
+        const firstBlocker = checklist.blockers[0];
+        setEditorActiveTab(firstBlocker.step);
+        setEditorMessage({
+          text: `Antes de publicar faltan ${checklist.blockers.length} dato(s): ${checklist.blockers.map(item => item.label).join(', ')}.`,
+          type: 'error'
+        });
+        return;
+      }
     }
 
     setEditorMessage({ text: 'Guardando...', type: 'info' });
@@ -3655,7 +3720,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       const url = isEdit ? `/api/admin/products/${editingProduct.id}` : '/api/admin/products';
       const method = isEdit ? 'PUT' : 'POST';
 
-      const payload = { ...editorForm };
+      const payload = { ...editorForm, status: targetStatus };
 
       // Limpiar includedItems si es paquete
       if (payload.isBundle && Array.isArray(payload.includedItems)) {
@@ -4093,6 +4158,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
     return { total, published, drafts, noImage, noRecipe, noCost, noDescription, noSku, lowStock, urgentStock, noSupplier, bundles, checks, completeness, tasks };
   }, [products, rawMaterialsList]);
+
+  // Estado en vivo del producto que se está editando.
+  const editorChecklist = useMemo(() => buildEditorChecklist(editorForm), [editorForm]);
 
   // Technique List & Definitions for Filtering and Audits
   const techniqueList = [
@@ -8237,6 +8305,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               >
                 <span>📋</span>
                 <span>1. Datos &amp; Galería</span>
+                {editorChecklist.stepStatus.general
+                  ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                  : <AlertCircle className="w-3.5 h-3.5 text-amber-500" />}
               </button>
 
               <button
@@ -8250,6 +8321,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               >
                 <span>🪵</span>
                 <span>2. Taller &amp; Insumos (Escandallo)</span>
+                {editorChecklist.stepStatus.taller
+                  ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                  : <AlertCircle className="w-3.5 h-3.5 text-amber-500" />}
                 <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono font-bold ${
                   editorActiveTab === 'taller' ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-800'
                 }`}>
@@ -8284,6 +8358,9 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               >
                 <span>💰</span>
                 <span>4. Precios, Margen &amp; Descuentos</span>
+                {editorChecklist.stepStatus.pricing
+                  ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                  : <AlertCircle className="w-3.5 h-3.5 text-amber-500" />}
                 {editorForm.price && (
                   <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono font-bold ${
                     editorActiveTab === 'pricing' ? 'bg-white/20 text-white' : 'bg-stone-100 text-stone-700'
@@ -8308,6 +8385,63 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                 )}
               </button>
+            </div>
+
+            {/* Semáforo de preparación: qué falta antes de publicar */}
+            <div className="px-3 sm:px-5 py-2.5 bg-white border-b border-[#E8E4DA] shrink-0">
+              <div className="flex items-center gap-2.5">
+                <div className={`w-9 h-9 rounded-xl border flex items-center justify-center font-mono font-black text-[10px] shrink-0 ${
+                  editorChecklist.canPublish
+                    ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                    : 'bg-amber-50 text-amber-800 border-amber-200'
+                }`}>
+                  {editorChecklist.percent}%
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[9px] font-black uppercase tracking-[0.16em] text-gray-500">
+                      Preparación para publicar
+                    </span>
+                    <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full border shrink-0 ${
+                      editorChecklist.canPublish
+                        ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                        : 'bg-amber-50 text-amber-800 border-amber-200'
+                    }`}>
+                      {editorChecklist.canPublish ? 'Listo' : `${editorChecklist.blockers.length} pendientes`}
+                    </span>
+                  </div>
+                  <div className="mt-1 h-1.5 rounded-full bg-stone-100 overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all ${editorChecklist.canPublish ? 'bg-emerald-500' : 'bg-amber-500'}`}
+                      style={{ width: `${Math.max(4, editorChecklist.percent)}%` }}
+                    />
+                  </div>
+                  <div className="flex flex-wrap items-center gap-1 mt-1">
+                    {editorChecklist.blockers.length > 0 ? editorChecklist.blockers.map(blocker => (
+                      <button
+                        key={blocker.id}
+                        type="button"
+                        onClick={() => setEditorActiveTab(blocker.step)}
+                        className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-amber-50 border border-amber-200 text-amber-900 text-[8.5px] font-bold hover:bg-amber-100 cursor-pointer"
+                        title={blocker.hint}
+                      >
+                        <AlertCircle className="w-2.5 h-2.5" />
+                        {blocker.label}
+                      </button>
+                    )) : (
+                      <span className="inline-flex items-center gap-1 text-[8.5px] font-bold text-emerald-700">
+                        <CheckCircle2 className="w-2.5 h-2.5" />
+                        Nombre, categoría, foto, receta, costo y precio completos.
+                      </span>
+                    )}
+                    {editorChecklist.blockers.length === 0 && editorChecklist.checks.some(check => !check.ok) && (
+                      <span className="text-[8.5px] text-gray-400">
+                        · Sugerencias opcionales: {editorChecklist.checks.filter(check => !check.ok).map(check => check.label).join(', ')}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Formulario Ergonómico por Pestañas */}
@@ -8899,7 +9033,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     {/* NAVEGACIÓN UX INFERIOR PESTAÑA 1 */}
                     <div className="pt-4 border-t border-stone-200 flex flex-wrap items-center justify-between gap-2.5">
                       <span className="text-[11px] text-gray-500">
-                        Paso 1 de 4: Información comercial y fotos de catálogo
+                        Paso 1 de 5: Información comercial y fotos de catálogo
                       </span>
                       <div className="flex items-center gap-2">
                         <button
@@ -11001,20 +11135,43 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   )}
                 </div>
 
-                <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
+                <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
                   <button
                     type="button"
                     onClick={() => setIsEditorOpen(false)}
-                    className="flex-1 sm:flex-none px-4 py-2 rounded-xl border border-gray-300 bg-white text-gray-700 font-semibold text-xs hover:bg-gray-50 transition-colors cursor-pointer"
+                    className="flex-1 sm:flex-none px-3.5 py-2 rounded-xl border border-gray-300 bg-white text-gray-700 font-semibold text-xs hover:bg-gray-50 transition-colors cursor-pointer"
                   >
                     Cancelar
                   </button>
                   <button
-                    type="submit"
-                    className="flex-1 sm:flex-none px-6 py-2 rounded-xl bg-[#2D4F3E] text-white font-bold text-xs hover:bg-[#20392C] transition-all cursor-pointer shadow-md active:scale-98"
+                    type="button"
+                    onClick={() => handleSaveProduct(null, { status: 'draft' })}
+                    className="flex-1 sm:flex-none px-3.5 py-2 rounded-xl border border-stone-300 bg-white text-stone-700 font-bold text-xs hover:bg-stone-50 transition-colors cursor-pointer inline-flex items-center justify-center gap-1.5"
                   >
-                    Guardar Cambios del Producto
+                    <Save className="w-3.5 h-3.5" />
+                    Guardar borrador
                   </button>
+                  {editorForm.status === 'published' ? (
+                    <button
+                      type="submit"
+                      className="flex-1 sm:flex-none px-5 py-2 rounded-xl bg-[#2D4F3E] text-white font-bold text-xs hover:bg-[#20392C] transition-all cursor-pointer shadow-md active:scale-98 inline-flex items-center justify-center gap-1.5"
+                    >
+                      <CheckCircle2 className="w-4 h-4" />
+                      Guardar cambios
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => handleSaveProduct(null, { status: 'published', forcePublish: true })}
+                      className={`flex-1 sm:flex-none px-5 py-2 rounded-xl text-white font-bold text-xs transition-all cursor-pointer shadow-md active:scale-98 inline-flex items-center justify-center gap-1.5 ${
+                        editorChecklist.canPublish ? 'bg-[#2D4F3E] hover:bg-[#20392C]' : 'bg-amber-600 hover:bg-amber-500'
+                      }`}
+                      title={editorChecklist.canPublish ? 'Publicar este producto en la tienda' : 'Completa los datos pendientes para publicar'}
+                    >
+                      {editorChecklist.canPublish ? <CheckCircle2 className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
+                      {editorChecklist.canPublish ? 'Publicar en tienda' : `Completar y publicar (${editorChecklist.blockers.length})`}
+                    </button>
+                  )}
                 </div>
               </div>
 
