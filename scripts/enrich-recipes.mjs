@@ -234,6 +234,13 @@ function enrichProduct(product, rawMaterials = []) {
   const switchMat = materialById(rawMaterials, 'mat-switches-clicker-mecanico');
   const ringMat = materialById(rawMaterials, 'mat-argollas-llavero');
 
+  if (hasItem(items, /cinta termica para fijar/) && hasItem(items, /cinta termica kapton/)) {
+    items = items.map(entry => /cinta termica kapton/.test(normalize(entry.name))
+      ? { ...entry, name: 'Protección de prensa y consumibles de sublimación', supplyType: 'indirect' }
+      : entry
+    );
+  }
+
   if (isClicker && !hasItem(items, /switch|teclado|interruptor/)) {
     items.push(item({
       name: switchMat?.name || 'Switch mecánico de teclado 3 pines Outemu Blue',
