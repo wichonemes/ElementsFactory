@@ -10,6 +10,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs';
 import { MAX_DISCOUNT_PERCENT } from '../shared/costing.js';
+import { packageUnitsForQuantity, normalizeUnit } from '../shared/units.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12421,38 +12422,19 @@ export function parseMaterialPackage(mat) {
 
 // Convierte la cantidad requerida en la unidad del stock del almacén de taller
 export function calculateMaterialStockDeduction(material, requiredQuantity, requiredUnit) {
-  const pkg = parseMaterialPackage(material);
-  const reqUnit = (requiredUnit || 'pza').toLowerCase().trim();
-  const pkgMeas = (pkg.packageMeasurement || 'pza').toLowerCase().trim();
-  const pkgQty = Number(pkg.packageQuantity) || 1;
+  const reqUnit = normalizeUnit(requiredUnit || 'pza');
   const qty = Number(requiredQuantity) || 0;
+  const pkg = parseMaterialPackage(material);
+  const pkgMeas = normalizeUnit(pkg.packageMeasurement || 'pza');
+  const pkgQty = Number(pkg.packageQuantity) || 1;
 
-  let baseUnitsRequired = qty;
-
-  if (reqUnit === pkgMeas) {
-    baseUnitsRequired = qty;
-  } else if ((reqUnit === 'g' || reqUnit === 'gr' || reqUnit === 'gramos') && (pkgMeas === 'kg' || pkgMeas === 'kilo')) {
-    baseUnitsRequired = qty / 1000;
-  } else if ((reqUnit === 'kg' || reqUnit === 'kilo') && (pkgMeas === 'g' || pkgMeas === 'gr' || pkgMeas === 'gramos')) {
-    baseUnitsRequired = qty * 1000;
-  } else if ((reqUnit === 'cm' || reqUnit === 'centimetros' || reqUnit === 'centímetros') && (pkgMeas === 'm' || pkgMeas === 'metros')) {
-    baseUnitsRequired = qty / 100;
-  } else if ((reqUnit === 'm' || reqUnit === 'metros') && (pkgMeas === 'cm' || pkgMeas === 'centimetros' || pkgMeas === 'centímetros')) {
-    baseUnitsRequired = qty * 100;
-  } else if ((reqUnit === 'ml' || reqUnit === 'mililitros') && (pkgMeas === 'l' || pkgMeas === 'litro' || pkgMeas === 'litros')) {
-    baseUnitsRequired = qty / 1000;
-  } else if ((reqUnit === 'l' || reqUnit === 'litro' || pkgMeas === 'litros') && (pkgMeas === 'ml' || pkgMeas === 'mililitros')) {
-    baseUnitsRequired = qty * 1000;
-  } else if ((reqUnit === 'gotas' || reqUnit === 'gota') && (pkgMeas === 'ml' || pkgMeas === 'g')) {
-    baseUnitsRequired = qty * 0.05; // 20 gotas = 1 ml o 1 g
-  } else if ((reqUnit === 'disparos' || reqUnit === 'disparo' || reqUnit === 'spray') && pkgMeas === 'ml') {
-    baseUnitsRequired = qty * 2; // ~2 ml por disparo de fijador
-  } else if ((reqUnit === 'click' || reqUnit === 'clicks' || reqUnit === 'impresion' || reqUnit === 'impresiones' || reqUnit === 'hoja' || reqUnit === 'hojas') && (pkgMeas === 'pza' || pkgMeas === 'pieza' || pkgMeas === 'hoja')) {
-    baseUnitsRequired = qty;
+  if ((reqUnit === 'gota' || reqUnit === 'gotas') && (pkgMeas === 'ml' || pkgMeas === 'g')) {
+    return Math.round(((qty * 0.05) / pkgQty) * 10000) / 10000;
   }
-
-  const stockUnitsDeducted = baseUnitsRequired / pkgQty;
-  return Math.round(stockUnitsDeducted * 10000) / 10000;
+  if ((reqUnit === 'disparo' || reqUnit === 'disparos' || reqUnit === 'spray') && pkgMeas === 'ml') {
+    return Math.round(((qty * 2) / pkgQty) * 10000) / 10000;
+  }
+  return Math.round(packageUnitsForQuantity(material, qty, requiredUnit) * 10000) / 10000;
 }
 
 const initialRawMaterials = [

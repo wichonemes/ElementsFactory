@@ -42,6 +42,7 @@ import {
   parseSku,
   suggestSkuForProduct
 } from '../utils/skuHelper';
+import { materialUnitCostFor } from '../../shared/units.js';
 import {
   DEFAULT_WORKSHOP_PARAMS,
   MAX_DISCOUNT_PERCENT,
@@ -2068,7 +2069,25 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     const currentRecipe = editorForm.manufacturingRecipe || { items: [] };
     const updatedItems = (currentRecipe.items || []).map(it => {
       if (it.id !== itemId) return it;
+      const normalizedName = String(it.name || '').toLowerCase();
+      const material = rawMaterialsList.find(m => m.id === it.materialId)
+        || rawMaterialsList.find(m => {
+          const materialName = String(m.name || '').toLowerCase();
+          return materialName && (normalizedName.includes(materialName) || materialName.includes(normalizedName));
+        });
       const updated = { ...it, [field]: value };
+
+      if (field === 'unitCost') updated.manualUnitCost = true;
+      if (field === 'manualUnitCost') {
+        updated.manualUnitCost = Boolean(value);
+        if (!value && material) {
+          updated.unitCost = Math.round(materialUnitCostFor(material, updated.unit || it.unit) * 10000) / 10000;
+        }
+      }
+      if (field === 'unit' && material && !it.manualUnitCost) {
+        updated.unitCost = Math.round(materialUnitCostFor(material, value) * 10000) / 10000;
+      }
+
       const net = field === 'netQuantity' ? Number(value) : (Number(updated.netQuantity) || 0);
       const waste = field === 'wasteQuantity' ? Number(value) : (Number(updated.wasteQuantity) || 0);
       updated.totalQuantity = Math.round((net + waste) * 100) / 100;

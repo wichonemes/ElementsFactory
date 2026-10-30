@@ -13,6 +13,7 @@ import {
   normalizeRecipeItems, inferSupplyType, enrichRecipeItems, materialUnitCost
 } from '../../shared/costing';
 import { parsePackageInfo, materialSupplyGroupFor, materialAreaFor } from './RawMaterialsSection';
+import { UNIT_OPTIONS, compatibleUnitsForMaterial, preferredUnitForMaterial, materialUnitCostFor, formatUnitCost } from '../../shared/units.js';
 
 const SUPPLY_GROUPS = [
   {
@@ -218,8 +219,9 @@ export default function ProductWorkshopTab({
   const [customName, setCustomName] = useState('');
   const [netQty, setNetQty] = useState(1);
   const [wasteQty, setWasteQty] = useState(0);
-  const [unit, setUnit] = useState('pza');
+  const [unit, setUnit] = useState('pieza');
   const [unitCost, setUnitCost] = useState('');
+  const [autoUnitCost, setAutoUnitCost] = useState(true);
   const [localMessage, setLocalMessage] = useState(null);
   const [simUnits, setSimUnits] = useState(1);
   const [expandedItemId, setExpandedItemId] = useState('');
@@ -271,6 +273,11 @@ export default function ProductWorkshopTab({
   const componentCost = componentGroup?.cost || 0;
 
   const selectedMaterial = rawMaterialsList.find(mat => mat.id === selectedMaterialId) || null;
+  const addUnitOptions = useMemo(() => {
+    if (!selectedMaterial) return UNIT_OPTIONS;
+    const allowed = compatibleUnitsForMaterial(selectedMaterial);
+    return UNIT_OPTIONS.filter(option => allowed.includes(option.value));
+  }, [selectedMaterial]);
   const linkedProducts = products.filter(product => product?.id && product.id !== editorForm?.id);
   const selectedComponent = linkedProducts.find(product => product.id === selectedComponentId) || null;
 
@@ -319,6 +326,8 @@ export default function ProductWorkshopTab({
       })
       .slice(0, 24);
   }, [rawMaterialsList, materialSearch, addGroup, activeMaterialAreaIds]);
+
+  const addTotalPreview = (number(netQty) + number(wasteQty)) * (number(unitCost) || 0);
 
   const activeAreas = AREAS.filter(area => {
     const techniques = editorForm?.techniques || [];
@@ -384,13 +393,19 @@ export default function ProductWorkshopTab({
     return nextSummary;
   };
 
+  useEffect(() => {
+    if (!autoUnitCost || !selectedMaterial) return;
+    setUnitCost(formatUnitCost(materialUnitCostFor(selectedMaterial, unit)));
+  }, [unit, selectedMaterial, autoUnitCost]);
+
   const resetAddForm = () => {
     setSelectedMaterialId('');
     setCustomName('');
     setNetQty(1);
     setWasteQty(0);
-    setUnit('pza');
+    setUnit('pieza');
     setUnitCost('');
+    setAutoUnitCost(true);
     setMaterialSearch('');
   };
 
@@ -398,12 +413,10 @@ export default function ProductWorkshopTab({
     setSelectedMaterialId(materialId);
     const mat = rawMaterialsList.find(item => item.id === materialId);
     if (!mat) return;
-    const pkg = parsePackageInfo(mat);
-    const resolvedUnit = pkg.packageMeasurement || 'pza';
-    const packageQty = number(pkg.packageQuantity, 1) || 1;
-    const packageCost = number(mat.costPerUnit ?? mat.packageCost, 0);
+    const resolvedUnit = preferredUnitForMaterial(mat);
     setUnit(resolvedUnit);
-    setUnitCost(packageCost > 0 ? (packageCost / packageQty).toFixed(4).replace(/0+$/, '').replace(/\.$/, '') : '');
+    setAutoUnitCost(true);
+    setUnitCost(formatUnitCost(materialUnitCostFor(mat, resolvedUnit)));
   };
 
   const addItem = () => {
@@ -434,6 +447,7 @@ export default function ProductWorkshopTab({
       category: mat?.category || (addGroup === 'production' ? 'services' : 'general'),
       supplyType: addGroup,
       manualGroup: true,
+      manualUnitCost: !autoUnitCost,
       netQuantity: qty,
       wasteQuantity: number(wasteQty, 0),
       wasteType: number(wasteQty, 0) > 0 ? 'trimming' : 'none',
@@ -775,8 +789,8 @@ export default function ProductWorkshopTab({
             <span className="text-gray-400">Cambia las áreas arriba si la receta usa otra técnica.</span>
           </div>
 
-          <div className="grid md:grid-cols-[1.5fr_repeat(4,minmax(0,.55fr))_auto] gap-2 items-end">
-            <div className="relative col-span-2 md:col-span-1">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-[1.4fr_repeat(5,minmax(0,.55fr))_auto] gap-2 items-end">
+            <div className="relative col-span-2 sm:col-span-3 lg:col-span-1">
               <label className="text-[9px] font-bold text-gray-500 uppercase">Buscar insumo</label>
               <div className="relative mt-0.5">
                 <Search className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
@@ -808,25 +822,55 @@ export default function ProductWorkshopTab({
             </div>
             <div>
               <label className="text-[9px] font-bold text-gray-500 uppercase">Unidad</label>
-              <input
-                type="text" value={unit}
+              <select
+                value={addUnitOptions.some(option => option.value === unit) ? unit : ''}
                 onChange={event => setUnit(event.target.value)}
                 className="w-full mt-0.5 px-2 py-2 rounded-xl border border-stone-300 bg-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-emerald-300"
+              >
+                {!addUnitOptions.some(option => option.value === unit) && (
+                  <option value="">{unit || 'Unidad'}</option>
+                )}
+                {addUnitOptions.map(option => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <div className="flex items-center justify-between gap-1">
+                <label className="text-[9px] font-bold text-gray-500 uppercase">Costo/u</label>
+                <button
+                  type="button"
+                  onClick={() => setAutoUnitCost(value => !value)}
+                  className={`text-[8px] font-black px-1 py-0.5 rounded border cursor-pointer ${
+                    autoUnitCost
+                      ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                      : 'bg-amber-50 border-amber-200 text-amber-800'
+                  }`}
+                  title={autoUnitCost ? 'Calculado desde el almacén. Clic para editar manualmente.' : 'Manual. Clic para volver a calcular automáticamente.'}
+                >
+                  {autoUnitCost ? 'AUTO' : 'MANUAL'}
+                </button>
+              </div>
+              <input
+                type="number" min="0" step="0.0001" value={unitCost}
+                onChange={event => { setAutoUnitCost(false); setUnitCost(event.target.value); }}
+                readOnly={autoUnitCost && Boolean(selectedMaterial)}
+                placeholder="Auto"
+                className={`w-full mt-0.5 px-2 py-2 rounded-xl border border-stone-300 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-emerald-300 ${
+                  autoUnitCost && selectedMaterial ? 'bg-stone-50 text-stone-500' : 'bg-white'
+                }`}
               />
             </div>
             <div>
-              <label className="text-[9px] font-bold text-gray-500 uppercase">Costo/u</label>
-              <input
-                type="number" min="0" step="0.0001" value={unitCost}
-                onChange={event => setUnitCost(event.target.value)}
-                placeholder="Auto"
-                className="w-full mt-0.5 px-2 py-2 rounded-xl border border-stone-300 bg-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-emerald-300"
-              />
+              <label className="text-[9px] font-bold text-gray-500 uppercase">Costo total</label>
+              <div className="w-full mt-0.5 px-2 py-2 rounded-xl border border-emerald-200 bg-emerald-50 text-xs font-mono font-black text-emerald-900">
+                {money(addTotalPreview)}
+              </div>
             </div>
             <button
               type="button"
               onClick={addItem}
-              className="col-span-2 md:col-span-1 h-[34px] inline-flex items-center justify-center gap-1 px-3 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white font-black text-xs transition-colors shadow-sm cursor-pointer active:scale-95"
+              className="col-span-2 sm:col-span-1 h-[34px] inline-flex items-center justify-center gap-1 px-3 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white font-black text-xs transition-colors shadow-sm cursor-pointer active:scale-95"
             >
               <Plus className="w-3.5 h-3.5" /> Agregar
             </button>
@@ -950,6 +994,9 @@ export default function ProductWorkshopTab({
                       </div>
                     ) : group.items.map(item => {
                       const material = materialForItem(item, rawMaterialsList);
+                      const itemUnitOptions = material
+                        ? UNIT_OPTIONS.filter(option => compatibleUnitsForMaterial(material).includes(option.value))
+                        : UNIT_OPTIONS;
                       const expanded = expandedItemId === item.id;
                       return (
                         <div key={item.id} className={`rounded-xl border p-2 transition-colors ${expanded ? 'border-emerald-300 bg-emerald-50/30' : 'border-stone-200 bg-white'}`}>
@@ -1007,18 +1054,42 @@ export default function ProductWorkshopTab({
                                 </div>
                                 <div>
                                   <span className="text-[8px] uppercase font-bold text-gray-400">Unidad</span>
-                                  <input
-                                    type="text" value={item.unit}
+                                  <select
+                                    value={itemUnitOptions.some(option => option.value === item.unit) ? item.unit : ''}
                                     onChange={event => onUpdateItem(item.id, 'unit', event.target.value)}
                                     className="w-full px-1.5 py-1 rounded-lg border border-stone-300 bg-white text-[10.5px] font-bold focus:outline-none focus:ring-1 focus:ring-emerald-300"
-                                  />
+                                  >
+                                    {!itemUnitOptions.some(option => option.value === item.unit) && (
+                                      <option value="">{item.unit || 'Unidad'}</option>
+                                    )}
+                                    {itemUnitOptions.map(option => (
+                                      <option key={option.value} value={option.value}>{option.label}</option>
+                                    ))}
+                                  </select>
                                 </div>
                                 <div>
-                                  <span className="text-[8px] uppercase font-bold text-gray-400">Costo/u</span>
+                                  <div className="flex items-center justify-between gap-1">
+                                    <span className="text-[8px] uppercase font-bold text-gray-400">Costo/u</span>
+                                    <button
+                                      type="button"
+                                      onClick={() => onUpdateItem(item.id, 'manualUnitCost', !item.manualUnitCost)}
+                                      className={`text-[7px] font-black px-1 py-0.5 rounded border cursor-pointer ${
+                                        item.manualUnitCost
+                                          ? 'bg-amber-50 border-amber-200 text-amber-800'
+                                          : 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                                      }`}
+                                      title={item.manualUnitCost ? 'Costo manual. Clic para calcular desde almacén.' : 'Costo automático desde almacén.'}
+                                    >
+                                      {item.manualUnitCost ? 'MANUAL' : 'AUTO'}
+                                    </button>
+                                  </div>
                                   <input
                                     type="number" min="0" step="0.0001" value={item.unitCost}
                                     onChange={event => onUpdateItem(item.id, 'unitCost', event.target.value)}
-                                    className="w-full px-1.5 py-1 rounded-lg border border-stone-300 bg-white text-[10.5px] font-bold focus:outline-none focus:ring-1 focus:ring-emerald-300"
+                                    readOnly={Boolean(material) && !item.manualUnitCost}
+                                    className={`w-full px-1.5 py-1 rounded-lg border border-stone-300 text-[10.5px] font-bold focus:outline-none focus:ring-1 focus:ring-emerald-300 ${
+                                      material && !item.manualUnitCost ? 'bg-stone-50 text-stone-500' : 'bg-white'
+                                    }`}
                                   />
                                 </div>
                                 <div>

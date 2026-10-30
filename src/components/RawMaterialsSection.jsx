@@ -11,6 +11,7 @@ import {
 
 import ShippingLogisticsSection from './ShippingLogisticsSection';
 import { getFilamentColor } from '../utils/colorUtils';
+import { packageUnitsForQuantity } from '../../shared/units.js';
 export { getFilamentColor };
 
 // Operadores y trabajadores de taller preconfigurados para testeo de mano de obra
@@ -240,34 +241,8 @@ export function materialSubfamilyFor(mat, familyId) {
 
 // Helper para convertir consumo de receta a unidades de stock de almacén de taller
 export function calculateMaterialStockDeduction(material, requiredQuantity, requiredUnit) {
-  const pkg = parsePackageInfo(material);
-  const reqUnit = (requiredUnit || 'pza').toLowerCase().trim();
-  const pkgMeas = (pkg.packageMeasurement || 'pza').toLowerCase().trim();
-  const pkgQty = Number(pkg.packageQuantity) || 1;
-  const qty = Number(requiredQuantity) || 0;
-
-  let baseUnitsRequired = qty;
-
-  if (reqUnit === pkgMeas) {
-    baseUnitsRequired = qty;
-  } else if ((reqUnit === 'g' || reqUnit === 'gr' || reqUnit === 'gramos') && (pkgMeas === 'kg' || pkgMeas === 'kilo')) {
-    baseUnitsRequired = qty / 1000;
-  } else if ((reqUnit === 'kg' || reqUnit === 'kilo') && (pkgMeas === 'g' || pkgMeas === 'gr' || pkgMeas === 'gramos')) {
-    baseUnitsRequired = qty * 1000;
-  } else if ((reqUnit === 'cm' || reqUnit === 'centimetros' || reqUnit === 'centímetros') && (pkgMeas === 'm' || pkgMeas === 'metros')) {
-    baseUnitsRequired = qty / 100;
-  } else if ((reqUnit === 'm' || reqUnit === 'metros') && (pkgMeas === 'cm' || pkgMeas === 'centimetros' || pkgMeas === 'centímetros')) {
-    baseUnitsRequired = qty * 100;
-  } else if ((reqUnit === 'ml' || reqUnit === 'mililitros') && (pkgMeas === 'l' || pkgMeas === 'litro' || pkgMeas === 'litros')) {
-    baseUnitsRequired = qty / 1000;
-  } else if ((reqUnit === 'l' || reqUnit === 'litro' || pkgMeas === 'litros') && (pkgMeas === 'ml' || pkgMeas === 'mililitros')) {
-    baseUnitsRequired = qty * 1000;
-  } else if ((reqUnit === 'hoja' || reqUnit === 'hojas') && (pkgMeas === 'pza' || pkgMeas === 'pieza' || pkgMeas === 'hoja')) {
-    baseUnitsRequired = qty;
-  }
-
-  const stockUnitsDeducted = baseUnitsRequired / pkgQty;
-  return Math.round(stockUnitsDeducted * 10000) / 10000;
+  const deduction = packageUnitsForQuantity(material, requiredQuantity, requiredUnit);
+  return Math.round(deduction * 10000) / 10000;
 }
 
 export const DEFAULT_MEXICO_SUPPLIERS = [
