@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect, useRef } from 'react';
 import { prepareImageForUpload } from '../utils/imageUpload';
+import { whiteStudioFile } from '../utils/whiteStudio';
 import {
   X, Camera, Upload, Sparkles, RefreshCw, CheckCircle2,
   AlertTriangle, RotateCcw, Info, ZoomIn, Eye, Sliders, Check
@@ -221,9 +222,21 @@ export default function ProductPhotoStudioModal({
     try {
       // Las fotos del celular pesan varios MB y el servidor acepta ~4 MB por petición: se comprimen antes de subir
       const compress = async (ref) => (ref.file ? await prepareImageForUpload(ref.file) : null);
-      const [frontFile, topFile, sideFile, detailFile] = await Promise.all([
+      const [compressedFront, topFile, sideFile, detailFile] = await Promise.all([
         compress(refFront), compress(refTop), compress(refSide), compress(refDetail)
       ]);
+
+      // Quita el fondo de la foto principal en el navegador (gratis) y la deja sobre blanco puro
+      let frontFile = compressedFront;
+      if (compressedFront) {
+        setGenerationStep('Quitando el fondo de la foto principal...');
+        try {
+          frontFile = await whiteStudioFile(compressedFront);
+        } catch (err) {
+          console.warn('No se pudo quitar el fondo:', err);
+          showToast('No se pudo quitar el fondo automáticamente. Se usará la foto original.', 'warning');
+        }
+      }
 
       const formData = new FormData();
       
@@ -291,7 +304,7 @@ export default function ProductPhotoStudioModal({
       if (data.warnings?.length) {
         showToast(data.warnings.join(' '), 'warning');
       } else {
-        showToast('¡4 tomas generadas con IA! Revisa cada una antes de aplicar.', 'success');
+        showToast('¡4 tomas generadas! Revisa cada una antes de aplicar.', 'success');
       }
     } catch (err) {
       console.error('Error al generar fotos:', err);
