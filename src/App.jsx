@@ -847,7 +847,6 @@ export default function App() {
       setSelectedCategory('all');
       setSelectedTechnique('all');
       setSearchQuery('');
-      setViewMode('catalog');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (tab === 'categories') {
       setIsCategoriesModalOpen(true);
@@ -1437,7 +1436,6 @@ export default function App() {
           setSelectedCategory('all');
           setSelectedTechnique('all');
           setSearchQuery('');
-          setViewMode('catalog');
           const el = document.getElementById('areas-section') || document.getElementById('catalogo-section');
           if (el) el.scrollIntoView({ behavior: 'smooth' });
         }}
@@ -1446,7 +1444,6 @@ export default function App() {
           setSelectedCategory('all');
           setSelectedTechnique('all');
           setSearchQuery('');
-          setViewMode('catalog');
           const el = document.getElementById('areas-section') || document.getElementById('catalogo-section');
           if (el) el.scrollIntoView({ behavior: 'smooth' });
         }}
@@ -1455,7 +1452,6 @@ export default function App() {
           setSelectedCategory('all');
           setSelectedTechnique('all');
           setSearchQuery('');
-          setViewMode('catalog');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
         onOpenCalculator={handleOpenCalculator}
