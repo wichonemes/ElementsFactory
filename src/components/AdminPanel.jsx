@@ -8649,7 +8649,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       className="w-full py-3 px-3.5 rounded-xl bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-md hover:shadow-amber-500/20 transition active:scale-98 cursor-pointer touch-manipulation"
                     >
                       <Camera className="w-4 h-4 text-slate-950" />
-                      <span>📸 Generar las 4 Fotos con IA (Frente, Arriba, Costado, Detalle)</span>
+                      <span>📸 Generar las 4 fotos del producto</span>
                     </button>
 
                     {/* 4 Miniaturas Táctiles del Estándar Oficial */}

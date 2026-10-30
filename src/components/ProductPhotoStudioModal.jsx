@@ -1,6 +1,7 @@
 ﻿import React, { useState, useEffect, useRef } from 'react';
 import { prepareImageForUpload } from '../utils/imageUpload';
 import { whiteStudioFile } from '../utils/whiteStudio';
+import SquareCropper from './SquareCropper';
 import {
   X, Camera, Upload, Sparkles, RefreshCw, CheckCircle2,
   AlertTriangle, RotateCcw, Info, ZoomIn, Eye, Sliders, Check
@@ -75,6 +76,7 @@ export default function ProductPhotoStudioModal({
   const [generationStep, setGenerationStep] = useState('');
   const [generationProgress, setGenerationProgress] = useState(0);
   const [generatedGallery, setGeneratedGallery] = useState(['', '', '', '']);
+  const [cropSource, setCropSource] = useState(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [staleSlots, setStaleSlots] = useState({ 0: false, 2: false, 3: false });
 
@@ -173,6 +175,11 @@ export default function ProductPhotoStudioModal({
     if (!file) return;
     if (!file.type.startsWith('image/')) {
       showToast('Por favor selecciona un archivo de imagen válido (JPG, PNG o WebP).', 'error');
+      return;
+    }
+
+    if (angleKey === 'front') {
+      setCropSource(file);
       return;
     }
 
@@ -518,14 +525,11 @@ export default function ProductPhotoStudioModal({
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-lg sm:text-xl font-bold tracking-tight text-white">
-                  Estudio Fotográfico de Catálogo (4 Tomas IA)
+                  Fotos del producto (4 tomas)
                 </h2>
-                <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-950/80 border border-emerald-600/50 text-emerald-300">
-                  <Sparkles className="w-3 h-3" /> Sharp Nativo · $0.00 MXN
-                </span>
               </div>
               <p className="text-xs text-slate-400">
-                1 a 4 fotos de referencia (celular o PC) → 4 tomas profesionales de catálogo en 1000 × 1000 WebP
+                Sube la foto principal, encuádrala cuadrada y se generan las 4 tomas de catálogo (1000 × 1000).
               </p>
             </div>
           </div>
@@ -548,6 +552,18 @@ export default function ProductPhotoStudioModal({
             </button>
           </div>
         </div>
+
+        {cropSource && (
+          <SquareCropper
+            file={cropSource}
+            onCancel={() => setCropSource(null)}
+            onApply={(squareFile) => {
+              setRefFront({ file: squareFile, preview: URL.createObjectURL(squareFile) });
+              setHasUnsavedChanges(true);
+              setCropSource(null);
+            }}
+          />
+        )}
 
         {/* Toast Notice */}
         {notice.text && (
@@ -1083,7 +1099,7 @@ export default function ProductPhotoStudioModal({
                         className="w-full py-1 px-2 rounded-lg text-[11px] font-medium bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-800 flex items-center justify-center gap-1 transition"
                       >
                         <RefreshCw className={`w-3 h-3 ${isReplacing ? 'animate-spin' : ''}`} />
-                        Regenerar toma con IA
+                        Regenerar toma
                       </button>
 
                     </div>
