@@ -4,6 +4,8 @@ export const UNIT_OPTIONS = [
   { value: 'ml', label: 'Mililitros (ml)' },
   { value: 'l', label: 'Litros (L)' },
   { value: 'pieza', label: 'Pieza' },
+  { value: 'placa', label: 'Placa' },
+  { value: 'tabla', label: 'Tabla' },
   { value: 'pliego', label: 'Pliego' },
   { value: 'hoja', label: 'Hoja' },
   { value: 'm', label: 'Metro (m)' },
@@ -23,6 +25,8 @@ const UNIT_ALIASES = {
   ml: 'ml', mililitro: 'ml', mililitros: 'ml',
   l: 'l', lt: 'l', litro: 'l', litros: 'l',
   pza: 'pieza', pzas: 'pieza', pieza: 'pieza', piezas: 'pieza',
+  placa: 'placa', placas: 'placa',
+  tabla: 'tabla', tablas: 'tabla',
   pliego: 'pliego', pliegos: 'pliego',
   hoja: 'hoja', hojas: 'hoja',
   m: 'm', metro: 'm', metros: 'm',
@@ -53,6 +57,13 @@ function parsePackage(material = {}) {
 
   const name = String(material.name || '');
   const unitText = String(material.unit || '');
+  const flatUnit = unitText.match(/^(placa|tabla|lamina|lámina|hoja|pieza|pza|metro|metros|m)\b/i);
+  if (flatUnit) {
+    return {
+      quantity: 1,
+      measurement: normalizeUnit(flatUnit[1])
+    };
+  }
 
   // Sets de tintas: "Set 4x100ml" => 400 ml.
   const volumeSet = name.match(/(\d+)\s*[x×]\s*([\d.,]+)\s*(ml|l)\b/i);
@@ -126,6 +137,8 @@ export function compatibleUnitsForMaterial(material) {
     cm: ['m', 'cm'],
     hoja: ['hoja', 'pieza'],
     pliego: ['pliego', 'pieza'],
+    placa: ['placa', 'pieza'],
+    tabla: ['tabla', 'pieza'],
     pieza: ['pieza'],
     rollo: ['rollo'],
     lote: ['lote'],
