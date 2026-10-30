@@ -6450,7 +6450,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             Costos de Producción, Márgenes & Ganancias
                           </h4>
                           <p className="text-xs text-gray-500">
-                            Fórmulas financieras en vivo: Ganancia = Venta − Costo · Margen % = Ganancia / Venta · Objetivo: {workshopParams.targetMarginPercent}%.
+                            Fórmulas financieras en vivo: Ganancia = Venta - Costo - Comisión · Costos con IVA {workshopParams.ivaPercent ?? 16}% y reserva de fallas {workshopParams.failureReservePercent || 3}% · Objetivo: {workshopParams.targetMarginPercent}%.
                           </p>
                         </div>
                       </div>

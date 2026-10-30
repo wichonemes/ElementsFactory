@@ -1,4 +1,4 @@
-﻿import React, { useMemo, useState } from 'react';
+﻿import React, { useEffect, useMemo, useState } from 'react';
 import {
   Wrench, Boxes, Plus, Trash2, ChevronDown, ChevronRight, Link2,
   Calculator, Zap, Clock, DollarSign, Package, Layers, Paintbrush,
@@ -245,6 +245,25 @@ export default function ProductWorkshopTab({
       };
     });
   }, [items]);
+
+  // Abre los grupos que ya tienen insumos para que el componente no quede oculto.
+  useEffect(() => {
+    const groupsWithItems = groupData
+      .filter(group => group.id !== 'component' && group.items.length > 0)
+      .map(group => group.id);
+    if (groupsWithItems.length === 0) return;
+    setOpenGroups(prev => {
+      const next = new Set(prev);
+      let changed = false;
+      groupsWithItems.forEach(groupId => {
+        if (!next.has(groupId)) {
+          next.add(groupId);
+          changed = true;
+        }
+      });
+      return changed ? next : prev;
+    });
+  }, [groupData]);
 
   const ownGroups = groupData.filter(group => group.id !== 'component');
   const ownCost = ownGroups.reduce((sum, group) => sum + group.cost, 0);
