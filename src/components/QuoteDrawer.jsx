@@ -31,10 +31,15 @@ export default function QuoteDrawer({
   const [deliveryNotes, setDeliveryNotes] = useState('');
   const [quoteNotes, setQuoteNotes] = useState('');
   const [taxMode, setTaxMode] = useState('included');
-  const [quoteFolio] = useState(() => buildQuoteFolio());
+  const [quoteFolio, setQuoteFolio] = useState(() => buildQuoteFolio());
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const [pdfError, setPdfError] = useState('');
   const [copied, setCopied] = useState(false);
+
+  // Cada nuevo carrito recibe un folio nuevo para la cotización.
+  useEffect(() => {
+    if (items.length === 0) setQuoteFolio(buildQuoteFolio());
+  }, [items.length]);
 
   // Cupones activos cargados desde el servidor con fallback estático
   const [serverCoupons, setServerCoupons] = useState([]);
