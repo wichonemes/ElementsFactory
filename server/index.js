@@ -2344,7 +2344,7 @@ if (fs.existsSync(distIndex)) {
     try {
       const baseHtml = fs.readFileSync(distIndex, 'utf8');
       const proto = req.headers['x-forwarded-proto'] || (req.secure ? 'https' : 'https');
-      const host = req.headers['x-forwarded-host'] || req.headers['host'] || 'artesano-digital.onrender.com';
+      const host = req.headers['x-forwarded-host'] || req.headers['host'] || 'artesano-digital.vercel.app';
       const baseUrl = `${proto}://${host}`;
 
       const targetProdCode = (req.query.prod || '').trim().toUpperCase();

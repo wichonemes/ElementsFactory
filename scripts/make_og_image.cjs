@@ -63,7 +63,7 @@ async function makeOg() {
       <text x="310" y="501" fill="#FFFFFF" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="18" text-anchor="middle">💬 Cotizaciones Directas por WhatsApp</text>
       
       <!-- Dominio web oficial -->
-      <text x="1100" y="502" fill="#D4A359" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="19" text-anchor="end">artesano-digital.onrender.com</text>
+      <text x="1100" y="502" fill="#D4A359" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="19" text-anchor="end">artesano-digital.vercel.app</text>
     </svg>
   `);
   

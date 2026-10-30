@@ -23,7 +23,7 @@ if %ERRORLEVEL% equ 0 (
     echo Notificando y forzando despliegue en Render...
     curl -s -X POST "https://api.render.com/deploy/srv-db8lvr6q1p3s73bk1660?key=gYGPX7kR1QQ" > nul
     echo Despliegue en curso en:
-    echo https://artesano-digital.onrender.com/
+    echo https://artesano-digital.vercel.app/
 ) else (
     echo.
     echo [AVISO] Si te solicitó credenciales o falló la subida por Git,
