@@ -239,14 +239,19 @@ export default function MobileCatalogAdminSection({
   // Archivos grandes: subida directa a Blob (evita el límite de 4.5 MB de la función) y registro en el catálogo
   const uploadLargeCatalog = async (file, cleanName, form, editing) => {
     const authHeaders = authToken ? { Authorization: `Bearer ${authToken}` } : {};
-    const blob = await upload(`catalogo/${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`, file, {
-      access: 'public',
-      handleUploadUrl: '/api/admin/blob/client-token',
-      headers: authHeaders,
-      contentType: file.type || 'application/pdf',
-      multipart: file.size > 8 * 1024 * 1024,
-      onUploadProgress: ({ percentage }) => setUploadProgress(Math.min(95, Math.round(percentage)))
-    });
+    let blob;
+    try {
+      blob = await upload(`catalogo/${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`, file, {
+        access: 'public',
+        handleUploadUrl: '/api/admin/blob/client-token',
+        headers: authHeaders,
+        contentType: file.type || 'application/pdf',
+        multipart: file.size > 8 * 1024 * 1024,
+        onUploadProgress: ({ percentage }) => setUploadProgress(Math.min(95, Math.round(percentage)))
+      });
+    } catch (uploadErr) {
+      throw new Error(`No se pudo subir el PDF grande (más de 4 MB). ${uploadErr.message}`);
+    }
     const response = await fetch('/api/admin/catalog-pdf/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', ...authHeaders },
