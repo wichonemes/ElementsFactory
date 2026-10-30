@@ -313,13 +313,27 @@ export default function ProductWorkshopTab({
     return inferred === groupId;
   };
 
+  // Los acabados (barniz, tinte, pintura...) son de una técnica concreta:
+  // barniz/tinte de madera no debe aparecer en una pieza 3D o de vinil.
+  const finishAreaFor = (mat) => {
+    const text = normalizeText(`${mat?.name || ''} ${mat?.category || ''}`);
+    if (!/barniz|tinte|pintura|laca|esmalte|sellador|acabado/.test(text)) return null;
+    if (/vinil|vinyl/.test(text)) return 'vinyl';
+    if (/acrilic|acrílico/.test(text)) return 'laser';
+    if (/taza|termo|tarro|sublim/.test(text)) return 'sublimation';
+    if (/filamento|\bpla\b|petg|\btpu\b|\babs\b/.test(text)) return '3d';
+    return 'laser'; // barniz o tinte genérico: se usa en madera (láser)
+  };
+
   const materialResults = useMemo(() => {
     const query = normalizeText(materialSearch.trim());
     return rawMaterialsList
       .filter(mat => {
         const groupOk = materialMatchesGroup(mat, addGroup);
-        const matArea = materialAreaFor(mat);
-        const sharedArea = ['consumables', 'packaging', 'other'].includes(matArea);
+        const finishArea = finishAreaFor(mat);
+        const matArea = finishArea || materialAreaFor(mat);
+        // Consumibles genéricos, herrajes, empaques y otros son comunes a todas las técnicas.
+        const sharedArea = !finishArea && ['consumables', 'packaging', 'other', 'assembly'].includes(matArea);
         const areaOk = activeMaterialAreaIds.length === 0
           || sharedArea
           || activeMaterialAreaIds.includes(matArea);

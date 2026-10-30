@@ -3866,6 +3866,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       await loadAllData();
       if (onRefreshCatalog) onRefreshCatalog();
       if (targetStatus === 'draft') {
+        setActiveTab('products');
         setFilterStatus('draft');
         setDraftNotice(`Borrador guardado: "${payload.name}". Se muestra abajo con el filtro Borrador; aquí lo puedes abrir y terminar.`);
       }

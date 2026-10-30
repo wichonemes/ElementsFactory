@@ -2325,8 +2325,11 @@ app.post('/api/admin/catalog-pdf/reset', requireAdmin, (_req, res) => {
 
 app.use('/api', (_req, res) => res.status(404).json({ error: 'Ruta no encontrada.' }));
 app.use((error, _req, res, _next) => {
-  const message = error?.message || (error instanceof multer.MulterError ? 'El archivo excede el tamaño máximo permitido.' : 'No fue posible procesar la solicitud.');
-  res.status(400).json({ error: message });
+  const tooLarge = (error instanceof multer.MulterError && error.code === 'LIMIT_FILE_SIZE') || error?.status === 413;
+  const message = tooLarge
+    ? 'La imagen es demasiado pesada (máximo 15 MB por archivo). Usa una foto más ligera.'
+    : (error?.message || 'No fue posible procesar la solicitud.');
+  res.status(tooLarge ? 413 : 400).json({ error: message });
 });
 
 // Fallback for SPA routing if dist exists con soporte para Open Graph dinámico en WhatsApp

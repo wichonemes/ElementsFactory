@@ -28,6 +28,7 @@ import CatalogSelectorModal from './components/CatalogSelectorModal';
 import { useFlashDeal } from './hooks/useFlashDeal';
 import { Home, Briefcase, CalendarHeart, Sparkles, ChevronRight, ShoppingBag, Layers, MessageCircle, Gift, RotateCw, Calendar, AlertTriangle, MapPin, Truck, Gamepad2 } from 'lucide-react';
 import { formatServiceDate } from './utils/serviceStatus';
+import { packageAreas } from './utils/packageAreas';
 import { playCoinSound, playSoftAreaSwitchSound, playMarioPowerDownSound } from './utils/soundEffects';
 import { getOptimizedSrcSet, HERO_IMAGE_SIZES } from './utils/imageOptimization';
 import catalogFallbackData from './data/catalogFallback.json';
@@ -401,9 +402,13 @@ export default function App() {
     });
   }, [products, activeWorld, selectedCategory, selectedTechnique, searchQuery]);
 
-  // Paquetes para la vista actual (Inicio o Área seleccionada) — rotados dinámicamente
+  // Paquetes para la vista actual (Inicio o Área seleccionada) — rotados dinámicamente.
+  // Los paquetes viven en el área "Paquetes", así que en cada área se muestran
+  // los que tienen esa área comercial (bundleAreas), no por "worlds".
   const currentAreaPackages = useMemo(() => {
-    const list = products.filter(p => p.isBundle && (activeWorld === 'all' || p.worlds?.includes(activeWorld)));
+    const list = products.filter(p => p.isBundle && (
+      activeWorld === 'all' || packageAreas(p).includes(activeWorld)
+    ));
     if (!list || list.length === 0) return [];
 
     let s = ((catalogSeed + 7129) * 9301 + 49297) % 233280;
@@ -513,6 +518,26 @@ export default function App() {
     return result;
   }, [filteredProducts, flashDeal?.activeFlashProductIds, catalogSeed, activeWorld, selectedCategory, selectedTechnique, searchQuery]);
 
+  // Conteos reales por área y paquetes, para el menú de navegación del catálogo
+  const catalogAreasSummary = useMemo(() => {
+    const counts = {};
+    let total = 0;
+    const bundles = [];
+    for (const p of products) {
+      if (p.status && p.status !== 'published') continue;
+      if (p.isBundle) {
+        bundles.push(p);
+        continue;
+      }
+      total += 1;
+      const worlds = Array.isArray(p.worlds) ? p.worlds : [];
+      for (const w of new Set(worlds)) {
+        counts[w] = (counts[w] || 0) + 1;
+      }
+    }
+    return { counts, total, bundles };
+  }, [products]);
+
   // Bucle infinito estilo Marketplace en la pantalla principal (scrolleo continuo de catálogo)
   const [infiniteLoopBatches, setInfiniteLoopBatches] = useState(1);
   const infiniteSentinelRef = useRef(null);
@@ -601,9 +626,16 @@ export default function App() {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   };
 
-  // Jump directly to an area to see its products and packages
+  // Jump directly to the packages view for a given area (or all)
   const handleSelectPackages = (area = 'all') => {
-    handleSelectWorld(area === 'all' ? 'all' : area);
+    playSoftAreaSwitchSound();
+    setSearchQuery('');
+    setPackagesInitialArea(area || 'all');
+    setActiveWorld('paquetes-servicios');
+    setSelectedCategory('all');
+    setSelectedTechnique('all');
+    setCatalogSeed(Date.now());
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   };
 
   // Cart operations
@@ -1290,6 +1322,9 @@ export default function App() {
                   <CatalogBottomNav
                     activeWorld={activeWorld}
                     currentWorldName={currentWorldObj?.name}
+                    productCounts={catalogAreasSummary.counts}
+                    bundles={catalogAreasSummary.bundles}
+                    totalProductCount={catalogAreasSummary.total}
                     onSelectWorld={handleSelectWorld}
                     onSelectPackages={handleSelectPackages}
                     onScrollToTop={() => {

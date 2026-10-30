@@ -76,6 +76,8 @@ export default function ProductPhotoStudioModal({
   const [generationStep, setGenerationStep] = useState('');
   const [generationProgress, setGenerationProgress] = useState(0);
   const [generatedGallery, setGeneratedGallery] = useState(['', '', '', '']);
+  const [generationError, setGenerationError] = useState('');
+  const [generationWarnings, setGenerationWarnings] = useState([]);
   const [cropSource, setCropSource] = useState(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [staleSlots, setStaleSlots] = useState({ 0: false, 2: false, 3: false });
@@ -215,30 +217,49 @@ export default function ProductPhotoStudioModal({
     }
   };
 
-  // Generate all 4 images
-  const handleGenerateAll = async () => {
-    if (!refFront.file && !refFront.preview) {
+  // Generate all 4 images. `frontOverride` permite generar justo después del encuadre,
+  // sin esperar a que React actualice el estado de la foto frontal.
+  const handleGenerateAll = async (frontOverride = null) => {
+    if (isGenerating) return;
+    const frontRef = frontOverride ? { file: frontOverride, preview: '' } : refFront;
+    if (!frontRef.file && !frontRef.preview) {
       showToast('Por favor sube o toma al menos la fotografía frontal (principal) de referencia.', 'warning');
       return;
     }
 
     setIsGenerating(true);
+    setGenerationError('');
+    setGenerationWarnings([]);
     setGenerationProgress(10);
     setGenerationStep('Iniciando toma 2: Fondo blanco puro (#FFFFFF) centrado...');
 
     try {
       // Las fotos del celular pesan varios MB y el servidor acepta ~4 MB por petición: se comprimen antes de subir
-      const compress = async (ref) => (ref.file ? await prepareImageForUpload(ref.file) : null);
+      const compress = async (ref) => (ref?.file ? await prepareImageForUpload(ref.file) : null);
       const [compressedFront, topFile, sideFile, detailFile] = await Promise.all([
-        compress(refFront), compress(refTop), compress(refSide), compress(refDetail)
+        compress(frontRef), compress(refTop), compress(refSide), compress(refDetail)
       ]);
 
-      // Quita el fondo de la foto principal en el navegador (gratis) y la deja sobre blanco puro
+      // Quita el fondo de la foto principal en el navegador (gratis) y la deja sobre blanco puro.
+      // La primera vez descarga un modelo grande: si tarda demasiado, se sigue con la foto original
+      // para que la generación no se quede "trabada".
       let frontFile = compressedFront;
       if (compressedFront) {
         setGenerationStep('Quitando el fondo de la foto principal...');
         try {
-          frontFile = await whiteStudioFile(compressedFront);
+          const removal = whiteStudioFile(compressedFront).catch(err => {
+            console.warn('No se pudo quitar el fondo:', err);
+            return null;
+          });
+          const timeout = new Promise(resolve => setTimeout(() => resolve('timeout'), 30000));
+          const result = await Promise.race([removal, timeout]);
+          if (result === 'timeout') {
+            showToast('El recorte de fondo está tardando. Seguimos con tu foto original y el servidor la deja sobre blanco.', 'warning');
+          } else if (result) {
+            frontFile = result;
+          } else {
+            showToast('No se pudo quitar el fondo automáticamente. Se usará la foto original.', 'warning');
+          }
         } catch (err) {
           console.warn('No se pudo quitar el fondo:', err);
           showToast('No se pudo quitar el fondo automáticamente. Se usará la foto original.', 'warning');
@@ -308,14 +329,20 @@ export default function ProductPhotoStudioModal({
       setGeneratedGallery(data.gallery);
       setHasUnsavedChanges(true);
       setStaleSlots({ 0: false, 2: false, 3: false });
-      if (data.warnings?.length) {
-        showToast(data.warnings.join(' '), 'warning');
+      const warns = Array.isArray(data.warnings) ? data.warnings.filter(Boolean) : [];
+      setGenerationWarnings(warns);
+      if (warns.length) {
+        showToast(warns.join(' '), 'warning');
       } else {
         showToast('¡4 tomas generadas! Revisa cada una antes de aplicar.', 'success');
       }
     } catch (err) {
       console.error('Error al generar fotos:', err);
-      showToast(`Error al procesar: ${err.message}`, 'error');
+      const message = /Failed to fetch|NetworkError|Load failed/i.test(err.message || '')
+        ? 'No hubo conexión con el servidor (puede ser el tamaño de las fotos o tu internet). Intenta de nuevo.'
+        : err.message;
+      setGenerationError(message || 'No se pudieron generar las fotos.');
+      showToast(`Error al procesar: ${message}`, 'error');
     } finally {
       setIsGenerating(false);
     }
@@ -561,6 +588,8 @@ export default function ProductPhotoStudioModal({
               setRefFront({ file: squareFile, preview: URL.createObjectURL(squareFile) });
               setHasUnsavedChanges(true);
               setCropSource(null);
+              // Genera las otras 3 tomas en automático: el usuario solo sube una foto
+              setTimeout(() => { handleGenerateAll(squareFile); }, 60);
             }}
           />
         )}
@@ -905,6 +934,25 @@ export default function ProductPhotoStudioModal({
                         style={{ width: `${generationProgress}%` }}
                       />
                     </div>
+                  </div>
+                )}
+                {generationError && !isGenerating && (
+                  <div className="mt-2 max-w-xl px-3 py-2 rounded-lg bg-rose-950/80 border border-rose-700 text-[11px] text-rose-200 flex items-start gap-2">
+                    <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+                    <span>
+                      <strong className="block">No se pudieron generar las fotos.</strong>
+                      {generationError}
+                    </span>
+                  </div>
+                )}
+                {generationWarnings.length > 0 && !isGenerating && (
+                  <div className="mt-2 max-w-xl px-3 py-2 rounded-lg bg-amber-950/70 border border-amber-700 text-[11px] text-amber-200">
+                    {generationWarnings.map((w, i) => (
+                      <p key={i} className="flex items-start gap-1.5">
+                        <AlertTriangle className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
+                        <span>{w}</span>
+                      </p>
+                    ))}
                   </div>
                 )}
               </div>

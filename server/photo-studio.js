@@ -22,12 +22,18 @@ if (!fs.existsSync(uploadsDir)) {
  * - Si local / disco, lo escribe en public/uploads/ y retorna la URL pública /uploads/...
  */
 export async function persistProcessedImage(buffer, filename) {
-  if (cloudDb.enabled) {
+  // En Vercel no hay disco persistente servible: si guardáramos en /tmp la URL
+  // quedaría rota (404) y el estudio parecería "no generar" las fotos.
+  const mustUseCloud = cloudDb.enabled || Boolean(process.env.VERCEL);
+  if (mustUseCloud) {
     try {
       const stored = await storeImage(buffer);
       return stored.url;
     } catch (err) {
-      console.warn('Fallo al subir a Supabase, guardando localmente en disco:', err.message);
+      console.warn('Fallo al subir la imagen al almacenamiento en la nube:', err.message);
+      if (process.env.VERCEL) {
+        throw new Error(`No se pudo guardar la imagen generada en el almacenamiento (${err.message}). Revisa la configuración de Vercel Blob.`);
+      }
     }
   }
 
