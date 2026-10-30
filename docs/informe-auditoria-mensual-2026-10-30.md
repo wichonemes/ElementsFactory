@@ -160,11 +160,13 @@ Con la comisión de tarjeta/terminal (4.1%) el margen neto real quedó por debaj
 
 ## 7. Pendientes sugeridos para el próximo ciclo
 
-1. Completar `customizationOptions` y `availability` en los productos personalizables restantes (15 detectados en revisión previa).
-2. Normalizar unidades/paquetes en el almacén.
+1. ~~Completar `customizationOptions` y `availability` en los productos personalizables restantes (15 detectados en revisión previa).~~ **✅ Completado en este ciclo** (15 productos: opciones de personalización y disponibilidad `made_to_order`).
+2. ~~Normalizar unidades/paquetes en el almacén.~~ **✅ Completado en este ciclo** (173 insumos normalizados; sin cambios en costos unitarios).
 3. Vincular paquetes a SKUs de productos reales.
 4. Registrar el borrador inicial del nuevo flujo de pedidos con anticipo 50% en el libro.
 5. Publicar informe mensual en `docs/`.
+
+> **Cierre de beta (30/10/2026):** los tres primeros pendientes quedaron resueltos. Estado final: catálogo sin errores críticos, costos reconciliados, márgenes ≥ objetivo y flujos de producción operativos. Quedan pendientes de negocio: persistencia de BD en Vercel y vinculación fina de paquetes a SKUs.
 
 ---
 

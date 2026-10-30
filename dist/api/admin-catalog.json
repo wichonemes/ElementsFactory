@@ -223,7 +223,13 @@
         "ivaPercent": 16,
         "includeIvaInCost": true,
         "ivaCost": 30.74
-      }
+      },
+      "customizationOptions": [
+        "Rostro y rasgos faciales",
+        "Vestimenta y pose",
+        "Escala (mini / estándar)"
+      ],
+      "availability": "made_to_order"
     },
     {
       "id": "colgador-llaves-l14",
@@ -15973,7 +15979,13 @@
         "ivaPercent": 16,
         "includeIvaInCost": true,
         "ivaCost": 30.74
-      }
+      },
+      "customizationOptions": [
+        "Especie",
+        "Rasgos de pelaje",
+        "Caja POP! Custom"
+      ],
+      "availability": "made_to_order"
     },
     {
       "id": "figuras-funko-parejas",
@@ -16206,7 +16218,12 @@
         "ivaPercent": 16,
         "includeIvaInCost": true,
         "ivaCost": 54.14
-      }
+      },
+      "customizationOptions": [
+        "Ocasión",
+        "Formato de caja conmemorativa"
+      ],
+      "availability": "made_to_order"
     },
     {
       "id": "figuras-funko-profesiones",
@@ -16442,7 +16459,12 @@
         "ivaPercent": 16,
         "includeIvaInCost": true,
         "ivaCost": 33.81
-      }
+      },
+      "customizationOptions": [
+        "Área profesional",
+        "Accesorio principal"
+      ],
+      "availability": "made_to_order"
     },
     {
       "id": "figuras-funko-amigos",
@@ -16668,7 +16690,12 @@
         "ivaPercent": 16,
         "includeIvaInCost": true,
         "ivaCost": 54.14
-      }
+      },
+      "customizationOptions": [
+        "Cantidad de figuras",
+        "Hobby / pasatiempo personalizado"
+      ],
+      "availability": "made_to_order"
     },
     {
       "id": "figuras-funko-familia",
@@ -16894,7 +16921,12 @@
         "ivaPercent": 16,
         "includeIvaInCost": true,
         "ivaCost": 74.17
-      }
+      },
+      "customizationOptions": [
+        "Integrantes de la familia",
+        "Extras (mascota / hobby)"
+      ],
+      "availability": "made_to_order"
     },
     {
       "id": "figuras-funko-abuelitos",
@@ -17120,7 +17152,12 @@
         "ivaPercent": 16,
         "includeIvaInCost": true,
         "ivaCost": 55.46
-      }
+      },
+      "customizationOptions": [
+        "Presentación del homenaje",
+        "Dedicatoria conmemorativa"
+      ],
+      "availability": "made_to_order"
     },
     {
       "id": "de-dibujo-a-figura-3d",
@@ -17299,7 +17336,12 @@
         "ivaPercent": 16,
         "includeIvaInCost": true,
         "ivaCost": 32.9
-      }
+      },
+      "customizationOptions": [
+        "Tamaño de la escultura",
+        "Base con nombre y año"
+      ],
+      "availability": "made_to_order"
     },
     {
       "id": "de-dibujo-a-figura-3d-ajolote",
@@ -17478,7 +17520,12 @@
         "ivaPercent": 16,
         "includeIvaInCost": true,
         "ivaCost": 32.9
-      }
+      },
+      "customizationOptions": [
+        "Tamaño de la escultura",
+        "Base con nombre y año"
+      ],
+      "availability": "made_to_order"
     },
     {
       "id": "de-dibujo-a-figura-3d-dinosaurio",
@@ -17657,7 +17704,12 @@
         "ivaPercent": 16,
         "includeIvaInCost": true,
         "ivaCost": 32.9
-      }
+      },
+      "customizationOptions": [
+        "Tamaño de la escultura",
+        "Base con nombre y año"
+      ],
+      "availability": "made_to_order"
     },
     {
       "id": "de-dibujo-a-figura-3d-cohete",
@@ -17836,7 +17888,12 @@
         "ivaPercent": 16,
         "includeIvaInCost": true,
         "ivaCost": 32.9
-      }
+      },
+      "customizationOptions": [
+        "Tamaño de la escultura",
+        "Base con nombre y año"
+      ],
+      "availability": "made_to_order"
     },
     {
       "id": "de-dibujo-a-figura-3d-coche",
@@ -18015,7 +18072,12 @@
         "ivaPercent": 16,
         "includeIvaInCost": true,
         "ivaCost": 32.9
-      }
+      },
+      "customizationOptions": [
+        "Tamaño de la escultura",
+        "Base con nombre y año"
+      ],
+      "availability": "made_to_order"
     },
     {
       "id": "de-dibujo-a-figura-3d-monstruo",
@@ -18194,7 +18256,12 @@
         "ivaPercent": 16,
         "includeIvaInCost": true,
         "ivaCost": 32.9
-      }
+      },
+      "customizationOptions": [
+        "Tamaño de la escultura",
+        "Base con nombre y año"
+      ],
+      "availability": "made_to_order"
     },
     {
       "id": "de-dibujo-a-figura-3d-castillo",
@@ -18373,7 +18440,12 @@
         "ivaPercent": 16,
         "includeIvaInCost": true,
         "ivaCost": 32.9
-      }
+      },
+      "customizationOptions": [
+        "Tamaño de la escultura",
+        "Base con nombre y año"
+      ],
+      "availability": "made_to_order"
     },
     {
       "id": "clicker-mecanico-fidget-t42",
@@ -18570,7 +18642,12 @@
         "ivaPercent": 16,
         "includeIvaInCost": true,
         "ivaCost": 5.23
-      }
+      },
+      "customizationOptions": [
+        "Color de carcasa",
+        "Tipo de switch mecánico"
+      ],
+      "availability": "made_to_order"
     }
   ],
   "categories": [
@@ -20431,7 +20508,9 @@
       "supplierId": "sup-printlab",
       "supplier": "PrintLab México 3D",
       "notes": "Color institucional distintivo de Artesano Digital. Acabado mate sedoso sin brillo plástico.",
-      "updatedAt": "2026-10-15T01:15:51.460Z"
+      "updatedAt": "2026-10-15T01:15:51.460Z",
+      "packageQuantity": 1,
+      "packageMeasurement": "kg"
     },
     {
       "id": "mat-pla-blanco",
@@ -20447,7 +20526,9 @@
       "supplierId": "sup-printlab",
       "supplier": "PrintLab México 3D",
       "notes": "Tono cálido orgánico para lámparas, macetas y letras en relieve.",
-      "updatedAt": "2026-10-15T00:58:14.636Z"
+      "updatedAt": "2026-10-15T00:58:14.636Z",
+      "packageQuantity": 1,
+      "packageMeasurement": "kg"
     },
     {
       "id": "mat-pla-negro",
@@ -20462,7 +20543,9 @@
       "costPerUnit": 500,
       "supplierId": "sup-printlab",
       "supplier": "PrintLab México 3D",
-      "notes": "Base universal de alto contraste para soportes gamer, Smart Decks y organizadores."
+      "notes": "Base universal de alto contraste para soportes gamer, Smart Decks y organizadores.",
+      "packageQuantity": 1,
+      "packageMeasurement": "kg"
     },
     {
       "id": "mat-pla-terracota",
@@ -20478,7 +20561,9 @@
       "supplierId": "sup-printlab",
       "supplier": "PrintLab México 3D",
       "notes": "Tono cálido ideal para macetas de interior, figuras botánicas y colección hogar.",
-      "updatedAt": "2026-10-15T00:15:57.450Z"
+      "updatedAt": "2026-10-15T00:15:57.450Z",
+      "packageQuantity": 1,
+      "packageMeasurement": "kg"
     },
     {
       "id": "mat-pla-mostaza",
@@ -20493,7 +20578,9 @@
       "costPerUnit": 520,
       "supplierId": "sup-printlab",
       "supplier": "PrintLab México 3D",
-      "notes": "Tono cálido colonial mexicano para piezas de diseño y acentos decorativos."
+      "notes": "Tono cálido colonial mexicano para piezas de diseño y acentos decorativos.",
+      "packageQuantity": 1,
+      "packageMeasurement": "kg"
     },
     {
       "id": "mat-pla-madera",
@@ -20508,7 +20595,9 @@
       "costPerUnit": 680,
       "supplierId": "sup-printlab",
       "supplier": "PrintLab México 3D",
-      "notes": "Compuesto con 20% fibras de pino reciclado. Se puede lijar, teñir y huele a madera al imprimir."
+      "notes": "Compuesto con 20% fibras de pino reciclado. Se puede lijar, teñir y huele a madera al imprimir.",
+      "packageQuantity": 1,
+      "packageMeasurement": "kg"
     },
     {
       "id": "mat-pla-seda-cobre",
@@ -20524,7 +20613,9 @@
       "supplierId": "sup-printlab",
       "supplier": "PrintLab México 3D",
       "notes": "Acabado metálico satinado ultrabrillante para trofeos, placas y números de mesa.",
-      "updatedAt": "2026-10-15T00:16:01.866Z"
+      "updatedAt": "2026-10-15T00:16:01.866Z",
+      "packageQuantity": 1,
+      "packageMeasurement": "kg"
     },
     {
       "id": "mat-pla-seda-oro",
@@ -20539,7 +20630,9 @@
       "costPerUnit": 560,
       "supplierId": "sup-printlab",
       "supplier": "PrintLab México 3D",
-      "notes": "Especial para eventos VIP, bodas y aniversarios de negocios."
+      "notes": "Especial para eventos VIP, bodas y aniversarios de negocios.",
+      "packageQuantity": 1,
+      "packageMeasurement": "kg"
     },
     {
       "id": "mat-pla-marmol",
@@ -20555,7 +20648,9 @@
       "supplierId": "sup-printlab",
       "supplier": "PrintLab México 3D",
       "notes": "Base blanca con partículas oscuras que ocultan completamente las líneas de capa.",
-      "updatedAt": "2026-10-15T00:58:35.137Z"
+      "updatedAt": "2026-10-15T00:58:35.137Z",
+      "packageQuantity": 1,
+      "packageMeasurement": "kg"
     },
     {
       "id": "mat-pla-glow",
@@ -20571,7 +20666,9 @@
       "supplierId": "sup-printlab",
       "supplier": "PrintLab México 3D",
       "notes": "Brilla en color verde esmeralda tras exponerse a luz natural o UV. Requiere boquilla hardened steel.",
-      "updatedAt": "2026-10-15T00:15:32.774Z"
+      "updatedAt": "2026-10-15T00:15:32.774Z",
+      "packageQuantity": 1,
+      "packageMeasurement": "kg"
     },
     {
       "id": "mat-pla-bicolor",
@@ -20586,7 +20683,9 @@
       "costPerUnit": 640,
       "supplierId": "sup-printlab",
       "supplier": "PrintLab México 3D",
-      "notes": "Doble tono con cambio de color al rotar la pieza frente a la luz."
+      "notes": "Doble tono con cambio de color al rotar la pieza frente a la luz.",
+      "packageQuantity": 1,
+      "packageMeasurement": "kg"
     },
     {
       "id": "mat-pla-gris",
@@ -20601,7 +20700,9 @@
       "costPerUnit": 500,
       "supplierId": "sup-printlab",
       "supplier": "PrintLab México 3D",
-      "notes": "Tono neutro sobrio para prototipos técnicos, maquetas y organizadores de escritorio."
+      "notes": "Tono neutro sobrio para prototipos técnicos, maquetas y organizadores de escritorio.",
+      "packageQuantity": 1,
+      "packageMeasurement": "kg"
     },
     {
       "id": "mat-pla-rojo",
@@ -20616,7 +20717,9 @@
       "costPerUnit": 520,
       "supplierId": "sup-printlab",
       "supplier": "PrintLab México 3D",
-      "notes": "Color vibrante para logotipos corporativos y distintivos de eventos."
+      "notes": "Color vibrante para logotipos corporativos y distintivos de eventos.",
+      "packageQuantity": 1,
+      "packageMeasurement": "kg"
     },
     {
       "id": "mat-pla-azul",
@@ -20631,7 +20734,9 @@
       "costPerUnit": 530,
       "supplierId": "sup-printlab",
       "supplier": "PrintLab México 3D",
-      "notes": "Acabado sedoso para premios y accesorios tecnológicos."
+      "notes": "Acabado sedoso para premios y accesorios tecnológicos.",
+      "packageQuantity": 1,
+      "packageMeasurement": "kg"
     },
     {
       "id": "mat-tpu-olivo",
@@ -20646,7 +20751,9 @@
       "costPerUnit": 700,
       "supplierId": "sup-printlab",
       "supplier": "PrintLab México 3D",
-      "notes": "Material gomoso de alta amortiguación para protectores de esquinas y sellos."
+      "notes": "Material gomoso de alta amortiguación para protectores de esquinas y sellos.",
+      "packageQuantity": 1,
+      "packageMeasurement": "kg"
     },
     {
       "id": "mat-tpu-negro",
@@ -20661,7 +20768,9 @@
       "costPerUnit": 700,
       "supplierId": "sup-printlab",
       "supplier": "PrintLab México 3D",
-      "notes": "Topes antideslizantes para bases de códigos QR, soportes de audífonos y protectores."
+      "notes": "Topes antideslizantes para bases de códigos QR, soportes de audífonos y protectores.",
+      "packageQuantity": 1,
+      "packageMeasurement": "kg"
     },
     {
       "id": "mat-tpu-trans",
@@ -20676,7 +20785,9 @@
       "costPerUnit": 720,
       "supplierId": "sup-printlab",
       "supplier": "PrintLab México 3D",
-      "notes": "Paredes flexibles difusoras de luz LED para lámparas personalizadas."
+      "notes": "Paredes flexibles difusoras de luz LED para lámparas personalizadas.",
+      "packageQuantity": 1,
+      "packageMeasurement": "kg"
     },
     {
       "id": "mat-petg-trans",
@@ -20691,7 +20802,9 @@
       "costPerUnit": 550,
       "supplierId": "sup-printlab",
       "supplier": "PrintLab México 3D",
-      "notes": "Resistente al impacto y rayos UV exterior. Excelente difusor para iluminación LED cálida."
+      "notes": "Resistente al impacto y rayos UV exterior. Excelente difusor para iluminación LED cálida.",
+      "packageQuantity": 1,
+      "packageMeasurement": "kg"
     },
     {
       "id": "mat-petg-negro",
@@ -20706,7 +20819,9 @@
       "costPerUnit": 550,
       "supplierId": "sup-printlab",
       "supplier": "PrintLab México 3D",
-      "notes": "Soporta hasta 75°C sin deformación. Ideal para piezas de automóviles y expositores bajo sol."
+      "notes": "Soporta hasta 75°C sin deformación. Ideal para piezas de automóviles y expositores bajo sol.",
+      "packageQuantity": 1,
+      "packageMeasurement": "kg"
     },
     {
       "id": "mat-spray-3dlac",
@@ -20721,7 +20836,9 @@
       "costPerUnit": 290,
       "supplierId": "sup-printlab",
       "supplier": "PrintLab México 3D",
-      "notes": "Elimina el warping en piezas grandes de PLA, PETG y TPU sobre base PEI texturizada."
+      "notes": "Elimina el warping en piezas grandes de PLA, PETG y TPU sobre base PEI texturizada.",
+      "packageQuantity": 400,
+      "packageMeasurement": "ml"
     },
     {
       "id": "mat-tazas-magicas",
@@ -20736,7 +20853,9 @@
       "costPerUnit": 68,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Taza con polímero termosensible negro que al verter agua caliente revela el diseño a color."
+      "notes": "Taza con polímero termosensible negro que al verter agua caliente revela el diseño a color.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-tazas-blancas-11oz",
@@ -20751,7 +20870,9 @@
       "costPerUnit": 28,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Taza cerámica de máxima blancura y barniz parejo Grado A+. Insumo de mayor volumen del taller."
+      "notes": "Taza cerámica de máxima blancura y barniz parejo Grado A+. Insumo de mayor volumen del taller.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-tazas-bicolor-olivo",
@@ -20766,7 +20887,9 @@
       "costPerUnit": 34,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Cuerpo blanco exterior para sublimación con asa e interior verde olivo a tono con Artesano Digital."
+      "notes": "Cuerpo blanco exterior para sublimación con asa e interior verde olivo a tono con Artesano Digital.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-tazas-bicolor-mostaza",
@@ -20781,7 +20904,9 @@
       "costPerUnit": 34,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Interior y asa amarillo mostaza cálido colonial. Excelente contraste con diseños botánicos."
+      "notes": "Interior y asa amarillo mostaza cálido colonial. Excelente contraste con diseños botánicos.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-tazas-bicolor-negro",
@@ -20796,7 +20921,9 @@
       "costPerUnit": 34,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Interior y asa negra brillante para marcas de café, barberías y estudios de diseño."
+      "notes": "Interior y asa negra brillante para marcas de café, barberías y estudios de diseño.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-tazas-bicolor-rojo",
@@ -20811,7 +20938,9 @@
       "costPerUnit": 34,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Ideal para temporada de San Valentín, Navidad y aniversarios."
+      "notes": "Ideal para temporada de San Valentín, Navidad y aniversarios.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-tazas-peltre-vintage",
@@ -20826,7 +20955,9 @@
       "costPerUnit": 48,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Taza de acero esmaltado estilo campirano con reborde plateado. Muy cotizada para cafeterías rústicas."
+      "notes": "Taza de acero esmaltado estilo campirano con reborde plateado. Muy cotizada para cafeterías rústicas.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-tazas-conicas-latte",
@@ -20841,7 +20972,9 @@
       "costPerUnit": 42,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Forma cónica moderna. Requiere almohadilla cónica especial en la prensa de tazas."
+      "notes": "Forma cónica moderna. Requiere almohadilla cónica especial en la prensa de tazas.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-tazas-cristal-esmerilado",
@@ -20856,7 +20989,9 @@
       "costPerUnit": 45,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Cristal translúcido con textura mate sedosa al tacto. Da apariencia elegante a monogramas."
+      "notes": "Cristal translúcido con textura mate sedosa al tacto. Da apariencia elegante a monogramas.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-tarro-cervecero-satinado",
@@ -20871,7 +21006,9 @@
       "costPerUnit": 65,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Capacidad de medio litro. Muy pedido para cumpleaños de adultos, despedidas y eventos deportivos."
+      "notes": "Capacidad de medio litro. Muy pedido para cumpleaños de adultos, despedidas y eventos deportivos.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-termos-blancos-500ml",
@@ -20886,7 +21023,9 @@
       "costPerUnit": 120,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Doble pared térmica al vacío. Mantiene bebidas frías 12 hrs o calientes 8 hrs."
+      "notes": "Doble pared térmica al vacío. Mantiene bebidas frías 12 hrs o calientes 8 hrs.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-termos-plata-500ml",
@@ -20901,7 +21040,9 @@
       "costPerUnit": 125,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Cuerpo metálico plateado. Los colores impresos adquieren brillo metalizado reflectivo."
+      "notes": "Cuerpo metálico plateado. Los colores impresos adquieren brillo metalizado reflectivo.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-tumbler-skinny-20oz",
@@ -20916,7 +21057,9 @@
       "costPerUnit": 135,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Cilindro perfectamente recto de 20 oz. Permite sublimación continua 360° sin bordes."
+      "notes": "Cilindro perfectamente recto de 20 oz. Permite sublimación continua 360° sin bordes.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-tumbler-glitter-20oz",
@@ -20931,7 +21074,9 @@
       "costPerUnit": 155,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Recubrimiento polimérico con microescarchado brillante. Ideal para graduaciones y bodas."
+      "notes": "Recubrimiento polimérico con microescarchado brillante. Ideal para graduaciones y bodas.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-latas-aluminio-500ml",
@@ -20946,7 +21091,9 @@
       "costPerUnit": 98,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Forma idéntica a lata de refresco con boquilla de silicón retráctil hermética."
+      "notes": "Forma idéntica a lata de refresco con boquilla de silicón retráctil hermética.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-botellas-deportivas-aluminio",
@@ -20961,7 +21108,9 @@
       "costPerUnit": 72,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Liviana y resistente para kits de gimnasio, senderismo y eventos de ciclismo."
+      "notes": "Liviana y resistente para kits de gimnasio, senderismo y eventos de ciclismo.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-playera-poliester-blanca",
@@ -20976,7 +21125,9 @@
       "costPerUnit": 65,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Tejido suave tipo algodón peinado. La tinta penetra la fibra y no se desgasta con lavadas."
+      "notes": "Tejido suave tipo algodón peinado. La tinta penetra la fibra y no se desgasta con lavadas.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-gorras-sublimables-malla",
@@ -20991,7 +21142,9 @@
       "costPerUnit": 35,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Broche de plástico ajustable. Frente de esponja rígida listo para plancha de gorras."
+      "notes": "Broche de plástico ajustable. Frente de esponja rígida listo para plancha de gorras.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-cojines-cuadrados-40x40",
@@ -21006,7 +21159,9 @@
       "costPerUnit": 75,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Funda de lino sintético de tacto fino lavable en lavadora. Incluye relleno de delcrón."
+      "notes": "Funda de lino sintético de tacto fino lavable en lavadora. Incluye relleno de delcrón.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-tote-bag-sublimable",
@@ -21021,7 +21176,9 @@
       "costPerUnit": 38,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Asas reforzadas de 60 cm. Excelente producto para marcas ecológicas y librerías."
+      "notes": "Asas reforzadas de 60 cm. Excelente producto para marcas ecológicas y librerías.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-rompecabezas-a4",
@@ -21036,7 +21193,9 @@
       "costPerUnit": 45,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Corte troquelado de alta precisión. Recubrimiento brillante para fotos familiares."
+      "notes": "Corte troquelado de alta precisión. Recubrimiento brillante para fotos familiares.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-mousepad-ergonomico",
@@ -21051,7 +21210,9 @@
       "costPerUnit": 25,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Espuma de caucho negro de 3mm con tela de poliéster prensada de alta durabilidad."
+      "notes": "Espuma de caucho negro de 3mm con tela de poliéster prensada de alta durabilidad.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-llaveros-mdf-sublimable",
@@ -21066,7 +21227,9 @@
       "costPerUnit": 220,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "MDF de 3mm con barniz de sublimación por ambos lados y película plástica protectora."
+      "notes": "MDF de 3mm con barniz de sublimación por ambos lados y película plástica protectora.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-tintas-sublimacion-cmyk",
@@ -21081,7 +21244,9 @@
       "costPerUnit": 480,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Fórmula de dispersión microscópica para cabezales piezoeléctricos Epson sin obstrucciones."
+      "notes": "Fórmula de dispersión microscópica para cabezales piezoeléctricos Epson sin obstrucciones.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-papel-sublimacion",
@@ -21096,7 +21261,9 @@
       "costPerUnit": 180,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Transferencia del 98% de la tinta a la superficie receptora con secado instantáneo."
+      "notes": "Transferencia del 98% de la tinta a la superficie receptora con secado instantáneo.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-cartulina-opalina",
@@ -21111,7 +21278,9 @@
       "costPerUnit": 140,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Papelería fina de presentación, tarjetas de cuidados para envíos y certificados de taller."
+      "notes": "Papelería fina de presentación, tarjetas de cuidados para envíos y certificados de taller.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-cinta-termica-kapton",
@@ -21127,7 +21296,9 @@
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
       "notes": "Poliamida dorada resistente hasta 260°C sin dejar residuos de pegamento en la cerámica.",
-      "updatedAt": "2026-10-17T04:15:59.029Z"
+      "updatedAt": "2026-10-17T04:15:59.029Z",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-hojas-teflon-prensa",
@@ -21142,7 +21313,9 @@
       "costPerUnit": 160,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Evita que el exceso de tinta o vinil se queme y manche la plancha superior."
+      "notes": "Evita que el exceso de tinta o vinil se queme y manche la plancha superior.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-madera-triplay-3mm",
@@ -21158,7 +21331,9 @@
       "supplierId": "sup-maderas-bajio",
       "supplier": "Maderas & Láser del Bajío",
       "notes": "Madera natural de pino calibrada para corte láser limpio y grabado nítido (100% libre de MDF).",
-      "updatedAt": "2026-10-15T01:00:17.536Z"
+      "updatedAt": "2026-10-15T01:00:17.536Z",
+      "packageQuantity": 40,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-triplay-caobilla-3mm",
@@ -21173,7 +21348,9 @@
       "costPerUnit": 52,
       "supplierId": "sup-maderas-bajio",
       "supplier": "Maderas & Láser del Bajío",
-      "notes": "Veta fina de caoba africana. Muy elegante para portarretratos y cajas de joyería."
+      "notes": "Veta fina de caoba africana. Muy elegante para portarretratos y cajas de joyería.",
+      "packageQuantity": 40,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-triplay-pino-5mm",
@@ -21188,7 +21365,9 @@
       "costPerUnit": 65,
       "supplierId": "sup-maderas-bajio",
       "supplier": "Maderas & Láser del Bajío",
-      "notes": "Espesor robusto para letreros de boda, cajas ensamblables y soportes de mostrador."
+      "notes": "Espesor robusto para letreros de boda, cajas ensamblables y soportes de mostrador.",
+      "packageQuantity": 40,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-mdf-3mm",
@@ -21203,7 +21382,9 @@
       "costPerUnit": 35,
       "supplierId": "sup-maderas-bajio",
       "supplier": "Maderas & Láser del Bajío",
-      "notes": "Densidad homogénea para plantillas de corte, maquetas y letreros para pintar."
+      "notes": "Densidad homogénea para plantillas de corte, maquetas y letreros para pintar.",
+      "packageQuantity": 40,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-mdf-5mm",
@@ -21218,7 +21399,9 @@
       "costPerUnit": 55,
       "supplierId": "sup-maderas-bajio",
       "supplier": "Maderas & Láser del Bajío",
-      "notes": "Da volumen tridimensional a letras corpóreas para pared de negocios."
+      "notes": "Da volumen tridimensional a letras corpóreas para pared de negocios.",
+      "packageQuantity": 40,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-mdf-melamina-blanca",
@@ -21233,7 +21416,9 @@
       "costPerUnit": 48,
       "supplierId": "sup-maderas-bajio",
       "supplier": "Maderas & Láser del Bajío",
-      "notes": "Frente blanco liso fácil de limpiar con grabado láser que deja ver el núcleo café."
+      "notes": "Frente blanco liso fácil de limpiar con grabado láser que deja ver el núcleo café.",
+      "packageQuantity": 40,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-acrilico-cristal",
@@ -21248,7 +21433,9 @@
       "costPerUnit": 90,
       "supplierId": "sup-maderas-bajio",
       "supplier": "Maderas & Láser del Bajío",
-      "notes": "Transparencia del 93%. Base para placas QR de mesa y protectores de mostrador."
+      "notes": "Transparencia del 93%. Base para placas QR de mesa y protectores de mostrador.",
+      "packageQuantity": 40,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-acrilico-negro",
@@ -21263,7 +21450,9 @@
       "costPerUnit": 95,
       "supplierId": "sup-maderas-bajio",
       "supplier": "Maderas & Láser del Bajío",
-      "notes": "Acabado piano ultrabrillante para placas ejecutivas y logotipos corporativos."
+      "notes": "Acabado piano ultrabrillante para placas ejecutivas y logotipos corporativos.",
+      "packageQuantity": 40,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-acrilico-negro-mate",
@@ -21278,7 +21467,9 @@
       "costPerUnit": 105,
       "supplierId": "sup-maderas-bajio",
       "supplier": "Maderas & Láser del Bajío",
-      "notes": "Textura mate antihuellas muy solicitada en gastronomía y bares modernos."
+      "notes": "Textura mate antihuellas muy solicitada en gastronomía y bares modernos.",
+      "packageQuantity": 40,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-acrilico-blanco",
@@ -21293,7 +21484,9 @@
       "costPerUnit": 95,
       "supplierId": "sup-maderas-bajio",
       "supplier": "Maderas & Láser del Bajío",
-      "notes": "Difunde uniformemente la luz de tiras LED sin mostrar los puntos individuales."
+      "notes": "Difunde uniformemente la luz de tiras LED sin mostrar los puntos individuales.",
+      "packageQuantity": 40,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-acrilico-espejo-oro",
@@ -21308,7 +21501,9 @@
       "costPerUnit": 135,
       "supplierId": "sup-maderas-bajio",
       "supplier": "Maderas & Láser del Bajío",
-      "notes": "Reflejo idéntico a espejo de vidrio pero irrompible. Letras para letreros de boda."
+      "notes": "Reflejo idéntico a espejo de vidrio pero irrompible. Letras para letreros de boda.",
+      "packageQuantity": 40,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-acrilico-espejo-plata",
@@ -21323,7 +21518,9 @@
       "costPerUnit": 130,
       "supplierId": "sup-maderas-bajio",
       "supplier": "Maderas & Láser del Bajío",
-      "notes": "Detalles brillantes tipo cromo para logotipos de barbería y joyería."
+      "notes": "Detalles brillantes tipo cromo para logotipos de barbería y joyería.",
+      "packageQuantity": 40,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-acrilico-humo",
@@ -21338,7 +21535,9 @@
       "costPerUnit": 105,
       "supplierId": "sup-maderas-bajio",
       "supplier": "Maderas & Láser del Bajío",
-      "notes": "Tono gris ahumado oscuro semitransparente para tableros de control y cajas de audio."
+      "notes": "Tono gris ahumado oscuro semitransparente para tableros de control y cajas de audio.",
+      "packageQuantity": 40,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-cuero-curpiel",
@@ -21353,7 +21552,9 @@
       "costPerUnit": 85,
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech México & Textil",
-      "notes": "Bicapa grabable: al pasar el láser quema la capa negra y revela dorado metálico nítido."
+      "notes": "Bicapa grabable: al pasar el láser quema la capa negra y revela dorado metálico nítido.",
+      "packageQuantity": 40,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-cuero-curpiel-caramelo",
@@ -21368,7 +21569,9 @@
       "costPerUnit": 85,
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech México & Textil",
-      "notes": "Insumo principal para los parches grabados a láser del Servicio Patch Bar en Vivo."
+      "notes": "Insumo principal para los parches grabados a láser del Servicio Patch Bar en Vivo.",
+      "packageQuantity": 40,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-laca-spray",
@@ -21383,7 +21586,9 @@
       "costPerUnit": 120,
       "supplierId": "sup-maderas-bajio",
       "supplier": "Maderas & Láser del Bajío",
-      "notes": "Sella el poro de la madera y fija el hollín del grabado láser para que no manche."
+      "notes": "Sella el poro de la madera y fija el hollín del grabado láser para que no manche.",
+      "packageQuantity": 400,
+      "packageMeasurement": "ml"
     },
     {
       "id": "mat-cera-madera",
@@ -21398,7 +21603,9 @@
       "costPerUnit": 150,
       "supplierId": "sup-maderas-bajio",
       "supplier": "Maderas & Láser del Bajío",
-      "notes": "Tratamiento no tóxico grado alimenticio para tablas de queso y letreros artesanales."
+      "notes": "Tratamiento no tóxico grado alimenticio para tablas de queso y letreros artesanales.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-barniz-poliuretano-spray",
@@ -21413,7 +21620,9 @@
       "costPerUnit": 135,
       "supplierId": "sup-maderas-bajio",
       "supplier": "Maderas & Láser del Bajío",
-      "notes": "Protección hidrófuga extrema contra salpicaduras de agua y humedad ambiental."
+      "notes": "Protección hidrófuga extrema contra salpicaduras de agua y humedad ambiental.",
+      "packageQuantity": 400,
+      "packageMeasurement": "ml"
     },
     {
       "id": "mat-vinil-textil-blanco",
@@ -21428,7 +21637,9 @@
       "costPerUnit": 130,
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech México & Textil",
-      "notes": "Poliuretano ultrafino elástico con soporte adhesivo para depilado rápido de detalles pequeños."
+      "notes": "Poliuretano ultrafino elástico con soporte adhesivo para depilado rápido de detalles pequeños.",
+      "packageQuantity": 50,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-vinil-textil-negro",
@@ -21443,7 +21654,9 @@
       "costPerUnit": 130,
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech México & Textil",
-      "notes": "Se aplica a 150°C durante 10-15 segundos. Se retira en caliente o frío sin despegarse."
+      "notes": "Se aplica a 150°C durante 10-15 segundos. Se retira en caliente o frío sin despegarse.",
+      "packageQuantity": 50,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-vinil-textil-olivo",
@@ -21458,7 +21671,9 @@
       "costPerUnit": 140,
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech México & Textil",
-      "notes": "Tono verde olivo coordinado con la identidad corporativa de Artesano Digital."
+      "notes": "Tono verde olivo coordinado con la identidad corporativa de Artesano Digital.",
+      "packageQuantity": 50,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-vinil-textil-mostaza",
@@ -21473,7 +21688,9 @@
       "costPerUnit": 140,
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech México & Textil",
-      "notes": "Color cálido muy llamativo para uniformes de cafeterías y delantales de baristas."
+      "notes": "Color cálido muy llamativo para uniformes de cafeterías y delantales de baristas.",
+      "packageQuantity": 50,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-vinil-textil-rojo",
@@ -21488,7 +21705,9 @@
       "costPerUnit": 135,
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech México & Textil",
-      "notes": "Gran adherencia en telas de algodón 100%, poliéster y mezclas spandex."
+      "notes": "Gran adherencia en telas de algodón 100%, poliéster y mezclas spandex.",
+      "packageQuantity": 50,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-vinil-puff-blanco",
@@ -21503,7 +21722,9 @@
       "costPerUnit": 195,
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech México & Textil",
-      "notes": "Al recibir calor en la prensa se infla creando un relieve tridimensional de hasta 1.5mm."
+      "notes": "Al recibir calor en la prensa se infla creando un relieve tridimensional de hasta 1.5mm.",
+      "packageQuantity": 50,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-vinil-puff-negro",
@@ -21518,7 +21739,9 @@
       "costPerUnit": 195,
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech México & Textil",
-      "notes": "Efecto acolchado tipo serigrafía inflable para sudaderas streetwear y gorras."
+      "notes": "Efecto acolchado tipo serigrafía inflable para sudaderas streetwear y gorras.",
+      "packageQuantity": 50,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-vinil-puff-olivo",
@@ -21533,7 +21756,9 @@
       "costPerUnit": 210,
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech México & Textil",
-      "notes": "Color exclusivo de taller con volumen texturizado mate de alta gama."
+      "notes": "Color exclusivo de taller con volumen texturizado mate de alta gama.",
+      "packageQuantity": 50,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-vinil-puff-terracota",
@@ -21548,7 +21773,9 @@
       "costPerUnit": 210,
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech México & Textil",
-      "notes": "Tono arcilla con volumen inflado para colecciones de autor y hoodies."
+      "notes": "Tono arcilla con volumen inflado para colecciones de autor y hoodies.",
+      "packageQuantity": 50,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-vinil-textil-glitter-oro",
@@ -21563,7 +21790,9 @@
       "costPerUnit": 175,
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech México & Textil",
-      "notes": "Micropartículas de brillo selladas que no desprenden diamantina en las lavadas."
+      "notes": "Micropartículas de brillo selladas que no desprenden diamantina en las lavadas.",
+      "packageQuantity": 50,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-vinil-textil-glitter-plata",
@@ -21578,7 +21807,9 @@
       "costPerUnit": 175,
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech México & Textil",
-      "notes": "Brillo plateado intenso para batas de quinceañeras y playeras de despedida de soltera."
+      "notes": "Brillo plateado intenso para batas de quinceañeras y playeras de despedida de soltera.",
+      "packageQuantity": 50,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-vinil-textil-holografico",
@@ -21593,7 +21824,9 @@
       "costPerUnit": 185,
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech México & Textil",
-      "notes": "Refleja destellos multicolores prisma según el ángulo de incidencia de la luz."
+      "notes": "Refleja destellos multicolores prisma según el ángulo de incidencia de la luz.",
+      "packageQuantity": 50,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-vinil-textil-reflectivo",
@@ -21608,7 +21841,9 @@
       "costPerUnit": 165,
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech México & Textil",
-      "notes": "Rebota la luz de los faros de automóviles. Certificado para ropa de ciclistas y seguridad."
+      "notes": "Rebota la luz de los faros de automóviles. Certificado para ropa de ciclistas y seguridad.",
+      "packageQuantity": 50,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-vinil-negro",
@@ -21623,7 +21858,9 @@
       "costPerUnit": 85,
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech México & Textil",
-      "notes": "Adhesivo base solvente durabilidad 6 años exterior para rotulación en letreros y cristales."
+      "notes": "Adhesivo base solvente durabilidad 6 años exterior para rotulación en letreros y cristales.",
+      "packageQuantity": 61,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-vinil-blanco",
@@ -21638,7 +21875,9 @@
       "costPerUnit": 85,
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech México & Textil",
-      "notes": "Blanco puro reflectivo para rotulación de horarios comerciales y frases de bienvenida."
+      "notes": "Blanco puro reflectivo para rotulación de horarios comerciales y frases de bienvenida.",
+      "packageQuantity": 61,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-vinil-olivo-adhesivo",
@@ -21653,7 +21892,9 @@
       "costPerUnit": 90,
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech México & Textil",
-      "notes": "Color distintivo para stickers institucionales de taller y señalética."
+      "notes": "Color distintivo para stickers institucionales de taller y señalética.",
+      "packageQuantity": 61,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-vinil-oro",
@@ -21668,7 +21909,9 @@
       "costPerUnit": 110,
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech México & Textil",
-      "notes": "Tono oro cepillado para numeración de mesas VIP y monogramas de boda."
+      "notes": "Tono oro cepillado para numeración de mesas VIP y monogramas de boda.",
+      "packageQuantity": 61,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-vinil-esmerilado-vidrio",
@@ -21683,7 +21926,9 @@
       "costPerUnit": 95,
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech México & Textil",
-      "notes": "Simula grabado al ácido sobre mamparas de baño, ventanas y puertas de oficina."
+      "notes": "Simula grabado al ácido sobre mamparas de baño, ventanas y puertas de oficina.",
+      "packageQuantity": 61,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-papel-transfer",
@@ -21698,7 +21943,9 @@
       "costPerUnit": 160,
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech México & Textil",
-      "notes": "Adherencia media que no deja goma y permite alinear con precisión las letras recortadas."
+      "notes": "Adherencia media que no deja goma y permite alinear con precisión las letras recortadas.",
+      "packageQuantity": 30,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-herramientas-weeder",
@@ -21713,7 +21960,9 @@
       "costPerUnit": 75,
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech México & Textil",
-      "notes": "Punta curva de acero templado para retirar interiores de letras minúsculas rápidamente."
+      "notes": "Punta curva de acero templado para retirar interiores de letras minúsculas rápidamente.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-argollas-llavero",
@@ -21729,7 +21978,9 @@
       "supplierId": "sup-empaques-slp",
       "supplier": "Herrajes & Ensamble San Luis",
       "notes": "Argolla plana reforzada de 25mm con cadena de 4 eslabones y armella soldada.",
-      "updatedAt": "2026-10-15T01:04:41.855Z"
+      "updatedAt": "2026-10-15T01:04:41.855Z",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-argollas-bronce",
@@ -21744,7 +21995,9 @@
       "costPerUnit": 135,
       "supplierId": "sup-empaques-slp",
       "supplier": "Herrajes & Ensamble San Luis",
-      "notes": "Tono rústico envejecido para llaveros de madera grabada y cuero artesanal."
+      "notes": "Tono rústico envejecido para llaveros de madera grabada y cuero artesanal.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-broches-perico-mosqueton",
@@ -21759,7 +22012,9 @@
       "costPerUnit": 115,
       "supplierId": "sup-empaques-slp",
       "supplier": "Herrajes & Ensamble San Luis",
-      "notes": "Cierre de resorte para enganchar llaveros a mochilas, bolsas y cinturones."
+      "notes": "Cierre de resorte para enganchar llaveros a mochilas, bolsas y cinturones.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-borlas-gamuza",
@@ -21774,7 +22029,9 @@
       "costPerUnit": 110,
       "supplierId": "sup-empaques-slp",
       "supplier": "Herrajes & Ensamble San Luis",
-      "notes": "Flecos de microgamuza suave con capuchón plateado para llaveros y adornos."
+      "notes": "Flecos de microgamuza suave con capuchón plateado para llaveros y adornos.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-percheros-madera",
@@ -21789,7 +22046,9 @@
       "costPerUnit": 12,
       "supplierId": "sup-empaques-slp",
       "supplier": "Herrajes & Ensamble San Luis",
-      "notes": "Diámetro 25mm x 50mm largo con tornillo de doble rosca para montaje en pared o placa."
+      "notes": "Diámetro 25mm x 50mm largo con tornillo de doble rosca para montaje en pared o placa.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-percheros-nogal",
@@ -21804,7 +22063,9 @@
       "costPerUnit": 18,
       "supplierId": "sup-empaques-slp",
       "supplier": "Herrajes & Ensamble San Luis",
-      "notes": "Madera noble de nogal con veta oscura profunda para colgadores edición de lujo."
+      "notes": "Madera noble de nogal con veta oscura profunda para colgadores edición de lujo.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-chips-nfc",
@@ -21819,7 +22080,9 @@
       "costPerUnit": 250,
       "supplierId": "sup-empaques-slp",
       "supplier": "Herrajes & Ensamble San Luis",
-      "notes": "Chips regrabables 144 bytes compatibles con iPhone y Android para enlace a WhatsApp y menú."
+      "notes": "Chips regrabables 144 bytes compatibles con iPhone y Android para enlace a WhatsApp y menú.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-monedas-nfc-antimetal",
@@ -21834,7 +22097,9 @@
       "costPerUnit": 220,
       "supplierId": "sup-empaques-slp",
       "supplier": "Herrajes & Ensamble San Luis",
-      "notes": "Blindadas con capa de ferrita que permite funcionar sobre bases metálicas sin interferencias."
+      "notes": "Blindadas con capa de ferrita que permite funcionar sobre bases metálicas sin interferencias.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-imanes-neodimio-n52",
@@ -21849,7 +22114,9 @@
       "costPerUnit": 130,
       "supplierId": "sup-empaques-slp",
       "supplier": "Herrajes & Ensamble San Luis",
-      "notes": "Fuerza de atracción de 1.8 kg. Para tapas de cajas artesanales y cierres invisibles."
+      "notes": "Fuerza de atracción de 1.8 kg. Para tapas de cajas artesanales y cierres invisibles.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-cadena-bolitas-10cm",
@@ -21864,7 +22131,9 @@
       "costPerUnit": 80,
       "supplierId": "sup-empaques-slp",
       "supplier": "Herrajes & Ensamble San Luis",
-      "notes": "Largo 10 cm, diámetro 2.4 mm. Para chapitas de mascotas y placas de maleta."
+      "notes": "Largo 10 cm, diámetro 2.4 mm. Para chapitas de mascotas y placas de maleta.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-remaches-ojillos",
@@ -21879,7 +22148,9 @@
       "costPerUnit": 65,
       "supplierId": "sup-empaques-slp",
       "supplier": "Herrajes & Ensamble San Luis",
-      "notes": "Doble cabeza para unión permanente de cintas de piel y parches textiles."
+      "notes": "Doble cabeza para unión permanente de cintas de piel y parches textiles.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-tornillos-chicago",
@@ -21894,7 +22165,9 @@
       "costPerUnit": 95,
       "supplierId": "sup-empaques-slp",
       "supplier": "Herrajes & Ensamble San Luis",
-      "notes": "Poste roscado desarmable de 8mm para álbumes de boda y carpetas de piel."
+      "notes": "Poste roscado desarmable de 8mm para álbumes de boda y carpetas de piel.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-cinta-3m-vhb",
@@ -21909,7 +22182,9 @@
       "costPerUnit": 145,
       "supplierId": "sup-empaques-slp",
       "supplier": "Herrajes & Ensamble San Luis",
-      "notes": "Poder de fijación industrial. Permite colocar letreros de pared sin perforar con taladro."
+      "notes": "Poder de fijación industrial. Permite colocar letreros de pared sin perforar con taladro.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-cajas-kraft-chica",
@@ -21924,7 +22199,9 @@
       "costPerUnit": 12,
       "supplierId": "sup-empaques-nacional",
       "supplier": "Empaques & Cajas Cartón México",
-      "notes": "Tamaño justo para llaveros personalizados, chapitas de mascotas y figuras 3D pequeñas."
+      "notes": "Tamaño justo para llaveros personalizados, chapitas de mascotas y figuras 3D pequeñas.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-cajas-kraft-mediana",
@@ -21939,7 +22216,9 @@
       "costPerUnit": 16,
       "supplierId": "sup-empaques-nacional",
       "supplier": "Empaques & Cajas Cartón México",
-      "notes": "Microcorrugado flauta E resistente. Se envían plegadas planas para ahorrar espacio."
+      "notes": "Microcorrugado flauta E resistente. Se envían plegadas planas para ahorrar espacio.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-cajas-kraft-grande",
@@ -21954,7 +22233,9 @@
       "costPerUnit": 26,
       "supplierId": "sup-empaques-nacional",
       "supplier": "Empaques & Cajas Cartón México",
-      "notes": "Capacidad para letreros de bienvenida, lámparas curvas y paquetes combo del taller."
+      "notes": "Capacidad para letreros de bienvenida, lámparas curvas y paquetes combo del taller.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-cajas-taza-individual",
@@ -21969,7 +22250,9 @@
       "costPerUnit": 14,
       "supplierId": "sup-empaques-nacional",
       "supplier": "Empaques & Cajas Cartón México",
-      "notes": "Permite apreciar el diseño sublimado de la taza sin necesidad de abrir la caja."
+      "notes": "Permite apreciar el diseño sublimado de la taza sin necesidad de abrir la caja.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-papel-tissue-impreso",
@@ -21984,7 +22267,9 @@
       "costPerUnit": 95,
       "supplierId": "sup-empaques-nacional",
       "supplier": "Empaques & Cajas Cartón México",
-      "notes": "Papel de 22g suave para envolver cada producto antes de colocarlo dentro de la caja kraft."
+      "notes": "Papel de 22g suave para envolver cada producto antes de colocarlo dentro de la caja kraft.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-viruta-kraft",
@@ -21999,7 +22284,9 @@
       "costPerUnit": 85,
       "supplierId": "sup-empaques-nacional",
       "supplier": "Empaques & Cajas Cartón México",
-      "notes": "Tiras en zigzag biodegradables que protegen las piezas de cerámica contra caídas."
+      "notes": "Tiras en zigzag biodegradables que protegen las piezas de cerámica contra caídas.",
+      "packageQuantity": 1,
+      "packageMeasurement": "kg"
     },
     {
       "id": "mat-cinta-engomada",
@@ -22014,7 +22301,9 @@
       "costPerUnit": 115,
       "supplierId": "sup-empaques-nacional",
       "supplier": "Empaques & Cajas Cartón México",
-      "notes": "Pegamento activado con agua con trama de fibra de vidrio inviolable para paquetería."
+      "notes": "Pegamento activado con agua con trama de fibra de vidrio inviolable para paquetería.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-cinta-canela-silenciosa",
@@ -22029,7 +22318,9 @@
       "costPerUnit": 160,
       "supplierId": "sup-empaques-nacional",
       "supplier": "Empaques & Cajas Cartón México",
-      "notes": "Adhesivo acrílico de alto agarre sobre cajas de cartón corrugado."
+      "notes": "Adhesivo acrílico de alto agarre sobre cajas de cartón corrugado.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-bolsas-celofan-llavero",
@@ -22044,7 +22335,9 @@
       "costPerUnit": 45,
       "supplierId": "sup-empaques-nacional",
       "supplier": "Empaques & Cajas Cartón México",
-      "notes": "Presentación limpia libre de polvo para entregas en masa de eventos y bodas."
+      "notes": "Presentación limpia libre de polvo para entregas en masa de eventos y bodas.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-bolsas-kraft-asa",
@@ -22059,7 +22352,9 @@
       "costPerUnit": 125,
       "supplierId": "sup-empaques-nacional",
       "supplier": "Empaques & Cajas Cartón México",
-      "notes": "Resistencia de hasta 4 kg. Ideales para entrega directa a clientes en el taller."
+      "notes": "Resistencia de hasta 4 kg. Ideales para entrega directa a clientes en el taller.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-stickers-garantia-kraft",
@@ -22074,7 +22369,9 @@
       "costPerUnit": 75,
       "supplierId": "sup-empaques-nacional",
       "supplier": "Empaques & Cajas Cartón México",
-      "notes": "Sello circular de 4 cm que cierra la caja con el grabado de Artesano Digital."
+      "notes": "Sello circular de 4 cm que cierra la caja con el grabado de Artesano Digital.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-plastico-burbuja-rollo",
@@ -22089,7 +22386,9 @@
       "costPerUnit": 160,
       "supplierId": "sup-empaques-nacional",
       "supplier": "Empaques & Cajas Cartón México",
-      "notes": "Burbuja de 3/16 sellada hermética. Obligatoria para envíos foráneos de cerámica."
+      "notes": "Burbuja de 3/16 sellada hermética. Obligatoria para envíos foráneos de cerámica.",
+      "packageQuantity": 50,
+      "packageMeasurement": "cm"
     },
     {
       "id": "mat-esquineros-carton",
@@ -22104,7 +22403,9 @@
       "costPerUnit": 65,
       "supplierId": "sup-empaques-nacional",
       "supplier": "Empaques & Cajas Cartón México",
-      "notes": "Protege las cuatro esquinas de letreros acrílicos y marcos de madera contra impactos."
+      "notes": "Protege las cuatro esquinas de letreros acrílicos y marcos de madera contra impactos.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ref-boquilla-04",
@@ -22119,7 +22420,9 @@
       "costPerUnit": 145,
       "supplierId": "sup-refacciones-cnc",
       "supplier": "Refacciones CNC 3D & Láser México",
-      "notes": "Acero templado a 55 HRC. Indispensable para filamentos abrasivos como Woodfill y Glow."
+      "notes": "Acero templado a 55 HRC. Indispensable para filamentos abrasivos como Woodfill y Glow.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ref-boquilla-04-brass",
@@ -22134,7 +22437,9 @@
       "costPerUnit": 65,
       "supplierId": "sup-refacciones-cnc",
       "supplier": "Refacciones CNC 3D & Láser México",
-      "notes": "Máxima transferencia de calor para filamento PLA estándar a altas velocidades."
+      "notes": "Máxima transferencia de calor para filamento PLA estándar a altas velocidades.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ref-boquilla-06",
@@ -22149,7 +22454,9 @@
       "costPerUnit": 85,
       "supplierId": "sup-refacciones-cnc",
       "supplier": "Refacciones CNC 3D & Láser México",
-      "notes": "Reduce el tiempo de impresión en 40% en macetas grandes y letras tridimensionales."
+      "notes": "Reduce el tiempo de impresión en 40% en macetas grandes y letras tridimensionales.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ref-boquilla-08",
@@ -22164,7 +22471,9 @@
       "costPerUnit": 95,
       "supplierId": "sup-refacciones-cnc",
       "supplier": "Refacciones CNC 3D & Láser México",
-      "notes": "Imprime capas gruesas de 0.4mm con gran resistencia estructural mecánica."
+      "notes": "Imprime capas gruesas de 0.4mm con gran resistencia estructural mecánica.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ref-bloque-calefactor",
@@ -22179,7 +22488,9 @@
       "costPerUnit": 160,
       "supplierId": "sup-refacciones-cnc",
       "supplier": "Refacciones CNC 3D & Láser México",
-      "notes": "Tratamiento niquelado que reduce la adherencia de plástico fundido quemado."
+      "notes": "Tratamiento niquelado que reduce la adherencia de plástico fundido quemado.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ref-ptfe",
@@ -22194,7 +22505,9 @@
       "costPerUnit": 120,
       "supplierId": "sup-refacciones-cnc",
       "supplier": "Refacciones CNC 3D & Láser México",
-      "notes": "Diámetro interno calibrado a 1.9mm (+- 0.05mm). Evita atascos con filamento TPU flexible."
+      "notes": "Diámetro interno calibrado a 1.9mm (+- 0.05mm). Evita atascos con filamento TPU flexible.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ref-termistor",
@@ -22209,7 +22522,9 @@
       "costPerUnit": 65,
       "supplierId": "sup-refacciones-cnc",
       "supplier": "Refacciones CNC 3D & Láser México",
-      "notes": "Sensor de temperatura de cartucho metálico compatible con Bambu, Creality y Prusa."
+      "notes": "Sensor de temperatura de cartucho metálico compatible con Bambu, Creality y Prusa.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ref-cartucho",
@@ -22224,7 +22539,9 @@
       "costPerUnit": 95,
       "supplierId": "sup-refacciones-cnc",
       "supplier": "Refacciones CNC 3D & Láser México",
-      "notes": "Llega de temperatura ambiente a 200°C en menos de 45 segundos."
+      "notes": "Llega de temperatura ambiente a 200°C en menos de 45 segundos.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ref-lamina-pei",
@@ -22239,7 +22556,9 @@
       "costPerUnit": 480,
       "supplierId": "sup-refacciones-cnc",
       "supplier": "Refacciones CNC 3D & Láser México",
-      "notes": "Acabado rugoso mate en la base de las piezas. Al enfriarse la pieza se despega sola."
+      "notes": "Acabado rugoso mate en la base de las piezas. Al enfriarse la pieza se despega sola.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ref-calcetin",
@@ -22254,7 +22573,9 @@
       "costPerUnit": 110,
       "supplierId": "sup-refacciones-cnc",
       "supplier": "Refacciones CNC 3D & Láser México",
-      "notes": "Mantiene la temperatura estable frente al flujo de aire del ventilador de capa."
+      "notes": "Mantiene la temperatura estable frente al flujo de aire del ventilador de capa.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ref-ventilador",
@@ -22269,7 +22590,9 @@
       "costPerUnit": 130,
       "supplierId": "sup-refacciones-cnc",
       "supplier": "Refacciones CNC 3D & Láser México",
-      "notes": "Enfriamiento violento e instantáneo para puentes limpios y voladizos sin soportes."
+      "notes": "Enfriamiento violento e instantáneo para puentes limpios y voladizos sin soportes.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ref-ventilador-4010",
@@ -22284,7 +22607,9 @@
       "costPerUnit": 95,
       "supplierId": "sup-refacciones-cnc",
       "supplier": "Refacciones CNC 3D & Láser México",
-      "notes": "Previene el heat creep (atasco por calor subiendo por el disipador)."
+      "notes": "Previene el heat creep (atasco por calor subiendo por el disipador).",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ref-correa-gt2",
@@ -22299,7 +22624,9 @@
       "costPerUnit": 75,
       "supplierId": "sup-refacciones-cnc",
       "supplier": "Refacciones CNC 3D & Láser México",
-      "notes": "Paso de 2mm. No se estira bajo tensión constante en ejes X e Y de impresoras y láser."
+      "notes": "Paso de 2mm. No se estira bajo tensión constante en ejes X e Y de impresoras y láser.",
+      "packageQuantity": 5,
+      "packageMeasurement": "m"
     },
     {
       "id": "mat-ref-cuchillas-plotter",
@@ -22314,7 +22641,9 @@
       "costPerUnit": 160,
       "supplierId": "sup-refacciones-cnc",
       "supplier": "Refacciones CNC 3D & Láser México",
-      "notes": "Filo estándar universal para vinil adhesivo Oracal y vinil textil HTV básico."
+      "notes": "Filo estándar universal para vinil adhesivo Oracal y vinil textil HTV básico.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ref-cuchillas-plotter-60",
@@ -22329,7 +22658,9 @@
       "costPerUnit": 175,
       "supplierId": "sup-refacciones-cnc",
       "supplier": "Refacciones CNC 3D & Láser México",
-      "notes": "Corta materiales gruesos de vinil puff, reflejante y piel sin morder las esquinas."
+      "notes": "Corta materiales gruesos de vinil puff, reflejante y piel sin morder las esquinas.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ref-teflon-prensa",
@@ -22344,7 +22675,9 @@
       "costPerUnit": 180,
       "supplierId": "sup-refacciones-cnc",
       "supplier": "Refacciones CNC 3D & Láser México",
-      "notes": "Repuesto térmico para evitar que el calor directo queme las prendas o tazas."
+      "notes": "Repuesto térmico para evitar que el calor directo queme las prendas o tazas.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ref-pad-silicon-tazas",
@@ -22359,7 +22692,9 @@
       "costPerUnit": 240,
       "supplierId": "sup-refacciones-cnc",
       "supplier": "Refacciones CNC 3D & Láser México",
-      "notes": "Resistencia eléctrica recubierta de silicón de alta densidad para presión uniforme."
+      "notes": "Resistencia eléctrica recubierta de silicón de alta densidad para presión uniforme.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ref-alcohol-isopropilico",
@@ -22374,7 +22709,9 @@
       "costPerUnit": 110,
       "supplierId": "sup-refacciones-cnc",
       "supplier": "Refacciones CNC 3D & Láser México",
-      "notes": "Desengrasa al 100% las camas magnéticas y los espejos de la máquina láser."
+      "notes": "Desengrasa al 100% las camas magnéticas y los espejos de la máquina láser.",
+      "packageQuantity": 1,
+      "packageMeasurement": "l"
     },
     {
       "id": "mat-ens-argolla-estrella",
@@ -22389,7 +22726,9 @@
       "costPerUnit": 125,
       "supplierId": "sup-herrajes-creativos",
       "supplier": "Herrajes & Insumos Creativos MX",
-      "notes": "Argolla con silueta de estrella de 30mm con cadenita y eslabón para llaveros temáticos."
+      "notes": "Argolla con silueta de estrella de 30mm con cadenita y eslabón para llaveros temáticos.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ens-argolla-corazon",
@@ -22404,7 +22743,9 @@
       "costPerUnit": 140,
       "supplierId": "sup-herrajes-creativos",
       "supplier": "Herrajes & Insumos Creativos MX",
-      "notes": "Ideal para detalles de bodas, aniversarios y recuerdos de San Valentín."
+      "notes": "Ideal para detalles de bodas, aniversarios y recuerdos de San Valentín.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ens-cadena-bolitas-negra",
@@ -22419,7 +22760,9 @@
       "costPerUnit": 160,
       "supplierId": "sup-herrajes-creativos",
       "supplier": "Herrajes & Insumos Creativos MX",
-      "notes": "Para placas de identificación militar, llaveros y etiquetas acrílicas."
+      "notes": "Para placas de identificación militar, llaveros y etiquetas acrílicas.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ens-cadena-bolitas-bronce",
@@ -22434,7 +22777,9 @@
       "costPerUnit": 175,
       "supplierId": "sup-herrajes-creativos",
       "supplier": "Herrajes & Insumos Creativos MX",
-      "notes": "Estilo retro para piezas de madera grabadas en láser."
+      "notes": "Estilo retro para piezas de madera grabadas en láser.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ens-mosqueton-mini",
@@ -22449,7 +22794,9 @@
       "costPerUnit": 180,
       "supplierId": "sup-herrajes-creativos",
       "supplier": "Herrajes & Insumos Creativos MX",
-      "notes": "Gatillo suave y argolla giratoria 360 grados para charms y llaveros compactos."
+      "notes": "Gatillo suave y argolla giratoria 360 grados para charms y llaveros compactos.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ens-mosqueton-dorado",
@@ -22465,7 +22812,9 @@
       "supplierId": "sup-herrajes-creativos",
       "supplier": "Herrajes & Insumos Creativos MX",
       "notes": "Baño electrostático de alta durabilidad para souvenirs premium.",
-      "updatedAt": "2026-10-15T00:15:42.035Z"
+      "updatedAt": "2026-10-15T00:15:42.035Z",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ens-broche-magnetico-14",
@@ -22480,7 +22829,9 @@
       "costPerUnit": 190,
       "supplierId": "sup-herrajes-creativos",
       "supplier": "Herrajes & Insumos Creativos MX",
-      "notes": "Cierre magnético ocultable en madera cortada en láser y piezas 3D."
+      "notes": "Cierre magnético ocultable en madera cortada en láser y piezas 3D.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ens-broche-iman-18",
@@ -22495,7 +22846,9 @@
       "costPerUnit": 220,
       "supplierId": "sup-herrajes-creativos",
       "supplier": "Herrajes & Insumos Creativos MX",
-      "notes": "Para monederos, cubiertas de libretas y estuches de cuero."
+      "notes": "Para monederos, cubiertas de libretas y estuches de cuero.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ens-tornillo-chicago-negro",
@@ -22510,7 +22863,9 @@
       "costPerUnit": 170,
       "supplierId": "sup-herrajes-creativos",
       "supplier": "Herrajes & Insumos Creativos MX",
-      "notes": "Para muestrarios, llaveros multicapa y menús de restaurante."
+      "notes": "Para muestrarios, llaveros multicapa y menús de restaurante.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ens-tornillo-chicago-laton",
@@ -22525,7 +22880,9 @@
       "costPerUnit": 195,
       "supplierId": "sup-herrajes-creativos",
       "supplier": "Herrajes & Insumos Creativos MX",
-      "notes": "Para carpetas ejecutivas de madera, cuero y acrílico."
+      "notes": "Para carpetas ejecutivas de madera, cuero y acrílico.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ens-remache-doble-vista",
@@ -22540,7 +22897,9 @@
       "costPerUnit": 145,
       "supplierId": "sup-herrajes-creativos",
       "supplier": "Herrajes & Insumos Creativos MX",
-      "notes": "Acabado limpio por ambos lados para llaveros de vinil y cuero sintético."
+      "notes": "Acabado limpio por ambos lados para llaveros de vinil y cuero sintético.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ens-base-pin-mariposa",
@@ -22555,7 +22914,9 @@
       "costPerUnit": 130,
       "supplierId": "sup-herrajes-creativos",
       "supplier": "Herrajes & Insumos Creativos MX",
-      "notes": "Para pines coleccionables impresos en 3D o cortados en madera/acrílico."
+      "notes": "Para pines coleccionables impresos en 3D o cortados en madera/acrílico.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ens-base-pin-goma",
@@ -22570,7 +22931,9 @@
       "costPerUnit": 85,
       "supplierId": "sup-herrajes-creativos",
       "supplier": "Herrajes & Insumos Creativos MX",
-      "notes": "Mayor agarre y no lastima la ropa ni la piel."
+      "notes": "Mayor agarre y no lastima la ropa ni la piel.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ens-gancho-caiman-gafete",
@@ -22585,7 +22948,9 @@
       "costPerUnit": 165,
       "supplierId": "sup-herrajes-creativos",
       "supplier": "Herrajes & Insumos Creativos MX",
-      "notes": "Para credenciales y gafetes corporativos para empresas y eventos."
+      "notes": "Para credenciales y gafetes corporativos para empresas y eventos.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ens-iman-neodimio-disco-10",
@@ -22600,7 +22965,9 @@
       "costPerUnit": 210,
       "supplierId": "sup-herrajes-creativos",
       "supplier": "Herrajes & Insumos Creativos MX",
-      "notes": "Agotado en taller: Se usa para figuras 3D articuladas y souvenirs magnéticos."
+      "notes": "Agotado en taller: Se usa para figuras 3D articuladas y souvenirs magnéticos.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ens-iman-neodimio-disco-15",
@@ -22615,7 +22982,9 @@
       "costPerUnit": 180,
       "supplierId": "sup-herrajes-creativos",
       "supplier": "Herrajes & Insumos Creativos MX",
-      "notes": "Fijación extrema atornillable para tableros de herramientas y letreros desmontables."
+      "notes": "Fijación extrema atornillable para tableros de herramientas y letreros desmontables.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ens-inserto-roscado-m3",
@@ -22630,7 +22999,9 @@
       "costPerUnit": 155,
       "supplierId": "sup-refacciones-cnc",
       "supplier": "Refacciones CNC 3D & Láser México",
-      "notes": "Se insertan con calor en piezas 3D para lograr uniones atornilladas indestructibles."
+      "notes": "Se insertan con calor en piezas 3D para lograr uniones atornilladas indestructibles.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ens-tornillo-m3-hex",
@@ -22645,7 +23016,9 @@
       "costPerUnit": 95,
       "supplierId": "sup-refacciones-cnc",
       "supplier": "Refacciones CNC 3D & Láser México",
-      "notes": "Especiales para ensambles estructurales de 3D y sujeción de placas."
+      "notes": "Especiales para ensambles estructurales de 3D y sujeción de placas.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ens-pegamento-cianocrilato-activador",
@@ -22660,7 +23033,9 @@
       "costPerUnit": 230,
       "supplierId": "sup-herrajes-creativos",
       "supplier": "Herrajes & Insumos Creativos MX",
-      "notes": "Pega madera MDF, PLA y acrílico en menos de 5 segundos con el activador."
+      "notes": "Pega madera MDF, PLA y acrílico en menos de 5 segundos con el activador.",
+      "packageQuantity": 2,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-ens-silicon-frio",
@@ -22675,7 +23050,9 @@
       "costPerUnit": 68,
       "supplierId": "sup-lumen",
       "supplier": "Lumen Papelería & Materiales de Arte",
-      "notes": "Para detalles textiles, cartulina y uniones elásticas sin quemar materiales."
+      "notes": "Para detalles textiles, cartulina y uniones elásticas sin quemar materiales.",
+      "packageQuantity": 250,
+      "packageMeasurement": "ml"
     },
     {
       "id": "mat-ens-tachas-hotfix-doradas",
@@ -22690,7 +23067,9 @@
       "costPerUnit": 140,
       "supplierId": "sup-textiles-centro",
       "supplier": "Textiles e Insumos del Centro",
-      "notes": "Se activan con la mini prensa térmica en playeras, gorras y mezclilla."
+      "notes": "Se activan con la mini prensa térmica en playeras, gorras y mezclilla.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-pegamento-resistol-850",
@@ -22705,7 +23084,9 @@
       "costPerUnit": 85,
       "supplierId": "sup-empaques-slp",
       "supplier": "Herrajes & Ensamble San Luis",
-      "notes": "Adhesivo PVA base agua para uniones de madera, triplay y MDF. Secado transparente de alta resistencia (en ml o gotas)."
+      "notes": "Adhesivo PVA base agua para uniones de madera, triplay y MDF. Secado transparente de alta resistencia (en ml o gotas).",
+      "packageQuantity": 500,
+      "packageMeasurement": "ml"
     },
     {
       "id": "mat-pegamento-cianocrilato-gotas",
@@ -22720,7 +23101,9 @@
       "costPerUnit": 110,
       "supplierId": "sup-empaques-slp",
       "supplier": "Herrajes & Ensamble San Luis",
-      "notes": "Fraguado en 3 segundos con acelerador. Para pegar acrílico con madera, PLA y uniones de precisión (gotas)."
+      "notes": "Fraguado en 3 segundos con acelerador. Para pegar acrílico con madera, PLA y uniones de precisión (gotas).",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-silicon-caliente-barras",
@@ -22735,7 +23118,9 @@
       "costPerUnit": 120,
       "supplierId": "sup-empaques-slp",
       "supplier": "Herrajes & Ensamble San Luis",
-      "notes": "Para fijación de cables internos en lámparas 3D y forrado de empaques."
+      "notes": "Para fijación de cables internos en lámparas 3D y forrado de empaques.",
+      "packageQuantity": 1,
+      "packageMeasurement": "kg"
     },
     {
       "id": "mat-lija-madera-fina-220",
@@ -22749,7 +23134,7 @@
       "minStockAlert": 5,
       "costPerUnit": 14,
       "packageQuantity": 1,
-      "packageMeasurement": "pliego",
+      "packageMeasurement": "pza",
       "supplierId": "sup-empaques-slp",
       "supplier": "Herrajes & Ensamble San Luis",
       "notes": "Pliego de lija de grano fino 220 para desbarbado suave y acabado sedoso antes del barnizado (rinde ~10 piezas de madera)."
@@ -22766,7 +23151,7 @@
       "minStockAlert": 5,
       "costPerUnit": 12,
       "packageQuantity": 1,
-      "packageMeasurement": "pliego",
+      "packageMeasurement": "pza",
       "supplierId": "sup-empaques-slp",
       "supplier": "Herrajes & Ensamble San Luis",
       "notes": "Para eliminar bordes ásperos y rebabas de corte con sierra o láser."
@@ -22783,7 +23168,7 @@
       "minStockAlert": 50,
       "costPerUnit": 1.5,
       "packageQuantity": 1,
-      "packageMeasurement": "corte",
+      "packageMeasurement": "pza",
       "supplierId": "sup-refacciones-cnc",
       "supplier": "Refacciones CNC 3D & Láser México",
       "notes": "Amortización de filo de sierra circular y vida útil de tubo láser CO2 por ciclo de corte."
@@ -22799,8 +23184,8 @@
       "currentStock": 10,
       "minStockAlert": 2,
       "costPerUnit": 45,
-      "packageQuantity": 50,
-      "packageMeasurement": "paño",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza",
       "supplierId": "sup-empaques-slp",
       "supplier": "Herrajes & Ensamble San Luis",
       "notes": "Paños suaves de algodón para aplicar tinte, retirar exceso de barniz y limpiar piezas terminadas."
@@ -22816,8 +23201,8 @@
       "currentStock": 12,
       "minStockAlert": 3,
       "costPerUnit": 48,
-      "packageQuantity": 50,
-      "packageMeasurement": "m",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza",
       "supplierId": "sup-viniltech",
       "supplier": "VinilTech Mayorista de Rotulación",
       "notes": "Cinta de baja adherencia que protege la madera de quemaduras y humo de láser durante el corte."
@@ -22835,7 +23220,9 @@
       "costPerUnit": 1650,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Película PET tratada de desprendimiento en frío/caliente para impresión DTF textil."
+      "notes": "Película PET tratada de desprendimiento en frío/caliente para impresión DTF textil.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-dtf-tinta-cmykw",
@@ -22850,7 +23237,9 @@
       "costPerUnit": 1250,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Pigmentos especiales de alta elasticidad para impresión sobre film DTF y curado en horno."
+      "notes": "Pigmentos especiales de alta elasticidad para impresión sobre film DTF y curado en horno.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-dtf-poliamida-polvo",
@@ -22865,7 +23254,9 @@
       "costPerUnit": 450,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Polvo adhesivo de poliuretano termofusible que se adhiere a la tinta húmeda del transfer."
+      "notes": "Polvo adhesivo de poliuretano termofusible que se adhiere a la tinta húmeda del transfer.",
+      "packageQuantity": 1,
+      "packageMeasurement": "kg"
     },
     {
       "id": "mat-papel-couche-300g",
@@ -22880,7 +23271,9 @@
       "costPerUnit": 160,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Gramaje grueso para invitaciones de boda, postales y portadas de catálogos."
+      "notes": "Gramaje grueso para invitaciones de boda, postales y portadas de catálogos.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-papel-sulfatada-12pts",
@@ -22895,7 +23288,9 @@
       "costPerUnit": 175,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Cuerpo rígido con reverso blanco mate para cajas automontables y tarjetas de agradecimiento."
+      "notes": "Cuerpo rígido con reverso blanco mate para cajas automontables y tarjetas de agradecimiento.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-toner-click-laser",
@@ -22910,7 +23305,9 @@
       "costPerUnit": 450,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Costo por click de tóner láser color microfino para invitaciones y papelería corporativa."
+      "notes": "Costo por click de tóner láser color microfino para invitaciones y papelería corporativa.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-foil-reactivo-oro",
@@ -22925,7 +23322,9 @@
       "costPerUnit": 220,
       "supplierId": "sup-sublimax",
       "supplier": "Sublimax Mayorista Cerámica & Textil",
-      "notes": "Se aplica con calor sobre tóner láser negro para crear letras doradas metalizadas en invitaciones."
+      "notes": "Se aplica con calor sobre tóner láser negro para crear letras doradas metalizadas en invitaciones.",
+      "packageQuantity": 1,
+      "packageMeasurement": "pza"
     },
     {
       "id": "mat-madera-abedul-3mm",
@@ -22935,8 +23334,8 @@
       "color": "Madera Clara Natural",
       "finish": "Natural / Madera",
       "unit": "placa (60x40 cm)",
-      "packageQuantity": 2400,
-      "packageMeasurement": "cm²",
+      "packageQuantity": 40,
+      "packageMeasurement": "cm",
       "currentStock": 20,
       "minStockAlert": 10,
       "costPerUnit": 58,
@@ -23037,8 +23436,8 @@
       "color": "Nogal Americano",
       "finish": "Natural / Madera Noble",
       "unit": "tabla (30x40 cm)",
-      "packageQuantity": 1200,
-      "packageMeasurement": "cm²",
+      "packageQuantity": 40,
+      "packageMeasurement": "cm",
       "currentStock": 8,
       "minStockAlert": 3,
       "costPerUnit": 185,
@@ -23054,8 +23453,8 @@
       "color": "Pino Natural",
       "finish": "Natural / Estufado",
       "unit": "tabla (30x40 cm)",
-      "packageQuantity": 1200,
-      "packageMeasurement": "cm²",
+      "packageQuantity": 40,
+      "packageMeasurement": "cm",
       "currentStock": 15,
       "minStockAlert": 5,
       "costPerUnit": 65,
@@ -23071,8 +23470,8 @@
       "color": "MDF Ocre",
       "finish": "Liso / Sin Astillas",
       "unit": "placa (60x40 cm)",
-      "packageQuantity": 2400,
-      "packageMeasurement": "cm²",
+      "packageQuantity": 40,
+      "packageMeasurement": "cm",
       "currentStock": 25,
       "minStockAlert": 10,
       "costPerUnit": 35,
@@ -23122,7 +23521,7 @@
       "color": "Acero Galvanizado",
       "finish": "Natural",
       "unit": "paquete (100 pzas)",
-      "packageQuantity": 100,
+      "packageQuantity": 1,
       "packageMeasurement": "pza",
       "currentStock": 8,
       "minStockAlert": 2,
@@ -23139,7 +23538,7 @@
       "color": "Acero Negro",
       "finish": "Fosfatado",
       "unit": "paquete (100 pzas)",
-      "packageQuantity": 100,
+      "packageQuantity": 1,
       "packageMeasurement": "pza",
       "currentStock": 6,
       "minStockAlert": 2,
@@ -23156,7 +23555,7 @@
       "color": "Kraft Natural",
       "finish": "Ventana Transparente",
       "unit": "paquete (100 pzas)",
-      "packageQuantity": 100,
+      "packageQuantity": 1,
       "packageMeasurement": "pza",
       "currentStock": 4,
       "minStockAlert": 2,
@@ -24040,5 +24439,5 @@
       }
     ]
   },
-  "exportedAt": "2026-10-30T18:14:47.951Z"
+  "exportedAt": "2026-10-30T18:26:44.354Z"
 }

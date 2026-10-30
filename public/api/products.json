@@ -54,7 +54,13 @@
     "regularPrice": 790,
     "savings": 100,
     "createdAt": "2026-10-14T14:44:40.000Z",
-    "updatedAt": "2026-10-14T14:44:40.000Z"
+    "updatedAt": "2026-10-14T14:44:40.000Z",
+    "customizationOptions": [
+      "Rostro y rasgos faciales",
+      "Vestimenta y pose",
+      "Escala (mini / estándar)"
+    ],
+    "availability": "made_to_order"
   },
   {
     "id": "colgador-llaves-l14",
@@ -4557,7 +4563,13 @@
     "regularPrice": 750,
     "savings": 100,
     "createdAt": "2026-10-24T15:00:00.000Z",
-    "updatedAt": "2026-10-24T15:00:00.000Z"
+    "updatedAt": "2026-10-24T15:00:00.000Z",
+    "customizationOptions": [
+      "Especie",
+      "Rasgos de pelaje",
+      "Caja POP! Custom"
+    ],
+    "availability": "made_to_order"
   },
   {
     "id": "figuras-funko-parejas",
@@ -4622,7 +4634,12 @@
     "regularPrice": 1490,
     "savings": 200,
     "createdAt": "2026-10-24T15:01:00.000Z",
-    "updatedAt": "2026-10-24T15:01:00.000Z"
+    "updatedAt": "2026-10-24T15:01:00.000Z",
+    "customizationOptions": [
+      "Ocasión",
+      "Formato de caja conmemorativa"
+    ],
+    "availability": "made_to_order"
   },
   {
     "id": "figuras-funko-profesiones",
@@ -4690,7 +4707,12 @@
     "regularPrice": 850,
     "savings": 100,
     "createdAt": "2026-10-24T15:02:00.000Z",
-    "updatedAt": "2026-10-24T15:02:00.000Z"
+    "updatedAt": "2026-10-24T15:02:00.000Z",
+    "customizationOptions": [
+      "Área profesional",
+      "Accesorio principal"
+    ],
+    "availability": "made_to_order"
   },
   {
     "id": "figuras-funko-amigos",
@@ -4748,7 +4770,12 @@
     "regularPrice": 1450,
     "savings": 200,
     "createdAt": "2026-10-24T15:03:00.000Z",
-    "updatedAt": "2026-10-24T15:03:00.000Z"
+    "updatedAt": "2026-10-24T15:03:00.000Z",
+    "customizationOptions": [
+      "Cantidad de figuras",
+      "Hobby / pasatiempo personalizado"
+    ],
+    "availability": "made_to_order"
   },
   {
     "id": "figuras-funko-familia",
@@ -4806,7 +4833,12 @@
     "regularPrice": 2050,
     "savings": 260,
     "createdAt": "2026-10-24T15:04:00.000Z",
-    "updatedAt": "2026-10-24T15:04:00.000Z"
+    "updatedAt": "2026-10-24T15:04:00.000Z",
+    "customizationOptions": [
+      "Integrantes de la familia",
+      "Extras (mascota / hobby)"
+    ],
+    "availability": "made_to_order"
   },
   {
     "id": "figuras-funko-abuelitos",
@@ -4864,7 +4896,12 @@
     "regularPrice": 1490,
     "savings": 200,
     "createdAt": "2026-10-24T15:05:00.000Z",
-    "updatedAt": "2026-10-24T15:05:00.000Z"
+    "updatedAt": "2026-10-24T15:05:00.000Z",
+    "customizationOptions": [
+      "Presentación del homenaje",
+      "Dedicatoria conmemorativa"
+    ],
+    "availability": "made_to_order"
   },
   {
     "id": "de-dibujo-a-figura-3d",
@@ -4922,7 +4959,12 @@
     ],
     "sku": "CUST-3D-DRAW-001",
     "createdAt": "2026-10-24T19:29:00.000Z",
-    "updatedAt": "2026-10-24T19:29:00.000Z"
+    "updatedAt": "2026-10-24T19:29:00.000Z",
+    "customizationOptions": [
+      "Tamaño de la escultura",
+      "Base con nombre y año"
+    ],
+    "availability": "made_to_order"
   },
   {
     "id": "de-dibujo-a-figura-3d-ajolote",
@@ -4980,7 +5022,12 @@
     ],
     "sku": "CUST-3D-DRAW-AJOLOTE",
     "createdAt": "2026-10-24T19:30:00.000Z",
-    "updatedAt": "2026-10-24T19:30:00.000Z"
+    "updatedAt": "2026-10-24T19:30:00.000Z",
+    "customizationOptions": [
+      "Tamaño de la escultura",
+      "Base con nombre y año"
+    ],
+    "availability": "made_to_order"
   },
   {
     "id": "de-dibujo-a-figura-3d-dinosaurio",
@@ -5038,7 +5085,12 @@
     ],
     "sku": "CUST-3D-DRAW-DINO",
     "createdAt": "2026-10-24T19:31:00.000Z",
-    "updatedAt": "2026-10-24T19:31:00.000Z"
+    "updatedAt": "2026-10-24T19:31:00.000Z",
+    "customizationOptions": [
+      "Tamaño de la escultura",
+      "Base con nombre y año"
+    ],
+    "availability": "made_to_order"
   },
   {
     "id": "de-dibujo-a-figura-3d-cohete",
@@ -5096,7 +5148,12 @@
     ],
     "sku": "CUST-3D-DRAW-COHETE",
     "createdAt": "2026-10-24T19:32:00.000Z",
-    "updatedAt": "2026-10-24T19:32:00.000Z"
+    "updatedAt": "2026-10-24T19:32:00.000Z",
+    "customizationOptions": [
+      "Tamaño de la escultura",
+      "Base con nombre y año"
+    ],
+    "availability": "made_to_order"
   },
   {
     "id": "de-dibujo-a-figura-3d-coche",
@@ -5154,7 +5211,12 @@
     ],
     "sku": "CUST-3D-DRAW-COCHE",
     "createdAt": "2026-10-24T19:33:00.000Z",
-    "updatedAt": "2026-10-24T19:33:00.000Z"
+    "updatedAt": "2026-10-24T19:33:00.000Z",
+    "customizationOptions": [
+      "Tamaño de la escultura",
+      "Base con nombre y año"
+    ],
+    "availability": "made_to_order"
   },
   {
     "id": "de-dibujo-a-figura-3d-monstruo",
@@ -5212,7 +5274,12 @@
     ],
     "sku": "CUST-3D-DRAW-MONSTRUO",
     "createdAt": "2026-10-24T19:34:00.000Z",
-    "updatedAt": "2026-10-24T19:34:00.000Z"
+    "updatedAt": "2026-10-24T19:34:00.000Z",
+    "customizationOptions": [
+      "Tamaño de la escultura",
+      "Base con nombre y año"
+    ],
+    "availability": "made_to_order"
   },
   {
     "id": "de-dibujo-a-figura-3d-castillo",
@@ -5270,7 +5337,12 @@
     ],
     "sku": "CUST-3D-DRAW-CASTILLO",
     "createdAt": "2026-10-24T19:35:00.000Z",
-    "updatedAt": "2026-10-24T19:35:00.000Z"
+    "updatedAt": "2026-10-24T19:35:00.000Z",
+    "customizationOptions": [
+      "Tamaño de la escultura",
+      "Base con nombre y año"
+    ],
+    "availability": "made_to_order"
   },
   {
     "id": "clicker-mecanico-fidget-t42",
@@ -5330,6 +5402,11 @@
     "sku": "JUG-3D-SWI-MAT-042",
     "createdAt": "2026-10-25T19:18:35.313Z",
     "updatedAt": "2026-10-25T19:18:35.313Z",
-    "whiteBgImage": "./uploads/t42_clicker_mecanico_estudio.webp"
+    "whiteBgImage": "./uploads/t42_clicker_mecanico_estudio.webp",
+    "customizationOptions": [
+      "Color de carcasa",
+      "Tipo de switch mecánico"
+    ],
+    "availability": "made_to_order"
   }
 ]
