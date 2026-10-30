@@ -1207,6 +1207,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   const [productSearch, setProductSearch] = useState('');
   const [filterWorld, setFilterWorld] = useState('all'); // 'all' | 'hogar' | 'negocios' | 'eventos'
   const [filterStatus, setFilterStatus] = useState('all');
+  const [draftNotice, setDraftNotice] = useState('');
   const [filterStock, setFilterStock] = useState('all'); // 'all' | 'in_stock' | 'made_to_order'
   const [filterTechnique, setFilterTechnique] = useState('all');
   const [productViewMode, setProductViewMode] = useState('grid'); // 'grid' (estilo paquetes) | 'table'
@@ -1295,6 +1296,38 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   // Photo Studio Modal State (Estudio Fotográfico IA / 4 Fotos)
   const [isPhotoStudioOpen, setIsPhotoStudioOpen] = useState(false);
   const [photoStudioProductId, setPhotoStudioProductId] = useState(null);
+
+  // Gesto/botón "atrás" del celular: cierra la ventana abierta en vez de salir del admin
+  const modalHistoryRef = useRef({ stack: [], skipPops: 0 });
+  useEffect(() => {
+    const onPop = () => {
+      const h = modalHistoryRef.current;
+      if (h.skipPops > 0) {
+        h.skipPops -= 1;
+        return;
+      }
+      const name = h.stack.pop();
+      if (name === 'photo') setIsPhotoStudioOpen(false);
+      if (name === 'editor') setIsEditorOpen(false);
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
+
+  const syncModalHistory = (name, open) => {
+    const h = modalHistoryRef.current;
+    const idx = h.stack.lastIndexOf(name);
+    if (open && idx === -1) {
+      h.stack.push(name);
+      window.history.pushState({ artesanoModal: name }, '');
+    } else if (!open && idx !== -1) {
+      h.stack.splice(idx, 1);
+      h.skipPops += 1;
+      window.history.back();
+    }
+  };
+  useEffect(() => { syncModalHistory('editor', isEditorOpen); }, [isEditorOpen]);
+  useEffect(() => { syncModalHistory('photo', isPhotoStudioOpen); }, [isPhotoStudioOpen]);
 
   const handleOpenPhotoStudio = (productId = null) => {
     if (productId === 'new' || (!productId && isEditorOpen && !editingProduct)) {
@@ -3832,6 +3865,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       setEditorMessage({ text: '¡Cambios guardados y sincronizados exitosamente!', type: 'success' });
       await loadAllData();
       if (onRefreshCatalog) onRefreshCatalog();
+      if (targetStatus === 'draft') {
+        setFilterStatus('draft');
+        setDraftNotice(`Borrador guardado: "${payload.name}". Se muestra abajo con el filtro Borrador; aquí lo puedes abrir y terminar.`);
+      }
       setTimeout(() => setIsEditorOpen(false), 800);
     } catch (err) {
       console.error('Error saving product:', err);
@@ -5425,6 +5462,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               {/* TAB 1: PRODUCTOS CON DIVISIÓN POR ÁREAS Y SWITCH DE STOCK */}
               {activeTab === 'products' && (
                 <div className="space-y-4">
+                  {draftNotice && (
+                    <div className="flex items-start justify-between gap-3 p-3 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs">
+                      <span className="font-semibold leading-relaxed">{draftNotice}</span>
+                      <button type="button" onClick={() => setDraftNotice('')} className="shrink-0 px-2 py-0.5 rounded-lg bg-white border border-amber-300 font-bold cursor-pointer">Cerrar</button>
+                    </div>
+                  )}
                   {/* BARRA DE ÁREAS Y AUDITORÍA: DISEÑO LIMPIO ESTILO CATÁLOGO */}
                   <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-[#E8E4DA] shadow-xs space-y-3">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
@@ -8772,6 +8815,41 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 font-bold text-sm text-gray-900 bg-white focus:ring-1 focus:ring-[#2D4F3E]"
                           placeholder="Ej. Colgador de llaves Bienvenidos con percheros de madera"
                         />
+                      </div>
+
+                      <div>
+                        <label className="font-bold text-gray-800 block mb-1 text-xs">Categoría *</label>
+                        <p className="text-[10.5px] text-gray-500 mb-1.5">Elige una o más. Aparecen según las áreas donde se exhibe el producto.</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {(() => {
+                            const areaIds = Array.isArray(editorForm.worlds) ? editorForm.worlds : [];
+                            const list = (categories || []).filter(cat => !cat.isHidden && (areaIds.length === 0 || areaIds.includes(cat.worldId)));
+                            if (list.length === 0) {
+                              return <span className="text-[11px] text-amber-700">No hay categorías para las áreas elegidas. Revisa la pestaña Categorías.</span>;
+                            }
+                            return list.map(cat => {
+                              const selected = (editorForm.categories || []).includes(cat.id);
+                              return (
+                                <button
+                                  key={cat.id}
+                                  type="button"
+                                  onClick={() => {
+                                    const current = Array.isArray(editorForm.categories) ? editorForm.categories : [];
+                                    const next = selected ? current.filter(id => id !== cat.id) : [...current, cat.id];
+                                    setEditorForm({ ...editorForm, categories: next });
+                                  }}
+                                  className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border cursor-pointer transition ${
+                                    selected
+                                      ? 'bg-[#2D4F3E] text-white border-[#2D4F3E]'
+                                      : 'bg-white text-gray-700 border-stone-300 hover:border-[#2D4F3E]'
+                                  }`}
+                                >
+                                  {selected ? '✓ ' : ''}{cat.name}
+                                </button>
+                              );
+                            });
+                          })()}
+                        </div>
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">

@@ -318,9 +318,11 @@ export default function ProductWorkshopTab({
     return rawMaterialsList
       .filter(mat => {
         const groupOk = materialMatchesGroup(mat, addGroup);
-        const areaOk = addGroup !== 'direct'
-          || activeMaterialAreaIds.length === 0
-          || activeMaterialAreaIds.includes(materialAreaFor(mat));
+        const matArea = materialAreaFor(mat);
+        const sharedArea = ['consumables', 'packaging', 'other'].includes(matArea);
+        const areaOk = activeMaterialAreaIds.length === 0
+          || sharedArea
+          || activeMaterialAreaIds.includes(matArea);
         const queryOk = !query || normalizeText(`${mat.name || ''} ${mat.category || ''} ${mat.supplier || ''}`).includes(query);
         return groupOk && areaOk && queryOk;
       })
