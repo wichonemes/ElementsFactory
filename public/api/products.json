@@ -427,7 +427,7 @@
     "code": "S10",
     "name": "Fotobotón acrílico con imán",
     "priceType": "starting_at",
-    "price": 39,
+    "price": 65,
     "priceUnit": "c/u",
     "status": "published",
     "featured": false,
@@ -1321,7 +1321,7 @@
     "code": "S1",
     "name": "Taza personalizada con logotipo o nombre",
     "priceType": "fixed",
-    "price": 72,
+    "price": 115,
     "priceUnit": "c/u",
     "status": "published",
     "featured": false,
@@ -1676,6 +1676,12 @@
     "isBundle": true,
     "bundleAreas": [
       "hogar"
+    ],
+    "includedItems": [
+      "Figura zorrito 10 cm (PLA premium)",
+      "Llavero miniatura de cabeza de zorrito",
+      "Stickers vinílicos D5 (2)",
+      "Empaque especial de colección"
     ]
   },
   {
@@ -2028,6 +2034,13 @@
     "bundleAreas": [
       "negocios"
     ],
+    "includedItems": [
+      "Placa de mostrador QR + NFC",
+      "Medalla 3D personalizada para retos",
+      "Llavero soporte para celular",
+      "Playera con marca del gimnasio",
+      "Termo grabado (opcional)"
+    ],
     "regularPrice": 620
   },
   {
@@ -2092,6 +2105,11 @@
     "isBundle": true,
     "bundleAreas": [
       "negocios"
+    ],
+    "includedItems": [
+      "Organizador de 8 peines guía",
+      "Portatijeras vertical",
+      "Soporte QR de mostrador"
     ],
     "regularPrice": 590
   },
@@ -2158,6 +2176,13 @@
     "isBundle": true,
     "bundleAreas": [
       "negocios"
+    ],
+    "includedItems": [
+      "Exhibidor múltiple de anillos con conos",
+      "Soporte vertical de aretes",
+      "Bandeja floral para collares",
+      "Mini letrero de marca en madera",
+      "Portaprecios de mostrador"
     ],
     "regularPrice": 680
   },
@@ -2327,6 +2352,12 @@
     "isBundle": true,
     "bundleAreas": [
       "eventos"
+    ],
+    "includedItems": [
+      "2 ganchos de madera grabados Novia/Novio",
+      "Alhajero de madera con terciopelo",
+      "Cosmetiquera de manta",
+      "2 vasos térmicos 20 oz"
     ]
   },
   {
@@ -2402,6 +2433,12 @@
     "isBundle": true,
     "bundleAreas": [
       "eventos"
+    ],
+    "includedItems": [
+      "Letrero de bienvenida tipo arco para caballete",
+      "Canastilla con 25 conos de pétalos",
+      "2 lestreros para sillas de honor",
+      "Tótem QR 15 x 20 cm"
     ]
   },
   {
@@ -2558,6 +2595,10 @@
     "isBundle": true,
     "bundleAreas": [
       "eventos"
+    ],
+    "includedItems": [
+      "Morralito de manta 100% algodón con jareta",
+      "Llavero de madera grabado con fecha"
     ]
   },
   {
@@ -4321,8 +4362,7 @@
     "status": "published",
     "featured": true,
     "worlds": [
-      "hogar",
-      "juguetes"
+      "hogar"
     ],
     "categories": [
       "juguetes-movimiento",
@@ -4389,8 +4429,7 @@
     "status": "published",
     "featured": true,
     "worlds": [
-      "hogar",
-      "juguetes"
+      "hogar"
     ],
     "categories": [
       "juguetes-articulados",
@@ -5243,13 +5282,11 @@
     "status": "published",
     "featured": true,
     "worlds": [
-      "juegos",
-      "oficina",
       "hogar"
     ],
     "categories": [
       "juguetes-fidget",
-      "oficina-accesorios"
+      "hogar-estudio"
     ],
     "techniques": [
       "3d",

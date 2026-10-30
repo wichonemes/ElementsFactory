@@ -400,7 +400,7 @@ function defaultTechnique(product) {
   return techs[0] || '3d';
 }
 
-function makeItem({ material, name, category, supplyType = 'direct', netQuantity = 1, wasteQuantity = 0, unit = 'pieza', unitCost = null, wasteType = 'none' }) {
+function makeItem({ material, name, category, supplyType = 'direct', netQuantity = 1, wasteQuantity = 0, unit = 'pieza', unitCost = null, wasteType = 'none', estimated = false }) {
   const resolvedUnit = unit || material?.packageMeasurement || 'pieza';
   const resolvedCost = unitCost !== null ? num(unitCost, 0) : materialUnitCost(material, resolvedUnit);
   const totalQuantity = round2(num(netQuantity) + num(wasteQuantity));
@@ -410,6 +410,7 @@ function makeItem({ material, name, category, supplyType = 'direct', netQuantity
     name: name || material?.name || 'Insumo',
     category: category || material?.category || 'materials',
     supplyType,
+    estimated: estimated === true || !material?.id,
     netQuantity: round2(netQuantity),
     wasteQuantity: round2(wasteQuantity),
     wasteType,
@@ -601,7 +602,8 @@ function buildOtherCostItems(product, tech, otherCost, rawMaterials = []) {
       netQuantity: 1,
       unit: 'lote',
       unitCost: amount,
-      wasteType: 'manual'
+      wasteType: 'manual',
+      estimated: true
     }));
   });
   return items;
@@ -633,7 +635,8 @@ export function buildRecipeFromProduct(product, rawMaterials = [], workshopParam
       wasteQuantity: Math.round(plaGrams * (num(params.filamentWastePercent, 15) / 100) * 100) / 100,
       unit: 'g',
       unitCost: pla ? materialUnitCost(pla, 'g') : num(params.plaPerKg, 500) / 1000,
-      wasteType: 'supports_and_purge'
+      wasteType: 'supports_and_purge',
+      estimated: !pla?.id
     }));
   }
   if (tpuGrams > 0) {
@@ -647,7 +650,8 @@ export function buildRecipeFromProduct(product, rawMaterials = [], workshopParam
       wasteQuantity: Math.round(tpuGrams * (num(params.filamentWastePercent, 15) / 100) * 100) / 100,
       unit: 'g',
       unitCost: tpu ? materialUnitCost(tpu, 'g') : num(params.tpuPerKg, 700) / 1000,
-      wasteType: 'supports_and_purge'
+      wasteType: 'supports_and_purge',
+      estimated: !tpu?.id
     }));
   }
 
@@ -664,7 +668,8 @@ export function buildRecipeFromProduct(product, rawMaterials = [], workshopParam
       supplyType: 'indirect',
       netQuantity: 1,
       unit: 'pieza',
-      unitCost: packagingCost
+      unitCost: packagingCost,
+      estimated: !box?.id
     }));
   }
 

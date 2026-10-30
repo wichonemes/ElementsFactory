@@ -17437,9 +17437,12 @@ class Database {
     const now = new Date().toISOString();
 
     // Paso 1: validar TODO antes de escribir. Si un insumo no existe, no se descuenta nada.
+    // Los renglones generados desde presupuestos agregados (lotes) llegan con `estimated: true`
+    // y NO representan un insumo real de almacén; se registran como estimados y no bloquean la producción.
     const sameName = (a, b) => String(a || '').toLowerCase().trim() === String(b || '').toLowerCase().trim();
     const plan = [];
     const missing = [];
+    const estimatedSkipped = [];
     for (const item of recipeItems) {
       const idx = db.rawMaterials.findIndex(m =>
         (item.materialId && m.id === item.materialId) ||
@@ -17447,6 +17450,11 @@ class Database {
         (!item.materialId && !item.rawMaterialId && item.name && sameName(m.name, item.name))
       );
       if (idx === -1) {
+        const isEstimatedLine = item.estimated === true || item.isEstimated === true;
+        if (isEstimatedLine) {
+          estimatedSkipped.push(item);
+          continue;
+        }
         missing.push(item.name || item.materialId || 'insumo sin nombre');
       } else {
         plan.push({ item, idx });
@@ -17507,12 +17515,23 @@ class Database {
 
     this.save(db);
 
+    const skipped = estimatedSkipped.map(i => ({
+      name: i.name,
+      category: i.category || '',
+      totalQuantity: i.totalQuantity,
+      unitCost: i.unitCost,
+      totalCost: i.totalCost,
+      reason: 'Renglón presupuestario (lote) sin insumo físico vinculado; el costo ya se incluye en la receta.'
+    }));
+
     return {
       success: true,
       productId: product?.id || productId,
       productName: product?.name || 'Producto',
       unitsProduced: multiplier,
       deductions,
+      skippedEstimated: skipped,
+      estimatedCount: skipped.length,
       updatedRawMaterials: db.rawMaterials,
       timestamp: now
     };

@@ -9,7 +9,7 @@ import {
   Home, Briefcase, PartyPopper, Printer, Palette, Scissors, Radio, Filter,
   Megaphone, Truck, MapPin, Calendar, Power, AlertCircle, Gift, Building2,
   Database, Save, Download, Gamepad2, Smartphone, Camera, Wrench, Hammer,
-  Link2, HardDrive, Globe, ShoppingCart
+  Link2, HardDrive, Globe, ShoppingCart, FileEdit, PackageCheck
 } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 import SalesMarketingSection from './SalesMarketingSection';
@@ -1176,7 +1176,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   const [loginLoading, setLoginLoading] = useState(false);
 
   // Navigation Tab State
-  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'stats' | 'products' | 'categories' | 'settings'
+  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'stats' | 'products' | 'drafts' | 'categories' | 'settings'
   const [rawMaterialsSubTab, setRawMaterialsSubTab] = useState('inventory');
   const [mobileNavGroup, setMobileNavGroup] = useState('catalog'); // 'catalog' | 'workshop' | 'sales' | 'business'
 
@@ -1185,7 +1185,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       setMobileNavGroup('dashboard');
     } else if (activeTab === 'pedidos') {
       setMobileNavGroup('pedidos');
-    } else if (['products', 'packages', 'categories', 'area-banners'].includes(activeTab)) {
+    } else if (['products', 'drafts', 'packages', 'categories', 'area-banners'].includes(activeTab)) {
       setMobileNavGroup('catalog');
     } else if (['raw-materials', 'margins'].includes(activeTab)) {
       setMobileNavGroup('workshop');
@@ -4187,6 +4187,16 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     const urgentStock = rawMaterialsList.filter(m => (Number(m.currentStock) || 0) <= (Number(m.minStockAlert) || 1) * 0.5).length;
     const noSupplier = rawMaterialsList.filter(m => !m.supplier).length;
     const bundles = products.filter(p => p.isBundle).length;
+    const validWorldIds = new Set(['hogar', 'negocios', 'personalizados', 'eventos', 'servicios', 'paquetes']);
+    const invalidWorldRefs = products.filter(p => (p.worlds || []).some(w => !validWorldIds.has(w))).length;
+    const brokenRecipes = products.filter(p => {
+      const items = p.manufacturingRecipe?.items;
+      if (!Array.isArray(items)) return false;
+      const matIds = new Set((rawMaterialsList || []).map(m => m.id));
+      return items.some(it => !it.estimated && !it.isEstimated && it.materialId && !matIds.has(it.materialId));
+    });
+    const incompleteBundles = products.filter(p => p.isBundle && !(Array.isArray(p.includedItems) && p.includedItems.length > 0));
+    const orphanCategories = products.filter(p => (p.categories || []).some(c => !categories.some(x => x.id === c)));
 
     const checks = [
       { id: 'image', label: 'Con foto principal', missing: noImage, done: total - noImage, weight: 20 },
@@ -4203,13 +4213,19 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       { id: 'no-recipe', label: 'Productos sin receta', detail: 'No tienen insumos ni costo de taller', count: noRecipe, tab: 'products', tone: 'rose' },
       { id: 'no-cost', label: 'Productos sin costo', detail: 'No se puede calcular su margen real', count: noCost, tab: 'margins', tone: 'amber' },
       { id: 'no-image', label: 'Productos sin foto', detail: 'No tienen imagen principal', count: noImage, tab: 'products', tone: 'sky' },
-      { id: 'drafts', label: 'Borradores sin publicar', detail: 'Están listos pero no visibles en la tienda', count: drafts, tab: 'products', tone: 'stone' },
+      { id: 'drafts', label: 'Borradores sin publicar', detail: 'Están listos pero no visibles en la tienda', count: drafts, tab: 'drafts', tone: 'stone' },
       { id: 'low-stock', label: 'Insumos bajos o agotados', detail: 'Requieren resurtido para seguir produciendo', count: lowStock, tab: 'raw-materials', subTab: 'inventory', tone: 'orange' },
       { id: 'no-supplier', label: 'Insumos sin proveedor', detail: 'No tienen proveedor asignado', count: noSupplier, tab: 'raw-materials', subTab: 'suppliers', tone: 'violet' }
     ].filter(task => task.count > 0);
 
-    return { total, published, drafts, noImage, noRecipe, noCost, noDescription, noSku, lowStock, urgentStock, noSupplier, bundles, checks, completeness, tasks };
-  }, [products, rawMaterialsList]);
+    const advancedTasks = [
+      { id: 'broken-recipes', label: 'Recetas con insumos inválidos', detail: 'Renglones sin material válido en almacén (bloquean producción)', count: brokenRecipes.length, tab: 'products', tone: 'rose' },
+      { id: 'incomplete-bundles', label: 'Paquetes sin componentes', detail: 'Faltan piezas incluidas por definir', count: incompleteBundles.length, tab: 'packages', tone: 'amber' },
+      { id: 'invalid-worlds', label: 'Áreas con referencias inválidas', detail: 'World/category inexistentes en productos', count: invalidWorldRefs, tab: 'categories', tone: 'sky' }
+    ].filter(task => task.count > 0);
+
+    return { total, published, drafts, noImage, noRecipe, noCost, noDescription, noSku, lowStock, urgentStock, noSupplier, bundles, checks, completeness, tasks, advancedTasks, brokenRecipes, incompleteBundles, invalidWorldRefs };
+  }, [products, rawMaterialsList, categories]);
 
   // Estado en vivo del producto que se está editando.
   const editorChecklist = useMemo(() => buildEditorChecklist(editorForm), [editorForm]);
@@ -4253,8 +4269,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     return counts;
   }, [products]);
 
+  // Vista exclusiva de borradores: solo productos con status 'draft'
+  const isDraftsView = activeTab === 'drafts';
+
   // Filtered & Sorted Products for Table and Grid
   const filteredProducts = useMemo(() => {
+    const statusFilter = isDraftsView ? 'draft' : filterStatus;
     const list = products.filter(p => {
       if (filterWorld === 'paquetes') {
         const isBundleOrService = p.isBundle || p.category === 'paquetes' || p.category === 'servicios' || p.code?.startsWith('PROMO') || p.code?.includes('PATCH') || p.worlds?.includes('paquetes') || p.worlds?.includes('paquetes-servicios');
@@ -4268,7 +4288,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       if (filterTechnique !== 'all' && !checkProductMatchesTechnique(p, filterTechnique)) {
         return false;
       }
-      if (filterStatus !== 'all' && p.status !== filterStatus) return false;
+      if (statusFilter !== 'all' && p.status !== statusFilter) return false;
       if (filterStock === 'in_stock' && p.availability !== 'in_stock') return false;
       if (filterStock === 'made_to_order' && p.availability === 'in_stock') return false;
       if (productSearch.trim()) {
@@ -4331,7 +4351,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       }
       return getProductTime(b) - getProductTime(a);
     });
-  }, [products, filterWorld, filterTechnique, filterStatus, filterStock, productSearch, productSort]);
+  }, [products, filterWorld, filterTechnique, filterStatus, filterStock, productSearch, productSort, isDraftsView]);
+
+  // Vista exclusiva de borradores: solo productos con status 'draft'
+  const draftsList = useMemo(() => filteredProducts.filter(p => p.status === 'draft'), [filteredProducts]);
+  const draftsCount = useMemo(() => products.filter(p => p.status === 'draft').length, [products]);
+  const visibleProductsForView = isDraftsView ? draftsList : filteredProducts;
 
   // Filtered Margins Rows for Margins Tab
   const filteredMarginsRows = useMemo(() => {
@@ -4723,6 +4748,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                 {(
                   mobileNavGroup === 'dashboard' || mobileNavGroup === 'pedidos' ? [] : mobileNavGroup === 'catalog' ? [
                     { id: 'products', label: 'Productos & SKUs', icon: '📦', count: products.length },
+                    { id: 'drafts', label: 'Borradores', icon: '✍️', count: draftsCount },
                     { id: 'packages', label: 'Paquetes & Kits', icon: '🎁', count: products.filter(p => p.isBundle).length },
                     { id: 'categories', label: 'Categorías', icon: '📁', count: categories.length },
                     { id: 'area-banners', label: 'Banners de Áreas', icon: '🖼️', count: 3 }
@@ -4865,6 +4891,23 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         activeTab === 'products' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-600'
                       }`}>
                         {products.length}
+                      </span>
+                    </button>
+
+                    <button
+                      onClick={() => setActiveTab('drafts')}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
+                        activeTab === 'drafts' ? 'bg-[#B45309] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#B45309] font-medium'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <FileEdit className="w-4 h-4" />
+                        <span>Borradores</span>
+                      </div>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                        activeTab === 'drafts' ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-800'
+                      }`}>
+                        {draftsCount}
                       </span>
                     </button>
 
@@ -5304,6 +5347,38 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         ))}
                       </div>
                     </section>
+
+                    {adminHealth.advancedTasks && adminHealth.advancedTasks.length > 0 && (
+                      <section className="rounded-2xl border border-[#E8E4DA] bg-white p-3.5 sm:p-4 shadow-xs">
+                        <div className="flex items-center justify-between gap-2">
+                          <div>
+                            <h3 className="text-sm font-black text-[#1F2421]">Avanzados del catálogo</h3>
+                            <p className="text-[10px] text-gray-500">Errores de datos que no deben llegar a producción.</p>
+                          </div>
+                          <span className="text-[9px] font-black px-2 py-0.5 rounded-full border bg-rose-50 text-rose-800 border-rose-200">
+                            {adminHealth.advancedTasks.length}
+                          </span>
+                        </div>
+                        <div className="mt-2 space-y-1.5">
+                          {adminHealth.advancedTasks.map(task => (
+                            <button
+                              key={task.id}
+                              type="button"
+                              onClick={() => { if (task.subTab) setRawMaterialsSubTab(task.subTab); setActiveTab(task.tab); }}
+                              className="w-full flex items-center gap-2 text-left rounded-xl border border-[#E8E4DA] bg-[#FAF9F5]/50 px-2.5 py-2 hover:bg-white hover:border-[#2D4F3E]/30 transition-colors cursor-pointer"
+                            >
+                              <span className={`w-1.5 h-7 rounded-full shrink-0 ${task.tone === 'rose' ? 'bg-rose-500' : task.tone === 'amber' ? 'bg-amber-500' : task.tone === 'sky' ? 'bg-sky-500' : task.tone === 'orange' ? 'bg-orange-500' : task.tone === 'violet' ? 'bg-violet-500' : 'bg-stone-400'}`} />
+                              <div className="min-w-0 flex-1">
+                                <div className="text-[10px] font-bold text-gray-900 truncate">{task.label}</div>
+                                <div className="text-[8.5px] text-gray-500 truncate">{task.detail}</div>
+                              </div>
+                              <span className="text-[10px] font-black font-mono text-gray-800">{task.count}</span>
+                              <ArrowRight className="w-3 h-3 text-gray-300 shrink-0" />
+                            </button>
+                          ))}
+                        </div>
+                      </section>
+                    )}
                   </div>
 
                   <section className="rounded-2xl border border-[#E8E4DA] bg-white p-3.5 sm:p-4 shadow-xs">
@@ -5459,10 +5534,27 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                 <CouponsAdminSection token={token} />
               )}
 
-              {/* TAB 1: PRODUCTOS */}
               {/* TAB 1: PRODUCTOS CON DIVISIÓN POR ÁREAS Y SWITCH DE STOCK */}
-              {activeTab === 'products' && (
+              {/* TAB: BORRADORES EXCLUSIVO (solo status 'draft') */}
+              {['products', 'drafts'].includes(activeTab) && (
                 <div className="space-y-4">
+                  {isDraftsView && (
+                    <div className="flex items-start justify-between gap-3 p-3 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs">
+                      <span className="font-semibold leading-relaxed">
+                        Estás en la <strong>vista de Borradores</strong>: solo se listan los productos con estado <strong>Borrador</strong>. Desde aquí se publican, se editan o se descartan.
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFilterStatus('all');
+                          setActiveTab('products');
+                        }}
+                        className="shrink-0 px-2.5 py-1.5 rounded-lg bg-white border border-amber-300 font-bold cursor-pointer hover:bg-amber-100 transition-colors"
+                      >
+                        Salir de Borradores
+                      </button>
+                    </div>
+                  )}
                   {draftNotice && (
                     <div className="flex items-start justify-between gap-3 p-3 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs">
                       <span className="font-semibold leading-relaxed">{draftNotice}</span>
@@ -5677,11 +5769,24 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       </button>
                       <button
                         type="button"
-                        onClick={handleOpenNewProduct}
+                        onClick={() => handleOpenNewProduct}
                         className="flex items-center gap-1.5 px-4 py-2 min-h-[40px] rounded-xl bg-[#2D4F3E] text-white text-xs font-bold hover:bg-[#20392C] active:scale-95 transition-all shadow-sm cursor-pointer touch-manipulation"
                       >
                         <Plus className="w-4 h-4 stroke-[2.5]" />
                         <span>Nuevo Producto</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFilterStatus('draft');
+                          setActiveTab('drafts');
+                        }}
+                        className="flex items-center gap-1.5 px-4 py-2 min-h-[40px] rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-bold active:scale-95 transition-all shadow-sm cursor-pointer touch-manipulation border border-amber-300"
+                        title="Abrir la vista exclusiva de productos guardados como borrador"
+                      >
+                        <FileEdit className="w-4 h-4 text-amber-700" />
+                        <span>Borradores</span>
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-200 text-amber-900 font-black">{draftsCount}</span>
                       </button>
                     </div>
                   </div>
@@ -5709,7 +5814,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                   {productViewMode === 'grid' ? (
                     /* VISTA EN CUADRÍCULA DE TARJETAS (ESTILO PAQUETES - FÁCIL EDICIÓN) */
                     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3 sm:gap-4">
-                      {filteredProducts.map(p => (
+                      {visibleProductsForView.map(p => (
                         <div
                           key={p.id}
                           className="rounded-2xl border border-[#E8E4DA] hover:border-gray-400 bg-white transition-all flex flex-col justify-between overflow-hidden shadow-xs hover:shadow-md relative"
@@ -5952,7 +6057,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     <>
 {/* VISTA MÓVIL: Tarjetas de Producto Táctiles y Adaptadas */}
                   <div className="md:hidden space-y-3">
-                    {filteredProducts.map(p => (
+                    {visibleProductsForView.map(p => (
                       <div
                         key={p.id}
                         className="bg-white rounded-2xl p-3.5 border border-[#E8E4DA] shadow-xs space-y-3"
@@ -6193,7 +6298,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
-                          {filteredProducts.map(p => (
+                          {visibleProductsForView.map(p => (
                             <tr key={p.id} className="hover:bg-gray-50/80 transition-colors">
                               <td className="py-1 px-2">
                                 <div className="flex items-center gap-1.5">

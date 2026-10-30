@@ -73,7 +73,7 @@
           "type": "measures"
         }
       ],
-      "costPrice": 192.12,
+      "costPrice": 222.86,
       "costBreakdown": {
         "plaGrams": 86.25,
         "tpuGrams": 0,
@@ -86,7 +86,12 @@
         "additionalFailuresCost": 4.55,
         "fixedOverheadCost": 8,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 5.63,
+        "wastePercentAverage": 4.8,
+        "totalBeforeIva": 192.12,
+        "ivaPercent": 16,
+        "ivaCost": 30.74
       },
       "manufacturingTimes": {
         "machineHours": 4,
@@ -213,7 +218,11 @@
         "energyCost": 3.94,
         "wearCost": 13.5,
         "laborCost": 45,
-        "failureReserveCost": 4.55
+        "failureReserveCost": 4.55,
+        "totalBeforeIva": 192.12,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 30.74
       }
     },
     {
@@ -314,7 +323,7 @@
       },
       "updatedAt": "2026-10-16T05:47:53.103Z",
       "stockQuantity": 25,
-      "costPrice": 87.3,
+      "costPrice": 101.27,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -327,7 +336,12 @@
         "prepCost": 0,
         "additionalFailuresCost": 2.19,
         "fixedOverheadCost": 0,
-        "shippingCost": 0
+        "shippingCost": 0,
+        "totalWasteCost": 2.11,
+        "wastePercentAverage": 3.3,
+        "totalBeforeIva": 87.3,
+        "ivaPercent": 16,
+        "ivaCost": 13.97
       },
       "sku": "HOG-LAS-PIN-GRA-014",
       "skuBreakdown": {
@@ -516,7 +530,11 @@
         },
         "wearCost": 1.25,
         "failureReserveCost": 2.19,
-        "fixedOverheadCost": 0
+        "fixedOverheadCost": 0,
+        "totalBeforeIva": 87.3,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 13.97
       },
       "repository": {
         "platform": "local",
@@ -629,7 +647,7 @@
       "detailImage": "./uploads/t38_vista3_detalle.webp",
       "measureImage": "./uploads/t38_vista4_medidas.webp",
       "stockQuantity": 10,
-      "costPrice": 238.93,
+      "costPrice": 278.32,
       "costBreakdown": {
         "plaGrams": 161,
         "tpuGrams": 0,
@@ -638,11 +656,16 @@
         "otherEquipCost": 0,
         "manualWorkMin": 20,
         "prepCost": 0,
-        "packagingCost": 15,
+        "packagingCost": 16,
         "additionalFailuresCost": 6.52,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 10.5,
+        "wastePercentAverage": 5.6,
+        "totalBeforeIva": 239.93,
+        "ivaPercent": 16,
+        "ivaCost": 38.39
       },
       "updatedAt": "2026-10-15T01:16:39.479Z",
       "flashDealConfig": {
@@ -773,7 +796,7 @@
           },
           {
             "id": "item-t38-empaque",
-            "materialId": "mat-cajas-kraft-medianas",
+            "materialId": "mat-cajas-kraft-mediana",
             "name": "Caja Kraft Rígida 20x15x8 cm + Poliburbuja Protectora",
             "category": "packaging",
             "supplyType": "indirect",
@@ -782,11 +805,11 @@
             "wasteType": "none",
             "totalQuantity": 1,
             "unit": "pieza",
-            "unitCost": 15,
-            "totalCost": 15
+            "unitCost": 16,
+            "totalCost": 16
           }
         ],
-        "totalMaterialCost": 186.5,
+        "totalMaterialCost": 187.5,
         "packagingAndShipping": {
           "enabled": true,
           "packagingType": "caja_kraft",
@@ -796,7 +819,11 @@
         "totalWasteCost": 10.5,
         "wastePercentAverage": 5.6,
         "failureReserveCost": 6.52,
-        "fixedOverheadCost": 0
+        "fixedOverheadCost": 0,
+        "totalBeforeIva": 239.93,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 38.39
       }
     },
     {
@@ -886,7 +913,7 @@
       "detailImage": "./uploads/catalog-v2-t6-detail-oficial.webp",
       "measureImage": "./uploads/catalog-v2-t6-scale-oficial.webp",
       "stockQuantity": 9,
-      "costPrice": 87.26,
+      "costPrice": 101.22,
       "costBreakdown": {
         "plaGrams": 109.25,
         "tpuGrams": 0,
@@ -899,7 +926,12 @@
         "additionalFailuresCost": 2.4,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 7.13,
+        "wastePercentAverage": 11.8,
+        "totalBeforeIva": 87.26,
+        "ivaPercent": 16,
+        "ivaCost": 13.96
       },
       "flashDealConfig": {
         "enabled": false,
@@ -1018,7 +1050,11 @@
         "energyCost": 3.28,
         "wearCost": 11.25,
         "laborCost": 10,
-        "failureReserveCost": 2.4
+        "failureReserveCost": 2.4,
+        "totalBeforeIva": 87.26,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 13.96
       }
     },
     {
@@ -1110,7 +1146,7 @@
       "detailImage": "./uploads/catalog-v2-t29-detail-a425b5e774.webp",
       "measureImage": "./uploads/catalog-v2-t29-scale-dd0637e08b.webp",
       "stockQuantity": 9,
-      "costPrice": 76.37,
+      "costPrice": 88.59,
       "costBreakdown": {
         "plaGrams": 92,
         "tpuGrams": 0,
@@ -1123,7 +1159,12 @@
         "additionalFailuresCost": 2.08,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 6,
+        "wastePercentAverage": 11.6,
+        "totalBeforeIva": 76.37,
+        "ivaPercent": 16,
+        "ivaCost": 12.22
       },
       "sku": "HOG-3D-CER-MAT-029",
       "skuBreakdown": {
@@ -1236,7 +1277,11 @@
         "energyCost": 2.84,
         "wearCost": 9.75,
         "laborCost": 10,
-        "failureReserveCost": 2.08
+        "failureReserveCost": 2.08,
+        "totalBeforeIva": 76.37,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 12.22
       }
     },
     {
@@ -1328,7 +1373,7 @@
       "detailImage": "./uploads/catalog-v2-t2-detail-25e3f42d09.webp",
       "measureImage": "./uploads/catalog-v2-t2-scale-851dae3290.webp",
       "stockQuantity": 12,
-      "costPrice": 35.99,
+      "costPrice": 41.75,
       "costBreakdown": {
         "plaGrams": 28.75,
         "tpuGrams": 0,
@@ -1341,7 +1386,12 @@
         "additionalFailuresCost": 0.96,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 1.88,
+        "wastePercentAverage": 7.4,
+        "totalBeforeIva": 35.99,
+        "ivaPercent": 16,
+        "ivaCost": 5.76
       },
       "sku": "HOG-3D-TEX-MAT-002",
       "skuBreakdown": {
@@ -1480,7 +1530,11 @@
         "energyCost": 1.05,
         "wearCost": 3.6,
         "laborCost": 5,
-        "failureReserveCost": 0.96
+        "failureReserveCost": 0.96,
+        "totalBeforeIva": 35.99,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 5.76
       }
     },
     {
@@ -1488,7 +1542,7 @@
       "code": "S10",
       "name": "Fotobotón acrílico con imán",
       "priceType": "starting_at",
-      "price": 39,
+      "price": 65,
       "priceUnit": "c/u",
       "status": "published",
       "featured": false,
@@ -1564,7 +1618,7 @@
       "detailImage": "./uploads/catalog-v2-s10-detail-12ca9401e4.webp",
       "measureImage": "./uploads/catalog-v2-s10-scale-58977e7af8.webp",
       "stockQuantity": 10,
-      "costPrice": 30.77,
+      "costPrice": 35.69,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -1577,7 +1631,12 @@
         "additionalFailuresCost": 0.84,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 30.77,
+        "ivaPercent": 16,
+        "ivaCost": 4.92
       },
       "flashDealConfig": {
         "enabled": false,
@@ -1722,7 +1781,11 @@
         "energyCost": 1.58,
         "wearCost": 0.75,
         "laborCost": 10,
-        "failureReserveCost": 0.84
+        "failureReserveCost": 0.84,
+        "totalBeforeIva": 30.77,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 4.92
       }
     },
     {
@@ -1814,7 +1877,7 @@
       "detailImage": "./uploads/catalog-v2-l8-detail-8fdec0405d.webp",
       "measureImage": "./uploads/catalog-v2-l8-scale-c92f64e638.webp",
       "stockQuantity": 10,
-      "costPrice": 40.18,
+      "costPrice": 46.61,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -1827,7 +1890,12 @@
         "additionalFailuresCost": 1.05,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 40.18,
+        "ivaPercent": 16,
+        "ivaCost": 6.43
       },
       "flashDealConfig": {
         "enabled": false,
@@ -2000,7 +2068,11 @@
         "energyCost": 0.53,
         "wearCost": 1,
         "laborCost": 15,
-        "failureReserveCost": 1.05
+        "failureReserveCost": 1.05,
+        "totalBeforeIva": 40.18,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 6.43
       }
     },
     {
@@ -2094,7 +2166,7 @@
       "detailImage": "./uploads/catalog-v2-l9-detail-58334a3c01.webp",
       "measureImage": "./uploads/catalog-v2-l9-scale-6760c3ae5c.webp",
       "stockQuantity": 10,
-      "costPrice": 22.53,
+      "costPrice": 26.13,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -2107,7 +2179,12 @@
         "additionalFailuresCost": 0.64,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0.64,
+        "wastePercentAverage": 10.9,
+        "totalBeforeIva": 22.53,
+        "ivaPercent": 16,
+        "ivaCost": 3.6
       },
       "flashDealConfig": {
         "enabled": false,
@@ -2247,7 +2324,11 @@
         "wearCost": 1,
         "laborCost": 15,
         "failureReserveCost": 0.64,
-        "fixedOverheadCost": 0
+        "fixedOverheadCost": 0,
+        "totalBeforeIva": 22.53,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 3.6
       },
       "repository": {
         "platform": "local",
@@ -2353,7 +2434,7 @@
       "detailImage": "./uploads/catalog-v2-t37-detail-oficial.webp",
       "measureImage": "./uploads/catalog-v2-t37-scale-oficial.webp",
       "stockQuantity": 10,
-      "costPrice": 142.88,
+      "costPrice": 165.74,
       "costBreakdown": {
         "plaGrams": 184,
         "tpuGrams": 0,
@@ -2366,7 +2447,12 @@
         "additionalFailuresCost": 3.87,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 12,
+        "wastePercentAverage": 11.7,
+        "totalBeforeIva": 142.88,
+        "ivaPercent": 16,
+        "ivaCost": 22.86
       },
       "sku": "HOG-3D-PLA-MAT-037",
       "skuBreakdown": {
@@ -2480,7 +2566,11 @@
         "energyCost": 4.81,
         "wearCost": 16.5,
         "laborCost": 15,
-        "failureReserveCost": 3.87
+        "failureReserveCost": 3.87,
+        "totalBeforeIva": 142.88,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 22.86
       }
     },
     {
@@ -2566,7 +2656,7 @@
       "detailImage": "./uploads/catalog-v2-t12-detail-oficial.webp",
       "measureImage": "./uploads/catalog-v2-t12-scale-oficial.webp",
       "stockQuantity": 13,
-      "costPrice": 27.44,
+      "costPrice": 31.83,
       "costBreakdown": {
         "plaGrams": 23,
         "tpuGrams": 0,
@@ -2579,7 +2669,12 @@
         "additionalFailuresCost": 0.71,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 1.5,
+        "wastePercentAverage": 8.1,
+        "totalBeforeIva": 27.44,
+        "ivaPercent": 16,
+        "ivaCost": 4.39
       },
       "flashDealConfig": {
         "enabled": false,
@@ -2726,7 +2821,11 @@
         "energyCost": 0.73,
         "wearCost": 2.5,
         "laborCost": 5,
-        "failureReserveCost": 0.71
+        "failureReserveCost": 0.71,
+        "totalBeforeIva": 27.44,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 4.39
       }
     },
     {
@@ -2821,7 +2920,7 @@
       "detailImage": "./uploads/catalog-v2-l4-detail-38817792c1.webp",
       "measureImage": "./uploads/catalog-v2-l4-scale-43c3f7ca9a.webp",
       "stockQuantity": 0,
-      "costPrice": 68.29,
+      "costPrice": 79.22,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -2834,7 +2933,12 @@
         "additionalFailuresCost": 1.76,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 68.29,
+        "ivaPercent": 16,
+        "ivaCost": 10.93
       },
       "updatedAt": "2026-10-14T23:56:58.023Z",
       "flashDealConfig": {
@@ -2993,7 +3097,11 @@
         "energyCost": 0.53,
         "wearCost": 1,
         "laborCost": 15,
-        "failureReserveCost": 1.76
+        "failureReserveCost": 1.76,
+        "totalBeforeIva": 68.29,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 10.93
       }
     },
     {
@@ -3077,7 +3185,7 @@
       "detailImage": "./uploads/t10_vista3_detalle.webp",
       "measureImage": "./uploads/t10_vista4_medidas.webp",
       "stockQuantity": 15,
-      "costPrice": 49.06,
+      "costPrice": 56.91,
       "costBreakdown": {
         "plaGrams": 69,
         "tpuGrams": 0,
@@ -3090,7 +3198,12 @@
         "additionalFailuresCost": 1.31,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 4.5,
+        "wastePercentAverage": 11.5,
+        "totalBeforeIva": 49.06,
+        "ivaPercent": 16,
+        "ivaCost": 7.85
       },
       "flashDealConfig": {
         "enabled": false,
@@ -3209,7 +3322,11 @@
         "energyCost": 0.8,
         "wearCost": 2.75,
         "laborCost": 5,
-        "failureReserveCost": 1.31
+        "failureReserveCost": 1.31,
+        "totalBeforeIva": 49.06,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 7.85
       }
     },
     {
@@ -3293,7 +3410,7 @@
       "detailImage": "./uploads/catalog-v2-t11-detail-033ea519c7.webp",
       "measureImage": "./uploads/catalog-v2-t11-scale-6b24250991.webp",
       "stockQuantity": 12,
-      "costPrice": 66.24,
+      "costPrice": 76.84,
       "costBreakdown": {
         "plaGrams": 86.25,
         "tpuGrams": 0,
@@ -3306,7 +3423,12 @@
         "additionalFailuresCost": 1.78,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 5.63,
+        "wastePercentAverage": 11.5,
+        "totalBeforeIva": 66.24,
+        "ivaPercent": 16,
+        "ivaCost": 10.6
       },
       "updatedAt": "2026-10-15T01:16:34.503Z",
       "sku": "HOG-3D-PLA-MAT-011",
@@ -3418,7 +3540,11 @@
         "energyCost": 2.63,
         "wearCost": 9,
         "laborCost": 4,
-        "failureReserveCost": 1.78
+        "failureReserveCost": 1.78,
+        "totalBeforeIva": 66.24,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 10.6
       }
     },
     {
@@ -3504,7 +3630,7 @@
       "detailImage": "./uploads/catalog-v2-t39-detail-oficial.webp",
       "measureImage": "./uploads/catalog-v2-t39-scale-oficial.webp",
       "stockQuantity": 10,
-      "costPrice": 207.03,
+      "costPrice": 240.15,
       "costBreakdown": {
         "plaGrams": 138,
         "tpuGrams": 0,
@@ -3517,7 +3643,12 @@
         "additionalFailuresCost": 5.59,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 9,
+        "wastePercentAverage": 5.5,
+        "totalBeforeIva": 207.03,
+        "ivaPercent": 16,
+        "ivaCost": 33.12
       },
       "sku": "HOG-NFC-PLA-NFC-039",
       "skuBreakdown": {
@@ -3671,7 +3802,11 @@
         "energyCost": 3.94,
         "wearCost": 13.5,
         "laborCost": 20,
-        "failureReserveCost": 5.59
+        "failureReserveCost": 5.59,
+        "totalBeforeIva": 207.03,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 33.12
       }
     },
     {
@@ -3755,7 +3890,7 @@
       "detailImage": "./uploads/catalog-v2-t7-detail-4284fc71a1.webp",
       "measureImage": "./uploads/catalog-v2-t7-scale-c7ede558e5.webp",
       "stockQuantity": 0,
-      "costPrice": 113.9,
+      "costPrice": 132.12,
       "costBreakdown": {
         "plaGrams": 149.5,
         "tpuGrams": 0,
@@ -3768,7 +3903,12 @@
         "additionalFailuresCost": 3.14,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 9.75,
+        "wastePercentAverage": 12,
+        "totalBeforeIva": 113.9,
+        "ivaPercent": 16,
+        "ivaCost": 18.22
       },
       "sku": "HOG-3D-PLA-MAT-007",
       "skuBreakdown": {
@@ -3879,7 +4019,11 @@
         "energyCost": 4.81,
         "wearCost": 16.5,
         "laborCost": 8,
-        "failureReserveCost": 3.14
+        "failureReserveCost": 3.14,
+        "totalBeforeIva": 113.9,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 18.22
       }
     },
     {
@@ -3975,7 +4119,7 @@
       "detailImage": "./uploads/t16_vista3_detalle.webp",
       "measureImage": "./uploads/t16_vista4_medidas.webp",
       "stockQuantity": 0,
-      "costPrice": 101.34,
+      "costPrice": 117.55,
       "costBreakdown": {
         "plaGrams": 103.5,
         "tpuGrams": 0,
@@ -3988,7 +4132,12 @@
         "additionalFailuresCost": 2.78,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 6.75,
+        "wastePercentAverage": 8.2,
+        "totalBeforeIva": 101.34,
+        "ivaPercent": 16,
+        "ivaCost": 16.21
       },
       "sku": "NEG-3D-PLA-MAT-016",
       "skuBreakdown": {
@@ -4129,7 +4278,11 @@
         "energyCost": 1.31,
         "wearCost": 4.5,
         "laborCost": 10,
-        "failureReserveCost": 2.78
+        "failureReserveCost": 2.78,
+        "totalBeforeIva": 101.34,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 16.21
       }
     },
     {
@@ -4214,7 +4367,7 @@
       "detailImage": "./uploads/catalog-v2-t26-detail-d1b53a8f75.webp",
       "measureImage": "./uploads/catalog-v2-t26-scale-fd71a1e6b8.webp",
       "stockQuantity": 10,
-      "costPrice": 93.98,
+      "costPrice": 109.02,
       "costBreakdown": {
         "plaGrams": 126.5,
         "tpuGrams": 0,
@@ -4227,7 +4380,12 @@
         "additionalFailuresCost": 2.59,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 8.25,
+        "wastePercentAverage": 12,
+        "totalBeforeIva": 93.98,
+        "ivaPercent": 16,
+        "ivaCost": 15.04
       },
       "flashDealConfig": {
         "enabled": false,
@@ -4344,7 +4502,11 @@
         "energyCost": 3.94,
         "wearCost": 13.5,
         "laborCost": 5,
-        "failureReserveCost": 2.59
+        "failureReserveCost": 2.59,
+        "totalBeforeIva": 93.98,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 15.04
       }
     },
     {
@@ -4429,7 +4591,7 @@
       "detailImage": "./uploads/catalog-v2-t25-detail-93cbff8d4b.webp",
       "measureImage": "./uploads/catalog-v2-t25-scale-eeadbf2eb7.webp",
       "stockQuantity": 0,
-      "costPrice": 55.66,
+      "costPrice": 64.57,
       "costBreakdown": {
         "plaGrams": 63.25,
         "tpuGrams": 0,
@@ -4442,7 +4604,12 @@
         "additionalFailuresCost": 1.5,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 4.13,
+        "wastePercentAverage": 10.2,
+        "totalBeforeIva": 55.66,
+        "ivaPercent": 16,
+        "ivaCost": 8.91
       },
       "flashDealConfig": {
         "enabled": false,
@@ -4589,7 +4756,11 @@
         "energyCost": 1.93,
         "wearCost": 6.6,
         "laborCost": 5,
-        "failureReserveCost": 1.5
+        "failureReserveCost": 1.5,
+        "totalBeforeIva": 55.66,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 8.91
       }
     },
     {
@@ -4597,7 +4768,7 @@
       "code": "S1",
       "name": "Taza personalizada con logotipo o nombre",
       "priceType": "fixed",
-      "price": 72,
+      "price": 115,
       "priceUnit": "c/u",
       "status": "published",
       "featured": false,
@@ -4677,7 +4848,7 @@
       "detailImage": "./uploads/catalog-v2-s1-detail-918981c0b0.webp",
       "measureImage": "./uploads/catalog-v2-s1-scale-406d68f108.webp",
       "stockQuantity": 6,
-      "costPrice": 53.75,
+      "costPrice": 62.35,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -4690,7 +4861,12 @@
         "additionalFailuresCost": 1.42,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 53.75,
+        "ivaPercent": 16,
+        "ivaCost": 8.6
       },
       "flashDealConfig": {
         "enabled": false,
@@ -4821,7 +4997,11 @@
         "energyCost": 1.58,
         "wearCost": 0.75,
         "laborCost": 10,
-        "failureReserveCost": 1.42
+        "failureReserveCost": 1.42,
+        "totalBeforeIva": 53.75,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 8.6
       }
     },
     {
@@ -4914,7 +5094,7 @@
       "detailImage": "./uploads/catalog-v2-l15-detail-c27a2576e2.webp",
       "measureImage": "./uploads/catalog-v2-l15-scale-a42156e5d0.webp",
       "stockQuantity": 0,
-      "costPrice": 29.33,
+      "costPrice": 34.02,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -4927,7 +5107,12 @@
         "additionalFailuresCost": 0.8,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 29.33,
+        "ivaPercent": 16,
+        "ivaCost": 4.69
       },
       "flashDealConfig": {
         "enabled": false,
@@ -5086,7 +5271,11 @@
         "energyCost": 0.53,
         "wearCost": 1,
         "laborCost": 15,
-        "failureReserveCost": 0.8
+        "failureReserveCost": 0.8,
+        "totalBeforeIva": 29.33,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 4.69
       }
     },
     {
@@ -5186,7 +5375,7 @@
       "detailImage": "./uploads/t20_vista3_detalle.webp",
       "measureImage": "./uploads/t20_vista4_medidas.webp",
       "stockQuantity": 0,
-      "costPrice": 22.3,
+      "costPrice": 25.87,
       "costBreakdown": {
         "plaGrams": 13.8,
         "tpuGrams": 0,
@@ -5199,7 +5388,12 @@
         "additionalFailuresCost": 0.59,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0.9,
+        "wastePercentAverage": 6,
+        "totalBeforeIva": 22.3,
+        "ivaPercent": 16,
+        "ivaCost": 3.57
       },
       "flashDealConfig": {
         "enabled": true,
@@ -5377,7 +5571,11 @@
         "energyCost": 0.36,
         "wearCost": 1.25,
         "laborCost": 5,
-        "failureReserveCost": 0.59
+        "failureReserveCost": 0.59,
+        "totalBeforeIva": 22.3,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 3.57
       }
     },
     {
@@ -5459,7 +5657,7 @@
       "detailImage": "./uploads/catalog-v2-t21-detail-2e76c2b71e.webp",
       "measureImage": "./uploads/catalog-v2-t21-scale-b72e3fcb99.webp",
       "stockQuantity": 16,
-      "costPrice": 68.1,
+      "costPrice": 79,
       "costBreakdown": {
         "plaGrams": 74.75,
         "tpuGrams": 0,
@@ -5472,7 +5670,12 @@
         "additionalFailuresCost": 1.87,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 4.88,
+        "wastePercentAverage": 9.9,
+        "totalBeforeIva": 68.1,
+        "ivaPercent": 16,
+        "ivaCost": 10.9
       },
       "flashDealConfig": {
         "enabled": false,
@@ -5617,7 +5820,11 @@
         "energyCost": 2.45,
         "wearCost": 8.4,
         "laborCost": 6,
-        "failureReserveCost": 1.87
+        "failureReserveCost": 1.87,
+        "totalBeforeIva": 68.1,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 10.9
       }
     },
     {
@@ -5700,7 +5907,7 @@
       "detailImage": "./uploads/t35_vista3_detalle.webp",
       "measureImage": "./uploads/t35_vista4_medidas.webp",
       "stockQuantity": 14,
-      "costPrice": 107.41,
+      "costPrice": 124.6,
       "costBreakdown": {
         "plaGrams": 92,
         "tpuGrams": 0,
@@ -5713,7 +5920,12 @@
         "additionalFailuresCost": 2.69,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 6,
+        "wastePercentAverage": 7,
+        "totalBeforeIva": 107.41,
+        "ivaPercent": 16,
+        "ivaCost": 17.19
       },
       "sku": "HOG-3D-PLA-BRI-035",
       "skuBreakdown": {
@@ -5854,11 +6066,21 @@
         "energyCost": 1.97,
         "wearCost": 6.75,
         "laborCost": 10,
-        "failureReserveCost": 2.69
+        "failureReserveCost": 2.69,
+        "totalBeforeIva": 107.41,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 17.19
       },
       "isBundle": true,
       "bundleAreas": [
         "hogar"
+      ],
+      "includedItems": [
+        "Figura zorrito 10 cm (PLA premium)",
+        "Llavero miniatura de cabeza de zorrito",
+        "Stickers vinílicos D5 (2)",
+        "Empaque especial de colección"
       ]
     },
     {
@@ -5951,7 +6173,7 @@
       "detailImage": "./uploads/catalog-v2-l2-detail-28fc8cd38d.webp",
       "measureImage": "./uploads/catalog-v2-l2-scale-1d8cf493d0.webp",
       "stockQuantity": 0,
-      "costPrice": 83.62,
+      "costPrice": 97,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -5964,7 +6186,12 @@
         "additionalFailuresCost": 2.09,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 83.62,
+        "ivaPercent": 16,
+        "ivaCost": 13.38
       },
       "flashDealConfig": {
         "enabled": false,
@@ -6123,7 +6350,11 @@
         "energyCost": 0.53,
         "wearCost": 1,
         "laborCost": 15,
-        "failureReserveCost": 2.09
+        "failureReserveCost": 2.09,
+        "totalBeforeIva": 83.62,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 13.38
       }
     },
     {
@@ -6210,7 +6441,7 @@
       "detailImage": "./uploads/t1_vista3_detalle.webp",
       "measureImage": "./uploads/t1_vista4_medidas.webp",
       "stockQuantity": 0,
-      "costPrice": 22.71,
+      "costPrice": 26.34,
       "costBreakdown": {
         "plaGrams": 20.7,
         "tpuGrams": 0,
@@ -6223,7 +6454,12 @@
         "additionalFailuresCost": 0.6,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 1.35,
+        "wastePercentAverage": 9.1,
+        "totalBeforeIva": 22.71,
+        "ivaPercent": 16,
+        "ivaCost": 3.63
       },
       "sku": "HOG-3D-PLA-MAT-001",
       "skuBreakdown": {
@@ -6364,7 +6600,11 @@
         "energyCost": 0.51,
         "wearCost": 1.75,
         "laborCost": 5,
-        "failureReserveCost": 0.6
+        "failureReserveCost": 0.6,
+        "totalBeforeIva": 22.71,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 3.63
       }
     },
     {
@@ -6450,7 +6690,7 @@
       "detailImage": "./uploads/catalog-v2-s8-detail-b17aab8fed.webp",
       "measureImage": "./uploads/catalog-v2-s8-scale-24ae10f387.webp",
       "stockQuantity": 14,
-      "costPrice": 78.44,
+      "costPrice": 90.99,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -6463,7 +6703,12 @@
         "additionalFailuresCost": 2.11,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 78.44,
+        "ivaPercent": 16,
+        "ivaCost": 12.55
       },
       "flashDealConfig": {
         "enabled": false,
@@ -6594,7 +6839,11 @@
         "energyCost": 1.58,
         "wearCost": 0.75,
         "laborCost": 10,
-        "failureReserveCost": 2.11
+        "failureReserveCost": 2.11,
+        "totalBeforeIva": 78.44,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 12.55
       }
     },
     {
@@ -6681,7 +6930,7 @@
       "detailImage": "./uploads/t33_vista3_detalle.webp",
       "measureImage": "./uploads/t33_vista4_medidas.webp",
       "stockQuantity": 0,
-      "costPrice": 128.63,
+      "costPrice": 149.21,
       "costBreakdown": {
         "plaGrams": 126.5,
         "tpuGrams": 0,
@@ -6694,7 +6943,12 @@
         "additionalFailuresCost": 3.57,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 8.25,
+        "wastePercentAverage": 7.6,
+        "totalBeforeIva": 128.63,
+        "ivaPercent": 16,
+        "ivaCost": 20.58
       },
       "flashDealConfig": {
         "enabled": false,
@@ -6855,7 +7109,11 @@
         "energyCost": 1.31,
         "wearCost": 4.5,
         "laborCost": 10,
-        "failureReserveCost": 3.57
+        "failureReserveCost": 3.57,
+        "totalBeforeIva": 128.63,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 20.58
       }
     },
     {
@@ -6940,7 +7198,7 @@
       "detailImage": "./uploads/catalog-v2-t32-detail-654a48c225.webp",
       "measureImage": "./uploads/catalog-v2-t32-scale-fbb59a194e.webp",
       "stockQuantity": 0,
-      "costPrice": 149.69,
+      "costPrice": 173.64,
       "costBreakdown": {
         "plaGrams": 172.5,
         "tpuGrams": 0,
@@ -6953,7 +7211,12 @@
         "additionalFailuresCost": 4.13,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 11.25,
+        "wastePercentAverage": 10,
+        "totalBeforeIva": 149.69,
+        "ivaPercent": 16,
+        "ivaCost": 23.95
       },
       "flashDealConfig": {
         "enabled": false,
@@ -7098,11 +7361,22 @@
         "energyCost": 4.81,
         "wearCost": 16.5,
         "laborCost": 12,
-        "failureReserveCost": 4.13
+        "failureReserveCost": 4.13,
+        "totalBeforeIva": 149.69,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 23.95
       },
       "isBundle": true,
       "bundleAreas": [
         "negocios"
+      ],
+      "includedItems": [
+        "Placa de mostrador QR + NFC",
+        "Medalla 3D personalizada para retos",
+        "Llavero soporte para celular",
+        "Playera con marca del gimnasio",
+        "Termo grabado (opcional)"
       ],
       "regularPrice": 620
     },
@@ -7186,7 +7460,7 @@
       "detailImage": "./uploads/catalog-v2-t18-detail-dd7ea8cd5c.webp",
       "measureImage": "./uploads/catalog-v2-t18-scale-8108f2560e.webp",
       "stockQuantity": 0,
-      "costPrice": 114.86,
+      "costPrice": 133.24,
       "costBreakdown": {
         "plaGrams": 126.5,
         "tpuGrams": 0,
@@ -7199,7 +7473,12 @@
         "additionalFailuresCost": 3.11,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 8.25,
+        "wastePercentAverage": 9.6,
+        "totalBeforeIva": 114.86,
+        "ivaPercent": 16,
+        "ivaCost": 18.38
       },
       "sku": "NEG-3D-PLA-MAT-018",
       "skuBreakdown": {
@@ -7338,11 +7617,20 @@
         "energyCost": 3.5,
         "wearCost": 12,
         "laborCost": 10,
-        "failureReserveCost": 3.11
+        "failureReserveCost": 3.11,
+        "totalBeforeIva": 114.86,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 18.38
       },
       "isBundle": true,
       "bundleAreas": [
         "negocios"
+      ],
+      "includedItems": [
+        "Organizador de 8 peines guía",
+        "Portatijeras vertical",
+        "Soporte QR de mostrador"
       ],
       "regularPrice": 590
     },
@@ -7427,7 +7715,7 @@
       "detailImage": "./uploads/catalog-v2-t27-detail-159392852e.webp",
       "measureImage": "./uploads/catalog-v2-t27-scale-33b7bb81ef.webp",
       "stockQuantity": 0,
-      "costPrice": 123.98,
+      "costPrice": 143.82,
       "costBreakdown": {
         "plaGrams": 138,
         "tpuGrams": 0,
@@ -7440,7 +7728,12 @@
         "additionalFailuresCost": 3.38,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 9,
+        "wastePercentAverage": 9.8,
+        "totalBeforeIva": 123.98,
+        "ivaPercent": 16,
+        "ivaCost": 19.84
       },
       "sku": "NEG-HYB-PLA-MAT-027",
       "skuBreakdown": {
@@ -7579,11 +7872,22 @@
         "energyCost": 4.2,
         "wearCost": 14.4,
         "laborCost": 10,
-        "failureReserveCost": 3.38
+        "failureReserveCost": 3.38,
+        "totalBeforeIva": 123.98,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 19.84
       },
       "isBundle": true,
       "bundleAreas": [
         "negocios"
+      ],
+      "includedItems": [
+        "Exhibidor múltiple de anillos con conos",
+        "Soporte vertical de aretes",
+        "Bandeja floral para collares",
+        "Mini letrero de marca en madera",
+        "Portaprecios de mostrador"
       ],
       "regularPrice": 680
     },
@@ -7682,7 +7986,7 @@
       "detailImage": "./uploads/catalog-v2-ev-patchbar-detail-10076432c6.webp",
       "measureImage": "./uploads/catalog-v2-ev-patchbar-scale-d63f586482.webp",
       "stockQuantity": 0,
-      "costPrice": 2427.3,
+      "costPrice": 2815.67,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -7695,7 +7999,12 @@
         "additionalFailuresCost": 66.33,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 2427.3,
+        "ivaPercent": 16,
+        "ivaCost": 388.37
       },
       "flashDealConfig": {
         "enabled": true,
@@ -7849,7 +8158,11 @@
         "energyCost": 0.22,
         "wearCost": 0.75,
         "laborCost": 10,
-        "failureReserveCost": 66.33
+        "failureReserveCost": 66.33,
+        "totalBeforeIva": 2427.3,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 388.37
       },
       "bundleAreas": [
         "eventos",
@@ -7944,7 +8257,7 @@
       "detailImage": "./uploads/catalog-v2-ev-suite-detail-0d1bdfdaa8.webp",
       "measureImage": "./uploads/catalog-v2-ev-suite-scale-0742a13507.webp",
       "stockQuantity": 0,
-      "costPrice": 299.53,
+      "costPrice": 347.45,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -7957,7 +8270,12 @@
         "additionalFailuresCost": 8,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 299.53,
+        "ivaPercent": 16,
+        "ivaCost": 47.92
       },
       "sku": "EVE-LAS-PIN-GRA-001",
       "skuBreakdown": {
@@ -8110,11 +8428,21 @@
         "energyCost": 0.53,
         "wearCost": 1,
         "laborCost": 15,
-        "failureReserveCost": 8
+        "failureReserveCost": 8,
+        "totalBeforeIva": 299.53,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 47.92
       },
       "isBundle": true,
       "bundleAreas": [
         "eventos"
+      ],
+      "includedItems": [
+        "2 ganchos de madera grabados Novia/Novio",
+        "Alhajero de madera con terciopelo",
+        "Cosmetiquera de manta",
+        "2 vasos térmicos 20 oz"
       ]
     },
     {
@@ -8207,7 +8535,7 @@
       "detailImage": "./uploads/catalog-v2-ev-ceremonia-detail-42a1ba517b.webp",
       "measureImage": "./uploads/catalog-v2-ev-ceremonia-scale-e08a0d52ea.webp",
       "stockQuantity": 0,
-      "costPrice": 489.63,
+      "costPrice": 567.97,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -8220,7 +8548,12 @@
         "additionalFailuresCost": 13.1,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 489.63,
+        "ivaPercent": 16,
+        "ivaCost": 78.34
       },
       "sku": "EVE-HYB-ACR-GRA-001",
       "skuBreakdown": {
@@ -8373,11 +8706,21 @@
         "energyCost": 0.53,
         "wearCost": 1,
         "laborCost": 15,
-        "failureReserveCost": 13.1
+        "failureReserveCost": 13.1,
+        "totalBeforeIva": 489.63,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 78.34
       },
       "isBundle": true,
       "bundleAreas": [
         "eventos"
+      ],
+      "includedItems": [
+        "Letrero de bienvenida tipo arco para caballete",
+        "Canastilla con 25 conos de pétalos",
+        "2 lestreros para sillas de honor",
+        "Tótem QR 15 x 20 cm"
       ]
     },
     {
@@ -8470,7 +8813,7 @@
       "detailImage": "./uploads/catalog-v2-ev-presidencial-detail-d5501f753a.webp",
       "measureImage": "./uploads/catalog-v2-ev-presidencial-scale-d717e16ef3.webp",
       "stockQuantity": 0,
-      "costPrice": 262.37,
+      "costPrice": 304.35,
       "costBreakdown": {
         "plaGrams": 103.5,
         "tpuGrams": 0,
@@ -8483,7 +8826,12 @@
         "additionalFailuresCost": 7.06,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 6.75,
+        "wastePercentAverage": 3.2,
+        "totalBeforeIva": 262.37,
+        "ivaPercent": 16,
+        "ivaCost": 41.98
       },
       "sku": "EVE-HYB-PLA-GRA-001",
       "skuBreakdown": {
@@ -8622,7 +8970,11 @@
         "energyCost": 3.06,
         "wearCost": 10.5,
         "laborCost": 30,
-        "failureReserveCost": 7.06
+        "failureReserveCost": 7.06,
+        "totalBeforeIva": 262.37,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 41.98
       }
     },
     {
@@ -8725,7 +9077,7 @@
       "detailImage": "./uploads/catalog-v2-ev-anticruda-detail-8feed7eac7.webp",
       "measureImage": "./uploads/catalog-v2-ev-anticruda-scale-8f3ed9c922.webp",
       "stockQuantity": 0,
-      "costPrice": 27.89,
+      "costPrice": 32.35,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -8738,7 +9090,12 @@
         "additionalFailuresCost": 0.75,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 27.89,
+        "ivaPercent": 16,
+        "ivaCost": 4.46
       },
       "sku": "EVE-LAS-TEX-GRA-001",
       "skuBreakdown": {
@@ -8891,11 +9248,19 @@
         "energyCost": 0.39,
         "wearCost": 0.75,
         "laborCost": 10,
-        "failureReserveCost": 0.75
+        "failureReserveCost": 0.75,
+        "totalBeforeIva": 27.89,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 4.46
       },
       "isBundle": true,
       "bundleAreas": [
         "eventos"
+      ],
+      "includedItems": [
+        "Morralito de manta 100% algodón con jareta",
+        "Llavero de madera grabado con fecha"
       ]
     },
     {
@@ -8996,7 +9361,7 @@
       "detailImage": "./uploads/catalog-v2-promo-hog-1-detail-5c907bdc2b.webp",
       "measureImage": "./uploads/catalog-v2-promo-hog-1-scale-a202394984.webp",
       "stockQuantity": 0,
-      "costPrice": 197.02,
+      "costPrice": 228.54,
       "costBreakdown": {
         "plaGrams": 46,
         "tpuGrams": 0,
@@ -9009,7 +9374,12 @@
         "additionalFailuresCost": 5.21,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 3,
+        "wastePercentAverage": 1.9,
+        "totalBeforeIva": 197.02,
+        "ivaPercent": 16,
+        "ivaCost": 31.52
       },
       "sku": "PAQ-HYB-PIN-GRA-001",
       "skuBreakdown": {
@@ -9149,7 +9519,11 @@
         "energyCost": 1.31,
         "wearCost": 4.5,
         "laborCost": 25,
-        "failureReserveCost": 5.21
+        "failureReserveCost": 5.21,
+        "totalBeforeIva": 197.02,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 31.52
       },
       "bundleAreas": [
         "hogar"
@@ -9248,7 +9622,7 @@
       "detailImage": "./uploads/catalog-v2-promo-hog-2-detail-239a9c3dda.webp",
       "measureImage": "./uploads/catalog-v2-promo-hog-2-scale-1c5a412a91.webp",
       "stockQuantity": 0,
-      "costPrice": 215.12,
+      "costPrice": 249.54,
       "costBreakdown": {
         "plaGrams": 253,
         "tpuGrams": 0,
@@ -9261,7 +9635,12 @@
         "additionalFailuresCost": 5.74,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 16.5,
+        "wastePercentAverage": 10.7,
+        "totalBeforeIva": 215.12,
+        "ivaPercent": 16,
+        "ivaCost": 34.42
       },
       "sku": "PAQ-3D-PLA-ENS-002",
       "skuBreakdown": {
@@ -9400,7 +9779,11 @@
         "energyCost": 7.88,
         "wearCost": 27,
         "laborCost": 20,
-        "failureReserveCost": 5.74
+        "failureReserveCost": 5.74,
+        "totalBeforeIva": 215.12,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 34.42
       },
       "bundleAreas": [
         "hogar"
@@ -9510,7 +9893,7 @@
       "detailImage": "./uploads/catalog-v2-promo-hog-3-detail-05fb365d65.webp",
       "measureImage": "./uploads/catalog-v2-promo-hog-3-scale-6a0903aae4.webp",
       "stockQuantity": 0,
-      "costPrice": 125.05,
+      "costPrice": 145.06,
       "costBreakdown": {
         "plaGrams": 86.25,
         "tpuGrams": 0,
@@ -9523,7 +9906,12 @@
         "additionalFailuresCost": 3.29,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 5.63,
+        "wastePercentAverage": 5.9,
+        "totalBeforeIva": 125.05,
+        "ivaPercent": 16,
+        "ivaCost": 20.01
       },
       "sku": "PAQ-HYB-PLA-GRA-003",
       "skuBreakdown": {
@@ -9662,7 +10050,11 @@
         "energyCost": 2.63,
         "wearCost": 9,
         "laborCost": 15,
-        "failureReserveCost": 3.29
+        "failureReserveCost": 3.29,
+        "totalBeforeIva": 125.05,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 20.01
       },
       "bundleAreas": [
         "hogar"
@@ -9766,7 +10158,7 @@
       "detailImage": "./uploads/catalog-v2-promo-biz-1-detail-2803b7aefa.webp",
       "measureImage": "./uploads/catalog-v2-promo-biz-1-scale-8d57b77857.webp",
       "stockQuantity": 0,
-      "costPrice": 658.65,
+      "costPrice": 764.03,
       "costBreakdown": {
         "plaGrams": 747.5,
         "tpuGrams": 0,
@@ -9779,7 +10171,12 @@
         "additionalFailuresCost": 18.02,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 48.75,
+        "wastePercentAverage": 9.9,
+        "totalBeforeIva": 658.65,
+        "ivaPercent": 16,
+        "ivaCost": 105.38
       },
       "sku": "PAQ-HYB-ACR-GRA-001",
       "skuBreakdown": {
@@ -9918,7 +10315,11 @@
         "energyCost": 21.88,
         "wearCost": 75,
         "laborCost": 50,
-        "failureReserveCost": 18.02
+        "failureReserveCost": 18.02,
+        "totalBeforeIva": 658.65,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 105.38
       },
       "bundleAreas": [
         "negocios"
@@ -10027,7 +10428,7 @@
       "detailImage": "./uploads/catalog-v2-promo-biz-2-detail-8feaf311de.webp",
       "measureImage": "./uploads/catalog-v2-promo-biz-2-scale-7310c244c1.webp",
       "stockQuantity": 0,
-      "costPrice": 322.88,
+      "costPrice": 374.54,
       "costBreakdown": {
         "plaGrams": 230,
         "tpuGrams": 0,
@@ -10040,7 +10441,12 @@
         "additionalFailuresCost": 8.82,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 15,
+        "wastePercentAverage": 5.9,
+        "totalBeforeIva": 322.88,
+        "ivaPercent": 16,
+        "ivaCost": 51.66
       },
       "sku": "PAQ-LAS-CER-NFC-002",
       "skuBreakdown": {
@@ -10193,7 +10599,11 @@
         "energyCost": 6.56,
         "wearCost": 22.5,
         "laborCost": 30,
-        "failureReserveCost": 8.82
+        "failureReserveCost": 8.82,
+        "totalBeforeIva": 322.88,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 51.66
       },
       "bundleAreas": [
         "negocios"
@@ -10290,7 +10700,7 @@
       "detailImage": "./uploads/catalog-v2-promo-biz-3-detail-04a190d0f1.webp",
       "measureImage": "./uploads/catalog-v2-promo-biz-3-scale-00d81fef57.webp",
       "stockQuantity": 0,
-      "costPrice": 318.87,
+      "costPrice": 369.89,
       "costBreakdown": {
         "plaGrams": 103.5,
         "tpuGrams": 0,
@@ -10303,7 +10713,12 @@
         "additionalFailuresCost": 8.56,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 6.75,
+        "wastePercentAverage": 2.6,
+        "totalBeforeIva": 318.87,
+        "ivaPercent": 16,
+        "ivaCost": 51.02
       },
       "sku": "PAQ-HYB-ACR-GRA-003",
       "skuBreakdown": {
@@ -10442,7 +10857,11 @@
         "energyCost": 3.06,
         "wearCost": 10.5,
         "laborCost": 40,
-        "failureReserveCost": 8.56
+        "failureReserveCost": 8.56,
+        "totalBeforeIva": 318.87,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 51.02
       },
       "bundleAreas": [
         "negocios"
@@ -10550,7 +10969,7 @@
       "detailImage": "./uploads/catalog-v2-promo-ev-1-detail-0d5351b213.webp",
       "measureImage": "./uploads/catalog-v2-promo-ev-1-scale-7c45b34c88.webp",
       "stockQuantity": 0,
-      "costPrice": 910.37,
+      "costPrice": 1056.03,
       "costBreakdown": {
         "plaGrams": 103.5,
         "tpuGrams": 0,
@@ -10563,7 +10982,12 @@
         "additionalFailuresCost": 25.06,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 6.75,
+        "wastePercentAverage": 0.9,
+        "totalBeforeIva": 910.37,
+        "ivaPercent": 16,
+        "ivaCost": 145.66
       },
       "sku": "PAQ-HYB-PIN-GRA-001",
       "skuBreakdown": {
@@ -10702,7 +11126,11 @@
         "energyCost": 3.06,
         "wearCost": 10.5,
         "laborCost": 90,
-        "failureReserveCost": 25.06
+        "failureReserveCost": 25.06,
+        "totalBeforeIva": 910.37,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 145.66
       },
       "bundleAreas": [
         "eventos"
@@ -10813,7 +11241,7 @@
       "detailImage": "./uploads/catalog-v2-promo-ev-2-detail-90b0dd966a.webp",
       "measureImage": "./uploads/catalog-v2-promo-ev-2-scale-6fc7e58b74.webp",
       "stockQuantity": 0,
-      "costPrice": 2972.3,
+      "costPrice": 3447.87,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -10826,7 +11254,12 @@
         "additionalFailuresCost": 81.33,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 2972.3,
+        "ivaPercent": 16,
+        "ivaCost": 475.57
       },
       "sku": "PAQ-LAS-TEX-GRA-002",
       "skuBreakdown": {
@@ -10965,7 +11398,11 @@
         "energyCost": 0.22,
         "wearCost": 0.75,
         "laborCost": 10,
-        "failureReserveCost": 81.33
+        "failureReserveCost": 81.33,
+        "totalBeforeIva": 2972.3,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 475.57
       },
       "bundleAreas": [
         "eventos",
@@ -11074,7 +11511,7 @@
       "detailImage": "./uploads/catalog-v2-promo-ev-3-detail-bc71d859c5.webp",
       "measureImage": "./uploads/catalog-v2-promo-ev-3-scale-c8a6e4b916.webp",
       "stockQuantity": 0,
-      "costPrice": 679.27,
+      "costPrice": 787.95,
       "costBreakdown": {
         "plaGrams": 402.5,
         "tpuGrams": 0,
@@ -11087,7 +11524,12 @@
         "additionalFailuresCost": 18.77,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 26.25,
+        "wastePercentAverage": 4.7,
+        "totalBeforeIva": 679.27,
+        "ivaPercent": 16,
+        "ivaCost": 108.68
       },
       "sku": "PAQ-HYB-ACR-GRA-003",
       "skuBreakdown": {
@@ -11226,7 +11668,11 @@
         "energyCost": 12.25,
         "wearCost": 42,
         "laborCost": 50,
-        "failureReserveCost": 18.77
+        "failureReserveCost": 18.77,
+        "totalBeforeIva": 679.27,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 108.68
       },
       "bundleAreas": [
         "eventos"
@@ -11329,7 +11775,7 @@
       "detailImage": "./uploads/catalog-v2-vn-tote-01-detail-0c36441473.webp",
       "measureImage": "./uploads/catalog-v2-vn-tote-01-scale-77b996cf91.webp",
       "stockQuantity": 6,
-      "costPrice": 68.2,
+      "costPrice": 79.11,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -11342,7 +11788,12 @@
         "additionalFailuresCost": 1.87,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 68.2,
+        "ivaPercent": 16,
+        "ivaCost": 10.91
       },
       "flashDealConfig": {
         "enabled": false,
@@ -11474,7 +11925,11 @@
         "energyCost": 1.58,
         "wearCost": 0.75,
         "laborCost": 10,
-        "failureReserveCost": 1.87
+        "failureReserveCost": 1.87,
+        "totalBeforeIva": 68.2,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 10.91
       }
     },
     {
@@ -11574,7 +12029,7 @@
       "detailImage": "./uploads/catalog-v2-vn-gorra-01-detail-bdfe928286.webp",
       "measureImage": "./uploads/catalog-v2-vn-gorra-01-scale-6cb8facc19.webp",
       "stockQuantity": 7,
-      "costPrice": 78.98,
+      "costPrice": 91.62,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -11587,7 +12042,12 @@
         "additionalFailuresCost": 2.18,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 78.98,
+        "ivaPercent": 16,
+        "ivaCost": 12.64
       },
       "flashDealConfig": {
         "enabled": false,
@@ -11719,7 +12179,11 @@
         "energyCost": 0.05,
         "wearCost": 0.75,
         "laborCost": 10,
-        "failureReserveCost": 2.18
+        "failureReserveCost": 2.18,
+        "totalBeforeIva": 78.98,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 12.64
       }
     },
     {
@@ -11828,7 +12292,7 @@
       "detailImage": "./uploads/catalog-v2-vn-playera-01-detail-4c183e34fb.webp",
       "measureImage": "./uploads/catalog-v2-vn-playera-01-scale-5b114e25f4.webp",
       "stockQuantity": 14,
-      "costPrice": 109.4,
+      "costPrice": 126.9,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -11841,7 +12305,12 @@
         "additionalFailuresCost": 3.07,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 109.4,
+        "ivaPercent": 16,
+        "ivaCost": 17.5
       },
       "flashDealConfig": {
         "enabled": false,
@@ -11973,7 +12442,11 @@
         "energyCost": 1.58,
         "wearCost": 0.75,
         "laborCost": 10,
-        "failureReserveCost": 3.07
+        "failureReserveCost": 3.07,
+        "totalBeforeIva": 109.4,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 17.5
       }
     },
     {
@@ -12062,7 +12535,7 @@
       "detailImage": "./uploads/catalog-v2-sb-taza-01-detail-b17aab8fed.webp",
       "measureImage": "./uploads/catalog-v2-sb-taza-01-scale-473238632a.webp",
       "stockQuantity": 16,
-      "costPrice": 78.44,
+      "costPrice": 90.99,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -12075,7 +12548,12 @@
         "additionalFailuresCost": 2.11,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 78.44,
+        "ivaPercent": 16,
+        "ivaCost": 12.55
       },
       "flashDealConfig": {
         "enabled": false,
@@ -12209,7 +12687,11 @@
         "energyCost": 1.58,
         "wearCost": 0.75,
         "laborCost": 10,
-        "failureReserveCost": 2.11
+        "failureReserveCost": 2.11,
+        "totalBeforeIva": 78.44,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 12.55
       }
     },
     {
@@ -12311,7 +12793,7 @@
       "detailImage": "./uploads/catalog-v2-sb-termo-01-detail-15c4eb91f2.webp",
       "measureImage": "./uploads/catalog-v2-sb-termo-01-scale-3899286d90.webp",
       "stockQuantity": 8,
-      "costPrice": 118.55,
+      "costPrice": 137.52,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -12324,7 +12806,12 @@
         "additionalFailuresCost": 3.22,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 118.55,
+        "ivaPercent": 16,
+        "ivaCost": 18.97
       },
       "flashDealConfig": {
         "enabled": false,
@@ -12456,7 +12943,11 @@
         "energyCost": 1.58,
         "wearCost": 0.75,
         "laborCost": 10,
-        "failureReserveCost": 3.22
+        "failureReserveCost": 3.22,
+        "totalBeforeIva": 118.55,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 18.97
       }
     },
     {
@@ -12548,7 +13039,7 @@
       "availability": "in_stock",
       "createdAt": "2026-10-14T19:14:22.883Z",
       "stockQuantity": 10,
-      "costPrice": 57.99,
+      "costPrice": 67.27,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -12561,7 +13052,12 @@
         "additionalFailuresCost": 1.46,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 57.99,
+        "ivaPercent": 16,
+        "ivaCost": 9.28
       },
       "sku": "EVE-LAS-PIN-GRA-001",
       "skuBreakdown": {
@@ -12714,7 +13210,11 @@
         "energyCost": 0.53,
         "wearCost": 1,
         "laborCost": 15,
-        "failureReserveCost": 1.46
+        "failureReserveCost": 1.46,
+        "totalBeforeIva": 57.99,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 9.28
       }
     },
     {
@@ -12797,7 +13297,7 @@
       "availability": "made_to_order",
       "createdAt": "2026-10-14T19:14:22.886Z",
       "stockQuantity": 0,
-      "costPrice": 71.47,
+      "costPrice": 82.91,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -12810,7 +13310,12 @@
         "additionalFailuresCost": 1.94,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 71.47,
+        "ivaPercent": 16,
+        "ivaCost": 11.44
       },
       "sku": "EVE-LAS-ACR-GRA-001",
       "skuBreakdown": {
@@ -12963,7 +13468,11 @@
         "energyCost": 0.53,
         "wearCost": 1,
         "laborCost": 15,
-        "failureReserveCost": 1.94
+        "failureReserveCost": 1.94,
+        "totalBeforeIva": 71.47,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 11.44
       }
     },
     {
@@ -13053,7 +13562,7 @@
       "availability": "in_stock",
       "createdAt": "2026-10-14T19:14:22.886Z",
       "stockQuantity": 10,
-      "costPrice": 129.88,
+      "costPrice": 150.66,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -13066,7 +13575,12 @@
         "additionalFailuresCost": 3.35,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 129.88,
+        "ivaPercent": 16,
+        "ivaCost": 20.78
       },
       "sku": "EVE-LAS-PIN-GRA-001",
       "skuBreakdown": {
@@ -13220,7 +13734,11 @@
         "energyCost": 0.53,
         "wearCost": 1,
         "laborCost": 15,
-        "failureReserveCost": 3.35
+        "failureReserveCost": 3.35,
+        "totalBeforeIva": 129.88,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 20.78
       }
     },
     {
@@ -13303,7 +13821,7 @@
       "availability": "in_stock",
       "createdAt": "2026-10-14T19:14:22.886Z",
       "stockQuantity": 6,
-      "costPrice": 79.68,
+      "costPrice": 92.43,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -13316,7 +13834,12 @@
         "additionalFailuresCost": 2.15,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 79.68,
+        "ivaPercent": 16,
+        "ivaCost": 12.75
       },
       "sku": "EVE-LAS-PIN-GRA-001",
       "skuBreakdown": {
@@ -13469,7 +13992,11 @@
         "energyCost": 0.53,
         "wearCost": 1,
         "laborCost": 15,
-        "failureReserveCost": 2.15
+        "failureReserveCost": 2.15,
+        "totalBeforeIva": 79.68,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 12.75
       }
     },
     {
@@ -13550,7 +14077,7 @@
       "availability": "in_stock",
       "createdAt": "2026-10-14T19:14:22.886Z",
       "stockQuantity": 8,
-      "costPrice": 91.98,
+      "costPrice": 106.7,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -13563,7 +14090,12 @@
         "additionalFailuresCost": 2.45,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 91.98,
+        "ivaPercent": 16,
+        "ivaCost": 14.72
       },
       "sku": "EVE-LAS-PIN-GRA-001",
       "skuBreakdown": {
@@ -13716,7 +14248,11 @@
         "energyCost": 0.53,
         "wearCost": 1,
         "laborCost": 15,
-        "failureReserveCost": 2.45
+        "failureReserveCost": 2.45,
+        "totalBeforeIva": 91.98,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 14.72
       }
     },
     {
@@ -13806,7 +14342,7 @@
       "availability": "in_stock",
       "createdAt": "2026-10-14T19:14:22.886Z",
       "stockQuantity": 8,
-      "costPrice": 93.22,
+      "costPrice": 108.14,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -13819,7 +14355,12 @@
         "additionalFailuresCost": 2.42,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 93.22,
+        "ivaPercent": 16,
+        "ivaCost": 14.92
       },
       "sku": "EVE-VIN-TEX-BRI-001",
       "skuBreakdown": {
@@ -13944,7 +14485,11 @@
         "energyCost": 0.05,
         "wearCost": 0.75,
         "laborCost": 10,
-        "failureReserveCost": 2.42
+        "failureReserveCost": 2.42,
+        "totalBeforeIva": 93.22,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 14.92
       }
     },
     {
@@ -14026,7 +14571,7 @@
       "availability": "in_stock",
       "createdAt": "2026-10-14T19:14:22.886Z",
       "stockQuantity": 10,
-      "costPrice": 60.87,
+      "costPrice": 70.61,
       "costBreakdown": {
         "plaGrams": 46,
         "tpuGrams": 0,
@@ -14039,7 +14584,12 @@
         "additionalFailuresCost": 1.63,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 3,
+        "wastePercentAverage": 7,
+        "totalBeforeIva": 60.87,
+        "ivaPercent": 16,
+        "ivaCost": 9.74
       },
       "sku": "EVE-HYB-PLA-GRA-001",
       "skuBreakdown": {
@@ -14206,7 +14756,11 @@
         "energyCost": 2.84,
         "wearCost": 5.4,
         "laborCost": 8,
-        "failureReserveCost": 1.63
+        "failureReserveCost": 1.63,
+        "totalBeforeIva": 60.87,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 9.74
       }
     },
     {
@@ -14289,7 +14843,7 @@
       "availability": "in_stock",
       "createdAt": "2026-10-14T19:14:22.886Z",
       "stockQuantity": 5,
-      "costPrice": 69.38,
+      "costPrice": 80.48,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -14302,7 +14856,12 @@
         "additionalFailuresCost": 1.85,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 0,
+        "wastePercentAverage": 0,
+        "totalBeforeIva": 69.38,
+        "ivaPercent": 16,
+        "ivaCost": 11.1
       },
       "sku": "EVE-HYB-PLA-GRA-001",
       "skuBreakdown": {
@@ -14455,7 +15014,11 @@
         "energyCost": 0.53,
         "wearCost": 1,
         "laborCost": 15,
-        "failureReserveCost": 1.85
+        "failureReserveCost": 1.85,
+        "totalBeforeIva": 69.38,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 11.1
       }
     },
     {
@@ -14538,7 +15101,7 @@
       ],
       "availability": "in_stock",
       "stockQuantity": 15,
-      "costPrice": 51.94,
+      "costPrice": 60.25,
       "costBreakdown": {
         "plaGrams": 51.75,
         "tpuGrams": 0,
@@ -14551,7 +15114,12 @@
         "additionalFailuresCost": 1.28,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 3.38,
+        "wastePercentAverage": 8.7,
+        "totalBeforeIva": 51.94,
+        "ivaPercent": 16,
+        "ivaCost": 8.31
       },
       "manufacturingTimes": {
         "machineHours": 1,
@@ -14675,7 +15243,11 @@
         "energyCost": 1.53,
         "wearCost": 5.25,
         "laborCost": 5,
-        "failureReserveCost": 1.28
+        "failureReserveCost": 1.28,
+        "totalBeforeIva": 51.94,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 8.31
       }
     },
     {
@@ -14688,8 +15260,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "hogar",
-        "juguetes"
+        "hogar"
       ],
       "categories": [
         "juguetes-movimiento",
@@ -14761,20 +15332,25 @@
       "measureImage": "./uploads/catalog-v2-j1-scale-oficial.webp",
       "dimensionsImage": "./uploads/catalog-v2-j1-scale-oficial.webp",
       "stockQuantity": 12,
-      "costPrice": 42.5,
+      "costPrice": 69.07,
       "costBreakdown": {
-        "plaGrams": 67,
+        "plaGrams": 77.05,
         "tpuGrams": 0,
-        "otherMaterialsCost": 0,
+        "otherMaterialsCost": 0.7,
         "machineHours": 2.5,
         "otherEquipCost": 0,
         "manualWorkMin": 5,
         "prepCost": 0,
         "packagingCost": 4,
-        "additionalFailuresCost": 0,
+        "additionalFailuresCost": 1.62,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Estimado"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 5.03,
+        "wastePercentAverage": 11.6,
+        "totalBeforeIva": 59.54,
+        "ivaPercent": 16,
+        "ivaCost": 9.53
       },
       "flashDealConfig": {
         "enabled": false,
@@ -14888,7 +15464,11 @@
         "energyCost": 2.19,
         "wearCost": 7.5,
         "laborCost": 5,
-        "failureReserveCost": 1.62
+        "failureReserveCost": 1.62,
+        "totalBeforeIva": 59.54,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 9.53
       }
     },
     {
@@ -14901,8 +15481,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "hogar",
-        "juguetes"
+        "hogar"
       ],
       "categories": [
         "juguetes-articulados",
@@ -14981,20 +15560,25 @@
       "measureImage": "./uploads/catalog-v2-j2-scale-oficial.webp",
       "dimensionsImage": "./uploads/catalog-v2-j2-scale-oficial.webp",
       "stockQuantity": 20,
-      "costPrice": 24.8,
+      "costPrice": 38.49,
       "costBreakdown": {
-        "plaGrams": 28,
+        "plaGrams": 32.2,
         "tpuGrams": 0,
-        "otherMaterialsCost": 4.5,
+        "otherMaterialsCost": 7.1,
         "machineHours": 0.8,
         "otherEquipCost": 0,
         "manualWorkMin": 3,
         "prepCost": 0,
         "packagingCost": 3,
-        "additionalFailuresCost": 0,
+        "additionalFailuresCost": 0.88,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Estimado"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 2.1,
+        "wastePercentAverage": 8,
+        "totalBeforeIva": 33.18,
+        "ivaPercent": 16,
+        "ivaCost": 5.31
       },
       "flashDealConfig": {
         "enabled": false,
@@ -15150,7 +15734,11 @@
         "energyCost": 0.7,
         "wearCost": 2.4,
         "laborCost": 3,
-        "failureReserveCost": 0.88
+        "failureReserveCost": 0.88,
+        "totalBeforeIva": 33.18,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 5.31
       }
     },
     {
@@ -15235,7 +15823,7 @@
           ]
         }
       ],
-      "costPrice": 192.12,
+      "costPrice": 222.86,
       "costBreakdown": {
         "plaGrams": 86.25,
         "tpuGrams": 0,
@@ -15248,7 +15836,12 @@
         "additionalFailuresCost": 4.55,
         "fixedOverheadCost": 8,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 5.63,
+        "wastePercentAverage": 4.8,
+        "totalBeforeIva": 192.12,
+        "ivaPercent": 16,
+        "ivaCost": 30.74
       },
       "manufacturingTimes": {
         "machineHours": 4,
@@ -15375,7 +15968,11 @@
         "energyCost": 3.94,
         "wearCost": 13.5,
         "laborCost": 45,
-        "failureReserveCost": 4.55
+        "failureReserveCost": 4.55,
+        "totalBeforeIva": 192.12,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 30.74
       }
     },
     {
@@ -15459,7 +16056,7 @@
           ]
         }
       ],
-      "costPrice": 338.39,
+      "costPrice": 392.53,
       "costBreakdown": {
         "plaGrams": 172.5,
         "tpuGrams": 0,
@@ -15472,7 +16069,12 @@
         "additionalFailuresCost": 8.2,
         "fixedOverheadCost": 15,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 11.25,
+        "wastePercentAverage": 5.6,
+        "totalBeforeIva": 338.39,
+        "ivaPercent": 16,
+        "ivaCost": 54.14
       },
       "manufacturingTimes": {
         "machineHours": 8,
@@ -15599,7 +16201,11 @@
         "energyCost": 7.44,
         "wearCost": 25.5,
         "laborCost": 80,
-        "failureReserveCost": 8.2
+        "failureReserveCost": 8.2,
+        "totalBeforeIva": 338.39,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 54.14
       }
     },
     {
@@ -15686,7 +16292,7 @@
           ]
         }
       ],
-      "costPrice": 211.31,
+      "costPrice": 245.12,
       "costBreakdown": {
         "plaGrams": 97.75,
         "tpuGrams": 0,
@@ -15699,7 +16305,12 @@
         "additionalFailuresCost": 5.05,
         "fixedOverheadCost": 10,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 6.38,
+        "wastePercentAverage": 5,
+        "totalBeforeIva": 211.31,
+        "ivaPercent": 16,
+        "ivaCost": 33.81
       },
       "manufacturingTimes": {
         "machineHours": 5,
@@ -15826,7 +16437,11 @@
         "energyCost": 4.38,
         "wearCost": 15,
         "laborCost": 50,
-        "failureReserveCost": 5.05
+        "failureReserveCost": 5.05,
+        "totalBeforeIva": 211.31,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 33.81
       }
     },
     {
@@ -15903,7 +16518,7 @@
           ]
         }
       ],
-      "costPrice": 338.39,
+      "costPrice": 392.53,
       "costBreakdown": {
         "plaGrams": 172.5,
         "tpuGrams": 0,
@@ -15916,7 +16531,12 @@
         "additionalFailuresCost": 8.2,
         "fixedOverheadCost": 15,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 11.25,
+        "wastePercentAverage": 5.6,
+        "totalBeforeIva": 338.39,
+        "ivaPercent": 16,
+        "ivaCost": 54.14
       },
       "manufacturingTimes": {
         "machineHours": 4,
@@ -16043,7 +16663,11 @@
         "energyCost": 7.44,
         "wearCost": 25.5,
         "laborCost": 80,
-        "failureReserveCost": 8.2
+        "failureReserveCost": 8.2,
+        "totalBeforeIva": 338.39,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 54.14
       }
     },
     {
@@ -16120,7 +16744,7 @@
           ]
         }
       ],
-      "costPrice": 463.57,
+      "costPrice": 537.74,
       "costBreakdown": {
         "plaGrams": 241.5,
         "tpuGrams": 0,
@@ -16133,7 +16757,12 @@
         "additionalFailuresCost": 11.32,
         "fixedOverheadCost": 20,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 15.75,
+        "wastePercentAverage": 5.7,
+        "totalBeforeIva": 463.57,
+        "ivaPercent": 16,
+        "ivaCost": 74.17
       },
       "manufacturingTimes": {
         "machineHours": 12,
@@ -16260,7 +16889,11 @@
         "energyCost": 10.5,
         "wearCost": 36,
         "laborCost": 110,
-        "failureReserveCost": 11.32
+        "failureReserveCost": 11.32,
+        "totalBeforeIva": 463.57,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 74.17
       }
     },
     {
@@ -16337,7 +16970,7 @@
           ]
         }
       ],
-      "costPrice": 346.63,
+      "costPrice": 402.09,
       "costBreakdown": {
         "plaGrams": 172.5,
         "tpuGrams": 0,
@@ -16350,7 +16983,12 @@
         "additionalFailuresCost": 8.44,
         "fixedOverheadCost": 15,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 11.25,
+        "wastePercentAverage": 5.5,
+        "totalBeforeIva": 346.63,
+        "ivaPercent": 16,
+        "ivaCost": 55.46
       },
       "manufacturingTimes": {
         "machineHours": 8,
@@ -16477,7 +17115,11 @@
         "energyCost": 7.44,
         "wearCost": 25.5,
         "laborCost": 85,
-        "failureReserveCost": 8.44
+        "failureReserveCost": 8.44,
+        "totalBeforeIva": 346.63,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 55.46
       }
     },
     {
@@ -16537,7 +17179,7 @@
       "sku": "CUST-3D-DRAW-001",
       "createdAt": "2026-10-24T19:29:00.000Z",
       "updatedAt": "2026-10-24T19:29:00.000Z",
-      "costPrice": 205.6,
+      "costPrice": 238.5,
       "costBreakdown": {
         "plaGrams": 138,
         "tpuGrams": 0,
@@ -16550,7 +17192,12 @@
         "additionalFailuresCost": 5.46,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 10.1,
+        "wastePercentAverage": 10,
+        "totalBeforeIva": 205.6,
+        "ivaPercent": 16,
+        "ivaCost": 32.9
       },
       "manufacturingRecipe": {
         "yieldUnits": 1,
@@ -16567,7 +17214,7 @@
         "items": [
           {
             "id": "item-de-dibujo-a-figura-3d-pla",
-            "materialId": "mat-pla-multicolor",
+            "materialId": "mat-pla-blanco",
             "name": "Filamento PLA Multicolor Grado Artístico (PrintLab / 3D Market)",
             "category": "3d",
             "supplyType": "direct",
@@ -16623,7 +17270,7 @@
           },
           {
             "id": "item-de-dibujo-a-figura-3d-empaque",
-            "materialId": "mat-cajas-kraft-medianas",
+            "materialId": "mat-cajas-kraft-mediana",
             "name": "Caja Kraft Rígida Acolchada con Viruta y Etiqueta de Colección",
             "category": "packaging",
             "supplyType": "indirect",
@@ -16632,11 +17279,11 @@
             "wasteType": "none",
             "totalQuantity": 1,
             "unit": "pieza",
-            "unitCost": 18,
-            "totalCost": 18
+            "unitCost": 16,
+            "totalCost": 16
           }
         ],
-        "totalMaterialCost": 102.5,
+        "totalMaterialCost": 100.5,
         "packagingAndShipping": {
           "enabled": true,
           "packagingType": "caja_kraft",
@@ -16644,10 +17291,14 @@
           "packagingDetails": "Caja de cartón kraft reforzada con papel picado y etiqueta coleccionable"
         },
         "totalWasteCost": 10.1,
-        "wastePercentAverage": 9.9,
+        "wastePercentAverage": 10,
         "wearCost": 24,
         "failureReserveCost": 5.46,
-        "fixedOverheadCost": 0
+        "fixedOverheadCost": 0,
+        "totalBeforeIva": 205.6,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 32.9
       }
     },
     {
@@ -16707,7 +17358,7 @@
       "sku": "CUST-3D-DRAW-AJOLOTE",
       "createdAt": "2026-10-24T19:30:00.000Z",
       "updatedAt": "2026-10-24T19:30:00.000Z",
-      "costPrice": 205.6,
+      "costPrice": 238.5,
       "costBreakdown": {
         "plaGrams": 138,
         "tpuGrams": 0,
@@ -16720,7 +17371,12 @@
         "additionalFailuresCost": 5.46,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 10.1,
+        "wastePercentAverage": 10,
+        "totalBeforeIva": 205.6,
+        "ivaPercent": 16,
+        "ivaCost": 32.9
       },
       "manufacturingRecipe": {
         "yieldUnits": 1,
@@ -16737,7 +17393,7 @@
         "items": [
           {
             "id": "item-de-dibujo-a-figura-3d-ajolote-pla",
-            "materialId": "mat-pla-multicolor",
+            "materialId": "mat-pla-blanco",
             "name": "Filamento PLA Multicolor Grado Artístico (PrintLab / 3D Market)",
             "category": "3d",
             "supplyType": "direct",
@@ -16793,7 +17449,7 @@
           },
           {
             "id": "item-de-dibujo-a-figura-3d-ajolote-empaque",
-            "materialId": "mat-cajas-kraft-medianas",
+            "materialId": "mat-cajas-kraft-mediana",
             "name": "Caja Kraft Rígida Acolchada con Viruta y Etiqueta de Colección",
             "category": "packaging",
             "supplyType": "indirect",
@@ -16802,11 +17458,11 @@
             "wasteType": "none",
             "totalQuantity": 1,
             "unit": "pieza",
-            "unitCost": 18,
-            "totalCost": 18
+            "unitCost": 16,
+            "totalCost": 16
           }
         ],
-        "totalMaterialCost": 102.5,
+        "totalMaterialCost": 100.5,
         "packagingAndShipping": {
           "enabled": true,
           "packagingType": "caja_kraft",
@@ -16814,10 +17470,14 @@
           "packagingDetails": "Caja de cartón kraft reforzada con papel picado y etiqueta coleccionable"
         },
         "totalWasteCost": 10.1,
-        "wastePercentAverage": 9.9,
+        "wastePercentAverage": 10,
         "wearCost": 24,
         "failureReserveCost": 5.46,
-        "fixedOverheadCost": 0
+        "fixedOverheadCost": 0,
+        "totalBeforeIva": 205.6,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 32.9
       }
     },
     {
@@ -16877,7 +17537,7 @@
       "sku": "CUST-3D-DRAW-DINO",
       "createdAt": "2026-10-24T19:31:00.000Z",
       "updatedAt": "2026-10-24T19:31:00.000Z",
-      "costPrice": 205.6,
+      "costPrice": 238.5,
       "costBreakdown": {
         "plaGrams": 138,
         "tpuGrams": 0,
@@ -16890,7 +17550,12 @@
         "additionalFailuresCost": 5.46,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 10.1,
+        "wastePercentAverage": 10,
+        "totalBeforeIva": 205.6,
+        "ivaPercent": 16,
+        "ivaCost": 32.9
       },
       "manufacturingRecipe": {
         "yieldUnits": 1,
@@ -16907,7 +17572,7 @@
         "items": [
           {
             "id": "item-de-dibujo-a-figura-3d-dinosaurio-pla",
-            "materialId": "mat-pla-multicolor",
+            "materialId": "mat-pla-blanco",
             "name": "Filamento PLA Multicolor Grado Artístico (PrintLab / 3D Market)",
             "category": "3d",
             "supplyType": "direct",
@@ -16963,7 +17628,7 @@
           },
           {
             "id": "item-de-dibujo-a-figura-3d-dinosaurio-empaque",
-            "materialId": "mat-cajas-kraft-medianas",
+            "materialId": "mat-cajas-kraft-mediana",
             "name": "Caja Kraft Rígida Acolchada con Viruta y Etiqueta de Colección",
             "category": "packaging",
             "supplyType": "indirect",
@@ -16972,11 +17637,11 @@
             "wasteType": "none",
             "totalQuantity": 1,
             "unit": "pieza",
-            "unitCost": 18,
-            "totalCost": 18
+            "unitCost": 16,
+            "totalCost": 16
           }
         ],
-        "totalMaterialCost": 102.5,
+        "totalMaterialCost": 100.5,
         "packagingAndShipping": {
           "enabled": true,
           "packagingType": "caja_kraft",
@@ -16984,10 +17649,14 @@
           "packagingDetails": "Caja de cartón kraft reforzada con papel picado y etiqueta coleccionable"
         },
         "totalWasteCost": 10.1,
-        "wastePercentAverage": 9.9,
+        "wastePercentAverage": 10,
         "wearCost": 24,
         "failureReserveCost": 5.46,
-        "fixedOverheadCost": 0
+        "fixedOverheadCost": 0,
+        "totalBeforeIva": 205.6,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 32.9
       }
     },
     {
@@ -17047,7 +17716,7 @@
       "sku": "CUST-3D-DRAW-COHETE",
       "createdAt": "2026-10-24T19:32:00.000Z",
       "updatedAt": "2026-10-24T19:32:00.000Z",
-      "costPrice": 205.6,
+      "costPrice": 238.5,
       "costBreakdown": {
         "plaGrams": 138,
         "tpuGrams": 0,
@@ -17060,7 +17729,12 @@
         "additionalFailuresCost": 5.46,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 10.1,
+        "wastePercentAverage": 10,
+        "totalBeforeIva": 205.6,
+        "ivaPercent": 16,
+        "ivaCost": 32.9
       },
       "manufacturingRecipe": {
         "yieldUnits": 1,
@@ -17077,7 +17751,7 @@
         "items": [
           {
             "id": "item-de-dibujo-a-figura-3d-cohete-pla",
-            "materialId": "mat-pla-multicolor",
+            "materialId": "mat-pla-blanco",
             "name": "Filamento PLA Multicolor Grado Artístico (PrintLab / 3D Market)",
             "category": "3d",
             "supplyType": "direct",
@@ -17133,7 +17807,7 @@
           },
           {
             "id": "item-de-dibujo-a-figura-3d-cohete-empaque",
-            "materialId": "mat-cajas-kraft-medianas",
+            "materialId": "mat-cajas-kraft-mediana",
             "name": "Caja Kraft Rígida Acolchada con Viruta y Etiqueta de Colección",
             "category": "packaging",
             "supplyType": "indirect",
@@ -17142,11 +17816,11 @@
             "wasteType": "none",
             "totalQuantity": 1,
             "unit": "pieza",
-            "unitCost": 18,
-            "totalCost": 18
+            "unitCost": 16,
+            "totalCost": 16
           }
         ],
-        "totalMaterialCost": 102.5,
+        "totalMaterialCost": 100.5,
         "packagingAndShipping": {
           "enabled": true,
           "packagingType": "caja_kraft",
@@ -17154,10 +17828,14 @@
           "packagingDetails": "Caja de cartón kraft reforzada con papel picado y etiqueta coleccionable"
         },
         "totalWasteCost": 10.1,
-        "wastePercentAverage": 9.9,
+        "wastePercentAverage": 10,
         "wearCost": 24,
         "failureReserveCost": 5.46,
-        "fixedOverheadCost": 0
+        "fixedOverheadCost": 0,
+        "totalBeforeIva": 205.6,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 32.9
       }
     },
     {
@@ -17217,7 +17895,7 @@
       "sku": "CUST-3D-DRAW-COCHE",
       "createdAt": "2026-10-24T19:33:00.000Z",
       "updatedAt": "2026-10-24T19:33:00.000Z",
-      "costPrice": 205.6,
+      "costPrice": 238.5,
       "costBreakdown": {
         "plaGrams": 138,
         "tpuGrams": 0,
@@ -17230,7 +17908,12 @@
         "additionalFailuresCost": 5.46,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 10.1,
+        "wastePercentAverage": 10,
+        "totalBeforeIva": 205.6,
+        "ivaPercent": 16,
+        "ivaCost": 32.9
       },
       "manufacturingRecipe": {
         "yieldUnits": 1,
@@ -17247,7 +17930,7 @@
         "items": [
           {
             "id": "item-de-dibujo-a-figura-3d-coche-pla",
-            "materialId": "mat-pla-multicolor",
+            "materialId": "mat-pla-blanco",
             "name": "Filamento PLA Multicolor Grado Artístico (PrintLab / 3D Market)",
             "category": "3d",
             "supplyType": "direct",
@@ -17303,7 +17986,7 @@
           },
           {
             "id": "item-de-dibujo-a-figura-3d-coche-empaque",
-            "materialId": "mat-cajas-kraft-medianas",
+            "materialId": "mat-cajas-kraft-mediana",
             "name": "Caja Kraft Rígida Acolchada con Viruta y Etiqueta de Colección",
             "category": "packaging",
             "supplyType": "indirect",
@@ -17312,11 +17995,11 @@
             "wasteType": "none",
             "totalQuantity": 1,
             "unit": "pieza",
-            "unitCost": 18,
-            "totalCost": 18
+            "unitCost": 16,
+            "totalCost": 16
           }
         ],
-        "totalMaterialCost": 102.5,
+        "totalMaterialCost": 100.5,
         "packagingAndShipping": {
           "enabled": true,
           "packagingType": "caja_kraft",
@@ -17324,10 +18007,14 @@
           "packagingDetails": "Caja de cartón kraft reforzada con papel picado y etiqueta coleccionable"
         },
         "totalWasteCost": 10.1,
-        "wastePercentAverage": 9.9,
+        "wastePercentAverage": 10,
         "wearCost": 24,
         "failureReserveCost": 5.46,
-        "fixedOverheadCost": 0
+        "fixedOverheadCost": 0,
+        "totalBeforeIva": 205.6,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 32.9
       }
     },
     {
@@ -17387,7 +18074,7 @@
       "sku": "CUST-3D-DRAW-MONSTRUO",
       "createdAt": "2026-10-24T19:34:00.000Z",
       "updatedAt": "2026-10-24T19:34:00.000Z",
-      "costPrice": 205.6,
+      "costPrice": 238.5,
       "costBreakdown": {
         "plaGrams": 138,
         "tpuGrams": 0,
@@ -17400,7 +18087,12 @@
         "additionalFailuresCost": 5.46,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 10.1,
+        "wastePercentAverage": 10,
+        "totalBeforeIva": 205.6,
+        "ivaPercent": 16,
+        "ivaCost": 32.9
       },
       "manufacturingRecipe": {
         "yieldUnits": 1,
@@ -17417,7 +18109,7 @@
         "items": [
           {
             "id": "item-de-dibujo-a-figura-3d-monstruo-pla",
-            "materialId": "mat-pla-multicolor",
+            "materialId": "mat-pla-blanco",
             "name": "Filamento PLA Multicolor Grado Artístico (PrintLab / 3D Market)",
             "category": "3d",
             "supplyType": "direct",
@@ -17473,7 +18165,7 @@
           },
           {
             "id": "item-de-dibujo-a-figura-3d-monstruo-empaque",
-            "materialId": "mat-cajas-kraft-medianas",
+            "materialId": "mat-cajas-kraft-mediana",
             "name": "Caja Kraft Rígida Acolchada con Viruta y Etiqueta de Colección",
             "category": "packaging",
             "supplyType": "indirect",
@@ -17482,11 +18174,11 @@
             "wasteType": "none",
             "totalQuantity": 1,
             "unit": "pieza",
-            "unitCost": 18,
-            "totalCost": 18
+            "unitCost": 16,
+            "totalCost": 16
           }
         ],
-        "totalMaterialCost": 102.5,
+        "totalMaterialCost": 100.5,
         "packagingAndShipping": {
           "enabled": true,
           "packagingType": "caja_kraft",
@@ -17494,10 +18186,14 @@
           "packagingDetails": "Caja de cartón kraft reforzada con papel picado y etiqueta coleccionable"
         },
         "totalWasteCost": 10.1,
-        "wastePercentAverage": 9.9,
+        "wastePercentAverage": 10,
         "wearCost": 24,
         "failureReserveCost": 5.46,
-        "fixedOverheadCost": 0
+        "fixedOverheadCost": 0,
+        "totalBeforeIva": 205.6,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 32.9
       }
     },
     {
@@ -17557,7 +18253,7 @@
       "sku": "CUST-3D-DRAW-CASTILLO",
       "createdAt": "2026-10-24T19:35:00.000Z",
       "updatedAt": "2026-10-24T19:35:00.000Z",
-      "costPrice": 205.6,
+      "costPrice": 238.5,
       "costBreakdown": {
         "plaGrams": 138,
         "tpuGrams": 0,
@@ -17570,7 +18266,12 @@
         "additionalFailuresCost": 5.46,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 10.1,
+        "wastePercentAverage": 10,
+        "totalBeforeIva": 205.6,
+        "ivaPercent": 16,
+        "ivaCost": 32.9
       },
       "manufacturingRecipe": {
         "yieldUnits": 1,
@@ -17587,7 +18288,7 @@
         "items": [
           {
             "id": "item-de-dibujo-a-figura-3d-castillo-pla",
-            "materialId": "mat-pla-multicolor",
+            "materialId": "mat-pla-blanco",
             "name": "Filamento PLA Multicolor Grado Artístico (PrintLab / 3D Market)",
             "category": "3d",
             "supplyType": "direct",
@@ -17643,7 +18344,7 @@
           },
           {
             "id": "item-de-dibujo-a-figura-3d-castillo-empaque",
-            "materialId": "mat-cajas-kraft-medianas",
+            "materialId": "mat-cajas-kraft-mediana",
             "name": "Caja Kraft Rígida Acolchada con Viruta y Etiqueta de Colección",
             "category": "packaging",
             "supplyType": "indirect",
@@ -17652,11 +18353,11 @@
             "wasteType": "none",
             "totalQuantity": 1,
             "unit": "pieza",
-            "unitCost": 18,
-            "totalCost": 18
+            "unitCost": 16,
+            "totalCost": 16
           }
         ],
-        "totalMaterialCost": 102.5,
+        "totalMaterialCost": 100.5,
         "packagingAndShipping": {
           "enabled": true,
           "packagingType": "caja_kraft",
@@ -17664,10 +18365,14 @@
           "packagingDetails": "Caja de cartón kraft reforzada con papel picado y etiqueta coleccionable"
         },
         "totalWasteCost": 10.1,
-        "wastePercentAverage": 9.9,
+        "wastePercentAverage": 10,
         "wearCost": 24,
         "failureReserveCost": 5.46,
-        "fixedOverheadCost": 0
+        "fixedOverheadCost": 0,
+        "totalBeforeIva": 205.6,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 32.9
       }
     },
     {
@@ -17680,13 +18385,11 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "juegos",
-        "oficina",
         "hogar"
       ],
       "categories": [
         "juguetes-fidget",
-        "oficina-accesorios"
+        "hogar-estudio"
       ],
       "techniques": [
         "3d",
@@ -17727,7 +18430,7 @@
         }
       ],
       "stockQuantity": 25,
-      "costPrice": 32.67,
+      "costPrice": 37.9,
       "costBreakdown": {
         "plaGrams": 20.7,
         "tpuGrams": 0,
@@ -17740,7 +18443,12 @@
         "additionalFailuresCost": 0.85,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller"
+        "costStatus": "Calculado de Taller",
+        "totalWasteCost": 1.35,
+        "wastePercentAverage": 5.6,
+        "totalBeforeIva": 32.67,
+        "ivaPercent": 16,
+        "ivaCost": 5.23
       },
       "sku": "JUG-3D-SWI-MAT-042",
       "createdAt": "2026-10-25T19:18:35.313Z",
@@ -17776,7 +18484,7 @@
         "items": [
           {
             "id": "item-t42-pla",
-            "materialId": "mat-pla-verde-olivo",
+            "materialId": "mat-pla-olivo",
             "name": "Filamento PLA Verde Olivo Mate y Crema Taller (PrintLab / 3D Market)",
             "category": "3d",
             "supplyType": "direct",
@@ -17818,7 +18526,7 @@
           },
           {
             "id": "item-t42-empaque",
-            "materialId": "mat-empaque-bolsa-kraft",
+            "materialId": "mat-bolsas-kraft-ventana",
             "name": "Bolsa Kraft con Ventana y Etiqueta Térmica con Código de Barras (CartoEmpaques)",
             "category": "consumables",
             "supplyType": "indirect",
@@ -17857,7 +18565,11 @@
         },
         "wastePercentAverage": 5.6,
         "failureReserveCost": 0.85,
-        "fixedOverheadCost": 0
+        "fixedOverheadCost": 0,
+        "totalBeforeIva": 32.67,
+        "ivaPercent": 16,
+        "includeIvaInCost": true,
+        "ivaCost": 5.23
       }
     }
   ],
@@ -17895,7 +18607,7 @@
       "worldId": "hogar",
       "name": "Estudio, escritorio y home office",
       "order": 5,
-      "productCount": 9
+      "productCount": 10
     },
     {
       "id": "hogar-cocina",
@@ -23328,5 +24040,5 @@
       }
     ]
   },
-  "exportedAt": "2026-10-30T16:34:25.368Z"
+  "exportedAt": "2026-10-30T18:14:47.951Z"
 }
