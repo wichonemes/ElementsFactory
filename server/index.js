@@ -1378,6 +1378,23 @@ app.post('/api/admin/orders', requireAdmin, (req, res) => {
 app.put('/api/admin/orders/:id', requireAdmin, (req, res) => {
   try {
     const currentOrder = (db.getOrders({}).find(o => o.id === req.params.id));
+
+    // Regla del taller: solo se avanza a producción con el 50% de anticipo
+    const enteringProduction = ['confirmado', 'fabricando', 'en_produccion', 'pagado'].includes(req.body.status)
+      && currentOrder
+      && !['confirmado', 'fabricando', 'en_produccion', 'pagado'].includes(currentOrder.status);
+    if (enteringProduction && req.body.status !== 'cancelado') {
+      const total = Number(req.body.amount ?? currentOrder.amount) || 0;
+      const paid = Number(req.body.amountPaid ?? currentOrder.amountPaid)
+        || Number(req.body.advanceReceived ?? currentOrder.advanceReceived)
+        || 0;
+      if (total > 0 && paid + 0.01 < total * 0.5) {
+        return res.status(400).json({
+          error: `Para iniciar producción se requiere al menos el 50% de anticipo (${(Math.round(total * 50) / 100).toFixed(2)}).`
+        });
+      }
+    }
+
     const updated = db.updateOrder(req.params.id, req.body);
     if (!updated) return res.status(404).json({ error: 'Pedido no encontrado' });
 
