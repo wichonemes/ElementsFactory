@@ -662,15 +662,6 @@ export default function SalesMarketingSection({ token, products = [], settings =
             <span>Registro de Publicaciones ({publications.length})</span>
           </button>
 
-          <button
-            onClick={() => setSubTab('orders')}
-            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl transition-all ${
-              subTab === 'orders' ? 'bg-white text-[#2D4F3E] shadow-sm font-bold' : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            <ShoppingBag className="w-4 h-4" />
-            <span>Libro de Pedidos ({orders.length})</span>
-          </button>
         </div>
       </div>
 

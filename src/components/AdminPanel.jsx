@@ -24,6 +24,7 @@ import PackagesAdminSection from './PackagesAdminSection';
 import CouponsAdminSection from './CouponsAdminSection';
 import AdminConfirmSaveModal from './AdminConfirmSaveModal';
 import ProductPhotoStudioModal from './ProductPhotoStudioModal';
+import OrdersWorkSection from './OrdersWorkSection';
 import {
   DEFAULT_SERVICE_STATUS,
   formatServiceDate,
@@ -1180,6 +1181,8 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
   useEffect(() => {
     if (activeTab === 'dashboard') {
       setMobileNavGroup('dashboard');
+    } else if (activeTab === 'pedidos') {
+      setMobileNavGroup('pedidos');
     } else if (['products', 'packages', 'categories', 'area-banners'].includes(activeTab)) {
       setMobileNavGroup('catalog');
     } else if (['raw-materials', 'margins'].includes(activeTab)) {
@@ -4650,10 +4653,11 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
             
             {/* Navegación Móvil Táctil Dedicada: selector superior segmentado con sub-chips (Estilo FiltersBar) */}
             <div className="md:hidden bg-white border-b border-[#E8E4DA] p-2.5 shrink-0 shadow-2xs space-y-2">
-              {/* Selector de Pilares Principales: 4 Secciones Limpias */}
-              <div className="grid grid-cols-5 gap-0.5 p-1 bg-[#F4F0E8] rounded-xl border border-[#E8E4DA]">
+              {/* Selector de Pilares Principales: 6 Secciones Limpias */}
+              <div className="grid grid-cols-6 gap-0.5 p-1 bg-[#F4F0E8] rounded-xl border border-[#E8E4DA]">
                 {[
                   { id: 'dashboard', label: 'Inicio', icon: '🏠' },
+                  { id: 'pedidos', label: 'Pedidos', icon: '🧾' },
                   { id: 'catalog', label: 'Catálogo', icon: '📦' },
                   { id: 'workshop', label: 'Taller', icon: '🧱' },
                   { id: 'sales', label: 'Ventas', icon: '⚡' },
@@ -4668,6 +4672,8 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         setMobileNavGroup(group.id);
                         if (group.id === 'dashboard') {
                           setActiveTab('dashboard');
+                        } else if (group.id === 'pedidos') {
+                          setActiveTab('pedidos');
                         } else if (group.id === 'catalog' && !['products', 'packages', 'categories', 'area-banners'].includes(activeTab)) {
                           setActiveTab('products');
                         } else if (group.id === 'workshop' && !['raw-materials', 'margins'].includes(activeTab)) {
@@ -4678,7 +4684,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           setActiveTab('stats');
                         }
                       }}
-                      className={`py-1.5 px-0.5 rounded-lg text-[10px] font-bold transition-all text-center flex flex-col items-center justify-center gap-0.5 cursor-pointer ${
+                      className={`py-1.5 px-0.5 rounded-lg text-[9px] font-bold transition-all text-center flex flex-col items-center justify-center gap-0.5 cursor-pointer ${
                         isCurrent
                           ? 'bg-[#2D4F3E] text-white shadow-xs'
                           : 'text-gray-600 hover:text-gray-900'
@@ -4694,7 +4700,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               {/* Sub-chips táctiles para la sección activa (limpio, scroll suave horizontal) */}
               <div className="flex flex-wrap gap-1.5">
                 {(
-                  mobileNavGroup === 'dashboard' ? [] : mobileNavGroup === 'catalog' ? [
+                  mobileNavGroup === 'dashboard' || mobileNavGroup === 'pedidos' ? [] : mobileNavGroup === 'catalog' ? [
                     { id: 'products', label: 'Productos & SKUs', icon: '📦', count: products.length },
                     { id: 'packages', label: 'Paquetes & Kits', icon: '🎁', count: products.filter(p => p.isBundle).length },
                     { id: 'categories', label: 'Categorías', icon: '📁', count: categories.length },
@@ -4798,6 +4804,23 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       activeTab === 'dashboard' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'
                     }`}>
                       Hoy
+                    </span>
+                  </button>
+
+                  <button
+                    onClick={() => setActiveTab('pedidos')}
+                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs transition-all ${
+                      activeTab === 'pedidos' ? 'bg-[#2D4F3E] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#2D4F3E] font-medium'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <ShoppingCart className="w-4 h-4" />
+                      <span>Pedidos &amp; Producción</span>
+                    </div>
+                    <span className={`text-[9px] px-1.5 py-0.5 rounded-md font-bold ${
+                      activeTab === 'pedidos' ? 'bg-white/20 text-white' : 'bg-amber-50 text-amber-700 border border-amber-200'
+                    }`}>
+                      Especial
                     </span>
                   </button>
 
@@ -5194,7 +5217,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                           { n: '1', title: 'Catálogo y fotos', desc: 'Crea o revisa productos, imágenes, precios y publicación.', tab: 'products', icon: Package, metric: `${adminHealth.published} publicados` },
                           { n: '2', title: 'Costos y recetas', desc: 'Completa la receta y verifica que el margen sea rentable.', tab: 'margins', icon: TrendingUp, metric: `${adminHealth.noRecipe} sin receta` },
                           { n: '3', title: 'Stock e insumos', desc: 'Revisa existencias, resurtidos, proveedores y almacén.', tab: 'raw-materials', subTab: 'inventory', icon: Layers, metric: `${adminHealth.lowStock} por resurtir` },
-                          { n: '4', title: 'Ventas y pedidos', desc: 'Consulta pedidos, cobros, cupones y campañas activas.', tab: 'sales', icon: Megaphone, metric: 'Libro de pedidos' }
+                          { n: '4', title: 'Pedidos & producción', desc: 'Confirma pedidos, descuenta insumos y controla entregas.', tab: 'pedidos', icon: ShoppingCart, metric: 'Libro de pedidos' }
                         ].map(step => {
                           const StepIcon = step.icon;
                           return (
@@ -5291,7 +5314,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       { label: 'Nuevo producto', desc: 'Agregar al catálogo', icon: Plus, action: () => handleOpenNewProduct(), tone: 'bg-emerald-50 text-emerald-800 border-emerald-200' },
                       { label: 'Stock e insumos', desc: 'Revisar almacén', icon: Layers, action: () => { setRawMaterialsSubTab('inventory'); setActiveTab('raw-materials'); }, tone: 'bg-sky-50 text-sky-800 border-sky-200' },
                       { label: 'Costos y recetas', desc: 'Revisar márgenes', icon: TrendingUp, action: () => setActiveTab('margins'), tone: 'bg-amber-50 text-amber-800 border-amber-200' },
-                      { label: 'Datos del taller', desc: 'Configuración', icon: Settings, action: () => setActiveTab('settings'), tone: 'bg-stone-50 text-stone-700 border-stone-200' }
+                      { label: 'Pedidos & producción', desc: 'Confirmar y entregar', icon: ShoppingCart, action: () => setActiveTab('pedidos'), tone: 'bg-purple-50 text-purple-800 border-purple-200' }
                     ].map(item => {
                       const ItemIcon = item.icon;
                       return (
@@ -5304,6 +5327,11 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     })}
                   </section>
                 </div>
+              )}
+
+              {/* TAB: PEDIDOS & PRODUCCIÓN (ÁREA ESPECIAL) */}
+              {activeTab === 'pedidos' && (
+                <OrdersWorkSection token={token} products={products} />
               )}
 
               {/* TAB: CATÁLOGO MÓVIL & ARCHIVO DE DESCARGAS */}
