@@ -708,14 +708,24 @@ export default function ProductPhotoStudioModal({
               <div>
                 <h3 className="text-sm font-bold text-white flex items-center gap-2">
                   <Camera className="w-4 h-4 text-amber-400" />
-                  <span>Tomas de Referencia del Producto (Toma fotos o sube archivos)</span>
+                  <span>Fotos del producto</span>
                 </h3>
-                <p className="text-xs text-slate-400 mt-0.5">
-                  La foto de <strong>Frente</strong> es la principal y obligatoria para generar. Las tomas de <strong>Arriba</strong>, <strong>Costado</strong> y <strong>Detalle</strong> son 100% opcionales pero le dan a la IA referencias dimensionales mucho más exactas.
+                <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                  <div className="rounded-xl border border-amber-800/70 bg-amber-950/40 p-2.5">
+                    <p className="font-bold text-amber-300">Paso 1 · Tu foto (obligatoria)</p>
+                    <p className="text-slate-300 mt-0.5">Eliges la foto de frente, la encuadras cuadrada y el sistema le quita el fondo.</p>
+                  </div>
+                  <div className="rounded-xl border border-emerald-800/70 bg-emerald-950/40 p-2.5">
+                    <p className="font-bold text-emerald-300">Paso 2 · Automático</p>
+                    <p className="text-slate-300 mt-0.5">Con el botón “Generar las 4 fotos” se arman el fondo blanco, el detalle, las medidas y la escena.</p>
+                  </div>
+                </div>
+                <p className="text-[11px] text-slate-500 mt-2">
+                  Arriba y Costado se guardan solo como respaldo; no cambian las 4 fotos. Detalle sí se usa si lo subes.
                 </p>
               </div>
               <span className="text-[11px] font-bold text-amber-300 bg-amber-950/60 border border-amber-800/70 px-2.5 py-1 rounded-lg shrink-0 self-start sm:self-auto">
-                📱 Toma foto directa con cámara o sube desde galería
+                📱 Cámara o galería
               </span>
             </div>
 
@@ -821,7 +831,7 @@ export default function ProductPhotoStudioModal({
                             <Camera className="w-5 h-5" />
                           </div>
                           <span className="text-[11px] font-bold text-slate-300 leading-snug">
-                            {angle.isRequired ? 'Tomar o subir foto de frente' : 'Tomar o subir ángulo'}
+                            {angle.isRequired ? 'Sube tu foto principal' : 'Foto extra (opcional)'}
                           </span>
                           <span className="text-[9.5px] text-slate-500 mt-1">
                             {angle.desc}
@@ -850,7 +860,7 @@ export default function ProductPhotoStudioModal({
                         className="flex-1 py-1.5 px-2 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center justify-center gap-1 transition cursor-pointer"
                       >
                         <Camera className="w-3 h-3 text-amber-400" />
-                        <span>{hasPhoto ? 'Cambiar' : 'Tomar / Subir'}</span>
+                        <span>{hasPhoto ? 'Cambiar foto' : 'Elegir foto'}</span>
                       </button>
 
                       {angle.key === 'front' && selectedProduct?.primaryImage && !hasPhoto && (
