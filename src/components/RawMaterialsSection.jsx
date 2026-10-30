@@ -131,14 +131,14 @@ export function materialAreaFor(mat) {
 export function materialSupplyGroupFor(mat) {
   const text = normalizeMaterialText(mat);
   const category = String(mat?.category || '').toLowerCase();
-  if (/papel.*sublim|hoja.*sublim|tinta.*sublim|cinta.*sublim|kapton|cinta.*transfer/.test(text)) return 'indirect';
-  if (category === 'packaging' || /caja|bolsa|empaque|etiqueta|kraft|celofan|viruta/.test(text)) return 'packaging';
+  if (/papel.*sublim|hoja.*sublim|tinta.*sublim|cinta.*sublim|cinta.*termica|kapton/.test(text)) return 'indirect';
+  if (/caja|bolsa|empaque|etiqueta|kraft|celofan|viruta/.test(text)) return 'packaging';
   if (/barniz|tinte|pintura|sellador|laca|esmalte|acabado/.test(text)) return 'finish';
   if (/diseno|licencia|archivo|modelo digital|arte digital|render/.test(text)) return 'intangible';
   if (/servicio|maquila|corte externo|grabado externo|instalacion/.test(text)) return 'production';
   if (/tornillo|clavo|tuerca|argolla|iman|led|interruptor|switch|herraje|broche|cierre|remache/.test(text)) return 'complementary';
-  if (/pegamento|resistol|cianocrilato|lija|cinta|brocha|pincel|guante|estopa|limpieza|alcohol|diluyente/.test(text) || category === 'consumables') return 'micro';
-  if (/guante|estopa|limpieza|proteccion/.test(text)) return 'indirect';
+  if (/guante|estopa|limpieza|proteccion|mascarilla|bata/.test(text)) return 'indirect';
+  if (/pegamento|resistol|cianocrilato|lija|cinta|brocha|pincel|alcohol|diluyente/.test(text) || category === 'consumables') return 'micro';
   return 'direct';
 }
 

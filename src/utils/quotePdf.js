@@ -93,7 +93,7 @@ function drawPageHeader(doc, { settings, folio, date }) {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(9.5);
   doc.setTextColor(255, 255, 255);
-  doc.text('COTIZACIÓN', 196, 10.5, { align: 'right' });
+  doc.text('COTIZACIÓN ESTIMADA', 196, 10.5, { align: 'right' });
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(6.8);
   doc.text(`Folio ${folio}`, 196, 15.2, { align: 'right' });
@@ -143,8 +143,8 @@ export async function downloadQuotePdf({
 
   const doc = new jsPDF({ unit: 'mm', format: 'a4', compress: true });
   doc.setProperties({
-    title: `Cotización ${folio} - ${safeText(settings?.businessName, 'Artesano Digital')}`,
-    subject: 'Cotización de productos y servicios personalizados',
+    title: `Cotización estimada ${folio} - ${safeText(settings?.businessName, 'Artesano Digital')}`,
+    subject: 'Cotización estimada de productos y servicios personalizados',
     author: safeText(settings?.businessName, 'Artesano Digital'),
     creator: 'Artesano Digital'
   });

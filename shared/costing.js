@@ -193,7 +193,7 @@ export function inferSupplyType(item = {}) {
   const text = normalizeText(`${item.name || ''} ${item.category || ''}`);
 
   // Consumibles propios de sublimación: papel, tinta, hoja y cinta térmica.
-  if (/papel.*sublim|hoja.*sublim|tinta.*sublim|cinta.*sublim|kapton|cinta.*transfer/.test(text)) return 'indirect';
+  if (/papel.*sublim|hoja.*sublim|tinta.*sublim|cinta.*sublim|cinta.*termica|kapton/.test(text)) return 'indirect';
   if (/empaque|caja|bolsa|etiqueta|celofan|viruta|burbuja|esquinero|tissue|kraft/.test(text)) return 'indirect';
   if (/\b(servicio|maquila|corte externo|grabado externo|impresion externa|instalacion)\b/.test(text)) return 'production';
   if (/diseno|licencia|archivo|modelo digital|arte digital|render|plantilla/.test(text)) return 'intangible';
