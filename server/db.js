@@ -16701,9 +16701,13 @@ class Database {
     // Order number
     let orderNumber = (data.orderNumber || '').trim().toUpperCase();
     if (!orderNumber) {
-      const seq = String(db.orders.length + 1).padStart(3, '0');
+      // Se toma el número más alto usado (no el conteo): evita repetir folios si se borran pedidos
       const year = new Date().getFullYear();
-      orderNumber = `PED-${year}-${seq}`;
+      const maxSeq = db.orders.reduce((max, o) => {
+        const m = /^PED-(\d{4})-(\d+)$/.exec(String(o.orderNumber || ''));
+        return m && Number(m[1]) === year ? Math.max(max, Number(m[2])) : max;
+      }, 0);
+      orderNumber = `PED-${year}-${String(maxSeq + 1).padStart(3, '0')}`;
     }
 
     // Customer code & recurrence (anonymized/masked, protecting personal data)
@@ -17432,10 +17436,31 @@ class Database {
     const deductions = [];
     const now = new Date().toISOString();
 
+    // Paso 1: validar TODO antes de escribir. Si un insumo no existe, no se descuenta nada.
+    const sameName = (a, b) => String(a || '').toLowerCase().trim() === String(b || '').toLowerCase().trim();
+    const plan = [];
+    const missing = [];
     for (const item of recipeItems) {
-      const idx = db.rawMaterials.findIndex(m => m.id === item.materialId || m.id === item.rawMaterialId || (item.name && m.name.toLowerCase().trim() === item.name.toLowerCase().trim()));
-      if (idx === -1) continue;
+      const idx = db.rawMaterials.findIndex(m =>
+        (item.materialId && m.id === item.materialId) ||
+        (item.rawMaterialId && m.id === item.rawMaterialId) ||
+        (!item.materialId && !item.rawMaterialId && item.name && sameName(m.name, item.name))
+      );
+      if (idx === -1) {
+        missing.push(item.name || item.materialId || 'insumo sin nombre');
+      } else {
+        plan.push({ item, idx });
+      }
+    }
+    if (missing.length > 0) {
+      return {
+        success: false,
+        error: `No se descontó nada: estos insumos de la receta ya no existen en almacén: ${missing.join(', ')}. Corrige la receta antes de producir.`,
+        missing
+      };
+    }
 
+    for (const { item, idx } of plan) {
       const mat = db.rawMaterials[idx];
       const netQty = Number(item.netQuantity) || 0;
       const wasteQty = Number(item.wasteQuantity) || 0;

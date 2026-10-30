@@ -1413,14 +1413,17 @@ app.put('/api/admin/orders/:id', requireAdmin, (req, res) => {
         productName: updated.productName,
         reason: `Fabricación de pedido #${updated.orderNumber}`
       });
-      if (deductionRes.success) {
-        db.updateOrder(updated.id, {
-          materialsDeducted: true,
-          materialsDeductedAt: new Date().toISOString()
-        });
-        updated.materialsDeducted = true;
-        updated.materialsDeductedAt = new Date().toISOString();
+      if (!deductionRes.success) {
+        // No se avanza el pedido si no se pudo descontar el almacén: evita fabricar sin control de insumos
+        db.updateOrder(updated.id, { status: currentOrder.status });
+        return res.status(409).json({ error: deductionRes.error || 'No se pudo descontar el almacén. El pedido no pasó a producción.' });
       }
+      db.updateOrder(updated.id, {
+        materialsDeducted: true,
+        materialsDeductedAt: new Date().toISOString()
+      });
+      updated.materialsDeducted = true;
+      updated.materialsDeductedAt = new Date().toISOString();
     } else if (req.body.revertStock === true || (req.body.status === 'cancelado' && currentOrder?.materialsDeducted)) {
       db.revertRecipeDeduction(updated.id);
       db.updateOrder(updated.id, {
