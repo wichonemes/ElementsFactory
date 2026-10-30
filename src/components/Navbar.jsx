@@ -25,7 +25,7 @@ export default function Navbar({
     { id: 'negocios', label: 'Negocio' },
     { id: 'eventos', label: 'Eventos' },
     { id: 'personalizados', label: 'Personalizados', isSpecial: true, isCustom: true },
-    { id: 'paquetes-servicios', label: 'Paquetes', isSpecial: true, isHighlight: true }
+    { id: 'servicios', label: 'Servicios', isSpecial: true, isHighlight: true }
   ];
 
   return (

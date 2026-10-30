@@ -75,10 +75,10 @@ export default function Footer({ onSelectWorld, onOpenAdmin, settings }) {
               </li>
               <li>
                 <button
-                  onClick={() => onSelectWorld('paquetes-servicios')}
+                  onClick={() => onSelectWorld('servicios')}
                   className="hover:text-amber-300 transition-colors text-left flex items-center gap-1 text-[#e8b84f] font-bold"
                 >
-                  <span>Paquetes y Combos</span>
+                  <span>Servicios (Diseño &amp; Taller)</span>
                 </button>
               </li>
             </ul>

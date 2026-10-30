@@ -199,7 +199,29 @@ export default function MobileSidebarDrawer({
               <ChevronRight className="w-4 h-4 text-gray-400 group-hover:translate-x-0.5 transition-transform" />
             </button>
 
-            {/* Centro de Servicios Especializados (ahora página aparte) */}
+            {/* Centro de Servicios Especializados (Diseño, Publicidad y Manufactura) */}
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                if (onSelectWorld) onSelectWorld('servicios');
+              }}
+              className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-amber-50/50 active:bg-amber-100/50 transition-colors text-left group cursor-pointer border border-amber-200/50"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                  <Sparkles className="w-5 h-5 text-[#D4A359]" />
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-gray-900 flex items-center gap-1.5">
+                    <span>Servicios</span>
+                    <span className="text-[9px] bg-[#17251E] text-[#D4A359] px-1.5 py-0.2 rounded-full font-bold">Taller</span>
+                  </div>
+                  <div className="text-[10px] text-gray-500">Diseño, Publicidad &amp; Industria B2B</div>
+                </div>
+              </div>
+              <ChevronRight className="w-4 h-4 text-gray-400 group-hover:translate-x-0.5 transition-transform" />
+            </button>
           </div>
 
           {/* GRUPO: ATENCIÓN DIRECTA */}
