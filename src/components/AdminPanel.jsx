@@ -1684,16 +1684,11 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
       worlds: initialOpts.worlds || (isBundle ? ['paquetes'] : ['hogar']),
       categories: [],
       techniques: ['3d'],
-      primaryImage: '/uploads/bandeja_vaciabolsillos_ovalada_white.jpg',
-      whiteBgImage: '/uploads/bandeja_vaciabolsillos_ovalada_white.jpg',
+      primaryImage: '',
+      whiteBgImage: '',
       detailImage: '',
       measureImage: '',
-      gallery: [
-        '/uploads/bandeja_vaciabolsillos_ovalada_white.jpg',
-        '',
-        '',
-        ''
-      ],
+      gallery: ['', '', '', ''],
       flashDealConfig: {
         enabled: false,
         durationMinutes: 120,
@@ -8513,17 +8508,18 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                       style={{ width: `${Math.max(4, editorChecklist.percent)}%` }}
                     />
                   </div>
-                  <div className="flex flex-wrap items-center gap-1 mt-1">
+                  <div className="flex flex-col gap-1 mt-1.5">
                     {editorChecklist.blockers.length > 0 ? editorChecklist.blockers.map(blocker => (
                       <button
                         key={blocker.id}
                         type="button"
                         onClick={() => setEditorActiveTab(blocker.step)}
-                        className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-amber-50 border border-amber-200 text-amber-900 text-[8.5px] font-bold hover:bg-amber-100 cursor-pointer"
-                        title={blocker.hint}
+                        className="text-left flex items-start gap-1.5 px-2 py-1.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 hover:bg-amber-100 cursor-pointer"
                       >
-                        <AlertCircle className="w-2.5 h-2.5" />
-                        {blocker.label}
+                        <AlertCircle className="w-3 h-3 mt-0.5 shrink-0" />
+                        <span className="text-[10.5px] leading-snug">
+                          <strong>Falta: {blocker.label}.</strong> {blocker.hint} <span className="text-amber-700 underline">Ir a este paso</span>
+                        </span>
                       </button>
                     )) : (
                       <span className="inline-flex items-center gap-1 text-[8.5px] font-bold text-emerald-700">

@@ -1176,7 +1176,9 @@ export default function ProductPhotoStudioModal({
                 ) : (
                   <>
                     <Check className="w-4 h-4" />
-                    Aplicar las 4 fotos al producto
+                    {generatedGallery.filter(Boolean).length < 4
+                      ? `Faltan ${4 - generatedGallery.filter(Boolean).length} de 4 fotos para aplicar`
+                      : 'Usar estas 4 fotos en el producto'}
                   </>
                 )}
               </button>
