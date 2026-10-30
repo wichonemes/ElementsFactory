@@ -11,6 +11,7 @@ import { fileURLToPath } from 'url';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import multer from 'multer';
+import { handleUpload } from '@vercel/blob/client';
 import { db } from './db.js';
 import { repairProductCosts } from '../shared/costing.js';
 import {
@@ -1783,6 +1784,8 @@ app.get('/api/catalog-pdf/download/:id', async (req, res) => {
     const item = catalogs.find(c => c.id === req.params.id) || 
       (req.params.id === 'primary' ? (catalogs.find(c => c.isPrimary) || catalogs[0]) : null);
 
+    const staticDefault = `/downloads/catalogo_movil_artesano_digital.pdf${isAttachment ? '?download=1' : ''}`;
+
     if (!item) {
       // Fallback al catálogo predeterminado si no se encuentra el ítem
       const defaultCatalog = path.join(downloadsDir, 'catalogo_movil_artesano_digital.pdf');
@@ -1791,7 +1794,7 @@ app.get('/api/catalog-pdf/download/:id', async (req, res) => {
         res.setHeader('Content-Disposition', `${dispositionType}; filename="Catalogo_Artesano_Digital.pdf"`);
         return res.sendFile(defaultCatalog);
       }
-      return res.status(404).json({ error: 'Catálogo no encontrado' });
+      return res.redirect(302, staticDefault);
     }
 
     const fileName = item.fileName || `${item.name || 'catalogo'}.pdf`;
@@ -1839,6 +1842,12 @@ app.get('/api/catalog-pdf/download/:id', async (req, res) => {
       return res.redirect(item.fileUrl);
     }
 
+    // 5b. Archivo público servido desde /downloads (CDN estático en producción)
+    if (item.fileUrl && item.fileUrl.startsWith('/downloads/')) {
+      const separator = item.fileUrl.includes('?') ? '&' : '?';
+      return res.redirect(302, `${item.fileUrl}${isAttachment ? `${separator}download=1` : ''}`);
+    }
+
     // 6. Fallback final al catálogo oficial
     const defaultCatalog = path.join(downloadsDir, 'catalogo_movil_artesano_digital.pdf');
     if (fs.existsSync(defaultCatalog)) {
@@ -1847,7 +1856,7 @@ app.get('/api/catalog-pdf/download/:id', async (req, res) => {
       return res.sendFile(defaultCatalog);
     }
 
-    res.status(404).json({ error: 'Archivo PDF no disponible' });
+    res.redirect(302, staticDefault);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -1857,6 +1866,82 @@ app.put('/api/admin/catalog-pdf/config', requireAdmin, (req, res) => {
   try {
     const updated = db.updateMobileCatalogConfig(req.body || {});
     res.json({ success: true, mobileCatalogConfig: updated });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Token para subida directa a Blob desde el navegador (archivos grandes que no caben en una función serverless)
+app.post('/api/admin/blob/client-token', requireAdmin, async (req, res) => {
+  try {
+    const host = req.headers['x-forwarded-host'] || req.headers.host || 'localhost';
+    const proto = req.headers['x-forwarded-proto'] || 'https';
+    const result = await handleUpload({
+      body: req.body,
+      request: new Request(`${proto}://${host}${req.originalUrl}`, { method: 'POST', headers: req.headers }),
+      onBeforeGenerateToken: async () => ({
+        allowedContentTypes: ['application/pdf', 'image/jpeg', 'image/png', 'image/webp'],
+        maximumSizeInBytes: 50 * 1024 * 1024,
+        addRandomSuffix: true
+      }),
+      onUploadCompleted: async () => {}
+    });
+    res.json(result);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// Registra en el catálogo un PDF ya subido a Blob (flujo de archivos grandes)
+app.post('/api/admin/catalog-pdf/register', requireAdmin, (req, res) => {
+  try {
+    const { catalogId, fileUrl, fileName, fileSize, fileType, name, season, badge, description, isPrimary, enabled } = req.body || {};
+    if (!fileUrl || !/^https:\/\//.test(String(fileUrl))) {
+      return res.status(400).json({ error: 'El archivo subido no es válido.' });
+    }
+    const size = Number(fileSize) || 0;
+    const fileSizeFormatted = size > 1024 * 1024
+      ? `${(size / (1024 * 1024)).toFixed(2)} MB`
+      : `${Math.round(size / 1024)} KB`;
+    const cleanFileName = String(fileName || 'catalogo.pdf').slice(0, 200);
+    const fields = {
+      fileName: cleanFileName,
+      fileUrl: String(fileUrl),
+      fileSize: fileSizeFormatted,
+      fileType: fileType || 'application/pdf',
+      ...(name ? { name } : {}),
+      ...(season ? { season } : {}),
+      ...(badge ? { badge } : {}),
+      ...(description ? { description } : {}),
+      ...(isPrimary !== undefined ? { isPrimary: isPrimary === true || isPrimary === 'true' } : {}),
+      ...(enabled !== undefined ? { enabled: enabled === true || enabled === 'true' } : {})
+    };
+    const applyItem = () => {
+      if (catalogId) {
+        db.updateMobileCatalogItem(catalogId, fields);
+      } else {
+        db.addMobileCatalogItem({
+          id: `cat-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+          name: name || cleanFileName.replace(/\.[^/.]+$/, '').replace(/[_|-]/g, ' '),
+          season: season || 'Temporada Actual',
+          badge: badge || 'Nuevo',
+          description: description || 'Catálogo oficial descargable.',
+          enabled: enabled !== undefined ? (enabled === true || enabled === 'true') : true,
+          isPrimary: isPrimary === true || isPrimary === 'true',
+          ...fields
+        });
+      }
+      return db.getMobileCatalogConfig();
+    };
+    let updatedConfig;
+    if (cloudDb.enabled) {
+      cloudDb.transaction(async () => { updatedConfig = applyItem(); }).then(() => {
+        res.json({ success: true, mobileCatalogConfig: updatedConfig });
+      }).catch(err => res.status(500).json({ error: err.message }));
+      return;
+    }
+    updatedConfig = applyItem();
+    res.json({ success: true, mobileCatalogConfig: updatedConfig });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

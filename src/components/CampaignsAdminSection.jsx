@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
+import { uploadImageFile } from '../utils/imageUpload';
 import {
   Gift, Sparkles, Upload, Image as ImageIcon, Check,
   AlertTriangle, Star, Flame, Eye, Edit, Plus, Calendar,
@@ -801,27 +802,14 @@ export default function CampaignsAdminSection({
     if (!file) return;
 
     setUploadingImage(true);
-    const formData = new FormData();
-    formData.append('image', file);
 
     try {
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        updateField('bannerImage', data.url);
-        setMessage({ text: 'Imagen de portada subida con éxito', type: 'success' });
-      } else {
-        const err = await res.json();
-        setMessage({ text: err.error || 'Error al subir imagen', type: 'error' });
-      }
+      const url = await uploadImageFile(file, token);
+      updateField('bannerImage', url);
+      setMessage({ text: 'Imagen de portada subida con éxito', type: 'success' });
     } catch (err) {
       console.error('Error subiendo imagen:', err);
-      setMessage({ text: 'Error de red al subir imagen', type: 'error' });
+      setMessage({ text: err.message || 'Error al subir imagen', type: 'error' });
     } finally {
       setUploadingImage(false);
     }

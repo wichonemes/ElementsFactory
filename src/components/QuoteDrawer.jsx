@@ -1080,7 +1080,7 @@ export default function QuoteDrawer({
                 className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-full bg-[#2D4F3E] hover:bg-[#20392C] disabled:opacity-70 disabled:cursor-wait text-white text-sm font-black transition-all shadow-md cursor-pointer active:scale-98"
               >
                 {isGeneratingPdf ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
-                <span>{isGeneratingPdf ? 'Generando PDF…' : 'Descargar cotización estimada'}</span>
+                <span>{isGeneratingPdf ? 'Generando PDF…' : 'Descargar reporte de cotización estimado'}</span>
               </button>
 
               {pdfError && (

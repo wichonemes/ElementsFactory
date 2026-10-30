@@ -6,6 +6,7 @@ import {
   CheckCircle2, RotateCcw, Power, Sliders, Printer, Globe, Film,
   Boxes
 } from 'lucide-react';
+import { uploadImageFile } from '../utils/imageUpload';
 
 const SUGGESTED_AREA_IMAGES = {
   hogar: [
@@ -364,41 +365,11 @@ export default function AreaBannersAdminSection({
       return;
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      setStatusMsg({ type: 'error', text: 'La imagen excede el límite de 5MB.' });
-      return;
-    }
-
     setUploading(true);
     setStatusMsg({ type: 'info', text: 'Subiendo imagen de banner al taller...' });
 
     try {
-      const uploadFormData = new FormData();
-      uploadFormData.append('image', file);
-
-      const headers = {};
-      if (token) headers['Authorization'] = `Bearer ${token}`;
-
-      let imageUrl = '';
-      try {
-        const res = await fetch('/api/upload', {
-          method: 'POST',
-          headers,
-          body: uploadFormData
-        });
-        if (res.ok) {
-          const data = await res.json();
-          imageUrl = data.imageUrl;
-        }
-      } catch (err) {}
-
-      if (!imageUrl) {
-        imageUrl = await new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.onload = (ev) => resolve(ev.target.result);
-          reader.readAsDataURL(file);
-        });
-      }
+      const imageUrl = await uploadImageFile(file, token);
 
       setFormData(prev => ({ ...prev, image: imageUrl }));
       setStatusMsg({ type: 'success', text: '¡Fotografía subida exitosamente! Haz clic en "Guardar Banner" para aplicar los cambios.' });
@@ -506,33 +477,7 @@ export default function AreaBannersAdminSection({
     setStatusMsg({ type: 'info', text: `Subiendo foto para ${cardKey.toUpperCase()}...` });
 
     try {
-      const uploadFormData = new FormData();
-      uploadFormData.append('image', file);
-
-      const headers = {};
-      if (token) headers['Authorization'] = `Bearer ${token}`;
-
-      let imageUrl = '';
-      try {
-        const res = await fetch('/api/upload', {
-          method: 'POST',
-          headers,
-          body: uploadFormData
-        });
-        if (res.ok) {
-          const data = await res.json();
-          imageUrl = data.imageUrl;
-        }
-      } catch (err) {}
-
-      // Fallback a Data URL si el backend está en modo estático/offline
-      if (!imageUrl) {
-        imageUrl = await new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.onload = (ev) => resolve(ev.target.result);
-          reader.readAsDataURL(file);
-        });
-      }
+      const imageUrl = await uploadImageFile(file, token);
 
       const current = cardsConfig[section]?.[cardKey] || {};
       const updated = {

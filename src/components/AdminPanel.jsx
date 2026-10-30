@@ -25,6 +25,7 @@ import CouponsAdminSection from './CouponsAdminSection';
 import AdminConfirmSaveModal from './AdminConfirmSaveModal';
 import ProductPhotoStudioModal from './ProductPhotoStudioModal';
 import OrdersWorkSection from './OrdersWorkSection';
+import { uploadImageFile } from '../utils/imageUpload';
 import {
   DEFAULT_SERVICE_STATUS,
   formatServiceDate,
@@ -3440,15 +3441,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     try {
       let imageUrl = '';
       try {
-        const formData = new FormData();
-        formData.append('image', file);
-        const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        const res = await fetch('/api/upload', { method: 'POST', headers, body: formData });
-        if (res.ok) {
-          const data = await res.json().catch(() => ({}));
-          imageUrl = data.imageUrl || data.url || '';
-        }
-      } catch {}
+        imageUrl = await uploadImageFile(file, token);
+      } catch (uploadErr) {
+        console.warn('Subida de foto al servidor falló; se guarda en el navegador.', uploadErr.message);
+      }
 
       if (!imageUrl) imageUrl = await compressImage(file);
       if (!imageUrl) throw new Error('No se pudo procesar la imagen.');
@@ -3480,17 +3476,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
     if (!file) return;
 
     setUploadingImage(slotKey);
-    const formData = new FormData();
-    formData.append('image', file);
 
     try {
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData
-      });
-      const data = await res.json();
-      if (res.ok && data.url) {
+      const data = { url: await uploadImageFile(file, token) };
+      if (data.url) {
         setEditorForm(prev => {
           const updated = { ...prev };
           const gal = [...(prev.gallery || [])];
@@ -3518,11 +3507,11 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
           return updated;
         });
       } else {
-        alert(data.error || 'Error al subir imagen');
+        alert('Error al subir imagen');
       }
     } catch (err) {
       console.error(err);
-      alert('Error al conectar para subir archivo.');
+      alert(err.message || 'Error al subir archivo.');
     } finally {
       setUploadingImage(false);
     }

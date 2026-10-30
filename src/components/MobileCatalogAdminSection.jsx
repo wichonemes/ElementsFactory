@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { upload } from '@vercel/blob/client';
 import { 
   FileText, 
   Upload, 
@@ -235,6 +236,41 @@ export default function MobileCatalogAdminSection({
     setCatalogModalOpen(true);
   };
 
+  // Archivos grandes: subida directa a Blob (evita el límite de 4.5 MB de la función) y registro en el catálogo
+  const uploadLargeCatalog = async (file, cleanName, form, editing) => {
+    const authHeaders = authToken ? { Authorization: `Bearer ${authToken}` } : {};
+    const blob = await upload(`catalogo/${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`, file, {
+      access: 'public',
+      handleUploadUrl: '/api/admin/blob/client-token',
+      headers: authHeaders,
+      contentType: file.type || 'application/pdf',
+      multipart: file.size > 8 * 1024 * 1024,
+      onUploadProgress: ({ percentage }) => setUploadProgress(Math.min(95, Math.round(percentage)))
+    });
+    const response = await fetch('/api/admin/catalog-pdf/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...authHeaders },
+      body: JSON.stringify({
+        catalogId: editing?.id || '',
+        fileUrl: blob.url,
+        fileName: file.name,
+        fileSize: file.size,
+        fileType: file.type || 'application/pdf',
+        name: cleanName,
+        season: (form.season || '').trim(),
+        badge: (form.badge || '').trim(),
+        description: (form.description || '').trim(),
+        isPrimary: Boolean(form.isPrimary),
+        enabled: Boolean(form.enabled)
+      })
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      throw new Error(data.error || `No se pudo registrar el catálogo (${response.status}).`);
+    }
+    return { ok: true, data };
+  };
+
   // Guardar catálogo (Crear o Editar con o sin archivo)
   const handleSaveCatalogModal = async (e) => {
     e.preventDefault();
@@ -268,7 +304,9 @@ export default function MobileCatalogAdminSection({
           formData.append('catalogId', editingCatalog.id);
         }
 
-        const uploadResult = await new Promise((resolve, reject) => {
+        const uploadResult = modalFile.size > 4 * 1024 * 1024
+          ? await uploadLargeCatalog(modalFile, cleanName, modalForm, editingCatalog)
+          : await new Promise((resolve, reject) => {
           const xhr = new XMLHttpRequest();
           uploadXhrRef.current = xhr;
           xhr.open('POST', '/api/admin/catalog-pdf/upload');
