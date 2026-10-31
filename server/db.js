@@ -20,12 +20,9 @@ const PRICE_REVIEW_2026_10 = {
   T10: { from: 99, to: 105 },
   T11: { from: 100, to: 140 },
   T16: { from: 199, to: 220 },
-  T18: { from: 199, to: 240 },
   T21: { from: 139, to: 145 },
   T26: { from: 169, to: 200 },
-  T27: { from: 249, to: 260 },
   T29: { from: 149, to: 160 },
-  T32: { from: 299, to: 320 },
   T38: { from: 449, to: 500 },
   T6: { from: 149, to: 185 },
   T7: { from: 199, to: 240 },
@@ -15672,6 +15669,33 @@ class Database {
     return { applied, alreadyApplied: false };
   }
 
+  /**
+   * Corrige los Starter Packs que quedaron con precio viejo en la base
+   * (antes se "maquillaban" al leer, lo que ocultaba el dato real).
+   */
+  applyPriceCorrection2026() {
+    const data = this.read();
+    if (!data.meta) data.meta = {};
+    if (data.meta.priceCorrection2026Applied) return { corrected: 0, alreadyApplied: true };
+    const targets = { T18: 480, T27: 540, T32: 490 };
+    const regulars = { T18: 590, T27: 680, T32: 620 };
+    let corrected = 0;
+    for (const product of data.products || []) {
+      const target = targets[product.code];
+      if (!target) continue;
+      if (Number(product.price) === target) continue;
+      product.price = target;
+      if (product.regularPrice == null) product.regularPrice = regulars[product.code];
+      product.savings = Math.max(0, Number(product.regularPrice) - target);
+      product.updatedAt = new Date().toISOString();
+      corrected += 1;
+    }
+    data.meta.priceCorrection2026Applied = new Date().toISOString();
+    data.meta.priceCorrection2026Count = corrected;
+    this.save(data);
+    return { corrected, alreadyApplied: false };
+  }
+
   syncCatalogWithCodebase() {
     const data = this.read();
     let changed = false;
@@ -15754,19 +15778,7 @@ class Database {
     // Purgar productos eliminados de la tienda (galga, tobera y lista negra)
     items = items.filter(p => !DELETED_PRODUCTS_BLOCKLIST.includes(p.id) && !(p.worlds && p.worlds.length === 1 && p.worlds[0] === 'industria'));
 
-    // Actualizar precios de Starter Packs si aún tienen los precios antiguos no rentables
-    items = items.map(p => {
-      if (p.id === 'starter-pack-joyeria-t27' && p.price < 540) {
-        return { ...p, price: 540, regularPrice: 680 };
-      }
-      if (p.id === 'starter-pack-gym-t32' && p.price < 490) {
-        return { ...p, price: 490, regularPrice: 620 };
-      }
-      if (p.id === 'starter-pack-barberia-t18' && p.price < 480) {
-        return { ...p, price: 480, regularPrice: 590 };
-      }
-      return p;
-    });
+    // Los precios viven en la base de datos (ya no se "maquillan" al leer).
 
     // Filter by status: public only sees published; admin can request all or specific
     if (filters.status && filters.status !== 'all') {

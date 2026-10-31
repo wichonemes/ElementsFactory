@@ -2600,7 +2600,8 @@
         "Playera con marca del gimnasio",
         "Termo grabado (opcional)"
       ],
-      "regularPrice": 620
+      "regularPrice": 620,
+      "savings": 130
     },
     {
       "id": "starter-pack-barberia-t18",
@@ -2670,7 +2671,8 @@
         "Portatijeras vertical",
         "Soporte QR de mostrador"
       ],
-      "regularPrice": 590
+      "regularPrice": 590,
+      "savings": 110
     },
     {
       "id": "starter-pack-joyeria-t27",
@@ -2743,7 +2745,8 @@
         "Mini letrero de marca en madera",
         "Portaprecios de mostrador"
       ],
-      "regularPrice": 680
+      "regularPrice": 680,
+      "savings": 140
     },
     {
       "id": "servicio-patch-bar-en-vivo",
