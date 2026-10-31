@@ -8456,27 +8456,53 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                             className="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 font-mono font-bold bg-white text-stone-800 uppercase"
                           />
                         </div>
-                        <div>
-                          <label className="text-[11px] font-bold text-gray-600 block mb-1">
-                            Porcentaje Promocionado (%):
-                          </label>
-                          <input
-                            type="number"
-                            min="1"
-                            max="50"
-                            value={businessSettings?.reviewsRewardConfig?.socialRewardPercent ?? 10}
-                            onChange={e => {
-                              setBusinessSettings({
-                                ...businessSettings,
-                                reviewsRewardConfig: {
-                                  ...(businessSettings?.reviewsRewardConfig || {}),
-                                  socialRewardPercent: Number(e.target.value) || 0
-                                }
-                              });
-                            }}
-                            className="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 font-bold bg-white text-emerald-800"
-                          />
+                        <div className="grid grid-cols-2 gap-2">
+                          <div>
+                            <label className="text-[10px] font-bold text-gray-600 block mb-1">
+                              % hasta $300 MXN:
+                            </label>
+                            <input
+                              type="number"
+                              min="1"
+                              max="30"
+                              value={businessSettings?.reviewsRewardConfig?.socialRewardPercentUnder300 ?? (businessSettings?.reviewsRewardConfig?.socialRewardPercent ?? 10)}
+                              onChange={e => {
+                                setBusinessSettings({
+                                  ...businessSettings,
+                                  reviewsRewardConfig: {
+                                    ...(businessSettings?.reviewsRewardConfig || {}),
+                                    socialRewardPercentUnder300: Number(e.target.value) || 0
+                                  }
+                                });
+                              }}
+                              className="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 font-bold bg-white text-emerald-800"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] font-bold text-gray-600 block mb-1">
+                              % mayor a $300 MXN:
+                            </label>
+                            <input
+                              type="number"
+                              min="1"
+                              max="30"
+                              value={businessSettings?.reviewsRewardConfig?.socialRewardPercentOver300 ?? 5}
+                              onChange={e => {
+                                setBusinessSettings({
+                                  ...businessSettings,
+                                  reviewsRewardConfig: {
+                                    ...(businessSettings?.reviewsRewardConfig || {}),
+                                    socialRewardPercentOver300: Number(e.target.value) || 0
+                                  }
+                                });
+                              }}
+                              className="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 font-bold bg-white text-emerald-800"
+                            />
+                          </div>
                         </div>
+                        <p className="text-[10px] text-stone-500 italic">
+                          * Cupones y promociones configurados como no acumulables entre sí ni con mayoreo.
+                        </p>
                       </div>
                     </div>
 

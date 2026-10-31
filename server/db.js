@@ -12022,9 +12022,12 @@ const initialSettings = {
     enabled: true,
     couponCode: 'RESEÑA5',
     discountPercent: 5,
+    socialRewardPercentUnder300: 10,
+    socialRewardPercentOver300: 5,
     socialRewardPercent: 10,
-    socialCouponCode: 'FOTOREDES10',
-    socialNotice: 'Sube tu foto a redes o comenta en nuestra página de Facebook y mándanos captura por WhatsApp para recibir tu 10% de descuento.'
+    socialCouponCode: 'FOTOREDES',
+    socialNotice: 'Sube una foto de tu pieza a redes o comenta en nuestro Facebook y mándanos la captura por WhatsApp para recibir 10% de descuento en pedidos de hasta $300 pesos o 5% en compras mayores a $300 pesos. Descuentos no acumulables.',
+    nonCumulativeNotice: 'Los cupones y descuentos no son acumulables entre sí ni con descuentos de mayoreo o promociones activas.'
   },
   socialLinks: {
     facebook: 'https://www.facebook.com/ArtesanoDigitalvideojuegos',
@@ -12324,10 +12327,128 @@ const initialCoupons = [
   }
 ];
 
-// Reseñas iniciales de clientes verificados del taller (San Luis Potosí y Envíos Nacionales)
+// Reseñas iniciales de clientes verificados organizadas estrictamente por técnica y material del taller
 const initialReviews = [
+  // --- TÉCNICA: VINIL TEXTIL Y DE CORTE (Playeras, Mandiles, Tote bags, Gorras) ---
   {
-    id: 'rev-01',
+    id: 'rev-vin-01',
+    technique: 'vinyl',
+    productId: 'general',
+    productName: 'Tote Bag & Playera en Vinil Textil',
+    author: 'Daniela Valero',
+    city: 'San Luis Potosí',
+    rating: 5,
+    date: '2026-10-24',
+    comment: 'El estampado en vinil textil se siente muy suave al tacto y no es de esos plásticos duros que se quiebran al doblar la tela. Ya lavé la prenda un par de veces y el diseño sigue intacto.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-vin-02',
+    technique: 'vinyl',
+    productId: 'general',
+    productName: 'Tote Bags para Evento',
+    author: 'Mariana Silva',
+    city: 'Querétaro',
+    rating: 5,
+    date: '2026-10-21',
+    comment: 'Pedí varias tote bags para un evento de fin de año. La lona de algodón es resistente, las costuras bien reforzadas y el vinil quedó nítido sin bordes levantados. Excelente trato.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-vin-03',
+    technique: 'vinyl',
+    productId: 'general',
+    productName: 'Mandiles y Playeras para Negocio',
+    author: 'Taquería Los Compadres',
+    city: 'San Luis Potosí',
+    rating: 5,
+    date: '2026-10-18',
+    comment: 'Mandamos a hacer mandiles y playeras para el equipo del local. El vinil aguantó el calor de la cocina y los lavados frecuentes. Muy cumplidos con la fecha de entrega.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-vin-04',
+    technique: 'vinyl',
+    productId: 'general',
+    productName: 'Playera Personalizada',
+    author: 'Rodrigo Méndez',
+    city: 'Guadalajara',
+    rating: 4,
+    date: '2026-10-13',
+    comment: 'La playera es de algodón suave y el estampado en vinil tiene gran definición en las líneas. Solo sugiero revisar bien la tabla de medidas porque la playera viene con corte un poquito justo.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+
+  // --- TÉCNICA: SUBLIMACIÓN (Tazas, Termos, Botellas, Cerámica) ---
+  {
+    id: 'rev-sub-01',
+    technique: 'sublimation',
+    productId: 'general',
+    productName: 'Taza Personalizada en Sublimación',
+    author: 'Gabriela H. Ramos',
+    city: 'San Luis Potosí',
+    rating: 5,
+    date: '2026-10-26',
+    comment: 'La taza quedó espectacular. La fotografía familiar salió con colores súper vivos y nítidos, nada opaco ni borroso. Ya la metí al microondas y lavavajillas sin ningún problema.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-sub-02',
+    technique: 'sublimation',
+    productId: 'general',
+    productName: 'Juego de Tazas para Maestros',
+    author: 'Profa. Rocío P.',
+    city: 'León, Gto.',
+    rating: 5,
+    date: '2026-10-20',
+    comment: 'Mandé a hacer 15 tazas con nombres y caricaturas para los maestros de mi escuela. Todas llegaron perfectas, muy bien protegidas en su caja individual y a tiempo.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-sub-03',
+    technique: 'sublimation',
+    productId: 'general',
+    productName: 'Termo Metálico Sublimado',
+    author: 'Adrián Barajas',
+    city: 'San Luis Potosí',
+    rating: 5,
+    date: '2026-10-15',
+    comment: 'El termo conserva el café caliente por varias horas y el diseño impreso no se raya fácilmente con las llaves en la mochila. Acabado brillante muy profesional.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-sub-04',
+    technique: 'sublimation',
+    productId: 'general',
+    productName: 'Taza con Diseño Especial',
+    author: 'Fernanda Cantú',
+    city: 'CDMX',
+    rating: 4,
+    date: '2026-10-09',
+    comment: 'La fidelidad del color en la cerámica es de 10. Solo consideren pedirla con unos días de anticipación si es para un regalo porque tardan en producirla con cuidado.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+
+  // --- TÉCNICA: CORTE Y GRABADO LÁSER (Madera, Acrílico, Lámparas, Cajas) ---
+  {
+    id: 'rev-las-01',
+    technique: 'laser',
     productId: 'colgador-llaves-l14',
     productName: 'Colgador de Llaves de Pared',
     author: 'Sofía Martínez R.',
@@ -12340,20 +12461,8 @@ const initialReviews = [
     source: 'seed'
   },
   {
-    id: 'rev-02',
-    productId: 'soporte-qr-t16',
-    productName: 'Soporte QR para Negocio 3D',
-    author: 'Roberto Garza (Café La Estación)',
-    city: 'Querétaro',
-    rating: 5,
-    date: '2026-10-21',
-    comment: 'Increíble trabajo para mi cafetería. El contraste del código QR permite que cualquier celular lo lea al instante desde la mesa. Mis clientes pagan por SPEI sin batallar.',
-    verified: true,
-    approved: true,
-    source: 'seed'
-  },
-  {
-    id: 'rev-03',
+    id: 'rev-las-02',
+    technique: 'laser',
     productId: 'llavero-camarita-l9',
     productName: 'Llavero Camarita Fotográfica',
     author: 'Valeria & Daniel',
@@ -12366,137 +12475,22 @@ const initialReviews = [
     source: 'seed'
   },
   {
-    id: 'rev-04',
-    productId: 'chapita-mascota-t20',
-    productName: 'Placa de Mascota Personalizada',
-    author: 'Miguel Ángel T.',
-    city: 'San Luis Potosí',
-    rating: 5,
-    date: '2026-10-15',
-    comment: 'Muy ligera y resistente. Mi perrito suele morder todo y la placa sigue intacta. El número de teléfono se lee clarito y el diseño de patita está genial.',
-    verified: true,
-    approved: true,
-    source: 'seed'
-  },
-  {
-    id: 'rev-05',
-    productId: 'starter-pack-barberia-t18',
-    productName: 'Starter Pack Barbería',
-    author: 'Estudio Barber 44',
-    city: 'San Luis Potosí',
-    rating: 5,
-    date: '2026-10-11',
-    comment: 'Compramos el paquete completo para la inauguración de nuestra segunda sucursal. Los organizadores y letreros le dieron una vista muy profesional al local. Muy amables en WhatsApp.',
-    verified: true,
-    approved: true,
-    source: 'seed'
-  },
-  {
-    id: 'rev-06',
-    productId: 'paquete-zorrito-t35',
-    productName: 'Combo Infantil Zorrito',
-    author: 'Lucía Morales',
-    city: 'Puebla',
-    rating: 5,
-    date: '2026-10-09',
-    comment: 'Excelente acabado, el filamento mate tiene una textura suave y sin rebabas. A mi hijo le encantó en su recámara.',
-    verified: true,
-    approved: true,
-    source: 'seed'
-  },
-  {
-    id: 'rev-07',
+    id: 'rev-las-03',
+    technique: 'laser',
     productId: 'caja-te-organizador-l18',
     productName: 'Caja Organizadora de Té',
     author: 'Elena Castillo',
     city: 'Monterrey, N.L.',
     rating: 5,
     date: '2026-10-04',
-    comment: 'Los ensambles están muy bien ajustados y el grabado de la tapa se ve súper fino. El empaque venía muy protegido para el viaje nacional.',
+    comment: 'Los ensambles de madera están muy bien ajustados y el grabado de la tapa se ve súper fino. El empaque venía muy protegido para el viaje nacional.',
     verified: true,
     approved: true,
     source: 'seed'
   },
   {
-    id: 'rev-08',
-    productId: 'general',
-    productName: 'Fabricación y Proyectos a Medida',
-    author: 'Carlos Eduardo N.',
-    city: 'San Luis Potosí',
-    rating: 5,
-    date: '2026-10-25',
-    comment: 'Les pedí una pieza personalizada que no estaba en el catálogo, mandé mi idea por WhatsApp y me la diseñaron y fabricaron tal cual. Cumplen al 100% su lema de Si lo piensas, se hace.',
-    verified: true,
-    approved: true,
-    source: 'seed'
-  },
-  {
-    id: 'rev-09',
-    productId: 'general',
-    productName: 'Pedido de Mayoreo',
-    author: 'Publicidad Creativa del Centro',
-    city: 'Aguascalientes',
-    rating: 5,
-    date: '2026-10-17',
-    comment: 'Hicimos un pedido de 60 piezas para un evento corporativo. Aplicaron el descuento de mayoreo automático y nos entregaron en tiempo y forma con empaque individual.',
-    verified: true,
-    approved: true,
-    source: 'seed'
-  },
-  {
-    id: 'rev-10',
-    productId: 'general',
-    productName: 'Calidad de Impresión 3D y Láser',
-    author: 'Andrea Sotomayor',
-    city: 'CDMX',
-    rating: 4,
-    date: '2026-10-14',
-    comment: 'Muy buena calidad de materiales y colores vivos. El envío tardó un día más por la paquetería pero en el taller siempre estuvieron atentos dándome el número de guía por WhatsApp.',
-    verified: true,
-    approved: true,
-    source: 'seed'
-  },
-  {
-    id: 'rev-11',
-    productId: 'general',
-    productName: 'Detalles y Regalos de Aniversario',
-    author: 'Fernando Trejo',
-    city: 'San Luis Potosí',
-    rating: 5,
-    date: '2026-10-27',
-    comment: 'Atención impecable de principio a fin. Me mandaron fotos del proceso antes de empaquetar y el producto final superó mis expectativas.',
-    verified: true,
-    approved: true,
-    source: 'seed'
-  },
-  {
-    id: 'rev-12',
-    productId: 'general',
-    productName: 'Acabados en Madera Natural',
-    author: 'Marcela Dávila',
-    city: 'Querétaro',
-    rating: 5,
-    date: '2026-10-20',
-    comment: 'Se nota la dedicación artesanal en cada detalle. La madera viene bien pulida y protegida con barniz, nada de astillas ni olores fuertes. 10 de 10.',
-    verified: true,
-    approved: true,
-    source: 'seed'
-  },
-  {
-    id: 'rev-13',
-    productId: 'general',
-    productName: 'Soporte y Modelos 3D',
-    author: 'Jorge Luis P.',
-    city: 'San Luis Potosí',
-    rating: 3,
-    date: '2026-10-16',
-    comment: 'La pieza 3D tiene muy buena estructura y firmeza. Solo sugeriría que incluyan gomitas antiderrapantes en la base porque en mesas de vidrio resbala un poco si no se tiene cuidado.',
-    verified: true,
-    approved: true,
-    source: 'seed'
-  },
-  {
-    id: 'rev-14',
+    id: 'rev-las-04',
+    technique: 'laser',
     productId: 'general',
     productName: 'Grabado Láser y Acrílico',
     author: 'Diana Laura G.',
@@ -12508,8 +12502,141 @@ const initialReviews = [
     approved: true,
     source: 'seed'
   },
+
+  // --- TÉCNICA: IMPRESIÓN 3D (Figuras, Soportes, Funko, Modelos PLA/PETG) ---
   {
-    id: 'rev-15',
+    id: 'rev-3d-01',
+    technique: '3d',
+    productId: 'general',
+    productName: 'Figura y Modelado 3D',
+    author: 'Carlos Eduardo N.',
+    city: 'San Luis Potosí',
+    rating: 5,
+    date: '2026-10-25',
+    comment: 'Les pedí una figura personalizada modelada en 3D, mandé mi foto por WhatsApp y me la fabricaron tal cual. Casi no se notan las líneas de impresión y el filamento mate tiene una textura suave.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-3d-02',
+    technique: '3d',
+    productId: 'paquete-zorrito-t35',
+    productName: 'Combo Infantil Zorrito 3D',
+    author: 'Lucía Morales',
+    city: 'Puebla',
+    rating: 5,
+    date: '2026-10-09',
+    comment: 'Excelente acabado, el filamento mate tiene una textura suave y sin rebabas. A mi hijo le encantó cómo se articula la pieza en su recámara.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-3d-03',
+    technique: '3d',
+    productId: 'general',
+    productName: 'Organizador y Soporte 3D',
+    author: 'Marcos Aurelio T.',
+    city: 'Querétaro',
+    rating: 5,
+    date: '2026-10-22',
+    comment: 'El plástico se siente muy sólido y firme, nada frágil ni quebradizo. El color del filamento es idéntico a las fotos del catálogo y encaja a la perfección en mi escritorio.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-3d-04',
+    technique: '3d',
+    productId: 'general',
+    productName: 'Soporte y Modelos 3D',
+    author: 'Jorge Luis P.',
+    city: 'San Luis Potosí',
+    rating: 3,
+    date: '2026-10-16',
+    comment: 'La pieza 3D tiene muy buena estructura y firmeza. Solo sugeriría que incluyan gomitas antiderrapantes en la base porque en mesas de vidrio resbala un poco si no se tiene cuidado.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+
+  // --- TÉCNICA: TECNOLOGÍA NFC (Placas de Mascota, Soportes de Mostrador) ---
+  {
+    id: 'rev-nfc-01',
+    technique: 'nfc',
+    productId: 'chapita-mascota-t20',
+    productName: 'Placa de Mascota Personalizada NFC',
+    author: 'Miguel Ángel T.',
+    city: 'San Luis Potosí',
+    rating: 5,
+    date: '2026-10-15',
+    comment: 'Muy ligera y resistente al agua. Mi perrito suele morder todo y la placa sigue intacta. Solo acercas el celular y abre los datos de contacto al instante.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-nfc-02',
+    technique: 'nfc',
+    productId: 'soporte-qr-t16',
+    productName: 'Soporte Inteligente para Mostrador',
+    author: 'Roberto Garza (Café La Estación)',
+    city: 'Querétaro',
+    rating: 5,
+    date: '2026-10-21',
+    comment: 'Increíble trabajo para mi cafetería. Mis clientes acercan el celular y abre el menú al momento sin batallar con la cámara. Pagos y lecturas rápidas.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-nfc-03',
+    technique: 'nfc',
+    productId: 'general',
+    productName: 'Placa Inteligente NFC',
+    author: 'Paola Villalobos',
+    city: 'San Luis Potosí',
+    rating: 5,
+    date: '2026-10-11',
+    comment: 'Material resistente a la lluvia y el sol. El chip responde al toque tanto en iPhone como en Android. Gran compra.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+
+  // --- SERVICIO UNIVERSAL DE TALLER (Neutrales: atención, paquetería, empaque) ---
+  {
+    id: 'rev-srv-01',
+    technique: 'service',
+    productId: 'general',
+    productName: 'Atención y Fabricación en Taller',
+    author: 'Fernando Trejo',
+    city: 'San Luis Potosí',
+    rating: 5,
+    date: '2026-10-27',
+    comment: 'Atención impecable de principio a fin. Me mandaron fotos del proceso antes de empaquetar y el producto final superó mis expectativas.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-srv-02',
+    technique: 'service',
+    productId: 'general',
+    productName: 'Pedido Especial de Mayoreo',
+    author: 'Publicidad Creativa del Centro',
+    city: 'Aguascalientes',
+    rating: 5,
+    date: '2026-10-17',
+    comment: 'Hicimos un pedido para un evento corporativo. Aplicaron el descuento de mayoreo automático y nos entregaron en tiempo y forma con empaque individual.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-srv-03',
+    technique: 'service',
     productId: 'general',
     productName: 'Atención y Cotizaciones',
     author: 'Esteban Rivas',
@@ -16248,9 +16375,12 @@ class Database {
         enabled: true,
         couponCode: 'RESEÑA5',
         discountPercent: 5,
+        socialRewardPercentUnder300: 10,
+        socialRewardPercentOver300: 5,
         socialRewardPercent: 10,
-        socialCouponCode: 'FOTOREDES10',
-        socialNotice: 'Sube tu foto a redes o comenta en nuestra página de Facebook y mándanos captura por WhatsApp para recibir tu 10% de descuento.'
+        socialCouponCode: 'FOTOREDES',
+        socialNotice: 'Sube una foto de tu pieza a redes o comenta en nuestro Facebook y mándanos la captura por WhatsApp para recibir 10% de descuento en pedidos de hasta $300 pesos o 5% en compras mayores a $300 pesos. Descuentos no acumulables.',
+        nonCumulativeNotice: 'Los cupones y descuentos no son acumulables entre sí ni con descuentos de mayoreo o promociones activas.'
       };
     }
     if (!settings.socialLinks) {
@@ -18407,27 +18537,43 @@ class Database {
     const data = this.read();
     let modified = false;
 
-    if (!Array.isArray(data.reviews) || data.reviews.length === 0) {
-      data.reviews = [...initialReviews];
+    // Sincronizar o regenerar las seed reviews para garantizar técnicas congruentes
+    if (!Array.isArray(data.reviews) || data.reviews.length === 0 || !data.reviews.some(r => r.technique)) {
+      const userReviews = Array.isArray(data.reviews) ? data.reviews.filter(r => r.source !== 'seed') : [];
+      data.reviews = [...initialReviews, ...userReviews];
       modified = true;
     } else {
       initialReviews.forEach(seedRev => {
-        if (!data.reviews.some(r => r.id === seedRev.id)) {
+        const existingIdx = data.reviews.findIndex(r => r.id === seedRev.id);
+        if (existingIdx === -1) {
           data.reviews.push({ ...seedRev });
+          modified = true;
+        } else if (data.reviews[existingIdx].technique !== seedRev.technique || data.reviews[existingIdx].comment !== seedRev.comment) {
+          data.reviews[existingIdx] = { ...data.reviews[existingIdx], ...seedRev };
           modified = true;
         }
       });
+      // Limpiar reviews seed antiguas que no estén en initialReviews
+      const currentSeedIds = new Set(initialReviews.map(r => r.id));
+      const filtered = data.reviews.filter(r => r.source !== 'seed' || currentSeedIds.has(r.id));
+      if (filtered.length !== data.reviews.length) {
+        data.reviews = filtered;
+        modified = true;
+      }
     }
 
     if (!data.settings) data.settings = {};
-    if (!data.settings.reviewsRewardConfig) {
+    if (!data.settings.reviewsRewardConfig || !data.settings.reviewsRewardConfig.socialRewardPercentUnder300) {
       data.settings.reviewsRewardConfig = {
         enabled: true,
         couponCode: 'RESEÑA5',
         discountPercent: 5,
+        socialCouponCode: 'FOTOREDES',
+        socialRewardPercentUnder300: 10,
+        socialRewardPercentOver300: 5,
         socialRewardPercent: 10,
-        socialCouponCode: 'FOTOREDES10',
-        socialNotice: 'Sube tu foto a redes o comenta en nuestra página de Facebook y mándanos captura por WhatsApp para recibir tu 10% de descuento.'
+        socialNotice: 'Sube una foto de tu pieza a redes o comenta en nuestro Facebook y mándanos la captura por WhatsApp para recibir 10% de descuento en pedidos de hasta $300 pesos o 5% en compras mayores a $300 pesos. Descuentos no acumulables.',
+        nonCumulativeNotice: 'Los cupones y promociones no son acumulables entre sí ni con descuentos de mayoreo.'
       };
       modified = true;
     }
@@ -18453,7 +18599,7 @@ class Database {
       modified = true;
     }
 
-    // Asegurar que el cupón de reseña y foto en redes existan en la base de cupones
+    // Asegurar que los cupones de reseña y foto en redes existan en la base de cupones
     if (!Array.isArray(data.coupons)) data.coupons = [];
     if (!data.coupons.some(c => c.code?.toUpperCase() === 'RESEÑA5' || c.code?.toUpperCase() === 'RESENA5')) {
       data.coupons.push({
@@ -18468,16 +18614,16 @@ class Database {
         usedCount: 0,
         expiresAt: '2026-12-31T23:59:59.000Z',
         active: true,
-        description: 'Cupón especial de agradecimiento por compartir tu opinión sobre Artesano Digital.'
+        description: 'Cupón de agradecimiento por compartir tu opinión sobre Artesano Digital (No acumulable).'
       });
       modified = true;
     }
 
-    if (!data.coupons.some(c => c.code?.toUpperCase() === 'FOTOREDES10')) {
+    if (!data.coupons.some(c => c.code?.toUpperCase() === 'FOTOREDES')) {
       data.coupons.push({
         id: 'cup-store-foto-redes',
-        code: 'FOTOREDES10',
-        name: '10% de Descuento por Foto en Redes',
+        code: 'FOTOREDES',
+        name: 'Premio por Foto en Redes Sociales',
         category: 'store',
         type: 'percent',
         value: 10,
@@ -18486,7 +18632,7 @@ class Database {
         usedCount: 0,
         expiresAt: '2026-12-31T23:59:59.000Z',
         active: true,
-        description: 'Descuento otorgado por compartir tu producto en redes sociales y enviar captura.'
+        description: 'Descuento por compartir foto en redes: 10% hasta $300 pesos o 5% mayores a $300 pesos (No acumulable).'
       });
       modified = true;
     }
@@ -18512,9 +18658,57 @@ class Database {
 
     if (filters.productId && filters.productId !== 'all') {
       const targetId = String(filters.productId).toLowerCase().trim();
-      const productReviews = list.filter(r => String(r.productId || '').toLowerCase() === targetId);
-      const generalPool = list.filter(r => !r.productId || r.productId === 'general');
 
+      // Buscar el producto en el catálogo para conocer su técnica real
+      const catalogProducts = Array.isArray(data.products) ? data.products : [];
+      const currentProduct = catalogProducts.find(p =>
+        String(p.id || '').toLowerCase() === targetId ||
+        String(p.code || '').toLowerCase() === targetId ||
+        String(p.sku || '').toLowerCase() === targetId
+      );
+
+      // Detección rigurosa de la técnica del producto
+      const getProductTech = (p) => {
+        if (!p) return 'general';
+        const name = (p.name || '').toLowerCase();
+        const techs = (p.techniques || []).map(t => String(t).toLowerCase());
+
+        if (techs.some(t => t.includes('vinil') || t.includes('vinyl')) || name.includes('tote') || name.includes('playera') || name.includes('mandil') || name.includes('gorra') || name.includes('bolsa')) {
+          return 'vinyl';
+        }
+        if (techs.some(t => t.includes('sublima')) || name.includes('taza') || name.includes('termo') || name.includes('tarro') || name.includes('cilindro')) {
+          return 'sublimation';
+        }
+        if (techs.some(t => t.includes('nfc')) || name.includes('nfc') || name.includes('chapita') || name.includes('inteligente')) {
+          return 'nfc';
+        }
+        if (techs.some(t => t.includes('laser')) || name.includes('madera') || name.includes('acr') || name.includes('letrero') || name.includes('caja')) {
+          return 'laser';
+        }
+        if (techs.some(t => t.includes('3d')) || name.includes('3d') || name.includes('figura') || name.includes('soporte') || name.includes('organizador') || name.includes('funko')) {
+          return '3d';
+        }
+        return techs[0] || 'general';
+      };
+
+      const productTech = getProductTech(currentProduct);
+
+      // 1. Reseñas asociadas directamente a este producto
+      const directReviews = list.filter(r => String(r.productId || '').toLowerCase() === targetId);
+
+      // 2. Reseñas estrictamente congruentes con la técnica del producto
+      const techniqueReviews = list.filter(r => {
+        if (directReviews.some(dr => dr.id === r.id)) return false;
+        return r.technique === productTech;
+      });
+
+      // 3. Reseñas neutrales de servicio (solo atención / envío, sin materiales)
+      const serviceReviews = list.filter(r => {
+        if (directReviews.some(dr => dr.id === r.id)) return false;
+        return r.technique === 'service';
+      });
+
+      // Hash determinista para dar variedad consistente y aleatoriedad por producto
       let hash = 0;
       for (let i = 0; i < targetId.length; i++) {
         hash = (hash << 5) - hash + targetId.charCodeAt(i);
@@ -18523,16 +18717,20 @@ class Database {
       const posHash = Math.abs(hash);
       const maxCount = 2 + (posHash % 2); // 2 o 3 opiniones por producto
 
-      const selectedGenerals = [];
-      const needed = Math.max(0, maxCount - productReviews.length);
-      for (let i = 0; i < needed && generalPool.length > 0; i++) {
-        const idx = (posHash + i * 3) % generalPool.length;
-        if (!selectedGenerals.includes(generalPool[idx])) {
-          selectedGenerals.push(generalPool[idx]);
+      // Construcción del conjunto congruente (técnica primero, luego servicio si se necesita)
+      const candidatePool = [...techniqueReviews, ...serviceReviews];
+      const selectedPool = [];
+      const needed = Math.max(0, maxCount - directReviews.length);
+
+      for (let i = 0; i < needed && candidatePool.length > 0; i++) {
+        const idx = (posHash + i * 2) % candidatePool.length;
+        const candidate = candidatePool[idx];
+        if (!selectedPool.some(sp => sp.id === candidate.id)) {
+          selectedPool.push(candidate);
         }
       }
 
-      list = [...productReviews, ...selectedGenerals].slice(0, maxCount);
+      list = [...directReviews, ...selectedPool].slice(0, maxCount);
     } else {
       // Ordenar de más reciente a más antigua para admin o listado general
       list.sort((a, b) => new Date(b.date || b.createdAt || 0) - new Date(a.date || a.createdAt || 0));

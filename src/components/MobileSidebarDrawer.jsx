@@ -193,9 +193,9 @@ export default function MobileSidebarDrawer({
                 <div>
                   <div className="text-xs font-bold text-gray-900 flex items-center gap-1.5">
                     <span>Facebook Oficial</span>
-                    <span className="text-[9px] bg-blue-100 text-blue-800 font-bold px-1.5 py-0.2 rounded-full">10% OFF</span>
+                    <span className="text-[9px] bg-blue-100 text-blue-800 font-bold px-1.5 py-0.2 rounded-full">5% a 10% OFF</span>
                   </div>
-                  <div className="text-[10px] text-gray-500">Sube foto de tu pieza o comenta por descuento</div>
+                  <div className="text-[10px] text-gray-500">10% hasta $300 o 5% mayores · No acumulable</div>
                 </div>
               </div>
               <ExternalLink className="w-3.5 h-3.5 text-blue-500 group-hover:translate-x-0.5 transition-transform" />

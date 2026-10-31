@@ -375,7 +375,7 @@ export default function Navbar({
               className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-[#1877F2]/10 hover:bg-[#1877F2]/20 border border-[#1877F2]/20 text-[#1877F2] font-bold text-xs shadow-2xs cursor-pointer"
             >
               <ExternalLink className="w-3.5 h-3.5" />
-              <span>Facebook Oficial (10% OFF en foto)</span>
+              <span>Facebook Oficial (Hasta 10% en foto · No acumulable)</span>
             </a>
 
             {settings?.mobileCatalogConfig?.enabled !== false && (

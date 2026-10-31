@@ -27,6 +27,12 @@ export const DEFAULT_COUPONS = [
   { code: 'AMOR15', category: 'store', type: 'percent', value: 15, label: '15% Gran Bazar del Amor', minPurchase: 0 },
   { code: 'MAMA15', category: 'store', type: 'percent', value: 15, label: '15% Especial Día de las Madres', minPurchase: 0 },
 
+  // Cupones de Reseñas y Redes Sociales
+  { code: 'RESEÑA5', category: 'store', type: 'percent', value: 5, label: '5% por Dejar Reseña en Tienda', minPurchase: 0 },
+  { code: 'FOTOREDES', category: 'store', type: 'percent', value: 10, label: 'Premio Foto en Redes (No acumulable)', minPurchase: 0 },
+  { code: 'FOTOREDES10', category: 'store', type: 'percent', value: 10, label: 'Premio Foto en Redes (No acumulable)', minPurchase: 0 },
+  { code: 'FOTOREDES5', category: 'store', type: 'percent', value: 5, label: '5% por Foto en Redes (No acumulable)', minPurchase: 0 },
+
   // Cupones de Oferta Relámpago Especial (Fines de Semana & Liquidaciones)
   { code: 'FLASHFINDE15', category: 'store', type: 'percent', value: 15, label: '15% Especial Oferta Relámpago de Fin de Semana', minPurchase: 0 },
   { code: 'FLASHFINDE', category: 'store', type: 'percent', value: 15, label: '15% Venta Flash de Fin de Semana', minPurchase: 0 },
@@ -236,7 +242,13 @@ export function calculateCouponDiscount(coupon, subtotal = 0) {
   }
 
   let discountAmount = 0;
-  if (coupon.type === 'percent') {
+  const cleanCode = (coupon.code || '').toUpperCase();
+  // Regla comercial de taller: Foto en redes otorga 10% hasta $300 MXN y 5% arriba de $300 MXN
+  if (cleanCode.startsWith('FOTOREDES')) {
+    const percent = subtotal <= 300 ? 10 : 5;
+    discountAmount = Math.round((subtotal * percent) / 100);
+    coupon.label = `${percent}% por Foto en Redes (No acumulable)`;
+  } else if (coupon.type === 'percent') {
     const percent = Math.min(15, coupon.value || coupon.discountPercent || 0);
     discountAmount = Math.round((subtotal * percent) / 100);
   } else if (coupon.type === 'fixed') {

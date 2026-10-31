@@ -2016,14 +2016,17 @@ export default function ProductDetailModal({
                     </div>
                     <div className="min-w-0 flex-1">
                       <span className="text-[10px] font-black uppercase tracking-wider text-blue-900">
-                        📸 Premio por Foto en Redes Sociales
+                        📸 Premio por Foto o Reseña en Redes
                       </span>
                       <h4 className="text-xs sm:text-sm font-bold text-stone-900 mt-0.5">
                         ¿Subiste tu foto a redes o comentaste en nuestra página de Facebook?
                       </h4>
                       <p className="text-xs text-stone-600 mt-1 leading-relaxed">
-                        {settings?.reviewsRewardConfig?.socialNotice || 'Sube una foto de tu producto a redes sociales o comenta en nuestro Facebook y mándanos la captura por WhatsApp para recibir un descuento especial en tu próximo pedido.'}
+                        {settings?.reviewsRewardConfig?.socialNotice || 'Sube una foto de tu producto a redes sociales o comenta en nuestro Facebook y mándanos la captura por WhatsApp: recibe 10% de descuento en pedidos de hasta $300 pesos o 5% en compras mayores a $300 pesos.'}
                       </p>
+                      <div className="text-[10px] text-stone-500 font-medium mt-1">
+                        * {settings?.reviewsRewardConfig?.nonCumulativeNotice || 'Cupones no acumulables entre sí ni con descuentos de mayoreo o promociones activas.'}
+                      </div>
                     </div>
                   </div>
 
@@ -2039,7 +2042,7 @@ export default function ProductDetailModal({
                     </a>
 
                     <a
-                      href={`https://wa.me/${settings?.whatsappNumber || '524442818795'}?text=${encodeURIComponent(`Hola Artesano Digital, aquí tengo la captura de mi reseña/foto en redes para mi descuento especial en mi siguiente pedido: 📸`)}`}
+                      href={`https://wa.me/${settings?.whatsappNumber || '524442818795'}?text=${encodeURIComponent(`Hola Artesano Digital, aquí tengo la captura de mi reseña/foto en redes para mi descuento especial (10% hasta $300 o 5% mayores) en mi siguiente pedido: 📸`)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#25D366] text-white text-xs font-bold hover:bg-[#1EBE5D] shadow-2xs transition-all cursor-pointer"
