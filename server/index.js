@@ -759,6 +759,9 @@ app.post('/api/orders', (req, res) => {
       subtotal: Number(subtotal) || Number(amount) || 0,
       couponCode: couponCode || null,
       couponDiscount: Number(discountAmount) || 0,
+      taxMode: req.body.taxMode || 'included',
+      paymentPreference: req.body.paymentPreference || 'anticipo_50',
+      taxData: req.body.taxData || null,
       notes: notes || '',
       status: 'pending_whatsapp',
       channel: 'web',
@@ -1634,24 +1637,37 @@ app.put('/api/admin/orders/:id', requireAdmin, (req, res) => {
       req.body.consumeStock !== false
     );
 
-    if (shouldDeduct && !updated.materialsDeducted && updated.productId) {
-      const deductionRes = db.deductRecipeMaterials(updated.productId, updated.quantity || 1, {
-        orderId: updated.id,
-        orderNumber: updated.orderNumber,
-        productName: updated.productName,
-        reason: `Fabricación de pedido #${updated.orderNumber}`
-      });
-      if (!deductionRes.success) {
-        // No se avanza el pedido si no se pudo descontar el almacén: evita fabricar sin control de insumos
-        db.updateOrder(updated.id, { status: currentOrder.status });
-        return res.status(409).json({ error: deductionRes.error || 'No se pudo descontar el almacén. El pedido no pasó a producción.' });
+    if (shouldDeduct && !updated.materialsDeducted) {
+      const itemsToDeduct = Array.isArray(updated.items) && updated.items.length > 0
+        ? updated.items
+        : (updated.productId && updated.productId !== 'personalizado' ? [{ id: updated.productId, quantity: updated.quantity || 1, name: updated.productName }] : []);
+
+      let hasDeductions = false;
+      for (const it of itemsToDeduct) {
+        const pId = it.id || it.productId || it.code;
+        if (!pId || pId === 'personalizado') continue;
+        const res = db.deductRecipeMaterials(pId, it.quantity || 1, {
+          orderId: updated.id,
+          orderNumber: updated.orderNumber,
+          productName: it.name || updated.productName,
+          reason: `Fabricación de pedido #${updated.orderNumber} (${it.name || pId})`
+        });
+        if (res.success) {
+          hasDeductions = true;
+        } else if (res.error && !res.error.includes('no tiene una receta')) {
+          db.updateOrder(updated.id, { status: currentOrder.status });
+          return res.status(409).json({ error: `${res.error} en producto "${it.name || pId}". El pedido no pasó a producción.` });
+        }
       }
-      db.updateOrder(updated.id, {
-        materialsDeducted: true,
-        materialsDeductedAt: new Date().toISOString()
-      });
-      updated.materialsDeducted = true;
-      updated.materialsDeductedAt = new Date().toISOString();
+
+      if (hasDeductions || itemsToDeduct.length > 0) {
+        db.updateOrder(updated.id, {
+          materialsDeducted: true,
+          materialsDeductedAt: new Date().toISOString()
+        });
+        updated.materialsDeducted = true;
+        updated.materialsDeductedAt = new Date().toISOString();
+      }
     } else if (req.body.revertStock === true || (req.body.status === 'cancelado' && currentOrder?.materialsDeducted)) {
       db.revertRecipeDeduction(updated.id);
       db.updateOrder(updated.id, {

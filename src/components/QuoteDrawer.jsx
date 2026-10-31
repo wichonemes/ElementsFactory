@@ -33,6 +33,12 @@ export default function QuoteDrawer({
   const [deliveryNotes, setDeliveryNotes] = useState('');
   const [quoteNotes, setQuoteNotes] = useState('');
   const [taxMode, setTaxMode] = useState('included');
+  const [paymentPreference, setPaymentPreference] = useState('anticipo_50'); // 'anticipo_50' | 'pago_100'
+  const [rfc, setRfc] = useState('');
+  const [razonSocial, setRazonSocial] = useState('');
+  const [codigoPostalFiscal, setCodigoPostalFiscal] = useState('');
+  const [regimenFiscal, setRegimenFiscal] = useState('612 - Personas Físicas con Actividades Empresariales');
+  const [usoCfdi, setUsoCfdi] = useState('G03 - Gastos en general');
   const [quoteFolio, setQuoteFolio] = useState(() => buildQuoteFolio());
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const [pdfError, setPdfError] = useState('');
@@ -172,17 +178,26 @@ export default function QuoteDrawer({
     .filter(t => t.minQty > 0 && t.percent > 0)
     .sort((a, b) => a.minQty - b.minQty);
 
-  // Cantidad total de piezas en el carrito
-  const totalItemCount = items.reduce((sum, item) => sum + (Number(item.quantity) || 1), 0);
+  // Regla financiera: El mayoreo aplica a productos físicos estándar de taller.
+  // Se excluyen servicios de eventos presenciales (EV-PATCHBAR o categoría servicios) y piezas con Oferta Flash.
+  const eligibleWholesaleItems = items.filter(item => {
+    const p = item.product || {};
+    const isLiveService = p.code === 'EV-PATCHBAR' || p.categories?.includes('servicios') || p.worlds?.includes('servicios');
+    const isFlashActive = !!p.flashDealApplied;
+    return !isLiveService && !isFlashActive;
+  });
 
-  // Calcular tier de mayoreo activo y siguiente nivel motivador
+  const wholesaleItemCount = eligibleWholesaleItems.reduce((sum, item) => sum + (Number(item.quantity) || 1), 0);
+  const wholesaleEligibleSubtotal = eligibleWholesaleItems.reduce((sum, item) => sum + ((Number(item.product?.price) || 0) * item.quantity), 0);
+
+  // Calcular tier de mayoreo activo basado en piezas de productos físicos de taller
   let activeTier = null;
   let nextTier = null;
   if (isWholesaleEnabled) {
     for (const tier of wholesaleTiers) {
-      if (totalItemCount >= tier.minQty) {
+      if (wholesaleItemCount >= tier.minQty) {
         activeTier = tier;
-      } else if (!nextTier && totalItemCount < tier.minQty) {
+      } else if (!nextTier && wholesaleItemCount < tier.minQty) {
         nextTier = tier;
       }
     }
@@ -190,7 +205,7 @@ export default function QuoteDrawer({
 
   const isBulkEligible = Boolean(activeTier && activeTier.percent > 0);
   const bulkDiscountRate = isBulkEligible ? (activeTier.percent / 100) : 0;
-  const bulkDiscountAmount = isBulkEligible ? Math.round(subtotal * bulkDiscountRate) : 0;
+  const bulkDiscountAmount = isBulkEligible ? Math.round(wholesaleEligibleSubtotal * bulkDiscountRate) : 0;
 
   // Validar cupón activo contra la lista de cupones
   const activeCouponObj = appliedCouponCode ? findCoupon(appliedCouponCode, combinedCustomCoupons) : null;
@@ -375,12 +390,18 @@ export default function QuoteDrawer({
     if (activeDiscountSource === 'wholesale') {
       msg += `*DESCUENTO MAYOREO (${activeTier?.minQty || 12}+ pzas):* -${formatQuoteMoney(bulkDiscountAmount)} MXN (${activeTier?.percent || 5}% OFF de taller)\n`;
     } else if (activeDiscountSource === 'coupon' && rawCouponDiscount > 0) {
-      const categoryLabel = activeCouponObj ? getCouponCategoryLabel(activeCouponObj) : 'Código Especial de Tienda';
-      const benefitLabel = activeCouponObj?.label || activeCouponObj?.name || 'Descuento especial';
-      msg += `*CUPÓN APLICADO:* ${appliedCouponCode}\n`;
-      msg += `   • *Tipo:* ${categoryLabel}\n`;
-      msg += `   • *Beneficio:* ${benefitLabel}\n`;
-      msg += `   • *Ahorro otorgado:* -${formatQuoteMoney(rawCouponDiscount)} MXN\n`;
+      if (appliedCouponCode === 'ENVIOGRATIS') {
+        msg += `*CUPÓN APLICADO:* ENVIOGRATIS\n`;
+        msg += `   • *Beneficio:* Subsidio directo de $150 MXN aplicado a guía de paquetería asegurada\n`;
+        msg += `   • *Ahorro otorgado:* -$150.00 MXN\n`;
+      } else {
+        const categoryLabel = activeCouponObj ? getCouponCategoryLabel(activeCouponObj) : 'Código Especial de Tienda';
+        const benefitLabel = activeCouponObj?.label || activeCouponObj?.name || 'Descuento especial';
+        msg += `*CUPÓN APLICADO:* ${appliedCouponCode}\n`;
+        msg += `   • *Tipo:* ${categoryLabel}\n`;
+        msg += `   • *Beneficio:* ${benefitLabel}\n`;
+        msg += `   • *Ahorro otorgado:* -${formatQuoteMoney(rawCouponDiscount)} MXN\n`;
+      }
       msg += `*Subtotal con descuento:* ${formatQuoteMoney(baseSubtotal)} MXN\n`;
     }
     if (bothDiscountsPresent) {
@@ -389,8 +410,22 @@ export default function QuoteDrawer({
 
     msg += `*${taxMode === 'included' ? 'IVA 16% incluido' : 'IVA 16%'}:* ${formatQuoteMoney(ivaAmount)} MXN\n`;
     msg += `*TOTAL:* ${formatQuoteMoney(billableTotal)} MXN\n`;
-    msg += `*Anticipo 50%:* ${formatQuoteMoney(advanceAmount)} MXN\n`;
-    msg += `*Saldo al entregar:* ${formatQuoteMoney(billableTotal - advanceAmount)} MXN\n`;
+
+    if (paymentPreference === 'pago_100') {
+      msg += `*Modalidad de pago:* Liquidación 100% inmediata (${formatQuoteMoney(billableTotal)} MXN) para despacho exprés\n`;
+    } else {
+      msg += `*Anticipo 50%:* ${formatQuoteMoney(advanceAmount)} MXN\n`;
+      msg += `*Saldo al entregar:* ${formatQuoteMoney(billableTotal - advanceAmount)} MXN\n`;
+    }
+
+    if (taxMode === 'added') {
+      msg += `\n*DATOS FISCALES PARA FACTURACIÓN (CFDI 4.0):*\n`;
+      if (rfc.trim()) msg += `  • *RFC:* ${rfc.trim().toUpperCase()}\n`;
+      if (razonSocial.trim()) msg += `  • *Razón Social:* ${razonSocial.trim()}\n`;
+      if (codigoPostalFiscal.trim()) msg += `  • *C.P. Fiscal:* ${codigoPostalFiscal.trim()}\n`;
+      msg += `  • *Régimen:* ${regimenFiscal}\n`;
+      msg += `  • *Uso CFDI:* ${usoCfdi}\n`;
+    }
 
     if (hasPendingQuotes) {
       msg += `*(Piezas sin precio fijo se confirmarán en este chat)*\n`;
@@ -438,6 +473,15 @@ export default function QuoteDrawer({
         subtotal: regularTotal,
         discountAmount,
         couponCode: appliedCouponCode || null,
+        taxMode,
+        paymentPreference,
+        taxData: taxMode === 'added' ? {
+          rfc: rfc.trim().toUpperCase(),
+          razonSocial: razonSocial.trim(),
+          codigoPostalFiscal: codigoPostalFiscal.trim(),
+          regimenFiscal,
+          usoCfdi
+        } : null,
         notes: (quoteNotes || '') + (deliveryNotes ? ` | ${deliveryNotes}` : ''),
         source: checkoutMode === 'direct' ? 'web_direct' : 'web_quote'
       };
@@ -1212,8 +1256,83 @@ export default function QuoteDrawer({
                   <p className="text-[9.5px] text-gray-500 mt-1 leading-snug">
                     {taxMode === 'included'
                       ? `El total de ${formatQuoteMoney(billableTotal)} ya incluye ${formatQuoteMoney(ivaAmount)} de IVA.`
-                      : `Se agregarán ${formatQuoteMoney(ivaAmount)} de IVA al subtotal.`}
+                      : `Se agregarán ${formatQuoteMoney(ivaAmount)} de IVA al subtotal para emisión de factura.`}
                   </p>
+
+                  {taxMode === 'added' && (
+                    <div className="mt-2.5 p-3 rounded-2xl bg-stone-50 border border-stone-200 space-y-2 animate-in fade-in">
+                      <div className="text-[11px] font-bold text-stone-800 flex items-center gap-1.5">
+                        <span>📄 Datos de Facturación (CFDI 4.0):</span>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <div>
+                          <label className="text-[10px] font-semibold text-gray-600 block mb-0.5">RFC:</label>
+                          <input
+                            type="text"
+                            placeholder="XAXX010101000"
+                            value={rfc}
+                            onChange={e => setRfc(e.target.value.toUpperCase())}
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 focus:border-[#2D4F3E] focus:outline-none bg-white text-xs uppercase font-mono"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[10px] font-semibold text-gray-600 block mb-0.5">C.P. Fiscal:</label>
+                          <input
+                            type="text"
+                            placeholder="78000"
+                            value={codigoPostalFiscal}
+                            onChange={e => setCodigoPostalFiscal(e.target.value)}
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 focus:border-[#2D4F3E] focus:outline-none bg-white text-xs font-mono"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-[10px] font-semibold text-gray-600 block mb-0.5">Razón Social o Nombre Fiscal:</label>
+                        <input
+                          type="text"
+                          placeholder="Empresa o Nombre Completo (sin S.A. de C.V.)"
+                          value={razonSocial}
+                          onChange={e => setRazonSocial(e.target.value)}
+                          className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 focus:border-[#2D4F3E] focus:outline-none bg-white text-xs"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="mt-3">
+                    <div className="text-[11px] font-semibold text-gray-600 mb-1">
+                      Modalidad de Pago para Taller:
+                    </div>
+                    <div className="grid grid-cols-2 p-1 bg-gray-100 rounded-xl gap-1">
+                      <button
+                        type="button"
+                        onClick={() => setPaymentPreference('anticipo_50')}
+                        className={`py-1.5 px-2 rounded-lg text-[10.5px] font-bold transition-all cursor-pointer ${
+                          paymentPreference === 'anticipo_50'
+                            ? 'bg-white text-[#2D4F3E] shadow-xs'
+                            : 'text-gray-500 hover:text-gray-800'
+                        }`}
+                      >
+                        Anticipo 50%
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setPaymentPreference('pago_100')}
+                        className={`py-1.5 px-2 rounded-lg text-[10.5px] font-bold transition-all cursor-pointer ${
+                          paymentPreference === 'pago_100'
+                            ? 'bg-white text-[#2D4F3E] shadow-xs'
+                            : 'text-gray-500 hover:text-gray-800'
+                        }`}
+                      >
+                        Liquidación 100%
+                      </button>
+                    </div>
+                    <p className="text-[9.5px] text-gray-500 mt-1 leading-snug">
+                      {paymentPreference === 'pago_100'
+                        ? `Pagas el 100% (${formatQuoteMoney(billableTotal)} MXN) al confirmar para agilizar el despacho exprés por paquetería.`
+                        : `Inicias producción con el 50% (${formatQuoteMoney(advanceAmount)} MXN) y liquidas el resto al entregar.`}
+                    </p>
+                  </div>
                 </div>
 
                 <div>
@@ -1289,10 +1408,17 @@ export default function QuoteDrawer({
                 <span className="text-lg font-black text-[#2D4F3E]">{formatQuoteMoney(billableTotal)} MXN</span>
               </div>
 
-              <div className="flex items-center justify-between text-[11px] text-[#8A6A2F] font-bold">
-                <span>Anticipo 50% para iniciar:</span>
-                <span>{formatQuoteMoney(advanceAmount)} MXN</span>
-              </div>
+              {paymentPreference === 'pago_100' ? (
+                <div className="flex items-center justify-between text-[11px] text-emerald-800 font-bold bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200/60">
+                  <span>Liquidación 100% (Envío exprés):</span>
+                  <span>{formatQuoteMoney(billableTotal)} MXN</span>
+                </div>
+              ) : (
+                <div className="flex items-center justify-between text-[11px] text-[#8A6A2F] font-bold">
+                  <span>Anticipo 50% para iniciar:</span>
+                  <span>{formatQuoteMoney(advanceAmount)} MXN</span>
+                </div>
+              )}
 
               <div className="text-[10px] text-gray-400">
                 * Folio {quoteFolio}. Confirmas dirección exacta y método de pago por WhatsApp.
