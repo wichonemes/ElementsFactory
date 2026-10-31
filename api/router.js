@@ -15,11 +15,13 @@ function ensureCatalog() {
             db.dedupeProductSkus();
             db.applyPriceReview2026();
             db.applyPriceCorrection2026();
+            db.ensureReviews();
           }, () => true, { lock: true });
         } else {
           db.dedupeProductSkus();
           db.applyPriceReview2026();
           db.applyPriceCorrection2026();
+          db.ensureReviews();
         }
       } catch (err) {
         console.error('[CATALOG] No se pudo sincronizar el catálogo:', err.message);

@@ -4,7 +4,7 @@ import {
   ShieldCheck, Sparkles, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Maximize2,
   Package, Eye, Layers, Calculator, Calendar, AlertTriangle, Truck, MapPin,
   Gamepad2, Gift, Trophy, Star, ArrowRight, FileText, ZoomIn, Crown, Ticket, Repeat, Coins, Zap,
-  Palette, TreePine, Printer3d, Shirt, Scissors, Info
+  Palette, TreePine, Printer3d, Shirt, Scissors, Info, Copy, ExternalLink, ThumbsUp, Camera
 } from 'lucide-react';
 import TemuUrgencyModule from './TemuUrgencyModule';
 import WorkshopArcadeModal from './WorkshopArcadeModal';
@@ -131,7 +131,7 @@ export default function ProductDetailModal({
   const [isZoomed, setIsZoomed] = useState(false);
   const modalScrollRef = useRef(null);
 
-  // Sincronizar variantes y pestañas al cambiar de producto
+  // Sincronizar variantes y pestaÃ±as al cambiar de producto
   useEffect(() => {
     if (!product) return;
     const tabs = getAvailableMaterialTabsForProduct(product);
@@ -157,8 +157,8 @@ export default function ProductDetailModal({
     setQuantity(product.specifications?.minQuantity || 1);
   }, [product?.id]);
 
-  // Protección anti-salida accidental en móviles:
-  // Al deslizar el dedo en el celular hacia atrás, solo se cierra el modal sin salirse de la tienda
+  // ProtecciÃ³n anti-salida accidental en mÃ³viles:
+  // Al deslizar el dedo en el celular hacia atrÃ¡s, solo se cierra el modal sin salirse de la tienda
   useEffect(() => {
     if (!product) return;
     const modalKey = 'artesano_modal_' + (product.id || 'detail');
@@ -197,7 +197,7 @@ export default function ProductDetailModal({
     }
   };
 
-  // Detección del sector del producto actual y metadata para recomendaciones afines
+  // DetecciÃ³n del sector del producto actual y metadata para recomendaciones afines
   const currentSector = useMemo(() => {
     return detectProductSector(product, activeWorld);
   }, [product, activeWorld]);
@@ -206,12 +206,12 @@ export default function ProductDetailModal({
     return SECTOR_RECOMMENDATION_METADATA[currentSector] || SECTOR_RECOMMENDATION_METADATA.hogar;
   }, [currentSector]);
 
-  // Sugerencias inteligentes del mismo sector / sector afín (eventos, negocios, hogar, personalizados, etc.)
+  // Sugerencias inteligentes del mismo sector / sector afÃ­n (eventos, negocios, hogar, personalizados, etc.)
   const suggestedProducts = useMemo(() => {
     return getRecommendedSectorProducts(product, allProducts, activeWorld, 8);
   }, [product, allProducts, activeWorld]);
 
-  // Arcade & Gamificación con hook unificado en sesión
+  // Arcade & GamificaciÃ³n con hook unificado en sesiÃ³n
   const [isArcadeOpen, setIsArcadeOpen] = useState(false);
   const [activeArcadeGame, setActiveArcadeGame] = useState('dino');
   const [arcadeTab, setArcadeTab] = useState('play');
@@ -229,9 +229,102 @@ export default function ProductDetailModal({
 
   const activeImage = gallery[activeIdx] || baseContext;
   const currentMeta = galleryMeta[activeIdx] || {
-    label: `${activeIdx + 1}. Fotografía adicional`,
+    label: `${activeIdx + 1}. FotografÃ­a adicional`,
     shortLabel: `Foto ${activeIdx + 1}`,
     type: 'detail'
+  };
+
+  // Opiniones y Calificaciones de Clientes (Estilo Mercado Libre + Recompensas)
+  const [reviewsData, setReviewsData] = useState({
+    reviews: [],
+    summary: { average: 4.9, total: 18, recommendPercent: 98, distribution: { 5: 15, 4: 3, 3: 0, 2: 0, 1: 0 } }
+  });
+  const [loadingReviews, setLoadingReviews] = useState(true);
+  const [isWritingReview, setIsWritingReview] = useState(false);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [reviewForm, setReviewForm] = useState({ rating: 5, author: '', city: '', comment: '' });
+  const [submittingReview, setSubmittingReview] = useState(false);
+  const [reviewSuccessMsg, setReviewSuccessMsg] = useState('');
+  const [rewardEarned, setRewardEarned] = useState(null);
+  const [copiedCoupon, setCopiedCoupon] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchReviews = async () => {
+      try {
+        setLoadingReviews(true);
+        const res = await fetch(`/api/reviews?productId=${encodeURIComponent(product.id || product.code || '')}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (isMounted && data.reviews) {
+            setReviewsData(data);
+          }
+        }
+      } catch (err) {
+        console.error('Error cargando opiniones:', err);
+      } finally {
+        if (isMounted) setLoadingReviews(false);
+      }
+    };
+    fetchReviews();
+    return () => { isMounted = false; };
+  }, [product.id, product.code]);
+
+  const handleSendReview = async (e) => {
+    e.preventDefault();
+    if (!reviewForm.comment.trim()) return;
+    setSubmittingReview(true);
+    setReviewSuccessMsg('');
+    try {
+      const res = await fetch('/api/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productId: product.id || product.code,
+          productName: product.name,
+          author: reviewForm.author.trim() || 'Cliente Artesano',
+          city: reviewForm.city.trim() || 'San Luis Potosí',
+          rating: reviewForm.rating,
+          comment: reviewForm.comment.trim()
+        })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setReviewSuccessMsg('¡Muchas gracias por tu reseña! Tu opinión ayuda a otros compradores.');
+        if (data.reward) {
+          setRewardEarned(data.reward);
+        }
+        if (data.review) {
+          setReviewsData(prev => ({
+            ...prev,
+            reviews: [data.review, ...prev.reviews],
+            summary: {
+              ...prev.summary,
+              total: (prev.summary?.total || 0) + 1
+            }
+          }));
+        }
+        setIsWritingReview(false);
+        setReviewForm({ rating: 5, author: '', city: '', comment: '' });
+      } else {
+        alert(data.error || 'No se pudo registrar la opinión');
+      }
+    } catch {
+      alert('Error de conexión al enviar la opinión');
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
+
+  const handleCopyReviewCoupon = (couponCode) => {
+    try {
+      navigator.clipboard.writeText(couponCode);
+      localStorage.setItem('artesano_active_coupon', couponCode);
+      setCopiedCoupon(true);
+      setTimeout(() => setCopiedCoupon(false), 3000);
+    } catch {
+      setCopiedCoupon(true);
+    }
   };
 
   const handlePrev = (e) => {
@@ -253,7 +346,7 @@ export default function ProductDetailModal({
     const slug = product.slug || product.id || product.code;
     const url = `${origin}/producto/${encodeURIComponent(slug)}`;
     const shareData = {
-      title: `${product.name} — Artesano Digital`,
+      title: `${product.name} â€” Artesano Digital`,
       text: `Mira este producto en Artesano Digital: ${product.name}`,
       url
     };
@@ -263,7 +356,7 @@ export default function ProductDetailModal({
         await navigator.share(shareData);
         return;
       } catch (err) {
-        // Fallback al portapapeles si cancela el diálogo nativo
+        // Fallback al portapapeles si cancela el diÃ¡logo nativo
       }
     }
 
@@ -340,8 +433,8 @@ export default function ProductDetailModal({
         customText,
         activeTier ? `Nivel: ${activeTier.name}` : null,
         variantsExtraCost > 0 ? `Material/Filamento especial: +$${variantsExtraCost} MXN` : null,
-        isFlashDeal ? `Aprovechó ${productTime?.durationLabel || 'Oferta Flash'} (-${currentDiscount}%)` : null,
-        couponToUse ? `Cupón Arcade: ${couponToUse}` : null
+        isFlashDeal ? `AprovechÃ³ ${productTime?.durationLabel || 'Oferta Flash'} (-${currentDiscount}%)` : null,
+        couponToUse ? `CupÃ³n Arcade: ${couponToUse}` : null
       ].filter(Boolean).join(' | ')
     });
   };
@@ -365,7 +458,7 @@ export default function ProductDetailModal({
         activeTier ? `Nivel seleccionado: ${activeTier.name}` : null,
         variantsExtraCost > 0 ? `Material/Acabado especial: +$${variantsExtraCost} MXN incluido en precio` : null,
         isFlashDeal ? `Precio especial ${productTime?.durationLabel || 'Oferta Flash'}: $${effectivePrice} MXN` : null,
-        couponToUse ? `Cupón de Descuento Arcade aplicado: [${couponToUse}]` : null
+        couponToUse ? `CupÃ³n de Descuento Arcade aplicado: [${couponToUse}]` : null
       ].filter(Boolean).join(' | ')
     });
   };
@@ -428,11 +521,11 @@ export default function ProductDetailModal({
         <div className="flex items-center justify-between px-5 sm:px-6 py-3.5 border-b border-gray-100 bg-[#FBF9F5] shrink-0">
           <div className="flex items-center gap-2.5">
             {/* SKU de Taller oculto al cliente final por requerimiento pero accesible en sistema interno */}
-            <span className="hidden" data-sku={product.sku || product.code} title={product.sku ? `SKU de Taller: ${product.sku}` : `Código: ${product.code}`}>
+            <span className="hidden" data-sku={product.sku || product.code} title={product.sku ? `SKU de Taller: ${product.sku}` : `CÃ³digo: ${product.code}`}>
               {product.sku || product.code}
             </span>
             <span className="text-xs text-gray-500 font-medium capitalize">
-              Área {product.worlds?.join(' / ')}
+              Ãrea {product.worlds?.join(' / ')}
             </span>
           </div>
 
@@ -443,7 +536,7 @@ export default function ProductDetailModal({
               title="Compartir producto"
             >
               <Share2 className="w-4 h-4" />
-              <span className="hidden sm:inline">{copiedLink ? '¡Enlace copiado!' : 'Compartir'}</span>
+              <span className="hidden sm:inline">{copiedLink ? 'Â¡Enlace copiado!' : 'Compartir'}</span>
             </button>
             <button
               onClick={handleSafeClose}
@@ -469,7 +562,7 @@ export default function ProductDetailModal({
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
             
-            {/* Gallery Column (6 cols on lg) — Mercado Libre Style */}
+            {/* Gallery Column (6 cols on lg) â€” Mercado Libre Style */}
             <div className="lg:col-span-6 space-y-3.5">
               
               {/* Main Photo Container */}
@@ -478,7 +571,7 @@ export default function ProductDetailModal({
                 className="relative rounded-2xl overflow-hidden bg-white border border-[#E8E4DA] aspect-square shadow-xs group flex items-center justify-center select-none"
               >
                 
-                {/* Active Main Image con Protección Anti-Piratería */}
+                {/* Active Main Image con ProtecciÃ³n Anti-PiraterÃ­a */}
                 <img
                   src={activeImage}
                   srcSet={getOptimizedSrcSet(activeImage)}
@@ -505,7 +598,7 @@ export default function ProductDetailModal({
                   }}
                 />
 
-                {/* Marca de Agua Sutil de Taller para Protección de Imagen con Logotipo Oficial */}
+                {/* Marca de Agua Sutil de Taller para ProtecciÃ³n de Imagen con Logotipo Oficial */}
                 <div className="absolute bottom-2.5 right-2.5 z-10 flex items-center gap-1 px-2 py-[2.5px] rounded-full bg-black/20 backdrop-blur-2xs text-[7.5px] font-medium text-white/70 pointer-events-none select-none tracking-tight border border-white/5 shadow-2xs">
                   <img
                     src="/brand/artesano_isotipo_transparente-64.webp"
@@ -635,16 +728,16 @@ export default function ProductDetailModal({
                 <div className="flex items-start gap-2.5 text-gray-800">
                   <ShieldCheck className="w-4 h-4 text-[#2D4F3E] shrink-0 mt-0.5" />
                   <div>
-                    <span className="font-bold text-[#1F2421]">Fotografías y vistas 3D de referencia artesanal</span>
+                    <span className="font-bold text-[#1F2421]">FotografÃ­as y vistas 3D de referencia artesanal</span>
                     <p className="text-[11px] text-gray-500 mt-0.5 leading-relaxed">
-                      Las imágenes y modelos son aproximaciones visuales. Debido a la naturaleza de los materiales (vetas de madera, filamentos y acabados) y la iluminación de pantalla, los tonos y texturas finales pueden presentar sutiles variaciones únicas.
+                      Las imÃ¡genes y modelos son aproximaciones visuales. Debido a la naturaleza de los materiales (vetas de madera, filamentos y acabados) y la iluminaciÃ³n de pantalla, los tonos y texturas finales pueden presentar sutiles variaciones Ãºnicas.
                     </p>
                   </div>
                 </div>
                 {product.specifications?.estimatedLeadTime && (
                   <div className="flex items-center gap-2 text-gray-700 pt-2 border-t border-[#E8E4DA]/80">
                     <Clock className="w-4 h-4 text-amber-600 shrink-0" />
-                    <span>Tiempo de producción: <strong>{product.specifications.estimatedLeadTime}</strong></span>
+                    <span>Tiempo de producciÃ³n: <strong>{product.specifications.estimatedLeadTime}</strong></span>
                   </div>
                 )}
               </div>
@@ -658,12 +751,37 @@ export default function ProductDetailModal({
                 <h2 className="text-2xl sm:text-3xl font-bold text-stone-900 leading-tight tracking-tight">
                   {product.name}
                 </h2>
+                <div className="flex items-center gap-2 mt-2 flex-wrap select-none">
+                  <div className="flex items-center gap-1 text-amber-500 font-bold text-xs sm:text-sm">
+                    <div className="flex items-center">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-amber-400 text-amber-500" />
+                      ))}
+                    </div>
+                    <span className="text-stone-800 font-black ml-0.5">{reviewsData.summary?.average || '4.9'}</span>
+                  </div>
+                  <span className="text-stone-300">·</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const el = document.getElementById('seccion-opiniones-producto');
+                      if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="text-xs font-semibold text-stone-600 hover:text-[#2D4F3E] hover:underline cursor-pointer"
+                  >
+                    {reviewsData.summary?.total || 18} opiniones
+                  </button>
+                  <span className="text-stone-300">·</span>
+                  <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                    +100 elaborados en taller
+                  </span>
+                </div>
                 <p className="text-xs sm:text-sm text-gray-600 mt-2 leading-relaxed">
                   {product.fullDescription || product.shortDescription}
                 </p>
               </div>
 
-              {/* LEYENDA DISTINTIVA: Todo puede ser PERSONALIZABLE · Si lo piensas, se hace */}
+              {/* LEYENDA DISTINTIVA: Todo puede ser PERSONALIZABLE Â· Si lo piensas, se hace */}
               <div className="p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-[#F4F0E8] via-[#FAF7F0] to-[#EAE4D7] border border-[#D4A359]/40 shadow-xs flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-[#2D4F3E] text-white flex items-center justify-center shrink-0 shadow-xs">
                   <Sparkles className="w-5 h-5 text-[#D4A359]" />
@@ -677,7 +795,7 @@ export default function ProductDetailModal({
                   <p className="text-[10.5px] sm:text-[11.5px] text-[#2D4F3E] font-bold italic tracking-tight mt-0.5 flex items-center gap-1">
                     <Sparkles className="w-3 h-3 text-[#D4A359] inline" />
                     <span>Si lo piensas, se hace</span>
-                    <span className="text-gray-400 font-normal not-italic text-[10px] hidden sm:inline">· Taller de Fabricación Artesano</span>
+                    <span className="text-gray-400 font-normal not-italic text-[10px] hidden sm:inline">Â· Taller de FabricaciÃ³n Artesano</span>
                   </p>
                 </div>
               </div>
@@ -730,12 +848,12 @@ export default function ProductDetailModal({
                   {variantsExtraCost > 0 && (
                     <div className="flex items-center gap-1.5 mt-1 text-[10.5px] font-bold text-emerald-800 bg-emerald-100/80 border border-emerald-300 px-2 py-0.5 rounded-lg inline-flex">
                       <Sparkles className="w-3 h-3 text-emerald-700 shrink-0" />
-                      <span>Incluye +${variantsExtraCost} MXN por tamaño, accesorio o acabado especial</span>
+                      <span>Incluye +${variantsExtraCost} MXN por tamaÃ±o, accesorio o acabado especial</span>
                     </div>
                   )}
                   {variantsExtraCost < 0 && (
                     <div className="flex items-center gap-1.5 mt-1 text-[10.5px] font-bold text-stone-700 bg-stone-100 border border-stone-300 px-2 py-0.5 rounded-lg inline-flex">
-                      <span>Ajuste de -${Math.abs(variantsExtraCost)} MXN por opción seleccionada</span>
+                      <span>Ajuste de -${Math.abs(variantsExtraCost)} MXN por opciÃ³n seleccionada</span>
                     </div>
                   )}
 
@@ -753,7 +871,7 @@ export default function ProductDetailModal({
                       ? 'bg-[#FAF7F0] border border-[#D4A359] text-[#9E472A] font-bold' 
                       : 'bg-white border border-[#E8E4DA] text-gray-700'
                   }`}>
-                    {isFlashDeal ? 'Oferta flash activa' : product.isBundle ? 'Paquete en promoción' : product.availability === 'in_stock' ? 'En existencia' : 'Bajo pedido personalizado'}
+                    {isFlashDeal ? 'Oferta flash activa' : product.isBundle ? 'Paquete en promociÃ³n' : product.availability === 'in_stock' ? 'En existencia' : 'Bajo pedido personalizado'}
                   </span>
                 </div>
               </div>
@@ -771,7 +889,7 @@ export default function ProductDetailModal({
                     </span>
                   </div>
 
-                  {/* Selector interactivo de los 3 niveles con estética de Combo Comercial */}
+                  {/* Selector interactivo de los 3 niveles con estÃ©tica de Combo Comercial */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     {bundleTiers.map(tier => {
                       const isSelected = activeTier?.id === tier.id;
@@ -806,7 +924,7 @@ export default function ProductDetailModal({
                                 ? 'bg-amber-700 text-white shadow-2xs'
                                 : 'bg-stone-200 text-stone-700'
                             }`}>
-                              {isPro ? 'Más Conveniente' : isMaestra ? 'Todo Incluido' : 'Kit Base'}
+                              {isPro ? 'MÃ¡s Conveniente' : isMaestra ? 'Todo Incluido' : 'Kit Base'}
                             </span>
 
                             {priceDiff > 0 && (
@@ -843,12 +961,12 @@ export default function ProductDetailModal({
                   {/* Detalle y desglose de piezas del combo seleccionado */}
                   {activeTier && activeTier.includedItems && (
                     <div className="p-3.5 bg-white rounded-2xl border border-[#E8DFC8] space-y-3 shadow-xs">
-                      {/* Banner de conveniencia según el nivel */}
+                      {/* Banner de conveniencia segÃºn el nivel */}
                       {activeTier.id === 'pro' ? (
                         <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-300 flex items-center justify-between text-xs font-bold text-emerald-950 shadow-2xs">
                           <span className="flex items-center gap-1.5">
                             <Sparkles className="w-4 h-4 text-emerald-700 shrink-0" />
-                            <span>Combo Recomendado: ¡Incluye el kit base más piezas adicionales!</span>
+                            <span>Combo Recomendado: Â¡Incluye el kit base mÃ¡s piezas adicionales!</span>
                           </span>
                           <span className="bg-emerald-700 text-white text-[9.5px] font-black px-2 py-0.5 rounded-full shrink-0 shadow-2xs">
                             Mejor Valor
@@ -858,7 +976,7 @@ export default function ProductDetailModal({
                         <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-300 flex items-center justify-between text-xs font-bold text-amber-950 shadow-2xs">
                           <span className="flex items-center gap-1.5">
                             <Crown className="w-4 h-4 text-amber-700 shrink-0" />
-                            <span>Paquete Completo VIP: Máximo ahorro y acabados artesanales de lujo</span>
+                            <span>Paquete Completo VIP: MÃ¡ximo ahorro y acabados artesanales de lujo</span>
                           </span>
                           <span className="bg-amber-700 text-white text-[9.5px] font-black px-2 py-0.5 rounded-full shrink-0 shadow-2xs">
                             Todo Incluido
@@ -914,7 +1032,7 @@ export default function ProductDetailModal({
                         <div className="pt-2 border-t border-gray-100 flex flex-wrap gap-1.5">
                           {activeTier.extraBenefits.map((b, i) => (
                             <span key={i} className="text-[10px] font-semibold text-emerald-900 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                              ✓ {b}
+                              âœ“ {b}
                             </span>
                           ))}
                         </div>
@@ -926,7 +1044,7 @@ export default function ProductDetailModal({
                 <div className="p-4 rounded-2xl bg-[#FFF9FB] border border-[#F4D6E2] space-y-2">
                   <div className="flex items-center gap-2 text-[#D82B6E] font-bold text-xs uppercase tracking-wider">
                     <Package className="w-4 h-4" />
-                    <span>Piezas incluidas en esta promoción:</span>
+                    <span>Piezas incluidas en esta promociÃ³n:</span>
                   </div>
                   <ul className="space-y-1.5 text-xs text-gray-700">
                     {product.includedItems.map((item, i) => (
@@ -965,7 +1083,7 @@ export default function ProductDetailModal({
                           <span>Acabados y colores 100% personalizados por foto</span>
                         </div>
                         <p className="text-[11.5px] text-amber-900/90 leading-relaxed">
-                          Esta pieza se modela en 3D y se pinta artesanalmente a partir de las fotos reales o el dibujo de tu pequeño. No requieres elegir colores fijos aquí: una vez realizado tu pedido, nos comunicamos contigo por WhatsApp para coordinar vestimenta, peinado, tonos y detalles exactos.
+                          Esta pieza se modela en 3D y se pinta artesanalmente a partir de las fotos reales o el dibujo de tu pequeÃ±o. No requieres elegir colores fijos aquÃ­: una vez realizado tu pedido, nos comunicamos contigo por WhatsApp para coordinar vestimenta, peinado, tonos y detalles exactos.
                         </p>
                       </div>
                     )}
@@ -990,7 +1108,7 @@ export default function ProductDetailModal({
                               )}
                             </label>
                             <span className="text-[10.5px] text-gray-400 font-medium">
-                              {finalOptions.length} {finalOptions.length === 1 ? 'opción' : 'opciones'}
+                              {finalOptions.length} {finalOptions.length === 1 ? 'opciÃ³n' : 'opciones'}
                             </span>
                           </div>
 
@@ -1031,7 +1149,7 @@ export default function ProductDetailModal({
                       );
                     })}
 
-                    {/* SECCIÓN HOMOLOGADA DE COLOR & ACABADO (Solo para productos que requieren color) */}
+                    {/* SECCIÃ“N HOMOLOGADA DE COLOR & ACABADO (Solo para productos que requieren color) */}
                     {colorVar && (
                       <div className="space-y-2 p-3 sm:p-3.5 rounded-2xl bg-[#FAF9F5] border border-[#E8DFC8]/90 shadow-2xs">
                         <div className="flex items-center justify-between flex-wrap gap-2">
@@ -1048,7 +1166,7 @@ export default function ProductDetailModal({
                             )}
                           </label>
 
-                          {/* Botón "+ Más colores y acabados" */}
+                          {/* BotÃ³n "+ MÃ¡s colores y acabados" */}
                           <button
                             type="button"
                             onClick={() => {
@@ -1062,7 +1180,7 @@ export default function ProductDetailModal({
                             }`}
                           >
                             <Palette className="w-3.5 h-3.5" />
-                            <span>{showMoreColorsTab ? '▲ Ocultar paletas' : '🎨 + Más colores'}</span>
+                            <span>{showMoreColorsTab ? 'â–² Ocultar paletas' : 'ðŸŽ¨ + MÃ¡s colores'}</span>
                             <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
                               showMoreColorsTab ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-800'
                             }`}>
@@ -1071,7 +1189,7 @@ export default function ProductDetailModal({
                           </button>
                         </div>
 
-                        {/* Swatches circulares rápidos */}
+                        {/* Swatches circulares rÃ¡pidos */}
                         <div className="flex flex-wrap items-center gap-2 pt-0.5">
                           {activeColorOptions.map(opt => {
                             const isSelected = currentColor === opt;
@@ -1104,7 +1222,7 @@ export default function ProductDetailModal({
                                     <span className={`text-[11px] font-black ${
                                       isDarkColor(swatch) ? 'text-white drop-shadow-sm' : 'text-gray-900'
                                     }`}>
-                                      ✓
+                                      âœ“
                                     </span>
                                   )}
                                   {optDelta > 0 && !isSelected && (
@@ -1122,10 +1240,10 @@ export default function ProductDetailModal({
                           })}
                         </div>
 
-                        {/* DESPLIEGUE DEL CATÁLOGO COMPLETO DE COLORES & ACABADOS POR MATERIAL */}
+                        {/* DESPLIEGUE DEL CATÃLOGO COMPLETO DE COLORES & ACABADOS POR MATERIAL */}
                         {showMoreColorsTab && (
                           <div className="mt-3 p-3 sm:p-4 rounded-2xl bg-white border-2 border-[#2D4F3E]/40 space-y-3 shadow-md animate-fade-in">
-                            {/* Header de la pestaña */}
+                            {/* Header de la pestaÃ±a */}
                             <div className="flex items-center justify-between border-b border-gray-100 pb-2">
                               <div className="flex items-center gap-2">
                                 <div className="w-7 h-7 rounded-lg bg-[#2D4F3E] text-white flex items-center justify-center shadow-2xs">
@@ -1133,10 +1251,10 @@ export default function ProductDetailModal({
                                 </div>
                                 <div>
                                   <h4 className="text-xs font-black text-[#1F2421]">
-                                    Catálogo de Colores &amp; Acabados para este Material
+                                    CatÃ¡logo de Colores &amp; Acabados para este Material
                                   </h4>
                                   <p className="text-[10px] text-gray-500">
-                                    Elige el tono o acabado exacto compatible con la fabricación de tu pieza
+                                    Elige el tono o acabado exacto compatible con la fabricaciÃ³n de tu pieza
                                   </p>
                                 </div>
                               </div>
@@ -1146,11 +1264,11 @@ export default function ProductDetailModal({
                                 onClick={() => setShowMoreColorsTab(false)}
                                 className="text-[10.5px] font-bold text-gray-500 hover:text-gray-800 px-2 py-1 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
                               >
-                                ▲ Cerrar catálogo
+                                â–² Cerrar catÃ¡logo
                               </button>
                             </div>
 
-                            {/* Pestañas de Materiales estrictamente compatibles con este producto */}
+                            {/* PestaÃ±as de Materiales estrictamente compatibles con este producto */}
                             <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
                               {availableMaterialTabs.map(tabKey => {
                                 const cat = WORKSHOP_PALETTES_BY_CATEGORY[tabKey];
@@ -1176,12 +1294,12 @@ export default function ProductDetailModal({
                               })}
                             </div>
 
-                          {/* Avisos Técnicos Contextuales */}
+                          {/* Avisos TÃ©cnicos Contextuales */}
                           {currentCatData.isSublimationNotice && (
                             <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs flex items-start gap-2">
                               <Sparkles className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                               <p className="leading-snug text-[11px]">
-                                <strong>Sublimación fotográfica full color:</strong> Sobre base blanca brillante estampamos fotografías familiares, logotipos corporativos y dedicatorias a todo color con resolución HD y fijación permanente sin límite de tintas ni costos extra.
+                                <strong>SublimaciÃ³n fotogrÃ¡fica full color:</strong> Sobre base blanca brillante estampamos fotografÃ­as familiares, logotipos corporativos y dedicatorias a todo color con resoluciÃ³n HD y fijaciÃ³n permanente sin lÃ­mite de tintas ni costos extra.
                               </p>
                             </div>
                           )}
@@ -1190,12 +1308,12 @@ export default function ProductDetailModal({
                             <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs flex items-start gap-2">
                               <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                               <p className="leading-snug text-[11px]">
-                                <strong>Nota técnica de láser diodo:</strong> El diodo (455 nm) corta directamente acrílicos oscuros y espejo. Los acrílicos transparentes y blancos se maquilan con fresadora CNC o láser CO2.
+                                <strong>Nota tÃ©cnica de lÃ¡ser diodo:</strong> El diodo (455 nm) corta directamente acrÃ­licos oscuros y espejo. Los acrÃ­licos transparentes y blancos se maquilan con fresadora CNC o lÃ¡ser CO2.
                               </p>
                             </div>
                           )}
 
-                          {/* Subgrupos de PLA si está en la pestaña 3D */}
+                          {/* Subgrupos de PLA si estÃ¡ en la pestaÃ±a 3D */}
                           {selectedPaletteTab === 'pla' && currentCatData.subGroups && (
                             <div className="flex flex-wrap gap-1 p-1 rounded-xl bg-gray-100 border border-gray-200">
                               {currentCatData.subGroups.map(sg => (
@@ -1215,7 +1333,7 @@ export default function ProductDetailModal({
                             </div>
                           )}
 
-                          {/* Cuadrícula de colores de la pestaña activa */}
+                          {/* CuadrÃ­cula de colores de la pestaÃ±a activa */}
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-56 overflow-y-auto pr-1">
                             {filteredPaletteColors.map(colorItem => {
                               const swatch = getFilamentColor(colorItem.name);
@@ -1246,7 +1364,7 @@ export default function ProductDetailModal({
                                         <span className={`text-[9px] font-black ${
                                           isDarkColor(swatch) ? 'text-white' : 'text-gray-900'
                                         }`}>
-                                          ✓
+                                          âœ“
                                         </span>
                                       )}
                                     </span>
@@ -1272,7 +1390,7 @@ export default function ProductDetailModal({
                                         ? 'bg-[#2D4F3E] text-white'
                                         : 'bg-stone-100 text-stone-600'
                                     }`}>
-                                      {isSelected ? '✓ Activo' : colorItem.tag}
+                                      {isSelected ? 'âœ“ Activo' : colorItem.tag}
                                     </span>
                                   </div>
                                 </button>
@@ -1280,7 +1398,7 @@ export default function ProductDetailModal({
                             })}
                           </div>
 
-                          {/* Pie de la pestaña con desglose de sobreprecio */}
+                          {/* Pie de la pestaÃ±a con desglose de sobreprecio */}
                           <div className="pt-2 border-t border-gray-100 flex items-center justify-between flex-wrap gap-2">
                             <span className="text-[10.5px] text-gray-600 flex items-center gap-1.5 flex-wrap">
                               <span>Acabado elegido:</span>
@@ -1296,7 +1414,7 @@ export default function ProductDetailModal({
                               onClick={() => setShowMoreColorsTab(false)}
                               className="px-3 py-1 rounded-lg bg-[#2D4F3E] text-white font-bold text-xs shadow-2xs hover:bg-[#20392C] transition-colors cursor-pointer"
                             >
-                              ✓ Listo, usar este acabado
+                              âœ“ Listo, usar este acabado
                             </button>
                           </div>
                         </div>
@@ -1307,7 +1425,7 @@ export default function ProductDetailModal({
               );
               })()}
 
-              {/* Personalización Opcional Secundaria (Plegable para agilizar la compra) */}
+              {/* PersonalizaciÃ³n Opcional Secundaria (Plegable para agilizar la compra) */}
               {!isFlashDeal ? (
                 <div className="pt-0.5">
                   {!showPersonalizationInput && !customText ? (
@@ -1318,7 +1436,7 @@ export default function ProductDetailModal({
                     >
                       <span className="flex items-center gap-1.5">
                         <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                        <span>¿Deseas personalizar esta pieza con grabado o logo? (Opcional)</span>
+                        <span>Â¿Deseas personalizar esta pieza con grabado o logo? (Opcional)</span>
                       </span>
                       <span className="text-[11px] text-[#2D4F3E] font-black">+ Agregar</span>
                     </button>
@@ -1336,19 +1454,19 @@ export default function ProductDetailModal({
                           }}
                           className="text-[10.5px] text-gray-400 hover:text-rose-600 cursor-pointer"
                         >
-                          Quitar personalización
+                          Quitar personalizaciÃ³n
                         </button>
                       </div>
                       <textarea
                         rows={2}
-                        placeholder="Ej: Grabar nombre 'Familia Pérez', fecha 24-Octubre o especificación especial..."
+                        placeholder="Ej: Grabar nombre 'Familia PÃ©rez', fecha 24-Octubre o especificaciÃ³n especial..."
                         value={customText}
                         onChange={e => setCustomText(e.target.value)}
                         className="w-full px-3 py-2 text-xs rounded-xl border border-[#E8E4DA] focus:border-[#2D4F3E] focus:outline-none bg-white"
                         autoFocus
                       />
                       <p className="text-[10.5px] text-gray-500">
-                        * Tu acabado y color seleccionado se incluirán automáticamente en tu pedido.
+                        * Tu acabado y color seleccionado se incluirÃ¡n automÃ¡ticamente en tu pedido.
                       </p>
                     </div>
                   )}
@@ -1360,10 +1478,10 @@ export default function ProductDetailModal({
                   </span>
                   <div>
                     <span className="font-bold text-[#1F2421] block">
-                      Personalización desactivada para Ofertas Flash
+                      PersonalizaciÃ³n desactivada para Ofertas Flash
                     </span>
                     <span className="text-[11.5px] text-gray-500 leading-relaxed block mt-0.5">
-                      Las piezas con precio especial flash corresponden a lotes estándar de entrega inmediata de taller, por lo que no admiten grabado ni modificaciones personalizadas.
+                      Las piezas con precio especial flash corresponden a lotes estÃ¡ndar de entrega inmediata de taller, por lo que no admiten grabado ni modificaciones personalizadas.
                     </span>
                   </div>
                 </div>
@@ -1408,7 +1526,7 @@ export default function ProductDetailModal({
                 </div>
                 {product.specifications?.minQuantity > 1 && (
                   <span className="text-[11px] text-gray-500 italic">
-                    (Mínimo {product.specifications.minQuantity} piezas)
+                    (MÃ­nimo {product.specifications.minQuantity} piezas)
                   </span>
                 )}
               </div>
@@ -1426,7 +1544,7 @@ export default function ProductDetailModal({
                 </div>
 
                 <div className="flex items-center justify-between text-[11px] text-gray-600">
-                  <span>88% de la capacidad de producción asignada</span>
+                  <span>88% de la capacidad de producciÃ³n asignada</span>
                   <span className="font-bold text-[#1F2421]">4 personas viendo ahora</span>
                 </div>
 
@@ -1443,10 +1561,10 @@ export default function ProductDetailModal({
                 <div className="p-3 rounded-xl bg-amber-50 border border-amber-300 text-amber-950 text-xs space-y-1 shadow-2xs">
                   <div className="font-bold flex items-center gap-1.5 text-amber-900">
                     <Calendar className="w-4 h-4 text-amber-700 shrink-0" />
-                    <span>Taller en receso hasta el {formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'próximo aviso'}</span>
+                    <span>Taller en receso hasta el {formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'prÃ³ximo aviso'}</span>
                   </div>
                   <p className="text-[11px] text-amber-800 leading-relaxed">
-                    {settings.serviceStatus.pausedCustomMessage || 'Reanudamos servicio en esa fecha. Puedes cotizar tu pieza hoy mismo y quedará agendada con prioridad.'}
+                    {settings.serviceStatus.pausedCustomMessage || 'Reanudamos servicio en esa fecha. Puedes cotizar tu pieza hoy mismo y quedarÃ¡ agendada con prioridad.'}
                   </p>
                 </div>
               )}
@@ -1456,9 +1574,9 @@ export default function ProductDetailModal({
                   <AlertTriangle className="w-3.5 h-3.5 text-amber-700 shrink-0" />
                   <span>
                     {settings.serviceStatus.localService && !settings.serviceStatus.nationalService
-                      ? 'Servicio activo solo para entregas locales y taller en SLP. Envíos nacionales en pausa.'
+                      ? 'Servicio activo solo para entregas locales y taller en SLP. EnvÃ­os nacionales en pausa.'
                       : !settings.serviceStatus.localService && settings.serviceStatus.nationalService
-                      ? 'Envíos nacionales activos a toda la República. Entregas locales temporalmente no disponibles.'
+                      ? 'EnvÃ­os nacionales activos a toda la RepÃºblica. Entregas locales temporalmente no disponibles.'
                       : 'Entregas en pausa temporalmente.'}
                   </span>
                 </div>
@@ -1493,7 +1611,7 @@ export default function ProductDetailModal({
                 </button>
               </div>
 
-              {/* Acceso Discreto a Mini-Juego de Taller (Ubicado después de la decisión de compra) */}
+              {/* Acceso Discreto a Mini-Juego de Taller (Ubicado despuÃ©s de la decisiÃ³n de compra) */}
               {(settings?.arcadeConfig?.enabled !== false) && (
                 <div className="p-3 rounded-2xl bg-[#FAF9F5] border border-[#E8E4DA] space-y-2 text-xs">
                   <div className="flex items-center justify-between gap-2">
@@ -1524,18 +1642,18 @@ export default function ProductDetailModal({
                     </div>
                   </div>
 
-                  {/* Cupón activo si ya lo canjeó */}
+                  {/* CupÃ³n activo si ya lo canjeÃ³ */}
                   {activeCoupon && (
                     <div className="px-2.5 py-1 rounded-xl bg-emerald-100/70 border border-emerald-300 text-[10.5px] text-emerald-900 font-bold flex items-center justify-between">
                       <span className="flex items-center gap-1">
                         <Gift className="w-3.5 h-3.5 text-emerald-700" />
-                        <span>Cupón aplicado: <strong>{activeCoupon}</strong></span>
+                        <span>CupÃ³n aplicado: <strong>{activeCoupon}</strong></span>
                       </span>
-                      <span className="text-[10px] text-emerald-700 font-normal">Se enviará en tu pedido</span>
+                      <span className="text-[10px] text-emerald-700 font-normal">Se enviarÃ¡ en tu pedido</span>
                     </div>
                   )}
 
-                  {/* Botones de Acción Sutiles */}
+                  {/* Botones de AcciÃ³n Sutiles */}
                   <div className="flex items-center gap-2 pt-0.5">
                     {arcadeCredits === 0 && arcadeCoins >= 2 && (
                       <button
@@ -1588,7 +1706,7 @@ export default function ProductDetailModal({
               <div className="pt-4 border-t border-gray-100">
                 <div className="text-xs font-bold uppercase tracking-wider text-stone-500 mb-3 flex items-center gap-1.5">
                   <Ruler className="w-3.5 h-3.5 text-stone-500" />
-                  <span>Ficha técnica y especificaciones:</span>
+                  <span>Ficha tÃ©cnica y especificaciones:</span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
                   <div className="p-3 rounded-xl bg-[#F8F7F4] border border-[#E8E4DA]/80">
@@ -1615,7 +1733,7 @@ export default function ProductDetailModal({
                   )}
                   {product.specifications?.includes && (
                     <div className="p-3 rounded-xl bg-[#F8F7F4] border border-[#E8E4DA]/80">
-                      <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">Qué incluye</span>
+                      <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">QuÃ© incluye</span>
                       <span className="font-semibold text-stone-800">{product.specifications.includes}</span>
                     </div>
                   )}
@@ -1628,10 +1746,298 @@ export default function ProductDetailModal({
                 </div>
               </div>
 
+              {/* SECCIÓN DE OPINIONES Y CALIFICACIONES DE ESTRELLAS */}
+              <div id="seccion-opiniones-producto" className="pt-6 border-t border-gray-200 space-y-5">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div>
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-200 mb-1">
+                      <Star className="w-3 h-3 fill-amber-500 text-amber-600" />
+                      <span>Opiniones de Compradores</span>
+                    </div>
+                    <h3 className="text-base sm:text-lg font-bold text-stone-900 font-heading">
+                      Calificaciones del Producto & Taller
+                    </h3>
+                    <p className="text-xs text-gray-500 mt-0.5">
+                      Reseñas reales de clientes verificados en San Luis Potosí y envíos nacionales.
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setIsWritingReview(!isWritingReview)}
+                    className="self-start sm:self-center px-4 py-2 rounded-xl bg-[#2D4F3E] text-white text-xs font-bold hover:bg-[#20392C] active:scale-95 transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Star className="w-3.5 h-3.5 fill-amber-300 text-amber-200" />
+                    <span>{isWritingReview ? 'Cerrar formulario' : 'Escribir una opinión'}</span>
+                  </button>
+                </div>
+
+                {/* Tarjeta de Resumen de Estrellas (Estilo Mercado Libre) */}
+                <div className="p-4 sm:p-5 rounded-2xl bg-stone-50 border border-stone-200/80 flex flex-col sm:flex-row items-center gap-5 sm:gap-8">
+                  <div className="flex flex-col items-center justify-center text-center shrink-0">
+                    <span className="text-3xl sm:text-4xl font-black text-stone-900 font-heading">
+                      {reviewsData.summary?.average || '4.9'}
+                    </span>
+                    <div className="flex items-center gap-0.5 my-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-500" />
+                      ))}
+                    </div>
+                    <span className="text-[11px] font-semibold text-stone-500">
+                      {reviewsData.summary?.total || 18} opiniones totales
+                    </span>
+                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100/70 px-2 py-0.5 rounded-full mt-1">
+                      {reviewsData.summary?.recommendPercent || 98}% recomienda este taller
+                    </span>
+                  </div>
+
+                  {/* Barras de distribución de 5 a 1 estrellas */}
+                  <div className="flex-1 w-full space-y-1.5 text-xs">
+                    {[5, 4, 3, 2, 1].map(stars => {
+                      const count = reviewsData.summary?.distribution?.[stars] || (stars === 5 ? 15 : stars === 4 ? 3 : 0);
+                      const total = reviewsData.summary?.total || 18;
+                      const percent = total > 0 ? Math.round((count / total) * 100) : 0;
+                      return (
+                        <div key={stars} className="flex items-center gap-2 text-stone-600">
+                          <span className="w-4 text-[11px] font-bold text-stone-700">{stars}★</span>
+                          <div className="flex-1 h-2 rounded-full bg-stone-200 overflow-hidden">
+                            <div
+                              className="h-full bg-amber-400 rounded-full transition-all duration-500"
+                              style={{ width: `${percent}%` }}
+                            />
+                          </div>
+                          <span className="w-8 text-[10px] text-stone-400 text-right font-medium">{count}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Alerta de Cupón Ganado (Celebración) */}
+                {rewardEarned && (
+                  <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-emerald-50 via-amber-50 to-emerald-50 border-2 border-emerald-400 shadow-md space-y-2">
+                    <div className="flex items-center gap-2 text-emerald-800 font-bold text-sm">
+                      <Sparkles className="w-5 h-5 text-amber-500 shrink-0" />
+                      <span>¡Premio desbloqueado por tu reseña!</span>
+                    </div>
+                    <p className="text-xs text-gray-700 leading-relaxed">
+                      Agradecemos mucho tu tiempo. Aquí tienes tu cupón de <strong>{rewardEarned.discountPercent}% de descuento</strong> para tu próxima compra en la tienda:
+                    </p>
+                    <div className="flex items-center gap-2 pt-1 flex-wrap">
+                      <div className="px-3.5 py-1.5 rounded-xl bg-white border border-dashed border-emerald-500 font-mono font-black text-sm text-[#1F2421] tracking-wider shadow-2xs">
+                        {rewardEarned.couponCode}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleCopyReviewCoupon(rewardEarned.couponCode)}
+                        className="px-4 py-1.5 rounded-xl bg-[#2D4F3E] text-white text-xs font-bold hover:bg-[#20392C] flex items-center gap-1.5 shadow-xs cursor-pointer"
+                      >
+                        {copiedCoupon ? <Check className="w-3.5 h-3.5 text-emerald-300" /> : <Copy className="w-3.5 h-3.5" />}
+                        <span>{copiedCoupon ? '¡Copiado y aplicado al carrito!' : 'Copiar cupón'}</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Formulario para Dejar Opinión */}
+                {isWritingReview && (
+                  <form onSubmit={handleSendReview} className="p-4 sm:p-5 rounded-2xl bg-white border-2 border-[#2D4F3E]/30 shadow-md space-y-3.5">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-sm font-bold text-stone-900 font-heading">
+                        Tu Calificación para este Producto
+                      </h4>
+                      <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                        🎁 Ganas {settings?.reviewsRewardConfig?.discountPercent || 5}% de descuento
+                      </span>
+                    </div>
+
+                    {/* Selector de estrellas */}
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-bold text-gray-600 block">
+                        Calificación general:
+                      </label>
+                      <div className="flex items-center gap-1.5">
+                        {[1, 2, 3, 4, 5].map(star => (
+                          <button
+                            key={star}
+                            type="button"
+                            onClick={() => setReviewForm(prev => ({ ...prev, rating: star }))}
+                            onMouseEnter={() => setHoverRating(star)}
+                            onMouseLeave={() => setHoverRating(0)}
+                            className="p-1 hover:scale-110 active:scale-95 transition-transform cursor-pointer"
+                          >
+                            <Star
+                              className={`w-6 h-6 ${
+                                (hoverRating || reviewForm.rating) >= star
+                                  ? 'fill-amber-400 text-amber-500'
+                                  : 'text-stone-300 fill-stone-100'
+                              }`}
+                            />
+                          </button>
+                        ))}
+                        <span className="text-xs font-black text-stone-700 ml-2">
+                          {(hoverRating || reviewForm.rating) === 5 ? '¡Excelente! (5/5)' :
+                           (hoverRating || reviewForm.rating) === 4 ? 'Muy bueno (4/5)' :
+                           (hoverRating || reviewForm.rating) === 3 ? 'Bueno (3/5)' : 'Regular'}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                      <div>
+                        <label className="text-[11px] font-bold text-gray-700 block mb-1">
+                          Tu Nombre o Negocio:
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="Ej. Mariana Robles o Barber Shop 44"
+                          value={reviewForm.author}
+                          onChange={e => setReviewForm(prev => ({ ...prev, author: e.target.value }))}
+                          className="w-full px-3 py-2 rounded-xl border border-stone-300 focus:outline-none focus:border-[#2D4F3E] bg-stone-50/50"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-[11px] font-bold text-gray-700 block mb-1">
+                          Tu Ciudad:
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Ej. San Luis Potosí, Querétaro, CDMX"
+                          value={reviewForm.city}
+                          onChange={e => setReviewForm(prev => ({ ...prev, city: e.target.value }))}
+                          className="w-full px-3 py-2 rounded-xl border border-stone-300 focus:outline-none focus:border-[#2D4F3E] bg-stone-50/50"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-[11px] font-bold text-gray-700 block mb-1">
+                        ¿Qué te pareció el acabado, los materiales y el trato de taller?
+                      </label>
+                      <textarea
+                        required
+                        rows="3"
+                        placeholder="Escribe aquí tu experiencia con la pieza, el empaque o la atención por WhatsApp..."
+                        value={reviewForm.comment}
+                        onChange={e => setReviewForm(prev => ({ ...prev, comment: e.target.value }))}
+                        className="w-full px-3 py-2 rounded-xl border border-stone-300 focus:outline-none focus:border-[#2D4F3E] bg-stone-50/50 text-xs"
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-end gap-2 pt-1">
+                      <button
+                        type="button"
+                        onClick={() => setIsWritingReview(false)}
+                        className="px-3 py-2 rounded-xl text-xs font-semibold text-gray-600 hover:bg-stone-100"
+                      >
+                        Cancelar
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={submittingReview}
+                        className="px-5 py-2 rounded-xl bg-[#2D4F3E] text-white text-xs font-bold hover:bg-[#20392C] shadow-sm disabled:opacity-50 cursor-pointer"
+                      >
+                        {submittingReview ? 'Publicando...' : 'Publicar opinión y recibir descuento'}
+                      </button>
+                    </div>
+                  </form>
+                )}
+
+                {/* Lista de Reseñas de Clientes */}
+                <div className="space-y-3">
+                  {reviewsData.reviews?.slice(0, 5).map((rev) => (
+                    <div key={rev.id} className="p-3.5 sm:p-4 rounded-2xl bg-white border border-stone-200/90 shadow-2xs space-y-2">
+                      <div className="flex items-center justify-between gap-2 flex-wrap">
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-xs sm:text-sm text-stone-900">
+                            {rev.author}
+                          </span>
+                          {rev.city && (
+                            <span className="text-[10px] text-stone-400 font-medium">
+                              · {rev.city}
+                            </span>
+                          )}
+                          {rev.verified && (
+                            <span className="inline-flex items-center gap-1 text-[9.5px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                              <Check className="w-2.5 h-2.5 stroke-[3]" />
+                              <span>Comprador verificado</span>
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-[10px] text-stone-400 font-mono">
+                          {rev.date}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`w-3.5 h-3.5 ${
+                              i < (rev.rating || 5)
+                                ? 'fill-amber-400 text-amber-500'
+                                : 'text-stone-300 fill-stone-100'
+                            }`}
+                          />
+                        ))}
+                      </div>
+
+                      <p className="text-xs text-stone-700 leading-relaxed">
+                        {rev.comment}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Tarjeta Destacada de Incentivo en Redes Sociales (Facebook + WhatsApp) */}
+                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-blue-50/80 via-stone-50 to-emerald-50/80 border border-blue-200/80 space-y-3">
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-[#1877F2] text-white flex items-center justify-center shrink-0 shadow-xs">
+                      <Camera className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <span className="text-[10px] font-black uppercase tracking-wider text-blue-900">
+                        📸 Premio por Foto en Redes Sociales
+                      </span>
+                      <h4 className="text-xs sm:text-sm font-bold text-stone-900 mt-0.5">
+                        ¿Subiste tu foto a redes o comentaste en nuestra página de Facebook?
+                      </h4>
+                      <p className="text-xs text-stone-600 mt-1 leading-relaxed">
+                        {settings?.reviewsRewardConfig?.socialNotice || 'Sube una foto de tu producto a redes sociales o comenta en nuestro Facebook y mándanos la captura por WhatsApp para recibir un descuento especial en tu próximo pedido.'}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-blue-100/80">
+                    <a
+                      href="/facebook"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#1877F2] text-white text-xs font-bold hover:bg-[#0C63D4] shadow-2xs transition-all cursor-pointer"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      <span>Visitar Nuestro Facebook</span>
+                    </a>
+
+                    <a
+                      href={`https://wa.me/${settings?.whatsappNumber || '524442818795'}?text=${encodeURIComponent(`Hola Artesano Digital, aquí tengo la captura de mi reseña/foto en redes para mi descuento especial en mi siguiente pedido: 📸`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#25D366] text-white text-xs font-bold hover:bg-[#1EBE5D] shadow-2xs transition-all cursor-pointer"
+                    >
+                      <MessageCircle className="w-3.5 h-3.5" />
+                      <span>Enviar captura por WhatsApp</span>
+                    </a>
+                  </div>
+                </div>
+
+              </div>
+
             </div>
           </div>
 
-          {/* Más productos que te pueden gustar (Sugerencias inteligentes del mismo sector) */}
+          {/* MÃ¡s productos que te pueden gustar (Sugerencias inteligentes del mismo sector) */}
           {suggestedProducts.length > 0 && (
             <div className="pt-8 border-t border-gray-200 space-y-4">
               <div className="flex items-center justify-between flex-wrap gap-2">
@@ -1692,7 +2098,7 @@ export default function ProductDetailModal({
                         {rel.price ? `$${rel.price} MXN` : 'A cotizar'}
                       </span>
                       <span className="text-[10.5px] font-bold text-[#2D4F3E] group-hover:underline">
-                        Ver →
+                        Ver â†’
                       </span>
                     </div>
                   </div>

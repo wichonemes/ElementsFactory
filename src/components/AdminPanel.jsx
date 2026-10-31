@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
   X, Shield, Lock, LogOut, Plus, Edit, Copy, Trash2, Eye,
   BarChart3, Package, FolderTree, Settings, Upload, Check, AlertTriangle,
@@ -9,7 +9,7 @@ import {
   Home, Briefcase, PartyPopper, Printer, Palette, Scissors, Radio, Filter,
   Megaphone, Truck, MapPin, Calendar, Power, AlertCircle, Gift, Building2,
   Database, Save, Download, Gamepad2, Smartphone, Camera, Wrench, Hammer,
-  Link2, HardDrive, Globe, ShoppingCart, FileEdit, PackageCheck
+  Link2, HardDrive, Globe, ShoppingCart, FileEdit, PackageCheck, Star, Share2
 } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 import SalesMarketingSection from './SalesMarketingSection';
@@ -22,6 +22,7 @@ import AreaBannersAdminSection from './AreaBannersAdminSection';
 import ProductWorkshopTab from './ProductWorkshopTab';
 import PackagesAdminSection from './PackagesAdminSection';
 import CouponsAdminSection from './CouponsAdminSection';
+import ReviewsAdminSection from './ReviewsAdminSection';
 import AdminConfirmSaveModal from './AdminConfirmSaveModal';
 import ProductPhotoStudioModal from './ProductPhotoStudioModal';
 import ErrorBoundary from './ErrorBoundary';
@@ -5125,6 +5126,23 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     </button>
 
                     <button
+                      onClick={() => setActiveTab('reviews')}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
+                        activeTab === 'reviews' ? 'bg-[#2D4F3E] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#2D4F3E] font-medium'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                        <span>Opiniones &amp; Reseñas</span>
+                      </div>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                        activeTab === 'reviews' ? 'bg-white/20 text-white' : 'bg-amber-50 text-amber-800 border border-amber-200'
+                      }`}>
+                        ⭐ Opiniones
+                      </span>
+                    </button>
+
+                    <button
                       onClick={() => setActiveTab('sales')}
                       className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
                         activeTab === 'sales' ? 'bg-[#2D4F3E] text-white shadow-xs font-bold' : 'text-gray-700 hover:bg-[#F4F0E8] hover:text-[#2D4F3E] font-medium'
@@ -5532,6 +5550,11 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
               {/* TAB: CUPONES & CÓDIGOS DE DESCUENTO (ARCADE & TIENDA) */}
               {activeTab === 'coupons' && (
                 <CouponsAdminSection token={token} />
+              )}
+
+              {/* TAB: OPINIONES Y CALIFICACIONES DE CLIENTES */}
+              {activeTab === 'reviews' && (
+                <ReviewsAdminSection token={token} products={products} />
               )}
 
               {/* TAB 1: PRODUCTOS CON DIVISIÓN POR ÁREAS Y SWITCH DE STOCK */}
@@ -8257,6 +8280,213 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                         className="shrink-0 px-4 py-2 rounded-xl bg-[#2D4F3E] text-white font-bold hover:bg-[#20392C] cursor-pointer shadow-xs"
                       >
                         Guardar Ajustes de Mayoreo
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* REDES SOCIALES & ENLACE CORTO OFICIAL */}
+                  <div className="bg-white p-6 rounded-2xl border border-[#E8E4DA] space-y-4">
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center font-bold">
+                          <Share2 className="w-5 h-5 text-blue-600" />
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-bold text-[#1F2421] font-heading">
+                            Redes Sociales &amp; Acortador Oficial
+                          </h4>
+                          <p className="text-xs text-gray-500">
+                            Configura el enlace oficial a tu página de Facebook.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3 text-xs">
+                      <div>
+                        <label className="font-bold text-gray-700 block mb-1">
+                          Enlace Actual de Facebook:
+                        </label>
+                        <input
+                          type="url"
+                          placeholder="https://www.facebook.com/ArtesanoDigitalvideojuegos"
+                          value={businessSettings?.socialLinks?.facebook || 'https://www.facebook.com/ArtesanoDigitalvideojuegos'}
+                          onChange={e => {
+                            setBusinessSettings({
+                              ...businessSettings,
+                              socialLinks: {
+                                ...(businessSettings?.socialLinks || {}),
+                                facebook: e.target.value
+                              }
+                            });
+                          }}
+                          className="w-full px-3 py-2 rounded-xl border border-gray-300 font-mono text-xs focus:outline-none focus:border-[#2D4F3E]"
+                        />
+                        <p className="text-[11px] text-gray-500 mt-1">
+                          💡 <em>Cuando cambies el nombre de tu página de Facebook para quitar la palabra "videojuegos", solo actualiza este campo y se actualizará automáticamente en toda la tienda.</em>
+                        </p>
+                      </div>
+
+                      {/* Caja de Acortador de Marca Propia */}
+                      <div className="p-3.5 rounded-xl bg-blue-50/70 border border-blue-200 space-y-2">
+                        <div className="flex items-center justify-between flex-wrap gap-2">
+                          <div>
+                            <span className="text-[10px] font-black uppercase tracking-wider text-blue-900 block">
+                              🔗 Tu Acortador de Marca Propia
+                            </span>
+                            <span className="font-mono font-bold text-xs text-blue-800">
+                              artesano-digital.vercel.app/facebook
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                navigator.clipboard.writeText('https://artesano-digital.vercel.app/facebook');
+                                alert('¡Enlace corto copiado al portapapeles!');
+                              }}
+                              className="px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-bold hover:bg-blue-700 cursor-pointer shadow-2xs"
+                            >
+                              Copiar Enlace Corto
+                            </button>
+                            <a
+                              href="/facebook"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-3 py-1.5 rounded-lg bg-white border border-blue-300 text-blue-800 text-xs font-bold hover:bg-blue-50 cursor-pointer shadow-2xs"
+                            >
+                              Probar Enlace ↗
+                            </a>
+                          </div>
+                        </div>
+                        <p className="text-[11px] text-blue-900/80 leading-relaxed">
+                          Usa <code>artesano-digital.vercel.app/facebook</code> (o <code>/fb</code>) en tus tarjetas de presentación impresas, notas de taller, flyers o historias. Redirige directamente al Facebook que tengas configurado aquí arriba sin que tengas que reimprimir material cuando cambies tu usuario.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* RECOMPENSAS POR RESEÑA Y REDES SOCIALES */}
+                  <div className="bg-white p-6 rounded-2xl border border-[#E8E4DA] space-y-4">
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold">
+                          <Star className="w-5 h-5 text-amber-600 fill-amber-500" />
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-bold text-[#1F2421] font-heading">
+                            Descuentos por Reseñas &amp; Fotos en Redes
+                          </h4>
+                          <p className="text-xs text-gray-500">
+                            Personaliza el código y porcentaje de descuento que se entrega a los clientes por opinar.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                      {/* Descuento por reseña en la web */}
+                      <div className="p-4 rounded-xl bg-stone-50 border border-stone-200 space-y-2.5">
+                        <span className="text-[10px] font-black uppercase tracking-wider text-stone-700 block">
+                          ⭐ Por Calificar en la Web
+                        </span>
+                        <div>
+                          <label className="text-[11px] font-bold text-gray-600 block mb-1">
+                            Código de Cupón Generado:
+                          </label>
+                          <input
+                            type="text"
+                            value={businessSettings?.reviewsRewardConfig?.couponCode || 'RESEÑA5'}
+                            onChange={e => {
+                              setBusinessSettings({
+                                ...businessSettings,
+                                reviewsRewardConfig: {
+                                  ...(businessSettings?.reviewsRewardConfig || {}),
+                                  couponCode: e.target.value.toUpperCase()
+                                }
+                              });
+                            }}
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 font-mono font-bold bg-white text-stone-800 uppercase"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[11px] font-bold text-gray-600 block mb-1">
+                            Porcentaje de Descuento (%):
+                          </label>
+                          <input
+                            type="number"
+                            min="1"
+                            max="50"
+                            value={businessSettings?.reviewsRewardConfig?.discountPercent ?? 5}
+                            onChange={e => {
+                              setBusinessSettings({
+                                ...businessSettings,
+                                reviewsRewardConfig: {
+                                  ...(businessSettings?.reviewsRewardConfig || {}),
+                                  discountPercent: Number(e.target.value) || 0
+                                }
+                              });
+                            }}
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 font-bold bg-white text-emerald-800"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Descuento por foto en redes sociales */}
+                      <div className="p-4 rounded-xl bg-stone-50 border border-stone-200 space-y-2.5">
+                        <span className="text-[10px] font-black uppercase tracking-wider text-blue-900 block">
+                          📸 Por Foto en Redes Sociales (WhatsApp)
+                        </span>
+                        <div>
+                          <label className="text-[11px] font-bold text-gray-600 block mb-1">
+                            Código para WhatsApp:
+                          </label>
+                          <input
+                            type="text"
+                            value={businessSettings?.reviewsRewardConfig?.socialCouponCode || 'FOTOREDES10'}
+                            onChange={e => {
+                              setBusinessSettings({
+                                ...businessSettings,
+                                reviewsRewardConfig: {
+                                  ...(businessSettings?.reviewsRewardConfig || {}),
+                                  socialCouponCode: e.target.value.toUpperCase()
+                                }
+                              });
+                            }}
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 font-mono font-bold bg-white text-stone-800 uppercase"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[11px] font-bold text-gray-600 block mb-1">
+                            Porcentaje Promocionado (%):
+                          </label>
+                          <input
+                            type="number"
+                            min="1"
+                            max="50"
+                            value={businessSettings?.reviewsRewardConfig?.socialRewardPercent ?? 10}
+                            onChange={e => {
+                              setBusinessSettings({
+                                ...businessSettings,
+                                reviewsRewardConfig: {
+                                  ...(businessSettings?.reviewsRewardConfig || {}),
+                                  socialRewardPercent: Number(e.target.value) || 0
+                                }
+                              });
+                            }}
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 font-bold bg-white text-emerald-800"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-end pt-1">
+                      <button
+                        type="button"
+                        onClick={handleSaveSettings}
+                        className="px-4 py-2 rounded-xl bg-[#2D4F3E] text-white font-bold hover:bg-[#20392C] cursor-pointer shadow-xs text-xs"
+                      >
+                        Guardar Ajustes de Redes &amp; Reseñas
                       </button>
                     </div>
                   </div>

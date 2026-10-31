@@ -721,6 +721,47 @@ app.post('/api/coupons/record-use', (req, res) => {
   }
 });
 
+// Enlace corto y amigable a Facebook Oficial
+app.get(['/facebook', '/fb'], (_req, res) => {
+  try {
+    const settings = db.getSettings();
+    const target = settings?.socialLinks?.facebook || 'https://www.facebook.com/ArtesanoDigitalvideojuegos';
+    return res.redirect(302, target);
+  } catch {
+    return res.redirect(302, 'https://www.facebook.com/ArtesanoDigitalvideojuegos');
+  }
+});
+
+// Opiniones y Calificaciones de Productos (Público)
+app.get('/api/reviews', (req, res) => {
+  try {
+    const { productId, limit } = req.query;
+    const data = db.getReviews({ productId, limit, status: 'approved' });
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Publicar una nueva opinión y obtener cupón de regalo (Público con límite de tasa)
+app.post('/api/reviews', rateLimit({ limit: 10, windowMs: 15 * 60 * 1000 }), (req, res) => {
+  try {
+    const { productId, productName, author, city, rating, comment } = req.body;
+    if (!comment || !String(comment).trim()) {
+      return res.status(400).json({ error: 'El comentario de la reseña es obligatorio.' });
+    }
+    const result = db.addReview({ productId, productName, author, city, rating, comment, source: 'web' });
+    res.status(201).json({
+      ok: true,
+      message: '¡Gracias por compartir tu opinión!',
+      review: result.review,
+      reward: result.reward
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 // Analytics tracking from client
 app.post('/api/analytics/event', (req, res) => {
   try {
@@ -1629,6 +1670,46 @@ app.delete('/api/admin/coupons/:id', requireAdmin, (req, res) => {
     const success = db.deleteCoupon(req.params.id);
     if (!success) return res.status(404).json({ error: 'Cupón no encontrado' });
     res.json({ ok: true, message: 'Cupón eliminado correctamente' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Admin: Gestión de Opiniones y Reseñas de Clientes
+app.get('/api/admin/reviews', requireAdmin, (req, res) => {
+  try {
+    const { status, productId } = req.query;
+    const data = db.getReviews({ status: status || 'all', productId });
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/admin/reviews', requireAdmin, (req, res) => {
+  try {
+    const result = db.addReview({ ...req.body, source: 'admin_manual' });
+    res.status(201).json(result.review);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+app.put('/api/admin/reviews/:id', requireAdmin, (req, res) => {
+  try {
+    const updated = db.updateReview(req.params.id, req.body);
+    if (!updated) return res.status(404).json({ error: 'Reseña no encontrada' });
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+app.delete('/api/admin/reviews/:id', requireAdmin, (req, res) => {
+  try {
+    const success = db.deleteReview(req.params.id);
+    if (!success) return res.status(404).json({ error: 'Reseña no encontrada' });
+    res.json({ ok: true, message: 'Reseña eliminada correctamente' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

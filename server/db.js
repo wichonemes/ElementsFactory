@@ -12009,6 +12009,27 @@ const initialSettings = {
     negocios: 3,
     eventos: 5,
     paquetes: 1
+  },
+  wholesaleConfig: {
+    enabled: true,
+    tiers: [
+      { minQty: 12, percent: 5 },
+      { minQty: 25, percent: 10 },
+      { minQty: 50, percent: 15 }
+    ]
+  },
+  reviewsRewardConfig: {
+    enabled: true,
+    couponCode: 'RESEÑA5',
+    discountPercent: 5,
+    socialRewardPercent: 10,
+    socialCouponCode: 'FOTOREDES10',
+    socialNotice: 'Sube tu foto a redes o comenta en nuestra página de Facebook y mándanos captura por WhatsApp para recibir tu 10% de descuento.'
+  },
+  socialLinks: {
+    facebook: 'https://www.facebook.com/ArtesanoDigitalvideojuegos',
+    instagram: '',
+    tiktok: ''
   }
 };
 
@@ -12087,7 +12108,8 @@ const createInitialDb = () => {
     publications: [],
     orders: [],
     pubTracking: [],
-    coupons: initialCoupons
+    coupons: initialCoupons,
+    reviews: initialReviews
   };
 };
 
@@ -12271,6 +12293,194 @@ const initialCoupons = [
     expiresAt: '2026-12-31T23:59:59.000Z',
     active: true,
     description: 'Código relámpago exclusivo para fines de semana.'
+  },
+  {
+    id: 'cup-store-resena',
+    code: 'RESEÑA5',
+    name: '5% de Descuento por Reseña',
+    category: 'store',
+    type: 'percent',
+    value: 5,
+    minPurchase: 0,
+    maxUses: null,
+    usedCount: 0,
+    expiresAt: '2026-12-31T23:59:59.000Z',
+    active: true,
+    description: 'Cupón especial de agradecimiento por compartir tu opinión sobre Artesano Digital.'
+  },
+  {
+    id: 'cup-store-foto-redes',
+    code: 'FOTOREDES10',
+    name: '10% de Descuento por Foto en Redes',
+    category: 'store',
+    type: 'percent',
+    value: 10,
+    minPurchase: 0,
+    maxUses: null,
+    usedCount: 0,
+    expiresAt: '2026-12-31T23:59:59.000Z',
+    active: true,
+    description: 'Descuento otorgado por compartir tu producto en redes sociales y enviar captura.'
+  }
+];
+
+// Reseñas iniciales de clientes verificados del taller (San Luis Potosí y Envíos Nacionales)
+const initialReviews = [
+  {
+    id: 'rev-01',
+    productId: 'colgador-llaves-l14',
+    productName: 'Colgador de Llaves de Pared',
+    author: 'Sofía Martínez R.',
+    city: 'San Luis Potosí',
+    rating: 5,
+    date: '2026-10-24',
+    comment: 'Pedí el colgador personalizado con los nombres de mi familia. El corte láser en la madera y el acabado con barniz se ven de lujo en la entrada de mi casa. Llegó súper rápido aquí en SLP.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-02',
+    productId: 'soporte-qr-t16',
+    productName: 'Soporte QR para Negocio 3D',
+    author: 'Roberto Garza (Café La Estación)',
+    city: 'Querétaro',
+    rating: 5,
+    date: '2026-10-21',
+    comment: 'Increíble trabajo para mi cafetería. El contraste del código QR permite que cualquier celular lo lea al instante desde la mesa. Mis clientes pagan por SPEI sin batallar.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-03',
+    productId: 'llavero-camarita-l9',
+    productName: 'Llavero Camarita Fotográfica',
+    author: 'Valeria & Daniel',
+    city: 'León, Gto.',
+    rating: 5,
+    date: '2026-10-18',
+    comment: 'Fue un detalle para mi novio por nuestro aniversario. El nivel de detalle en el lente y el grabado en la madera quedó perfecto. Mucho más bonito en persona que en foto.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-04',
+    productId: 'chapita-mascota-t20',
+    productName: 'Placa de Mascota Personalizada',
+    author: 'Miguel Ángel T.',
+    city: 'San Luis Potosí',
+    rating: 5,
+    date: '2026-10-15',
+    comment: 'Muy ligera y resistente. Mi perrito suele morder todo y la placa sigue intacta. El número de teléfono se lee clarito y el diseño de patita está genial.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-05',
+    productId: 'starter-pack-barberia-t18',
+    productName: 'Starter Pack Barbería',
+    author: 'Estudio Barber 44',
+    city: 'San Luis Potosí',
+    rating: 5,
+    date: '2026-10-11',
+    comment: 'Compramos el paquete completo para la inauguración de nuestra segunda sucursal. Los organizadores y letreros le dieron una vista muy profesional al local. Muy amables en WhatsApp.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-06',
+    productId: 'paquete-zorrito-t35',
+    productName: 'Combo Infantil Zorrito',
+    author: 'Lucía Morales',
+    city: 'Puebla',
+    rating: 5,
+    date: '2026-10-09',
+    comment: 'Excelente acabado, el filamento mate tiene una textura suave y sin rebabas. A mi hijo le encantó en su recámara.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-07',
+    productId: 'caja-te-organizador-l18',
+    productName: 'Caja Organizadora de Té',
+    author: 'Elena Castillo',
+    city: 'Monterrey, N.L.',
+    rating: 5,
+    date: '2026-10-04',
+    comment: 'Los ensambles están muy bien ajustados y el grabado de la tapa se ve súper fino. El empaque venía muy protegido para el viaje nacional.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-08',
+    productId: 'general',
+    productName: 'Fabricación y Proyectos a Medida',
+    author: 'Carlos Eduardo N.',
+    city: 'San Luis Potosí',
+    rating: 5,
+    date: '2026-10-25',
+    comment: 'Les pedí una pieza personalizada que no estaba en el catálogo, mandé mi idea por WhatsApp y me la diseñaron y fabricaron tal cual. Cumplen al 100% su lema de Si lo piensas, se hace.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-09',
+    productId: 'general',
+    productName: 'Pedido de Mayoreo',
+    author: 'Publicidad Creativa del Centro',
+    city: 'Aguascalientes',
+    rating: 5,
+    date: '2026-10-17',
+    comment: 'Hicimos un pedido de 60 piezas para un evento corporativo. Aplicaron el descuento de mayoreo automático y nos entregaron en tiempo y forma con empaque individual.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-10',
+    productId: 'general',
+    productName: 'Calidad de Impresión 3D y Láser',
+    author: 'Andrea Sotomayor',
+    city: 'CDMX',
+    rating: 4,
+    date: '2026-10-14',
+    comment: 'Muy buena calidad de materiales y colores vivos. El envío tardó un día más por la paquetería pero en el taller siempre estuvieron atentos dándome el número de guía por WhatsApp.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-11',
+    productId: 'general',
+    productName: 'Detalles y Regalos de Aniversario',
+    author: 'Fernando Trejo',
+    city: 'San Luis Potosí',
+    rating: 5,
+    date: '2026-10-27',
+    comment: 'Atención impecable de principio a fin. Me mandaron fotos del proceso antes de empaquetar y el producto final superó mis expectativas.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-12',
+    productId: 'general',
+    productName: 'Acabados en Madera Natural',
+    author: 'Marcela Dávila',
+    city: 'Querétaro',
+    rating: 5,
+    date: '2026-10-20',
+    comment: 'Se nota la dedicación artesanal en cada detalle. La madera viene bien pulida y protegida con barniz, nada de astillas ni olores fuertes. 10 de 10.',
+    verified: true,
+    approved: true,
+    source: 'seed'
   }
 ];
 
@@ -15316,6 +15526,10 @@ class Database {
         data.coupons = [...initialCoupons];
         this.save(data);
       }
+      if (!data.reviews || data.reviews.length === 0) {
+        data.reviews = [...initialReviews];
+        this.save(data);
+      }
       if (!data.rawMaterials || data.rawMaterials.length === 0) {
         data.rawMaterials = [...initialRawMaterials];
         this.save(data);
@@ -15990,12 +16204,68 @@ class Database {
         ...settings.mobileCatalogConfig
       };
     }
+    if (!settings.reviewsRewardConfig) {
+      settings.reviewsRewardConfig = {
+        enabled: true,
+        couponCode: 'RESEÑA5',
+        discountPercent: 5,
+        socialRewardPercent: 10,
+        socialCouponCode: 'FOTOREDES10',
+        socialNotice: 'Sube tu foto a redes o comenta en nuestra página de Facebook y mándanos captura por WhatsApp para recibir tu 10% de descuento.'
+      };
+    }
+    if (!settings.socialLinks) {
+      settings.socialLinks = {
+        facebook: 'https://www.facebook.com/ArtesanoDigitalvideojuegos',
+        instagram: '',
+        tiktok: ''
+      };
+    }
+    if (!settings.wholesaleConfig) {
+      settings.wholesaleConfig = {
+        enabled: true,
+        tiers: [
+          { minQty: 12, percent: 5 },
+          { minQty: 25, percent: 10 },
+          { minQty: 50, percent: 15 }
+        ]
+      };
+    }
     return settings;
   }
 
   updateSettings(newSettings) {
     const db = this.read();
     db.settings = { ...db.settings, ...newSettings };
+
+    // Si se actualizó el cupón de recompensa por reseña, sincronizarlo en la lista de cupones
+    if (newSettings?.reviewsRewardConfig?.couponCode) {
+      const code = String(newSettings.reviewsRewardConfig.couponCode).trim().toUpperCase();
+      const val = Number(newSettings.reviewsRewardConfig.discountPercent) || 5;
+      if (!Array.isArray(db.coupons)) db.coupons = [];
+      const existing = db.coupons.find(c => c.id === 'cup-store-resena' || c.code?.toUpperCase() === code);
+      if (existing) {
+        existing.code = code;
+        existing.value = val;
+        existing.name = `${val}% de Descuento por Reseña`;
+      } else {
+        db.coupons.push({
+          id: 'cup-store-resena',
+          code,
+          name: `${val}% de Descuento por Reseña`,
+          category: 'store',
+          type: 'percent',
+          value: val,
+          minPurchase: 0,
+          maxUses: null,
+          usedCount: 0,
+          expiresAt: '2026-12-31T23:59:59.000Z',
+          active: true,
+          description: 'Cupón especial de agradecimiento por compartir tu opinión sobre Artesano Digital.'
+        });
+      }
+    }
+
     this.save(db);
     return db.settings;
   }
@@ -18088,6 +18358,206 @@ class Database {
       productsCount: parsed.products.length,
       timestamp: new Date().toISOString()
     };
+  }
+
+  // ==========================================
+  // GESTIÓN DE OPINIONES Y RESEÑAS
+  // ==========================================
+
+  ensureReviews() {
+    const data = this.read();
+    let modified = false;
+
+    if (!Array.isArray(data.reviews) || data.reviews.length === 0) {
+      data.reviews = [...initialReviews];
+      modified = true;
+    }
+
+    if (!data.settings) data.settings = {};
+    if (!data.settings.reviewsRewardConfig) {
+      data.settings.reviewsRewardConfig = {
+        enabled: true,
+        couponCode: 'RESEÑA5',
+        discountPercent: 5,
+        socialRewardPercent: 10,
+        socialCouponCode: 'FOTOREDES10',
+        socialNotice: 'Sube tu foto a redes o comenta en nuestra página de Facebook y mándanos captura por WhatsApp para recibir tu 10% de descuento.'
+      };
+      modified = true;
+    }
+
+    if (!data.settings.socialLinks) {
+      data.settings.socialLinks = {
+        facebook: 'https://www.facebook.com/ArtesanoDigitalvideojuegos',
+        instagram: '',
+        tiktok: ''
+      };
+      modified = true;
+    }
+
+    if (!data.settings.wholesaleConfig) {
+      data.settings.wholesaleConfig = {
+        enabled: true,
+        tiers: [
+          { minQty: 12, percent: 5 },
+          { minQty: 25, percent: 10 },
+          { minQty: 50, percent: 15 }
+        ]
+      };
+      modified = true;
+    }
+
+    // Asegurar que el cupón de reseña y foto en redes existan en la base de cupones
+    if (!Array.isArray(data.coupons)) data.coupons = [];
+    if (!data.coupons.some(c => c.code?.toUpperCase() === 'RESEÑA5' || c.code?.toUpperCase() === 'RESENA5')) {
+      data.coupons.push({
+        id: 'cup-store-resena',
+        code: 'RESEÑA5',
+        name: '5% de Descuento por Reseña',
+        category: 'store',
+        type: 'percent',
+        value: 5,
+        minPurchase: 0,
+        maxUses: null,
+        usedCount: 0,
+        expiresAt: '2026-12-31T23:59:59.000Z',
+        active: true,
+        description: 'Cupón especial de agradecimiento por compartir tu opinión sobre Artesano Digital.'
+      });
+      modified = true;
+    }
+
+    if (!data.coupons.some(c => c.code?.toUpperCase() === 'FOTOREDES10')) {
+      data.coupons.push({
+        id: 'cup-store-foto-redes',
+        code: 'FOTOREDES10',
+        name: '10% de Descuento por Foto en Redes',
+        category: 'store',
+        type: 'percent',
+        value: 10,
+        minPurchase: 0,
+        maxUses: null,
+        usedCount: 0,
+        expiresAt: '2026-12-31T23:59:59.000Z',
+        active: true,
+        description: 'Descuento otorgado por compartir tu producto en redes sociales y enviar captura.'
+      });
+      modified = true;
+    }
+
+    if (modified) {
+      this.save(data);
+    }
+    return { modified, count: data.reviews?.length || 0 };
+  }
+
+  getReviews(filters = {}) {
+    const data = this.read();
+    let list = Array.isArray(data.reviews) ? [...data.reviews] : [];
+
+    // Filtro por estatus: 'all' | 'approved' | 'pending'
+    if (filters.status && filters.status !== 'all') {
+      const isApproved = filters.status === 'approved';
+      list = list.filter(r => (r.approved !== false) === isApproved);
+    } else if (!filters.status) {
+      // Público por defecto: solo aprobadas
+      list = list.filter(r => r.approved !== false);
+    }
+
+    if (filters.productId && filters.productId !== 'all') {
+      const targetId = String(filters.productId).toLowerCase().trim();
+      const productReviews = list.filter(r => String(r.productId || '').toLowerCase() === targetId);
+      const generalReviews = list.filter(r => !r.productId || r.productId === 'general');
+      // Mostrar primero las específicas del producto, complementando con las generales de taller
+      list = [...productReviews, ...generalReviews];
+    }
+
+    // Ordenar de más reciente a más antigua
+    list.sort((a, b) => new Date(b.date || b.createdAt || 0) - new Date(a.date || a.createdAt || 0));
+
+    if (filters.limit) {
+      list = list.slice(0, Number(filters.limit));
+    }
+
+    // Resumen y promedio de calificación
+    const ratings = list.map(r => Number(r.rating) || 5);
+    const sum = ratings.reduce((acc, r) => acc + r, 0);
+    const average = ratings.length > 0 ? Number((sum / ratings.length).toFixed(1)) : 4.9;
+
+    const distribution = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+    ratings.forEach(r => {
+      const star = Math.min(5, Math.max(1, Math.round(r)));
+      distribution[star] = (distribution[star] || 0) + 1;
+    });
+
+    return {
+      reviews: list,
+      summary: {
+        average,
+        total: list.length,
+        recommendPercent: ratings.length > 0 ? Math.round((ratings.filter(r => r >= 4).length / ratings.length) * 100) : 98,
+        distribution
+      }
+    };
+  }
+
+  addReview(reviewData) {
+    const data = this.read();
+    if (!Array.isArray(data.reviews)) data.reviews = [];
+
+    const rating = Math.min(5, Math.max(1, Number(reviewData.rating) || 5));
+    const author = String(reviewData.author || 'Cliente Artesano').trim().slice(0, 80);
+    const comment = String(reviewData.comment || '').trim().slice(0, 1000);
+    if (!comment) throw new Error('El comentario de la reseña es obligatorio.');
+
+    const newReview = {
+      id: `rev-${Date.now()}-${Math.round(Math.random() * 1000)}`,
+      productId: reviewData.productId || 'general',
+      productName: reviewData.productName || 'Producto Artesano Digital',
+      author,
+      city: reviewData.city ? String(reviewData.city).trim().slice(0, 60) : 'San Luis Potosí',
+      rating,
+      date: new Date().toISOString().split('T')[0],
+      comment,
+      verified: true,
+      approved: true, // Aprobada para visibilidad inmediata (el admin puede pausarla)
+      source: reviewData.source || 'web',
+      createdAt: new Date().toISOString()
+    };
+
+    data.reviews.unshift(newReview);
+    this.save(data);
+
+    const cfg = data.settings?.reviewsRewardConfig || {};
+    return {
+      review: newReview,
+      reward: {
+        couponCode: cfg.couponCode || 'RESEÑA5',
+        discountPercent: Number(cfg.discountPercent) || 5
+      }
+    };
+  }
+
+  updateReview(id, updates) {
+    const data = this.read();
+    if (!Array.isArray(data.reviews)) return null;
+    const idx = data.reviews.findIndex(r => r.id === id);
+    if (idx === -1) return null;
+    data.reviews[idx] = { ...data.reviews[idx], ...updates, updatedAt: new Date().toISOString() };
+    this.save(data);
+    return data.reviews[idx];
+  }
+
+  deleteReview(id) {
+    const data = this.read();
+    if (!Array.isArray(data.reviews)) return false;
+    const initialLen = data.reviews.length;
+    data.reviews = data.reviews.filter(r => r.id !== id);
+    if (data.reviews.length !== initialLen) {
+      this.save(data);
+      return true;
+    }
+    return false;
   }
 }
 

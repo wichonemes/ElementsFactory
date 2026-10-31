@@ -22,6 +22,14 @@
       "destination": "/api/affiliates-page"
     },
     {
+      "source": "/facebook",
+      "destination": "/api/facebook"
+    },
+    {
+      "source": "/fb",
+      "destination": "/api/facebook"
+    },
+    {
       "source": "/producto/(.*)",
       "destination": "/api/product-page?slug=$1"
     },
