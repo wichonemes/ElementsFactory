@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Eye, Plus, MessageCircle, Sparkles, Layers, Image as ImageIcon, Calculator, ShoppingBag, Flame, Clock, Zap, Star } from 'lucide-react';
 import { getOptimizedSrcSet, PRODUCT_CARD_SIZES } from '../utils/imageOptimization';
+import { getProductSocialProof } from '../utils/socialProofHelper';
 
 export default function ProductCard({
   product,
@@ -13,6 +14,7 @@ export default function ProductCard({
   onOpenCalculator
 }) {
   const [isHovered, setIsHovered] = useState(false);
+  const socialProof = getProductSocialProof(product);
 
   const handleOpenDetailModal = (e) => {
     if (e && e.stopPropagation) e.stopPropagation();
@@ -234,13 +236,13 @@ export default function ProductCard({
           >
             {product.name}
           </h3>
-          <div className="flex items-center gap-1.5 text-[11px] pt-0.5 select-none">
-            <div className="flex items-center gap-0.5 text-amber-500 font-bold">
-              <Star className="w-3 h-3 fill-amber-400 text-amber-500 shrink-0" />
-              <span className="text-stone-800 font-bold text-[11px]">4.9</span>
+          <div className="flex items-center gap-1.5 text-[10.5px] pt-0.5 select-none">
+            <div className="inline-flex items-center gap-1 px-1.5 py-0.2 rounded bg-[#FAF7F0] border border-[#E8E4DA]/80 text-[#9E6D38]">
+              <Star className="w-2.5 h-2.5 fill-[#D4A359] text-[#9E6D38] shrink-0" />
+              <span className="font-mono text-stone-700 font-bold text-[10px]">{socialProof.rating}</span>
             </div>
             <span className="text-stone-300">·</span>
-            <span className="text-stone-400 text-[10px] font-medium">+100 hechos</span>
+            <span className="text-stone-500 text-[10px] font-medium">{socialProof.shortCraftedLabel}</span>
           </div>
           <div className="flex items-center gap-1 text-[10.5px] font-bold select-none pt-0.5">
             <span className="text-[#9E472A]">Personalizable</span>

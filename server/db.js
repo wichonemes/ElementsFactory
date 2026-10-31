@@ -12481,6 +12481,45 @@ const initialReviews = [
     verified: true,
     approved: true,
     source: 'seed'
+  },
+  {
+    id: 'rev-13',
+    productId: 'general',
+    productName: 'Soporte y Modelos 3D',
+    author: 'Jorge Luis P.',
+    city: 'San Luis Potosí',
+    rating: 3,
+    date: '2026-10-16',
+    comment: 'La pieza 3D tiene muy buena estructura y firmeza. Solo sugeriría que incluyan gomitas antiderrapantes en la base porque en mesas de vidrio resbala un poco si no se tiene cuidado.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-14',
+    productId: 'general',
+    productName: 'Grabado Láser y Acrílico',
+    author: 'Diana Laura G.',
+    city: 'Guadalajara',
+    rating: 4,
+    date: '2026-10-12',
+    comment: 'El acabado del acrílico y la madera es muy limpio. Me hubiera gustado un instructivo impreso de cuidados básicos dentro de la caja, aunque me lo explicaron bien por chat.',
+    verified: true,
+    approved: true,
+    source: 'seed'
+  },
+  {
+    id: 'rev-15',
+    productId: 'general',
+    productName: 'Atención y Cotizaciones',
+    author: 'Esteban Rivas',
+    city: 'San Luis Potosí',
+    rating: 4,
+    date: '2026-10-06',
+    comment: 'Tardaron casi un día en responder mi primera cotización en WhatsApp porque tenían bastante trabajo, pero una vez confirmado el diseño lo entregaron muy rápido y con gran calidad.',
+    verified: true,
+    approved: true,
+    source: 'seed'
   }
 ];
 
@@ -18371,6 +18410,13 @@ class Database {
     if (!Array.isArray(data.reviews) || data.reviews.length === 0) {
       data.reviews = [...initialReviews];
       modified = true;
+    } else {
+      initialReviews.forEach(seedRev => {
+        if (!data.reviews.some(r => r.id === seedRev.id)) {
+          data.reviews.push({ ...seedRev });
+          modified = true;
+        }
+      });
     }
 
     if (!data.settings) data.settings = {};
@@ -18467,16 +18513,33 @@ class Database {
     if (filters.productId && filters.productId !== 'all') {
       const targetId = String(filters.productId).toLowerCase().trim();
       const productReviews = list.filter(r => String(r.productId || '').toLowerCase() === targetId);
-      const generalReviews = list.filter(r => !r.productId || r.productId === 'general');
-      // Mostrar primero las específicas del producto, complementando con las generales de taller
-      list = [...productReviews, ...generalReviews];
-    }
+      const generalPool = list.filter(r => !r.productId || r.productId === 'general');
 
-    // Ordenar de más reciente a más antigua
-    list.sort((a, b) => new Date(b.date || b.createdAt || 0) - new Date(a.date || a.createdAt || 0));
+      let hash = 0;
+      for (let i = 0; i < targetId.length; i++) {
+        hash = (hash << 5) - hash + targetId.charCodeAt(i);
+        hash |= 0;
+      }
+      const posHash = Math.abs(hash);
+      const maxCount = 2 + (posHash % 2); // 2 o 3 opiniones por producto
 
-    if (filters.limit) {
-      list = list.slice(0, Number(filters.limit));
+      const selectedGenerals = [];
+      const needed = Math.max(0, maxCount - productReviews.length);
+      for (let i = 0; i < needed && generalPool.length > 0; i++) {
+        const idx = (posHash + i * 3) % generalPool.length;
+        if (!selectedGenerals.includes(generalPool[idx])) {
+          selectedGenerals.push(generalPool[idx]);
+        }
+      }
+
+      list = [...productReviews, ...selectedGenerals].slice(0, maxCount);
+    } else {
+      // Ordenar de más reciente a más antigua para admin o listado general
+      list.sort((a, b) => new Date(b.date || b.createdAt || 0) - new Date(a.date || a.createdAt || 0));
+
+      if (filters.limit) {
+        list = list.slice(0, Number(filters.limit));
+      }
     }
 
     // Resumen y promedio de calificación
