@@ -2381,7 +2381,21 @@ app.use((error, _req, res, _next) => {
 // Fallback for SPA routing if dist exists con soporte para Open Graph dinámico en WhatsApp
 const distIndex = path.join(distDir, 'index.html');
 if (fs.existsSync(distIndex)) {
-  app.use((req, res) => {
+  app.get(/^\/(uploads|brand|portafolio|portfolio|interfaces|products|downloads|animacion|audiovisual|editorial|fotografia|identidad-corporativa|ilustracion|impresos|maquetado-inicio-wicho-v2|mi-portafolio|modelado-3d|optimized)\/.*/, async (req, res) => {
+  try {
+    const pathname = decodeURIComponent(String(req.params[0] || '')).replace(/^\/+/, '');
+    const result = await resolveImageFromBlob(pathname);
+    if (!result) return res.status(404).json({ error: 'Imagen no encontrada.' });
+    const buffer = Buffer.from(await new Response(result.stream).arrayBuffer());
+    res.setHeader('Content-Type', result.blob.contentType || 'image/webp');
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    return res.status(200).end(buffer);
+  } catch (err) {
+    return res.status(500).json({ error: err?.message || 'Error al servir la imagen.' });
+  }
+});
+
+app.use((req, res) => {
     // Si la solicitud es para un asset o endpoint no HTML, dejar pasar
     if (req.path.startsWith('/assets/') || req.path.startsWith('/uploads/') || req.path.startsWith('/brand/')) {
       return res.status(404).end();

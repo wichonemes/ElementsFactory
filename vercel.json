@@ -27,75 +27,75 @@
     },
     {
       "source": "/uploads/(.*)",
-      "destination": "/api/images/uploads/$1"
+      "destination": "/api/router?__path=/uploads/$1"
     },
     {
       "source": "/brand/(.*)",
-      "destination": "/api/images/brand/$1"
+      "destination": "/api/router?__path=/brand/$1"
     },
     {
       "source": "/portafolio/(.*)",
-      "destination": "/api/images/portafolio/$1"
+      "destination": "/api/router?__path=/portafolio/$1"
     },
     {
       "source": "/portfolio/(.*)",
-      "destination": "/api/images/portfolio/$1"
+      "destination": "/api/router?__path=/portfolio/$1"
     },
     {
       "source": "/interfaces/(.*)",
-      "destination": "/api/images/interfaces/$1"
+      "destination": "/api/router?__path=/interfaces/$1"
     },
     {
       "source": "/products/(.*)",
-      "destination": "/api/images/products/$1"
+      "destination": "/api/router?__path=/products/$1"
     },
     {
       "source": "/downloads/(.*)",
-      "destination": "/api/images/downloads/$1"
+      "destination": "/api/router?__path=/downloads/$1"
     },
     {
       "source": "/animacion/(.*)",
-      "destination": "/api/images/animacion/$1"
+      "destination": "/api/router?__path=/animacion/$1"
     },
     {
       "source": "/audiovisual/(.*)",
-      "destination": "/api/images/audiovisual/$1"
+      "destination": "/api/router?__path=/audiovisual/$1"
     },
     {
       "source": "/editorial/(.*)",
-      "destination": "/api/images/editorial/$1"
+      "destination": "/api/router?__path=/editorial/$1"
     },
     {
       "source": "/fotografia/(.*)",
-      "destination": "/api/images/fotografia/$1"
+      "destination": "/api/router?__path=/fotografia/$1"
     },
     {
       "source": "/identidad-corporativa/(.*)",
-      "destination": "/api/images/identidad-corporativa/$1"
+      "destination": "/api/router?__path=/identidad-corporativa/$1"
     },
     {
       "source": "/ilustracion/(.*)",
-      "destination": "/api/images/ilustracion/$1"
+      "destination": "/api/router?__path=/ilustracion/$1"
     },
     {
       "source": "/impresos/(.*)",
-      "destination": "/api/images/impresos/$1"
+      "destination": "/api/router?__path=/impresos/$1"
     },
     {
       "source": "/maquetado-inicio-wicho-v2/(.*)",
-      "destination": "/api/images/maquetado-inicio-wicho-v2/$1"
+      "destination": "/api/router?__path=/maquetado-inicio-wicho-v2/$1"
     },
     {
       "source": "/mi-portafolio/(.*)",
-      "destination": "/api/images/mi-portafolio/$1"
+      "destination": "/api/router?__path=/mi-portafolio/$1"
     },
     {
       "source": "/modelado-3d/(.*)",
-      "destination": "/api/images/modelado-3d/$1"
+      "destination": "/api/router?__path=/modelado-3d/$1"
     },
     {
       "source": "/optimized/(.*)",
-      "destination": "/api/images/optimized/$1"
+      "destination": "/api/router?__path=/optimized/$1"
     },
     {
       "source": "/((?!api/|uploads/|brand/|portafolio/|portfolio/|interfaces/|products/|downloads/|animacion/|audiovisual/|editorial/|fotografia/|identidad-corporativa/|ilustracion/|impresos/|maquetado-inicio-wicho-v2/|mi-portafolio/|modelado-3d/|optimized/).*)*",
