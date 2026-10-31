@@ -169,6 +169,25 @@ async function resolveImageFromBlob(pathname) {
     }
   }
 
+  // 5. RESPALDO INTELIGENTE DE VARIANTES: Si se pidió una variante optimizada (-card o -medium)
+  // y no existe como archivo separado, servir la imagen base original para que nunca se rompa.
+  if (!entry) {
+    const variantMatch = pathname.match(/^(.*)-(card|medium)\.([a-z0-9]+)$/i);
+    if (variantMatch) {
+      const baseStem = variantMatch[1];
+      const ext = variantMatch[3];
+      entry = await resolveImageFromBlob(`${baseStem}.${ext}`);
+      if (!entry) {
+        for (const candidateExt of ['webp', 'jpg', 'jpeg', 'png']) {
+          if (candidateExt !== ext.toLowerCase()) {
+            entry = await resolveImageFromBlob(`${baseStem}.${candidateExt}`);
+            if (entry) break;
+          }
+        }
+      }
+    }
+  }
+
   if (entry) {
     IMAGE_BLOB_CACHE.set(pathname, { at: Date.now(), ...entry });
   }
@@ -2444,10 +2463,8 @@ app.use((error, _req, res, _next) => {
   res.status(tooLarge ? 413 : 400).json({ error: message });
 });
 
-// Fallback for SPA routing if dist exists con soporte para Open Graph dinámico en WhatsApp
-const distIndex = path.join(distDir, 'index.html');
-if (fs.existsSync(distIndex)) {
-  app.get(/^\/((?:uploads|brand|portafolio|portfolio|interfaces|products|downloads|animacion|audiovisual|editorial|fotografia|identidad-corporativa|ilustracion|impresos|maquetado-inicio-wicho-v2|mi-portafolio|modelado-3d|optimized)\/.+)$/, async (req, res) => {
+// Endpoint global para servir imágenes de uploads, brand y portafolio con fallback resiliente
+app.get(/^\/((?:uploads|brand|portafolio|portfolio|interfaces|products|downloads|animacion|audiovisual|editorial|fotografia|identidad-corporativa|ilustracion|impresos|maquetado-inicio-wicho-v2|mi-portafolio|modelado-3d|optimized)\/.+)$/, async (req, res) => {
   try {
     const pathname = decodeURIComponent(String(req.params[0] || '')).replace(/^\/+/, '');
     const image = await resolveImageFromBlob(pathname);
@@ -2460,7 +2477,10 @@ if (fs.existsSync(distIndex)) {
   }
 });
 
-app.use((req, res) => {
+// Fallback for SPA routing if dist exists con soporte para Open Graph dinámico en WhatsApp
+const distIndex = path.join(distDir, 'index.html');
+if (fs.existsSync(distIndex)) {
+  app.use((req, res) => {
     // Si la solicitud es para un asset o endpoint no HTML, dejar pasar
     if (req.path.startsWith('/assets/') || req.path.startsWith('/uploads/') || req.path.startsWith('/brand/')) {
       return res.status(404).end();

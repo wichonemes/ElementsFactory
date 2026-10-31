@@ -7,10 +7,11 @@
  */
 export function getOptimizedSrcSet(src) {
   if (!src || typeof src !== 'string') return undefined;
-  if (/^(data:|blob:|https?:)/i.test(src)) return undefined;
-  if (/\.svg(?:[?#]|$)/i.test(src)) return undefined;
+  const normalized = src.trim().replace(/^\.\//, '/');
+  if (/^(data:|blob:|https?:)/i.test(normalized)) return undefined;
+  if (/\.svg(?:[?#]|$)/i.test(normalized)) return undefined;
 
-  const clean = src.split(/[?#]/, 1)[0];
+  const clean = normalized.split(/[?#]/, 1)[0];
   const match = clean.match(/^(.*\/)?([^/]+)\.(jpe?g|png|webp)$/i);
   if (!match) return undefined;
 

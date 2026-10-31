@@ -153,6 +153,7 @@ export default function ProductCard({
           decoding="async"
           onError={(e) => {
             e.currentTarget.onerror = null;
+            e.currentTarget.srcset = '';
             e.currentTarget.src = '/uploads/img_002.jpg';
           }}
         />

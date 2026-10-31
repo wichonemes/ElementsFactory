@@ -54,9 +54,24 @@ export default function ProductDetailModal({
   if (!product) return null;
 
   // Build clean unified gallery list strictly following the 4-photo standard
-  const gallery = product.gallery && product.gallery.length > 0
-    ? product.gallery
-    : [product.primaryImage];
+  const cleanUrl = (u) => (typeof u === 'string' && u.trim() ? u.trim().replace(/^\.\//, '/') : '');
+  const baseContext = cleanUrl(product.gallery?.[0]) || cleanUrl(product.primaryImage) || cleanUrl(product.contextImage);
+  const baseWhite = cleanUrl(product.gallery?.[1]) || cleanUrl(product.whiteBgImage) || baseContext;
+  const baseDetail = cleanUrl(product.gallery?.[2]) || cleanUrl(product.detailImage) || baseWhite || baseContext;
+  const baseScale = cleanUrl(product.gallery?.[3]) || cleanUrl(product.measureImage) || cleanUrl(product.dimensionsImage) || baseDetail || baseWhite || baseContext;
+
+  const rawGallery = Array.isArray(product.gallery) && product.gallery.length > 0
+    ? product.gallery.map(cleanUrl).filter(Boolean)
+    : [baseContext].filter(Boolean);
+
+  const gallery = rawGallery.length >= 4
+    ? rawGallery
+    : [
+        rawGallery[0] || baseContext,
+        rawGallery[1] || baseWhite,
+        rawGallery[2] || baseDetail,
+        rawGallery[3] || baseScale
+      ].filter(Boolean);
 
   const defaultMeta = product.isBundle
     ? [
@@ -212,7 +227,7 @@ export default function ProductDetailModal({
     setIsArcadeOpen(false);
   };
 
-  const activeImage = gallery[activeIdx] || product.primaryImage;
+  const activeImage = gallery[activeIdx] || baseContext;
   const currentMeta = galleryMeta[activeIdx] || {
     label: `${activeIdx + 1}. Fotografía adicional`,
     shortLabel: `Foto ${activeIdx + 1}`,
@@ -480,6 +495,14 @@ export default function ProductDetailModal({
                       : 'object-contain p-2.5 sm:p-4 bg-white'
                   } ${isZoomed ? 'scale-150 cursor-zoom-out' : 'cursor-zoom-in'}`}
                   onClick={() => setIsZoomed(!isZoomed)}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.srcset = '';
+                    const fb = baseContext || '/brand/artesano_digital_icono.png';
+                    if (e.currentTarget.src !== fb) {
+                      e.currentTarget.src = fb;
+                    }
+                  }}
                 />
 
                 {/* Marca de Agua Sutil de Taller para Protección de Imagen con Logotipo Oficial */}
@@ -583,6 +606,14 @@ export default function ProductDetailModal({
                             onDragStart={(e) => e.preventDefault()}
                             onContextMenu={(e) => e.preventDefault()}
                             className={`w-full h-full select-none pointer-events-none ${idx === 0 ? 'object-cover' : 'object-contain p-1'}`}
+                            onError={(e) => {
+                              e.currentTarget.onerror = null;
+                              e.currentTarget.srcset = '';
+                              const fb = baseContext || '/brand/artesano_digital_icono.png';
+                              if (e.currentTarget.src !== fb) {
+                                e.currentTarget.src = fb;
+                              }
+                            }}
                           />
                         </div>
                         <div className="flex items-center justify-center gap-1.5 w-full px-0.5">

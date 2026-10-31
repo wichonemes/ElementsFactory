@@ -417,6 +417,8 @@ const initialCategories = [
   "primaryImage": "/uploads/t42_clicker_mecanico_contexto.webp",
   "gallery": [
     "/uploads/t42_clicker_mecanico_contexto.webp",
+    "/uploads/t42_clicker_mecanico_estudio.webp",
+    "/uploads/t42_clicker_mecanico_estudio.webp",
     "/uploads/t42_clicker_mecanico_estudio.webp"
   ],
   "shortDescription": "Juguete antiestrés clicker con switch mecánico de 3 pines tipo Outemu Blue con sonido táctil clicky y keycap impreso en 3D.",
@@ -468,11 +470,13 @@ const initialCategories = [
   "createdAt": "2026-10-25T19:18:35.313Z",
   "updatedAt": "2026-10-25T19:18:35.313Z",
   "whiteBgImage": "/uploads/t42_clicker_mecanico_estudio.webp",
+  "detailImage": "/uploads/t42_clicker_mecanico_estudio.webp",
+  "measureImage": "/uploads/t42_clicker_mecanico_estudio.webp",
   "galleryMeta": [
     {
       "label": "1. Vista de contexto en setup gamer / escritorio",
       "shortLabel": "Contexto",
-      "type": "context",
+      "type": "lifestyle",
       "materialInfo": "Carcasa PLA verde olivo mate con switch mecánico táctil y keycap crema"
     },
     {
@@ -480,6 +484,18 @@ const initialCategories = [
       "shortLabel": "Fondo Blanco",
       "type": "white_angle",
       "materialInfo": "Vista isométrica 45° con switch Outemu y argolla metálica reforzada"
+    },
+    {
+      "label": "3. Detalle macro de switch mecánico y keycap",
+      "shortLabel": "Detalle",
+      "type": "detail",
+      "materialInfo": "Switch tipo Outemu con clic táctil y keycap desmontable"
+    },
+    {
+      "label": "4. Medidas y proporciones en mano",
+      "shortLabel": "Medidas",
+      "type": "measures",
+      "materialInfo": "3.2 x 2.4 x 2.8 cm, formato compacto para llavero de bolsillo"
     }
   ],
   "manufacturingRecipe": {

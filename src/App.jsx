@@ -1444,6 +1444,11 @@ export default function App() {
             settings={settings}
             onTrackWhatsApp={handleTrackWhatsAppQuote}
             onOpenArcade={handleOpenArcade}
+            onSelectProduct={(itemProduct) => {
+              const fullProd = products.find(p => p.id === itemProduct?.id || p.code === itemProduct?.code) || itemProduct;
+              setIsCartOpen(false);
+              setSelectedProduct(fullProd);
+            }}
           />
         </Suspense>
       )}

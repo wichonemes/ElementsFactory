@@ -2,7 +2,7 @@
 import {
   X, Trash2, MessageCircle, Copy, Check, ShoppingBag, ArrowRight,
   Info, Calendar, MapPin, User, Truck, AlertTriangle, Zap, Tag, Sparkles, RotateCcw,
-  Paintbrush, FileText, Gift, Ticket, Coins, Download, Loader2, Mail, Phone
+  Paintbrush, FileText, Gift, Ticket, Coins, Download, Loader2, Mail, Phone, Eye
 } from 'lucide-react';
 import { formatServiceDate } from '../utils/serviceStatus';
 import { findCoupon, calculateCouponDiscount, getCouponCategory, getCouponCategoryLabel, isCouponExpired } from '../utils/couponsHelper';
@@ -18,7 +18,8 @@ export default function QuoteDrawer({
   onClearCart,
   settings,
   onTrackWhatsApp,
-  onOpenArcade
+  onOpenArcade,
+  onSelectProduct
 }) {
   if (!isOpen) return null;
 
@@ -603,12 +604,26 @@ export default function QuoteDrawer({
                       key={`${p.id}-${idx}`}
                       className="p-3 rounded-2xl border border-[#E8E4DA] bg-white flex gap-3 relative group shadow-2xs"
                     >
-                      {/* Miniatura Cuadrada */}
-                      <img loading="lazy"
-                        src={p.primaryImage}
-                        alt={p.name}
-                        className="w-16 h-16 rounded-xl object-cover bg-gray-50 border border-gray-100 shrink-0"
-                      />
+                      {/* Miniatura Cuadrada Clickeable */}
+                      <button
+                        type="button"
+                        onClick={() => onSelectProduct && onSelectProduct(p)}
+                        className="w-16 h-16 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 shrink-0 cursor-pointer hover:ring-2 hover:ring-[#2D4F3E] transition-all relative group/thumb"
+                        title={`Ver detalles de ${p.name}`}
+                      >
+                        <img loading="lazy"
+                          src={(p.primaryImage || '').replace(/^\.\//, '/')}
+                          alt={p.name}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = '/brand/artesano_digital_icono.png';
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-black/25 opacity-0 group-hover/thumb:opacity-100 flex items-center justify-center transition-opacity">
+                          <Eye className="w-4 h-4 text-white drop-shadow" />
+                        </div>
+                      </button>
 
                       {/* Info del Producto */}
                       <div className="flex-1 min-w-0 space-y-1">
@@ -629,9 +644,20 @@ export default function QuoteDrawer({
                           </button>
                         </div>
 
-                        <h5 className="text-xs font-bold text-[#1F2421] truncate">
-                          {p.name}
-                        </h5>
+                        <button
+                          type="button"
+                          onClick={() => onSelectProduct && onSelectProduct(p)}
+                          className="text-left block w-full group/title cursor-pointer"
+                          title={`Ver detalles de ${p.name}`}
+                        >
+                          <h5 className="text-xs font-bold text-[#1F2421] group-hover/title:text-[#2D4F3E] transition-colors truncate">
+                            {p.name}
+                          </h5>
+                          <span className="text-[10px] text-[#2D4F3E] hover:underline flex items-center gap-1 mt-0.5 font-medium">
+                            <Eye className="w-3 h-3 inline shrink-0" />
+                            <span>Ver detalles y medidas</span>
+                          </span>
+                        </button>
 
                         {/* Variantes seleccionadas */}
                         {item.selectedVariants && Object.keys(item.selectedVariants).length > 0 && (
