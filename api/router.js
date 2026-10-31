@@ -12,10 +12,10 @@ function ensureCatalog() {
       try {
         if (cloudDb.enabled) {
           await cloudDb.transaction(async () => {
-            db.syncCatalogWithCodebase();
+            db.dedupeProductSkus();
           }, () => true, { lock: true });
         } else {
-          db.syncCatalogWithCodebase();
+          db.dedupeProductSkus();
         }
       } catch (err) {
         console.error('[CATALOG] No se pudo sincronizar el catálogo:', err.message);

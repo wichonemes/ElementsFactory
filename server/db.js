@@ -15602,6 +15602,17 @@ class Database {
     fs.renameSync(tmpPath, DB_PATH);
   }
 
+  /**
+   * Corrige únicamente los SKU repetidos. No toca precios, imágenes ni datos del
+   * catálogo, por lo que es seguro ejecutarlo sobre la base de producción.
+   */
+  dedupeProductSkus() {
+    const data = this.read();
+    const fixed = ensureUniqueProductSkus(data.products);
+    if (fixed > 0) this.save(data);
+    return { fixed, totalProducts: (data.products || []).length };
+  }
+
   syncCatalogWithCodebase() {
     const data = this.read();
     let changed = false;
