@@ -40,7 +40,7 @@ if (production && (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_RO
   console.log('[STORAGE] Supabase Storage no configurado. Utilizando almacenamiento local en public/uploads.');
 }
 app.disable('x-powered-by');
-if (process.env.RENDER) app.set('trust proxy', 1);
+if (process.env.RENDER || process.env.VERCEL) app.set('trust proxy', 1);
 // Wrap only the final API handler: authentication and multipart parsing run first.
 // Upload endpoints are excluded so long file network transfers don't hold database row locks.
 for (const method of ['get', 'post', 'put', 'delete', 'patch']) {
