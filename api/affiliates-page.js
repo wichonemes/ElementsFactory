@@ -77,7 +77,6 @@ export default async function handler(req, res) {
   html = html.replace(/<meta\s+name="description"[^>]*>/i, '');
   html = html.replace(/<meta\s+property="og:[^"]+"[^>]*>/gi, '');
   html = html.replace(/<meta\s+name="twitter:[^"]+"[^>]*>/gi, '');
-  html = html.replace(/<base\s+href="[^"]*"\s*\/?>/i, '');
   html = html.replace('</head>', `    ${tags}\n  </head>`);
 
   res.statusCode = 200;
