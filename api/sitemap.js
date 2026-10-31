@@ -33,6 +33,7 @@ export default async function handler(req, res) {
 
   const staticPages = [
     { loc: `${site}/`, priority: '1.0', changefreq: 'weekly' },
+    { loc: `${site}/nosotros`, priority: '0.7', changefreq: 'monthly' },
     { loc: `${site}/?area=hogar`, priority: '0.9', changefreq: 'weekly' },
     { loc: `${site}/?area=negocios`, priority: '0.9', changefreq: 'weekly' },
     { loc: `${site}/?area=eventos`, priority: '0.9', changefreq: 'weekly' },

@@ -4,6 +4,36 @@ const DELETED_PRODUCTS_BLOCKLIST = [
   'galga-calibradora-roscas-ind2',
   'tobera-ventilacion-automotriz-ind1'
 ];
+// Revisión de precios de octubre 2026: sube los productos cuyo margen neto
+// quedó por debajo del 40% (después de la comisión de tarjeta del 4.1%).
+// Solo se aplica si el precio actual sigue siendo el precio anterior, para no
+// pisar ajustes manuales hechos después desde el panel.
+const PRICE_REVIEW_2026_10 = {
+  'EV-ANTICRUDA': { from: 45, to: 60 },
+  L14: { from: 143, to: 185 },
+  L15: { from: 49, to: 65 },
+  L4: { from: 108, to: 145 },
+  L8: { from: 79, to: 85 },
+  S8: { from: 150, to: 165 },
+  'SB-TAZA-01': { from: 140, to: 165 },
+  'SB-TERMO-01': { from: 230, to: 250 },
+  T10: { from: 99, to: 105 },
+  T11: { from: 100, to: 140 },
+  T16: { from: 199, to: 220 },
+  T18: { from: 199, to: 240 },
+  T21: { from: 139, to: 145 },
+  T26: { from: 169, to: 200 },
+  T27: { from: 249, to: 260 },
+  T29: { from: 149, to: 160 },
+  T32: { from: 299, to: 320 },
+  T38: { from: 449, to: 500 },
+  T6: { from: 149, to: 185 },
+  T7: { from: 199, to: 240 },
+  'VN-GORRA-01': { from: 145, to: 165 },
+  'VN-PLAYERA-01': { from: 185, to: 230 },
+  'VN-TOTE-01': { from: 120, to: 145 }
+};
+
 import { cloudDb } from './cloud-db.js';
 import fs from 'fs';
 import path from 'path';
@@ -15611,6 +15641,35 @@ class Database {
     const fixed = ensureUniqueProductSkus(data.products);
     if (fixed > 0) this.save(data);
     return { fixed, totalProducts: (data.products || []).length };
+  }
+
+  /**
+   * Aplica una sola vez la revisión de precios de octubre 2026.
+   * Devuelve cuántos productos cambiaron.
+   */
+  applyPriceReview2026() {
+    const data = this.read();
+    if (!data.meta) data.meta = {};
+    if (data.meta.priceReview2026Applied) return { applied: 0, alreadyApplied: true };
+    let applied = 0;
+    for (const product of data.products || []) {
+      const row = PRICE_REVIEW_2026_10[product.code];
+      if (!row) continue;
+      if (Number(product.price) !== row.from) continue;
+      product.price = row.to;
+      if (product.regularPrice != null && Number(product.regularPrice) <= row.to) {
+        delete product.regularPrice;
+        delete product.savings;
+      } else if (product.regularPrice != null) {
+        product.savings = Number(product.regularPrice) - row.to;
+      }
+      product.updatedAt = new Date().toISOString();
+      applied += 1;
+    }
+    data.meta.priceReview2026Applied = new Date().toISOString();
+    data.meta.priceReview2026Count = applied;
+    this.save(data);
+    return { applied, alreadyApplied: false };
   }
 
   syncCatalogWithCodebase() {

@@ -10,6 +10,10 @@
   },
   "rewrites": [
     {
+      "source": "/nosotros",
+      "destination": "/api/about-page"
+    },
+    {
       "source": "/producto/(.*)",
       "destination": "/api/product-page?slug=$1"
     },

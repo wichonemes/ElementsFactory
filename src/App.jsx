@@ -8,6 +8,7 @@ import ProductDetailModal from './components/ProductDetailModal';
 import QuoteDrawer from './components/QuoteDrawer';
 import AdminPanel from './components/AdminPanel';
 import Footer from './components/Footer';
+import AboutPage from './components/AboutPage';
 import CraftShowcase from './components/CraftShowcase';
 import PatchBarShowcase from './components/PatchBarShowcase';
 import QuoteCalculatorModal from './components/QuoteCalculatorModal';
@@ -173,6 +174,7 @@ export default function App() {
   const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false);
   const [isCatalogSelectorOpen, setIsCatalogSelectorOpen] = useState(false);
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(() => typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('menu'));
+  const [showAbout, setShowAbout] = useState(() => typeof window !== 'undefined' && /^\/nosotros\/?$/i.test(window.location.pathname));
   const [mobileNavTab, setMobileNavTab] = useState(() => (typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('menu')) ? 'menu' : 'home');
 
   const handleOpenCatalogSelector = () => {
@@ -275,6 +277,13 @@ export default function App() {
       }
     }
   }, [products]);
+
+  // Sincroniza la página "Nosotros" con el historial del navegador
+  useEffect(() => {
+    const onPopState = () => setShowAbout(/^\/nosotros\/?$/i.test(window.location.pathname));
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
 
   // Sincronización de restablecimiento inmediato de monedas de Arcade desde el servidor
   useEffect(() => {
@@ -858,6 +867,13 @@ export default function App() {
     }
   };
 
+  const handleCloseAbout = () => {
+    setShowAbout(false);
+    if (/^\/nosotros\/?$/i.test(window.location.pathname)) {
+      window.history.replaceState({}, '', '/');
+    }
+  };
+
   const handleOpenWhatsAppDirect = () => {
     if (settings?.whatsappNumber) {
       window.open(
@@ -869,6 +885,16 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FBF9F5] text-[#1F2421] pb-20 lg:pb-0">
+      {showAbout && (
+        <AboutPage
+          onBack={handleCloseAbout}
+          onExplore={() => {
+            handleCloseAbout();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          settings={settings}
+        />
+      )}
       
       {/* Top Navigation para Escritorio */}
       <div className="hidden md:block">
@@ -1409,6 +1435,10 @@ export default function App() {
       <Footer
         onSelectWorld={handleSelectWorld}
         onOpenAdmin={() => setIsAdminOpen(true)}
+        onOpenAbout={() => {
+          window.history.pushState({}, '', '/nosotros');
+          setShowAbout(true);
+        }}
         settings={settings}
       />
 

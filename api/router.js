@@ -13,9 +13,11 @@ function ensureCatalog() {
         if (cloudDb.enabled) {
           await cloudDb.transaction(async () => {
             db.dedupeProductSkus();
+            db.applyPriceReview2026();
           }, () => true, { lock: true });
         } else {
           db.dedupeProductSkus();
+          db.applyPriceReview2026();
         }
       } catch (err) {
         console.error('[CATALOG] No se pudo sincronizar el catálogo:', err.message);

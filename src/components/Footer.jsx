@@ -2,7 +2,7 @@ import React from 'react';
 import { Shield, Phone, Mail, MapPin, Clock, Heart } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 
-export default function Footer({ onSelectWorld, onOpenAdmin, settings }) {
+export default function Footer({ onSelectWorld, onOpenAdmin, onOpenAbout, settings }) {
   return (
     <footer className="bg-[#1F2421] text-gray-300 border-t border-black/20 pt-16 pb-12 text-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
@@ -104,6 +104,15 @@ export default function Footer({ onSelectWorld, onOpenAdmin, settings }) {
               Atención Comercial
             </h4>
             <div className="space-y-2.5">
+              {onOpenAbout && (
+                <button
+                  onClick={onOpenAbout}
+                  className="flex items-center gap-2 text-gray-300 hover:text-emerald-400 transition-colors text-left font-semibold"
+                >
+                  <Heart className="w-3.5 h-3.5 text-emerald-400/80 shrink-0" />
+                  <span>Sobre el taller (Nosotros)</span>
+                </button>
+              )}
               {settings?.whatsappNumber && (
                 <a
                   href={`https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, '')}?text=Hola%20Artesano%20Digital,%20me%20gustar%C3%ADa%20hacer%20una%20consulta.`}
