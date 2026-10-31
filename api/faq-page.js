@@ -3,10 +3,10 @@ let shellCache = { html: '', at: 0 };
 
 const escapeHtml = (value = '') =>
   String(value)
-    .replace(/&/g, '&amp;)
-    .replace(/</g, '&lt;)
-    .replace(/>/g, '&gt;)
-    .replace(/"/g, '&quot;)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
 
 async function loadShell(site) {
@@ -32,7 +32,8 @@ export default async function handler(req, res) {
   const shell = await loadShell(site);
 
   if (!shell) {
-    res.status(503).setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.statusCode = 503;
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
     res.end('Sitio temporalmente no disponible. Intenta de nuevo en unos segundos.');
     return;
   }
