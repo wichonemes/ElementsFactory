@@ -256,7 +256,8 @@ export default function App() {
     if (products && products.length > 0) {
       try {
         const urlParams = new URLSearchParams(window.location.search);
-        const targetProd = urlParams.get('prod') || localStorage.getItem('artesano_target_prod');
+        const injectedProduct = (typeof window !== 'undefined' && window.__ARTESANO_PRODUCT__) ? String(window.__ARTESANO_PRODUCT__) : '';
+        const targetProd = urlParams.get('prod') || injectedProduct || localStorage.getItem('artesano_target_prod');
         if (targetProd) {
           const cleanTarget = targetProd.trim().toUpperCase();
           const match = products.find(p =>
@@ -967,6 +968,24 @@ export default function App() {
       {/* VISTA MÓVIL ESTILO MERCADO LIBRE: Banner Compacto + Cortinilla */}
       {activeWorld === 'all' && !searchQuery && (
         <div className="md:hidden">
+          <div className="px-4 pt-4 pb-3 bg-gradient-to-b from-[#F4F0E8] to-[#FBF9F5]">
+            <p className="text-[10px] uppercase tracking-[0.18em] font-bold text-[#2D4F3E]">
+              Taller digital mexicano
+            </p>
+            <h2 className="mt-1 text-[22px] leading-tight font-extrabold text-[#1F2421]">
+              Si lo piensas, se hace.
+            </h2>
+            <p className="mt-1 text-[13px] leading-snug text-[#5B5F5A]">
+              Detalles personalizados para <span className="font-semibold text-[#2D4F3E]">empresas, hogares y eventos</span>.
+            </p>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {['Impresión 3D', 'Corte láser', 'Sublimación', 'NFC'].map(tag => (
+                <span key={tag} className="rounded-full bg-white border border-[#E4DED1] px-2.5 py-1 text-[11px] font-semibold text-[#2D4F3E]">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
           <MobileBannerCarousel
             slides={mobileSlides}
             onSelectSlide={handleSelectWorld}

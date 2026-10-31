@@ -10,6 +10,14 @@
   },
   "rewrites": [
     {
+      "source": "/producto/(.*)",
+      "destination": "/api/product-page?slug=$1"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    },
+    {
       "source": "/api/(.*)",
       "destination": "/api/router?__path=$1"
     },

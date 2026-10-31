@@ -147,15 +147,30 @@ export default function ProductDetailModal({
   useEffect(() => {
     if (!product) return;
     const modalKey = 'artesano_modal_' + (product.id || 'detail');
-    window.history.pushState({ modal: modalKey }, '', window.location.href);
+    const slug = product.slug || product.id || product.code;
+    const productPath = slug ? `/producto/${encodeURIComponent(slug)}` : '';
+    const currentPath = window.location.pathname.replace(/\/+$/, '');
+    const targetUrl = (productPath && currentPath !== productPath) ? productPath : window.location.href;
+    window.history.pushState({ modal: modalKey }, '', targetUrl);
 
     const onPopState = () => {
+      if (window.location.pathname.startsWith('/producto/')) {
+        window.history.replaceState({}, '', '/');
+      }
       if (onClose) onClose();
     };
 
     window.addEventListener('popstate', onPopState);
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.stopPropagation();
+        if (onClose) onClose();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
     return () => {
       window.removeEventListener('popstate', onPopState);
+      window.removeEventListener('keydown', onKeyDown);
     };
   }, [product?.id]);
 
@@ -220,9 +235,8 @@ export default function ProductDetailModal({
 
   const handleShare = async () => {
     const origin = window.location.origin;
-    const cleanPath = window.location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '');
-    const prodParam = product.code || product.sku || product.id;
-    const url = `${origin}${cleanPath}/?prod=${encodeURIComponent(prodParam)}`;
+    const slug = product.slug || product.id || product.code;
+    const url = `${origin}/producto/${encodeURIComponent(slug)}`;
     const shareData = {
       title: `${product.name} — Artesano Digital`,
       text: `Mira este producto en Artesano Digital: ${product.name}`,
@@ -380,6 +394,9 @@ export default function ProductDetailModal({
 
   return (
     <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={product?.name ? `Detalle de ${product.name}` : 'Detalle del producto'}
       className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 overflow-y-auto bg-black/70 backdrop-blur-sm animate-fade-in overscroll-contain touch-pan-y"
       onClick={handleSafeClose}
     >
