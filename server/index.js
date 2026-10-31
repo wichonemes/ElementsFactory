@@ -12,6 +12,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import multer from 'multer';
 import { handleUpload } from '@vercel/blob/client';
+import { get as getBlob, putFromUrl } from '@vercel/blob';
 import { db } from './db.js';
 import { repairProductCosts } from '../shared/costing.js';
 import {
@@ -80,6 +81,48 @@ app.use('/api', (_req, res, next) => { res.set('Cache-Control', 'no-store'); nex
 app.use('/api/auth/login', rateLimit({ limit: 15, windowMs: 15 * 60 * 1000 }));
 const trackingLimit = rateLimit({ limit: 120, windowMs: 60 * 1000 });
 app.use(['/api/analytics/event', '/api/tracking'], trackingLimit);
+
+// Imágenes servidas desde Vercel Blob (con migración automática desde el origen anterior).
+const IMAGE_BLOB_CACHE = new Map();
+const IMAGE_BLOB_CACHE_MS = 10 * 60 * 1000;
+
+async function resolveImageFromBlob(pathname) {
+  const cached = IMAGE_BLOB_CACHE.get(pathname);
+  if (cached && Date.now() - cached.at < IMAGE_BLOB_CACHE_MS) return cached.value;
+  let result = null;
+  try {
+    result = (await getBlob(pathname, { access: 'public' })) || null;
+  } catch {
+    result = null;
+  }
+  if ((!result || result.statusCode !== 200) && process.env.BLOB_READ_WRITE_TOKEN) {
+    try {
+      await putFromUrl(pathname, `https://wichonemes.github.io/artesano/${pathname}`, { access: 'public' });
+      result = (await getBlob(pathname, { access: 'public' })) || null;
+    } catch (err) {
+      console.warn(`[IMAGES] No se pudo migrar la imagen ${pathname} a Vercel Blob:`, err?.message || err);
+    }
+  }
+  const value = result && result.statusCode === 200 ? result : null;
+  if (value) IMAGE_BLOB_CACHE.set(pathname, { at: Date.now(), value });
+  return value;
+}
+
+app.get(/\/api\/images\/(.+)/, async (req, res) => {
+  try {
+    const pathname = decodeURIComponent(String(req.params[0] || '')).replace(/^\/+/, '');
+    if (!pathname) return res.status(400).json({ error: 'Ruta de imagen inválida.' });
+    const result = await resolveImageFromBlob(pathname);
+    if (!result) return res.status(404).json({ error: 'Imagen no encontrada.' });
+    const buffer = Buffer.from(await new Response(result.stream).arrayBuffer());
+    res.setHeader('Content-Type', result.blob.contentType || 'image/webp');
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    return res.status(200).end(buffer);
+  } catch (err) {
+    return res.status(500).json({ error: err?.message || 'Error al servir la imagen.' });
+  }
+});
+
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
