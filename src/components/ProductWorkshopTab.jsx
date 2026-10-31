@@ -214,6 +214,7 @@ export default function ProductWorkshopTab({
   const [componentSearch, setComponentSearch] = useState('');
   const [showComponentResults, setShowComponentResults] = useState(false);
   const [addGroup, setAddGroup] = useState('direct');
+  const [activeAddGroupId, setActiveAddGroupId] = useState(null);
   const [materialSearch, setMaterialSearch] = useState('');
   const [selectedMaterialId, setSelectedMaterialId] = useState('');
   const [customName, setCustomName] = useState('');
@@ -367,17 +368,24 @@ export default function ProductWorkshopTab({
   };
 
   const openAddForGroup = (groupId) => {
+    if (activeAddGroupId === groupId) {
+      setActiveAddGroupId(null);
+      return;
+    }
+    setActiveAddGroupId(groupId);
     setAddGroup(groupId);
     setShowMaterialResults(true);
     setMaterialSearch('');
     setSelectedMaterialId('');
     setCustomName('');
+    setNetQty(1);
+    setWasteQty(0);
+    setUnit('pieza');
+    setUnitCost('');
+    setAutoUnitCost(true);
     if (!openGroups.has(groupId)) {
       setOpenGroups(prev => new Set([...prev, groupId]));
     }
-    window.setTimeout(() => {
-      document.getElementById('workshop-add-form')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 60);
   };
 
   const updateRecipe = (nextItems, recipeExtra = {}, formExtra = {}) => {
@@ -478,6 +486,7 @@ export default function ProductWorkshopTab({
     if (!openGroups.has(addGroup)) {
       setOpenGroups(prev => new Set([...prev, addGroup]));
     }
+    setActiveAddGroupId(null);
     resetAddForm();
     notify(`${group.short}: “${name}” agregado a la receta.`);
   };
@@ -773,189 +782,11 @@ export default function ProductWorkshopTab({
           </div>
         </div>
 
-        {/* Agregar insumo: búsqueda visual + captura rápida */}
-        <div id="workshop-add-form" className="rounded-2xl border border-emerald-200 bg-emerald-50/40 p-3 space-y-2">
-          <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800 mr-1">Agregar a:</span>
-            {SUPPLY_GROUPS.filter(group => group.id !== 'component').map(group => (
-              <button
-                key={group.id}
-                type="button"
-                onClick={() => { setAddGroup(group.id); setShowMaterialResults(true); setMaterialSearch(''); }}
-                className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold border transition-colors cursor-pointer ${
-                  addGroup === group.id
-                    ? 'bg-[#2D4F3E] border-[#2D4F3E] text-white shadow-sm'
-                    : 'bg-white border-stone-200 text-gray-600 hover:border-emerald-300'
-                }`}
-              >
-                <group.icon className="w-3 h-3" /> {group.short}
-              </button>
-            ))}
-          </div>
-
-          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[9px] text-gray-500">
-            <span>
-              Mostrando <strong className="text-emerald-800">{GROUP_MAP[addGroup]?.label || 'insumos'}</strong>
-            </span>
-            <span>·</span>
-            <span>
-              Áreas activas: <strong className="text-gray-700">{activeAreas.length > 0 ? activeAreas.map(area => area.short).join(', ') : 'todas'}</strong>
-            </span>
-            {activeAreas.length > 1 && <span className="text-emerald-700 font-semibold">Producto multiárea</span>}
-            <span className="text-gray-400">Cambia las áreas arriba si la receta usa otra técnica.</span>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-[1.4fr_repeat(5,minmax(0,.55fr))_auto] gap-2 items-end">
-            <div className="relative col-span-2 sm:col-span-3 lg:col-span-1">
-              <label className="text-[9px] font-bold text-gray-500 uppercase">Buscar insumo</label>
-              <div className="relative mt-0.5">
-                <Search className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type="text"
-                  value={materialSearch}
-                  onChange={event => { setMaterialSearch(event.target.value); setShowMaterialResults(true); }}
-                  onFocus={() => setShowMaterialResults(true)}
-                  placeholder="TPU, filamento, madera, imán, caja…"
-                  className="w-full pl-8 pr-2 py-2 rounded-xl border border-stone-300 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-emerald-300"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="text-[9px] font-bold text-gray-500 uppercase">Cantidad</label>
-              <input
-                type="number" min="0.01" step="0.01" value={netQty}
-                onChange={event => setNetQty(event.target.value)}
-                className="w-full mt-0.5 px-2 py-2 rounded-xl border border-stone-300 bg-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-emerald-300"
-              />
-            </div>
-            <div>
-              <label className="text-[9px] font-bold text-gray-500 uppercase">Merma</label>
-              <input
-                type="number" min="0" step="0.01" value={wasteQty}
-                onChange={event => setWasteQty(event.target.value)}
-                className="w-full mt-0.5 px-2 py-2 rounded-xl border border-stone-300 bg-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-emerald-300"
-              />
-            </div>
-            <div>
-              <label className="text-[9px] font-bold text-gray-500 uppercase">Unidad</label>
-              <select
-                value={addUnitOptions.some(option => option.value === unit) ? unit : ''}
-                onChange={event => setUnit(event.target.value)}
-                className="w-full mt-0.5 px-2 py-2 rounded-xl border border-stone-300 bg-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-emerald-300"
-              >
-                {!addUnitOptions.some(option => option.value === unit) && (
-                  <option value="">{unit || 'Unidad'}</option>
-                )}
-                {addUnitOptions.map(option => (
-                  <option key={option.value} value={option.value}>{option.label}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <div className="flex items-center justify-between gap-1">
-                <label className="text-[9px] font-bold text-gray-500 uppercase">Costo/u</label>
-                <button
-                  type="button"
-                  onClick={() => setAutoUnitCost(value => !value)}
-                  className={`text-[8px] font-black px-1 py-0.5 rounded border cursor-pointer ${
-                    autoUnitCost
-                      ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
-                      : 'bg-amber-50 border-amber-200 text-amber-800'
-                  }`}
-                  title={autoUnitCost ? 'Calculado desde el almacén. Clic para editar manualmente.' : 'Manual. Clic para volver a calcular automáticamente.'}
-                >
-                  {autoUnitCost ? 'AUTO' : 'MANUAL'}
-                </button>
-              </div>
-              <input
-                type="number" min="0" step="0.0001" value={unitCost}
-                onChange={event => { setAutoUnitCost(false); setUnitCost(event.target.value); }}
-                readOnly={autoUnitCost && Boolean(selectedMaterial)}
-                placeholder="Auto"
-                className={`w-full mt-0.5 px-2 py-2 rounded-xl border border-stone-300 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-emerald-300 ${
-                  autoUnitCost && selectedMaterial ? 'bg-stone-50 text-stone-500' : 'bg-white'
-                }`}
-              />
-            </div>
-            <div>
-              <label className="text-[9px] font-bold text-gray-500 uppercase">Costo total</label>
-              <div className="w-full mt-0.5 px-2 py-2 rounded-xl border border-emerald-200 bg-emerald-50 text-xs font-mono font-black text-emerald-900">
-                {money(addTotalPreview)}
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={addItem}
-              className="col-span-2 sm:col-span-1 h-[34px] inline-flex items-center justify-center gap-1 px-3 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white font-black text-xs transition-colors shadow-sm cursor-pointer active:scale-95"
-            >
-              <Plus className="w-3.5 h-3.5" /> Agregar
-            </button>
-          </div>
-
-          {(showMaterialResults || materialSearch) && (
-            <div className="grid sm:grid-cols-2 2xl:grid-cols-3 gap-1.5 max-h-52 overflow-y-auto pr-1">
-              {materialResults.map(mat => {
-                const pkg = parsePackageInfo(mat);
-                const selected = mat.id === selectedMaterialId;
-                return (
-                  <button
-                    key={mat.id}
-                    type="button"
-                    onClick={() => { chooseMaterial(mat.id); setShowMaterialResults(false); }}
-                    className={`flex items-center gap-2 p-1.5 rounded-xl border text-left transition-colors cursor-pointer ${
-                      selected ? 'bg-emerald-100 border-emerald-400 ring-1 ring-emerald-300' : 'bg-white border-stone-200 hover:border-emerald-300 hover:bg-emerald-50/50'
-                    }`}
-                  >
-                    <MaterialBadge item={mat} size="sm" />
-                    <div className="min-w-0 flex-1">
-                      <div className="text-[10px] font-bold text-gray-800 truncate">{mat.name}</div>
-                      <div className="text-[8.5px] text-gray-500 truncate">
-                        {mat.category || 'general'} · {mat.supplier || 'Sin proveedor'}
-                      </div>
-                    </div>
-                    <div className="text-right shrink-0">
-                      <div className="text-[9.5px] font-mono font-black text-emerald-800">{money(mat.costPerUnit)}</div>
-                      <div className="text-[8px] text-gray-400">{pkg.packageQuantity} {pkg.packageMeasurement}</div>
-                    </div>
-                  </button>
-                );
-              })}
-              {materialResults.length === 0 && (
-                <div className="sm:col-span-2 2xl:col-span-3 text-[10px] text-gray-500 bg-white border border-dashed border-stone-200 rounded-xl p-3 text-center">
-                  No hay insumos con esa búsqueda. Puedes escribirlo manualmente abajo.
-                </div>
-              )}
-            </div>
-          )}
-
-          <input
-            type="text"
-            value={customName}
-            onChange={event => setCustomName(event.target.value)}
-            placeholder="O escribe un insumo manual…"
-            className="w-full px-2.5 py-2 rounded-xl border border-stone-300 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-emerald-300"
-          />
-
-          {selectedMaterial && (
-            <div className="flex items-center gap-2 rounded-xl bg-white border border-emerald-200 p-2">
-              <MaterialBadge item={selectedMaterial} size="sm" />
-              <div className="min-w-0 flex-1">
-                <div className="text-[10.5px] font-bold text-gray-800 truncate">{selectedMaterial.name}</div>
-                <div className="text-[9px] text-gray-500">
-                  Paquete {parsePackageInfo(selectedMaterial).packageQuantity} {parsePackageInfo(selectedMaterial).packageMeasurement} · costo {money(selectedMaterial.costPerUnit)} · {selectedMaterial.supplier || 'sin proveedor'}
-                </div>
-              </div>
-              <button type="button" onClick={resetAddForm} className="p-1 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 cursor-pointer" title="Quitar selección">
-                <X className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          )}
-        </div>
-
         {/* Grupos de receta en tarjetas compactas */}
         <div className="grid lg:grid-cols-2 gap-2">
           {groupData.filter(group => group.id !== 'component').map(group => {
             const isOpen = openGroups.has(group.id);
+            const isAddingHere = activeAddGroupId === group.id;
             return (
               <div key={group.id} className="rounded-2xl border border-stone-200 overflow-hidden bg-white">
                 <div className="w-full flex items-center gap-1.5 sm:gap-2 p-2.5 bg-stone-50/80 hover:bg-stone-100/70">
@@ -979,11 +810,15 @@ export default function ProductWorkshopTab({
                   <button
                     type="button"
                     onClick={() => openAddForGroup(group.id)}
-                    className="shrink-0 inline-flex items-center gap-1 px-1.5 py-1 rounded-lg bg-white border border-stone-200 text-[8.5px] font-bold text-stone-600 hover:border-emerald-300 hover:text-emerald-800 cursor-pointer"
-                    title={`Agregar ${group.short.toLowerCase()}`}
+                    className={`shrink-0 inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[8.5px] font-bold transition-colors cursor-pointer ${
+                      isAddingHere
+                        ? 'bg-[#2D4F3E] text-white border border-[#2D4F3E] shadow-xs'
+                        : 'bg-white border border-stone-200 text-stone-600 hover:border-emerald-300 hover:text-emerald-800'
+                    }`}
+                    title={isAddingHere ? 'Cerrar captura' : `Agregar ${group.short.toLowerCase()}`}
                   >
-                    <Plus className="w-3 h-3" />
-                    <span className="hidden sm:inline">{group.short}</span>
+                    {isAddingHere ? <X className="w-3 h-3" /> : <Plus className="w-3 h-3" />}
+                    <span className="hidden sm:inline">{isAddingHere ? 'Cerrar' : group.short}</span>
                   </button>
                   <button
                     type="button"
@@ -996,8 +831,188 @@ export default function ProductWorkshopTab({
                 </div>
 
                 {isOpen && (
-                  <div className="p-2 space-y-1.5 bg-stone-50/30">
-                    {group.items.length === 0 ? (
+                  <div className="p-2 space-y-2 bg-stone-50/30">
+                    {/* Formulario contextual para agregar a este grupo */}
+                    {isAddingHere && (
+                      <div className="rounded-xl border border-emerald-300 bg-emerald-50/70 p-3 space-y-2.5 shadow-sm">
+                        <div className="flex items-center justify-between gap-2 border-b border-emerald-200/60 pb-1.5">
+                          <div className="flex items-center gap-1.5 min-w-0">
+                            <span className="text-[10px] font-black uppercase tracking-wider text-emerald-900">
+                              + Agregar a {group.short}
+                            </span>
+                            <span className="text-[9px] text-emerald-700 font-medium truncate">({group.label})</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setActiveAddGroupId(null)}
+                            className="p-1 rounded-lg text-emerald-700 hover:text-rose-600 hover:bg-rose-50 cursor-pointer shrink-0"
+                            title="Cerrar"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+
+                        {/* Buscador de insumos */}
+                        <div className="relative">
+                          <Search className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+                          <input
+                            type="text"
+                            value={materialSearch}
+                            onChange={event => { setMaterialSearch(event.target.value); setShowMaterialResults(true); }}
+                            onFocus={() => setShowMaterialResults(true)}
+                            placeholder={`Buscar ${group.short.toLowerCase()} en almacén…`}
+                            className="w-full pl-8 pr-2 py-1.5 rounded-xl border border-stone-300 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-emerald-300"
+                          />
+                        </div>
+
+                        {/* Sugerencias de insumos filtrados */}
+                        {(showMaterialResults || materialSearch) && (
+                          <div className="grid sm:grid-cols-2 gap-1.5 max-h-48 overflow-y-auto pr-1 border border-emerald-200/50 rounded-xl p-1.5 bg-white/80">
+                            {materialResults.map(mat => {
+                              const pkg = parsePackageInfo(mat);
+                              const selected = mat.id === selectedMaterialId;
+                              return (
+                                <button
+                                  key={mat.id}
+                                  type="button"
+                                  onClick={() => { chooseMaterial(mat.id); setShowMaterialResults(false); }}
+                                  className={`flex items-center gap-2 p-1.5 rounded-xl border text-left transition-colors cursor-pointer ${
+                                    selected ? 'bg-emerald-100 border-emerald-400 ring-1 ring-emerald-300' : 'bg-white border-stone-200 hover:border-emerald-300 hover:bg-emerald-50/50'
+                                  }`}
+                                >
+                                  <MaterialBadge item={mat} size="sm" />
+                                  <div className="min-w-0 flex-1">
+                                    <div className="text-[10px] font-bold text-gray-800 truncate">{mat.name}</div>
+                                    <div className="text-[8.5px] text-gray-500 truncate">
+                                      {mat.category || 'general'} · {mat.supplier || 'Sin proveedor'}
+                                    </div>
+                                  </div>
+                                  <div className="text-right shrink-0">
+                                    <div className="text-[9.5px] font-mono font-black text-emerald-800">{money(mat.costPerUnit)}</div>
+                                    <div className="text-[8px] text-gray-400">{pkg.packageQuantity} {pkg.packageMeasurement}</div>
+                                  </div>
+                                </button>
+                              );
+                            })}
+                            {materialResults.length === 0 && (
+                              <div className="sm:col-span-2 text-[9.5px] text-gray-500 bg-white border border-dashed border-stone-200 rounded-xl p-2.5 text-center">
+                                No hay insumos en almacén con esa búsqueda. Puedes escribirlo manualmente abajo.
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        {/* Insumo seleccionado del almacén o captura manual */}
+                        {selectedMaterial ? (
+                          <div className="flex items-center gap-2 rounded-xl bg-white border border-emerald-200 p-2 shadow-xs">
+                            <MaterialBadge item={selectedMaterial} size="sm" />
+                            <div className="min-w-0 flex-1">
+                              <div className="text-[10.5px] font-bold text-gray-800 truncate">{selectedMaterial.name}</div>
+                              <div className="text-[8.5px] text-gray-500">
+                                Paquete {parsePackageInfo(selectedMaterial).packageQuantity} {parsePackageInfo(selectedMaterial).packageMeasurement} · costo {money(selectedMaterial.costPerUnit)} · {selectedMaterial.supplier || 'sin proveedor'}
+                              </div>
+                            </div>
+                            <button type="button" onClick={resetAddForm} className="p-1 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 cursor-pointer" title="Quitar selección">
+                              <X className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        ) : (
+                          <input
+                            type="text"
+                            value={customName}
+                            onChange={event => setCustomName(event.target.value)}
+                            placeholder="O escribe un insumo manual si no está en almacén…"
+                            className="w-full px-2.5 py-1.5 rounded-xl border border-stone-300 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-emerald-300"
+                          />
+                        )}
+
+                        {/* Parámetros: Cantidad, Merma, Unidad, Costo */}
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 items-end">
+                          <div>
+                            <label className="text-[9px] font-bold text-gray-600 uppercase">Cantidad</label>
+                            <input
+                              type="number" min="0.01" step="0.01" value={netQty}
+                              onChange={event => setNetQty(event.target.value)}
+                              className="w-full mt-0.5 px-2 py-1.5 rounded-xl border border-stone-300 bg-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-emerald-300"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[9px] font-bold text-gray-600 uppercase">Merma</label>
+                            <input
+                              type="number" min="0" step="0.01" value={wasteQty}
+                              onChange={event => setWasteQty(event.target.value)}
+                              className="w-full mt-0.5 px-2 py-1.5 rounded-xl border border-stone-300 bg-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-emerald-300"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[9px] font-bold text-gray-600 uppercase">Unidad</label>
+                            <select
+                              value={addUnitOptions.some(option => option.value === unit) ? unit : ''}
+                              onChange={event => setUnit(event.target.value)}
+                              className="w-full mt-0.5 px-2 py-1.5 rounded-xl border border-stone-300 bg-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-emerald-300"
+                            >
+                              {!addUnitOptions.some(option => option.value === unit) && (
+                                <option value="">{unit || 'Unidad'}</option>
+                              )}
+                              {addUnitOptions.map(option => (
+                                <option key={option.value} value={option.value}>{option.label}</option>
+                              ))}
+                            </select>
+                          </div>
+                          <div>
+                            <div className="flex items-center justify-between gap-1">
+                              <label className="text-[9px] font-bold text-gray-600 uppercase">Costo/u</label>
+                              <button
+                                type="button"
+                                onClick={() => setAutoUnitCost(value => !value)}
+                                className={`text-[7.5px] font-black px-1 py-0.5 rounded border cursor-pointer ${
+                                  autoUnitCost
+                                    ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                                    : 'bg-amber-50 border-amber-200 text-amber-800'
+                                }`}
+                                title={autoUnitCost ? 'Calculado desde el almacén. Clic para editar manualmente.' : 'Manual. Clic para volver a calcular automáticamente.'}
+                              >
+                                {autoUnitCost ? 'AUTO' : 'MANUAL'}
+                              </button>
+                            </div>
+                            <input
+                              type="number" min="0" step="0.0001" value={unitCost}
+                              onChange={event => { setAutoUnitCost(false); setUnitCost(event.target.value); }}
+                              readOnly={autoUnitCost && Boolean(selectedMaterial)}
+                              placeholder="Auto"
+                              className={`w-full mt-0.5 px-2 py-1.5 rounded-xl border border-stone-300 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-emerald-300 ${
+                                autoUnitCost && selectedMaterial ? 'bg-stone-50 text-stone-500' : 'bg-white'
+                              }`}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Resumen de costo y botón de agregar */}
+                        <div className="flex items-center justify-between gap-2 pt-1 border-t border-emerald-200/50">
+                          <div className="text-[10px] text-gray-600">
+                            Total insumo: <strong className="font-mono text-emerald-800 font-bold">{money(addTotalPreview)}</strong>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => setActiveAddGroupId(null)}
+                              className="px-2.5 py-1.5 rounded-xl border border-stone-200 bg-white text-gray-600 text-xs font-semibold hover:bg-stone-50 cursor-pointer"
+                            >
+                              Cancelar
+                            </button>
+                            <button
+                              type="button"
+                              onClick={addItem}
+                              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#2D4F3E] hover:bg-[#20392C] text-white font-black text-xs transition-colors shadow-sm cursor-pointer active:scale-95"
+                            >
+                              <Plus className="w-3.5 h-3.5" /> Agregar a {group.short}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {group.items.length === 0 && !isAddingHere ? (
                       <div className="border border-dashed border-stone-200 rounded-xl p-3 text-center">
                         <p className="text-[10px] text-gray-400">Sin insumos en este grupo.</p>
                         <button

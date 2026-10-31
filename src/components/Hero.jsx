@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, MessageCircle, Sparkles, Printer3d, Flame, Layers, Wand2, Shirt } from 'lucide-react';
+import { ArrowRight, MessageCircle, Sparkles, Printer3d, Flame, Layers, Wand2, Shirt, Users, HelpCircle } from 'lucide-react';
 import MonthlyEventBanner from './MonthlyEventBanner';
 
 export default function Hero({
   onExploreCatalog,
   onOpenWorld,
   settings,
-  campaignsConfig: initialCampaignsConfig
+  campaignsConfig: initialCampaignsConfig,
+  onOpenAbout,
+  onOpenFaq
 }) {
   const [campaignsConfig, setCampaignsConfig] = useState(initialCampaignsConfig || null);
 
@@ -161,26 +163,33 @@ export default function Hero({
             {/* LADO DERECHO (lg:col-span-5): Botones de Acción Refinados & Puntos de Confianza */}
             <div className="lg:col-span-5 flex flex-col items-stretch sm:items-start lg:items-end justify-center gap-4">
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
-                <button
-                  type="button"
-                  onClick={onExploreCatalog}
-                  className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-[#17251E] text-white text-xs sm:text-sm font-bold tracking-wide hover:bg-[#2D4F3E] active:scale-98 transition-all shadow-md shadow-[#17251E]/15 cursor-pointer group font-heading font-futura"
+                <a
+                  href="/nosotros"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (onOpenAbout) onOpenAbout();
+                    else window.location.href = '/nosotros';
+                  }}
+                  className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full bg-[#17251E] text-white text-xs sm:text-sm font-bold tracking-wide hover:bg-[#2D4F3E] active:scale-98 transition-all shadow-md shadow-[#17251E]/15 cursor-pointer group font-heading font-futura text-center"
+                  title="Conoce más sobre nuestro taller artesanal"
                 >
-                  <span>Explorar el catálogo</span>
-                  <ArrowRight className="w-4 h-4 text-[#D4A359] group-hover:translate-x-1 transition-transform" />
-                </button>
+                  <Users className="w-4 h-4 text-[#D4A359] group-hover:scale-110 transition-transform" />
+                  <span>Nosotros</span>
+                </a>
 
-                {settings?.whatsappNumber && (
-                  <a
-                    href={`https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, '')}?text=Hola%20Artesano%20Digital,%20quiero%20cotizar%20un%20proyecto.`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white text-[#17251E] border border-[#E8E4DA] text-xs sm:text-sm font-bold hover:bg-stone-50 active:scale-98 transition-all shadow-2xs font-heading font-futura"
-                  >
-                    <MessageCircle className="w-4 h-4 text-emerald-600" />
-                    <span>Cotizar proyecto</span>
-                  </a>
-                )}
+                <a
+                  href="/faq"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (onOpenFaq) onOpenFaq();
+                    else window.location.href = '/faq';
+                  }}
+                  className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full bg-white text-[#17251E] border border-[#E8E4DA] text-xs sm:text-sm font-bold hover:bg-stone-50 active:scale-98 transition-all shadow-2xs font-heading font-futura text-center cursor-pointer group"
+                  title="Preguntas frecuentes y tiempos de entrega"
+                >
+                  <HelpCircle className="w-4 h-4 text-[#2D4F3E] group-hover:scale-110 transition-transform" />
+                  <span>Preguntas frecuentes</span>
+                </a>
               </div>
 
               {/* Puntos de Confianza del Taller */}

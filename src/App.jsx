@@ -1057,6 +1057,14 @@ export default function App() {
             onOpenWorld={handleSelectWorld}
             settings={settings}
             campaignsConfig={campaignsConfig}
+            onOpenAbout={() => {
+              window.history.pushState({}, '', '/nosotros');
+              setShowAbout(true);
+            }}
+            onOpenFaq={() => {
+              window.history.pushState({}, '', '/faq');
+              setShowFaq(true);
+            }}
           />
         </div>
       )}

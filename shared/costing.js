@@ -625,10 +625,10 @@ export function buildRecipeFromProduct(product, rawMaterials = [], workshopParam
   const plaGrams = num(cb.plaGrams, tech === '3d' ? 50 : 0);
   const tpuGrams = num(cb.tpuGrams, 0);
   if (plaGrams > 0) {
-    const pla = findMaterialByQuery(rawMaterials, ['pla verde olivo', 'pla blanco', 'filamento pla'], '3d');
+    const pla = findMaterialByQuery(rawMaterials, ['filamento pla', 'pla'], '3d');
     items.push(makeItem({
       material: pla,
-      name: pla?.name || 'Filamento PLA',
+      name: 'Filamento PLA (1.75mm)',
       category: '3d',
       supplyType: 'direct',
       netQuantity: plaGrams,
@@ -640,10 +640,10 @@ export function buildRecipeFromProduct(product, rawMaterials = [], workshopParam
     }));
   }
   if (tpuGrams > 0) {
-    const tpu = findMaterialByQuery(rawMaterials, ['tpu'], '3d');
+    const tpu = findMaterialByQuery(rawMaterials, ['filamento tpu', 'tpu'], '3d');
     items.push(makeItem({
       material: tpu,
-      name: tpu?.name || 'Filamento TPU',
+      name: 'Filamento TPU Flexible 95A (1.75mm)',
       category: '3d',
       supplyType: 'direct',
       netQuantity: tpuGrams,

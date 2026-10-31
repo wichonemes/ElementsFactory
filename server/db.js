@@ -515,7 +515,7 @@ const initialCategories = [
       {
         "id": "item-t42-pla",
         "materialId": "mat-pla-verde-olivo",
-        "name": "Filamento PLA Verde Olivo Mate y Crema Taller (PrintLab / 3D Market)",
+        "name": "Filamento PLA (1.75mm)",
         "category": "3d",
         "supplyType": "direct",
         "netQuantity": 18,
@@ -12621,7 +12621,7 @@ const initialRawMaterials = [
   },
   {
     "id": "mat-pla-olivo",
-    "name": "Filamento PLA Verde Olivo Mate (1.75mm)",
+    "name": "Filamento PLA (1.75mm)",
     "category": "3d",
     "materialType": "PLA",
     "color": "Verde Olivo",
@@ -12831,7 +12831,7 @@ const initialRawMaterials = [
   },
   {
     "id": "mat-tpu-olivo",
-    "name": "Filamento TPU Flexible 95A Verde Olivo (1.75mm)",
+    "name": "Filamento TPU Flexible 95A (1.75mm)",
     "category": "3d",
     "materialType": "TPU Flexible",
     "color": "Verde Olivo",
