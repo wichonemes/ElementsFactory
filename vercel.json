@@ -18,6 +18,10 @@
       "destination": "/api/faq-page"
     },
     {
+      "source": "/afiliados",
+      "destination": "/api/affiliates-page"
+    },
+    {
       "source": "/producto/(.*)",
       "destination": "/api/product-page?slug=$1"
     },

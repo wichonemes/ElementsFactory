@@ -35,6 +35,7 @@ export default async function handler(req, res) {
     { loc: `${site}/`, priority: '1.0', changefreq: 'weekly' },
     { loc: `${site}/nosotros`, priority: '0.7', changefreq: 'monthly' },
     { loc: `${site}/faq`, priority: '0.6', changefreq: 'monthly' },
+    { loc: `${site}/afiliados`, priority: '0.7', changefreq: 'monthly' },
     { loc: `${site}/?area=hogar`, priority: '0.9', changefreq: 'weekly' },
     { loc: `${site}/?area=negocios`, priority: '0.9', changefreq: 'weekly' },
     { loc: `${site}/?area=eventos`, priority: '0.9', changefreq: 'weekly' },

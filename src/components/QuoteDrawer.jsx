@@ -2,7 +2,7 @@
 import {
   X, Trash2, MessageCircle, Copy, Check, ShoppingBag, ArrowRight,
   Info, Calendar, MapPin, User, Truck, AlertTriangle, Zap, Tag, Sparkles, RotateCcw,
-  Paintbrush, FileText, Gift, Ticket, Coins, Download, Loader2, Mail, Phone, Eye
+  Paintbrush, FileText, Gift, Ticket, Coins, Download, Loader2, Mail, Phone, Eye, Package, Award
 } from 'lucide-react';
 import { formatServiceDate } from '../utils/serviceStatus';
 import { findCoupon, calculateCouponDiscount, getCouponCategory, getCouponCategoryLabel, isCouponExpired } from '../utils/couponsHelper';
@@ -19,7 +19,8 @@ export default function QuoteDrawer({
   settings,
   onTrackWhatsApp,
   onOpenArcade,
-  onSelectProduct
+  onSelectProduct,
+  onOpenLoyalty
 }) {
   if (!isOpen) return null;
 
@@ -154,14 +155,23 @@ export default function QuoteDrawer({
     })) || [])
   ];
 
-  // Validar cupón activo contra la lista de cupones
-  const activeCouponObj = appliedCouponCode ? findCoupon(appliedCouponCode, combinedCustomCoupons) : null;
-  const couponCalculation = activeCouponObj ? calculateCouponDiscount(activeCouponObj, subtotal) : null;
+  // Descuento automático de mayoreo: 12+ piezas = 15% de descuento directo
+  const totalItemCount = items.reduce((sum, item) => sum + (Number(item.quantity) || 1), 0);
+  const bulkThreshold = 12;
+  const isBulkEligible = totalItemCount >= bulkThreshold;
+  const bulkDiscountRate = 0.15;
+  const bulkDiscountAmount = isBulkEligible ? Math.round(subtotal * bulkDiscountRate) : 0;
 
-  const discountAmount = couponCalculation?.isValid ? couponCalculation.discountAmount : 0;
+  // Validar cupón activo contra la lista de cupones (aplica sobre el remanente para proteger márgenes)
+  const baseForCoupon = Math.max(0, subtotal - bulkDiscountAmount);
+  const activeCouponObj = appliedCouponCode ? findCoupon(appliedCouponCode, combinedCustomCoupons) : null;
+  const couponCalculation = activeCouponObj ? calculateCouponDiscount(activeCouponObj, baseForCoupon) : null;
+
+  const couponDiscountAmount = couponCalculation?.isValid ? couponCalculation.discountAmount : 0;
+  const discountAmount = bulkDiscountAmount + couponDiscountAmount;
   // Piso comercial: ningún total con productos puede quedar en $0 MXN
   const finalTotal = subtotal > 0
-    ? (couponCalculation?.isValid ? couponCalculation.finalTotal : subtotal)
+    ? Math.max(1, subtotal - discountAmount)
     : 0;
 
   // Desglose fiscal para la cotización. Por defecto los precios del catálogo ya incluyen IVA.
@@ -308,6 +318,9 @@ export default function QuoteDrawer({
 
     msg += `--------------------------------------\n`;
     msg += `*Subtotal (sin IVA):* ${formatQuoteMoney(netBeforeDiscount)} MXN\n`;
+    if (bulkDiscountAmount > 0) {
+      msg += `*DESCUENTO MAYOREO (12+ pzas):* -${formatQuoteMoney(bulkDiscountAmount)} MXN (15% OFF de taller)\n`;
+    }
 
     if (appliedCouponCode && discountAmount > 0) {
       const categoryLabel = activeCouponObj ? getCouponCategoryLabel(activeCouponObj) : 'Código Especial de Tienda';
@@ -744,6 +757,81 @@ export default function QuoteDrawer({
                   <span className="text-amber-600 text-sm shrink-0">ℹ️</span>
                   <span><strong>Nota:</strong> Los cupones de descuento no son acumulables entre sí (máximo 1 cupón por pedido).</span>
                 </div>
+
+                {/* Banner de Mayoreo Automático (12+ piezas = 15% OFF) */}
+                {items.length > 0 && subtotal > 0 && (
+                  <div className={`p-3 rounded-2xl border transition-all ${
+                    isBulkEligible
+                      ? 'bg-gradient-to-r from-emerald-50 via-teal-50/70 to-emerald-50 border-emerald-400 shadow-xs'
+                      : 'bg-stone-50 border-stone-200'
+                  }`}>
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
+                          isBulkEligible ? 'bg-[#2D4F3E] text-white shadow-xs' : 'bg-stone-200 text-stone-600'
+                        }`}>
+                          <Package className="w-4 h-4" />
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-xs font-black text-gray-900 flex items-center gap-1.5 flex-wrap">
+                            <span>Precio de Mayoreo (15% OFF)</span>
+                            {isBulkEligible && (
+                              <span className="text-[9.5px] font-black px-2 py-0.5 bg-emerald-700 text-white rounded-full">
+                                ¡ACTIVO!
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-[11px] text-gray-600 truncate">
+                            {isBulkEligible
+                              ? `¡Felicidades! Tienes 15% de descuento en tus ${totalItemCount} piezas.`
+                              : `Llevas ${totalItemCount} de 12 piezas. Agrega ${bulkThreshold - totalItemCount} más para 15% OFF.`}
+                          </p>
+                        </div>
+                      </div>
+                      {isBulkEligible && (
+                        <div className="text-right shrink-0">
+                          <span className="text-xs font-mono font-black text-emerald-800">
+                            -${formatQuoteMoney(bulkDiscountAmount)}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    {!isBulkEligible && (
+                      <div className="mt-2 space-y-1">
+                        <div className="w-full h-1.5 rounded-full bg-stone-200 overflow-hidden">
+                          <div
+                            className="h-full bg-emerald-600 transition-all duration-300"
+                            style={{ width: `${Math.min(100, Math.round((totalItemCount / bulkThreshold) * 100))}%` }}
+                          />
+                        </div>
+                        <div className="flex justify-between text-[9px] text-gray-400 font-semibold">
+                          <span>{totalItemCount} piezas</span>
+                          <span>Meta: 12 piezas (-15%)</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Botón a la Tarjeta Club Artesano */}
+                {onOpenLoyalty && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onOpenLoyalty();
+                      onClose();
+                    }}
+                    className="w-full flex items-center justify-between p-2.5 rounded-xl bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-50 border border-emerald-300/80 hover:border-emerald-400 text-xs text-emerald-950 font-bold transition-all cursor-pointer shadow-2xs group"
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <Sparkles className="w-4 h-4 text-emerald-700 group-hover:rotate-12 transition-transform" />
+                      <span>Tarjeta Club Artesano (Sellos & Premios)</span>
+                    </span>
+                    <span className="text-[11px] text-emerald-800 underline font-semibold">
+                      Ver sellos &rarr;
+                    </span>
+                  </button>
+                )}
 
                 {/* Enlace directo para canjear cupones con monedas del Arcade */}
                 {onOpenArcade && (

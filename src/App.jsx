@@ -12,6 +12,8 @@ const AdminPanel = lazy(() => import('./components/AdminPanel'));
 import Footer from './components/Footer';
 import AboutPage from './components/AboutPage';
 import FaqPage from './components/FaqPage';
+import AffiliatesPage from './components/AffiliatesPage';
+import LoyaltyModal from './components/LoyaltyModal';
 import CraftShowcase from './components/CraftShowcase';
 import PatchBarShowcase from './components/PatchBarShowcase';
 import QuoteCalculatorModal from './components/QuoteCalculatorModal';
@@ -179,6 +181,8 @@ export default function App() {
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(() => typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('menu'));
   const [showAbout, setShowAbout] = useState(() => typeof window !== 'undefined' && /^\/nosotros\/?$/i.test(window.location.pathname));
   const [showFaq, setShowFaq] = useState(() => typeof window !== 'undefined' && /^\/faq\/?$/i.test(window.location.pathname));
+  const [showAffiliates, setShowAffiliates] = useState(() => typeof window !== 'undefined' && /^\/afiliados\/?$/i.test(window.location.pathname));
+  const [showLoyalty, setShowLoyalty] = useState(false);
   const [mobileNavTab, setMobileNavTab] = useState(() => (typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('menu')) ? 'menu' : 'home');
 
   const handleOpenCatalogSelector = () => {
@@ -288,6 +292,7 @@ export default function App() {
       const path = window.location.pathname;
       setShowAbout(/^\/nosotros\/?$/i.test(path));
       setShowFaq(/^\/faq\/?$/i.test(path));
+      setShowAffiliates(/^\/afiliados\/?$/i.test(path));
     };
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
@@ -889,6 +894,13 @@ export default function App() {
     }
   };
 
+  const handleCloseAffiliates = () => {
+    setShowAffiliates(false);
+    if (/^\/afiliados\/?$/i.test(window.location.pathname)) {
+      window.history.replaceState({}, '', '/');
+    }
+  };
+
   const handleOpenWhatsAppDirect = () => {
     if (settings?.whatsappNumber) {
       window.open(
@@ -921,6 +933,18 @@ export default function App() {
           settings={settings}
         />
       )}
+
+      {showAffiliates && (
+        <AffiliatesPage
+          onBack={handleCloseAffiliates}
+          settings={settings}
+        />
+      )}
+
+      <LoyaltyModal
+        isOpen={showLoyalty}
+        onClose={() => setShowLoyalty(false)}
+      />
       
       {/* Top Navigation para Escritorio */}
       <div className="hidden md:block">
@@ -1433,6 +1457,7 @@ export default function App() {
             onClose={() => setSelectedProduct(null)}
             onAddToCart={handleAddToCart}
             onOpenArcade={handleOpenArcade}
+            onOpenLoyalty={() => setShowLoyalty(true)}
             onDirectWhatsAppQuote={handleDirectWhatsAppQuote}
             onOpenCalculator={handleOpenCalculator}
           />
@@ -1492,6 +1517,14 @@ export default function App() {
           window.history.pushState({}, '', '/faq');
           setShowFaq(true);
         }}
+        onOpenAffiliates={() => {
+          window.history.pushState({}, '', '/afiliados');
+          setShowAffiliates(true);
+          setShowAbout(false);
+          setShowFaq(false);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+        onOpenLoyalty={() => setShowLoyalty(true)}
         settings={settings}
       />
 

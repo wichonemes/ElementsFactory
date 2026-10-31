@@ -1,8 +1,8 @@
 import React from 'react';
-import { Shield, Phone, Mail, MapPin, Clock, Heart, HelpCircle } from 'lucide-react';
+import { Shield, Phone, Mail, MapPin, Clock, Heart, HelpCircle, Users, Sparkles } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 
-export default function Footer({ onSelectWorld, onOpenAdmin, onOpenAbout, onOpenFaq, settings }) {
+export default function Footer({ onSelectWorld, onOpenAdmin, onOpenAbout, onOpenFaq, onOpenAffiliates, onOpenLoyalty, settings }) {
   return (
     <footer className="bg-[#1F2421] text-gray-300 border-t border-black/20 pt-16 pb-12 text-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
@@ -120,6 +120,24 @@ export default function Footer({ onSelectWorld, onOpenAdmin, onOpenAbout, onOpen
                 >
                   <HelpCircle className="w-3.5 h-3.5 text-emerald-400/80 shrink-0" />
                   <span>Preguntas Frecuentes (FAQ)</span>
+                </button>
+              )}
+              {onOpenAffiliates && (
+                <button
+                  onClick={onOpenAffiliates}
+                  className="flex items-center gap-2 text-gray-300 hover:text-amber-300 transition-colors text-left font-semibold"
+                >
+                  <Users className="w-3.5 h-3.5 text-amber-400/90 shrink-0" />
+                  <span>Revendedores &amp; Afiliados</span>
+                </button>
+              )}
+              {onOpenLoyalty && (
+                <button
+                  onClick={onOpenLoyalty}
+                  className="flex items-center gap-2 text-gray-300 hover:text-emerald-400 transition-colors text-left font-semibold"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-emerald-400/90 shrink-0" />
+                  <span>Tarjeta Club Artesano (Sellos)</span>
                 </button>
               )}
               {settings?.whatsappNumber && (
