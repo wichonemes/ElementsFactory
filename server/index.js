@@ -88,7 +88,9 @@ const IMAGE_BLOB_CACHE_MS = 10 * 60 * 1000;
 
 async function resolveImageFromBlob(pathname) {
   const cached = IMAGE_BLOB_CACHE.get(pathname);
-  if (cached && Date.now() - cached.at < IMAGE_BLOB_CACHE_MS) return cached.value;
+  if (cached && Date.now() - cached.at < IMAGE_BLOB_CACHE_MS) {
+    return { contentType: cached.contentType, buffer: cached.buffer };
+  }
   let result = null;
   try {
     result = (await getBlob(pathname, { access: 'public' })) || null;
@@ -103,21 +105,23 @@ async function resolveImageFromBlob(pathname) {
       console.warn(`[IMAGES] No se pudo migrar la imagen ${pathname} a Vercel Blob:`, err?.message || err);
     }
   }
-  const value = result && result.statusCode === 200 ? result : null;
-  if (value) IMAGE_BLOB_CACHE.set(pathname, { at: Date.now(), value });
-  return value;
+  const ok = Boolean(result && result.statusCode === 200);
+  const entry = ok
+    ? { contentType: result.blob.contentType || 'image/webp', buffer: Buffer.from(await new Response(result.stream).arrayBuffer()) }
+    : null;
+  if (entry) IMAGE_BLOB_CACHE.set(pathname, { at: Date.now(), ...entry });
+  return entry;
 }
 
 app.get(/\/api\/images\/(.+)/, async (req, res) => {
   try {
     const pathname = decodeURIComponent(String(req.params[0] || '')).replace(/^\/+/, '');
     if (!pathname) return res.status(400).json({ error: 'Ruta de imagen inválida.' });
-    const result = await resolveImageFromBlob(pathname);
-    if (!result) return res.status(404).json({ error: 'Imagen no encontrada.' });
-    const buffer = Buffer.from(await new Response(result.stream).arrayBuffer());
-    res.setHeader('Content-Type', result.blob.contentType || 'image/webp');
+    const image = await resolveImageFromBlob(pathname);
+    if (!image) return res.status(404).json({ error: 'Imagen no encontrada.' });
+    res.setHeader('Content-Type', image.contentType);
     res.setHeader('Cache-Control', 'public, max-age=86400');
-    return res.status(200).end(buffer);
+    return res.status(200).end(image.buffer);
   } catch (err) {
     return res.status(500).json({ error: err?.message || 'Error al servir la imagen.' });
   }
@@ -2384,12 +2388,11 @@ if (fs.existsSync(distIndex)) {
   app.get(/^\/((?:uploads|brand|portafolio|portfolio|interfaces|products|downloads|animacion|audiovisual|editorial|fotografia|identidad-corporativa|ilustracion|impresos|maquetado-inicio-wicho-v2|mi-portafolio|modelado-3d|optimized)\/.+)$/, async (req, res) => {
   try {
     const pathname = decodeURIComponent(String(req.params[0] || '')).replace(/^\/+/, '');
-    const result = await resolveImageFromBlob(pathname);
-    if (!result) return res.status(404).json({ error: 'Imagen no encontrada.' });
-    const buffer = Buffer.from(await new Response(result.stream).arrayBuffer());
-    res.setHeader('Content-Type', result.blob.contentType || 'image/webp');
+    const image = await resolveImageFromBlob(pathname);
+    if (!image) return res.status(404).json({ error: 'Imagen no encontrada.' });
+    res.setHeader('Content-Type', image.contentType);
     res.setHeader('Cache-Control', 'public, max-age=86400');
-    return res.status(200).end(buffer);
+    return res.status(200).end(image.buffer);
   } catch (err) {
     return res.status(500).json({ error: err?.message || 'Error al servir la imagen.' });
   }
