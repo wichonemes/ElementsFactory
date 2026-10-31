@@ -17,7 +17,7 @@ export default function MobileBannerCarousel({
       title: 'Colección Hogar & Decoración',
       subtitle: 'Lámparas 3D, maceteros geométricos y percheros',
       badge: 'Novedades de Taller',
-      image: './uploads/img_001.jpg',
+      image: '/uploads/img_001.jpg',
       worldId: 'hogar'
     },
     {
@@ -25,7 +25,7 @@ export default function MobileBannerCarousel({
       title: 'Branding Comercial & Mostrador',
       subtitle: 'Señalética inteligente, QR y enlaces NFC para negocios',
       badge: 'Soluciones para Negocios',
-      image: './uploads/pack_barberia_boutique_contexto.jpg',
+      image: '/uploads/pack_barberia_boutique_contexto.jpg',
       worldId: 'negocios'
     },
     {
@@ -33,7 +33,7 @@ export default function MobileBannerCarousel({
       title: 'Bodas, XV Años & Recuerdos',
       subtitle: 'Letreros de bienvenida, copas grabadas y souvenirs',
       badge: 'Eventos Especiales',
-      image: './uploads/bienvenida_ceremonia_boda.jpg',
+      image: '/uploads/bienvenida_ceremonia_boda.jpg',
       worldId: 'eventos'
     },
     {
@@ -41,7 +41,7 @@ export default function MobileBannerCarousel({
       title: 'Setup Gamer & Home Office',
       subtitle: 'Soportes de audífonos, bandejas y organizadores modulares',
       badge: 'Impresión 3D Pro',
-      image: './uploads/kit_home_office_gamer_contexto.jpg',
+      image: '/uploads/kit_home_office_gamer_contexto.jpg',
       worldId: 'hogar'
     }
   ];
@@ -79,8 +79,8 @@ export default function MobileBannerCarousel({
       >
         {/* Imagen de fondo */}
         <img
-          src={activeSlide.image || './uploads/img_001.jpg'}
-          srcSet={getOptimizedSrcSet(activeSlide.image || './uploads/img_001.jpg')}
+          src={activeSlide.image || '/uploads/img_001.jpg'}
+          srcSet={getOptimizedSrcSet(activeSlide.image || '/uploads/img_001.jpg')}
           sizes={HERO_IMAGE_SIZES}
           alt={activeSlide.title || 'Artesano Digital'}
           fetchPriority="high"

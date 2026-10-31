@@ -131,7 +131,7 @@ const SELECTION_CARDS_CATALOG = {
       code: 'BRAND-01',
       title: 'Identidad de Marca',
       desc: 'Logotipos vectoriales, paleta de color y manual de marca para tu negocio.',
-      defaultUrl: './portafolio/assets/artesano-cover.webp',
+      defaultUrl: '/portafolio/assets/artesano-cover.webp',
       badge: 'Identidad Visual',
       icon: Palette,
       accentColor: '#e8b84f',
@@ -143,7 +143,7 @@ const SELECTION_CARDS_CATALOG = {
       code: 'PRINT-02',
       title: 'Lonas & Gran Formato',
       desc: 'Lonas de alta densidad, vinil cortado y microperforado para fachada o cancel.',
-      defaultUrl: './portafolio/assets/civil-shirts.webp',
+      defaultUrl: '/portafolio/assets/civil-shirts.webp',
       badge: 'Gran Formato',
       icon: Printer,
       accentColor: '#10b981',
@@ -155,7 +155,7 @@ const SELECTION_CARDS_CATALOG = {
       code: 'DEV-03',
       title: 'Web & Tienda',
       desc: 'Sitios web responsivos, catálogos online y tiendas rápidas optimizadas.',
-      defaultUrl: './interfaces/assets/ui-01.jpg',
+      defaultUrl: '/interfaces/assets/ui-01.jpg',
       badge: 'Desarrollo Web',
       icon: Globe,
       accentColor: '#06b6d4',
@@ -167,7 +167,7 @@ const SELECTION_CARDS_CATALOG = {
       code: 'EDIT-04',
       title: 'Catálogo & Redes',
       desc: 'Menús digitales, catálogos en PDF y contenido gráfico para historias y posts.',
-      defaultUrl: './portafolio/assets/popol-spread.webp',
+      defaultUrl: '/portafolio/assets/popol-spread.webp',
       badge: 'Contenido & Impresos',
       icon: Film,
       accentColor: '#c084fc',
@@ -181,7 +181,7 @@ const SELECTION_CARDS_CATALOG = {
       code: 'PROTO-01',
       title: 'Prototipos Funcionales',
       desc: 'Validación rápida de cotas, holguras y ensamble desde archivo 3D.',
-      defaultUrl: './uploads/catalog-v2-ind1-context-oficial.webp',
+      defaultUrl: '/uploads/catalog-v2-ind1-context-oficial.webp',
       badge: 'Validación Rápida',
       icon: Layers,
       accentColor: '#5BB8FF',
@@ -193,7 +193,7 @@ const SELECTION_CARDS_CATALOG = {
       code: 'JIG-02',
       title: 'Utillaje y Herramientas',
       desc: 'Galgas de control, nidos Poka-Yoke y mordazas que no rayan piezas.',
-      defaultUrl: './uploads/catalog-v2-ind2-context-oficial.webp',
+      defaultUrl: '/uploads/catalog-v2-ind2-context-oficial.webp',
       badge: 'Línea de Producción',
       icon: Wrench,
       accentColor: '#8FB99B',
@@ -205,7 +205,7 @@ const SELECTION_CARDS_CATALOG = {
       code: 'SPARE-03',
       title: 'Refacciones y Obsoletos',
       desc: 'Sustitución de bujes, poleas y piezas descontinuadas desde 1 pieza.',
-      defaultUrl: './uploads/industria_portada_oficial_ingenieria.webp',
+      defaultUrl: '/uploads/industria_portada_oficial_ingenieria.webp',
       badge: 'Sustitución Directa',
       icon: RotateCcw,
       accentColor: '#fbbf24',
@@ -217,7 +217,7 @@ const SELECTION_CARDS_CATALOG = {
       code: 'BATCH-04',
       title: 'Lotes Cortos y Preseries',
       desc: 'Producción continua de 10 a 500 piezas sin costo de apertura de molde.',
-      defaultUrl: './uploads/catalog-v2-ind1-detail-oficial.webp',
+      defaultUrl: '/uploads/catalog-v2-ind1-detail-oficial.webp',
       badge: 'Volumen Flexible',
       icon: Boxes,
       accentColor: '#c084fc',
@@ -263,16 +263,16 @@ export default function AreaBannersAdminSection({
     }
     return {
     diseno: {
-      branding: { url: './portafolio/assets/artesano-cover.webp', enabled: false },
-      publicidad: { url: './portafolio/assets/civil-shirts.webp', enabled: false },
-      web: { url: './interfaces/assets/ui-01.jpg', enabled: false },
-      editorial: { url: './portafolio/assets/popol-spread.webp', enabled: false }
+      branding: { url: '/portafolio/assets/artesano-cover.webp', enabled: false },
+      publicidad: { url: '/portafolio/assets/civil-shirts.webp', enabled: false },
+      web: { url: '/interfaces/assets/ui-01.jpg', enabled: false },
+      editorial: { url: '/portafolio/assets/popol-spread.webp', enabled: false }
     },
     industria: {
-      proto: { url: './uploads/catalog-v2-ind1-context-oficial.webp', enabled: false },
-      jig: { url: './uploads/catalog-v2-ind2-context-oficial.webp', enabled: false },
-      spare: { url: './uploads/industria_portada_oficial_ingenieria.webp', enabled: false },
-      batch: { url: './uploads/catalog-v2-ind1-detail-oficial.webp', enabled: false }
+      proto: { url: '/uploads/catalog-v2-ind1-context-oficial.webp', enabled: false },
+      jig: { url: '/uploads/catalog-v2-ind2-context-oficial.webp', enabled: false },
+      spare: { url: '/uploads/industria_portada_oficial_ingenieria.webp', enabled: false },
+      batch: { url: '/uploads/catalog-v2-ind1-detail-oficial.webp', enabled: false }
     }
     };
   });
@@ -284,16 +284,16 @@ export default function AreaBannersAdminSection({
       const bInd = businessSettings.categoryBackgroundPhotos.industria || {};
       setCardsConfig({
         diseno: {
-          branding: typeof bDiseno.branding === 'string' ? { url: bDiseno.branding, enabled: false } : (bDiseno.branding || { url: './portafolio/assets/artesano-cover.webp', enabled: false }),
-          publicidad: typeof bDiseno.publicidad === 'string' ? { url: bDiseno.publicidad, enabled: false } : (bDiseno.publicidad || { url: './portafolio/assets/civil-shirts.webp', enabled: false }),
-          web: typeof bDiseno.web === 'string' ? { url: bDiseno.web, enabled: false } : (bDiseno.web || { url: './interfaces/assets/ui-01.jpg', enabled: false }),
-          editorial: typeof bDiseno.editorial === 'string' ? { url: bDiseno.editorial, enabled: false } : (bDiseno.editorial || { url: './portafolio/assets/popol-spread.webp', enabled: false })
+          branding: typeof bDiseno.branding === 'string' ? { url: bDiseno.branding, enabled: false } : (bDiseno.branding || { url: '/portafolio/assets/artesano-cover.webp', enabled: false }),
+          publicidad: typeof bDiseno.publicidad === 'string' ? { url: bDiseno.publicidad, enabled: false } : (bDiseno.publicidad || { url: '/portafolio/assets/civil-shirts.webp', enabled: false }),
+          web: typeof bDiseno.web === 'string' ? { url: bDiseno.web, enabled: false } : (bDiseno.web || { url: '/interfaces/assets/ui-01.jpg', enabled: false }),
+          editorial: typeof bDiseno.editorial === 'string' ? { url: bDiseno.editorial, enabled: false } : (bDiseno.editorial || { url: '/portafolio/assets/popol-spread.webp', enabled: false })
         },
         industria: {
-          proto: typeof bInd.proto === 'string' ? { url: bInd.proto, enabled: false } : (bInd.proto || { url: './uploads/catalog-v2-ind1-context-oficial.webp', enabled: false }),
-          jig: typeof bInd.jig === 'string' ? { url: bInd.jig, enabled: false } : (bInd.jig || { url: './uploads/catalog-v2-ind2-context-oficial.webp', enabled: false }),
-          spare: typeof bInd.spare === 'string' ? { url: bInd.spare, enabled: false } : (bInd.spare || { url: './uploads/industria_portada_oficial_ingenieria.webp', enabled: false }),
-          batch: typeof bInd.batch === 'string' ? { url: bInd.batch, enabled: false } : (bInd.batch || { url: './uploads/catalog-v2-ind1-detail-oficial.webp', enabled: false })
+          proto: typeof bInd.proto === 'string' ? { url: bInd.proto, enabled: false } : (bInd.proto || { url: '/uploads/catalog-v2-ind1-context-oficial.webp', enabled: false }),
+          jig: typeof bInd.jig === 'string' ? { url: bInd.jig, enabled: false } : (bInd.jig || { url: '/uploads/catalog-v2-ind2-context-oficial.webp', enabled: false }),
+          spare: typeof bInd.spare === 'string' ? { url: bInd.spare, enabled: false } : (bInd.spare || { url: '/uploads/industria_portada_oficial_ingenieria.webp', enabled: false }),
+          batch: typeof bInd.batch === 'string' ? { url: bInd.batch, enabled: false } : (bInd.batch || { url: '/uploads/catalog-v2-ind1-detail-oficial.webp', enabled: false })
         }
       });
     }
@@ -857,7 +857,7 @@ export default function AreaBannersAdminSection({
                           type="text"
                           value={current.url || ''}
                           onChange={(e) => handleCardUrlChange('diseno', card.key, e.target.value)}
-                          placeholder="./uploads/tu_foto.jpg"
+                          placeholder="/uploads/tu_foto.jpg"
                           className="w-full px-2.5 py-1 text-[10.5px] rounded-lg border border-gray-200 bg-gray-50/70 focus:bg-white focus:outline-none focus:border-[#2D4F3E]"
                           title="Ruta o URL de la fotografía"
                         />
@@ -1004,7 +1004,7 @@ export default function AreaBannersAdminSection({
                           type="text"
                           value={current.url || ''}
                           onChange={(e) => handleCardUrlChange('industria', card.key, e.target.value)}
-                          placeholder="./uploads/tu_foto.jpg"
+                          placeholder="/uploads/tu_foto.jpg"
                           className="w-full px-2.5 py-1 text-[10.5px] rounded-lg border border-gray-200 bg-gray-50/70 focus:bg-white focus:outline-none focus:border-[#2D4F3E]"
                           title="Ruta o URL de la fotografía"
                         />

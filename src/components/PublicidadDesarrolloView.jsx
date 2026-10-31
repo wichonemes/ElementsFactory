@@ -81,10 +81,10 @@ export default function PublicidadDesarrolloView({
 
   const globalPhotosEnabled = settings?.showCategoryBackgroundPhotos !== false;
 
-  const brandingBg = parseCardBg(settings?.categoryBackgroundPhotos?.diseno?.branding, './portafolio/assets/artesano-cover.webp');
-  const publicidadBg = parseCardBg(settings?.categoryBackgroundPhotos?.diseno?.publicidad, './portafolio/assets/civil-shirts.webp');
-  const webBg = parseCardBg(settings?.categoryBackgroundPhotos?.diseno?.web, './interfaces/assets/ui-01.jpg');
-  const editorialBg = parseCardBg(settings?.categoryBackgroundPhotos?.diseno?.editorial, './portafolio/assets/popol-spread.webp');
+  const brandingBg = parseCardBg(settings?.categoryBackgroundPhotos?.diseno?.branding, '/portafolio/assets/artesano-cover.webp');
+  const publicidadBg = parseCardBg(settings?.categoryBackgroundPhotos?.diseno?.publicidad, '/portafolio/assets/civil-shirts.webp');
+  const webBg = parseCardBg(settings?.categoryBackgroundPhotos?.diseno?.web, '/interfaces/assets/ui-01.jpg');
+  const editorialBg = parseCardBg(settings?.categoryBackgroundPhotos?.diseno?.editorial, '/portafolio/assets/popol-spread.webp');
 
   // Paleta oficial de temas y estilos para las 4 áreas principales
   const categoryTheme = {
@@ -968,7 +968,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-lg border border-[#e8b84f]/40 bg-[#0B0D11] flex items-center justify-center p-1 shadow-inner">
                     <img
-                      src="./brand/artesano_isotipo_transparente-128.webp"
+                      src="/brand/artesano_isotipo_transparente-128.webp"
                       alt="Artesano Digital Logo"
                       width="32"
                       height="32"
@@ -992,11 +992,11 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
               <div className="py-2.5 flex items-center gap-3">
                 <div className="w-14 h-18 sm:w-16 sm:h-20 shrink-0 rounded-xl bg-gradient-to-b from-[#202631] to-[#0E1116] border border-white/15 overflow-hidden shadow-md flex items-center justify-center p-2">
                   <img loading="lazy"
-                    src="./brand/artesano_digital_icono.svg"
+                    src="/brand/artesano_digital_icono.svg"
                     alt="Artesano Digital"
                     className="w-full h-full object-contain"
                     onError={(e) => {
-                      e.currentTarget.src = './brand/artesano_isotipo_transparente.png';
+                      e.currentTarget.src = '/brand/artesano_isotipo_transparente.png';
                     }}
                   />
                 </div>
@@ -1015,7 +1015,7 @@ ${hasPrintItems ? `_(Nota: Los precios de impresión no incluyen diseño gráfic
               <div className="pt-2 border-t border-white/10 flex items-center justify-between gap-2">
                 <span className="text-stone-400 text-[10.5px] font-medium">Portafolio oficial:</span>
                 <a
-                  href="./portafolio/"
+                  href="/portafolio/"
                   target="_blank"
                   rel="noreferrer"
                   className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#e8b84f] to-[#d4a359] hover:from-[#f0c765] hover:to-[#e8b84f] text-[#0B0D11] font-black text-xs transition-all flex items-center gap-1.5 shadow-md active:scale-95 cursor-pointer touch-manipulation"

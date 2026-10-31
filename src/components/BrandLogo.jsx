@@ -10,7 +10,7 @@ export default function BrandLogo({
   light = false,
   iconOnly = false 
 }) {
-  const basePath = './brand/';
+  const basePath = '/brand/';
   const iconSrc = `${basePath}artesano_isotipo_transparente-128.webp`;
 
   if (iconOnly) {
@@ -25,7 +25,7 @@ export default function BrandLogo({
           onError={(e) => {
             if (!e.currentTarget.dataset.fallback) {
               e.currentTarget.dataset.fallback = '1';
-              e.currentTarget.src = './brand/artesano_digital_icono.svg';
+              e.currentTarget.src = '/brand/artesano_digital_icono.svg';
             }
           }}
         />
@@ -49,8 +49,8 @@ export default function BrandLogo({
             if (!e.currentTarget.dataset.fallback) {
               e.currentTarget.dataset.fallback = '1';
               e.currentTarget.src = light
-                ? './brand/logo_artesano_blanco.png'
-                : './brand/logo_artesano_negro.png';
+                ? '/brand/logo_artesano_blanco.png'
+                : '/brand/logo_artesano_negro.png';
             }
           }}
         />

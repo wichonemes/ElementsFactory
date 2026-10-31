@@ -8275,10 +8275,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                           {[
-                            { key: 'branding', label: 'BRAND-01: Identidad & Marca', defaultUrl: './portafolio/assets/artesano-cover.webp' },
-                            { key: 'publicidad', label: 'PRINT-02: Lonas & Gran Formato', defaultUrl: './portafolio/assets/civil-shirts.webp' },
-                            { key: 'web', label: 'DEV-03: Web & Tienda', defaultUrl: './interfaces/assets/ui-01.jpg' },
-                            { key: 'editorial', label: 'EDIT-04: Catálogos & Redes', defaultUrl: './portafolio/assets/popol-spread.webp' }
+                            { key: 'branding', label: 'BRAND-01: Identidad & Marca', defaultUrl: '/portafolio/assets/artesano-cover.webp' },
+                            { key: 'publicidad', label: 'PRINT-02: Lonas & Gran Formato', defaultUrl: '/portafolio/assets/civil-shirts.webp' },
+                            { key: 'web', label: 'DEV-03: Web & Tienda', defaultUrl: '/interfaces/assets/ui-01.jpg' },
+                            { key: 'editorial', label: 'EDIT-04: Catálogos & Redes', defaultUrl: '/portafolio/assets/popol-spread.webp' }
                           ].map(card => {
                             const cfg = readInlineCard('diseno', card.key, card.defaultUrl);
                             return (
@@ -8333,7 +8333,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   type="text"
                                   value={cfg.url}
                                   onChange={(e) => updateInlineCard('diseno', card.key, { url: e.target.value, enabled: true }, card.defaultUrl)}
-                                  placeholder="./uploads/tu_foto.jpg"
+                                  placeholder="/uploads/tu_foto.jpg"
                                   className="w-full px-2 py-1 text-[10px] rounded border border-gray-300 bg-white focus:outline-none focus:border-[#2D4F3E]"
                                 />
                               </div>
@@ -8354,10 +8354,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                           {[
-                            { key: 'proto', label: 'PROTO-01: Prototipos funcionales', defaultUrl: './uploads/catalog-v2-ind1-context-oficial.webp' },
-                            { key: 'jig', label: 'JIG-02: Utillaje y herramentales', defaultUrl: './uploads/catalog-v2-ind2-context-oficial.webp' },
-                            { key: 'spare', label: 'SPARE-03: Refacciones y obsoletos', defaultUrl: './uploads/industria_portada_oficial_ingenieria.webp' },
-                            { key: 'batch', label: 'BATCH-04: Lotes Cortos y Preseries', defaultUrl: './uploads/catalog-v2-ind1-detail-oficial.webp' }
+                            { key: 'proto', label: 'PROTO-01: Prototipos funcionales', defaultUrl: '/uploads/catalog-v2-ind1-context-oficial.webp' },
+                            { key: 'jig', label: 'JIG-02: Utillaje y herramentales', defaultUrl: '/uploads/catalog-v2-ind2-context-oficial.webp' },
+                            { key: 'spare', label: 'SPARE-03: Refacciones y obsoletos', defaultUrl: '/uploads/industria_portada_oficial_ingenieria.webp' },
+                            { key: 'batch', label: 'BATCH-04: Lotes Cortos y Preseries', defaultUrl: '/uploads/catalog-v2-ind1-detail-oficial.webp' }
                           ].map(card => {
                             const cfg = readInlineCard('industria', card.key, card.defaultUrl);
                             return (
@@ -8412,7 +8412,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                                   type="text"
                                   value={cfg.url}
                                   onChange={(e) => updateInlineCard('industria', card.key, { url: e.target.value, enabled: true }, card.defaultUrl)}
-                                  placeholder="./uploads/tu_foto.jpg"
+                                  placeholder="/uploads/tu_foto.jpg"
                                   className="w-full px-2 py-1 text-[10px] rounded border border-gray-300 bg-white focus:outline-none focus:border-[#2D4F3E]"
                                 />
                               </div>
@@ -8430,16 +8430,16 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                               ...businessSettings,
                               categoryBackgroundPhotos: {
                                 diseno: {
-                                  branding: './portafolio/assets/artesano-cover.webp',
-                                  publicidad: './portafolio/assets/civil-shirts.webp',
-                                  web: './interfaces/assets/ui-01.jpg',
-                                  editorial: './portafolio/assets/popol-spread.webp'
+                                  branding: '/portafolio/assets/artesano-cover.webp',
+                                  publicidad: '/portafolio/assets/civil-shirts.webp',
+                                  web: '/interfaces/assets/ui-01.jpg',
+                                  editorial: '/portafolio/assets/popol-spread.webp'
                                 },
                                 industria: {
-                                  proto: './uploads/catalog-v2-ind1-context-oficial.webp',
-                                  jig: './uploads/catalog-v2-ind2-context-oficial.webp',
-                                  spare: './uploads/industria_portada_oficial_ingenieria.webp',
-                                  batch: './uploads/catalog-v2-ind1-detail-oficial.webp'
+                                  proto: '/uploads/catalog-v2-ind1-context-oficial.webp',
+                                  jig: '/uploads/catalog-v2-ind2-context-oficial.webp',
+                                  spare: '/uploads/industria_portada_oficial_ingenieria.webp',
+                                  batch: '/uploads/catalog-v2-ind1-detail-oficial.webp'
                                 }
                               }
                             };
@@ -12337,10 +12337,10 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
 
             <div className="p-3.5 rounded-2xl bg-stone-50 border border-stone-200 flex items-center gap-3">
               <img loading="lazy"
-                src={confirmDeleteProduct.primaryImage || './brand/artesano_isotipo_transparente.png'}
+                src={confirmDeleteProduct.primaryImage || '/brand/artesano_isotipo_transparente.png'}
                 alt={confirmDeleteProduct.name}
                 className="w-14 h-14 object-cover rounded-xl border border-stone-200 shrink-0 bg-white"
-                onError={(e) => { e.target.src = './brand/artesano_isotipo_transparente.png'; }}
+                onError={(e) => { e.target.src = '/brand/artesano_isotipo_transparente.png'; }}
               />
               <div className="min-w-0 flex-1 text-xs">
                 <h4 className="font-bold text-stone-900 truncate">{confirmDeleteProduct.name}</h4>

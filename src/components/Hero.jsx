@@ -28,7 +28,7 @@ export default function Hero({
   const seasonalSlides = [
     {
       id: 'hogar-estilo',
-      image: './uploads/img_001.jpg',
+      image: '/uploads/img_001.jpg',
       categoryTag: 'Hogar & Estilo',
       badge: 'Novedad de Temporada',
       title: 'Colección Hogar y Estilo',
@@ -37,7 +37,7 @@ export default function Hero({
     },
     {
       id: 'branding-comercial',
-      image: './uploads/pack_barberia_boutique_contexto.jpg',
+      image: '/uploads/pack_barberia_boutique_contexto.jpg',
       categoryTag: 'Negocios & Marcas',
       badge: 'Temporada Comercial',
       title: 'Branding Comercial & Mostrador',
@@ -46,7 +46,7 @@ export default function Hero({
     },
     {
       id: 'bodas-eventos',
-      image: './uploads/bienvenida_ceremonia_boda.jpg',
+      image: '/uploads/bienvenida_ceremonia_boda.jpg',
       categoryTag: 'Bodas & Eventos',
       badge: 'Edición Especial Ceremonias',
       title: 'Colección Bodas & Celebraciones',
@@ -55,7 +55,7 @@ export default function Hero({
     },
     {
       id: 'setup-gamer',
-      image: './uploads/kit_home_office_gamer_contexto.jpg',
+      image: '/uploads/kit_home_office_gamer_contexto.jpg',
       categoryTag: 'Setup & Gaming',
       badge: 'Lanzamiento de Taller',
       title: 'Setup Gamer & Home Office',
@@ -64,7 +64,7 @@ export default function Hero({
     },
     {
       id: 'linea-termica',
-      image: './uploads/sublimacion_taza_tarro_contexto.jpg',
+      image: '/uploads/sublimacion_taza_tarro_contexto.jpg',
       categoryTag: 'Sublimación & Textil',
       badge: 'Novedad Térmica',
       title: 'Línea Térmica & Personalizada',

@@ -54,10 +54,10 @@ export default function CustomProductsSection({
       priceNumber: 650,
       leadTime: '3 a 5 días',
       images: [
-        './uploads/catalog-v2-cust-pets-1.webp',
-        './uploads/catalog-v2-cust-pets-2.webp',
-        './uploads/catalog-v2-cust-pets-3.webp',
-        './uploads/catalog-v2-cust-pets-4.webp'
+        '/uploads/catalog-v2-cust-pets-1.webp',
+        '/uploads/catalog-v2-cust-pets-2.webp',
+        '/uploads/catalog-v2-cust-pets-3.webp',
+        '/uploads/catalog-v2-cust-pets-4.webp'
       ],
       photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Caja y empaque'],
       shortDesc: 'Inmortalizamos a tu mejor amigo con sus manchas, pelaje, collar y rasgos únicos, en su caja POP! Custom con ventana transparente y su nombre.',
@@ -92,10 +92,10 @@ export default function CustomProductsSection({
       priceNumber: 1250,
       leadTime: '4 a 6 días',
       images: [
-        './uploads/catalog-v2-cust-parejas-1.webp',
-        './uploads/catalog-v2-cust-parejas-2.webp',
-        './uploads/catalog-v2-cust-parejas-3.webp',
-        './uploads/catalog-v2-cust-parejas-4.webp'
+        '/uploads/catalog-v2-cust-parejas-1.webp',
+        '/uploads/catalog-v2-cust-parejas-2.webp',
+        '/uploads/catalog-v2-cust-parejas-3.webp',
+        '/uploads/catalog-v2-cust-parejas-4.webp'
       ],
       photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Caja doble'],
       shortDesc: 'Set de figuras personalizadas para novios, esposos o aniversarios. Reproducimos sus outfits favoritos, peinados, poses cómplices y caja conmemorativa doble.',
@@ -130,10 +130,10 @@ export default function CustomProductsSection({
       priceNumber: 680,
       leadTime: '3 a 5 días',
       images: [
-        './uploads/catalog-v2-cust-prof-1.webp',
-        './uploads/catalog-v2-cust-prof-2.webp',
-        './uploads/catalog-v2-cust-prof-3.webp',
-        './uploads/catalog-v2-cust-prof-4.webp'
+        '/uploads/catalog-v2-cust-prof-1.webp',
+        '/uploads/catalog-v2-cust-prof-2.webp',
+        '/uploads/catalog-v2-cust-prof-3.webp',
+        '/uploads/catalog-v2-cust-prof-4.webp'
       ],
       photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Caja de título'],
       shortDesc: 'Médicos con bata y estetoscopio, ingenieros con casco y planos, enfermeros, abogados, maestros, chefs o deportistas con uniforme oficial y caja conmemorativa.',
@@ -168,10 +168,10 @@ export default function CustomProductsSection({
       priceNumber: 650,
       leadTime: '3 a 5 días',
       images: [
-        './uploads/catalog-v2-cust-amigos-1.webp',
-        './uploads/catalog-v2-cust-amigos-2.webp',
-        './uploads/catalog-v2-cust-amigos-3.webp',
-        './uploads/catalog-v2-cust-amigos-4.webp'
+        '/uploads/catalog-v2-cust-amigos-1.webp',
+        '/uploads/catalog-v2-cust-amigos-2.webp',
+        '/uploads/catalog-v2-cust-amigos-3.webp',
+        '/uploads/catalog-v2-cust-amigos-4.webp'
       ],
       photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Caja conmemorativa'],
       shortDesc: 'Recrea a tu mejor amigo con sus prendas favoritas, tatuajes, tenis o accesorios característicos (guitarra, videojuegos, libro, taza de café).',
@@ -206,10 +206,10 @@ export default function CustomProductsSection({
       priceNumber: 1850,
       leadTime: '5 a 8 días',
       images: [
-        './uploads/catalog-v2-cust-familia-1.webp',
-        './uploads/catalog-v2-cust-familia-2.webp',
-        './uploads/catalog-v2-cust-familia-3.webp',
-        './uploads/catalog-v2-cust-familia-4.webp'
+        '/uploads/catalog-v2-cust-familia-1.webp',
+        '/uploads/catalog-v2-cust-familia-2.webp',
+        '/uploads/catalog-v2-cust-familia-3.webp',
+        '/uploads/catalog-v2-cust-familia-4.webp'
       ],
       photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Caja set familiar'],
       shortDesc: 'Recrea a toda la familia en una composición armoniosa: papás, hijos y bebés con sus alturas proporcionales, en caja exhibidora panorámica con apellido familiar.',
@@ -244,10 +244,10 @@ export default function CustomProductsSection({
       priceNumber: 680,
       leadTime: '3 a 5 días',
       images: [
-        './uploads/catalog-v2-cust-abuelitos-1.webp',
-        './uploads/catalog-v2-cust-abuelitos-2.webp',
-        './uploads/catalog-v2-cust-abuelitos-3.webp',
-        './uploads/catalog-v2-cust-abuelitos-4.webp'
+        '/uploads/catalog-v2-cust-abuelitos-1.webp',
+        '/uploads/catalog-v2-cust-abuelitos-2.webp',
+        '/uploads/catalog-v2-cust-abuelitos-3.webp',
+        '/uploads/catalog-v2-cust-abuelitos-4.webp'
       ],
       photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Caja conmemorativa'],
       shortDesc: 'Captura la ternura, el peinado, los anteojos y la calidez de los abuelos. El regalo más conmovedor para el Día de los Abuelos, bodas de oro o cumpleaños.',
@@ -283,10 +283,10 @@ export default function CustomProductsSection({
       priceNumber: 580,
       leadTime: '3 a 5 días',
       images: [
-        './uploads/catalog-v2-cust-dibujo-1.webp',
-        './uploads/catalog-v2-cust-dibujo-2.webp',
-        './uploads/catalog-v2-cust-dibujo-3.webp',
-        './uploads/catalog-v2-cust-dibujo-4.webp'
+        '/uploads/catalog-v2-cust-dibujo-1.webp',
+        '/uploads/catalog-v2-cust-dibujo-2.webp',
+        '/uploads/catalog-v2-cust-dibujo-3.webp',
+        '/uploads/catalog-v2-cust-dibujo-4.webp'
       ],
       photoLabels: ['En contexto', 'Fondo blanco', 'Detalle', 'Peana y escala'],
       shortDesc: '¿Tienes un dibujo de tu pequeño? Lo convertimos en una escultura 3D física única. Dragones, monstruos, superhéroes o personajes fieles a sus trazos.',
@@ -335,8 +335,8 @@ export default function CustomProductsSection({
       <div className="relative bg-[#1F2421] text-white overflow-hidden py-8 sm:py-12 border-b border-black/20">
         <div className="absolute inset-0 opacity-20">
           <img
-            src="./uploads/personalizados-figuras-funko.jpg"
-            srcSet={getOptimizedSrcSet('./uploads/personalizados-figuras-funko.jpg')}
+            src="/uploads/personalizados-figuras-funko.jpg"
+            srcSet={getOptimizedSrcSet('/uploads/personalizados-figuras-funko.jpg')}
             sizes={HERO_IMAGE_SIZES}
             alt="Personalizados Artesano Digital"
             fetchPriority="high"
@@ -447,14 +447,14 @@ export default function CustomProductsSection({
                     decoding="async"
                     className="w-full h-full object-cover group-hover:scale-104 transition-transform duration-500 pointer-events-none select-none"
                     onError={(e) => {
-                      e.currentTarget.src = './brand/og_artesano_preview.jpg';
+                      e.currentTarget.src = '/brand/og_artesano_preview.jpg';
                     }}
                   />
 
                   {/* Marca de Agua Sutil Oficial */}
                   <div className="absolute top-2 right-2 z-10 flex items-center gap-1 px-1.5 py-[2px] rounded-full bg-black/20 backdrop-blur-2xs text-[7px] font-medium text-white/70 pointer-events-none select-none tracking-tight border border-white/5 shadow-2xs">
                     <img
-                      src="./brand/artesano_isotipo_transparente-64.webp"
+                      src="/brand/artesano_isotipo_transparente-64.webp"
                       alt=""
                       width="16"
                       height="16"
@@ -598,7 +598,7 @@ export default function CustomProductsSection({
                     className="w-full h-full object-cover select-none pointer-events-none"
                   />
                   <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 rounded-full bg-black/30 backdrop-blur-2xs text-[9px] font-medium text-white/80 border border-white/10">
-                    <img src="./brand/artesano_isotipo_transparente-64.webp" alt="" width="24" height="24" loading="lazy" decoding="async" className="w-3 h-3 object-contain" />
+                    <img src="/brand/artesano_isotipo_transparente-64.webp" alt="" width="24" height="24" loading="lazy" decoding="async" className="w-3 h-3 object-contain" />
                     <span>Artesano Digital</span>
                   </div>
                 </div>

@@ -40,7 +40,7 @@ export default function HomePackageCard({
           className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
           onError={(e) => {
             e.currentTarget.onerror = null;
-            e.currentTarget.src = './uploads/img_002.jpg';
+            e.currentTarget.src = '/uploads/img_002.jpg';
           }}
         />
 
@@ -72,7 +72,7 @@ export default function HomePackageCard({
           {/* Marca de agua */}
           <div className="flex items-center gap-1 px-1.5 py-[2px] rounded-full bg-black/20 backdrop-blur-2xs text-[7px] font-medium text-white/80 tracking-tight border border-white/5 shadow-2xs">
             <img
-              src="./brand/artesano_isotipo_transparente-64.webp"
+              src="/brand/artesano_isotipo_transparente-64.webp"
               alt=""
               width="16"
               height="16"

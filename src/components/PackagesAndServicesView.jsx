@@ -1298,7 +1298,7 @@ export default function PackagesAndServicesView({
           {/* Marca de Agua Sutil de Taller para Protección de Imagen con Logotipo Oficial */}
           <div className="absolute bottom-2 right-2 z-10 flex items-center gap-1 px-1.5 py-[2px] rounded-full bg-black/15 backdrop-blur-2xs text-[7px] font-medium text-white/60 pointer-events-none select-none tracking-tight border border-white/5 shadow-2xs">
             <img
-              src="./brand/artesano_isotipo_transparente-64.webp"
+              src="/brand/artesano_isotipo_transparente-64.webp"
               alt=""
               width="16"
               height="16"

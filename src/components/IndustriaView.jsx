@@ -461,10 +461,10 @@ ${formData.detalles || 'Sin requerimientos especiales de temperatura o tracción
 
             const globalPhotosEnabled = settings?.showCategoryBackgroundPhotos !== false;
 
-            const protoBg = parseCardBg(settings?.categoryBackgroundPhotos?.industria?.proto, './uploads/catalog-v2-ind1-context-oficial.webp');
-            const jigBg = parseCardBg(settings?.categoryBackgroundPhotos?.industria?.jig, './uploads/catalog-v2-ind2-context-oficial.webp');
-            const spareBg = parseCardBg(settings?.categoryBackgroundPhotos?.industria?.spare, './uploads/industria_portada_oficial_ingenieria.webp');
-            const batchBg = parseCardBg(settings?.categoryBackgroundPhotos?.industria?.batch, './uploads/catalog-v2-ind1-detail-oficial.webp');
+            const protoBg = parseCardBg(settings?.categoryBackgroundPhotos?.industria?.proto, '/uploads/catalog-v2-ind1-context-oficial.webp');
+            const jigBg = parseCardBg(settings?.categoryBackgroundPhotos?.industria?.jig, '/uploads/catalog-v2-ind2-context-oficial.webp');
+            const spareBg = parseCardBg(settings?.categoryBackgroundPhotos?.industria?.spare, '/uploads/industria_portada_oficial_ingenieria.webp');
+            const batchBg = parseCardBg(settings?.categoryBackgroundPhotos?.industria?.batch, '/uploads/catalog-v2-ind1-detail-oficial.webp');
 
             const applicationsData = [
               {

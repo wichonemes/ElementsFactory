@@ -9,15 +9,10 @@ inbox_fotos
 docs
 tests
 
-# Las imágenes y el portafolio se sirven desde GitHub Pages mediante rewrites.
+# uploads se sirve mediante Vercel Blob y fallback optimizado
 public/api
 public/uploads
-public/brand
-public/portafolio
 public/portfolio
-public/interfaces
-public/products
-public/downloads
 public/animacion
 public/audiovisual
 public/editorial

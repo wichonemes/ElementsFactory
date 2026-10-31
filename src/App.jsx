@@ -825,7 +825,7 @@ export default function App() {
     return [
       {
         id: 'hogar-estilo',
-        image: './uploads/img_001.jpg',
+        image: '/uploads/img_001.jpg',
         badge: 'Hogar & Decoración',
         title: 'Colección Hogar & Decoración',
         description: 'Lámparas 3D, maceteros geométricos y percheros de pared',
@@ -833,7 +833,7 @@ export default function App() {
       },
       {
         id: 'branding-comercial',
-        image: './uploads/pack_barberia_boutique_contexto.jpg',
+        image: '/uploads/pack_barberia_boutique_contexto.jpg',
         badge: 'Negocios & Marcas',
         title: 'Branding Comercial & Mostrador',
         description: 'Señalética inteligente, QR y enlaces NFC para negocios',
@@ -841,7 +841,7 @@ export default function App() {
       },
       {
         id: 'bodas-eventos',
-        image: './uploads/bienvenida_ceremonia_boda.jpg',
+        image: '/uploads/bienvenida_ceremonia_boda.jpg',
         badge: 'Eventos Especiales',
         title: 'Bodas, XV Años & Recuerdos',
         description: 'Letreros de bienvenida, copas grabadas y souvenirs de taller',
@@ -849,7 +849,7 @@ export default function App() {
       },
       {
         id: 'setup-gamer',
-        image: './uploads/kit_home_office_gamer_contexto.jpg',
+        image: '/uploads/kit_home_office_gamer_contexto.jpg',
         badge: 'Setup & Gaming',
         title: 'Setup Gamer & Home Office',
         description: 'Soportes de audífonos, bandejas y organizadores 3D',
@@ -1202,8 +1202,8 @@ export default function App() {
                 <div className="flex -space-x-3 shrink-0">
                   <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden border-2 border-white/20 bg-black/40 shadow-xs">
                     <img
-                      src="./uploads/personalizados-figuras-funko.jpg"
-                      srcSet={getOptimizedSrcSet('./uploads/personalizados-figuras-funko.jpg')}
+                      src="/uploads/personalizados-figuras-funko.jpg"
+                      srcSet={getOptimizedSrcSet('/uploads/personalizados-figuras-funko.jpg')}
                       sizes="56px"
                       alt="Funko Custom"
                       loading="lazy"
@@ -1213,8 +1213,8 @@ export default function App() {
                   </div>
                   <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden border-2 border-sky-400/50 bg-black/40 shadow-xs">
                     <img
-                      src="./uploads/personalizados-dibujo-figura-3d.jpg"
-                      srcSet={getOptimizedSrcSet('./uploads/personalizados-dibujo-figura-3d.jpg')}
+                      src="/uploads/personalizados-dibujo-figura-3d.jpg"
+                      srcSet={getOptimizedSrcSet('/uploads/personalizados-dibujo-figura-3d.jpg')}
                       sizes="56px"
                       alt="De Dibujo a 3D"
                       loading="lazy"
@@ -1252,7 +1252,7 @@ export default function App() {
             {loading ? (
               <div className="py-24 text-center space-y-3">
                 <img
-                  src="./brand/artesano_isotipo_transparente-128.webp"
+                  src="/brand/artesano_isotipo_transparente-128.webp"
                   alt="Cargando"
                   width="40"
                   height="40"
