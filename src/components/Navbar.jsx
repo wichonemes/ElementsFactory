@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShoppingBag, Search, Menu, X, Shield, Phone, Sparkles, Lock, Gamepad2, Gift, FileText, MapPin, Truck, AlertCircle, Pause, TrendingUp } from 'lucide-react';
+import { ShoppingBag, Search, Menu, X, Shield, Phone, Sparkles, Lock, Gamepad2, Gift, FileText, MapPin, Truck, AlertCircle, Pause, TrendingUp, Heart, HelpCircle, ExternalLink } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 import { formatServiceDate } from '../utils/serviceStatus';
 
@@ -15,6 +15,8 @@ export default function Navbar({
   onSearchChange,
   onOpenCatalog,
   onOpenAffiliates,
+  onOpenAbout,
+  onOpenFaq,
   settings
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -45,22 +47,22 @@ export default function Navbar({
             <span className="truncate">
               {settings?.serviceStatus?.isPaused ? (
                 <span className="text-amber-300 font-bold flex items-center gap-1">
-                  <Pause className="w-3 h-3 text-amber-300 shrink-0 inline" /> Taller en receso tÃ©cnico hasta el {formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'prÃ³ximo aviso'} Â· Cotizaciones abiertas
+                  <Pause className="w-3 h-3 text-amber-300 shrink-0 inline" /> Taller en receso técnico hasta el {formatServiceDate(settings.serviceStatus.pausedUntilDate) || 'próximo aviso'} · Cotizaciones abiertas
                 </span>
               ) : settings?.serviceStatus?.localService && settings?.serviceStatus?.nationalService === false ? (
                 <span className="text-amber-200 flex items-center gap-1">
-                  <MapPin className="w-3 h-3 text-amber-300 shrink-0 inline" /> Entregas locales y taller activos en SLP Â· EnvÃ­os nacionales en pausa
+                  <MapPin className="w-3 h-3 text-amber-300 shrink-0 inline" /> Entregas locales y taller activos en SLP · Envíos nacionales en pausa
                 </span>
               ) : settings?.serviceStatus?.localService === false && settings?.serviceStatus?.nationalService ? (
                 <span className="text-amber-200 flex items-center gap-1">
-                  <Truck className="w-3 h-3 text-amber-300 shrink-0 inline" /> EnvÃ­os nacionales activos a toda la RepÃºblica Â· Entregas locales en pausa
+                  <Truck className="w-3 h-3 text-amber-300 shrink-0 inline" /> Envíos nacionales activos a toda la República · Entregas locales en pausa
                 </span>
               ) : settings?.serviceStatus?.localService === false && settings?.serviceStatus?.nationalService === false ? (
                 <span className="text-rose-300 font-bold flex items-center gap-1">
-                  <AlertCircle className="w-3 h-3 text-rose-300 shrink-0 inline" /> EnvÃ­os y entregas temporalmente en pausa Â· Consultas activas
+                  <AlertCircle className="w-3 h-3 text-rose-300 shrink-0 inline" /> Envíos y entregas temporalmente en pausa · Consultas activas
                 </span>
               ) : (
-                'Taller mexicano de fabricaciÃ³n & personalizaciÃ³n Â· ImpresiÃ³n 3D Â· LÃ¡ser Â· SublimaciÃ³n Â· Vinil Textil'
+                'Taller mexicano de fabricación & personalización · Impresión 3D · Láser · Sublimación · Vinil Textil'
               )}
             </span>
           </div>
@@ -73,9 +75,9 @@ export default function Navbar({
                   else window.open(settings?.mobileCatalogConfig?.fileUrl || '/downloads/catalogo_movil_artesano_digital.pdf', '_blank');
                 }}
                 className="hover:text-amber-300 flex items-center gap-1 transition-colors text-amber-200/90 font-medium text-[11px] cursor-pointer"
-                title={settings?.mobileCatalogConfig?.title || 'CatÃ¡logos Oficiales de Temporada en PDF'}
+                title={settings?.mobileCatalogConfig?.title || 'Catálogos Oficiales de Temporada en PDF'}
               >
-                <FileText className="w-3 h-3 text-amber-300" /> {settings?.mobileCatalogConfig?.buttonText || 'CatÃ¡logo MÃ³vil PDF'}
+                <FileText className="w-3 h-3 text-amber-300" /> {settings?.mobileCatalogConfig?.buttonText || 'Catálogo Móvil PDF'}
               </button>
             )}
             {settings?.whatsappNumber && (
@@ -112,9 +114,9 @@ export default function Navbar({
             <button
               onClick={onOpenAdmin}
               className="hover:text-white flex items-center gap-1 transition-colors"
-              title="Panel de AdministraciÃ³n"
+              title="Panel de Administración"
             >
-              <Shield className="w-3 h-3 text-amber-400" /> AdministraciÃ³n
+              <Shield className="w-3 h-3 text-amber-400" /> Administración
             </button>
           </div>
         </div>
@@ -192,7 +194,7 @@ export default function Navbar({
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
-                placeholder="Buscar por cÃ³digo, tÃ©cnica..."
+                placeholder="Buscar por código, técnica..."
                 value={searchQuery}
                 onChange={e => onSearchChange(e.target.value)}
                 className="w-full pl-9 pr-3 py-1.5 text-xs rounded-full bg-white border border-[#E8E4DA] focus:border-[#2D4F3E] focus:outline-none transition-colors"
@@ -201,7 +203,7 @@ export default function Navbar({
                 <button
                   onClick={() => onSearchChange('')}
                   className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-0.5 cursor-pointer"
-                  aria-label="Limpiar bÃºsqueda"
+                  aria-label="Limpiar búsqueda"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -237,7 +239,7 @@ export default function Navbar({
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden p-2 text-gray-700 hover:text-[#1F2421] rounded-lg"
-              aria-label="MenÃº"
+              aria-label="Menú"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -251,7 +253,7 @@ export default function Navbar({
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
-                placeholder="Buscar productos, cÃ³digos (ej. L14, T38)..."
+                placeholder="Buscar productos, códigos (ej. L14, T38)..."
                 value={searchQuery}
                 onChange={e => onSearchChange(e.target.value)}
                 autoFocus
@@ -261,7 +263,7 @@ export default function Navbar({
                 <button
                   onClick={() => onSearchChange('')}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-0.5 cursor-pointer"
-                  aria-label="Limpiar bÃºsqueda"
+                  aria-label="Limpiar búsqueda"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -275,7 +277,7 @@ export default function Navbar({
       {mobileMenuOpen && (
         <div className="lg:hidden border-t border-[#E8E4DA] bg-white px-4 pt-3 pb-6 shadow-xl">
           <div className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2 px-2">
-            Ãreas de CatÃ¡logo
+            Áreas de Catálogo
           </div>
           <div className="space-y-1">
             {worlds.map(w => {
@@ -340,6 +342,42 @@ export default function Navbar({
               <span>Gana dinero / Mayoreo</span>
             </a>
 
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  if (onOpenAbout) onOpenAbout();
+                  else window.location.href = '/nosotros';
+                }}
+                className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-stone-50 hover:bg-stone-100 border border-stone-200 text-stone-700 font-bold text-xs shadow-2xs cursor-pointer"
+              >
+                <Heart className="w-3.5 h-3.5 text-emerald-600" /> Nosotros
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  if (onOpenFaq) onOpenFaq();
+                  else window.location.href = '/faq';
+                }}
+                className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-stone-50 hover:bg-stone-100 border border-stone-200 text-stone-700 font-bold text-xs shadow-2xs cursor-pointer"
+              >
+                <HelpCircle className="w-3.5 h-3.5 text-stone-600" /> FAQ / Ayuda
+              </button>
+            </div>
+
+            <a
+              href="/facebook"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-[#1877F2]/10 hover:bg-[#1877F2]/20 border border-[#1877F2]/20 text-[#1877F2] font-bold text-xs shadow-2xs cursor-pointer"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              <span>Facebook Oficial (10% OFF en foto)</span>
+            </a>
+
             {settings?.mobileCatalogConfig?.enabled !== false && (
               <button
                 type="button"
@@ -349,10 +387,10 @@ export default function Navbar({
                   else window.open(settings?.mobileCatalogConfig?.fileUrl || '/downloads/catalogo_movil_artesano_digital.pdf', '_blank');
                 }}
                 className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-[#2D4F3E]/20 bg-[#FAF9F5] text-[#2D4F3E] text-xs font-bold shadow-2xs cursor-pointer"
-                title={settings?.mobileCatalogConfig?.title || 'CatÃ¡logos Oficiales de Temporada (PDF 9:16)'}
+                title={settings?.mobileCatalogConfig?.title || 'Catálogos Oficiales de Temporada (PDF 9:16)'}
               >
                 <FileText className="w-4 h-4 text-[#2D4F3E]" />
-                <span>{settings?.mobileCatalogConfig?.buttonText ? `${settings.mobileCatalogConfig.buttonText}` : 'CatÃ¡logos Oficiales de Temporada (PDF 9:16)'}</span>
+                <span>{settings?.mobileCatalogConfig?.buttonText ? `${settings.mobileCatalogConfig.buttonText}` : 'Catálogos Oficiales de Temporada (PDF 9:16)'}</span>
               </button>
             )}
 

@@ -44,32 +44,30 @@ export default function AboutPage({ onBack, onExplore, settings }) {
     : '#';
 
   return (
-    <div className="fixed inset-0 z-40 overflow-y-auto bg-[#FBF9F5]">
+    <div className="fixed inset-0 z-40 overflow-y-auto bg-[#FBF9F5] pb-24">
       <div className="sticky top-0 z-10 border-b border-[#E8E4DA] bg-[#FBF9F5]/95 backdrop-blur">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
-          <a
-            href="/"
-            onClick={(e) => {
-              e.preventDefault();
+          <button
+            type="button"
+            onClick={() => {
               if (onBack) onBack();
               else window.location.href = '/';
             }}
-            className="inline-flex items-center gap-2 rounded-xl border border-[#E2DCCD] bg-white px-3 py-2 text-sm font-semibold text-[#1F2421] transition hover:border-[#2D4F3E] hover:text-[#2D4F3E] cursor-pointer"
+            className="inline-flex items-center gap-2 rounded-xl border border-[#E2DCCD] bg-white px-3 py-2 text-sm font-semibold text-[#1F2421] transition hover:border-[#2D4F3E] hover:text-[#2D4F3E] cursor-pointer shadow-2xs active:scale-95"
           >
             <ArrowLeft className="h-4 w-4" />
-            Volver al catálogo
-          </a>
-          <a
-            href="/"
-            onClick={(e) => {
-              e.preventDefault();
+            <span>Volver al catálogo</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
               if (onBack) onBack();
               else window.location.href = '/';
             }}
-            className="hidden sm:block cursor-pointer"
+            className="cursor-pointer"
           >
             <BrandLogo showTagline={false} />
-          </a>
+          </button>
         </div>
       </div>
 
@@ -154,8 +152,13 @@ export default function AboutPage({ onBack, onExplore, settings }) {
               Cotizar por WhatsApp
             </a>
             <button
-              onClick={onExplore}
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+              type="button"
+              onClick={() => {
+                if (onExplore) onExplore();
+                else if (onBack) onBack();
+                else window.location.href = '/';
+              }}
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10 cursor-pointer active:scale-95"
             >
               Ver catálogo completo
             </button>

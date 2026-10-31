@@ -37,12 +37,12 @@ export default function ProductCard({
       };
 
   const techniqueLabels = {
-    '3d': { label: 'ImpresiÃ³n 3D', color: 'bg-emerald-50 text-emerald-800 border-emerald-200' },
-    'laser': { label: 'LÃ¡ser', color: 'bg-amber-50 text-amber-800 border-amber-200' },
-    'sublimation': { label: 'SublimaciÃ³n', color: 'bg-rose-50 text-rose-800 border-rose-200' },
+    '3d': { label: 'Impresión 3D', color: 'bg-emerald-50 text-emerald-800 border-emerald-200' },
+    'laser': { label: 'Láser', color: 'bg-amber-50 text-amber-800 border-amber-200' },
+    'sublimation': { label: 'Sublimación', color: 'bg-rose-50 text-rose-800 border-rose-200' },
     'vinyl': { label: 'Vinil', color: 'bg-indigo-50 text-indigo-800 border-indigo-200' },
-    'print': { label: 'ImpresiÃ³n', color: 'bg-cyan-50 text-cyan-800 border-cyan-200' },
-    'impresion_laser': { label: 'ImpresiÃ³n', color: 'bg-cyan-50 text-cyan-800 border-cyan-200' },
+    'print': { label: 'Impresión', color: 'bg-cyan-50 text-cyan-800 border-cyan-200' },
+    'impresion_laser': { label: 'Impresión', color: 'bg-cyan-50 text-cyan-800 border-cyan-200' },
     'nfc': { label: 'NFC', color: 'bg-teal-50 text-teal-800 border-teal-200' }
   };
 
@@ -132,7 +132,7 @@ export default function ProductCard({
       }`}
     >
       
-      {/* Photo Container con ProtecciÃ³n Anti-PiraterÃ­a (Bloqueo de Arrastre, Clic Derecho y Marca de Agua) */}
+      {/* Photo Container con Protección Anti-Piratería (Bloqueo de Arrastre, Clic Derecho y Marca de Agua) */}
       <div
         onClick={handleOpenDetailModal}
         onContextMenu={(e) => e.preventDefault()}
@@ -176,7 +176,7 @@ export default function ProductCard({
             ) : null}
           </div>
 
-          {/* Right: Technique Badge (3D, LÃ¡ser, SublimaciÃ³n, Vinil, NFC) */}
+          {/* Right: Technique Badge (3D, Láser, Sublimación, Vinil, NFC) */}
           <span className={`px-1.5 py-0.5 sm:px-2 rounded-md text-[8.5px] sm:text-[9.5px] font-bold border backdrop-blur-md shadow-xs ${techBadge.color}`}>
             {techBadge.label}
           </span>
@@ -267,10 +267,10 @@ export default function ProductCard({
             </button>
           </div>
 
-          {/* Sello de Taller & EnvÃ­o Seguro estilo Mercado Libre */}
+          {/* Sello de Taller & Envío Seguro estilo Mercado Libre */}
           <div className="text-[10px] text-emerald-700 font-bold flex items-center gap-1 pt-0.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
-            <span className="truncate">Taller SLP Â· EnvÃ­o Seguro</span>
+            <span className="truncate">Taller SLP · Envío Seguro</span>
           </div>
         </div>
       </div>

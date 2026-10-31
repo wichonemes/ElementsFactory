@@ -641,6 +641,12 @@ export default function App() {
 
   // Go to Home handler
   const handleGoHome = () => {
+    setShowAbout(false);
+    setShowFaq(false);
+    setShowAffiliates(false);
+    if (/^\/(nosotros|faq|afiliados)\/?$/i.test(window.location.pathname)) {
+      window.history.replaceState({}, '', '/');
+    }
     playSoftAreaSwitchSound();
     setActiveWorld('all');
     setSelectedCategory('all');
@@ -652,6 +658,12 @@ export default function App() {
 
   // World / Area selector handler
   const handleSelectWorld = (worldId, tab, initialCategory = null) => {
+    setShowAbout(false);
+    setShowFaq(false);
+    setShowAffiliates(false);
+    if (/^\/(nosotros|faq|afiliados)\/?$/i.test(window.location.pathname)) {
+      window.history.replaceState({}, '', '/');
+    }
     playSoftAreaSwitchSound();
     setSearchQuery(''); // Limpia la búsqueda para que el catálogo abra inmediatamente
     if (worldId === 'industria') {
@@ -895,6 +907,14 @@ export default function App() {
 
   const handleMobileNavTab = (tab) => {
     setMobileNavTab(tab);
+    // Si estaba en una página secundaria (Nosotros, FAQ, Afiliados), cerrarla de inmediato
+    setShowAbout(false);
+    setShowFaq(false);
+    setShowAffiliates(false);
+    if (/^\/(nosotros|faq|afiliados)\/?$/i.test(window.location.pathname)) {
+      window.history.replaceState({}, '', '/');
+    }
+
     if (tab === 'home') {
       setActiveWorld('all');
       setSelectedCategory('all');
@@ -912,23 +932,32 @@ export default function App() {
 
   const handleCloseAbout = () => {
     setShowAbout(false);
-    if (/^\/nosotros\/?$/i.test(window.location.pathname)) {
+    setShowFaq(false);
+    setShowAffiliates(false);
+    if (/^\/(nosotros|faq|afiliados)\/?$/i.test(window.location.pathname)) {
       window.history.replaceState({}, '', '/');
     }
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   const handleCloseFaq = () => {
+    setShowAbout(false);
     setShowFaq(false);
-    if (/^\/faq\/?$/i.test(window.location.pathname)) {
+    setShowAffiliates(false);
+    if (/^\/(nosotros|faq|afiliados)\/?$/i.test(window.location.pathname)) {
       window.history.replaceState({}, '', '/');
     }
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   const handleCloseAffiliates = () => {
+    setShowAbout(false);
+    setShowFaq(false);
     setShowAffiliates(false);
-    if (/^\/afiliados\/?$/i.test(window.location.pathname)) {
+    if (/^\/(nosotros|faq|afiliados)\/?$/i.test(window.location.pathname)) {
       window.history.replaceState({}, '', '/');
     }
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   const handleOpenWhatsAppDirect = () => {
@@ -992,6 +1021,20 @@ export default function App() {
             setShowAffiliates(true);
             setShowAbout(false);
             setShowFaq(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          onOpenAbout={() => {
+            window.history.pushState({}, '', '/nosotros');
+            setShowAbout(true);
+            setShowFaq(false);
+            setShowAffiliates(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          onOpenFaq={() => {
+            window.history.pushState({}, '', '/faq');
+            setShowFaq(true);
+            setShowAbout(false);
+            setShowAffiliates(false);
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
           searchQuery={searchQuery}
@@ -1672,7 +1715,7 @@ export default function App() {
         onSelectTechnique={setSelectedTechnique}
       />
 
-      {/* Barra Lateral Deslizable para Móviles (Drawer con Cotizador, Arcade, Catálogo, WhatsApp y Admin) */}
+      {/* Barra Lateral Deslizable para Móviles (Drawer con Cotizador, Arcade, Catálogo, WhatsApp, Mayoreo, Nosotros, FAQ y Admin) */}
       <MobileSidebarDrawer
         isOpen={isMoreMenuOpen}
         onClose={() => {
@@ -1687,7 +1730,36 @@ export default function App() {
         onOpenArcade={handleOpenArcade}
         onOpenCalculator={() => handleOpenCalculator()}
         onOpenWhatsApp={handleOpenWhatsAppDirect}
-        onSelectWorld={handleSelectWorld}
+        onSelectWorld={(worldId) => {
+          setShowAbout(false);
+          setShowFaq(false);
+          setShowAffiliates(false);
+          if (window.location.pathname !== '/') window.history.replaceState({}, '', '/');
+          handleSelectWorld(worldId);
+        }}
+        onGoHome={handleGoHome}
+        onOpenAffiliates={() => {
+          setShowAbout(false);
+          setShowFaq(false);
+          setShowAffiliates(true);
+          window.history.pushState({}, '', '/afiliados');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+        onOpenAbout={() => {
+          setShowAffiliates(false);
+          setShowFaq(false);
+          setShowAbout(true);
+          window.history.pushState({}, '', '/nosotros');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+        onOpenFaq={() => {
+          setShowAffiliates(false);
+          setShowAbout(false);
+          setShowFaq(true);
+          window.history.pushState({}, '', '/faq');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+        onOpenLoyalty={() => setShowLoyalty(true)}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenCatalog={handleOpenCatalogSelector}
         cartCount={totalCartCount}

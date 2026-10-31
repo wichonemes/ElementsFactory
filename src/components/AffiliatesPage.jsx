@@ -23,29 +23,27 @@ export default function AffiliatesPage({ onBack, settings }) {
       {/* Barra superior de navegación */}
       <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-stone-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <a
-            href="/"
-            onClick={(e) => {
-              e.preventDefault();
+          <button
+            type="button"
+            onClick={() => {
               if (onBack) onBack();
               else window.location.href = '/';
             }}
-            className="inline-flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-emerald-800 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-emerald-800 transition-colors cursor-pointer active:scale-95 py-2 px-2.5 rounded-lg hover:bg-stone-100"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Volver al catálogo</span>
-          </a>
-          <a
-            href="/"
-            onClick={(e) => {
-              e.preventDefault();
+          </button>
+          <button
+            type="button"
+            onClick={() => {
               if (onBack) onBack();
               else window.location.href = '/';
             }}
             className="cursor-pointer"
           >
             <BrandLogo size="sm" showTagline={false} />
-          </a>
+          </button>
           <a
             href={whatsappUrl}
             target="_blank"
