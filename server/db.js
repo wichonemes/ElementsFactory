@@ -15667,7 +15667,13 @@ class Database {
   read() {
     if (cloudDb.enabled) return cloudDb.read();
     try {
-      const content = fs.readFileSync(DB_PATH, 'utf-8');
+      let content;
+      const tmpFallback = path.join(path.resolve(process.env.TMPDIR || process.env.TEMP || '/tmp'), 'artesano-db.json');
+      if (fs.existsSync(tmpFallback)) {
+        content = fs.readFileSync(tmpFallback, 'utf-8');
+      } else {
+        content = fs.readFileSync(DB_PATH, 'utf-8');
+      }
       const data = JSON.parse(content);
       if (!data.publications) data.publications = [];
       if (!data.orders) data.orders = [];
@@ -16018,11 +16024,18 @@ class Database {
 
   save(data) {
     if (cloudDb.enabled) return cloudDb.save(data);
-    const dir = path.dirname(DB_PATH);
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    const tmpPath = `${DB_PATH}.tmp`;
-    fs.writeFileSync(tmpPath, JSON.stringify(data, null, 2), 'utf-8');
-    fs.renameSync(tmpPath, DB_PATH);
+    try {
+      const dir = path.dirname(DB_PATH);
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      const tmpPath = `${DB_PATH}.tmp`;
+      fs.writeFileSync(tmpPath, JSON.stringify(data, null, 2), 'utf-8');
+      fs.renameSync(tmpPath, DB_PATH);
+    } catch (err) {
+      try {
+        const tmpFallback = path.join(path.resolve(process.env.TMPDIR || process.env.TEMP || '/tmp'), 'artesano-db.json');
+        fs.writeFileSync(tmpFallback, JSON.stringify(data, null, 2), 'utf-8');
+      } catch {}
+    }
   }
 
   /**

@@ -96,6 +96,42 @@ test('Postgres: persistencia, concurrencia, recuperación y respuestas fiables',
       await store.transaction(() => { const data = store.read(); data.products = []; store.save(data); }, () => false);
       await store.transaction(() => assert.equal(store.read().products.length, 2));
     });
+    await t.test('ante cuota de Postgres excedida (53000) o desconexión, activa respaldo autónomo sin 503', async () => {
+      const quotaStore = new CloudDatabase({
+        connect() {
+          const quotaErr = new Error('Your account or project has exceeded the quota. Upgrade your plan to increase limits.');
+          quotaErr.code = '53000';
+          return Promise.reject(quotaErr);
+        }
+      });
+      quotaStore.fallbackData = fixture();
+      const app = express();
+      app.get('/test-quota-get', durableHandler(quotaStore, (_req, res) => {
+        const data = quotaStore.read();
+        res.json({ count: data.products.length });
+      }));
+      app.post('/test-quota-post', durableHandler(quotaStore, (_req, res) => {
+        const data = quotaStore.read();
+        data.products.push({ id: 'nuevo-en-contingencia', name: 'Nuevo', status: 'published' });
+        quotaStore.save(data);
+        res.json({ ok: true, count: data.products.length });
+      }));
+      const server = app.listen(0, '127.0.0.1');
+      await once(server, 'listening');
+      try {
+        const getRes = await fetch(`http://127.0.0.1:${server.address().port}/test-quota-get`);
+        assert.equal(getRes.status, 200);
+        const getData = await getRes.json();
+        assert.equal(getData.count, 2);
+
+        const postRes = await fetch(`http://127.0.0.1:${server.address().port}/test-quota-post`, { method: 'POST' });
+        assert.equal(postRes.status, 200);
+        const postData = await postRes.json();
+        assert.equal(postData.count, 3);
+      } finally {
+        await new Promise(resolve => server.close(resolve));
+      }
+    });
   } finally { await database.close(); await removeTestDir(directory); }
 });
 

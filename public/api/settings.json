@@ -688,5 +688,38 @@
         "enabled": false
       }
     }
+  },
+  "reviewsRewardConfig": {
+    "enabled": true,
+    "couponCode": "RESEÑA5",
+    "discountPercent": 5,
+    "socialCouponCode": "FOTOREDES",
+    "socialRewardPercentUnder300": 10,
+    "socialRewardPercentOver300": 5,
+    "socialRewardPercent": 10,
+    "socialNotice": "Sube una foto de tu pieza a redes o comenta en nuestro Facebook y mándanos la captura por WhatsApp para recibir 10% de descuento en pedidos de hasta $300 pesos o 5% en compras mayores a $300 pesos. Descuentos no acumulables.",
+    "nonCumulativeNotice": "Los cupones y promociones no son acumulables entre sí ni con descuentos de mayoreo."
+  },
+  "socialLinks": {
+    "facebook": "https://www.facebook.com/ArtesanoDigitalvideojuegos",
+    "instagram": "",
+    "tiktok": ""
+  },
+  "wholesaleConfig": {
+    "enabled": true,
+    "tiers": [
+      {
+        "minQty": 12,
+        "percent": 5
+      },
+      {
+        "minQty": 25,
+        "percent": 10
+      },
+      {
+        "minQty": 50,
+        "percent": 15
+      }
+    ]
   }
 }

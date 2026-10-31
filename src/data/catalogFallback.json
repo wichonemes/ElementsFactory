@@ -2183,7 +2183,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "paquetes"
+        "hogar"
       ],
       "categories": [
         "hogar-decoracion",
@@ -2532,7 +2532,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "paquetes"
+        "negocios"
       ],
       "categories": [
         "negocios-gym"
@@ -2613,7 +2613,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "paquetes"
+        "negocios"
       ],
       "categories": [
         "negocios-barberias"
@@ -2684,7 +2684,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "paquetes"
+        "negocios"
       ],
       "categories": [
         "negocios-joyerias",
@@ -2758,7 +2758,8 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "paquetes"
+        "eventos",
+        "negocios"
       ],
       "categories": [
         "eventos-bodas",
@@ -2853,7 +2854,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "paquetes"
+        "eventos"
       ],
       "categories": [
         "eventos-bodas"
@@ -2932,7 +2933,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "paquetes"
+        "eventos"
       ],
       "categories": [
         "eventos-bodas"
@@ -3079,12 +3080,12 @@
       "code": "EV-ANTICRUDA",
       "name": "Kit Anticruda en Manta con Llaveros de Madera",
       "priceType": "starting_at",
-      "price": 60,
+      "price": 45,
       "priceUnit": "pieza (mín. 25 pzas)",
       "status": "published",
       "featured": true,
       "worlds": [
-        "paquetes"
+        "eventos"
       ],
       "categories": [
         "eventos-bodas",
@@ -3178,7 +3179,7 @@
       "featured": true,
       "badge": "COMBO RECOMENDADO",
       "worlds": [
-        "paquetes"
+        "hogar"
       ],
       "categories": [
         "hogar-organizacion",
@@ -3261,7 +3262,7 @@
       "featured": true,
       "badge": "MÁS VENDIDO ESCRITORIO",
       "worlds": [
-        "paquetes"
+        "hogar"
       ],
       "categories": [
         "hogar-estudio",
@@ -3338,7 +3339,7 @@
       "featured": true,
       "badge": "PET FRIENDLY",
       "worlds": [
-        "paquetes"
+        "hogar"
       ],
       "categories": [
         "hogar-mascotas",
@@ -3426,7 +3427,7 @@
       "featured": true,
       "badge": "MÁS POPULAR RESTAURANTES",
       "worlds": [
-        "paquetes"
+        "negocios"
       ],
       "categories": [
         "negocios-restaurantes"
@@ -3508,7 +3509,7 @@
       "featured": true,
       "badge": "CONECTIVIDAD SMART",
       "worlds": [
-        "paquetes"
+        "negocios"
       ],
       "categories": [
         "negocios-oficinas",
@@ -3595,7 +3596,7 @@
       "featured": true,
       "badge": "FIDELIZACIÓN CLIENTES",
       "worlds": [
-        "paquetes"
+        "negocios"
       ],
       "categories": [
         "negocios-barberias",
@@ -3670,7 +3671,7 @@
       "featured": true,
       "badge": "PAQUETE BODA TOTAL",
       "worlds": [
-        "paquetes"
+        "eventos"
       ],
       "categories": [
         "eventos-bodas"
@@ -3756,7 +3757,8 @@
       "featured": true,
       "badge": "EXPERIENCIA ESTRELLA",
       "worlds": [
-        "paquetes"
+        "eventos",
+        "negocios"
       ],
       "categories": [
         "eventos-bodas",
@@ -3846,7 +3848,7 @@
       "featured": true,
       "badge": "FIESTAS & GRADUACIONES",
       "worlds": [
-        "paquetes"
+        "eventos"
       ],
       "categories": [
         "eventos-xvanos",
@@ -4927,7 +4929,8 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "hogar"
+        "hogar",
+        "juguetes"
       ],
       "categories": [
         "juguetes-movimiento",
@@ -4994,7 +4997,8 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "hogar"
+        "hogar",
+        "juguetes"
       ],
       "categories": [
         "juguetes-articulados",
@@ -6659,6 +6663,39 @@
           "enabled": false
         }
       }
+    },
+    "reviewsRewardConfig": {
+      "enabled": true,
+      "couponCode": "RESEÑA5",
+      "discountPercent": 5,
+      "socialCouponCode": "FOTOREDES",
+      "socialRewardPercentUnder300": 10,
+      "socialRewardPercentOver300": 5,
+      "socialRewardPercent": 10,
+      "socialNotice": "Sube una foto de tu pieza a redes o comenta en nuestro Facebook y mándanos la captura por WhatsApp para recibir 10% de descuento en pedidos de hasta $300 pesos o 5% en compras mayores a $300 pesos. Descuentos no acumulables.",
+      "nonCumulativeNotice": "Los cupones y promociones no son acumulables entre sí ni con descuentos de mayoreo."
+    },
+    "socialLinks": {
+      "facebook": "https://www.facebook.com/ArtesanoDigitalvideojuegos",
+      "instagram": "",
+      "tiktok": ""
+    },
+    "wholesaleConfig": {
+      "enabled": true,
+      "tiers": [
+        {
+          "minQty": 12,
+          "percent": 5
+        },
+        {
+          "minQty": 25,
+          "percent": 10
+        },
+        {
+          "minQty": 50,
+          "percent": 15
+        }
+      ]
     }
   },
   "campaigns": {
@@ -7045,6 +7082,48 @@
       "description": "Código relámpago exclusivo para fines de semana.",
       "discountPercent": 15,
       "label": "15% Especial Oferta Relámpago de Fin de Semana"
+    },
+    {
+      "id": "cup-store-resena",
+      "code": "RESEÑA5",
+      "name": "5% de Descuento por Reseña",
+      "category": "store",
+      "type": "percent",
+      "value": 5,
+      "minPurchase": 0,
+      "maxUses": null,
+      "usedCount": 0,
+      "expiresAt": "2026-12-31T23:59:59.000Z",
+      "active": true,
+      "description": "Cupón especial de agradecimiento por compartir tu opinión sobre Artesano Digital."
+    },
+    {
+      "id": "cup-store-foto-redes",
+      "code": "FOTOREDES10",
+      "name": "10% de Descuento por Foto en Redes",
+      "category": "store",
+      "type": "percent",
+      "value": 10,
+      "minPurchase": 0,
+      "maxUses": null,
+      "usedCount": 0,
+      "expiresAt": "2026-12-31T23:59:59.000Z",
+      "active": true,
+      "description": "Descuento otorgado por compartir tu producto en redes sociales y enviar captura."
+    },
+    {
+      "id": "cup-store-foto-redes",
+      "code": "FOTOREDES",
+      "name": "Premio por Foto en Redes Sociales",
+      "category": "store",
+      "type": "percent",
+      "value": 10,
+      "minPurchase": 0,
+      "maxUses": null,
+      "usedCount": 0,
+      "expiresAt": "2026-12-31T23:59:59.000Z",
+      "active": true,
+      "description": "Descuento por compartir foto en redes: 10% hasta $300 pesos o 5% mayores a $300 pesos (No acumulable)."
     }
   ],
   "arcade": {
@@ -7427,5 +7506,5 @@
       }
     ]
   },
-  "exportedAt": "2026-10-30T18:26:44.366Z"
+  "exportedAt": "2026-10-31T16:09:48.615Z"
 }

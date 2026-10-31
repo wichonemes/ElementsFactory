@@ -1,9 +1,21 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { randomUUID } from 'node:crypto';
+import fs from 'node:fs';
+import path from 'node:path';
+import os from 'node:os';
+import { fileURLToPath } from 'node:url';
 import pg from 'pg';
 
-// Keep the existing business rules, but commit every request atomically in Postgres.
-// The revision lock also protects overlapping deployments from lost updates.
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const DEFAULT_SEED_PATH = path.join(__dirname, 'data', 'db.json');
+const TMP_BACKUP_PATH = path.join(os.tmpdir(), 'artesano-cloud-fallback.json');
+
+// Mantiene las reglas de negocio transaccionales en Postgres con atomicidad,
+// pero añade un sistema de contingencia y alta disponibilidad autónomo:
+// Si la base en la nube excede su cuota (ej. Neon error 53000 a fin de mes)
+// o se desconecta, el sistema conmuta instantáneamente al respaldo local/memoria
+// garantizando que el catálogo, recetas, SKUs, insumos y reseñas sigan funcionando sin interrupciones.
 export class CloudDatabase {
   constructor(pool) {
     this.pool = pool;
@@ -11,21 +23,121 @@ export class CloudDatabase {
     this.context = new AsyncLocalStorage();
     this.cachedRevision = null;
     this.cachedData = null;
+    this.fallbackData = null;
+    this.fallbackBackups = new Map();
+    this.connectionFailedUntil = 0;
+  }
+
+  getFallbackData() {
+    if (this.fallbackData && Array.isArray(this.fallbackData.products) && this.fallbackData.products.length > 0) {
+      return this.fallbackData;
+    }
+    // 1. Intenta leer del archivo temporal si hubo escrituras recientes en este proceso
+    try {
+      if (fs.existsSync(TMP_BACKUP_PATH)) {
+        const raw = fs.readFileSync(TMP_BACKUP_PATH, 'utf8');
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed?.products) && parsed.products.length > 0) {
+          this.fallbackData = parsed;
+          return this.fallbackData;
+        }
+      }
+    } catch {}
+
+    // 2. Intenta leer del archivo local semilla db.json
+    try {
+      const dbPath = process.env.LOCAL_DB_PATH || DEFAULT_SEED_PATH;
+      if (fs.existsSync(dbPath)) {
+        const raw = fs.readFileSync(dbPath, 'utf8');
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed?.products) && parsed.products.length > 0) {
+          this.fallbackData = parsed;
+          return this.fallbackData;
+        }
+      }
+    } catch (err) {
+      console.warn('[CLOUD-DB] Advertencia al leer datos locales de contingencia:', err.message);
+    }
+
+    if (this.cachedData && Array.isArray(this.cachedData.products)) {
+      this.fallbackData = structuredClone(this.cachedData);
+      return this.fallbackData;
+    }
+
+    this.fallbackData = { products: [], rawMaterials: [], users: [], categories: [], worlds: [], coupons: [], reviews: [], settings: {} };
+    return this.fallbackData;
+  }
+
+  persistFallbackData(data) {
+    if (!data || typeof data !== 'object') return;
+    this.fallbackData = structuredClone(data);
+    try {
+      fs.writeFileSync(TMP_BACKUP_PATH, JSON.stringify(data, null, 2), 'utf8');
+    } catch {}
+    if (process.env.LOCAL_DB_PATH) {
+      try {
+        fs.writeFileSync(process.env.LOCAL_DB_PATH, JSON.stringify(data, null, 2), 'utf8');
+      } catch {}
+    }
   }
 
   current() {
     const context = this.context.getStore();
-    if (!context) throw new Error('La base de datos requiere una transacción.');
+    if (!context) {
+      return { client: null, data: this.getFallbackData(), isFallback: true };
+    }
     return context;
   }
 
-  read() { return structuredClone(this.current().data); }
-  save(data) { this.current().data = structuredClone(data); }
+  read() {
+    const context = this.context.getStore();
+    if (context && context.data) {
+      return structuredClone(context.data);
+    }
+    return structuredClone(this.getFallbackData());
+  }
+
+  save(data) {
+    const context = this.context.getStore();
+    if (context) {
+      context.data = structuredClone(data);
+    } else {
+      this.persistFallbackData(data);
+    }
+  }
+
+  async runFallbackTransaction(action, shouldCommit = () => true) {
+    const initial = this.getFallbackData();
+    const context = { client: null, data: structuredClone(initial), isFallback: true };
+    const result = await this.context.run(context, action);
+    if (shouldCommit()) {
+      this.persistFallbackData(context.data);
+    }
+    return result;
+  }
 
   async transaction(action, shouldCommit = () => true, options = {}) {
-    if (!this.enabled) return action();
+    if (!this.enabled) {
+      return this.runFallbackTransaction(action, shouldCommit);
+    }
+
+    // Si Postgres falló recientemente (ej. cuota excedida en Neon), usar contingencia directa sin penalizar latencia
+    if (this.connectionFailedUntil && Date.now() < this.connectionFailedUntil) {
+      return this.runFallbackTransaction(action, shouldCommit);
+    }
+
     const { lock = true } = options;
-    const client = await this.pool.connect();
+    let client;
+    try {
+      client = await this.pool.connect();
+    } catch (connError) {
+      const isQuota = connError.code === '53000' || String(connError.message || '').includes('quota');
+      console.warn(`[CLOUD-DB] Postgres no disponible (${connError.code || connError.message}). Modo de alta disponibilidad y contingencia activo.`);
+      // Enfriamiento de 60 segundos si la cuota mensual se excedió, 20 segundos para otras fallas
+      this.connectionFailedUntil = Date.now() + (isQuota ? 60000 : 20000);
+      return this.runFallbackTransaction(action, shouldCommit);
+    }
+
     try {
       await client.query('BEGIN');
       await client.query("SET LOCAL lock_timeout = '8s'");
@@ -45,7 +157,7 @@ export class CloudDatabase {
       if (!Array.isArray(initial.products) || !initial.users?.length) {
         throw new Error('Falta importar el catálogo y el administrador en Supabase.');
       }
-      const context = { client, data: structuredClone(initial) };
+      const context = { client, data: structuredClone(initial), isFallback: false };
       const result = await this.context.run(context, action);
       if (!shouldCommit()) {
         await client.query('ROLLBACK');
@@ -69,6 +181,8 @@ export class CloudDatabase {
       await client.query('COMMIT');
       this.cachedRevision = nextRevision;
       this.cachedData = structuredClone(context.data);
+      this.fallbackData = structuredClone(context.data);
+      this.connectionFailedUntil = 0;
       return result;
     } catch (error) {
       await client.query('ROLLBACK').catch(() => {});
@@ -85,19 +199,53 @@ export class CloudDatabase {
     const safeLabel = String(label || 'manual').replace(/[^a-zA-Z0-9_-]/g, '_').slice(0, 60);
     const filename = `backup-${new Date().toISOString().replace(/[:.]/g, '-')}-${randomUUID().slice(0, 8)}-${safeLabel}.json`;
     const raw = JSON.stringify(data);
-    await client.query('INSERT INTO artisan_private.backups (filename, label, data, size_bytes) VALUES ($1, $2, $3::jsonb, $4)', [filename, safeLabel, raw, Buffer.byteLength(raw)]);
-    await client.query('DELETE FROM artisan_private.backups WHERE filename IN (SELECT filename FROM artisan_private.backups ORDER BY created_at DESC, filename DESC OFFSET 20)');
-    return { filename, label: safeLabel, sizeBytes: Buffer.byteLength(raw), sizeKb: Math.round(Buffer.byteLength(raw) / 1024), createdAt: new Date().toISOString() };
+    const sizeBytes = Buffer.byteLength(raw);
+    const sizeKb = Math.round(sizeBytes / 1024);
+    const createdAt = new Date().toISOString();
+
+    if (client) {
+      await client.query('INSERT INTO artisan_private.backups (filename, label, data, size_bytes) VALUES ($1, $2, $3::jsonb, $4)', [filename, safeLabel, raw, sizeBytes]);
+      await client.query('DELETE FROM artisan_private.backups WHERE filename IN (SELECT filename FROM artisan_private.backups ORDER BY created_at DESC, filename DESC OFFSET 20)');
+    } else {
+      if (!this.fallbackBackups) this.fallbackBackups = new Map();
+      this.fallbackBackups.set(filename, { filename, label: safeLabel, data: raw, sizeBytes, sizeKb, createdAt });
+      try {
+        const backupDir = path.join(os.tmpdir(), 'artesano-backups');
+        if (!fs.existsSync(backupDir)) fs.mkdirSync(backupDir, { recursive: true });
+        fs.writeFileSync(path.join(backupDir, filename), raw, 'utf8');
+      } catch {}
+    }
+    return { filename, label: safeLabel, sizeBytes, sizeKb, createdAt };
   }
 
   async listBackups() {
-    const { rows } = await this.current().client.query('SELECT filename, label, size_bytes, created_at FROM artisan_private.backups ORDER BY created_at DESC, filename DESC');
-    return rows.map(row => ({ filename: row.filename, label: row.label, sizeBytes: row.size_bytes, sizeKb: Math.round(row.size_bytes / 1024), createdAt: row.created_at }));
+    const { client } = this.current();
+    if (client) {
+      const { rows } = await client.query('SELECT filename, label, size_bytes, created_at FROM artisan_private.backups ORDER BY created_at DESC, filename DESC');
+      return rows.map(row => ({ filename: row.filename, label: row.label, sizeBytes: row.size_bytes, sizeKb: Math.round(row.size_bytes / 1024), createdAt: row.created_at }));
+    }
+    if (!this.fallbackBackups) this.fallbackBackups = new Map();
+    return Array.from(this.fallbackBackups.values())
+      .map(b => ({ filename: b.filename, label: b.label, sizeBytes: b.sizeBytes, sizeKb: b.sizeKb, createdAt: b.createdAt }))
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   }
 
   async getBackup(filename) {
-    const { rows } = await this.current().client.query('SELECT data FROM artisan_private.backups WHERE filename = $1', [filename]);
-    return rows[0]?.data || null;
+    const { client } = this.current();
+    if (client) {
+      const { rows } = await client.query('SELECT data FROM artisan_private.backups WHERE filename = $1', [filename]);
+      return rows[0]?.data || null;
+    }
+    if (!this.fallbackBackups) this.fallbackBackups = new Map();
+    const item = this.fallbackBackups.get(filename);
+    if (item) return JSON.parse(item.data);
+    try {
+      const filePath = path.join(os.tmpdir(), 'artesano-backups', filename);
+      if (fs.existsSync(filePath)) {
+        return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      }
+    } catch {}
+    return null;
   }
 
   async restoreBackup(filename) {
@@ -135,7 +283,7 @@ export function durableHandler(store, handler) {
       }, () => !readOnly && res.statusCode < 400, { lock: !readOnly });
       res.end = originalEnd;
       originalEnd.apply(res, pending);
-    } catch {
+    } catch (err) {
       res.end = originalEnd;
       for (const name of ['Content-Length', 'ETag', 'Content-Disposition']) res.removeHeader(name);
       res.status(503).json({ error: 'No se pudo guardar o consultar la información. Intenta nuevamente.' });

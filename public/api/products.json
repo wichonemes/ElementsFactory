@@ -67,7 +67,7 @@
     "code": "L14",
     "name": "Colgador de llaves Bienvenidos",
     "priceType": "fixed",
-    "price": 143,
+    "price": 185,
     "priceUnit": "pieza",
     "status": "published",
     "featured": true,
@@ -145,7 +145,7 @@
     "code": "T38",
     "name": "Lámpara de mesa moderna",
     "priceType": "fixed",
-    "price": 449,
+    "price": 500,
     "priceUnit": "pieza",
     "status": "published",
     "featured": true,
@@ -222,7 +222,7 @@
     "code": "T6",
     "name": "Maceta espiral geométrica",
     "priceType": "starting_at",
-    "price": 149,
+    "price": 185,
     "priceUnit": "pieza",
     "status": "published",
     "featured": false,
@@ -295,7 +295,7 @@
     "code": "T29",
     "name": "Bandeja vaciabolsillos ovalada",
     "priceType": "starting_at",
-    "price": 149,
+    "price": 160,
     "priceUnit": "pieza",
     "status": "published",
     "featured": false,
@@ -500,7 +500,7 @@
     "code": "L8",
     "name": "Fotoimán de madera natural grabado",
     "priceType": "starting_at",
-    "price": 79,
+    "price": 85,
     "priceUnit": "pieza",
     "status": "published",
     "featured": false,
@@ -784,7 +784,7 @@
     "code": "L4",
     "name": "Nombre de escritorio en madera maciza",
     "priceType": "fixed",
-    "price": 108,
+    "price": 145,
     "priceUnit": "pieza",
     "status": "published",
     "featured": false,
@@ -862,7 +862,7 @@
     "code": "T10",
     "name": "Soporte vertical para celular",
     "priceType": "fixed",
-    "price": 99,
+    "price": 105,
     "priceUnit": "pieza",
     "status": "published",
     "featured": false,
@@ -929,7 +929,7 @@
     "code": "T11",
     "name": "Portalápices facetado geométrico",
     "priceType": "fixed",
-    "price": 100,
+    "price": 140,
     "priceUnit": "pieza",
     "status": "published",
     "featured": false,
@@ -1055,7 +1055,7 @@
     "code": "T7",
     "name": "Soporte gamer para audífonos y mando",
     "priceType": "starting_at",
-    "price": 199,
+    "price": 240,
     "priceUnit": "pieza",
     "status": "published",
     "featured": false,
@@ -1116,7 +1116,7 @@
     "code": "T16",
     "name": "Soporte de mostrador para código QR comercial",
     "priceType": "starting_at",
-    "price": 199,
+    "price": 220,
     "priceUnit": "pieza",
     "status": "published",
     "featured": true,
@@ -1189,7 +1189,7 @@
     "code": "T26",
     "name": "Servilletero de diseño botánico para mesa",
     "priceType": "starting_at",
-    "price": 169,
+    "price": 200,
     "priceUnit": "pieza",
     "status": "published",
     "featured": false,
@@ -1398,7 +1398,7 @@
     "code": "L15",
     "name": "Posavasos de madera natural grabado con láser",
     "priceType": "starting_at",
-    "price": 49,
+    "price": 65,
     "priceUnit": "c/u",
     "status": "published",
     "featured": false,
@@ -1560,7 +1560,7 @@
     "code": "T21",
     "name": "Portabolsas sanitario para paseo de mascotas",
     "priceType": "starting_at",
-    "price": 139,
+    "price": 145,
     "priceUnit": "c/u",
     "status": "published",
     "featured": false,
@@ -1630,7 +1630,7 @@
     "status": "published",
     "featured": true,
     "worlds": [
-      "paquetes"
+      "hogar"
     ],
     "categories": [
       "hogar-decoracion",
@@ -1835,7 +1835,7 @@
     "code": "S8",
     "name": "Taza mágica térmica con revelado fotográfico",
     "priceType": "fixed",
-    "price": 150,
+    "price": 165,
     "priceUnit": "pieza",
     "status": "published",
     "featured": true,
@@ -1979,7 +1979,7 @@
     "status": "published",
     "featured": true,
     "worlds": [
-      "paquetes"
+      "negocios"
     ],
     "categories": [
       "negocios-gym"
@@ -2047,7 +2047,8 @@
       "Playera con marca del gimnasio",
       "Termo grabado (opcional)"
     ],
-    "regularPrice": 620
+    "regularPrice": 620,
+    "savings": 130
   },
   {
     "id": "starter-pack-barberia-t18",
@@ -2059,7 +2060,7 @@
     "status": "published",
     "featured": true,
     "worlds": [
-      "paquetes"
+      "negocios"
     ],
     "categories": [
       "negocios-barberias"
@@ -2117,7 +2118,8 @@
       "Portatijeras vertical",
       "Soporte QR de mostrador"
     ],
-    "regularPrice": 590
+    "regularPrice": 590,
+    "savings": 110
   },
   {
     "id": "starter-pack-joyeria-t27",
@@ -2129,7 +2131,7 @@
     "status": "published",
     "featured": true,
     "worlds": [
-      "paquetes"
+      "negocios"
     ],
     "categories": [
       "negocios-joyerias",
@@ -2190,7 +2192,8 @@
       "Mini letrero de marca en madera",
       "Portaprecios de mostrador"
     ],
-    "regularPrice": 680
+    "regularPrice": 680,
+    "savings": 140
   },
   {
     "id": "servicio-patch-bar-en-vivo",
@@ -2202,7 +2205,8 @@
     "status": "published",
     "featured": true,
     "worlds": [
-      "paquetes"
+      "eventos",
+      "negocios"
     ],
     "categories": [
       "eventos-bodas",
@@ -2297,7 +2301,7 @@
     "status": "published",
     "featured": true,
     "worlds": [
-      "paquetes"
+      "eventos"
     ],
     "categories": [
       "eventos-bodas"
@@ -2376,7 +2380,7 @@
     "status": "published",
     "featured": true,
     "worlds": [
-      "paquetes"
+      "eventos"
     ],
     "categories": [
       "eventos-bodas"
@@ -2528,7 +2532,7 @@
     "status": "published",
     "featured": true,
     "worlds": [
-      "paquetes"
+      "eventos"
     ],
     "categories": [
       "eventos-bodas",
@@ -2622,7 +2626,7 @@
     "featured": true,
     "badge": "COMBO RECOMENDADO",
     "worlds": [
-      "paquetes"
+      "hogar"
     ],
     "categories": [
       "hogar-organizacion",
@@ -2705,7 +2709,7 @@
     "featured": true,
     "badge": "MÁS VENDIDO ESCRITORIO",
     "worlds": [
-      "paquetes"
+      "hogar"
     ],
     "categories": [
       "hogar-estudio",
@@ -2782,7 +2786,7 @@
     "featured": true,
     "badge": "PET FRIENDLY",
     "worlds": [
-      "paquetes"
+      "hogar"
     ],
     "categories": [
       "hogar-mascotas",
@@ -2870,7 +2874,7 @@
     "featured": true,
     "badge": "MÁS POPULAR RESTAURANTES",
     "worlds": [
-      "paquetes"
+      "negocios"
     ],
     "categories": [
       "negocios-restaurantes"
@@ -2952,7 +2956,7 @@
     "featured": true,
     "badge": "CONECTIVIDAD SMART",
     "worlds": [
-      "paquetes"
+      "negocios"
     ],
     "categories": [
       "negocios-oficinas",
@@ -3039,7 +3043,7 @@
     "featured": true,
     "badge": "FIDELIZACIÓN CLIENTES",
     "worlds": [
-      "paquetes"
+      "negocios"
     ],
     "categories": [
       "negocios-barberias",
@@ -3114,7 +3118,7 @@
     "featured": true,
     "badge": "PAQUETE BODA TOTAL",
     "worlds": [
-      "paquetes"
+      "eventos"
     ],
     "categories": [
       "eventos-bodas"
@@ -3179,7 +3183,7 @@
     "detailImage": "./uploads/catalog-v2-promo-ev-1-detail-0d5351b213.webp",
     "measureImage": "./uploads/catalog-v2-promo-ev-1-scale-7c45b34c88.webp",
     "stockQuantity": 0,
-    "sku": "PAQ-HYB-PIN-GRA-001",
+    "sku": "PAQ-HYB-PIN-GRA-002",
     "dimensionsImage": "./uploads/catalog-v2-promo-ev-1-scale-7c45b34c88.webp",
     "bundleAreas": [
       "eventos"
@@ -3200,7 +3204,8 @@
     "featured": true,
     "badge": "EXPERIENCIA ESTRELLA",
     "worlds": [
-      "paquetes"
+      "eventos",
+      "negocios"
     ],
     "categories": [
       "eventos-bodas",
@@ -3290,7 +3295,7 @@
     "featured": true,
     "badge": "FIESTAS & GRADUACIONES",
     "worlds": [
-      "paquetes"
+      "eventos"
     ],
     "categories": [
       "eventos-xvanos",
@@ -3355,7 +3360,7 @@
     "detailImage": "./uploads/catalog-v2-promo-ev-3-detail-bc71d859c5.webp",
     "measureImage": "./uploads/catalog-v2-promo-ev-3-scale-c8a6e4b916.webp",
     "stockQuantity": 0,
-    "sku": "PAQ-HYB-ACR-GRA-003",
+    "sku": "PAQ-HYB-ACR-GRA-002",
     "dimensionsImage": "./uploads/catalog-v2-promo-ev-3-scale-c8a6e4b916.webp",
     "bundleAreas": [
       "eventos"
@@ -3366,7 +3371,7 @@
     "code": "VN-TOTE-01",
     "name": "Bolsa Tote Bag de Manta con Vinil Textil / Sublimación",
     "priceType": "starting_at",
-    "price": 120,
+    "price": 145,
     "regularPrice": 150,
     "priceUnit": "pieza (desde $85 mayoreo)",
     "status": "published",
@@ -3443,14 +3448,15 @@
     "updatedAt": "2026-10-14T23:16:38.861Z",
     "sku": "HOG-SUB-TEX-MAT-001",
     "dimensionsImage": "./uploads/catalog-v2-vn-tote-01-scale-77b996cf91.webp",
-    "createdAt": "2026-10-14T23:16:38.861Z"
+    "createdAt": "2026-10-14T23:16:38.861Z",
+    "savings": 5
   },
   {
     "id": "gorra-trucker-personalizada-vinil-parche",
     "code": "VN-GORRA-01",
     "name": "Gorra Trucker Ajustable con Vinil Textil & Parche",
     "priceType": "starting_at",
-    "price": 145,
+    "price": 165,
     "regularPrice": 180,
     "priceUnit": "pieza (desde $99 mayoreo)",
     "status": "published",
@@ -3527,15 +3533,15 @@
     "updatedAt": "2026-10-14T23:16:59.067Z",
     "sku": "HOG-VIN-TEX-TER-001",
     "dimensionsImage": "./uploads/catalog-v2-vn-gorra-01-scale-6cb8facc19.webp",
-    "createdAt": "2026-10-14T23:16:59.067Z"
+    "createdAt": "2026-10-14T23:16:59.067Z",
+    "savings": 15
   },
   {
     "id": "playera-algodon-personalizada-vinil-textil",
     "code": "VN-PLAYERA-01",
     "name": "Playera 100% Algodón Peinado con Vinil Textil HD",
     "priceType": "starting_at",
-    "price": 185,
-    "regularPrice": 230,
+    "price": 230,
     "priceUnit": "pieza (desde $135 mayoreo)",
     "status": "published",
     "featured": true,
@@ -3618,7 +3624,7 @@
       "expiresAt": null
     },
     "updatedAt": "2026-10-14T23:16:52.767Z",
-    "sku": "HOG-SUB-TEX-MAT-001",
+    "sku": "HOG-SUB-TEX-MAT-002",
     "dimensionsImage": "./uploads/catalog-v2-vn-playera-01-scale-5b114e25f4.webp",
     "createdAt": "2026-10-14T23:16:52.767Z"
   },
@@ -3627,7 +3633,7 @@
     "code": "SB-TAZA-01",
     "name": "Taza Mágica Térmica Reveladora / Cerámica Sublimada",
     "priceType": "starting_at",
-    "price": 140,
+    "price": 165,
     "regularPrice": 175,
     "priceUnit": "pieza (desde $95 mayoreo)",
     "status": "published",
@@ -3693,16 +3699,17 @@
       "expiresAt": null
     },
     "updatedAt": "2026-10-14T23:16:38.825Z",
-    "sku": "HOG-SUB-CER-BRI-001",
+    "sku": "HOG-SUB-CER-BRI-002",
     "dimensionsImage": "./uploads/catalog-v2-sb-taza-01-scale-473238632a.webp",
-    "createdAt": "2026-10-14T23:16:38.825Z"
+    "createdAt": "2026-10-14T23:16:38.825Z",
+    "savings": 10
   },
   {
     "id": "termo-metalico-termico-20oz-personalizado",
     "code": "SB-TERMO-01",
     "name": "Termo Metálico Térmico 20 oz con Vinil Permanente / Grabado",
     "priceType": "starting_at",
-    "price": 230,
+    "price": 250,
     "regularPrice": 280,
     "priceUnit": "pieza (desde $165 mayoreo)",
     "status": "published",
@@ -3781,7 +3788,8 @@
     "updatedAt": "2026-10-14T23:16:52.730Z",
     "sku": "HOG-SUB-MET-MAT-001",
     "dimensionsImage": "./uploads/catalog-v2-sb-termo-01-scale-3899286d90.webp",
-    "createdAt": "2026-10-14T23:16:52.730Z"
+    "createdAt": "2026-10-14T23:16:52.730Z",
+    "savings": 30
   },
   {
     "id": "topper-pastel-boda-ev-topper",
@@ -3850,7 +3858,7 @@
     "availability": "in_stock",
     "createdAt": "2026-10-14T19:14:22.883Z",
     "stockQuantity": 10,
-    "sku": "EVE-LAS-PIN-GRA-001",
+    "sku": "EVE-LAS-PIN-GRA-003",
     "dimensionsImage": "./uploads/catalog-v2-ev-topper-01-scale-a04d8b9223.webp"
   },
   {
@@ -3979,7 +3987,7 @@
     "availability": "in_stock",
     "createdAt": "2026-10-14T19:14:22.886Z",
     "stockQuantity": 10,
-    "sku": "EVE-LAS-PIN-GRA-001",
+    "sku": "EVE-LAS-PIN-GRA-004",
     "dimensionsImage": "./uploads/catalog-v2-ev-guest-01-scale-d57c627388.webp"
   },
   {
@@ -4040,7 +4048,7 @@
     "availability": "in_stock",
     "createdAt": "2026-10-14T19:14:22.886Z",
     "stockQuantity": 6,
-    "sku": "EVE-LAS-PIN-GRA-001",
+    "sku": "EVE-LAS-PIN-GRA-005",
     "dimensionsImage": "./uploads/catalog-v2-ev-cajitas-01-scale-c2a7f3aa8c.webp"
   },
   {
@@ -4099,7 +4107,7 @@
     "availability": "in_stock",
     "createdAt": "2026-10-14T19:14:22.886Z",
     "stockQuantity": 8,
-    "sku": "EVE-LAS-PIN-GRA-001",
+    "sku": "EVE-LAS-PIN-GRA-006",
     "dimensionsImage": "./uploads/catalog-v2-ev-abanico-01-scale-2fcc7e991d.webp"
   },
   {
@@ -4227,7 +4235,7 @@
     "availability": "in_stock",
     "createdAt": "2026-10-14T19:14:22.886Z",
     "stockQuantity": 10,
-    "sku": "EVE-HYB-PLA-GRA-001",
+    "sku": "EVE-HYB-PLA-GRA-002",
     "dimensionsImage": "./uploads/catalog-v2-ev-charms-01-scale-e94b9ebbe4.webp"
   },
   {
@@ -4288,7 +4296,7 @@
     "availability": "in_stock",
     "createdAt": "2026-10-14T19:14:22.886Z",
     "stockQuantity": 5,
-    "sku": "EVE-HYB-PLA-GRA-001",
+    "sku": "EVE-HYB-PLA-GRA-003",
     "dimensionsImage": "./uploads/catalog-v2-ev-candy-01-scale-f2621c7555.webp"
   },
   {
@@ -4368,7 +4376,8 @@
     "status": "published",
     "featured": true,
     "worlds": [
-      "hogar"
+      "hogar",
+      "juguetes"
     ],
     "categories": [
       "juguetes-movimiento",
@@ -4435,7 +4444,8 @@
     "status": "published",
     "featured": true,
     "worlds": [
-      "hogar"
+      "hogar",
+      "juguetes"
     ],
     "categories": [
       "juguetes-articulados",

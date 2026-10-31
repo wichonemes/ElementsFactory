@@ -236,7 +236,7 @@
       "code": "L14",
       "name": "Colgador de llaves Bienvenidos",
       "priceType": "fixed",
-      "price": 143,
+      "price": 185,
       "priceUnit": "pieza",
       "status": "published",
       "featured": true,
@@ -569,7 +569,7 @@
       "code": "T38",
       "name": "Lámpara de mesa moderna",
       "priceType": "fixed",
-      "price": 449,
+      "price": 500,
       "priceUnit": "pieza",
       "status": "published",
       "featured": true,
@@ -837,7 +837,7 @@
       "code": "T6",
       "name": "Maceta espiral geométrica",
       "priceType": "starting_at",
-      "price": 149,
+      "price": 185,
       "priceUnit": "pieza",
       "status": "published",
       "featured": false,
@@ -1068,7 +1068,7 @@
       "code": "T29",
       "name": "Bandeja vaciabolsillos ovalada",
       "priceType": "starting_at",
-      "price": 149,
+      "price": 160,
       "priceUnit": "pieza",
       "status": "published",
       "featured": false,
@@ -1799,7 +1799,7 @@
       "code": "L8",
       "name": "Fotoimán de madera natural grabado",
       "priceType": "starting_at",
-      "price": 79,
+      "price": 85,
       "priceUnit": "pieza",
       "status": "published",
       "featured": false,
@@ -2839,7 +2839,7 @@
       "code": "L4",
       "name": "Nombre de escritorio en madera maciza",
       "priceType": "fixed",
-      "price": 108,
+      "price": 145,
       "priceUnit": "pieza",
       "status": "published",
       "featured": false,
@@ -3115,7 +3115,7 @@
       "code": "T10",
       "name": "Soporte vertical para celular",
       "priceType": "fixed",
-      "price": 99,
+      "price": 105,
       "priceUnit": "pieza",
       "status": "published",
       "featured": false,
@@ -3340,7 +3340,7 @@
       "code": "T11",
       "name": "Portalápices facetado geométrico",
       "priceType": "fixed",
-      "price": 100,
+      "price": 140,
       "priceUnit": "pieza",
       "status": "published",
       "featured": false,
@@ -3820,7 +3820,7 @@
       "code": "T7",
       "name": "Soporte gamer para audífonos y mando",
       "priceType": "starting_at",
-      "price": 199,
+      "price": 240,
       "priceUnit": "pieza",
       "status": "published",
       "featured": false,
@@ -4037,7 +4037,7 @@
       "code": "T16",
       "name": "Soporte de mostrador para código QR comercial",
       "priceType": "starting_at",
-      "price": 199,
+      "price": 220,
       "priceUnit": "pieza",
       "status": "published",
       "featured": true,
@@ -4296,7 +4296,7 @@
       "code": "T26",
       "name": "Servilletero de diseño botánico para mesa",
       "priceType": "starting_at",
-      "price": 169,
+      "price": 200,
       "priceUnit": "pieza",
       "status": "published",
       "featured": false,
@@ -5015,7 +5015,7 @@
       "code": "L15",
       "name": "Posavasos de madera natural grabado con láser",
       "priceType": "starting_at",
-      "price": 49,
+      "price": 65,
       "priceUnit": "c/u",
       "status": "published",
       "featured": false,
@@ -5589,7 +5589,7 @@
       "code": "T21",
       "name": "Portabolsas sanitario para paseo de mascotas",
       "priceType": "starting_at",
-      "price": 139,
+      "price": 145,
       "priceUnit": "c/u",
       "status": "published",
       "featured": false,
@@ -5843,7 +5843,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "paquetes"
+        "hogar"
       ],
       "categories": [
         "hogar-decoracion",
@@ -5913,9 +5913,9 @@
       "detailImage": "./uploads/t35_vista3_detalle.webp",
       "measureImage": "./uploads/t35_vista4_medidas.webp",
       "stockQuantity": 14,
-      "costPrice": 124.6,
+      "costPrice": 102,
       "costBreakdown": {
-        "plaGrams": 92,
+        "plaGrams": 80,
         "tpuGrams": 0,
         "otherMaterialsCost": 25,
         "machineHours": 2.25,
@@ -5923,15 +5923,10 @@
         "manualWorkMin": 10,
         "prepCost": 0,
         "packagingCost": 15,
-        "additionalFailuresCost": 2.69,
+        "additionalFailuresCost": 0,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller",
-        "totalWasteCost": 6,
-        "wastePercentAverage": 7,
-        "totalBeforeIva": 107.41,
-        "ivaPercent": 16,
-        "ivaCost": 17.19
+        "costStatus": "Estimado"
       },
       "sku": "HOG-3D-PLA-BRI-035",
       "skuBreakdown": {
@@ -6618,7 +6613,7 @@
       "code": "S8",
       "name": "Taza mágica térmica con revelado fotográfico",
       "priceType": "fixed",
-      "price": 150,
+      "price": 165,
       "priceUnit": "pieza",
       "status": "published",
       "featured": true,
@@ -7132,7 +7127,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "paquetes"
+        "negocios"
       ],
       "categories": [
         "negocios-gym"
@@ -7204,9 +7199,9 @@
       "detailImage": "./uploads/catalog-v2-t32-detail-654a48c225.webp",
       "measureImage": "./uploads/catalog-v2-t32-scale-fbb59a194e.webp",
       "stockQuantity": 0,
-      "costPrice": 173.64,
+      "costPrice": 128,
       "costBreakdown": {
-        "plaGrams": 172.5,
+        "plaGrams": 150,
         "tpuGrams": 0,
         "otherMaterialsCost": 18,
         "machineHours": 5.5,
@@ -7214,15 +7209,10 @@
         "manualWorkMin": 12,
         "prepCost": 0,
         "packagingCost": 8,
-        "additionalFailuresCost": 4.13,
+        "additionalFailuresCost": 0,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller",
-        "totalWasteCost": 11.25,
-        "wastePercentAverage": 10,
-        "totalBeforeIva": 149.69,
-        "ivaPercent": 16,
-        "ivaCost": 23.95
+        "costStatus": "Estimado"
       },
       "flashDealConfig": {
         "enabled": false,
@@ -7384,7 +7374,8 @@
         "Playera con marca del gimnasio",
         "Termo grabado (opcional)"
       ],
-      "regularPrice": 620
+      "regularPrice": 620,
+      "savings": 130
     },
     {
       "id": "starter-pack-barberia-t18",
@@ -7396,7 +7387,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "paquetes"
+        "negocios"
       ],
       "categories": [
         "negocios-barberias"
@@ -7466,9 +7457,9 @@
       "detailImage": "./uploads/catalog-v2-t18-detail-dd7ea8cd5c.webp",
       "measureImage": "./uploads/catalog-v2-t18-scale-8108f2560e.webp",
       "stockQuantity": 0,
-      "costPrice": 133.24,
+      "costPrice": 98,
       "costBreakdown": {
-        "plaGrams": 126.5,
+        "plaGrams": 110,
         "tpuGrams": 0,
         "otherMaterialsCost": 15,
         "machineHours": 4,
@@ -7476,15 +7467,10 @@
         "manualWorkMin": 10,
         "prepCost": 0,
         "packagingCost": 8,
-        "additionalFailuresCost": 3.11,
+        "additionalFailuresCost": 0,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller",
-        "totalWasteCost": 8.25,
-        "wastePercentAverage": 9.6,
-        "totalBeforeIva": 114.86,
-        "ivaPercent": 16,
-        "ivaCost": 18.38
+        "costStatus": "Estimado"
       },
       "sku": "NEG-3D-PLA-MAT-018",
       "skuBreakdown": {
@@ -7638,7 +7624,8 @@
         "Portatijeras vertical",
         "Soporte QR de mostrador"
       ],
-      "regularPrice": 590
+      "regularPrice": 590,
+      "savings": 110
     },
     {
       "id": "starter-pack-joyeria-t27",
@@ -7650,7 +7637,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "paquetes"
+        "negocios"
       ],
       "categories": [
         "negocios-joyerias",
@@ -7721,9 +7708,9 @@
       "detailImage": "./uploads/catalog-v2-t27-detail-159392852e.webp",
       "measureImage": "./uploads/catalog-v2-t27-scale-33b7bb81ef.webp",
       "stockQuantity": 0,
-      "costPrice": 143.82,
+      "costPrice": 105,
       "costBreakdown": {
-        "plaGrams": 138,
+        "plaGrams": 120,
         "tpuGrams": 0,
         "otherMaterialsCost": 15,
         "machineHours": 4.8,
@@ -7731,15 +7718,10 @@
         "manualWorkMin": 10,
         "prepCost": 0,
         "packagingCost": 8,
-        "additionalFailuresCost": 3.38,
+        "additionalFailuresCost": 0,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller",
-        "totalWasteCost": 9,
-        "wastePercentAverage": 9.8,
-        "totalBeforeIva": 123.98,
-        "ivaPercent": 16,
-        "ivaCost": 19.84
+        "costStatus": "Estimado"
       },
       "sku": "NEG-HYB-PLA-MAT-027",
       "skuBreakdown": {
@@ -7895,7 +7877,8 @@
         "Mini letrero de marca en madera",
         "Portaprecios de mostrador"
       ],
-      "regularPrice": 680
+      "regularPrice": 680,
+      "savings": 140
     },
     {
       "id": "servicio-patch-bar-en-vivo",
@@ -7907,7 +7890,8 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "paquetes"
+        "eventos",
+        "negocios"
       ],
       "categories": [
         "eventos-bodas",
@@ -7992,25 +7976,20 @@
       "detailImage": "./uploads/catalog-v2-ev-patchbar-detail-10076432c6.webp",
       "measureImage": "./uploads/catalog-v2-ev-patchbar-scale-d63f586482.webp",
       "stockQuantity": 0,
-      "costPrice": 2815.67,
+      "costPrice": 2400,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
-        "otherMaterialsCost": 2200,
+        "otherMaterialsCost": 1900,
         "machineHours": 0.25,
         "otherEquipCost": 0,
         "manualWorkMin": 10,
         "prepCost": 0,
         "packagingCost": 150,
-        "additionalFailuresCost": 66.33,
+        "additionalFailuresCost": 0,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller",
-        "totalWasteCost": 0,
-        "wastePercentAverage": 0,
-        "totalBeforeIva": 2427.3,
-        "ivaPercent": 16,
-        "ivaCost": 388.37
+        "costStatus": "Estimado"
       },
       "flashDealConfig": {
         "enabled": true,
@@ -8185,7 +8164,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "paquetes"
+        "eventos"
       ],
       "categories": [
         "eventos-bodas"
@@ -8263,7 +8242,7 @@
       "detailImage": "./uploads/catalog-v2-ev-suite-detail-0d1bdfdaa8.webp",
       "measureImage": "./uploads/catalog-v2-ev-suite-scale-0742a13507.webp",
       "stockQuantity": 0,
-      "costPrice": 347.45,
+      "costPrice": 320,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -8273,15 +8252,10 @@
         "manualWorkMin": 15,
         "prepCost": 0,
         "packagingCost": 25,
-        "additionalFailuresCost": 8,
+        "additionalFailuresCost": 0,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller",
-        "totalWasteCost": 0,
-        "wastePercentAverage": 0,
-        "totalBeforeIva": 299.53,
-        "ivaPercent": 16,
-        "ivaCost": 47.92
+        "costStatus": "Estimado"
       },
       "sku": "EVE-LAS-PIN-GRA-001",
       "skuBreakdown": {
@@ -8461,7 +8435,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "paquetes"
+        "eventos"
       ],
       "categories": [
         "eventos-bodas"
@@ -8541,7 +8515,7 @@
       "detailImage": "./uploads/catalog-v2-ev-ceremonia-detail-42a1ba517b.webp",
       "measureImage": "./uploads/catalog-v2-ev-ceremonia-scale-e08a0d52ea.webp",
       "stockQuantity": 0,
-      "costPrice": 567.97,
+      "costPrice": 520,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -8551,15 +8525,10 @@
         "manualWorkMin": 15,
         "prepCost": 0,
         "packagingCost": 40,
-        "additionalFailuresCost": 13.1,
+        "additionalFailuresCost": 0,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller",
-        "totalWasteCost": 0,
-        "wastePercentAverage": 0,
-        "totalBeforeIva": 489.63,
-        "ivaPercent": 16,
-        "ivaCost": 78.34
+        "costStatus": "Estimado"
       },
       "sku": "EVE-HYB-ACR-GRA-001",
       "skuBreakdown": {
@@ -8993,7 +8962,7 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "paquetes"
+        "eventos"
       ],
       "categories": [
         "eventos-bodas",
@@ -9083,7 +9052,7 @@
       "detailImage": "./uploads/catalog-v2-ev-anticruda-detail-8feed7eac7.webp",
       "measureImage": "./uploads/catalog-v2-ev-anticruda-scale-8f3ed9c922.webp",
       "stockQuantity": 0,
-      "costPrice": 32.35,
+      "costPrice": 18,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
@@ -9093,15 +9062,10 @@
         "manualWorkMin": 10,
         "prepCost": 0,
         "packagingCost": 2,
-        "additionalFailuresCost": 0.75,
+        "additionalFailuresCost": 0,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller",
-        "totalWasteCost": 0,
-        "wastePercentAverage": 0,
-        "totalBeforeIva": 27.89,
-        "ivaPercent": 16,
-        "ivaCost": 4.46
+        "costStatus": "Estimado"
       },
       "sku": "EVE-LAS-TEX-GRA-001",
       "skuBreakdown": {
@@ -9284,7 +9248,7 @@
       "featured": true,
       "badge": "COMBO RECOMENDADO",
       "worlds": [
-        "paquetes"
+        "hogar"
       ],
       "categories": [
         "hogar-organizacion",
@@ -9367,9 +9331,9 @@
       "detailImage": "./uploads/catalog-v2-promo-hog-1-detail-5c907bdc2b.webp",
       "measureImage": "./uploads/catalog-v2-promo-hog-1-scale-a202394984.webp",
       "stockQuantity": 0,
-      "costPrice": 228.54,
+      "costPrice": 168,
       "costBreakdown": {
-        "plaGrams": 46,
+        "plaGrams": 40,
         "tpuGrams": 0,
         "otherMaterialsCost": 120,
         "machineHours": 1.5,
@@ -9377,15 +9341,10 @@
         "manualWorkMin": 25,
         "prepCost": 0,
         "packagingCost": 18,
-        "additionalFailuresCost": 5.21,
+        "additionalFailuresCost": 0,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller",
-        "totalWasteCost": 3,
-        "wastePercentAverage": 1.9,
-        "totalBeforeIva": 197.02,
-        "ivaPercent": 16,
-        "ivaCost": 31.52
+        "costStatus": "Estimado"
       },
       "sku": "PAQ-HYB-PIN-GRA-001",
       "skuBreakdown": {
@@ -9550,7 +9509,7 @@
       "featured": true,
       "badge": "MÁS VENDIDO ESCRITORIO",
       "worlds": [
-        "paquetes"
+        "hogar"
       ],
       "categories": [
         "hogar-estudio",
@@ -9628,9 +9587,9 @@
       "detailImage": "./uploads/catalog-v2-promo-hog-2-detail-239a9c3dda.webp",
       "measureImage": "./uploads/catalog-v2-promo-hog-2-scale-1c5a412a91.webp",
       "stockQuantity": 0,
-      "costPrice": 249.54,
+      "costPrice": 205,
       "costBreakdown": {
-        "plaGrams": 253,
+        "plaGrams": 220,
         "tpuGrams": 0,
         "otherMaterialsCost": 10,
         "machineHours": 9,
@@ -9638,15 +9597,10 @@
         "manualWorkMin": 20,
         "prepCost": 0,
         "packagingCost": 18,
-        "additionalFailuresCost": 5.74,
+        "additionalFailuresCost": 0,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller",
-        "totalWasteCost": 16.5,
-        "wastePercentAverage": 10.7,
-        "totalBeforeIva": 215.12,
-        "ivaPercent": 16,
-        "ivaCost": 34.42
+        "costStatus": "Estimado"
       },
       "sku": "PAQ-3D-PLA-ENS-002",
       "skuBreakdown": {
@@ -9810,7 +9764,7 @@
       "featured": true,
       "badge": "PET FRIENDLY",
       "worlds": [
-        "paquetes"
+        "hogar"
       ],
       "categories": [
         "hogar-mascotas",
@@ -9899,9 +9853,9 @@
       "detailImage": "./uploads/catalog-v2-promo-hog-3-detail-05fb365d65.webp",
       "measureImage": "./uploads/catalog-v2-promo-hog-3-scale-6a0903aae4.webp",
       "stockQuantity": 0,
-      "costPrice": 145.06,
+      "costPrice": 118,
       "costBreakdown": {
-        "plaGrams": 86.25,
+        "plaGrams": 75,
         "tpuGrams": 0,
         "otherMaterialsCost": 40,
         "machineHours": 3,
@@ -9909,15 +9863,10 @@
         "manualWorkMin": 15,
         "prepCost": 0,
         "packagingCost": 12,
-        "additionalFailuresCost": 3.29,
+        "additionalFailuresCost": 0,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller",
-        "totalWasteCost": 5.63,
-        "wastePercentAverage": 5.9,
-        "totalBeforeIva": 125.05,
-        "ivaPercent": 16,
-        "ivaCost": 20.01
+        "costStatus": "Estimado"
       },
       "sku": "PAQ-HYB-PLA-GRA-003",
       "skuBreakdown": {
@@ -10081,7 +10030,7 @@
       "featured": true,
       "badge": "MÁS POPULAR RESTAURANTES",
       "worlds": [
-        "paquetes"
+        "negocios"
       ],
       "categories": [
         "negocios-restaurantes"
@@ -10164,9 +10113,9 @@
       "detailImage": "./uploads/catalog-v2-promo-biz-1-detail-2803b7aefa.webp",
       "measureImage": "./uploads/catalog-v2-promo-biz-1-scale-8d57b77857.webp",
       "stockQuantity": 0,
-      "costPrice": 764.03,
+      "costPrice": 710,
       "costBreakdown": {
-        "plaGrams": 747.5,
+        "plaGrams": 650,
         "tpuGrams": 0,
         "otherMaterialsCost": 80,
         "machineHours": 25,
@@ -10174,15 +10123,10 @@
         "manualWorkMin": 50,
         "prepCost": 0,
         "packagingCost": 40,
-        "additionalFailuresCost": 18.02,
+        "additionalFailuresCost": 0,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller",
-        "totalWasteCost": 48.75,
-        "wastePercentAverage": 9.9,
-        "totalBeforeIva": 658.65,
-        "ivaPercent": 16,
-        "ivaCost": 105.38
+        "costStatus": "Estimado"
       },
       "sku": "PAQ-HYB-ACR-GRA-001",
       "skuBreakdown": {
@@ -10346,7 +10290,7 @@
       "featured": true,
       "badge": "CONECTIVIDAD SMART",
       "worlds": [
-        "paquetes"
+        "negocios"
       ],
       "categories": [
         "negocios-oficinas",
@@ -10434,9 +10378,9 @@
       "detailImage": "./uploads/catalog-v2-promo-biz-2-detail-8feaf311de.webp",
       "measureImage": "./uploads/catalog-v2-promo-biz-2-scale-7310c244c1.webp",
       "stockQuantity": 0,
-      "costPrice": 374.54,
+      "costPrice": 295,
       "costBreakdown": {
-        "plaGrams": 230,
+        "plaGrams": 200,
         "tpuGrams": 0,
         "otherMaterialsCost": 120,
         "machineHours": 7.5,
@@ -10444,15 +10388,10 @@
         "manualWorkMin": 30,
         "prepCost": 0,
         "packagingCost": 20,
-        "additionalFailuresCost": 8.82,
+        "additionalFailuresCost": 0,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller",
-        "totalWasteCost": 15,
-        "wastePercentAverage": 5.9,
-        "totalBeforeIva": 322.88,
-        "ivaPercent": 16,
-        "ivaCost": 51.66
+        "costStatus": "Estimado"
       },
       "sku": "PAQ-LAS-CER-NFC-002",
       "skuBreakdown": {
@@ -10630,7 +10569,7 @@
       "featured": true,
       "badge": "FIDELIZACIÓN CLIENTES",
       "worlds": [
-        "paquetes"
+        "negocios"
       ],
       "categories": [
         "negocios-barberias",
@@ -10706,9 +10645,9 @@
       "detailImage": "./uploads/catalog-v2-promo-biz-3-detail-04a190d0f1.webp",
       "measureImage": "./uploads/catalog-v2-promo-biz-3-scale-00d81fef57.webp",
       "stockQuantity": 0,
-      "costPrice": 369.89,
+      "costPrice": 320,
       "costBreakdown": {
-        "plaGrams": 103.5,
+        "plaGrams": 90,
         "tpuGrams": 0,
         "otherMaterialsCost": 180,
         "machineHours": 3.5,
@@ -10716,15 +10655,10 @@
         "manualWorkMin": 40,
         "prepCost": 0,
         "packagingCost": 25,
-        "additionalFailuresCost": 8.56,
+        "additionalFailuresCost": 0,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller",
-        "totalWasteCost": 6.75,
-        "wastePercentAverage": 2.6,
-        "totalBeforeIva": 318.87,
-        "ivaPercent": 16,
-        "ivaCost": 51.02
+        "costStatus": "Estimado"
       },
       "sku": "PAQ-HYB-ACR-GRA-003",
       "skuBreakdown": {
@@ -10888,7 +10822,7 @@
       "featured": true,
       "badge": "PAQUETE BODA TOTAL",
       "worlds": [
-        "paquetes"
+        "eventos"
       ],
       "categories": [
         "eventos-bodas"
@@ -10975,9 +10909,9 @@
       "detailImage": "./uploads/catalog-v2-promo-ev-1-detail-0d5351b213.webp",
       "measureImage": "./uploads/catalog-v2-promo-ev-1-scale-7c45b34c88.webp",
       "stockQuantity": 0,
-      "costPrice": 1056.03,
+      "costPrice": 890,
       "costBreakdown": {
-        "plaGrams": 103.5,
+        "plaGrams": 90,
         "tpuGrams": 0,
         "otherMaterialsCost": 680,
         "machineHours": 3.5,
@@ -10985,17 +10919,12 @@
         "manualWorkMin": 90,
         "prepCost": 0,
         "packagingCost": 50,
-        "additionalFailuresCost": 25.06,
+        "additionalFailuresCost": 0,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller",
-        "totalWasteCost": 6.75,
-        "wastePercentAverage": 0.9,
-        "totalBeforeIva": 910.37,
-        "ivaPercent": 16,
-        "ivaCost": 145.66
+        "costStatus": "Estimado"
       },
-      "sku": "PAQ-HYB-PIN-GRA-001",
+      "sku": "PAQ-HYB-PIN-GRA-002",
       "skuBreakdown": {
         "standardSku": "PAQ-HYB-PIN-GRA-001",
         "legacyCode": "PROMO-EV-1",
@@ -11157,7 +11086,8 @@
       "featured": true,
       "badge": "EXPERIENCIA ESTRELLA",
       "worlds": [
-        "paquetes"
+        "eventos",
+        "negocios"
       ],
       "categories": [
         "eventos-bodas",
@@ -11247,25 +11177,20 @@
       "detailImage": "./uploads/catalog-v2-promo-ev-2-detail-90b0dd966a.webp",
       "measureImage": "./uploads/catalog-v2-promo-ev-2-scale-6fc7e58b74.webp",
       "stockQuantity": 0,
-      "costPrice": 3447.87,
+      "costPrice": 2950,
       "costBreakdown": {
         "plaGrams": 0,
         "tpuGrams": 0,
-        "otherMaterialsCost": 2700,
+        "otherMaterialsCost": 2400,
         "machineHours": 0.25,
         "otherEquipCost": 0,
         "manualWorkMin": 10,
         "prepCost": 0,
         "packagingCost": 180,
-        "additionalFailuresCost": 81.33,
+        "additionalFailuresCost": 0,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller",
-        "totalWasteCost": 0,
-        "wastePercentAverage": 0,
-        "totalBeforeIva": 2972.3,
-        "ivaPercent": 16,
-        "ivaCost": 475.57
+        "costStatus": "Estimado"
       },
       "sku": "PAQ-LAS-TEX-GRA-002",
       "skuBreakdown": {
@@ -11430,7 +11355,7 @@
       "featured": true,
       "badge": "FIESTAS & GRADUACIONES",
       "worlds": [
-        "paquetes"
+        "eventos"
       ],
       "categories": [
         "eventos-xvanos",
@@ -11517,9 +11442,9 @@
       "detailImage": "./uploads/catalog-v2-promo-ev-3-detail-bc71d859c5.webp",
       "measureImage": "./uploads/catalog-v2-promo-ev-3-scale-c8a6e4b916.webp",
       "stockQuantity": 0,
-      "costPrice": 787.95,
+      "costPrice": 620,
       "costBreakdown": {
-        "plaGrams": 402.5,
+        "plaGrams": 350,
         "tpuGrams": 0,
         "otherMaterialsCost": 320,
         "machineHours": 14,
@@ -11527,17 +11452,12 @@
         "manualWorkMin": 50,
         "prepCost": 0,
         "packagingCost": 35,
-        "additionalFailuresCost": 18.77,
+        "additionalFailuresCost": 0,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller",
-        "totalWasteCost": 26.25,
-        "wastePercentAverage": 4.7,
-        "totalBeforeIva": 679.27,
-        "ivaPercent": 16,
-        "ivaCost": 108.68
+        "costStatus": "Estimado"
       },
-      "sku": "PAQ-HYB-ACR-GRA-003",
+      "sku": "PAQ-HYB-ACR-GRA-002",
       "skuBreakdown": {
         "standardSku": "PAQ-HYB-ACR-GRA-003",
         "legacyCode": "PROMO-EV-3",
@@ -11689,7 +11609,7 @@
       "code": "VN-TOTE-01",
       "name": "Bolsa Tote Bag de Manta con Vinil Textil / Sublimación",
       "priceType": "starting_at",
-      "price": 120,
+      "price": 145,
       "regularPrice": 150,
       "priceUnit": "pieza (desde $85 mayoreo)",
       "status": "published",
@@ -11936,14 +11856,15 @@
         "ivaPercent": 16,
         "includeIvaInCost": true,
         "ivaCost": 10.91
-      }
+      },
+      "savings": 5
     },
     {
       "id": "gorra-trucker-personalizada-vinil-parche",
       "code": "VN-GORRA-01",
       "name": "Gorra Trucker Ajustable con Vinil Textil & Parche",
       "priceType": "starting_at",
-      "price": 145,
+      "price": 165,
       "regularPrice": 180,
       "priceUnit": "pieza (desde $99 mayoreo)",
       "status": "published",
@@ -12190,15 +12111,15 @@
         "ivaPercent": 16,
         "includeIvaInCost": true,
         "ivaCost": 12.64
-      }
+      },
+      "savings": 15
     },
     {
       "id": "playera-algodon-personalizada-vinil-textil",
       "code": "VN-PLAYERA-01",
       "name": "Playera 100% Algodón Peinado con Vinil Textil HD",
       "priceType": "starting_at",
-      "price": 185,
-      "regularPrice": 230,
+      "price": 230,
       "priceUnit": "pieza (desde $135 mayoreo)",
       "status": "published",
       "featured": true,
@@ -12324,7 +12245,7 @@
         "expiresAt": null
       },
       "updatedAt": "2026-10-14T23:16:52.767Z",
-      "sku": "HOG-SUB-TEX-MAT-001",
+      "sku": "HOG-SUB-TEX-MAT-002",
       "skuBreakdown": {
         "standardSku": "HOG-SUB-TEX-MAT-001",
         "legacyCode": "VN-PLAYERA-01",
@@ -12460,7 +12381,7 @@
       "code": "SB-TAZA-01",
       "name": "Taza Mágica Térmica Reveladora / Cerámica Sublimada",
       "priceType": "starting_at",
-      "price": 140,
+      "price": 165,
       "regularPrice": 175,
       "priceUnit": "pieza (desde $95 mayoreo)",
       "status": "published",
@@ -12569,7 +12490,7 @@
         "expiresAt": null
       },
       "updatedAt": "2026-10-14T23:16:38.825Z",
-      "sku": "HOG-SUB-CER-BRI-001",
+      "sku": "HOG-SUB-CER-BRI-002",
       "skuBreakdown": {
         "standardSku": "HOG-SUB-CER-BRI-001",
         "legacyCode": "SB-TAZA-01",
@@ -12698,14 +12619,15 @@
         "ivaPercent": 16,
         "includeIvaInCost": true,
         "ivaCost": 12.55
-      }
+      },
+      "savings": 10
     },
     {
       "id": "termo-metalico-termico-20oz-personalizado",
       "code": "SB-TERMO-01",
       "name": "Termo Metálico Térmico 20 oz con Vinil Permanente / Grabado",
       "priceType": "starting_at",
-      "price": 230,
+      "price": 250,
       "regularPrice": 280,
       "priceUnit": "pieza (desde $165 mayoreo)",
       "status": "published",
@@ -12954,7 +12876,8 @@
         "ivaPercent": 16,
         "includeIvaInCost": true,
         "ivaCost": 18.97
-      }
+      },
+      "savings": 30
     },
     {
       "id": "topper-pastel-boda-ev-topper",
@@ -13065,7 +12988,7 @@
         "ivaPercent": 16,
         "ivaCost": 9.28
       },
-      "sku": "EVE-LAS-PIN-GRA-001",
+      "sku": "EVE-LAS-PIN-GRA-003",
       "skuBreakdown": {
         "standardSku": "EVE-LAS-PIN-GRA-001",
         "legacyCode": "EV-TOPPER-01",
@@ -13588,7 +13511,7 @@
         "ivaPercent": 16,
         "ivaCost": 20.78
       },
-      "sku": "EVE-LAS-PIN-GRA-001",
+      "sku": "EVE-LAS-PIN-GRA-004",
       "skuBreakdown": {
         "standardSku": "EVE-LAS-PIN-GRA-001",
         "legacyCode": "EV-GUEST-01",
@@ -13847,7 +13770,7 @@
         "ivaPercent": 16,
         "ivaCost": 12.75
       },
-      "sku": "EVE-LAS-PIN-GRA-001",
+      "sku": "EVE-LAS-PIN-GRA-005",
       "skuBreakdown": {
         "standardSku": "EVE-LAS-PIN-GRA-001",
         "legacyCode": "EV-CAJITAS-01",
@@ -14103,7 +14026,7 @@
         "ivaPercent": 16,
         "ivaCost": 14.72
       },
-      "sku": "EVE-LAS-PIN-GRA-001",
+      "sku": "EVE-LAS-PIN-GRA-006",
       "skuBreakdown": {
         "standardSku": "EVE-LAS-PIN-GRA-001",
         "legacyCode": "EV-ABANICO-01",
@@ -14597,7 +14520,7 @@
         "ivaPercent": 16,
         "ivaCost": 9.74
       },
-      "sku": "EVE-HYB-PLA-GRA-001",
+      "sku": "EVE-HYB-PLA-GRA-002",
       "skuBreakdown": {
         "standardSku": "EVE-HYB-PLA-GRA-001",
         "legacyCode": "EV-CHARMS-01",
@@ -14869,7 +14792,7 @@
         "ivaPercent": 16,
         "ivaCost": 11.1
       },
-      "sku": "EVE-HYB-PLA-GRA-001",
+      "sku": "EVE-HYB-PLA-GRA-003",
       "skuBreakdown": {
         "standardSku": "EVE-HYB-PLA-GRA-001",
         "legacyCode": "EV-CANDY-01",
@@ -15266,7 +15189,8 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "hogar"
+        "hogar",
+        "juguetes"
       ],
       "categories": [
         "juguetes-movimiento",
@@ -15338,25 +15262,20 @@
       "measureImage": "./uploads/catalog-v2-j1-scale-oficial.webp",
       "dimensionsImage": "./uploads/catalog-v2-j1-scale-oficial.webp",
       "stockQuantity": 12,
-      "costPrice": 69.07,
+      "costPrice": 42.5,
       "costBreakdown": {
-        "plaGrams": 77.05,
+        "plaGrams": 67,
         "tpuGrams": 0,
-        "otherMaterialsCost": 0.7,
+        "otherMaterialsCost": 0,
         "machineHours": 2.5,
         "otherEquipCost": 0,
         "manualWorkMin": 5,
         "prepCost": 0,
         "packagingCost": 4,
-        "additionalFailuresCost": 1.62,
+        "additionalFailuresCost": 0,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller",
-        "totalWasteCost": 5.03,
-        "wastePercentAverage": 11.6,
-        "totalBeforeIva": 59.54,
-        "ivaPercent": 16,
-        "ivaCost": 9.53
+        "costStatus": "Estimado"
       },
       "flashDealConfig": {
         "enabled": false,
@@ -15487,7 +15406,8 @@
       "status": "published",
       "featured": true,
       "worlds": [
-        "hogar"
+        "hogar",
+        "juguetes"
       ],
       "categories": [
         "juguetes-articulados",
@@ -15566,25 +15486,20 @@
       "measureImage": "./uploads/catalog-v2-j2-scale-oficial.webp",
       "dimensionsImage": "./uploads/catalog-v2-j2-scale-oficial.webp",
       "stockQuantity": 20,
-      "costPrice": 38.49,
+      "costPrice": 24.8,
       "costBreakdown": {
-        "plaGrams": 32.2,
+        "plaGrams": 28,
         "tpuGrams": 0,
-        "otherMaterialsCost": 7.1,
+        "otherMaterialsCost": 4.5,
         "machineHours": 0.8,
         "otherEquipCost": 0,
         "manualWorkMin": 3,
         "prepCost": 0,
         "packagingCost": 3,
-        "additionalFailuresCost": 0.88,
+        "additionalFailuresCost": 0,
         "fixedOverheadCost": 0,
         "shippingCost": 0,
-        "costStatus": "Calculado de Taller",
-        "totalWasteCost": 2.1,
-        "wastePercentAverage": 8,
-        "totalBeforeIva": 33.18,
-        "ivaPercent": 16,
-        "ivaCost": 5.31
+        "costStatus": "Estimado"
       },
       "flashDealConfig": {
         "enabled": false,
@@ -20491,6 +20406,39 @@
           "enabled": false
         }
       }
+    },
+    "reviewsRewardConfig": {
+      "enabled": true,
+      "couponCode": "RESEÑA5",
+      "discountPercent": 5,
+      "socialCouponCode": "FOTOREDES",
+      "socialRewardPercentUnder300": 10,
+      "socialRewardPercentOver300": 5,
+      "socialRewardPercent": 10,
+      "socialNotice": "Sube una foto de tu pieza a redes o comenta en nuestro Facebook y mándanos la captura por WhatsApp para recibir 10% de descuento en pedidos de hasta $300 pesos o 5% en compras mayores a $300 pesos. Descuentos no acumulables.",
+      "nonCumulativeNotice": "Los cupones y promociones no son acumulables entre sí ni con descuentos de mayoreo."
+    },
+    "socialLinks": {
+      "facebook": "https://www.facebook.com/ArtesanoDigitalvideojuegos",
+      "instagram": "",
+      "tiktok": ""
+    },
+    "wholesaleConfig": {
+      "enabled": true,
+      "tiers": [
+        {
+          "minQty": 12,
+          "percent": 5
+        },
+        {
+          "minQty": 25,
+          "percent": 10
+        },
+        {
+          "minQty": 50,
+          "percent": 15
+        }
+      ]
     }
   },
   "rawMaterials": [
@@ -24057,6 +24005,48 @@
       "description": "Código relámpago exclusivo para fines de semana.",
       "discountPercent": 15,
       "label": "15% Especial Oferta Relámpago de Fin de Semana"
+    },
+    {
+      "id": "cup-store-resena",
+      "code": "RESEÑA5",
+      "name": "5% de Descuento por Reseña",
+      "category": "store",
+      "type": "percent",
+      "value": 5,
+      "minPurchase": 0,
+      "maxUses": null,
+      "usedCount": 0,
+      "expiresAt": "2026-12-31T23:59:59.000Z",
+      "active": true,
+      "description": "Cupón especial de agradecimiento por compartir tu opinión sobre Artesano Digital."
+    },
+    {
+      "id": "cup-store-foto-redes",
+      "code": "FOTOREDES10",
+      "name": "10% de Descuento por Foto en Redes",
+      "category": "store",
+      "type": "percent",
+      "value": 10,
+      "minPurchase": 0,
+      "maxUses": null,
+      "usedCount": 0,
+      "expiresAt": "2026-12-31T23:59:59.000Z",
+      "active": true,
+      "description": "Descuento otorgado por compartir tu producto en redes sociales y enviar captura."
+    },
+    {
+      "id": "cup-store-foto-redes",
+      "code": "FOTOREDES",
+      "name": "Premio por Foto en Redes Sociales",
+      "category": "store",
+      "type": "percent",
+      "value": 10,
+      "minPurchase": 0,
+      "maxUses": null,
+      "usedCount": 0,
+      "expiresAt": "2026-12-31T23:59:59.000Z",
+      "active": true,
+      "description": "Descuento por compartir foto en redes: 10% hasta $300 pesos o 5% mayores a $300 pesos (No acumulable)."
     }
   ],
   "arcade": {
@@ -24439,5 +24429,5 @@
       }
     ]
   },
-  "exportedAt": "2026-10-30T18:26:44.354Z"
+  "exportedAt": "2026-10-31T16:09:48.603Z"
 }

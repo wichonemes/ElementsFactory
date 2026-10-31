@@ -176,5 +176,47 @@
     "description": "Código relámpago exclusivo para fines de semana.",
     "discountPercent": 15,
     "label": "15% Especial Oferta Relámpago de Fin de Semana"
+  },
+  {
+    "id": "cup-store-resena",
+    "code": "RESEÑA5",
+    "name": "5% de Descuento por Reseña",
+    "category": "store",
+    "type": "percent",
+    "value": 5,
+    "minPurchase": 0,
+    "maxUses": null,
+    "usedCount": 0,
+    "expiresAt": "2026-12-31T23:59:59.000Z",
+    "active": true,
+    "description": "Cupón especial de agradecimiento por compartir tu opinión sobre Artesano Digital."
+  },
+  {
+    "id": "cup-store-foto-redes",
+    "code": "FOTOREDES10",
+    "name": "10% de Descuento por Foto en Redes",
+    "category": "store",
+    "type": "percent",
+    "value": 10,
+    "minPurchase": 0,
+    "maxUses": null,
+    "usedCount": 0,
+    "expiresAt": "2026-12-31T23:59:59.000Z",
+    "active": true,
+    "description": "Descuento otorgado por compartir tu producto en redes sociales y enviar captura."
+  },
+  {
+    "id": "cup-store-foto-redes",
+    "code": "FOTOREDES",
+    "name": "Premio por Foto en Redes Sociales",
+    "category": "store",
+    "type": "percent",
+    "value": 10,
+    "minPurchase": 0,
+    "maxUses": null,
+    "usedCount": 0,
+    "expiresAt": "2026-12-31T23:59:59.000Z",
+    "active": true,
+    "description": "Descuento por compartir foto en redes: 10% hasta $300 pesos o 5% mayores a $300 pesos (No acumulable)."
   }
 ]
