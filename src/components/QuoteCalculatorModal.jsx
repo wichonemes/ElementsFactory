@@ -664,11 +664,11 @@ export default function QuoteCalculatorModal({
         "Acabados": selectedFinishesLabels.length > 0 ? selectedFinishesLabels.join(' + ') : 'Estándar',
         "Medidas": `${dimensions.width}×${dimensions.length}×${dimensions.height} cm`,
         "Merma Taller": "+18% calculada",
-        "Envío": calculation.shippingObj.label
+        "Envío Cotizado": `${calculation.shippingObj.label} ($${calculation.shippingCost} MXN)`
       },
       customText: personalizationText.trim()
-        ? `${personalizationText.trim()} | Total: $${calculation.estimatedTotal} MXN`
-        : `Medidas ${dimensions.width}x${dimensions.length}x${dimensions.height} cm | Total: $${calculation.estimatedTotal} MXN`
+        ? `${personalizationText.trim()} · Fabricación: $${calculation.subtotalPieces} MXN + Flete: $${calculation.shippingCost} MXN (Total est. $${calculation.estimatedTotal} MXN)`
+        : `Medidas ${dimensions.width}×${dimensions.length}×${dimensions.height} cm · Fabricación: $${calculation.subtotalPieces} MXN + Flete: $${calculation.shippingCost} MXN (Total est. $${calculation.estimatedTotal} MXN)`
     };
 
     onAddToCart(customCartItem);

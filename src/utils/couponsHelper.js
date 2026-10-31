@@ -10,34 +10,34 @@ export const DEFAULT_COUPONS = [
   { code: 'VIPARTESANO', category: 'arcade', type: 'percent', value: 15, label: '15% de Descuento VIP + Sorpresa', minPurchase: 300 },
 
   // Cupones Promocionales & Clientes (Códigos Especiales y de Tienda)
-  { code: 'BIENVENIDO', category: 'store', type: 'percent', value: 10, label: '10% de Bienvenida al Taller', minPurchase: 0 },
-  { code: 'ARTESANO10', category: 'store', type: 'percent', value: 10, label: '10% de Descuento Especial', minPurchase: 0 },
-  { code: 'CLIENTEFRECUENTE', category: 'store', type: 'percent', value: 15, label: '15% de Cliente Frecuente', minPurchase: 0 },
+  { code: 'BIENVENIDO', category: 'store', type: 'percent', value: 10, label: '10% de Bienvenida al Taller', minPurchase: 350 },
+  { code: 'ARTESANO10', category: 'store', type: 'percent', value: 10, label: '10% de Descuento Especial', minPurchase: 300 },
+  { code: 'CLIENTEFRECUENTE', category: 'store', type: 'percent', value: 15, label: '15% de Cliente Frecuente', minPurchase: 450 },
   { code: 'PROMO15', category: 'store', type: 'percent', value: 15, label: '15% de Descuento Especial', minPurchase: 500 },
-  { code: 'ENVIOGRATIS', category: 'store', type: 'fixed', value: 150, label: 'Bono de $150 MXN para Envío', minPurchase: 400 },
-  { code: 'BUENFIN', category: 'store', type: 'percent', value: 15, label: '15% de Descuento de Temporada', minPurchase: 0 },
-  { code: 'NAVIDAD', category: 'store', type: 'percent', value: 15, label: '15% de Temporada Navideña', minPurchase: 0 },
+  { code: 'ENVIOGRATIS', category: 'store', type: 'fixed', value: 150, label: 'Bono de  MXN para Envío', minPurchase: 400 },
+  { code: 'BUENFIN', category: 'store', type: 'percent', value: 15, label: '15% de Descuento de Temporada', minPurchase: 350 },
+  { code: 'NAVIDAD', category: 'store', type: 'percent', value: 15, label: '15% de Temporada Navideña', minPurchase: 350 },
 
   // Cupones de Eventos Mensuales de Taller (Eventos Grandes y Quincenas)
-  { code: 'GRANMES15', category: 'store', type: 'percent', value: 15, label: '15% de Evento Grande del Mes', minPurchase: 0 },
   { code: 'GRANMES15', category: 'store', type: 'percent', value: 15, label: '15% de Gran Bazar del Mes', minPurchase: 400 },
-  { code: 'QUINCENA10', category: 'store', type: 'percent', value: 10, label: '10% de Quincena Relámpago Flash', minPurchase: 0 },
-  { code: 'MUERTOS15', category: 'store', type: 'percent', value: 15, label: '15% Festival Día de Muertos', minPurchase: 0 },
-  { code: 'CATRINA10', category: 'store', type: 'percent', value: 10, label: '10% Quincena Catrinas', minPurchase: 0 },
-  { code: 'AMOR15', category: 'store', type: 'percent', value: 15, label: '15% Gran Bazar del Amor', minPurchase: 0 },
-  { code: 'MAMA15', category: 'store', type: 'percent', value: 15, label: '15% Especial Día de las Madres', minPurchase: 0 },
+  { code: 'QUINCENA10', category: 'store', type: 'percent', value: 10, label: '10% de Quincena Relámpago Flash', minPurchase: 300 },
+  { code: 'MUERTOS15', category: 'store', type: 'percent', value: 15, label: '15% Festival Día de Muertos', minPurchase: 350 },
+  { code: 'CATRINA10', category: 'store', type: 'percent', value: 10, label: '10% Quincena Catrinas', minPurchase: 300 },
+  { code: 'AMOR15', category: 'store', type: 'percent', value: 15, label: '15% Gran Bazar del Amor', minPurchase: 350 },
+  { code: 'MAMA15', category: 'store', type: 'percent', value: 15, label: '15% Especial Día de las Madres', minPurchase: 350 },
 
   // Cupones de Reseñas y Redes Sociales
-  { code: 'RESEÑA5', category: 'store', type: 'percent', value: 5, label: '5% por Dejar Reseña en Tienda', minPurchase: 0 },
-  { code: 'FOTOREDES', category: 'store', type: 'percent', value: 10, label: 'Premio Foto en Redes (No acumulable)', minPurchase: 0 },
-  { code: 'FOTOREDES10', category: 'store', type: 'percent', value: 10, label: 'Premio Foto en Redes (No acumulable)', minPurchase: 0 },
-  { code: 'FOTOREDES5', category: 'store', type: 'percent', value: 5, label: '5% por Foto en Redes (No acumulable)', minPurchase: 0 },
+  { code: 'RESENA5', category: 'store', type: 'percent', value: 5, label: '5% por Dejar Reseña en Tienda', minPurchase: 150 },
+  { code: 'RESEÑA5', category: 'store', type: 'percent', value: 5, label: '5% por Dejar Reseña en Tienda', minPurchase: 150 },
+  { code: 'FOTOREDES', category: 'store', type: 'percent', value: 10, label: 'Premio Foto en Redes (No acumulable)', minPurchase: 250 },
+  { code: 'FOTOREDES10', category: 'store', type: 'percent', value: 10, label: 'Premio Foto en Redes (No acumulable)', minPurchase: 250 },
+  { code: 'FOTOREDES5', category: 'store', type: 'percent', value: 5, label: '5% por Foto en Redes (No acumulable)', minPurchase: 150 },
 
   // Cupones de Oferta Relámpago Especial (Fines de Semana & Liquidaciones)
-  { code: 'FLASHFINDE15', category: 'store', type: 'percent', value: 15, label: '15% Especial Oferta Relámpago de Fin de Semana', minPurchase: 0 },
-  { code: 'FLASHFINDE', category: 'store', type: 'percent', value: 15, label: '15% Venta Flash de Fin de Semana', minPurchase: 0 },
-  { code: 'LIQUIDACION', category: 'store', type: 'percent', value: 15, label: '15% Liquidación de Taller', minPurchase: 0 },
-  { code: 'FINDE15', category: 'store', type: 'percent', value: 15, label: '15% Flash Fin de Semana', minPurchase: 0 }
+  { code: 'FLASHFINDE15', category: 'store', type: 'percent', value: 15, label: '15% Especial Oferta Relámpago de Fin de Semana', minPurchase: 350 },
+  { code: 'FLASHFINDE', category: 'store', type: 'percent', value: 15, label: '15% Venta Flash de Fin de Semana', minPurchase: 350 },
+  { code: 'LIQUIDACION', category: 'store', type: 'percent', value: 15, label: '15% Liquidación de Taller', minPurchase: 350 },
+  { code: 'FINDE15', category: 'store', type: 'percent', value: 15, label: '15% Flash Fin de Semana', minPurchase: 350 }
 ];
 
 /**

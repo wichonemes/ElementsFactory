@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import {
   ShoppingCart, Plus, Search, Edit, CheckCircle2, Clock, Truck, X, Save,
   AlertCircle, Package, List, LayoutGrid, Calendar, Wallet, RefreshCw,
-  CreditCard, Hammer, FileText, ArrowRight, CircleDollarSign, Minus, Ban, TrendingUp
+  CreditCard, Hammer, FileText, ArrowRight, CircleDollarSign, Minus, Ban, TrendingUp, MessageCircle, MapPin
 } from 'lucide-react';
 
 const DAY = 86400000;
@@ -680,31 +680,84 @@ export default function OrdersWorkSection({ token, products = [] }) {
                   <span className="text-[8px] font-bold px-1.5 py-0.5 rounded bg-emerald-50 border border-emerald-200 text-emerald-700">Insumos descontados</span>
                 )}
               </div>
-              <div className="text-[10px] text-gray-500 mt-0.5">
-                {order.customerCode || 'Anónimo'} · alta {dateKey(order.date || order.createdAt)}
+              <div className="text-[10px] text-gray-700 font-bold mt-0.5 flex items-center gap-1.5 flex-wrap">
+                <span>{order.customerName || order.customerCode || 'Anónimo'}</span>
+                {order.customerCode && <span className="text-[9px] font-normal text-gray-400">({order.customerCode})</span>}
+                {order.taxData?.rfc && (
+                  <span className="text-[7.5px] font-black px-1.5 py-0.2 rounded bg-blue-50 border border-blue-200 text-blue-700" title={`RFC: ${order.taxData.rfc} · ${order.taxData.razonSocial || ''}`}>
+                    CFDI 4.0
+                  </span>
+                )}
+                {order.customerPhone && (
+                  <a
+                    href={`https://wa.me/${order.customerPhone.replace(/\D/g, '').startsWith('52') ? order.customerPhone.replace(/\D/g, '') : '52' + order.customerPhone.replace(/\D/g, '')}?text=${encodeURIComponent(`Hola ${order.customerName || ''}, te contacto de Artesano Digital sobre tu pedido ${order.orderNumber}:`)}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[8.5px] font-bold hover:bg-emerald-200 transition-colors"
+                    title={`Abrir WhatsApp con ${order.customerPhone}`}
+                  >
+                    <MessageCircle className="w-2.5 h-2.5" /> WhatsApp
+                  </a>
+                )}
               </div>
-              <div className="text-[10px] text-gray-500">
-                Entrega: <strong className="text-gray-700">{orderDeliveryDate(order)}</strong>
+              {order.shippingCity && (
+                <div className="text-[9px] text-stone-600 flex items-center gap-1 mt-0.5 truncate" title={order.shippingCity}>
+                  <MapPin className="w-2.5 h-2.5 text-stone-400 shrink-0" />
+                  <span className="truncate">{order.shippingCity}</span>
+                </div>
+              )}
+              <div className="text-[9.5px] text-gray-500 mt-0.5">
+                Alta {dateKey(order.date || order.createdAt)} · Entrega: <strong className="text-gray-700">{orderDeliveryDate(order)}</strong>
               </div>
             </div>
             <SignalBadge signal={signal} />
           </div>
 
-          <div className="flex items-center gap-2">
-            {product?.primaryImage ? (
-              <img src={product.primaryImage} alt="" className="w-10 h-10 rounded-xl object-cover border border-stone-200 shrink-0" />
-            ) : (
-              <span className="w-10 h-10 rounded-xl bg-stone-100 border border-stone-200 flex items-center justify-center shrink-0">
-                <Package className="w-4 h-4 text-stone-500" />
-              </span>
-            )}
-            <div className="min-w-0 flex-1">
-              <div className="text-[11px] font-bold text-gray-900 truncate" title={order.productName}>{order.productName || 'Pedido general'}</div>
-              <div className="text-[9px] text-gray-500">
-                {order.quantity} pza × {money(orderUnitPrice(order))} · {product?.sku || product?.code || order.productId || 'Sin SKU'}
+          {/* Desglose de Artículos de la Orden */}
+          {Array.isArray(order.items) && order.items.length > 0 ? (
+            <div className="rounded-xl bg-stone-50 border border-stone-200 p-2 space-y-1.5 text-xs">
+              <div className="text-[9px] font-bold uppercase tracking-wider text-stone-500 flex items-center justify-between">
+                <span>Artículos ({order.items.reduce((s, it) => s + (Number(it.quantity) || 1), 0)} pzas)</span>
+                <span className="text-[8.5px] text-stone-400">{order.items.length} producto{order.items.length > 1 ? 's' : ''}</span>
+              </div>
+              <div className="space-y-1 max-h-36 overflow-y-auto pr-0.5">
+                {order.items.map((it, idx) => (
+                  <div key={idx} className="bg-white rounded-lg p-1.5 border border-stone-100 text-[10px]">
+                    <div className="flex items-start justify-between gap-1 font-bold text-gray-800">
+                      <span>{it.quantity}× {it.name || it.productName || 'Producto'}</span>
+                      <span className="text-emerald-700 shrink-0">${Number(it.price || 0) * (Number(it.quantity) || 1)}</span>
+                    </div>
+                    {it.selectedVariants && Object.keys(it.selectedVariants).length > 0 && (
+                      <div className="text-[8.5px] text-stone-500 mt-0.5 leading-tight">
+                        {Object.entries(it.selectedVariants).map(([k, v]) => `${k}: ${v}`).join(' · ')}
+                      </div>
+                    )}
+                    {it.customText && (
+                      <div className="text-[8.5px] text-amber-700 italic mt-0.5">
+                        Personalizado: &quot;{it.customText}&quot;
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              {product?.primaryImage ? (
+                <img src={product.primaryImage} alt="" className="w-10 h-10 rounded-xl object-cover border border-stone-200 shrink-0" />
+              ) : (
+                <span className="w-10 h-10 rounded-xl bg-stone-100 border border-stone-200 flex items-center justify-center shrink-0">
+                  <Package className="w-4 h-4 text-stone-500" />
+                </span>
+              )}
+              <div className="min-w-0 flex-1">
+                <div className="text-[11px] font-bold text-gray-900 truncate" title={order.productName}>{order.productName || 'Pedido general'}</div>
+                <div className="text-[9px] text-gray-500">
+                  {order.quantity} pza × {money(orderUnitPrice(order))} · {product?.sku || product?.code || order.productId || 'Sin SKU'}
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
             <div className="rounded-lg bg-[#FAF9F5] border border-[#E8E4DA] px-2 py-1">

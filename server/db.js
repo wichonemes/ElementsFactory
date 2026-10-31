@@ -18498,8 +18498,8 @@ class Database {
       rating,
       date: new Date().toISOString().split('T')[0],
       comment,
-      verified: true,
-      approved: true, // Aprobada para visibilidad inmediata (el admin puede pausarla)
+      verified: false, // Solo verificada si se asocia a compra real
+      approved: false, // Requiere aprobación en panel por seguridad antes de mostrarse al público
       source: reviewData.source || 'web',
       createdAt: new Date().toISOString()
     };

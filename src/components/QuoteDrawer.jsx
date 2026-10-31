@@ -373,15 +373,6 @@ export default function QuoteDrawer({
       // Enlace directo a la pieza en tienda
       msg += `   • *Ver pieza:* ${prodUrl}\n`;
 
-      // Enlace al modelo 3D en MakerWorld si es pieza 3D
-      const is3D = p.techniques?.some(t => t === '3d' || t === 'impresion_3d' || t === '3d_printing') ||
-                   p.worlds?.includes('3d') ||
-                   (p.categories && p.categories.some(c => c.includes('3d') || c.includes('gamer') || c.includes('escritorio')));
-      if (is3D) {
-        const makerUrl = p.makerWorldUrl || `https://makerworld.com/en/search/models?keyword=${encodeURIComponent(p.name.replace(/[^a-zA-Z0-9 ]/g, ''))}`;
-        msg += `   • *Modelo 3D MakerWorld:* ${makerUrl}\n`;
-      }
-
       msg += `\n`;
     });
 
@@ -409,6 +400,11 @@ export default function QuoteDrawer({
     }
 
     msg += `*${taxMode === 'included' ? 'IVA 16% incluido' : 'IVA 16%'}:* ${formatQuoteMoney(ivaAmount)} MXN\n`;
+    if (appliedCouponCode === 'ENVIOGRATIS') {
+      msg += `*Envío / Flete:* Subsidio directo de $150 MXN aplicado a guía asegurada\n`;
+    } else {
+      msg += `*Envío / Flete:* A convenir según C.P. de entrega (Se liquida contra guía de paquetería)\n`;
+    }
     msg += `*TOTAL:* ${formatQuoteMoney(billableTotal)} MXN\n`;
 
     if (paymentPreference === 'pago_100') {
@@ -1401,6 +1397,17 @@ export default function QuoteDrawer({
               <div className="flex items-center justify-between text-xs text-gray-600">
                 <span>{taxMode === 'included' ? 'IVA 16% incluido:' : 'IVA 16%:'}</span>
                 <span className="font-bold text-gray-900">{formatQuoteMoney(ivaAmount)} MXN</span>
+              </div>
+
+              <div className="flex items-center justify-between text-xs text-gray-600">
+                <span>Envío / Flete:</span>
+                {appliedCouponCode === 'ENVIOGRATIS' ? (
+                  <span className="font-bold text-emerald-700">Subsidio $150 MXN (Cubierto)</span>
+                ) : (
+                  <span className="font-semibold text-stone-500 text-[11px]" title="Se calcula y liquida contra guía de paquetería según C.P. de destino">
+                    A convenir contra guía (C.P.)
+                  </span>
+                )}
               </div>
 
               <div className="flex items-center justify-between text-base font-extrabold text-[#1F2421] pt-1 border-t border-gray-200/60 font-heading">
