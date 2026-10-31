@@ -106,6 +106,7 @@ function buildMetaTags(site, product, canonical) {
   };
 
   const tags = [
+    `<base href="/" />`,
     `<title>${name} | Artesano Digital</title>`,
     `<meta name="description" content="${description}" />`,
     `<link rel="canonical" href="${escapeHtml(canonical)}" />`,

@@ -59,6 +59,7 @@ export default async function handler(req, res) {
   };
 
   const tags = [
+    `<base href="/" />`,
     `<title>${escapeHtml(title)}</title>`,
     `<meta name="description" content="${escapeHtml(description)}" />`,
     `<link rel="canonical" href="${escapeHtml(canonical)}" />`,
