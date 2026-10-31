@@ -1,14 +1,44 @@
-﻿import React, { useState, useEffect, useMemo, useRef, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useMemo, useRef, lazy, Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import WorldSelector from './components/WorldSelector';
 import FiltersBar from './components/FiltersBar';
 import ProductCard from './components/ProductCard';
-const ProductDetailModal = lazy(() => import('./components/ProductDetailModal'));
-const QuoteDrawer = lazy(() => import('./components/QuoteDrawer'));
+// Manejo automático de actualización de chunks entre despliegues de Vercel
+function lazyWithRetry(componentImport) {
+  return lazy(async () => {
+    try {
+      return await componentImport();
+    } catch (error) {
+      const isChunkError = error?.message?.includes('dynamically imported module') ||
+                           error?.message?.includes('Importing a module script failed') ||
+                           error?.name === 'TypeError';
+      if (isChunkError && typeof window !== 'undefined') {
+        const lastReload = window.sessionStorage.getItem('last_chunk_reload');
+        const now = Date.now();
+        if (!lastReload || now - Number(lastReload) > 10000) {
+          window.sessionStorage.setItem('last_chunk_reload', String(now));
+          window.location.reload();
+          return new Promise(() => {});
+        }
+      }
+      throw error;
+    }
+  });
+}
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('vite:preloadError', (event) => {
+    event.preventDefault();
+    window.location.reload();
+  });
+}
+
+const ProductDetailModal = lazyWithRetry(() => import('./components/ProductDetailModal'));
+const QuoteDrawer = lazyWithRetry(() => import('./components/QuoteDrawer'));
 // El panel de administración es pesado y solo lo usa el taller:
 // se descarga aparte, únicamente al abrirlo.
-const AdminPanel = lazy(() => import('./components/AdminPanel'));
+const AdminPanel = lazyWithRetry(() => import('./components/AdminPanel'));
 import Footer from './components/Footer';
 import AboutPage from './components/AboutPage';
 import FaqPage from './components/FaqPage';
