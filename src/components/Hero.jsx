@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, MessageCircle, Sparkles, Printer3d, Flame, Layers, Wand2, Shirt, Users, HelpCircle } from 'lucide-react';
+import { ArrowRight, MessageCircle, Sparkles, Printer3d, Flame, Layers, Wand2, Shirt, Users, HelpCircle, TrendingUp } from 'lucide-react';
 import MonthlyEventBanner from './MonthlyEventBanner';
 
 export default function Hero({
@@ -8,7 +8,8 @@ export default function Hero({
   settings,
   campaignsConfig: initialCampaignsConfig,
   onOpenAbout,
-  onOpenFaq
+  onOpenFaq,
+  onOpenAffiliates
 }) {
   const [campaignsConfig, setCampaignsConfig] = useState(initialCampaignsConfig || null);
 
@@ -162,7 +163,7 @@ export default function Hero({
 
             {/* LADO DERECHO (lg:col-span-5): Botones de Acción Refinados & Puntos de Confianza */}
             <div className="lg:col-span-5 flex flex-col items-stretch sm:items-start lg:items-end justify-center gap-4">
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto">
                 <a
                   href="/nosotros"
                   onClick={(e) => {
@@ -170,7 +171,7 @@ export default function Hero({
                     if (onOpenAbout) onOpenAbout();
                     else window.location.href = '/nosotros';
                   }}
-                  className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full bg-[#17251E] text-white text-xs sm:text-sm font-bold tracking-wide hover:bg-[#2D4F3E] active:scale-98 transition-all shadow-md shadow-[#17251E]/15 cursor-pointer group font-heading font-futura text-center"
+                  className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 rounded-full bg-[#17251E] text-white text-xs sm:text-sm font-bold tracking-wide hover:bg-[#2D4F3E] active:scale-98 transition-all shadow-md shadow-[#17251E]/15 cursor-pointer group font-heading font-futura text-center"
                   title="Conoce más sobre nuestro taller artesanal"
                 >
                   <Users className="w-4 h-4 text-[#D4A359] group-hover:scale-110 transition-transform" />
@@ -184,11 +185,25 @@ export default function Hero({
                     if (onOpenFaq) onOpenFaq();
                     else window.location.href = '/faq';
                   }}
-                  className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full bg-white text-[#17251E] border border-[#E8E4DA] text-xs sm:text-sm font-bold hover:bg-stone-50 active:scale-98 transition-all shadow-2xs font-heading font-futura text-center cursor-pointer group"
+                  className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 rounded-full bg-white text-[#17251E] border border-[#E8E4DA] text-xs sm:text-sm font-bold hover:bg-stone-50 active:scale-98 transition-all shadow-2xs font-heading font-futura text-center cursor-pointer group"
                   title="Preguntas frecuentes y tiempos de entrega"
                 >
                   <HelpCircle className="w-4 h-4 text-[#2D4F3E] group-hover:scale-110 transition-transform" />
                   <span>Preguntas frecuentes</span>
+                </a>
+
+                <a
+                  href="/afiliados"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (onOpenAffiliates) onOpenAffiliates();
+                    else window.location.href = '/afiliados';
+                  }}
+                  className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-white text-xs sm:text-sm font-black hover:from-amber-600 hover:to-amber-700 active:scale-98 transition-all shadow-md shadow-amber-500/25 font-heading font-futura text-center cursor-pointer group"
+                  title="Gana dinero como afiliado o compra por mayoreo"
+                >
+                  <TrendingUp className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
+                  <span>Gana dinero / Mayoreo</span>
                 </a>
               </div>
 

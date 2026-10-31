@@ -96,6 +96,15 @@ export default function Navbar({
                 <Gamepad2 className="w-3.5 h-3.5 text-amber-300" /> Arcade &amp; Cupones
               </button>
             )}
+            {onOpenAffiliates && (
+              <button
+                onClick={onOpenAffiliates}
+                className="hover:text-amber-300 flex items-center gap-1.5 transition-colors text-amber-200 font-bold cursor-pointer"
+                title="Gana dinero como afiliado o compra por mayoreo"
+              >
+                <TrendingUp className="w-3.5 h-3.5 text-amber-400" /> Gana dinero / Mayoreo
+              </button>
+            )}
             <button
               onClick={onOpenAdmin}
               className="hover:text-white flex items-center gap-1 transition-colors"

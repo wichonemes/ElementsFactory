@@ -155,20 +155,74 @@ export default function QuoteDrawer({
     })) || [])
   ];
 
-  // Descuento automático de mayoreo: 12+ piezas = 15% de descuento directo
+  // Configuración de Mayoreo Escalonado (dinámico del taller o defaults)
+  const defaultWholesaleTiers = [
+    { minQty: 12, percent: 5 },
+    { minQty: 25, percent: 10 },
+    { minQty: 50, percent: 15 }
+  ];
+  const wholesaleConfig = settings?.wholesaleConfig || {};
+  const isWholesaleEnabled = wholesaleConfig.enabled !== false;
+  const wholesaleTiers = (
+    Array.isArray(wholesaleConfig.tiers) && wholesaleConfig.tiers.length > 0
+      ? wholesaleConfig.tiers
+      : defaultWholesaleTiers
+  )
+    .map(t => ({ minQty: Number(t.minQty) || 0, percent: Number(t.percent) || 0 }))
+    .filter(t => t.minQty > 0 && t.percent > 0)
+    .sort((a, b) => a.minQty - b.minQty);
+
+  // Cantidad total de piezas en el carrito
   const totalItemCount = items.reduce((sum, item) => sum + (Number(item.quantity) || 1), 0);
-  const bulkThreshold = 12;
-  const isBulkEligible = totalItemCount >= bulkThreshold;
-  const bulkDiscountRate = 0.15;
+
+  // Calcular tier de mayoreo activo y siguiente nivel motivador
+  let activeTier = null;
+  let nextTier = null;
+  if (isWholesaleEnabled) {
+    for (const tier of wholesaleTiers) {
+      if (totalItemCount >= tier.minQty) {
+        activeTier = tier;
+      } else if (!nextTier && totalItemCount < tier.minQty) {
+        nextTier = tier;
+      }
+    }
+  }
+
+  const isBulkEligible = Boolean(activeTier && activeTier.percent > 0);
+  const bulkDiscountRate = isBulkEligible ? (activeTier.percent / 100) : 0;
   const bulkDiscountAmount = isBulkEligible ? Math.round(subtotal * bulkDiscountRate) : 0;
 
-  // Validar cupón activo contra la lista de cupones (aplica sobre el remanente para proteger márgenes)
-  const baseForCoupon = Math.max(0, subtotal - bulkDiscountAmount);
+  // Validar cupón activo contra la lista de cupones
   const activeCouponObj = appliedCouponCode ? findCoupon(appliedCouponCode, combinedCustomCoupons) : null;
-  const couponCalculation = activeCouponObj ? calculateCouponDiscount(activeCouponObj, baseForCoupon) : null;
+  const couponCalculation = activeCouponObj ? calculateCouponDiscount(activeCouponObj, subtotal) : null;
+  const rawCouponDiscount = couponCalculation?.isValid ? couponCalculation.discountAmount : 0;
 
-  const couponDiscountAmount = couponCalculation?.isValid ? couponCalculation.discountAmount : 0;
-  const discountAmount = bulkDiscountAmount + couponDiscountAmount;
+  // REGLA CRÍTICA SOLICITADA POR EL DUEÑO: LOS DESCUENTOS NO SON ACUMULABLES
+  // Si el cliente califica para mayoreo Y también tiene un cupón, NUNCA SE SUMAN.
+  // Se aplica únicamente el que le otorgue MAYOR descuento en pesos para no comerse las ganancias del taller.
+  const hasWholesaleDiscount = bulkDiscountAmount > 0;
+  const hasCouponDiscount = rawCouponDiscount > 0;
+  const bothDiscountsPresent = hasWholesaleDiscount && hasCouponDiscount;
+
+  let activeDiscountSource = 'none'; // 'wholesale' | 'coupon' | 'none'
+  let discountAmount = 0;
+
+  if (bothDiscountsPresent) {
+    if (bulkDiscountAmount >= rawCouponDiscount) {
+      activeDiscountSource = 'wholesale';
+      discountAmount = bulkDiscountAmount;
+    } else {
+      activeDiscountSource = 'coupon';
+      discountAmount = rawCouponDiscount;
+    }
+  } else if (hasWholesaleDiscount) {
+    activeDiscountSource = 'wholesale';
+    discountAmount = bulkDiscountAmount;
+  } else if (hasCouponDiscount) {
+    activeDiscountSource = 'coupon';
+    discountAmount = rawCouponDiscount;
+  }
+
   // Piso comercial: ningún total con productos puede quedar en $0 MXN
   const finalTotal = subtotal > 0
     ? Math.max(1, subtotal - discountAmount)
@@ -318,18 +372,19 @@ export default function QuoteDrawer({
 
     msg += `--------------------------------------\n`;
     msg += `*Subtotal (sin IVA):* ${formatQuoteMoney(netBeforeDiscount)} MXN\n`;
-    if (bulkDiscountAmount > 0) {
-      msg += `*DESCUENTO MAYOREO (12+ pzas):* -${formatQuoteMoney(bulkDiscountAmount)} MXN (15% OFF de taller)\n`;
-    }
-
-    if (appliedCouponCode && discountAmount > 0) {
+    if (activeDiscountSource === 'wholesale') {
+      msg += `*DESCUENTO MAYOREO (${activeTier?.minQty || 12}+ pzas):* -${formatQuoteMoney(bulkDiscountAmount)} MXN (${activeTier?.percent || 5}% OFF de taller)\n`;
+    } else if (activeDiscountSource === 'coupon' && rawCouponDiscount > 0) {
       const categoryLabel = activeCouponObj ? getCouponCategoryLabel(activeCouponObj) : 'Código Especial de Tienda';
       const benefitLabel = activeCouponObj?.label || activeCouponObj?.name || 'Descuento especial';
       msg += `*CUPÓN APLICADO:* ${appliedCouponCode}\n`;
       msg += `   • *Tipo:* ${categoryLabel}\n`;
       msg += `   • *Beneficio:* ${benefitLabel}\n`;
-      msg += `   • *Ahorro otorgado:* -${formatQuoteMoney(discountAmount)} MXN\n`;
+      msg += `   • *Ahorro otorgado:* -${formatQuoteMoney(rawCouponDiscount)} MXN\n`;
       msg += `*Subtotal con descuento:* ${formatQuoteMoney(baseSubtotal)} MXN\n`;
+    }
+    if (bothDiscountsPresent) {
+      msg += `*(Nota: Promociones no acumulables. Se aplicó el descuento más conveniente)*\n`;
     }
 
     msg += `*${taxMode === 'included' ? 'IVA 16% incluido' : 'IVA 16%'}:* ${formatQuoteMoney(ivaAmount)} MXN\n`;
@@ -758,8 +813,21 @@ export default function QuoteDrawer({
                   <span><strong>Nota:</strong> Los cupones de descuento no son acumulables entre sí (máximo 1 cupón por pedido).</span>
                 </div>
 
-                {/* Banner de Mayoreo Automático (12+ piezas = 15% OFF) */}
-                {items.length > 0 && subtotal > 0 && (
+                                {/* Alerta si el cliente intentó acumular cupón y mayoreo */}
+                {bothDiscountsPresent && (
+                  <div className="flex items-start gap-2 p-3 rounded-2xl bg-amber-50 border border-amber-300 text-xs text-amber-950 shadow-xs">
+                    <span className="text-amber-600 text-sm shrink-0">🔒</span>
+                    <div className="space-y-0.5">
+                      <span className="font-black text-amber-900 block">Promociones no acumulables</span>
+                      <p className="text-[11px] text-amber-800 leading-tight">
+                        Por política de taller, los descuentos de mayoreo y los cupones no se suman. Se aplicó automáticamente la opción más favorable: <strong>{activeDiscountSource === 'wholesale' ? `Mayoreo (-${bulkDiscountAmount} MXN)` : `Cupón (-${rawCouponDiscount} MXN)`}</strong>.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Banner de Mayoreo Escalonado */}
+                {items.length > 0 && subtotal > 0 && isWholesaleEnabled && (
                   <div className={`p-3 rounded-2xl border transition-all ${
                     isBulkEligible
                       ? 'bg-gradient-to-r from-emerald-50 via-teal-50/70 to-emerald-50 border-emerald-400 shadow-xs'
@@ -774,17 +842,21 @@ export default function QuoteDrawer({
                         </div>
                         <div className="min-w-0">
                           <div className="text-xs font-black text-gray-900 flex items-center gap-1.5 flex-wrap">
-                            <span>Precio de Mayoreo (15% OFF)</span>
+                            <span>Precio de Mayoreo</span>
                             {isBulkEligible && (
                               <span className="text-[9.5px] font-black px-2 py-0.5 bg-emerald-700 text-white rounded-full">
-                                ¡ACTIVO!
+                                {activeTier.percent}% OFF
                               </span>
                             )}
                           </div>
                           <p className="text-[11px] text-gray-600 truncate">
                             {isBulkEligible
-                              ? `¡Felicidades! Tienes 15% de descuento en tus ${totalItemCount} piezas.`
-                              : `Llevas ${totalItemCount} de 12 piezas. Agrega ${bulkThreshold - totalItemCount} más para 15% OFF.`}
+                              ? nextTier
+                                ? `¡${activeTier.percent}% activado! Agrega ${nextTier.minQty - totalItemCount} más para subir a ${nextTier.percent}%.`
+                                : `¡Nivel Máximo! Tienes ${activeTier.percent}% en tus ${totalItemCount} piezas.`
+                              : nextTier
+                                ? `Llevas ${totalItemCount} de ${nextTier.minQty} piezas. Agrega ${nextTier.minQty - totalItemCount} más para ${nextTier.percent}% OFF.`
+                                : 'Precios especiales por volumen.'}
                           </p>
                         </div>
                       </div>
@@ -796,17 +868,19 @@ export default function QuoteDrawer({
                         </div>
                       )}
                     </div>
-                    {!isBulkEligible && (
+                    {nextTier && (
                       <div className="mt-2 space-y-1">
                         <div className="w-full h-1.5 rounded-full bg-stone-200 overflow-hidden">
                           <div
                             className="h-full bg-emerald-600 transition-all duration-300"
-                            style={{ width: `${Math.min(100, Math.round((totalItemCount / bulkThreshold) * 100))}%` }}
+                            style={{
+                              width: `${Math.min(100, Math.round((totalItemCount / nextTier.minQty) * 100))}%`
+                            }}
                           />
                         </div>
                         <div className="flex justify-between text-[9px] text-gray-400 font-semibold">
                           <span>{totalItemCount} piezas</span>
-                          <span>Meta: 12 piezas (-15%)</span>
+                          <span>Siguiente: {nextTier.minQty} pzas ({nextTier.percent}% OFF)</span>
                         </div>
                       </div>
                     )}

@@ -8143,6 +8143,124 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
                     )}
                   </div>
 
+                  {/* Configuración de Descuentos por Mayoreo */}
+                  <div className="bg-white p-6 rounded-2xl border border-[#E8E4DA] space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#E8E4DA] pb-3">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+                          <Package className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-bold text-[#1F2421] font-heading">
+                            Descuentos Automáticos por Mayoreo (Escalonados)
+                          </h4>
+                          <p className="text-xs text-gray-500">
+                            Ajusta los mínimos de piezas y los porcentajes que se aplicarán automáticamente en el carrito.
+                          </p>
+                        </div>
+                      </div>
+                      <label className="inline-flex items-center gap-2 cursor-pointer text-xs font-bold text-gray-700 bg-stone-50 px-3 py-1.5 rounded-xl border border-stone-200">
+                        <input
+                          type="checkbox"
+                          checked={businessSettings?.wholesaleConfig?.enabled !== false}
+                          onChange={e => {
+                            const cfg = businessSettings?.wholesaleConfig || {
+                              tiers: [
+                                { minQty: 12, percent: 5 },
+                                { minQty: 25, percent: 10 },
+                                { minQty: 50, percent: 15 }
+                              ]
+                            };
+                            setBusinessSettings({
+                              ...businessSettings,
+                              wholesaleConfig: { ...cfg, enabled: e.target.checked }
+                            });
+                          }}
+                          className="w-4 h-4 accent-[#2D4F3E] rounded"
+                        />
+                        <span>{businessSettings?.wholesaleConfig?.enabled !== false ? '✓ Mayoreo Activo' : 'Pausado'}</span>
+                      </label>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      {(businessSettings?.wholesaleConfig?.tiers || [
+                        { minQty: 12, percent: 5 },
+                        { minQty: 25, percent: 10 },
+                        { minQty: 50, percent: 15 }
+                      ]).map((tier, idx) => (
+                        <div key={idx} className="p-3.5 rounded-2xl border border-stone-200 bg-stone-50/70 space-y-2">
+                          <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800">
+                            Nivel {idx + 1} {idx === 0 ? '(Básico)' : idx === 1 ? '(Medio)' : '(Mayorista)'}
+                          </span>
+                          <div className="space-y-1.5 text-xs">
+                            <label className="block text-[11px] font-bold text-gray-600">
+                              Piezas mínimas:
+                              <input
+                                type="number"
+                                min="2"
+                                value={tier.minQty}
+                                onChange={e => {
+                                  const currentTiers = [...(businessSettings?.wholesaleConfig?.tiers || [
+                                    { minQty: 12, percent: 5 },
+                                    { minQty: 25, percent: 10 },
+                                    { minQty: 50, percent: 15 }
+                                  ])];
+                                  currentTiers[idx] = { ...currentTiers[idx], minQty: Number(e.target.value) || 0 };
+                                  setBusinessSettings({
+                                    ...businessSettings,
+                                    wholesaleConfig: {
+                                      ...(businessSettings?.wholesaleConfig || { enabled: true }),
+                                      tiers: currentTiers
+                                    }
+                                  });
+                                }}
+                                className="w-full mt-0.5 px-2.5 py-1.5 rounded-xl border border-stone-300 bg-white font-bold text-gray-900"
+                              />
+                            </label>
+                            <label className="block text-[11px] font-bold text-gray-600">
+                              Descuento (%):
+                              <input
+                                type="number"
+                                min="1"
+                                max="90"
+                                value={tier.percent}
+                                onChange={e => {
+                                  const currentTiers = [...(businessSettings?.wholesaleConfig?.tiers || [
+                                    { minQty: 12, percent: 5 },
+                                    { minQty: 25, percent: 10 },
+                                    { minQty: 50, percent: 15 }
+                                  ])];
+                                  currentTiers[idx] = { ...currentTiers[idx], percent: Number(e.target.value) || 0 };
+                                  setBusinessSettings({
+                                    ...businessSettings,
+                                    wholesaleConfig: {
+                                      ...(businessSettings?.wholesaleConfig || { enabled: true }),
+                                      tiers: currentTiers
+                                    }
+                                  });
+                                }}
+                                className="w-full mt-0.5 px-2.5 py-1.5 rounded-xl border border-stone-300 bg-white font-bold text-emerald-800"
+                              />
+                            </label>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-gray-600 bg-amber-50/70 border border-amber-200/80 p-3 rounded-xl">
+                      <span>
+                        🔒 <strong>Protección de taller:</strong> El sistema nunca acumulará el mayoreo con cupones o promociones de banner. Siempre aplica el de mayor beneficio sin duplicar descuentos.
+                      </span>
+                      <button
+                        type="button"
+                        onClick={handleSaveSettings}
+                        className="shrink-0 px-4 py-2 rounded-xl bg-[#2D4F3E] text-white font-bold hover:bg-[#20392C] cursor-pointer shadow-xs"
+                      >
+                        Guardar Ajustes de Mayoreo
+                      </button>
+                    </div>
+                  </div>
+
                   {/* Security / Password form */}
                   <div className="bg-white p-6 rounded-2xl border border-[#E8E4DA] space-y-4">
                     <h4 className="text-sm font-bold text-[#1F2421] font-heading flex items-center gap-1.5">

@@ -23,15 +23,29 @@ export default function AffiliatesPage({ onBack, settings }) {
       {/* Barra superior de navegación */}
       <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-stone-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <button
-            type="button"
-            onClick={onBack}
+          <a
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              if (onBack) onBack();
+              else window.location.href = '/';
+            }}
             className="inline-flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-emerald-800 transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Volver a la tienda</span>
-          </button>
-          <BrandLogo size="sm" showTagline={false} />
+            <span>Volver al catálogo</span>
+          </a>
+          <a
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              if (onBack) onBack();
+              else window.location.href = '/';
+            }}
+            className="cursor-pointer"
+          >
+            <BrandLogo size="sm" showTagline={false} />
+          </a>
           <a
             href={whatsappUrl}
             target="_blank"
@@ -152,7 +166,7 @@ export default function AffiliatesPage({ onBack, settings }) {
             <ul className="space-y-2 text-xs text-gray-700">
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-                <span><strong>15% de descuento automático</strong> comprando desde 12 piezas.</span>
+                <span><strong>Descuentos escalonados por volumen:</strong> 5% en 12 pzas, 10% en 25 pzas y 15% en 50 pzas.</span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
@@ -233,6 +247,55 @@ export default function AffiliatesPage({ onBack, settings }) {
                 ${wholesaleMargin.toLocaleString('es-MX')} MXN
               </div>
               <p className="text-[10px] text-gray-500">Revendiendo en tu negocio/zona</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+            {/* Requisitos y Condiciones Claras */}
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 pt-16">
+        <div className="rounded-3xl border border-stone-200 bg-white p-6 sm:p-8 space-y-6 shadow-sm">
+          <div className="text-center space-y-1">
+            <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800">
+              Claridad y Confianza
+            </span>
+            <h3 className="font-heading font-black text-2xl text-gray-900">
+              ¿Hay requisitos o metas de venta al mes?
+            </h3>
+            <p className="text-xs text-gray-600 max-w-xl mx-auto">
+              Queremos que ganes con libertad, sin presiones pero con compromiso mutuo de taller.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-4 pt-2">
+            <div className="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-2.5">
+              <h4 className="font-heading font-black text-sm text-emerald-950 flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-700" />
+                <span>Para Afiliados Digitales (Tu Código)</span>
+              </h4>
+              <ul className="space-y-1.5 text-xs text-emerald-900/90 list-disc list-inside leading-relaxed">
+                <li><strong>Cero inversión:</strong> No pagas nada por registrarte ni por tu código.</li>
+                <li><strong>Meta para conservar tu código exclusivo activo:</strong> Se solicita un mínimo muy accesible de <strong>al menos 3 ventas referidas al mes</strong> (o $1,500 MXN mensuales en ventas referidas).</li>
+                <li><strong>Sin deudas ni penalizaciones:</strong> Si algún mes no llegas, tu código no genera cobros ocultos; simplemente te contactamos para darte tips y reactivarlo.</li>
+              </ul>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-2.5">
+              <h4 className="font-heading font-black text-sm text-amber-950 flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-amber-700" />
+                <span>Para Mayoristas con Stock Propio</span>
+              </h4>
+              <ul className="space-y-1.5 text-xs text-amber-900/90 list-disc list-inside leading-relaxed">
+                <li><strong>Sin cuota mensual forzosa:</strong> Compras únicamente cuando tu negocio lo necesite.</li>
+                <li><strong>Escala Automática por Pedido:</strong>
+                  <ul className="pl-4 pt-1 space-y-0.5 list-none font-bold text-amber-800">
+                    <li>• De 12 a 24 piezas: <strong>5% de descuento</strong></li>
+                    <li>• De 25 a 49 piezas: <strong>10% de descuento</strong></li>
+                    <li>• De 50 o más piezas: <strong>15% de descuento</strong></li>
+                  </ul>
+                </li>
+                <li><strong>Protección de taller:</strong> Descuentos directos en tu carrito, listos para facturar y enviar.</li>
+              </ul>
             </div>
           </div>
         </div>

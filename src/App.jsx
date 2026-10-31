@@ -957,6 +957,13 @@ export default function App() {
           onOpenAdmin={() => setIsAdminOpen(true)}
           onOpenArcade={handleOpenArcade}
           onOpenCatalog={handleOpenCatalogSelector}
+          onOpenAffiliates={() => {
+            window.history.pushState({}, '', '/afiliados');
+            setShowAffiliates(true);
+            setShowAbout(false);
+            setShowFaq(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
           settings={settings}
@@ -1088,6 +1095,13 @@ export default function App() {
             onOpenFaq={() => {
               window.history.pushState({}, '', '/faq');
               setShowFaq(true);
+            }}
+            onOpenAffiliates={() => {
+              window.history.pushState({}, '', '/afiliados');
+              setShowAffiliates(true);
+              setShowAbout(false);
+              setShowFaq(false);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
           />
         </div>

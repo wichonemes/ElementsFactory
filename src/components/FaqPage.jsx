@@ -52,16 +52,29 @@ export default function FaqPage({ onBack, onExplore, settings }) {
     <div className="fixed inset-0 z-40 overflow-y-auto bg-[#FBF9F5]">
       <div className="sticky top-0 z-10 border-b border-[#E8E4DA] bg-[#FBF9F5]/95 backdrop-blur">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
-          <button
-            onClick={onBack}
-            className="inline-flex items-center gap-2 rounded-xl border border-[#E2DCCD] bg-white px-3 py-2 text-sm font-semibold text-[#1F2421] transition hover:border-[#2D4F3E] hover:text-[#2D4F3E]"
+          <a
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              if (onBack) onBack();
+              else window.location.href = '/';
+            }}
+            className="inline-flex items-center gap-2 rounded-xl border border-[#E2DCCD] bg-white px-3 py-2 text-sm font-semibold text-[#1F2421] transition hover:border-[#2D4F3E] hover:text-[#2D4F3E] cursor-pointer"
           >
             <ArrowLeft className="h-4 w-4" />
-            Volver
-          </button>
-          <div className="hidden sm:block">
+            Volver al catálogo
+          </a>
+          <a
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              if (onBack) onBack();
+              else window.location.href = '/';
+            }}
+            className="hidden sm:block cursor-pointer"
+          >
             <BrandLogo showTagline={false} />
-          </div>
+          </a>
         </div>
       </div>
 

@@ -106,7 +106,6 @@ function buildMetaTags(site, product, canonical) {
   };
 
   const tags = [
-    `<base href="/" />`,
     `<title>${name} | Artesano Digital</title>`,
     `<meta name="description" content="${description}" />`,
     `<link rel="canonical" href="${escapeHtml(canonical)}" />`,
@@ -134,6 +133,9 @@ function buildMetaTags(site, product, canonical) {
 function injectIntoSite(html, tags) {
   const withoutOld = html
     .replace(/<title>[\s\S]*?<\/title>/i, '')
+    .replace(/<base\s+href="[^"]*"\s*\/?>/gi, '')
+    .replace(/<head>/i, '<head>\n    <base href="/" />')
+    .replace(/(src|href)="\.\/(assets|brand)\//g, '$1="/$2/')
     .replace(/\s*<meta\s+name="description"[^>]*>/gi, '')
     .replace(/\s*<link\s+rel="canonical"[^>]*>/gi, '')
     .replace(/\s*<meta\s+property="og:[^"]*"[^>]*>/gi, '')

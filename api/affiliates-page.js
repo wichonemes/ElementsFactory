@@ -52,7 +52,6 @@ export default async function handler(req, res) {
   };
 
   const tags = [
-    `<base href="/" />`,
     `<title>${escapeHtml(title)}</title>`,
     `<meta name="description" content="${escapeHtml(description)}" />`,
     `<link rel="canonical" href="${escapeHtml(canonical)}" />`,
@@ -69,7 +68,10 @@ export default async function handler(req, res) {
     `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`
   ].join('\n    ');
 
-  let html = shell;
+  let html = shell
+    .replace(/<base\s+href="[^"]*"\s*\/?>/gi, '')
+    .replace(/<head>/i, '<head>\n    <base href="/" />')
+    .replace(/(src|href)="\.\/(assets|brand)\//g, '$1="/$2/');
   html = html.replace(/<title>[^<]*<\/title>/i, '');
   html = html.replace(/<link\s+rel="canonical"[^>]*>/i, '');
   html = html.replace(/<meta\s+name="description"[^>]*>/i, '');
