@@ -14,6 +14,10 @@
       "destination": "/api/about-page"
     },
     {
+      "source": "/faq",
+      "destination": "/api/faq-page"
+    },
+    {
       "source": "/producto/(.*)",
       "destination": "/api/product-page?slug=$1"
     },

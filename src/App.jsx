@@ -11,6 +11,7 @@ const QuoteDrawer = lazy(() => import('./components/QuoteDrawer'));
 const AdminPanel = lazy(() => import('./components/AdminPanel'));
 import Footer from './components/Footer';
 import AboutPage from './components/AboutPage';
+import FaqPage from './components/FaqPage';
 import CraftShowcase from './components/CraftShowcase';
 import PatchBarShowcase from './components/PatchBarShowcase';
 import QuoteCalculatorModal from './components/QuoteCalculatorModal';
@@ -177,6 +178,7 @@ export default function App() {
   const [isCatalogSelectorOpen, setIsCatalogSelectorOpen] = useState(false);
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(() => typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('menu'));
   const [showAbout, setShowAbout] = useState(() => typeof window !== 'undefined' && /^\/nosotros\/?$/i.test(window.location.pathname));
+  const [showFaq, setShowFaq] = useState(() => typeof window !== 'undefined' && /^\/faq\/?$/i.test(window.location.pathname));
   const [mobileNavTab, setMobileNavTab] = useState(() => (typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('menu')) ? 'menu' : 'home');
 
   const handleOpenCatalogSelector = () => {
@@ -280,9 +282,13 @@ export default function App() {
     }
   }, [products]);
 
-  // Sincroniza la página "Nosotros" con el historial del navegador
+  // Sincroniza la página "Nosotros" y "Preguntas Frecuentes" con el historial del navegador
   useEffect(() => {
-    const onPopState = () => setShowAbout(/^\/nosotros\/?$/i.test(window.location.pathname));
+    const onPopState = () => {
+      const path = window.location.pathname;
+      setShowAbout(/^\/nosotros\/?$/i.test(path));
+      setShowFaq(/^\/faq\/?$/i.test(path));
+    };
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
@@ -876,6 +882,13 @@ export default function App() {
     }
   };
 
+  const handleCloseFaq = () => {
+    setShowFaq(false);
+    if (/^\/faq\/?$/i.test(window.location.pathname)) {
+      window.history.replaceState({}, '', '/');
+    }
+  };
+
   const handleOpenWhatsAppDirect = () => {
     if (settings?.whatsappNumber) {
       window.open(
@@ -892,6 +905,17 @@ export default function App() {
           onBack={handleCloseAbout}
           onExplore={() => {
             handleCloseAbout();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          settings={settings}
+        />
+      )}
+
+      {showFaq && (
+        <FaqPage
+          onBack={handleCloseFaq}
+          onExplore={() => {
+            handleCloseFaq();
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
           settings={settings}
@@ -1450,6 +1474,10 @@ export default function App() {
         onOpenAbout={() => {
           window.history.pushState({}, '', '/nosotros');
           setShowAbout(true);
+        }}
+        onOpenFaq={() => {
+          window.history.pushState({}, '', '/faq');
+          setShowFaq(true);
         }}
         settings={settings}
       />

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Shield, Phone, Mail, MapPin, Clock, Heart } from 'lucide-react';
+import { Shield, Phone, Mail, MapPin, Clock, Heart, HelpCircle } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 
-export default function Footer({ onSelectWorld, onOpenAdmin, onOpenAbout, settings }) {
+export default function Footer({ onSelectWorld, onOpenAdmin, onOpenAbout, onOpenFaq, settings }) {
   return (
     <footer className="bg-[#1F2421] text-gray-300 border-t border-black/20 pt-16 pb-12 text-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
@@ -111,6 +111,15 @@ export default function Footer({ onSelectWorld, onOpenAdmin, onOpenAbout, settin
                 >
                   <Heart className="w-3.5 h-3.5 text-emerald-400/80 shrink-0" />
                   <span>Sobre el taller (Nosotros)</span>
+                </button>
+              )}
+              {onOpenFaq && (
+                <button
+                  onClick={onOpenFaq}
+                  className="flex items-center gap-2 text-gray-300 hover:text-emerald-400 transition-colors text-left font-semibold"
+                >
+                  <HelpCircle className="w-3.5 h-3.5 text-emerald-400/80 shrink-0" />
+                  <span>Preguntas Frecuentes (FAQ)</span>
                 </button>
               )}
               {settings?.whatsappNumber && (
