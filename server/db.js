@@ -18647,6 +18647,19 @@ class Database {
     const data = this.read();
     let list = Array.isArray(data.reviews) ? [...data.reviews] : [];
 
+    // Si la base de datos aún tiene las seed reviews de la versión previa sin técnica, migrar en caliente
+    const hasNewSeeds = list.some(r => r.id && (r.id.startsWith('rev-vin-') || r.id.startsWith('rev-3d-') || r.id.startsWith('rev-las-')));
+    if (!hasNewSeeds) {
+      const userReviews = list.filter(r => r.source !== 'seed' && !r.id?.startsWith('rev-'));
+      list = [...initialReviews, ...userReviews];
+      try {
+        data.reviews = list;
+        this.save(data);
+      } catch {
+        // En consultas de solo lectura
+      }
+    }
+
     // Filtro por estatus: 'all' | 'approved' | 'pending'
     if (filters.status && filters.status !== 'all') {
       const isApproved = filters.status === 'approved';
