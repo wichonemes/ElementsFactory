@@ -1,12 +1,14 @@
-﻿import React, { useState, useEffect, useMemo, useRef } from 'react';
+﻿import React, { useState, useEffect, useMemo, useRef, lazy, Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import WorldSelector from './components/WorldSelector';
 import FiltersBar from './components/FiltersBar';
 import ProductCard from './components/ProductCard';
-import ProductDetailModal from './components/ProductDetailModal';
-import QuoteDrawer from './components/QuoteDrawer';
-import AdminPanel from './components/AdminPanel';
+const ProductDetailModal = lazy(() => import('./components/ProductDetailModal'));
+const QuoteDrawer = lazy(() => import('./components/QuoteDrawer'));
+// El panel de administración es pesado y solo lo usa el taller:
+// se descarga aparte, únicamente al abrirlo.
+const AdminPanel = lazy(() => import('./components/AdminPanel'));
 import Footer from './components/Footer';
 import AboutPage from './components/AboutPage';
 import CraftShowcase from './components/CraftShowcase';
@@ -1387,42 +1389,52 @@ export default function App() {
 
       {/* Product Detail Modal */}
       {selectedProduct && (
-        <ProductDetailModal
-          product={selectedProduct}
-          allProducts={products}
-          activeWorld={activeWorld}
-          onSelectProduct={(newProd) => setSelectedProduct(newProd)}
-          settings={settings}
-          isFlashDeal={flashDeal.isProductOnFlashDeal(selectedProduct.id)}
-          flashDeal={flashDeal}
-          onClose={() => setSelectedProduct(null)}
-          onAddToCart={handleAddToCart}
-          onOpenArcade={handleOpenArcade}
-          onDirectWhatsAppQuote={handleDirectWhatsAppQuote}
-          onOpenCalculator={handleOpenCalculator}
-        />
+        <Suspense fallback={null}>
+          <ProductDetailModal
+            product={selectedProduct}
+            allProducts={products}
+            activeWorld={activeWorld}
+            onSelectProduct={(newProd) => setSelectedProduct(newProd)}
+            settings={settings}
+            isFlashDeal={flashDeal.isProductOnFlashDeal(selectedProduct.id)}
+            flashDeal={flashDeal}
+            onClose={() => setSelectedProduct(null)}
+            onAddToCart={handleAddToCart}
+            onOpenArcade={handleOpenArcade}
+            onDirectWhatsAppQuote={handleDirectWhatsAppQuote}
+            onOpenCalculator={handleOpenCalculator}
+          />
+        </Suspense>
       )}
 
       {/* Quote Drawer (Shopping Cart Slide-Over) */}
-      <QuoteDrawer
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        items={cartItems}
-        onUpdateQuantity={handleUpdateQuantity}
-        onRemoveItem={handleRemoveItem}
-        onClearCart={handleClearCart}
-        settings={settings}
-        onTrackWhatsApp={handleTrackWhatsAppQuote}
-        onOpenArcade={handleOpenArcade}
-      />
+      {isCartOpen && (
+        <Suspense fallback={null}>
+          <QuoteDrawer
+            isOpen={isCartOpen}
+            onClose={() => setIsCartOpen(false)}
+            items={cartItems}
+            onUpdateQuantity={handleUpdateQuantity}
+            onRemoveItem={handleRemoveItem}
+            onClearCart={handleClearCart}
+            settings={settings}
+            onTrackWhatsApp={handleTrackWhatsAppQuote}
+            onOpenArcade={handleOpenArcade}
+          />
+        </Suspense>
+      )}
 
-      {/* Admin Panel Modal */}
-      <AdminPanel
-        isOpen={isAdminOpen}
-        onClose={() => setIsAdminOpen(false)}
-        onRefreshCatalog={loadCatalogData}
-        flashDeal={flashDeal}
-      />
+      {/* Admin Panel Modal (se carga solo al abrirlo) */}
+      {isAdminOpen && (
+        <Suspense fallback={null}>
+          <AdminPanel
+            isOpen={isAdminOpen}
+            onClose={() => setIsAdminOpen(false)}
+            onRefreshCatalog={loadCatalogData}
+            flashDeal={flashDeal}
+          />
+        </Suspense>
+      )}
 
 
 

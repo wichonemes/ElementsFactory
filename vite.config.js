@@ -18,6 +18,17 @@ export default defineConfig({
     }
   },
   build: {
-    outDir: 'dist'
+    outDir: 'dist',
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return;
+          if (id.includes('lucide-react')) return 'icons';
+          if (id.includes('jspdf') || id.includes('html2canvas')) return 'documents';
+          if (id.includes('@imgly') || id.includes('onnxruntime')) return 'studio';
+          return 'vendor';
+        }
+      }
+    }
   }
 });

@@ -1,6 +1,5 @@
 ﻿import React, { useState, useEffect, useRef } from 'react';
 import { prepareImageForUpload } from '../utils/imageUpload';
-import { whiteStudioFile } from '../utils/whiteStudio';
 import SquareCropper from './SquareCropper';
 import {
   X, Camera, Upload, Sparkles, RefreshCw, CheckCircle2,
@@ -247,10 +246,14 @@ export default function ProductPhotoStudioModal({
       if (compressedFront) {
         setGenerationStep('Quitando el fondo de la foto principal...');
         try {
-          const removal = whiteStudioFile(compressedFront).catch(err => {
-            console.warn('No se pudo quitar el fondo:', err);
-            return null;
-          });
+          // Se carga el recortador de fondo solo cuando de verdad se usa
+          // (son ~24 MB de modelo: nunca debe descargarse al abrir la tienda).
+          const removal = import('../utils/whiteStudio')
+            .then(({ whiteStudioFile }) => whiteStudioFile(compressedFront))
+            .catch(err => {
+              console.warn('No se pudo quitar el fondo:', err);
+              return null;
+            });
           const timeout = new Promise(resolve => setTimeout(() => resolve('timeout'), 30000));
           const result = await Promise.race([removal, timeout]);
           if (result === 'timeout') {
