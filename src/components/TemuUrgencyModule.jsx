@@ -40,7 +40,7 @@ export default function TemuUrgencyModule({
             <Flame className="w-3 h-3 fill-amber-400 text-amber-400 animate-pulse" />
           </span>
           <span className="text-xs text-emerald-100/90 font-medium truncate">
-            Solo <strong className="font-bold text-white">{scarcityMetrics.unitsLeft} pzas</strong> disponibles
+            Precio preferencial <strong className="font-bold text-white">de taller</strong>
           </span>
         </div>
 
@@ -114,19 +114,19 @@ export default function TemuUrgencyModule({
         {/* Right: Scarcity Progress & CTA */}
         <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto shrink-0 justify-end">
           
-          <div className="w-full sm:w-40 space-y-1">
+          <div className="w-full sm:w-44 space-y-1">
             <div className="flex items-center justify-between text-[10.5px] font-bold">
               <span className="text-[#E5C378] flex items-center gap-1">
-                🔥 {scarcityMetrics.percent}% apartado
+                🛡️ Garantía de Taller
               </span>
               <span className="text-amber-200 text-[10px]">
-                Solo {scarcityMetrics.unitsLeft} lugares
+                Entrega 1-3 días
               </span>
             </div>
             <div className="w-full bg-black/40 rounded-full h-2 overflow-hidden border border-white/10">
               <div 
-                className="bg-gradient-to-r from-[#E5C378] via-[#C28E38] to-[#9E472A] h-2 rounded-full transition-all duration-1000" 
-                style={{ width: `${scarcityMetrics.percent}%` }}
+                className="bg-gradient-to-r from-[#E5C378] via-[#C28E38] to-[#9E472A] h-2 rounded-full" 
+                style={{ width: '100%' }}
               ></div>
             </div>
           </div>

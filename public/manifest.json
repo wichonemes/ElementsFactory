@@ -1,0 +1,26 @@
+{
+  "name": "Artesano Digital — Taller & Tienda Oficial",
+  "short_name": "Artesano Digital",
+  "description": "Productos personalizados para empresas, hogares y eventos en México. Impresión 3D, corte láser, sublimación y NFC.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FBF9F5",
+  "theme_color": "#1F2421",
+  "icons": [
+    {
+      "src": "/brand/artesano_digital_icono.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ]
+}

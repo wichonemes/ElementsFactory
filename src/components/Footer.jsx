@@ -2,7 +2,7 @@ import React from 'react';
 import { Shield, Phone, Mail, MapPin, Clock, Heart, HelpCircle, Users, Sparkles } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 
-export default function Footer({ onSelectWorld, onOpenAdmin, onOpenAbout, onOpenFaq, onOpenAffiliates, onOpenLoyalty, settings }) {
+export default function Footer({ onSelectWorld, onOpenAdmin, onOpenAbout, onOpenFaq, onOpenAffiliates, onOpenLoyalty, onOpenLegal, settings }) {
   return (
     <footer className="bg-[#1F2421] text-gray-300 border-t border-black/20 pt-16 pb-12 text-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
@@ -161,14 +161,27 @@ export default function Footer({ onSelectWorld, onOpenAdmin, onOpenAbout, onOpen
                   <span className="truncate font-medium">{settings.businessEmail}</span>
                 </a>
               )}
-              <div className="pt-2">
+              <div className="pt-2 flex flex-col gap-1.5 text-[11px] text-gray-400">
                 <button
-                  onClick={onOpenAdmin}
-                  className="flex items-center gap-1 text-[11px] text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
-                  title="Acceso de Taller (solo para el equipo)"
+                  type="button"
+                  onClick={() => onOpenLegal && onOpenLegal('privacy')}
+                  className="hover:text-emerald-400 text-left transition-colors cursor-pointer"
                 >
-                  <Shield className="w-3 h-3 opacity-60" />
-                  <span>Acceso de Taller</span>
+                  Aviso de Privacidad
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onOpenLegal && onOpenLegal('terms')}
+                  className="hover:text-emerald-400 text-left transition-colors cursor-pointer"
+                >
+                  Términos y Condiciones
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onOpenLegal && onOpenLegal('warranty')}
+                  className="hover:text-emerald-400 text-left transition-colors cursor-pointer"
+                >
+                  Garantía y Envíos
                 </button>
               </div>
             </div>

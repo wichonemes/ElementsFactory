@@ -1572,38 +1572,12 @@ export default function AdminPanel({ isOpen, onClose, onRefreshCatalog, flashDea
         setLoginError(data.error || 'Credenciales incorrectas');
         return;
       }
+      setLoginError('Error de autenticación con el servidor');
     } catch (err) {
-      // Backend no disponible (GitHub Pages estático o Render suspendido/offline)
-    }
-
-    // 2. Acceso administrativo local/offline si el servidor no está en línea
-    const validUsers = [
-      'admin',
-      'contactoartesanodigital@gmail.com',
-      'wichonemes@gmail.com',
-      'wichonemes'
-    ];
-    const isMasterPassword = inputPass === 'Artesano2026!' || inputPass === 'admin' || inputPass === 'artesano2026';
-
-    if (validUsers.includes(inputUser) && isMasterPassword) {
-      const offlineUser = {
-        id: 'admin-1',
-        username: 'admin',
-        name: 'Administrador Artesano Digital',
-        email: inputUser.includes('@') ? inputUser : 'contactoartesanodigital@gmail.com',
-        role: 'superadmin'
-      };
-      const offlineToken = 'offline-session-token-' + Date.now();
-      setToken(offlineToken);
-      setCurrentUser(offlineUser);
-      localStorage.setItem('artesano_admin_token', offlineToken);
-      localStorage.setItem('artesano_admin_user', JSON.stringify(offlineUser));
+      setLoginError('Servidor no disponible. Verifica tu conexión.');
+    } finally {
       setLoginLoading(false);
-      return;
     }
-
-    setLoginError('Credenciales incorrectas o servidor no disponible.');
-    setLoginLoading(false);
   };
 
   const handleLogout = () => {

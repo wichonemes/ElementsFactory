@@ -44,6 +44,7 @@ import AboutPage from './components/AboutPage';
 import FaqPage from './components/FaqPage';
 import AffiliatesPage from './components/AffiliatesPage';
 import LoyaltyModal from './components/LoyaltyModal';
+import LegalModal from './components/LegalModal';
 import CraftShowcase from './components/CraftShowcase';
 import PatchBarShowcase from './components/PatchBarShowcase';
 import QuoteCalculatorModal from './components/QuoteCalculatorModal';
@@ -203,6 +204,7 @@ export default function App() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [legalModalState, setLegalModalState] = useState({ isOpen: false, tab: 'privacy' });
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
   const [calculatorProduct, setCalculatorProduct] = useState(null);
   const [campaignsConfig, setCampaignsConfig] = useState(() => catalogFallbackData.campaigns || null);
@@ -252,6 +254,12 @@ export default function App() {
     // Capture marketing publication code, direct product link, and UTM tracking parameters
     try {
       const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('admin') === '1') {
+      setIsAdminOpen(true);
+    }
+    if (urlParams.get('privacidad') === '1' || urlParams.get('legal') === '1') {
+      setLegalModalState({ isOpen: true, tab: 'privacy' });
+    }
       const prodParam = urlParams.get('prod');
       if (prodParam) {
         localStorage.setItem('artesano_target_prod', prodParam);
@@ -1000,6 +1008,12 @@ export default function App() {
         />
       )}
 
+      <LegalModal
+        isOpen={legalModalState.isOpen}
+        initialTab={legalModalState.tab}
+        onClose={() => setLegalModalState({ isOpen: false, tab: 'privacy' })}
+      />
+
       <LoyaltyModal
         isOpen={showLoyalty}
         onClose={() => setShowLoyalty(false)}
@@ -1596,6 +1610,7 @@ export default function App() {
       <Footer
         onSelectWorld={handleSelectWorld}
         onOpenAdmin={() => setIsAdminOpen(true)}
+        onOpenLegal={(tab) => setLegalModalState({ isOpen: true, tab: tab || 'privacy' })}
         onOpenAbout={() => {
           window.history.pushState({}, '', '/nosotros');
           setShowAbout(true);

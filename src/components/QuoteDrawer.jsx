@@ -295,12 +295,12 @@ export default function QuoteDrawer({
   };
 
   // Construcción del mensaje estructurado para WhatsApp con enlaces directos
-  const buildWhatsAppMessage = () => {
+  const buildWhatsAppMessage = (overrideFolio = null) => {
     const isDirect = checkoutMode === 'direct';
     const cleanPath = typeof window !== 'undefined' ? window.location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '') : '';
     const baseUrl = typeof window !== 'undefined' && window.location.origin
       ? `${window.location.origin}${cleanPath}`
-      : 'https://wichonemes.github.io/artesano';
+      : 'https://artesano-digital.vercel.app';
 
     let msg = isDirect
       ? `*PEDIDO DIRECTO INMEDIATO — ARTESANO DIGITAL*\n`
@@ -320,7 +320,7 @@ export default function QuoteDrawer({
     if (cityZip.trim()) {
       msg += `• *Ciudad / C.P. para entrega:* ${cityZip.trim()}\n`;
     }
-    msg += `• *Folio de cotización:* ${quoteFolio}\n`;
+    msg += `• *Folio oficial de pedido:* ${overrideFolio || quoteFolio}\n`;
     if (campaignRef.trim()) {
       msg += `• *Referencia:* ${campaignRef.trim()}\n`;
     }
@@ -412,12 +412,52 @@ export default function QuoteDrawer({
     return msg;
   };
 
-  const handleSendWhatsApp = () => {
+  const handleSendWhatsApp = async () => {
     if (items.length === 0) return;
     playCoinSound();
     playRandomOrderCelebrationSound();
 
-    // Monitoreo: Registrar uso de cupón en la base de datos del taller
+    let assignedFolio = quoteFolio;
+
+    // 1. Persistencia oficial: Guardar orden y lead en base de datos antes de enviar a WhatsApp
+    try {
+      const orderPayload = {
+        customerName: customerName.trim(),
+        customerPhone: customerPhone.trim(),
+        customerEmail: customerEmail.trim(),
+        customerCity: cityZip.trim(),
+        items: items.map(it => ({
+          id: it.product?.id || it.id,
+          name: it.product?.name || it.name,
+          quantity: it.quantity,
+          price: it.product?.price || it.price,
+          selectedVariants: it.selectedVariants || {},
+          customText: it.customText || ''
+        })),
+        amount: billableTotal,
+        subtotal: regularTotal,
+        discountAmount,
+        couponCode: appliedCouponCode || null,
+        notes: (quoteNotes || '') + (deliveryNotes ? ` | ${deliveryNotes}` : ''),
+        source: checkoutMode === 'direct' ? 'web_direct' : 'web_quote'
+      };
+
+      const orderRes = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderPayload)
+      });
+      if (orderRes.ok) {
+        const orderData = await orderRes.json();
+        if (orderData.folio) {
+          assignedFolio = orderData.folio;
+        }
+      }
+    } catch (err) {
+      console.warn('Persistencia de orden en segundo plano:', err);
+    }
+
+    // 2. Monitoreo: Registrar uso de cupón en la base de datos del taller
     if (appliedCouponCode && discountAmount > 0) {
       try {
         fetch('/api/coupons/record-use', {
@@ -433,7 +473,7 @@ export default function QuoteDrawer({
       } catch (e) {}
     }
 
-    const text = buildWhatsAppMessage();
+    const text = buildWhatsAppMessage(assignedFolio);
     const phone = (settings?.whatsappNumber || '5215500000000').replace(/[^0-9]/g, '');
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
 
@@ -448,7 +488,7 @@ export default function QuoteDrawer({
         couponCategory: activeCouponObj ? getCouponCategory(activeCouponObj) : 'store',
         discountAmount,
         taxMode,
-        folio: quoteFolio
+        folio: assignedFolio
       });
     }
 

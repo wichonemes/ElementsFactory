@@ -111,13 +111,6 @@ export default function Navbar({
             >
               <TrendingUp className="w-3.5 h-3.5 text-amber-400" /> Gana dinero / Mayoreo
             </a>
-            <button
-              onClick={onOpenAdmin}
-              className="hover:text-white flex items-center gap-1 transition-colors"
-              title="Panel de Administración"
-            >
-              <Shield className="w-3 h-3 text-amber-400" /> Administración
-            </button>
           </div>
         </div>
       </div>

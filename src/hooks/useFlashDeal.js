@@ -178,7 +178,7 @@ export function useFlashDeal(products = [], settings = null) {
         },
         scarcityMetrics: {
           unitsLeft,
-          percent: Math.min(95, Math.floor(78 + elapsedRatio * 16))
+          percent: 100
         }
       };
     });
@@ -297,10 +297,8 @@ export function useFlashDeal(products = [], settings = null) {
           durationLabel = durationMinutes < 60 ? `FLASH ${durationMinutes}M` : `FLASH ${durationHours}H`;
         }
 
-        const elapsedRatio = 1 - (secondsRemaining / cycleDuration);
-        const hash = String(foundProduct.id || '').split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-        const baseUnits = cycleDuration <= 1800 ? 2 : (3 + (hash % 2));
-        const unitsLeft = Math.max(1, Math.floor(baseUnits - elapsedRatio * (baseUnits - 1)));
+        const realStock = typeof foundProduct.stockQuantity === 'number' && foundProduct.stockQuantity > 0 ? foundProduct.stockQuantity : null;
+        const unitsLeft = realStock || 5;
         const blitzPercentRemaining = Math.max(4, Math.min(100, Math.round((secondsRemaining / Math.min(cycleDuration, 900)) * 100)));
 
         map[foundProduct.id] = {
@@ -321,7 +319,8 @@ export function useFlashDeal(products = [], settings = null) {
           },
           scarcityMetrics: {
             unitsLeft,
-            percent: Math.min(95, Math.floor(78 + elapsedRatio * 16))
+            percent: 100,
+            isRealStock: !!realStock
           }
         };
       }

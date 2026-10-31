@@ -721,6 +721,64 @@ app.post('/api/coupons/record-use', (req, res) => {
   }
 });
 
+// Captura de Órdenes y Cotizaciones Web (Persistencia real previa a WhatsApp)
+app.post('/api/orders', (req, res) => {
+  try {
+    const {
+      customerName,
+      customerPhone,
+      customerEmail,
+      customerCity,
+      items,
+      amount,
+      subtotal,
+      discountAmount,
+      couponCode,
+      notes,
+      source = 'web_cart'
+    } = req.body;
+
+    if (!items || !items.length) {
+      return res.status(400).json({ error: 'El carrito no contiene productos' });
+    }
+
+    const orderData = {
+      customerName: (customerName || 'Cliente Web').trim(),
+      customerPhone: (customerPhone || '').trim(),
+      customerEmail: (customerEmail || '').trim(),
+      shippingCity: (customerCity || '').trim(),
+      items: items.map(it => ({
+        id: it.id || it.productId,
+        name: it.name || it.productName || 'Producto',
+        quantity: Number(it.quantity) || 1,
+        price: Number(it.price) || 0,
+        selectedVariants: it.selectedVariants || {},
+        customText: it.customText || ''
+      })),
+      amount: Number(amount) || 0,
+      subtotal: Number(subtotal) || Number(amount) || 0,
+      couponCode: couponCode || null,
+      couponDiscount: Number(discountAmount) || 0,
+      notes: notes || '',
+      status: 'pending_whatsapp',
+      channel: 'web',
+      source,
+      createdAt: new Date().toISOString()
+    };
+
+    const newOrder = db.createOrder(orderData);
+    res.json({
+      success: true,
+      order: newOrder,
+      orderNumber: newOrder.orderNumber,
+      folio: newOrder.orderNumber
+    });
+  } catch (err) {
+    console.error('Error al capturar pedido:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Enlace corto y amigable a Facebook Oficial
 app.get(['/facebook', '/fb'], (_req, res) => {
   try {
@@ -817,9 +875,7 @@ app.post('/api/auth/login', (req, res) => {
     const cleanUser = username.toLowerCase().trim();
     const user = (currentDb.users || []).find(u => 
       u.username.toLowerCase() === cleanUser || 
-      (u.email || '').toLowerCase() === cleanUser ||
-      cleanUser === 'wichonemes@gmail.com' ||
-      cleanUser === 'wicho'
+      (u.email || '').toLowerCase() === cleanUser
     );
 
     if (!user) {
