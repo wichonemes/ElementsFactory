@@ -187,6 +187,7 @@ export default function QuoteDrawer({
     return !isLiveService && !isFlashActive;
   });
 
+  const totalItemCount = items.reduce((sum, item) => sum + (Number(item.quantity) || 1), 0);
   const wholesaleItemCount = eligibleWholesaleItems.reduce((sum, item) => sum + (Number(item.quantity) || 1), 0);
   const wholesaleEligibleSubtotal = eligibleWholesaleItems.reduce((sum, item) => sum + ((Number(item.product?.price) || 0) * item.quantity), 0);
 
@@ -932,10 +933,10 @@ export default function QuoteDrawer({
                           <p className="text-[11px] text-gray-600 truncate">
                             {isBulkEligible
                               ? nextTier
-                                ? `¡${activeTier.percent}% activado! Agrega ${nextTier.minQty - totalItemCount} más para subir a ${nextTier.percent}%.`
-                                : `¡Nivel Máximo! Tienes ${activeTier.percent}% en tus ${totalItemCount} piezas.`
+                                ? `¡${activeTier.percent}% activado! Agrega ${nextTier.minQty - wholesaleItemCount} más para subir a ${nextTier.percent}%.`
+                                : `¡Nivel Máximo! Tienes ${activeTier.percent}% en tus ${wholesaleItemCount} piezas.`
                               : nextTier
-                                ? `Llevas ${totalItemCount} de ${nextTier.minQty} piezas. Agrega ${nextTier.minQty - totalItemCount} más para ${nextTier.percent}% OFF.`
+                                ? `Llevas ${wholesaleItemCount} de ${nextTier.minQty} piezas. Agrega ${nextTier.minQty - wholesaleItemCount} más para ${nextTier.percent}% OFF.`
                                 : 'Precios especiales por volumen.'}
                           </p>
                         </div>
@@ -954,12 +955,12 @@ export default function QuoteDrawer({
                           <div
                             className="h-full bg-emerald-600 transition-all duration-300"
                             style={{
-                              width: `${Math.min(100, Math.round((totalItemCount / nextTier.minQty) * 100))}%`
+                              width: `${Math.min(100, Math.round((wholesaleItemCount / nextTier.minQty) * 100))}%`
                             }}
                           />
                         </div>
                         <div className="flex justify-between text-[9px] text-gray-400 font-semibold">
-                          <span>{totalItemCount} piezas</span>
+                          <span>{wholesaleItemCount} piezas</span>
                           <span>Siguiente: {nextTier.minQty} pzas ({nextTier.percent}% OFF)</span>
                         </div>
                       </div>
