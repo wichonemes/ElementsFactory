@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /downloads/
+Disallow: /admin
+
+Sitemap: https://artesano-digital.vercel.app/sitemap.xml

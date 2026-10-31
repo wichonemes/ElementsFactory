@@ -11973,7 +11973,10 @@ const initialSettings = {
 
 const createInitialDb = () => {
   const salt = bcrypt.genSaltSync(10);
-  const hashedPassword = bcrypt.hashSync('Artesano2026!', salt);
+  const initialAdminPassword = (process.env.ADMIN_INITIAL_PASSWORD && process.env.ADMIN_INITIAL_PASSWORD.length >= 12)
+    ? process.env.ADMIN_INITIAL_PASSWORD
+    : 'AD-ePnzAHpUid8Z';
+  const hashedPassword = bcrypt.hashSync(initialAdminPassword, salt);
 
   return {
     users: [
@@ -15629,6 +15632,27 @@ class Database {
           changed = true;
         }
       }
+    }
+
+    // 3.1 Garantizar unicidad de SKU (trazabilidad de inventario y reportes)
+    const seenSkus = new Map();
+    for (const prod of data.products) {
+      if (!prod.sku) continue;
+      const skuKey = String(prod.sku).toUpperCase();
+      if (!seenSkus.has(skuKey)) {
+        seenSkus.set(skuKey, prod.id);
+        continue;
+      }
+      const skuBase = skuKey.replace(/-\d{3}$/, '');
+      let seq = 2;
+      let candidate;
+      do {
+        candidate = `${skuBase}-${String(seq).padStart(3, '0')}`;
+        seq += 1;
+      } while (seenSkus.has(candidate));
+      prod.sku = candidate;
+      seenSkus.set(candidate, prod.id);
+      changed = true;
     }
 
     if (changed) {

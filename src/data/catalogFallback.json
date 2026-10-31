@@ -3732,7 +3732,7 @@
       "detailImage": "./uploads/catalog-v2-promo-ev-1-detail-0d5351b213.webp",
       "measureImage": "./uploads/catalog-v2-promo-ev-1-scale-7c45b34c88.webp",
       "stockQuantity": 0,
-      "sku": "PAQ-HYB-PIN-GRA-001",
+      "sku": "PAQ-HYB-PIN-GRA-002",
       "dimensionsImage": "./uploads/catalog-v2-promo-ev-1-scale-7c45b34c88.webp",
       "bundleAreas": [
         "eventos"
@@ -3908,7 +3908,7 @@
       "detailImage": "./uploads/catalog-v2-promo-ev-3-detail-bc71d859c5.webp",
       "measureImage": "./uploads/catalog-v2-promo-ev-3-scale-c8a6e4b916.webp",
       "stockQuantity": 0,
-      "sku": "PAQ-HYB-ACR-GRA-003",
+      "sku": "PAQ-HYB-ACR-GRA-002",
       "dimensionsImage": "./uploads/catalog-v2-promo-ev-3-scale-c8a6e4b916.webp",
       "bundleAreas": [
         "eventos"
@@ -4171,7 +4171,7 @@
         "expiresAt": null
       },
       "updatedAt": "2026-10-14T23:16:52.767Z",
-      "sku": "HOG-SUB-TEX-MAT-001",
+      "sku": "HOG-SUB-TEX-MAT-002",
       "dimensionsImage": "./uploads/catalog-v2-vn-playera-01-scale-5b114e25f4.webp",
       "createdAt": "2026-10-14T23:16:52.767Z"
     },
@@ -4246,7 +4246,7 @@
         "expiresAt": null
       },
       "updatedAt": "2026-10-14T23:16:38.825Z",
-      "sku": "HOG-SUB-CER-BRI-001",
+      "sku": "HOG-SUB-CER-BRI-002",
       "dimensionsImage": "./uploads/catalog-v2-sb-taza-01-scale-473238632a.webp",
       "createdAt": "2026-10-14T23:16:38.825Z"
     },
@@ -4403,7 +4403,7 @@
       "availability": "in_stock",
       "createdAt": "2026-10-14T19:14:22.883Z",
       "stockQuantity": 10,
-      "sku": "EVE-LAS-PIN-GRA-001",
+      "sku": "EVE-LAS-PIN-GRA-003",
       "dimensionsImage": "./uploads/catalog-v2-ev-topper-01-scale-a04d8b9223.webp"
     },
     {
@@ -4532,7 +4532,7 @@
       "availability": "in_stock",
       "createdAt": "2026-10-14T19:14:22.886Z",
       "stockQuantity": 10,
-      "sku": "EVE-LAS-PIN-GRA-001",
+      "sku": "EVE-LAS-PIN-GRA-004",
       "dimensionsImage": "./uploads/catalog-v2-ev-guest-01-scale-d57c627388.webp"
     },
     {
@@ -4593,7 +4593,7 @@
       "availability": "in_stock",
       "createdAt": "2026-10-14T19:14:22.886Z",
       "stockQuantity": 6,
-      "sku": "EVE-LAS-PIN-GRA-001",
+      "sku": "EVE-LAS-PIN-GRA-005",
       "dimensionsImage": "./uploads/catalog-v2-ev-cajitas-01-scale-c2a7f3aa8c.webp"
     },
     {
@@ -4652,7 +4652,7 @@
       "availability": "in_stock",
       "createdAt": "2026-10-14T19:14:22.886Z",
       "stockQuantity": 8,
-      "sku": "EVE-LAS-PIN-GRA-001",
+      "sku": "EVE-LAS-PIN-GRA-006",
       "dimensionsImage": "./uploads/catalog-v2-ev-abanico-01-scale-2fcc7e991d.webp"
     },
     {
@@ -4780,7 +4780,7 @@
       "availability": "in_stock",
       "createdAt": "2026-10-14T19:14:22.886Z",
       "stockQuantity": 10,
-      "sku": "EVE-HYB-PLA-GRA-001",
+      "sku": "EVE-HYB-PLA-GRA-002",
       "dimensionsImage": "./uploads/catalog-v2-ev-charms-01-scale-e94b9ebbe4.webp"
     },
     {
@@ -4841,7 +4841,7 @@
       "availability": "in_stock",
       "createdAt": "2026-10-14T19:14:22.886Z",
       "stockQuantity": 5,
-      "sku": "EVE-HYB-PLA-GRA-001",
+      "sku": "EVE-HYB-PLA-GRA-003",
       "dimensionsImage": "./uploads/catalog-v2-ev-candy-01-scale-f2621c7555.webp"
     },
     {

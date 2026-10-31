@@ -29,7 +29,10 @@ const PORT = process.env.PORT || 5000;
 const production = process.env.NODE_ENV === 'production';
 const JWT_SECRET = (process.env.JWT_SECRET && process.env.JWT_SECRET.length >= 32)
   ? process.env.JWT_SECRET
-  : 'artesano_digital_super_secret_jwt_key_2026_production_safe_token';
+  : randomBytes(48).toString('hex');
+if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) {
+  console.warn('[SEGURIDAD] JWT_SECRET no configurado (mínimo 32 caracteres). Se generó una clave temporal por proceso; configura JWT_SECRET en Vercel para sesiones estables.');
+}
 if (production && !cloudDb.enabled) {
   console.log('[STORAGE] DATABASE_URL no configurado. Utilizando almacenamiento local persistente.');
 }

@@ -608,6 +608,11 @@ export function isCustomPhotoOrDrawingProduct(product) {
  */
 export function getAvailableMaterialTabsForProduct(product) {
   if (!product) return ['pla'];
+  // Si el producto declara explícitamente sus familias de material, se respetan por encima de cualquier heurística.
+  if (Array.isArray(product.materialFamilies) && product.materialFamilies.length > 0) {
+    const explicit = product.materialFamilies.filter(f => WORKSHOP_PALETTES_BY_CATEGORY[f]);
+    if (explicit.length > 0) return explicit;
+  }
   const techs = (product.techniques || []).map(t => String(t).toLowerCase());
   const mat = (product.specifications?.material || '').toLowerCase();
   const name = (product.name || '').toLowerCase();
@@ -617,14 +622,15 @@ export function getAvailableMaterialTabsForProduct(product) {
   const available = [];
 
   // 1. Madera / MDF / Tintes & Barnices
+  // IMPORTANTE: la técnica "laser" por sí sola NO implica madera (se graba también metal, acrílico o cerámica).
   const isWood = (
-    techs.some(t => ['laser', 'carpinteria', 'madera', 'cnc'].includes(t)) ||
+    techs.some(t => ['carpinteria', 'madera', 'cnc'].includes(t)) ||
     mat.includes('madera') || mat.includes('mdf') || mat.includes('pino') ||
     mat.includes('nogal') || mat.includes('triplay') || mat.includes('haya') ||
     mat.includes('abedul') || mat.includes('tzalam') || mat.includes('roble') ||
     name.includes('madera') || name.includes('mdf') || name.includes('posavasos') ||
     name.includes('camarita') || name.includes('colgador') || name.includes('servilletero') ||
-    cats.some(c => c.includes('madera') || c.includes('laser'))
+    cats.some(c => c.includes('madera'))
   ) && !mat.includes('100% tela') && !name.includes('gorra');
 
   if (isWood) available.push('wood');
