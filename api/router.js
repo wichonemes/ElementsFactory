@@ -1,18 +1,27 @@
 import app from '../server/index.js';
 import { db } from '../server/db.js';
+import { cloudDb } from '../server/cloud-db.js';
 
 // Sincronización única por proceso para garantizar SKUs únicos y catálogo al día
 // también en el entorno serverless de Vercel (donde el bloque de arranque no corre).
+// En Postgres hay que abrir una transacción con commit: las lecturas normales se revierten.
 let catalogReady = null;
 function ensureCatalog() {
   if (!catalogReady) {
-    catalogReady = Promise.resolve().then(() => {
+    catalogReady = (async () => {
       try {
-        db.syncCatalogWithCodebase();
+        if (cloudDb.enabled) {
+          await cloudDb.transaction(async () => {
+            db.syncCatalogWithCodebase();
+          }, () => true, { lock: true });
+        } else {
+          db.syncCatalogWithCodebase();
+        }
       } catch (err) {
         console.error('[CATALOG] No se pudo sincronizar el catálogo:', err.message);
+        catalogReady = null;
       }
-    });
+    })();
   }
   return catalogReady;
 }

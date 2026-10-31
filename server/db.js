@@ -11971,12 +11971,43 @@ const initialSettings = {
 
 // Initial Admin User (password will be hashed)
 
+/**
+ * Garantiza que ningún SKU se repita (trazabilidad de inventario y reportes).
+ * Devuelve cuántos SKUs fueron corregidos.
+ */
+function ensureUniqueProductSkus(products) {
+  if (!Array.isArray(products)) return 0;
+  const seen = new Map();
+  let fixed = 0;
+  for (const prod of products) {
+    if (!prod || !prod.sku) continue;
+    const skuKey = String(prod.sku).toUpperCase();
+    if (!seen.has(skuKey)) {
+      seen.set(skuKey, prod.id);
+      continue;
+    }
+    const skuBase = skuKey.replace(/-\d{3}$/, '');
+    let seq = 2;
+    let candidate;
+    do {
+      candidate = `${skuBase}-${String(seq).padStart(3, '0')}`;
+      seq += 1;
+    } while (seen.has(candidate));
+    prod.sku = candidate;
+    seen.set(candidate, prod.id);
+    fixed += 1;
+  }
+  return fixed;
+}
+
 const createInitialDb = () => {
   const salt = bcrypt.genSaltSync(10);
   const initialAdminPassword = (process.env.ADMIN_INITIAL_PASSWORD && process.env.ADMIN_INITIAL_PASSWORD.length >= 12)
     ? process.env.ADMIN_INITIAL_PASSWORD
     : 'AD-ePnzAHpUid8Z';
   const hashedPassword = bcrypt.hashSync(initialAdminPassword, salt);
+  const initialProductsCopyWithUniqueSkus = initialProducts.map(p => ({ ...p }));
+  ensureUniqueProductSkus(initialProductsCopyWithUniqueSkus);
 
   return {
     users: [
@@ -11993,7 +12024,7 @@ const createInitialDb = () => {
     settings: initialSettings,
     worlds: initialWorlds,
     categories: initialCategories,
-    products: initialProducts,
+    products: initialProductsCopyWithUniqueSkus,
     analytics: {
       pageViews: 142,
       productViews: {
@@ -15635,25 +15666,7 @@ class Database {
     }
 
     // 3.1 Garantizar unicidad de SKU (trazabilidad de inventario y reportes)
-    const seenSkus = new Map();
-    for (const prod of data.products) {
-      if (!prod.sku) continue;
-      const skuKey = String(prod.sku).toUpperCase();
-      if (!seenSkus.has(skuKey)) {
-        seenSkus.set(skuKey, prod.id);
-        continue;
-      }
-      const skuBase = skuKey.replace(/-\d{3}$/, '');
-      let seq = 2;
-      let candidate;
-      do {
-        candidate = `${skuBase}-${String(seq).padStart(3, '0')}`;
-        seq += 1;
-      } while (seenSkus.has(candidate));
-      prod.sku = candidate;
-      seenSkus.set(candidate, prod.id);
-      changed = true;
-    }
+    if (ensureUniqueProductSkus(data.products) > 0) changed = true;
 
     if (changed) {
       this.save(data);
