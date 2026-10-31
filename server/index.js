@@ -2381,7 +2381,7 @@ app.use((error, _req, res, _next) => {
 // Fallback for SPA routing if dist exists con soporte para Open Graph dinámico en WhatsApp
 const distIndex = path.join(distDir, 'index.html');
 if (fs.existsSync(distIndex)) {
-  app.get(/^\/(uploads|brand|portafolio|portfolio|interfaces|products|downloads|animacion|audiovisual|editorial|fotografia|identidad-corporativa|ilustracion|impresos|maquetado-inicio-wicho-v2|mi-portafolio|modelado-3d|optimized)\/.*/, async (req, res) => {
+  app.get(/^\/((?:uploads|brand|portafolio|portfolio|interfaces|products|downloads|animacion|audiovisual|editorial|fotografia|identidad-corporativa|ilustracion|impresos|maquetado-inicio-wicho-v2|mi-portafolio|modelado-3d|optimized)\/.+)$/, async (req, res) => {
   try {
     const pathname = decodeURIComponent(String(req.params[0] || '')).replace(/^\/+/, '');
     const result = await resolveImageFromBlob(pathname);
