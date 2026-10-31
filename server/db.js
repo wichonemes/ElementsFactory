@@ -12067,7 +12067,7 @@ function ensureUniqueProductSkus(products) {
   return fixed;
 }
 
-const createInitialDb = () => {
+export const createInitialDb = () => {
   const salt = bcrypt.genSaltSync(10);
   const initialAdminPassword = (process.env.ADMIN_INITIAL_PASSWORD && process.env.ADMIN_INITIAL_PASSWORD.length >= 12)
     ? process.env.ADMIN_INITIAL_PASSWORD
@@ -18849,3 +18849,4 @@ class Database {
 }
 
 export const db = new Database();
+cloudDb.fallbackSupplier = () => createInitialDb();

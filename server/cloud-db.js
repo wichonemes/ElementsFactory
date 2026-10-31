@@ -32,6 +32,21 @@ export class CloudDatabase {
     if (this.fallbackData && Array.isArray(this.fallbackData.products) && this.fallbackData.products.length > 0) {
       return this.fallbackData;
     }
+
+    // 0. Si se especificó una ruta explícita (ej. en tests de integración), usarla primero
+    if (process.env.LOCAL_DB_PATH) {
+      try {
+        if (fs.existsSync(process.env.LOCAL_DB_PATH)) {
+          const raw = fs.readFileSync(process.env.LOCAL_DB_PATH, 'utf8');
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed?.products)) {
+            this.fallbackData = parsed;
+            return this.fallbackData;
+          }
+        }
+      } catch {}
+    }
+
     // 1. Intenta leer del archivo temporal si hubo escrituras recientes en este proceso
     try {
       if (fs.existsSync(TMP_BACKUP_PATH)) {
@@ -44,22 +59,41 @@ export class CloudDatabase {
       }
     } catch {}
 
-    // 2. Intenta leer del archivo local semilla db.json
-    try {
-      const dbPath = process.env.LOCAL_DB_PATH || DEFAULT_SEED_PATH;
-      if (fs.existsSync(dbPath)) {
-        const raw = fs.readFileSync(dbPath, 'utf8');
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed?.products) && parsed.products.length > 0) {
-          this.fallbackData = parsed;
-          return this.fallbackData;
+    // 2. Intenta leer de las posibles ubicaciones de db.json en local y Vercel
+    const candidatePaths = [
+      DEFAULT_SEED_PATH,
+      path.join(process.cwd(), 'server', 'data', 'db.json'),
+      path.join(__dirname, '..', 'server', 'data', 'db.json'),
+      path.join(__dirname, 'data', 'db.json')
+    ].filter(Boolean);
+
+    for (const dbPath of candidatePaths) {
+      try {
+        if (fs.existsSync(dbPath)) {
+          const raw = fs.readFileSync(dbPath, 'utf8');
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed?.products) && parsed.products.length > 0) {
+            this.fallbackData = parsed;
+            return this.fallbackData;
+          }
         }
-      }
-    } catch (err) {
-      console.warn('[CLOUD-DB] Advertencia al leer datos locales de contingencia:', err.message);
+      } catch {}
     }
 
-    if (this.cachedData && Array.isArray(this.cachedData.products)) {
+    // 3. Intenta con el generador compilado en memoria (createInitialDb de db.js)
+    if (typeof this.fallbackSupplier === 'function') {
+      try {
+        const seed = this.fallbackSupplier();
+        if (Array.isArray(seed?.products) && seed.products.length > 0) {
+          this.fallbackData = seed;
+          return this.fallbackData;
+        }
+      } catch (err) {
+        console.warn('[CLOUD-DB] Advertencia al generar datos de contingencia con fallbackSupplier:', err.message);
+      }
+    }
+
+    if (this.cachedData && Array.isArray(this.cachedData.products) && this.cachedData.products.length > 0) {
       this.fallbackData = structuredClone(this.cachedData);
       return this.fallbackData;
     }

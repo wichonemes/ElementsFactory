@@ -5,6 +5,7 @@
   "cleanUrls": true,
   "functions": {
     "api/router.js": {
+      "includeFiles": "server/data/db.json",
       "maxDuration": 60
     }
   },
